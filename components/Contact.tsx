@@ -85,6 +85,7 @@ const Contact = ({ onFormOpen }: ContactProps) => {
                                     alt="Red Rabbit Media Team"
                                     fill
                                     className="object-cover object-center"
+                                    sizes="(max-width: 1024px) 100vw, 50vw"
                                 />
                                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                                     <div className="text-center relative py-8">

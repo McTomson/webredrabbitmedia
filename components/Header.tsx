@@ -36,15 +36,16 @@ export default function Header({ onFormOpen }: HeaderProps) {
                 <div className="flex justify-between items-center">
                     <div className="fade-down" style={{ animationDelay: '100ms' }}>
                         <Link href="/" className="flex items-center outline-none focus:outline-none">
-                            <Image
-                                src="/images/logo.webp"
-                                alt="Red Rabbit Media Logo"
-                                width={200}
-                                height={50}
-                                className="h-8 md:h-10 w-auto"
-                                priority // Fix LCP warning
-                                style={{ width: 'auto', height: 'auto' }} // Fix aspect ratio warning
-                            />
+                            <div className="relative w-[150px] h-[40px]">
+                                <Image
+                                    src="/images/logo.webp"
+                                    alt="Red Rabbit Media Logo"
+                                    fill
+                                    className="object-contain object-left"
+                                    priority // Fix LCP warning
+                                    sizes="(max-width: 768px) 120px, 150px"
+                                />
+                            </div>
                         </Link>
                     </div>
                     <nav className="hidden md:flex items-center gap-8 outline-none focus:outline-none">

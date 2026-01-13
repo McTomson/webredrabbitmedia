@@ -16,10 +16,8 @@ export function middleware(request: NextRequest) {
         response.headers.set('Vary', 'User-Agent');
     }
 
-    // 3. Security Headers (SEO-relevant)
-    response.headers.set('X-Content-Type-Options', 'nosniff');
-    response.headers.set('X-Frame-Options', 'SAMEORIGIN');
-    response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    // 3. Security Headers (SEO-relevant) handled in next.config.ts
+
 
     // 4. Cache-Control für statische Assets
     if (url.pathname.startsWith('/_next/static') || url.pathname.startsWith('/images')) {

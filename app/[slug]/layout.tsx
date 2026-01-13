@@ -5,11 +5,21 @@ import { notFound } from 'next/navigation';
 export { generateStaticParams };
 
 type Props = {
-    params: { city: string };
+    params: Promise<{ slug: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const city = cities[params.city as CitySlug];
+    const { slug } = await params;
+
+    // Parse city from slug (same logic as page.tsx)
+    if (!slug || !slug.startsWith('webdesign-')) {
+        return {
+            title: 'Stadt nicht gefunden',
+        };
+    }
+
+    const citySlug = slug.replace('webdesign-', '') as CitySlug;
+    const city = cities[citySlug];
 
     if (!city) {
         return {

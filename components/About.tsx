@@ -264,6 +264,7 @@ const About = () => {
                                         alt="Red Rabbit Media Team"
                                         fill
                                         className="object-cover object-right"
+                                        sizes="(max-width: 1024px) 100vw, 50vw"
                                     />
                                     <div className="absolute inset-0 bg-black/20 flex items-center justify-center z-10">
                                         <div className="text-center relative py-8">

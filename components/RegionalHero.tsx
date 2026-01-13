@@ -178,7 +178,10 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
                                 >
                                     <div className="text-2xl font-semibold text-gray-900">Premium Website</div>
                                     <div className="flex items-baseline gap-3">
-                                        <span className="text-4xl font-bold text-red-600">790 €</span>
+                                        <span className="text-4xl font-bold text-red-600">
+                                            <span className="text-2xl font-light text-gray-500 mr-1">ab</span>
+                                            790 €
+                                        </span>
                                         <span className="text-xl text-gray-500 line-through">statt 2.800 €</span>
                                     </div>
                                     <div className="text-sm text-gray-600">nur bei direkter Anfrage - stressfrei</div>
@@ -240,7 +243,7 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
                         <div className="flex justify-center lg:justify-start">
                             <motion.button
                                 onClick={onFormOpen}
-                                className="group flex items-center justify-center gap-3 px-6 md:px-8 py-3 md:py-4 bg-red-600 text-white hover:bg-red-700 transition-all duration-500 rounded-lg shadow-lg shadow-red-500/30"
+                                className="group flex items-center justify-center gap-3 px-6 md:px-8 py-3 md:py-4 bg-red-600 text-white hover:bg-red-700 transition-all duration-500 rounded-none shadow-lg shadow-red-500/30"
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 1.4 }}

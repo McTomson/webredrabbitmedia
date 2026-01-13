@@ -1,9 +1,27 @@
 // Google Indexing API Integration
 import { google } from 'googleapis';
 import { NextRequest, NextResponse } from 'next/server';
+import rateLimit from '@/lib/rate-limit';
+
+// Rate Limiter: 10 requests per minute per IP (higher limit for indexing if multiple URLs updated)
+const limiter = rateLimit({
+    interval: 60 * 1000,
+    uniqueTokenPerInterval: 500,
+});
 
 export async function POST(request: NextRequest) {
     try {
+        // Rate Limiting
+        const ip = request.headers.get('x-forwarded-for') || 'Anonymous';
+        try {
+            await limiter.check(10, ip);
+        } catch {
+            return NextResponse.json(
+                { error: 'Zu viele Anfragen. Bitte warten.' },
+                { status: 429 }
+            );
+        }
+
         const { url, type = 'URL_UPDATED' } = await request.json();
 
         // Validate URL

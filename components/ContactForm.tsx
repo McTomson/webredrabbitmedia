@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { X, Send, Building, User, Mail, Phone, MapPin, MessageSquare, Globe, CheckCircle, Clock, CreditCard, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import emailjs from '@emailjs/browser';
 import Image from 'next/image';
 
 interface ContactFormProps {
@@ -46,7 +45,8 @@ const ContactForm = ({ isOpen, onClose }: ContactFormProps) => {
         email: '',
         phone: '',
         website: '',
-        message: ''
+        message: '',
+        honeyPot: '' // Hidden field for spam protection
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -128,27 +128,22 @@ const ContactForm = ({ isOpen, onClose }: ContactFormProps) => {
                 email: sanitizeInput(formData.email),
                 phone: sanitizeInput(formData.phone),
                 website: sanitizeInput(formData.website),
-                message: sanitizeInput(formData.message)
+                message: sanitizeInput(formData.message),
+                honeyPot: formData.honeyPot
             };
 
-            // Prepare email template parameters
-            const templateParams = {
-                from_name: sanitizedData.name,
-                user_email: sanitizedData.email,
-                company: sanitizedData.company || 'Nicht angegeben',
-                phone: sanitizedData.phone || 'Nicht angegeben',
-                website: sanitizedData.website,
-                user_message: sanitizedData.message || 'Keine Nachricht angegeben',
-                offer_price: '790€ statt 2.800€'
-            };
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sanitizedData),
+            });
 
-            // Send email using EmailJS with env variables for NEXT.JS (process.env)
-            const result = await emailjs.send(
-                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'service_k2llclj',
-                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'template_0qhyudq',
-                templateParams,
-                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || 'INMQGgk7vcfIj5EwK'
-            );
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Fehler beim Senden');
+            }
 
             setIsSubmitting(false);
             setShowSuccess(true);
@@ -161,7 +156,8 @@ const ContactForm = ({ isOpen, onClose }: ContactFormProps) => {
                 email: '',
                 phone: '',
                 website: '',
-                message: ''
+                message: '',
+                honeyPot: ''
             });
 
         } catch (error) {
@@ -257,6 +253,18 @@ const ContactForm = ({ isOpen, onClose }: ContactFormProps) => {
 
                                 {/* Form */}
                                 <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                                    {/* Honeypot Field - Hidden */}
+                                    <div className="hidden" aria-hidden="true">
+                                        <input
+                                            type="text"
+                                            name="honeyPot"
+                                            value={formData.honeyPot}
+                                            onChange={handleInputChange}
+                                            tabIndex={-1}
+                                            autoComplete="off"
+                                        />
+                                    </div>
+
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {/* Name */}
                                         <div className="space-y-2">

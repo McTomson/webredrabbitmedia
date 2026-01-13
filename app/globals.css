@@ -285,7 +285,7 @@ input[type="range"]:focus::-moz-range-thumb {
 
   /* Sophisticated Button System */
   .btn-minimal {
-    @apply inline-flex items-center justify-center px-12 py-4 rounded-full;
+    @apply inline-flex items-center justify-center px-12 py-4 rounded-none;
     @apply bg-primary text-primary-foreground font-medium tracking-wide;
     @apply border border-primary/20 shadow-subtle;
     transition: var(--transition-smooth);
@@ -294,7 +294,7 @@ input[type="range"]:focus::-moz-range-thumb {
   }
 
   .btn-outline-minimal {
-    @apply inline-flex items-center justify-center px-12 py-4 rounded-full;
+    @apply inline-flex items-center justify-center px-12 py-4 rounded-none;
     @apply border border-primary/30 text-primary bg-transparent font-medium tracking-wide;
     @apply shadow-subtle backdrop-blur-sm;
     transition: var(--transition-smooth);
@@ -303,7 +303,7 @@ input[type="range"]:focus::-moz-range-thumb {
   }
 
   .btn-accent {
-    @apply inline-flex items-center justify-center px-12 py-4 rounded-full;
+    @apply inline-flex items-center justify-center px-12 py-4 rounded-none;
     background: var(--gradient-accent);
     @apply text-accent-foreground font-medium tracking-wide shadow-medium;
     transition: var(--transition-smooth);
@@ -318,7 +318,7 @@ input[type="range"]:focus::-moz-range-thumb {
 
   /* Premium Card System */
   .card-premium {
-    @apply bg-card rounded-2xl border border-border/60 shadow-subtle;
+    @apply bg-card rounded-xl border border-border/60 shadow-subtle;
     @apply backdrop-blur-sm transition-all duration-700;
     @apply hover:shadow-medium hover:border-border hover:-translate-y-2;
     @apply hover:bg-card/95;
