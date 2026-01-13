@@ -34,10 +34,31 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
                     overflow: 'hidden'
                 }}
             >
-                <article itemScope itemType="https://schema.org/Service">
+            >
+                <article itemScope itemType={data.region === "Wien" ? "https://schema.org/LocalBusiness" : "https://schema.org/ProfessionalService"}>
                     <div itemProp="name" role="heading" aria-level={1}>
                         Webdesign {data.region} - Website erstellen lassen ab 790 Euro
                     </div>
+
+                    {/* Address - Always Wien for all regions (SAB) */}
+                    <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress" style={{ display: 'none' }}>
+                        <span itemProp="streetAddress">Grabnergasse 8</span>
+                        <span itemProp="postalCode">1060</span>
+                        <span itemProp="addressLocality">Wien</span>
+                        <span itemProp="addressCountry">AT</span>
+                    </div>
+
+                    {/* Service Area for non-Wien regions */}
+                    {data.region !== "Wien" && (
+                        <div itemProp="areaServed" itemScope itemType="https://schema.org/State" style={{ display: 'none' }}>
+                            <span itemProp="name">{data.region}</span>
+                        </div>
+                    )}
+
+                    {/* Mobile Service Definition */}
+                    {data.region !== "Wien" && (
+                        <meta itemProp="serviceType" content="Mobile Webdesign & Website-Entwicklung" />
+                    )}
 
                     <div itemProp="description">
                         <h2>Professionelles Webdesign in {data.region} ab 790 Euro</h2>
@@ -52,6 +73,14 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
                             {content.economicContext} {data.region} ist ein wirtschaftlich starker Standort mit {data.population} Einwohnern.
                             Unsere Webdesign Agentur versteht die spezifischen Anforderungen der regionalen Wirtschaft und erstellt
                             Websites, die perfekt auf die Zielgruppe in {data.region} abgestimmt sind.
+                        </p>
+
+                        <h2>Persönlicher Service vor Ort in {data.region}</h2>
+                        <p>
+                            Wir kommen zu Ihnen! Mit unserem Hauptsitz in Wien bedienen wir ganz Österreich - inklusive persönlicher
+                            Beratung vor Ort in {data.region}. Bereits über {content.projectCount} erfolgreiche Webdesign-Projekte haben
+                            wir in {data.region} realisiert. Ob in {data.mainCity}, {data.cities[1]}, {data.cities[2]} oder {data.cities[3]} -
+                            wir sind für Sie da und besuchen Sie gerne persönlich für eine unverbindliche Erstberatung.
                         </p>
 
                         <h2>Website erstellen lassen in {data.region} - So funktioniert's</h2>
@@ -105,9 +134,9 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
 
                         <h2>Referenzen und Erfahrungen aus {data.region}</h2>
                         <p itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
-                            Red Rabbit Media hat bereits zahlreiche erfolgreiche Webdesign-Projekte in {data.region} umgesetzt.
+                            Red Rabbit Media hat bereits über {content.projectCount} erfolgreiche Webdesign-Projekte in {data.region} umgesetzt.
                             Unsere Kunden aus {data.mainCity}, {data.cities[1]}, {data.cities[2]} und weiteren Städten in
-                            {data.region} schätzen unsere professionelle Arbeitsweise und das faire Preis-Leistungs-Verhältnis.
+                            {data.region} schätzen unsere professionelle Arbeitsweise, den persönlichen Vor-Ort-Service und das faire Preis-Leistungs-Verhältnis.
                             Mit einer durchschnittlichen Bewertung von <span itemProp="ratingValue">4.8</span> Sternen basierend
                             auf <span itemProp="reviewCount">315</span> Kundenbewertungen gehören wir zu den bestbewerteten
                             Webdesign-Agenturen in Österreich. Die beste Bewertung ist <span itemProp="bestRating">5</span> Sterne.
@@ -124,6 +153,8 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
                             <li>Fixpreis ab 790 Euro ohne versteckte Kosten für ganz {data.region}</li>
                             <li>Kein Risiko - Zahlung erst nach Zufriedenheit</li>
                             <li>4.8 Sterne Bewertung bei 315 Kunden</li>
+                            <li>Über {content.projectCount} erfolgreiche Projekte in {data.region}</li>
+                            <li>Persönlicher Vor-Ort-Service in ganz {data.region}</li>
                             <li>Spezialisierung auf {data.region} - Kenntnisse der regionalen Wirtschaft</li>
                             <li>Service für {data.cities.join(', ')} und alle weiteren Städte in {data.region}</li>
                             <li>DSGVO-konforme Websites nach österreichischem Recht</li>

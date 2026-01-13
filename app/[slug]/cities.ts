@@ -9,6 +9,7 @@ export interface City {
     seoText: string;
     marketTrends: string;
     localFacts: readonly string[];
+    projectCount?: number;
 }
 
 export const cities: Record<string, City> = {
@@ -21,7 +22,8 @@ export const cities: Record<string, City> = {
         landmarks: ["Stephansdom", "Schloss Schönbrunn", "Donau City"],
         seoText: "In Wien konkurrieren über 50.000 Unternehmen um die digitale Sichtbarkeit. Eine Website muss hier mehr können als nur gut aussehen – sie muss Wiens schnelles Tempo widerspiegeln. Unsere Designs für Wiener Kunden sind geprägt von urbaner Ästhetik, kombiniert mit kompromissloser technischer SEO, um in den hart umkämpften lokalen Suchergebnissen (Local Pack) zu bestehen.",
         marketTrends: "Steigende Nachfrage nach mehrsprachigen Websites (DE/EN) für internationales Publikum und mobile-first Lösungen für die urbane Pendler-Zielgruppe.",
-        localFacts: ["Höchste dichte an Digitalagenturen in Österreich", "Starker Fokus auf Service-Dienstleistungen", "Hohe Mobile-Usage durch Öffi-Nutzer"]
+        localFacts: ["Höchste dichte an Digitalagenturen in Österreich", "Starker Fokus auf Service-Dienstleistungen", "Hohe Mobile-Usage durch Öffi-Nutzer"],
+        projectCount: 315
     },
     graz: {
         name: "Graz",
