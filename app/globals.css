@@ -123,47 +123,80 @@ body {
 }
 
 /* Focus indicator for accessibility */
-*:focus {
-  outline: 2px solid #ef4444;
-  outline-offset: 2px;
+/* REMOVED GLOBAL RED OUTLINE - AGGRESSIVE OVERRIDE */
+*:focus,
+*:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+  /* Optional: prevents border color changes if any */
 }
 
-/* Custom slider styling */
+/* Custom slider styling - Robust Cross-Browser Fix */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
+  width: 100%;
   cursor: pointer;
+  height: 8px;
+  /* Reduced height to look like a track */
+  margin: 10px 0;
+  background: #cbd5e1;
+  /* Fallback track color */
+  border-radius: 4px;
 }
 
-input[type="range"]::-webkit-slider-track {
-  background: #e5e7eb;
-  height: 4px;
-  border-radius: 2px;
+/* Chrome, Safari, Opera, Edge */
+input[type="range"]::-webkit-slider-runnable-track {
+  background: transparent;
+  /* Changed to transparent as input has background */
+  height: 8px;
+  border-radius: 4px;
+  width: 100%;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  background: #ef4444;
-  height: 16px;
-  width: 16px;
+  background: #dc2626;
+  /* red-600 */
+  height: 18px;
+  width: 18px;
   border-radius: 50%;
   margin-top: -6px;
+  /* Center thumb on track (18/2 - 6/2 = 6, inverted) -> -6px */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
+/* Firefox */
 input[type="range"]::-moz-range-track {
-  background: #e5e7eb;
-  height: 4px;
-  border-radius: 2px;
+  background: transparent;
+  height: 8px;
+  border-radius: 4px;
+  width: 100%;
 }
 
 input[type="range"]::-moz-range-thumb {
-  background: #ef4444;
-  height: 16px;
-  width: 16px;
+  background: #dc2626;
+  height: 18px;
+  width: 18px;
   border-radius: 50%;
   border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Focus styles */
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.3);
+}
+
+input[type="range"]:focus::-moz-range-thumb {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.3);
 }
 
 /* Sophisticated Minimal Design System - Inspired by Premium Portfolio Aesthetics */

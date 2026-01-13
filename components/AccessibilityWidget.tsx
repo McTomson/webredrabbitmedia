@@ -147,7 +147,7 @@ const AccessibilityWidget = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+                        className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4"
                         onClick={() => setIsOpen(false)}
                     >
                         <motion.div
@@ -203,7 +203,7 @@ const AccessibilityWidget = () => {
                                                 max="200"
                                                 value={settings.fontSize}
                                                 onChange={(e) => handleSliderChange('fontSize', parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                                                className="w-full"
                                                 aria-label="Schriftgröße anpassen"
                                             />
                                         </div>
@@ -219,7 +219,7 @@ const AccessibilityWidget = () => {
                                                 max="200"
                                                 value={settings.lineHeight}
                                                 onChange={(e) => handleSliderChange('lineHeight', parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                                                className="w-full"
                                                 aria-label="Zeilenhöhe anpassen"
                                             />
                                         </div>
@@ -235,7 +235,7 @@ const AccessibilityWidget = () => {
                                                 max="5"
                                                 value={settings.letterSpacing}
                                                 onChange={(e) => handleSliderChange('letterSpacing', parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                                                className="w-full"
                                                 aria-label="Buchstabenabstand anpassen"
                                             />
                                         </div>

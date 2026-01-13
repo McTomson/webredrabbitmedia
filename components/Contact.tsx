@@ -81,41 +81,13 @@ const Contact = ({ onFormOpen }: ContactProps) => {
                         <div className="relative">
                             <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden relative">
                                 <Image
-                                    src="/images/pexels-fauxels-3184395.jpg"
+                                    src="/images/hero-portrait.jpg"
                                     alt="Red Rabbit Media Team"
                                     fill
                                     className="object-cover object-center"
                                 />
                                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                                     <div className="text-center relative py-8">
-                                        <motion.div
-                                            className="relative w-56 h-56 mx-auto mb-8 drop-shadow-2xl"
-                                            animate={{
-                                                y: [0, -15, 0],
-                                                rotate: [0, 3, -3, 0],
-                                            }}
-                                            transition={{
-                                                duration: 4,
-                                                repeat: Infinity,
-                                                ease: "easeInOut"
-                                            }}
-                                        >
-                                            <Image
-                                                src="/images/logo.png"
-                                                alt="Red Rabbit Media"
-                                                fill
-                                                className="object-contain brightness-0 invert"
-                                            />
-                                        </motion.div>
-                                        <motion.div
-                                            className="mb-3"
-                                            initial={{ opacity: 0, y: 20 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: 0.3, duration: 0.8 }}
-                                        >
-                                            <p className="text-white text-3xl font-semibold mb-1 drop-shadow-lg tracking-tight">red rabbit media</p>
-                                        </motion.div>
                                         <motion.p
                                             className="text-white font-medium text-xl drop-shadow-md"
                                             initial={{ opacity: 0, y: 20 }}
