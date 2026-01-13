@@ -34,7 +34,7 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
                     overflow: 'hidden'
                 }}
             >
-            >
+
                 <article itemScope itemType={data.region === "Wien" ? "https://schema.org/LocalBusiness" : "https://schema.org/ProfessionalService"}>
                     <div itemProp="name" role="heading" aria-level={1}>
                         Webdesign {data.region} - Website erstellen lassen ab 790 Euro
