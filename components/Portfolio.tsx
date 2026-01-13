@@ -399,7 +399,7 @@ const Portfolio = () => {
                                         {/* Using Next.js Image for optimization, fallback logic included via state if needed, but here simple */}
                                         <Image
                                             src={project.screenshot}
-                                            alt={`${project.name} Website`}
+                                            alt={`${project.name} - Webdesign Referenz ${project.category} | Red Rabbit Media`}
                                             width={606}
                                             height={313}
                                             className="w-full h-full object-contain object-top transition-transform duration-700 group-hover:scale-105"

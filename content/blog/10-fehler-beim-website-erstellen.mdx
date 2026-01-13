@@ -1,0 +1,175 @@
+---
+title: "10 tödliche Fehler beim Website-Erstellen: Ein technischer Deep-Dive (2025)"
+excerpt: "Warum rankt Ihre Website nicht? Warum springen Besucher ab? Dmitry Pashlov (Lead Dev) analysiert die 10 schlimmsten technischen Sünden – von LCP-Problemen bis zu Mobile-First Katastrophen."
+featuredSnippet: "Die häufigsten Website-Fehler, die das Ranking zerstören, sind schlechte Mobile-Optimierung, langsame Ladezeiten (LCP > 2.5s) durch unkomprimierte Bilder, fehlende SSL-Verschlüsselung und Layout-Shifts (CLS). Technisch wiegen auch fehlende strukturierte Daten (Schema.org) und blockierendes JavaScript schwer, da sie Google daran hindern, die Inhalte korrekt zu indexieren."
+featuredSnippetTitle: "Was sind die schlimmsten Website-Fehler für SEO?"
+author: "Dmitry Pashlov"
+publishedAt: "2024-12-28"
+updatedAt: "2025-01-13"
+category: "Technische SEO & Performance"
+tags: ["SEO Fehler", "Core Web Vitals", "Next.js", "Webentwicklung", "PageSpeed"]
+featuredImage: "/images/blog/debugging_hero_tech_1768273023735.png"
+sources:
+  - name: "Google PageSpeed Insights (Tool)"
+    url: "https://pagespeed.web.dev/"
+  - name: "Mozilla Developer Network (Web Performance)"
+    url: "https://developer.mozilla.org/en-US/docs/Web/Performance"
+  - name: "Google Search Central (Core Web Vitals)"
+    url: "https://developers.google.com/search/docs/appearance/core-web-vitals"
+---
+
+## Code ist Poesie – aber nur, wenn er lädt.
+
+Als Lead Developer bei Red Rabbit Media sehe ich mir jede Woche dutzende Websites an. Oft sehen sie auf den ersten Blick gut aus. "Modernes Design", sagen die Kunden. "Gute Farben".
+
+Aber wenn ich die Entwickler-Konsole öffne (F12), sehe ich das Grauen.
+
+Rote Fehlermeldungen. 10MB große Bilder, die im Hintergrund laden. JavaScript-Dateien, die den Seitenaufbau blockieren. Für einen Nutzer mag die Seite "okay" aussehen. Für Google ist sie kaputt. Und eine kaputte Seite rankt nicht.
+
+In diesem technischen Deep-Dive gehe ich nicht auf Design-Geschmacksfragen ein. Wir sprechen über harte Fakten. Über Millisekunden, Rendering-Pfade und Indexierbarkeit.
+
+Hier sind die 10 Fehler, die ich am häufigsten finde – und wie wir sie bei Red Rabbit Media fixen.
+
+---
+
+## 1. Die Bilder-Katastrophe (LCP-Killer Nr. 1)
+
+"Ein Bild sagt mehr als 1000 Worte" – aber ein 5MB großes Bild sagt dem Browser vor allem eines: "Warte!"
+
+### Das technische Problem
+Viele Website-Betreiber laden Fotos direkt vom Smartphone oder der DSLR-Kamera hoch. Diese Bilder haben oft Auflösungen von 4000x3000 Pixeln und sind 5-10 MB groß.
+Der Browser muss dieses riesige Datenpaket herunterladen, nur um es dann in ein kleines 300x200 Pixel Fenster zu quetschen.
+
+**Auswirkung auf Core Web Vitals:** Ihr **LCP (Largest Contentful Paint)** schießt durch die Decke. Google erwartet einen LCP von unter 2,5 Sekunden. Ein 5MB Bild braucht im 4G-Netz oft allein 4 Sekunden.
+
+### Der Fix: Next-Gen Formate
+Wir nutzen bei Red Rabbit Media ausschließlich **WebP** oder **AVIF**. Diese Formate sind bei gleicher Qualität oft 30-50% kleiner als JPG.
+Außerdem nutzen wir das `<Image>` Component von Next.js, das automatisch:
+1.  Das Bild in der passenden Größe für das jeweilige Gerät ausliefert (Responsive Images).
+2.  Das Bild erst lädt, wenn es im Viewport erscheint (Lazy Loading).
+3.  Einen Platzhalter (Blur) anzeigt, um Layout Shifts zu vermeiden.
+
+---
+
+## 2. Mobile "Last" statt Mobile First
+
+Österreich hat eine mobile Internetnutzung von fast 90%. Wer heute noch am Desktop designt und "hofft", dass es am Handy passt, hat verloren.
+
+### Der Realitäts-Check
+Google nutzt seit Jahren **Mobile-First Indexing**. Das heißt: Google sieht Ihre Desktop-Seite gar nicht an. Der Bot besucht Ihre Seite als "iPhone" oder "Android Phone".
+Wenn Ihre Seite am Desktop wunderschön ist, aber am Handy Buttons überlappen oder Texte aus dem Bildschirm ragen, stuft Google die ganze Seite als "minderwertig" ein.
+
+![Mobile Fail Comparison](/images/blog/mobile_fail_comparison_1768273040082.png)
+
+### Typische Mobile-Fehler:
+*   **Touch Targets zu klein**: Buttons müssen mindestens 44x44 Pixel groß sein (Daumengröße).
+*   **Horizontaler Scroll**: Wenn ein Element breiter ist als 100vw (Viewport Width), wackelt die ganze Seite.
+*   **Hover-Effekte**: Es gibt keinen "Mauszeiger" am Handy. Menüs, die nur per Hover aufgehen, sind unbedienbar.
+
+---
+
+## 3. Client-Side Rendering (CSR) ohne Hydration Strategy
+
+Das ist ein Problem moderner Frameworks wie React (wenn man sie falsch benutzt).
+
+### Das Problem
+Bei einer reinen Single Page Application (SPA) bekommt der Browser initial nur eine leere weiße Seite (`<div id="root"></div>`) und ein riesiges JavaScript-Bundle. Der Browser muss erst das JS laden und ausführen, um Text anzuzeigen.
+Suchmaschinen-Bots tun sich damit schwer. Sie sehen oft nur die weiße Seite und geben auf.
+
+### Die Lösung: Server-Side Rendering (SSR) & SSG
+Deshalb setzen wir auf **Next.js**.
+*   **SSR (Server-Side Rendering):** Der Server baut die HTML-Seite fertig zusammen und schickt das fertige HTML zum Browser. Google sieht sofort Text.
+*   **SSG (Static Site Generation):** Für Blogs oder Landingpages generieren wir die HTML-Dateien schon beim "Build" (Vorkochen). Die Seite ist dann so schnell wie eine einfache Textdatei.
+
+---
+
+## 4. Langsame Server-Response (TTFB)
+
+Wenn der Server 2 Sekunden "überlegt", bevor er das erste Byte schickt (Time to First Byte), ist das Spiel schon verloren.
+
+**Ursache:** Billiges Shared-Hosting für 2,99€. Hier teilen Sie sich die CPU-Leistung mit 5000 anderen Websites. Wenn eine davon gehackt wird oder viel Traffic hat, wird Ihre Seite langsam.
+**Unsere Lösung:** Wir hosten auf **Vercel** (Edge Network). Ihre Website liegt nicht auf *einem* Server in Frankfurt, sondern wird weltweit auf hunderte Server verteilt. Der User bekommt die Daten immer vom schnellsten Server in seiner Nähe.
+
+---
+
+## 5. Ignorieren der Core Web Vitals (CLS)
+
+Haben Sie schon mal versucht, einen Artikel zu lesen, und plötzlich springt der Text weg, weil ein Werbebanner nachgeladen hat? Das ist ein **Layout Shift (CLS)**.
+
+### Warum Google CLS hasst
+Google möchte eine stabile User Experience. Wenn sich Elemente nachträglich verschieben, klicken Nutzer oft aus Versehen auf den falschen Button (z.B. "Kaufen" statt "Abbrechen").
+CLS ist ab 2021 ein direkter Ranking-Faktor.
+
+**Wie wir CLS verhindern:**
+*   Jedes Bild und Video bekommt feste `width` und `height` Attribute im CSS (Aspect Ratio). Der Browser reserviert den Platz, bevor das Bild geladen ist.
+*   Schriftarten werden vorgeladen (`font-display: swap`), damit kein Text-Flimmern (FOIT) entsteht.
+
+![PageSpeed Score 100](/images/blog/pagespeed_score_100_1768273054731.png)
+
+---
+
+## 6. Fehlende oder falsche Meta-Daten
+
+Ein technischer Fehler, der nichts mit Performance zu tun hat, aber mit Sichtbarkeit.
+
+Jede URL Ihrer Website braucht einen einzigartigen `<title>` und eine `<meta name="description">`.
+*   Der Title ist der blaue Link bei Google.
+*   Die Description ist der graue Text darunter.
+
+**Der Fehler:** Viele CMS generieren automatisch Duplicate Content (z.B. "Home - Seite 1", "Home - Seite 2").
+**Der Fix:** Wir programmieren dynamische Metadaten. Bei einer Produktseite generiert sich der Titel automatisch aus: `Produktname | Kategorie | Marke`.
+
+---
+
+## 7. Unsichere Plugins (WordPress Krankheit)
+
+WordPress ist toll. Aber Plugins sind das Sicherheitsrisiko Nr. 1.
+
+Jedes Plugin ist fremder Code auf Ihrem Server. Wenn Sie 30 Plugins installiert haben, haben Sie 30 potenzielle Hintertüren für Hacker.
+Außerdem lädt jedes Plugin eigene CSS- und JS-Dateien. Ich habe Seiten gesehen, die 15 verschiedene CSS-Dateien geladen haben, nur für einen Slider, ein Kontaktformular und eine Cookie-Bar.
+
+**Unser Ansatz:** Wir programmieren Features selbst, statt Plugins zu installieren. Ein Kontaktformular braucht kein 5MB Plugin. Es braucht 50 Zeilen Code.
+
+---
+
+## 8. Kein Caching
+
+Warum muss die "Über uns" Seite jedes Mal neu aus der Datenbank generiert werden? Der Text ändert sich doch nur alle paar Jahre.
+
+Ohne Caching muss der Server bei jedem Besucher rechnen. Das kostet Energie und Zeit.
+Mit **Caching** (z.B. Redis oder Varnish) speichern wir die fertige Seite im Arbeitsspeicher. Der Server liefert sie in 0,05 Sekunden aus.
+
+---
+
+## 9. Text in Bildern verstecken
+
+Ein Klassiker bei Designern, die Print gewohnt sind.
+Sie erstellen eine wunderschöne Grafik in Photoshop, schreiben dort "Unser Angebot: Website ab 790€" rein und speichern es als JPG.
+
+**Das Problem:** Google kann Text in Bildern nicht zuverlässig lesen. Für die Suchmaschine ist das Angebot unsichtbar.
+Außerdem: Wenn der Nutzer hereinzoomt, wird der Text pixelig. Und ein Screenreader für Blinde kann es gar nicht vorlesen (Barrierefreiheit!).
+
+**Der Fix:** Text ist immer HTML. Design ist CSS.
+
+---
+
+## 10. DSGVO-Sünden (Google Fonts)
+
+Ein juristischer Fehler, der technisch vermeidbar ist.
+Wenn Sie Google Fonts direkt von den Google-Servern einbinden, wird bei jedem Aufruf die IP-Adresse des Besuchers an Google (USA) übertragen. Das ist laut Urteilen in Deutschland und Österreich illegal ohne Einwilligung.
+
+**Die Lösung:** Wir laden die Schriftarten herunter und speichern sie lokal auf dem Webserver (`/fonts/inter.woff2`).
+Vorteil 1: 100% DSGVO-konform.
+Vorteil 2: Schneller, da kein DNS-Request zu Google nötig ist.
+
+---
+
+## Fazit: Qualität ist kein Zufall
+
+Eine Website zu bauen ist einfach. Eine *gute* Website zu bauen ist Handwerk.
+Die meisten dieser Fehler passieren, weil Baukästen oder unerfahrene Designer nicht wissen, was im Hintergrund passiert.
+
+Bei Red Rabbit Media ist technische SEO keine "Zusatzleistung". Sie ist das Fundament. Wir bauen Websites so, dass Google sie liebt – damit Sie gefunden werden.
+
+**Wollen Sie wissen, wie Ihre Seite abschneidet?**
+[Machen Sie den Technik-Check](/kontakt) oder lesen Sie, [was Sie bei einer Restaurant-Website beachten müssen](/tipps/restaurant-website-must-haves).

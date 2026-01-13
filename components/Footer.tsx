@@ -114,9 +114,50 @@ const Footer = () => {
                         </div>
                     </div>
 
+
+
+                    {/* SEO Links Section */}
+                    <AOSWrapper animation="fade-up" delay={350}>
+                        <div className="border-t border-gray-800 mt-12 pt-8 pb-4">
+                            <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-y-2 gap-x-1 text-xs text-gray-500 text-center md:text-left">
+                                <span className="font-medium text-gray-400 mr-2">Wir sind aktiv in ganz Österreich:</span>
+
+                                {/* Cities */}
+                                <Link href="/webdesign-wien" className="hover:text-red-400 transition-colors">Wien</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-graz" className="hover:text-red-400 transition-colors">Graz</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-linz" className="hover:text-red-400 transition-colors">Linz</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-salzburg" className="hover:text-red-400 transition-colors">Salzburg</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-innsbruck" className="hover:text-red-400 transition-colors">Innsbruck</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-klagenfurt" className="hover:text-red-400 transition-colors">Klagenfurt</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-st-poelten" className="hover:text-red-400 transition-colors">St. Pölten</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-bregenz" className="hover:text-red-400 transition-colors">Bregenz</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-eisenstadt" className="hover:text-red-400 transition-colors">Eisenstadt</Link>
+
+                                {/* Separator */}
+                                <span className="hidden md:inline mx-3 text-gray-600">|</span>
+                                <span className="md:hidden w-full h-1"></span>
+
+                                {/* SEO Keywords */}
+                                <Link href="/" className="hover:text-red-400 transition-colors">Website erstellen lassen</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/" className="hover:text-red-400 transition-colors">Homepage erstellen lassen</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/tipps/was-kostet-eine-website" className="hover:text-red-400 transition-colors">Website Kosten</Link>
+                            </div>
+                        </div>
+                    </AOSWrapper>
+
                     {/* Bottom Bar */}
                     <AOSWrapper animation="fade-up" delay={400}>
-                        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between">
+                        <div className="border-t border-gray-800 mt-4 pt-8 flex flex-col md:flex-row items-center justify-between">
                             <p className="text-sm text-gray-400">
                                 © {currentYear} Red Rabbit GmbH. Alle Rechte vorbehalten.
                             </p>
@@ -129,55 +170,57 @@ const Footer = () => {
                         </div>
                     </AOSWrapper>
                 </div>
-            </footer>
+            </footer >
 
             {/* QR Code Modal */}
-            {showQRCode && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                    <div className="bg-white rounded-2xl shadow-lg max-w-sm w-full p-6 text-center">
-                        <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-medium text-gray-900">Website QR-Code</h3>
+            {
+                showQRCode && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+                        <div className="bg-white rounded-2xl shadow-lg max-w-sm w-full p-6 text-center">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-lg font-medium text-gray-900">Website QR-Code</h3>
+                                <button
+                                    onClick={() => setShowQRCode(false)}
+                                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                                    aria-label="Schließen"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {/* QR Code */}
+                            <div className="w-48 h-48 mx-auto bg-white rounded-lg flex items-center justify-center mb-4 p-2 relative h-48">
+                                <Image
+                                    src="/images/red_rabbit_contact_qr.png"
+                                    alt="Red Rabbit Media QR Code"
+                                    fill
+                                    className="object-contain"
+                                />
+                            </div>
+
+                            <p className="text-sm text-gray-600 mb-4">
+                                Scanne diesen Code für direkten Zugriff auf unsere Website
+                            </p>
+
+                            {/* Contact Save Button */}
+                            <button
+                                onClick={handleSaveContact}
+                                className="w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors mb-3 flex items-center justify-center gap-2"
+                            >
+                                <UserPlus className="w-4 h-4" />
+                                Kontaktdaten speichern
+                            </button>
+
                             <button
                                 onClick={() => setShowQRCode(false)}
-                                className="text-gray-400 hover:text-gray-600 transition-colors"
-                                aria-label="Schließen"
+                                className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
                             >
-                                <X className="w-5 h-5" />
+                                Schließen
                             </button>
                         </div>
-
-                        {/* QR Code */}
-                        <div className="w-48 h-48 mx-auto bg-white rounded-lg flex items-center justify-center mb-4 p-2 relative h-48">
-                            <Image
-                                src="/images/red_rabbit_contact_qr.png"
-                                alt="Red Rabbit Media QR Code"
-                                fill
-                                className="object-contain"
-                            />
-                        </div>
-
-                        <p className="text-sm text-gray-600 mb-4">
-                            Scanne diesen Code für direkten Zugriff auf unsere Website
-                        </p>
-
-                        {/* Contact Save Button */}
-                        <button
-                            onClick={handleSaveContact}
-                            className="w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors mb-3 flex items-center justify-center gap-2"
-                        >
-                            <UserPlus className="w-4 h-4" />
-                            Kontaktdaten speichern
-                        </button>
-
-                        <button
-                            onClick={() => setShowQRCode(false)}
-                            className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
-                        >
-                            Schließen
-                        </button>
                     </div>
-                </div>
-            )}
+                )
+            }
         </>
     );
 };

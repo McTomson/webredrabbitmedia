@@ -1,22 +1,25 @@
 "use client";
 
-import { useParams } from 'next/navigation';
-import { cities, type CitySlug } from './cities';
-import { notFound } from 'next/navigation';
 import { MapPin, Users, Building, Phone, Mail, ArrowRight, Check } from 'lucide-react';
 import Link from 'next/link';
 import { AOSWrapper } from '@/components/AnimatedSection';
 import Image from 'next/image';
 
-export default function CityPage() {
-    const params = useParams();
-    const citySlug = params.city as CitySlug;
-    const city = cities[citySlug];
-
-    if (!city) {
-        notFound();
+interface CityContentProps {
+    city: {
+        name: string;
+        region: string;
+        population: string;
+        description: string;
+        keywords: string;
+        landmarks: readonly string[];
+        seoText: string;
+        marketTrends: string;
+        localFacts: readonly string[];
     }
+}
 
+export default function CityContent({ city }: CityContentProps) {
     return (
         <div className="min-h-screen bg-white">
             {/* Hero Section */}
@@ -95,6 +98,17 @@ export default function CityPage() {
                                 <p className="text-xl text-gray-600 mb-6 leading-relaxed">
                                     {city.description}
                                 </p>
+
+                                {/* Unique SEO Content Block */}
+                                <div className="mb-8 p-6 bg-red-50 rounded-xl border border-red-100">
+                                    <h3 className="text-lg font-medium text-red-800 mb-3">
+                                        Warum {city.name} anders tickt
+                                    </h3>
+                                    <p className="text-gray-700 leading-relaxed text-sm">
+                                        {city.seoText}
+                                    </p>
+                                </div>
+
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-3">
                                         <Users className="w-6 h-6 text-red-600" />
@@ -104,9 +118,12 @@ export default function CityPage() {
                                         <MapPin className="w-6 h-6 text-red-600" />
                                         <span className="text-gray-700"><strong>Region:</strong> {city.region}</span>
                                     </div>
-                                    <div className="flex items-center gap-3">
-                                        <Building className="w-6 h-6 text-red-600" />
-                                        <span className="text-gray-700"><strong>Bekannt für:</strong> {city.landmarks.join(", ")}</span>
+                                    <div className="flex items-start gap-3">
+                                        <Building className="w-6 h-6 text-red-600 mt-1" />
+                                        <div>
+                                            <span className="text-gray-900 font-medium block mb-1">Markttrends:</span>
+                                            <span className="text-gray-600 text-sm leading-relaxed">{city.marketTrends}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

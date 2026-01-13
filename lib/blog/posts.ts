@@ -11,6 +11,7 @@ export interface BlogPost {
     title: string;
     excerpt: string;
     featuredSnippet: string;
+    featuredSnippetTitle?: string;
     author: string;
     publishedAt: string;
     updatedAt: string;
@@ -66,6 +67,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
             title: data.title,
             excerpt: data.excerpt,
             featuredSnippet: data.featuredSnippet,
+            featuredSnippetTitle: data.featuredSnippetTitle,
             author: data.author,
             publishedAt: data.publishedAt,
             updatedAt: data.updatedAt,

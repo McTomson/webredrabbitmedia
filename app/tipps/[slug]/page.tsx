@@ -122,6 +122,18 @@ export default async function BlogPostPage({ params }: Props) {
                                 </div>
                             </div>
 
+                            {/* Featured Snippet Block (Position 0 Optimization) */}
+                            {(post.featuredSnippet && post.featuredSnippetTitle) && (
+                                <div className="bg-blue-50 border-l-4 border-blue-600 p-6 md:p-8 rounded-r-xl mb-12 shadow-sm">
+                                    <h2 className="text-2xl font-bold text-[#141414] mb-4">
+                                        {post.featuredSnippetTitle}
+                                    </h2>
+                                    <p className="text-xl text-gray-800 leading-relaxed font-medium">
+                                        {post.featuredSnippet}
+                                    </p>
+                                </div>
+                            )}
+
                             {/* Featured Image */}
                             <div className="relative aspect-video w-full mb-12 rounded-2xl overflow-hidden shadow-soft border border-gray-100">
                                 <Image src={post.featuredImage} alt={post.title} fill className="object-cover" priority />
@@ -132,29 +144,61 @@ export default async function BlogPostPage({ params }: Props) {
                                 {compiledContent}
                             </div>
 
-                            {/* Global Author E-E-A-T Section */}
-                            <div className="mt-20 p-8 md:p-12 bg-white border border-gray-100 rounded-2xl shadow-soft">
-                                <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
-                                    <div className="w-24 h-24 rounded-2xl bg-gray-50 flex-shrink-0 flex items-center justify-center font-bold text-4xl text-[#dc2626] border border-gray-100 shadow-sm">
-                                        TU
-                                    </div>
-                                    <div>
-                                        <h4 className="text-2xl font-bold text-[#141414] mb-4">Experten-Profil: Thomas Uhlir MBA</h4>
-                                        <p className="text-gray-600 leading-relaxed mb-6">
-                                            Als Gründer von Red Rabbit Media kombiniert Thomas Uhlir betriebswirtschaftliche Exzellenz mit technologischer Innovation.
-                                            Sein Fokus liegt auf der Entwicklung von Performance-Websites, die durch Schnelligkeit, E-E-A-T Konformität und erstklassiges Design überzeugen.
-                                        </p>
-                                        <div className="flex flex-wrap justify-center md:justify-start gap-4">
-                                            <Link href="/#contact" className="btn-primary py-2 text-sm uppercase tracking-widest font-bold px-6">
-                                                Beratung anfragen
-                                            </Link>
-                                            <a href="https://www.linkedin.com/in/thomasuhlir/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[#141414] font-bold text-sm uppercase tracking-widest hover:text-[#dc2626] transition-colors">
-                                                LinkedIn Profil <span>→</span>
-                                            </a>
+                            {/* Global Author E-E-A-T Section - Dynamic based on Author */}
+                            {post.author.includes("Dmitry") ? (
+                                <div className="mt-20 p-8 md:p-12 bg-white border border-gray-100 rounded-2xl shadow-soft">
+                                    <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
+                                        <div className="w-24 h-24 rounded-2xl bg-blue-50 flex-shrink-0 flex items-center justify-center font-bold text-4xl text-blue-600 border border-blue-100 shadow-sm overflow-hidden relative">
+                                            {/* Fallback Initials or Image if available */}
+                                            <span className="z-10 relative">DP</span>
+                                            <Image
+                                                src="/images/dmitry-pashlov.jpg"
+                                                alt="Dmitry Pashlov"
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-2xl font-bold text-[#141414] mb-4">Experten-Profil: Dmitry Pashlov</h4>
+                                            <p className="text-gray-600 leading-relaxed mb-6">
+                                                Dmitry Pashlov ist der technische Kopf hinter Red Rabbit Media. Als Lead Developer spezialisiert er sich auf Next.js, High-Performance-Architekturen und technische SEO.
+                                                Sein Credo: "Code is Poetry – aber nur, wenn er lädt." Er sorgt dafür, dass Ihre Website nicht nur gut aussieht, sondern auch technisch bei Google gewinnt.
+                                            </p>
+                                            <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                                                <Link href="/#contact" className="btn-primary py-2 text-sm uppercase tracking-widest font-bold px-6">
+                                                    Technik-Check anfragen
+                                                </Link>
+                                                <a href="https://www.linkedin.com/in/dmitrypashlov/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[#141414] font-bold text-sm uppercase tracking-widest hover:text-[#dc2626] transition-colors">
+                                                    LinkedIn Profil <span>→</span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="mt-20 p-8 md:p-12 bg-white border border-gray-100 rounded-2xl shadow-soft">
+                                    <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
+                                        <div className="w-24 h-24 rounded-2xl bg-gray-50 flex-shrink-0 flex items-center justify-center font-bold text-4xl text-[#dc2626] border border-gray-100 shadow-sm">
+                                            TU
+                                        </div>
+                                        <div>
+                                            <h4 className="text-2xl font-bold text-[#141414] mb-4">Experten-Profil: Thomas Uhlir MBA</h4>
+                                            <p className="text-gray-600 leading-relaxed mb-6">
+                                                Als Gründer von Red Rabbit Media kombiniert Thomas Uhlir betriebswirtschaftliche Exzellenz mit technologischer Innovation.
+                                                Sein Fokus liegt auf der Entwicklung von Performance-Websites, die durch Schnelligkeit, E-E-A-T Konformität und erstklassiges Design überzeugen.
+                                            </p>
+                                            <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                                                <Link href="/#contact" className="btn-primary py-2 text-sm uppercase tracking-widest font-bold px-6">
+                                                    Beratung anfragen
+                                                </Link>
+                                                <a href="https://www.linkedin.com/in/thomasuhlir/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[#141414] font-bold text-sm uppercase tracking-widest hover:text-[#dc2626] transition-colors">
+                                                    LinkedIn Profil <span>→</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </Container>
                 </article>
@@ -199,9 +243,10 @@ export default async function BlogPostPage({ params }: Props) {
                         "dateModified": post.updatedAt,
                         "author": {
                             "@type": "Person",
-                            "name": "Thomas Uhlir MBA",
-                            "jobTitle": "CEO Red Rabbit Media",
-                            "url": "https://www.linkedin.com/in/thomasuhlir/"
+                            "name": post.author,
+                            "url": post.author.includes("Dmitry")
+                                ? "https://www.linkedin.com/in/dmitrypashlov/"
+                                : "https://www.linkedin.com/in/thomasuhlir/"
                         },
                         "publisher": {
                             "@type": "Organization",

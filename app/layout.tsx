@@ -93,6 +93,17 @@ const jsonLd = {
         "opens": "09:00",
         "closes": "18:00"
       },
+      "areaServed": [
+        { "@type": "City", "name": "Wien" },
+        { "@type": "City", "name": "Graz" },
+        { "@type": "City", "name": "Linz" },
+        { "@type": "City", "name": "Salzburg" },
+        { "@type": "City", "name": "Innsbruck" },
+        { "@type": "City", "name": "Klagenfurt" },
+        { "@type": "City", "name": "Bregenz" },
+        { "@type": "City", "name": "Eisenstadt" },
+        { "@type": "City", "name": "St. Pölten" }
+      ],
       "founder": {
         "@type": "Person",
         "name": "Thomas Uhlir MBA",
@@ -134,8 +145,26 @@ const jsonLd = {
       "logo": "https://web.redrabbit.media/logo.png",
       "sameAs": [
         "https://www.instagram.com/redrabbit.media/",
-        "https://www.linkedin.com/"
+        "https://www.linkedin.com/in/thomasuhlir/"
       ]
+    },
+    {
+      "@type": "Product",
+      "name": "Premium Website",
+      "description": "Professionelle Website inkl. Design, SEO & Mobiloptimierung",
+      "image": "https://web.redrabbit.media/images/og-image.jpg",
+      "offers": {
+        "@type": "AggregateOffer",
+        "url": "https://web.redrabbit.media",
+        "priceCurrency": "EUR",
+        "lowPrice": "790",
+        "offerCount": "1",
+        "priceValidUntil": "2026-12-31"
+      },
+      "brand": {
+        "@type": "Brand",
+        "name": "Red Rabbit Media"
+      }
     },
     {
       "@type": "ProfessionalService",
