@@ -191,12 +191,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.7,
         },
-        {
-            url: `${baseUrl}/webdesign-salzburg`,
-            lastModified: currentDate,
-            changeFrequency: 'monthly',
-            priority: 0.8,
-        },
+
 
         // Cookie Settings
         {
