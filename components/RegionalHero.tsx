@@ -4,12 +4,20 @@ import { ArrowDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
-interface HeroProps {
+interface RegionalHeroProps {
     onFormOpen: () => void;
+    data: {
+        region: string;
+        mainCity: string;
+        mainCitySlug: string;
+        population: string;
+        cities: string[];
+    };
 }
 
-const Hero = ({ onFormOpen }: HeroProps) => {
+const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
@@ -69,8 +77,8 @@ const Hero = ({ onFormOpen }: HeroProps) => {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/images/dashboard.webp" // USING DASHBOARD AS REQUESTED
-                    alt="Red Rabbit Media Background"
+                    src="/images/dashboard.webp"
+                    alt={`Red Rabbit Media Webdesign ${data.region}`}
                     fill
                     className="w-full h-full object-cover opacity-50"
                     priority
@@ -123,7 +131,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.7, duration: 0.8 }}
                             >
-                                Webdesign & digitale Dienstleistungen
+                                Webdesign in {data.region}
                             </motion.p>
                         </motion.div>
                     </div>
@@ -143,7 +151,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.6, delay: 0.4 }}
                                 >
-                                    Keine Meetings.
+                                    Webdesign {data.region}.
                                 </motion.span>
                                 <motion.span
                                     className="block"
@@ -151,7 +159,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.6, delay: 0.6 }}
                                 >
-                                    Kein Aufwand.
+                                    Keine Meetings.
                                 </motion.span>
                                 <motion.span
                                     className="text-red-600 font-medium block"
@@ -184,9 +192,31 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 1.2 }}
                         >
-                            Du füllst nur das Formular aus – wir übernehmen den Rest.
-                            Zahle nur, wenn dir der Vorschlag gefällt. Kein Aufwand. Kein Risiko.
+                            Professionelles Webdesign für {data.cities.slice(0, 3).join(', ')} und ganz {data.region}.
+                            Du füllst nur das Formular aus – wir übernehmen den Rest. Kein Aufwand. Kein Risiko.
                         </motion.p>
+
+                        {/* Regional Info Badge */}
+                        <motion.div
+                            className="flex items-center justify-center lg:justify-start gap-3 py-2"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 1.25 }}
+                        >
+                            <div className="px-4 py-2 bg-red-50 border border-red-200 rounded-lg">
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-semibold text-red-600">{data.population}</span> Menschen in {data.region}
+                                </p>
+                            </div>
+                            <Link
+                                href={`/webdesign-${data.mainCitySlug}`}
+                                className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors"
+                            >
+                                <p className="text-sm text-gray-700">
+                                    Speziell für <span className="font-semibold text-gray-900">{data.mainCity}</span> →
+                                </p>
+                            </Link>
+                        </motion.div>
 
                         {/* Trust / Reviews */}
                         <motion.div
@@ -257,4 +287,4 @@ const Hero = ({ onFormOpen }: HeroProps) => {
     );
 };
 
-export default Hero;
+export default RegionalHero;

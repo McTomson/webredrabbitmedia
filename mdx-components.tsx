@@ -16,9 +16,9 @@ function FeaturedSnippet({ children }: { children: React.ReactNode }) {
                 </svg>
                 <div>
                     <p className="text-sm font-semibold text-red-700 mb-2">Schnellantwort</p>
-                    <p className="text-base leading-relaxed text-gray-800" itemProp="text">
+                    <div className="text-base leading-relaxed text-gray-800" itemProp="text">
                         {children}
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -188,7 +188,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
             if (!src) return null;
 
             return (
-                <div className="my-8">
+                <span className="my-8 block">
                     <Image
                         src={src}
                         alt={alt || ''}
@@ -198,9 +198,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
                         {...props}
                     />
                     {alt && (
-                        <p className="text-sm text-gray-500 text-center mt-2 italic">{alt}</p>
+                        <span className="text-sm text-gray-500 text-center mt-2 italic block">{alt}</span>
                     )}
-                </div>
+                </span>
             );
         },
 

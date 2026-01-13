@@ -3,29 +3,34 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Header from "@/components/Header";
+import RegionalHero from "@/components/RegionalHero";
+import RegionalSEOContent from "@/components/RegionalSEOContent";
 import SkipLinks from "@/components/SkipLinks";
-import { City } from './cities';
-import CityHero from '@/components/CityHero'; // New component
-import CitySEOContent from '@/components/CitySEOContent'; // New component
-import CityFAQ from '@/components/CityFAQ'; // New component
 
 const Portfolio = dynamic(() => import('@/components/Portfolio'));
 const Process = dynamic(() => import('@/components/Process'));
 const SeoOptimization = dynamic(() => import('@/components/SeoOptimization'));
 const About = dynamic(() => import('@/components/About'));
 const Pricing = dynamic(() => import('@/components/Pricing'));
+const RegionalFAQ = dynamic(() => import('@/components/RegionalFAQ'));
 const Contact = dynamic(() => import('@/components/Contact'));
 const FloatingWhatsApp = dynamic(() => import('@/components/FloatingWhatsApp'), { ssr: false });
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
 const AccessibilityWidget = dynamic(() => import('@/components/AccessibilityWidget'), { ssr: false });
 const ContactForm = dynamic(() => import('@/components/ContactForm'), { ssr: false });
 
-interface CityContentProps {
-    city: City;
-}
-
-export default function CityContent({ city }: CityContentProps) {
+export default function WienPage() {
     const [isFormOpen, setIsFormOpen] = useState(false);
+
+    const regionalData = {
+        region: "Wien",
+        mainCity: "Wien",
+        mainCitySlug: "wien",
+        population: "1,9 Mio.",
+        cities: ["Wien", "Döbling", "Hietzing", "Favoriten", "Floridsdorf"],
+        landmarks: ["Stephansdom", "Schloss Schönbrunn", "Prater", "Hofburg"],
+        keywords: "Webdesign Wien, Webdesign Agentur Wien, Homepage Agentur Wien, Webentwicklung Wien",
+    };
 
     return (
         <div className="min-h-screen">
@@ -34,19 +39,16 @@ export default function CityContent({ city }: CityContentProps) {
             <CookieBanner />
             <FloatingWhatsApp />
             <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
-
             <Header onFormOpen={() => setIsFormOpen(true)} />
-
-            <CitySEOContent city={city} />
-
+            <RegionalSEOContent data={regionalData} />
             <main id="main-content" className="relative">
-                <CityHero city={city} onFormOpen={() => setIsFormOpen(true)} />
+                <RegionalHero data={regionalData} onFormOpen={() => setIsFormOpen(true)} />
                 <Portfolio />
                 <Process onFormOpen={() => setIsFormOpen(true)} />
                 <SeoOptimization />
                 <About />
                 <Pricing onFormOpen={() => setIsFormOpen(true)} />
-                <CityFAQ city={city} />
+                <RegionalFAQ data={regionalData} />
                 <Contact onFormOpen={() => setIsFormOpen(true)} />
             </main>
         </div>

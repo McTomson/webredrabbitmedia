@@ -148,6 +148,56 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.7,
         },
 
+        // Bundesland Hub Pages (Regional SEO Strategy)
+        {
+            url: `${baseUrl}/webdesign-oberoesterreich`,
+            lastModified: currentDate,
+            changeFrequency: 'monthly',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/webdesign-niederoesterreich`,
+            lastModified: currentDate,
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/webdesign-steiermark`,
+            lastModified: currentDate,
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/webdesign-tirol`,
+            lastModified: currentDate,
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/webdesign-kaernten`,
+            lastModified: currentDate,
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/webdesign-vorarlberg`,
+            lastModified: currentDate,
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/webdesign-burgenland`,
+            lastModified: currentDate,
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/webdesign-salzburg`,
+            lastModified: currentDate,
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+
         // Cookie Settings
         {
             url: `${baseUrl}/cookie-einstellungen`,

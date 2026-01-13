@@ -19,96 +19,90 @@ const nextConfig = {
   // SEO - 301 Redirects für konsolidierte Landing Pages
   async redirects() {
     return [
-      // Stadt-Seiten → Haupt-Seite mit Anchor
-      {
-        source: '/webdesign-graz',
-        destination: '/webdesign-wien#staedte',
-        permanent: true,
-      },
-      {
-        source: '/webdesign-linz',
-        destination: '/webdesign-wien#staedte',
-        permanent: true,
-      },
-      {
-        source: '/webdesign-salzburg',
-        destination: '/webdesign-wien#staedte',
-        permanent: true,
-      },
-      {
-        source: '/webdesign-innsbruck',
-        destination: '/webdesign-wien#staedte',
-        permanent: true,
-      },
-      {
-        source: '/webdesign-klagenfurt',
-        destination: '/webdesign-wien#staedte',
-        permanent: true,
-      },
-      {
-        source: '/webdesign-villach',
-        destination: '/webdesign-wien#staedte',
-        permanent: true,
-      },
+      // Oberösterreich - Secondary cities → Bundesland hub
       {
         source: '/webdesign-wels',
-        destination: '/webdesign-wien#staedte',
+        destination: '/webdesign-oberoesterreich',
         permanent: true,
       },
       {
-        source: '/webdesign-st-poelten',
-        destination: '/webdesign-wien#staedte',
+        source: '/webdesign-steyr',
+        destination: '/webdesign-oberoesterreich',
         permanent: true,
       },
+      {
+        source: '/webdesign-braunau',
+        destination: '/webdesign-oberoesterreich',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-voecklabruck',
+        destination: '/webdesign-oberoesterreich',
+        permanent: true,
+      },
+
+      // Steiermark - Secondary cities → Bundesland hub (to be created)
+      {
+        source: '/webdesign-leoben',
+        destination: '/webdesign-steiermark',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-kapfenberg',
+        destination: '/webdesign-steiermark',
+        permanent: true,
+      },
+
+      // Tirol - Secondary cities → Bundesland hub (to be created)
+      {
+        source: '/webdesign-kufstein',
+        destination: '/webdesign-tirol',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-woergl',
+        destination: '/webdesign-tirol',
+        permanent: true,
+      },
+
+      // Kärnten - Secondary cities → Bundesland hub (to be created)
+      {
+        source: '/webdesign-villach',
+        destination: '/webdesign-kaernten',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-spittal',
+        destination: '/webdesign-kaernten',
+        permanent: true,
+      },
+
+      // Vorarlberg - Secondary cities → Bundesland hub (to be created)
       {
         source: '/webdesign-dornbirn',
-        destination: '/webdesign-wien#staedte',
+        destination: '/webdesign-vorarlberg',
         permanent: true,
       },
       {
-        source: '/webdesign-bregenz',
-        destination: '/webdesign-wien#staedte',
+        source: '/webdesign-feldkirch',
+        destination: '/webdesign-vorarlberg',
+        permanent: true,
+      },
+
+      // Niederösterreich - Secondary cities → Bundesland hub (to be created)
+      {
+        source: '/webdesign-wiener-neustadt',
+        destination: '/webdesign-niederoesterreich',
         permanent: true,
       },
       {
-        source: '/webdesign-eisenstadt',
-        destination: '/webdesign-wien#staedte',
-        permanent: true,
-      },
-      // Bundesland-Seiten → Regionen
-      {
-        source: '/webdesign-niederoesterreich',
-        destination: '/webdesign-wien#regionen',
+        source: '/webdesign-krems',
+        destination: '/webdesign-niederoesterreich',
         permanent: true,
       },
       {
-        source: '/webdesign-oberoesterreich',
-        destination: '/webdesign-wien#regionen',
-        permanent: true,
-      },
-      {
-        source: '/webdesign-tirol',
-        destination: '/webdesign-wien#regionen',
-        permanent: true,
-      },
-      {
-        source: '/webdesign-vorarlberg',
-        destination: '/webdesign-wien#regionen',
-        permanent: true,
-      },
-      {
-        source: '/webdesign-kaernten',
-        destination: '/webdesign-wien#regionen',
-        permanent: true,
-      },
-      {
-        source: '/webdesign-steiermark',
-        destination: '/webdesign-wien#regionen',
-        permanent: true,
-      },
-      {
-        source: '/webdesign-burgenland',
-        destination: '/webdesign-wien#regionen',
+        source: '/webdesign-baden',
+        destination: '/webdesign-niederoesterreich',
         permanent: true,
       },
     ]

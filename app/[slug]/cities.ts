@@ -1,5 +1,17 @@
 // City data for Austrian cities
-export const cities = {
+export interface City {
+    name: string;
+    region: string;
+    population: string;
+    description: string;
+    keywords: string;
+    landmarks: readonly string[];
+    seoText: string;
+    marketTrends: string;
+    localFacts: readonly string[];
+}
+
+export const cities: Record<string, City> = {
     wien: {
         name: "Wien",
         region: "Wien",
