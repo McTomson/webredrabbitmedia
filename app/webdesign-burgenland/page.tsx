@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
+import { regionalContent } from "@/lib/regional-content";
 import Header from "@/components/Header";
 import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
@@ -20,14 +21,15 @@ const ContactForm = dynamic(() => import('@/components/ContactForm'), { ssr: fal
 
 export default function BurgenlandPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
+
   const regionalData = {
     region: "Burgenland",
     mainCity: "Eisenstadt",
     mainCitySlug: "eisenstadt",
-    population: "300.000",
-    cities: ["Eisenstadt", "Neusiedl", "Mattersburg", "Oberwart", "Güssing"],
-    landmarks: ["Schloss Esterházy", "Neusiedler See", "Haydnhaus", "Schlosspark"],
-    keywords: "Website erstellen Burgenland, Homepage Burgenland, Webdesign Eisenstadt",
+    population: "0,3 Mio.",
+    cities: ["Eisenstadt", "Oberwart", "Mattersburg", "Neusiedl", "Pinkafeld"],
+    landmarks: ["Schloss Esterházy", "Neusiedler See", "Burg Forchtenstein"],
+    keywords: "Webdesign Burgenland, Website erstellen Burgenland, Homepage Burgenland, Webentwicklung Burgenland",
   };
 
   return (
@@ -35,7 +37,7 @@ export default function BurgenlandPage() {
       <SkipLinks /><AccessibilityWidget /><CookieBanner /><FloatingWhatsApp />
       <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
       <Header onFormOpen={() => setIsFormOpen(true)} />
-      <RegionalSEOContent data={regionalData} />
+      <RegionalSEOContent data={regionalData} content={regionalContent["Burgenland"]} />
       <main id="main-content" className="relative">
         <RegionalHero data={regionalData} onFormOpen={() => setIsFormOpen(true)} />
         <Portfolio /><Process onFormOpen={() => setIsFormOpen(true)} />

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
+import { regionalContent } from "@/lib/regional-content";
 import Header from "@/components/Header";
 import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
@@ -35,7 +36,7 @@ export default function NiederoesterreichPage() {
       <SkipLinks /><AccessibilityWidget /><CookieBanner /><FloatingWhatsApp />
       <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
       <Header onFormOpen={() => setIsFormOpen(true)} />
-      <RegionalSEOContent data={regionalData} />
+      <RegionalSEOContent data={regionalData} content={regionalContent["Niederösterreich"]} />
       <main id="main-content" className="relative">
         <RegionalHero data={regionalData} onFormOpen={() => setIsFormOpen(true)} />
         <Portfolio /><Process onFormOpen={() => setIsFormOpen(true)} />

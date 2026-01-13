@@ -9,6 +9,8 @@ import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
 import SkipLinks from "@/components/SkipLinks";
 
+import { regionalContent } from "@/lib/regional-content";
+
 // Below-the-fold - lazy laden
 const Portfolio = dynamic(() => import('@/components/Portfolio'));
 const Process = dynamic(() => import('@/components/Process'));
@@ -62,7 +64,7 @@ export default function OberoesterreichPage() {
             <Header onFormOpen={handleFormOpen} />
 
             {/* SEO Content for Crawlers (hidden) */}
-            <RegionalSEOContent data={regionalData} />
+            <RegionalSEOContent data={regionalData} content={regionalContent["Oberösterreich"]} />
 
             <main id="main-content" className="relative">
                 {/* Regional Hero Section */}

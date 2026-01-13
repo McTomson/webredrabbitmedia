@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Header from "@/components/Header";
+import { regionalContent } from "@/lib/regional-content";
 import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
 import SkipLinks from "@/components/SkipLinks";
@@ -35,7 +36,7 @@ export default function SalzburgPage() {
       <SkipLinks /><AccessibilityWidget /><CookieBanner /><FloatingWhatsApp />
       <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
       <Header onFormOpen={() => setIsFormOpen(true)} />
-      <RegionalSEOContent data={regionalData} />
+      <RegionalSEOContent data={regionalData} content={regionalContent["Salzburg"]} />
       <main id="main-content" className="relative">
         <RegionalHero data={regionalData} onFormOpen={() => setIsFormOpen(true)} />
         <Portfolio /><Process onFormOpen={() => setIsFormOpen(true)} />
