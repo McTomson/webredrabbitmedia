@@ -74,7 +74,15 @@ export const localBusinessSchema = {
             closes: '18:00',
         },
     ],
+    aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.8',
+        reviewCount: '315',
+        bestRating: '5',
+        worstRating: '1',
+    },
 };
+
 
 // WebSite Schema mit SearchAction
 export const websiteSchema = {
