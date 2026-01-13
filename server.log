@@ -1,0 +1,56 @@
+
+> webredrabbitmedia-nextjs@0.1.0 dev
+> next dev -p 8000
+
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/McTomson/package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * /Users/McTomson/Desktop/Tomson/Websiten Intern/webredrabbitmedia/package-lock.json
+
+   ▲ Next.js 15.5.9
+   - Local:        http://localhost:8000
+   - Network:      http://10.0.0.39:8000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+ ✓ Starting...
+ ✓ Ready in 5.3s
+ ✓ Compiled /middleware in 360ms (114 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 2.5s (1342 modules)
+ GET / 200 in 10061ms
+ GET / 200 in 3418ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 3.7s (1374 modules)
+ GET /favicon.ico 200 in 3984ms
+ GET /webdesign-kaernten 200 in 4965ms
+ ○ Compiling /[slug] ...
+ ✓ Compiled /[slug] in 718ms (1407 modules)
+ GET /webdesign-klagenfurt 200 in 2038ms
+ ○ Compiling /webdesign-wien ...
+ ✓ Compiled /webdesign-wien in 1294ms (1414 modules)
+ GET /webdesign-wien 200 in 2105ms
+ GET /webdesign-st-poelten 200 in 640ms
+ GET /webdesign-linz 200 in 241ms
+ GET / 200 in 101ms
+ GET /webdesign-klagenfurt 200 in 87ms
+ GET /webdesign-bregenz 200 in 64ms
+ ○ Compiling /tipps/was-kostet-eine-website ...
+ ✓ Compiled /tipps/was-kostet-eine-website in 2s (1409 modules)
+ GET /tipps/was-kostet-eine-website 200 in 2555ms
+ GET /tipps/was-kostet-eine-website 200 in 86ms
+ GET / 200 in 87ms
+ GET / 200 in 48ms
+ ✓ Compiled in 3s (623 modules)
+ GET / 200 in 101ms
+ ✓ Compiled in 1403ms (1409 modules)
+ GET / 200 in 895ms
+ ✓ Compiled in 6.9s (1409 modules)
+ GET / 200 in 498ms
+ ✓ Compiled in 2.5s (1409 modules)
+ GET / 200 in 232ms
+ ✓ Compiled in 1132ms (1409 modules)
+ GET / 200 in 117ms

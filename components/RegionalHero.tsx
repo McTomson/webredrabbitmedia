@@ -177,7 +177,7 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
                                     transition={{ duration: 0.6, delay: 1.0 }}
                                 >
                                     <div className="text-2xl font-semibold text-gray-900">Premium Website</div>
-                                    <div className="flex items-baseline gap-3">
+                                    <div className="flex items-baseline gap-3 justify-center lg:justify-start">
                                         <span className="text-4xl font-bold text-red-600">
                                             <span className="text-2xl font-light text-gray-500 mr-1">ab</span>
                                             790 €

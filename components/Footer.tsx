@@ -121,7 +121,28 @@ const Footer = () => {
                     <AOSWrapper animation="fade-up" delay={350}>
                         <div className="border-t border-gray-800 mt-12 pt-8 pb-4">
                             <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-y-2 gap-x-1 text-xs text-gray-500 text-center md:text-left">
-                                <span className="font-medium text-gray-400 mr-2">Wir sind aktiv in ganz Österreich:</span>
+                                <span className="font-medium text-gray-400 mr-2">Bundesländer:</span>
+                                <Link href="/webdesign-wien" className="hover:text-red-400 transition-colors">Wien</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-niederoesterreich" className="hover:text-red-400 transition-colors">Niederösterreich</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-oberoesterreich" className="hover:text-red-400 transition-colors">Oberösterreich</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-burgenland" className="hover:text-red-400 transition-colors">Burgenland</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-steiermark" className="hover:text-red-400 transition-colors">Steiermark</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-kaernten" className="hover:text-red-400 transition-colors">Kärnten</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-salzburg" className="hover:text-red-400 transition-colors">Salzburg</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-tirol" className="hover:text-red-400 transition-colors">Tirol</Link>
+                                <span className="hidden md:inline mx-1">·</span>
+                                <Link href="/webdesign-vorarlberg" className="hover:text-red-400 transition-colors">Vorarlberg</Link>
+
+                                <span className="w-full my-2 border-t border-gray-800/50"></span>
+
+                                <span className="font-medium text-gray-400 mr-2">Städte:</span>
 
                                 {/* Cities */}
                                 <Link href="/webdesign-wien" className="hover:text-red-400 transition-colors">Wien</Link>

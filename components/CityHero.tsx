@@ -83,17 +83,17 @@ const CityHero = ({ onFormOpen, city }: CityHeroProps) => {
                                 </motion.span>
 
                                 <motion.div
-                                    className="mt-8 space-y-3 p-6 bg-gray-50 rounded-xl border border-gray-100 inline-block text-left w-full md:w-auto"
+                                    className="mt-8 space-y-3 p-6 bg-gray-50 rounded-xl border border-gray-100 inline-block text-center lg:text-left w-full lg:w-auto"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.6, delay: 0.6 }}
                                 >
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-3 justify-center lg:justify-start">
                                         <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
                                         <span className="text-sm font-medium text-gray-500 uppercase tracking-wider">Angebot</span>
                                     </div>
                                     <div className="text-2xl font-semibold text-gray-900">Premium Website</div>
-                                    <div className="flex items-baseline gap-3">
+                                    <div className="flex items-baseline gap-3 justify-center lg:justify-start">
                                         <span className="text-4xl font-bold text-red-600">790 €</span>
                                         <span className="text-xl text-gray-400 line-through decoration-1">2.800 €</span>
                                     </div>
