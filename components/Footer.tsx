@@ -33,6 +33,7 @@ const Footer = () => {
                                         width={32}
                                         height={32}
                                         className="h-8 w-auto"
+                                        style={{ width: 'auto', height: 'auto' }} // Fix aspect ratio warning
                                     />
                                     <span className="text-xl font-light">Red Rabbit Media</span>
                                 </div>

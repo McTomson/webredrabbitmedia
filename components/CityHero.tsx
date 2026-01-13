@@ -160,6 +160,8 @@ const CityHero = ({ onFormOpen, city }: CityHeroProps) => {
                                 width={600}
                                 height={700}
                                 className="relative rounded-2xl shadow-2xl z-10 w-full object-cover max-h-[700px]"
+                                sizes="(max-width: 1024px) 100vw, 50vw" // Fix missing sizes warning
+                                priority // Hero images should be priority
                             />
 
                             {/* Floating Badge */}

@@ -39,9 +39,11 @@ export default function Header({ onFormOpen }: HeaderProps) {
                             <Image
                                 src="/images/logo.webp"
                                 alt="Red Rabbit Media Logo"
-                                width={80}
-                                height={80}
-                                className={`w-auto transition-all duration-300 ${scrolled ? "h-12" : "h-16"}`}
+                                width={200}
+                                height={50}
+                                className="h-8 md:h-10 w-auto"
+                                priority // Fix LCP warning
+                                style={{ width: 'auto', height: 'auto' }} // Fix aspect ratio warning
                             />
                         </Link>
                     </div>
