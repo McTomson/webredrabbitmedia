@@ -1,0 +1,15 @@
+{
+    "buildCommand": "npm run build",
+    "devCommand": "npm run dev",
+    "installCommand": "npm install",
+    "framework": "nextjs",
+    "outputDirectory": ".next",
+    "regions": [
+        "iad1"
+    ],
+    "build": {
+        "env": {
+            "NODE_VERSION": "20.x"
+        }
+    }
+}
