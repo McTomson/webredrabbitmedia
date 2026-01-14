@@ -471,7 +471,7 @@ const ContactForm = ({ isOpen, onClose }: ContactFormProps) => {
                                     <div className="bg-white border border-gray-200 rounded-none p-4 text-center shadow-sm">
                                         <CreditCard className="w-6 h-6 text-red-600 mx-auto mb-2" />
                                         <h3 className="font-medium text-gray-900 mb-1">Aktionspreis gesichert</h3>
-                                        <p className="text-sm text-gray-600">790€ statt 2.800€ netto</p>
+                                        <p className="text-sm text-gray-600">ab 790€</p>
                                     </div>
                                     <div className="bg-white border border-gray-200 rounded-none p-4 text-center shadow-sm">
                                         <MessageCircle className="w-6 h-6 text-red-600 mx-auto mb-2" />
@@ -489,13 +489,15 @@ const ContactForm = ({ isOpen, onClose }: ContactFormProps) => {
                                         <Phone className="w-4 h-4" />
                                         <span>Anrufen</span>
                                     </button>
-                                    <button
-                                        onClick={() => window.open('mailto:office@redrabbit.media')}
+                                    <a
+                                        href="mailto:office@redrabbit.media"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className="flex items-center justify-center gap-3 px-6 py-3 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-all duration-300 rounded-none"
                                     >
                                         <Mail className="w-4 h-4" />
                                         <span>E-Mail senden</span>
-                                    </button>
+                                    </a>
                                 </div>
 
                                 {/* Auto-close notice */}
