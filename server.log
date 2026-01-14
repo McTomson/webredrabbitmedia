@@ -122,3 +122,17 @@ Import trace for requested module:
  GET / 500 in 206ms
  GET / 500 in 70ms
  ✓ Compiled /_error in 1512ms (197 modules)
+ ⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+   ▲ Next.js 15.5.9
+   - Local:        http://localhost:8000
+   - Network:      http://10.0.0.39:8000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+ ✓ Starting...
+ ✓ Ready in 3.2s
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 8.1s (114 modules)
+ ○ Compiling / ...
