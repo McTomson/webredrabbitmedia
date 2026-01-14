@@ -54,3 +54,71 @@
  GET / 200 in 232ms
  ✓ Compiled in 1132ms (1409 modules)
  GET / 200 in 117ms
+ ○ Compiling /webdesign-salzburg ...
+ ✓ Compiled /webdesign-salzburg in 1846ms (1420 modules)
+ GET /webdesign-salzburg 200 in 2981ms
+ GET / 200 in 138ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 2.1s (812 modules)
+ GET /favicon.ico 200 in 2962ms
+ ✓ Compiled in 5s (1420 modules)
+ GET / 200 in 974ms
+ ⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+   ▲ Next.js 15.5.9
+   - Local:        http://localhost:8000
+   - Network:      http://10.0.0.39:8000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+ ✓ Starting...
+ ✓ Ready in 2.8s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 632ms (114 modules)
+ ○ Compiling / ...
+ ⨯ ./app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!./app/globals.css
+Error: Cannot find module '/Users/McTomson/Desktop/Tomson/Websiten Intern/webredrabbitmedia/node_modules/magic-string/dist/magic-string.cjs.js'
+Import trace for requested module:
+./app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!./app/globals.css
+./app/globals.css
+ ⨯ ./app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!./app/globals.css
+Error: Cannot find module '/Users/McTomson/Desktop/Tomson/Websiten Intern/webredrabbitmedia/node_modules/magic-string/dist/magic-string.cjs.js'
+Import trace for requested module:
+./app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!./app/globals.css
+./app/globals.css
+ GET / 500 in 5212ms
+ GET / 500 in 51ms
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ GET / 500 in 699ms
+ GET / 500 in 22ms
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ GET / 500 in 145ms
+ GET / 500 in 19ms
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ ⨯ [TypeError: Cannot read properties of undefined (reading '/_app')]
+[TypeError: Cannot read properties of undefined (reading '/_app')]
+ GET / 500 in 206ms
+ GET / 500 in 70ms
+ ✓ Compiled /_error in 1512ms (197 modules)

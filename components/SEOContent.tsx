@@ -115,7 +115,7 @@ const SEOContent = () => {
                                 <span itemProp="streetAddress">Grabnergasse 8/8</span><br />
                                 <span itemProp="postalCode">1060</span>
                                 <span itemProp="addressLocality">Wien</span>,
-                                <span itemProp="addressCountry">Österreich</span>
+                                <span itemProp="addressCountry">AT</span>
                             </span>
                         </address>
 

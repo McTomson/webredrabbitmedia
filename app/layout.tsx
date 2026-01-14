@@ -158,12 +158,20 @@ const jsonLd = {
         "url": "https://web.redrabbit.media",
         "priceCurrency": "EUR",
         "lowPrice": "790",
+        "highPrice": "2800",
         "offerCount": "1",
         "priceValidUntil": "2026-12-31"
       },
       "brand": {
         "@type": "Brand",
         "name": "Red Rabbit Media"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "315",
+        "bestRating": "5",
+        "worstRating": "1"
       }
     },
     {
@@ -171,7 +179,16 @@ const jsonLd = {
       "name": "Red Rabbit Media Webdesign",
       "description": "Professionelles Webdesign und SEO Agentur aus Wien.",
       "url": "https://web.redrabbit.media",
-      "priceRange": "€€"
+      "image": "https://web.redrabbit.media/images/og-image.jpg",
+      "telephone": "+436769000955",
+      "priceRange": "€€",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Grabnergasse 8",
+        "addressLocality": "Wien",
+        "postalCode": "1060",
+        "addressCountry": "AT"
+      }
     }
   ]
 };
@@ -196,6 +213,21 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preload" href="/images/logo.webp" as="image" type="image/webp" />
+
+        {/* Google Analytics GA4 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-G6KH3WEZY7"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-G6KH3WEZY7');
+          `}
+        </Script>
 
         <Script id="gtm-script" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

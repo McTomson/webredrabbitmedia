@@ -105,6 +105,17 @@ const nextConfig = {
         destination: '/webdesign-niederoesterreich',
         permanent: true,
       },
+      // Fix for umlaut URL
+      {
+        source: '/webdesign-kärnten',
+        destination: '/webdesign-kaernten',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-k%C3%A4rnten',
+        destination: '/webdesign-kaernten',
+        permanent: true,
+      },
     ]
   },
 
