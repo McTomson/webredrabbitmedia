@@ -212,7 +212,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preload" href="/images/logo.webp" as="image" type="image/webp" />
+
 
         {/* Google Analytics GA4 */}
         <Script

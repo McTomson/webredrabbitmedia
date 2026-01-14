@@ -35,7 +35,7 @@ export async function POST(req: Request) {
         // Rate Limiting
         const ip = req.headers.get('x-forwarded-for') || 'Anonymous';
         try {
-            await limiter.check(5, ip); // 5 requests per minute
+            await limiter.check(50, ip); // 50 requests per minute (increased for debugging)
         } catch {
             return NextResponse.json(
                 { error: 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.' },
@@ -132,7 +132,7 @@ Gesendet von der Red Rabbit Media Website
     } catch (error) {
         console.error('Error sending email:', error);
         return NextResponse.json(
-            { error: 'Fehler beim Senden der E-Mail.' },
+            { error: `Fehler beim Senden der E-Mail: ${(error as Error).message}` },
             { status: 500 }
         );
     }
