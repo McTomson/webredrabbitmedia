@@ -72,12 +72,12 @@ export async function POST(req: Request) {
 
         // Create transporter
         const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT),
+            host: process.env.SMTP_HOST || 'smtp.ionos.de',
+            port: Number(process.env.SMTP_PORT) || 587,
             secure: false, // true for 465, false for other ports
             auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASSWORD,
+                user: process.env.SMTP_USER || 'office@redrabbit.media',
+                pass: process.env.SMTP_PASSWORD || 'Redsagnichts90#!',
             },
             tls: {
                 ciphers: 'SSLv3'
@@ -89,8 +89,8 @@ export async function POST(req: Request) {
 
         // Prepare email content
         const mailOptions = {
-            from: `"${process.env.SMTP_FROM}" <${process.env.SMTP_FROM}>`,
-            to: process.env.SMTP_TO,
+            from: `"${process.env.SMTP_FROM || 'office@redrabbit.media'}" <${process.env.SMTP_FROM || 'office@redrabbit.media'}>`,
+            to: process.env.SMTP_TO || 'd.pashlov@redrabbit.media,t.uhlir@redrabbit.media',
             replyTo: email,
             subject: `Neue Anfrage via Website: ${safeName}`,
             text: `
