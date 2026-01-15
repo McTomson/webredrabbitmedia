@@ -1,4 +1,4 @@
-import { getPostBySlug, getAllPosts, compileBlogPost } from '@/lib/blog/posts';
+import { getPostBySlug, getAllPosts, compileBlogPost, extractHeadings } from '@/lib/blog/posts';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -6,6 +6,7 @@ import { Metadata } from 'next';
 import { ArrowLeft, Linkedin, CheckCircle2 } from "lucide-react";
 import Container from '@/components/Container';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { useMDXComponents } from '@/mdx-components';
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -60,6 +61,8 @@ export default async function BlogPostPage({ params }: Props) {
 
     const compiledContent = await compileBlogPost(post.content);
     const readingTime = Math.ceil(post.content.split(/\s+/).length / 200);
+    const headings = extractHeadings(post.content);
+    const TableOfContents = useMDXComponents({}).TableOfContents as React.ComponentType<{ headings: Array<{ id: string; text: string; level: number }> }>;
 
     return (
         <div className="min-h-screen bg-[#fafafa] pt-20">
@@ -131,6 +134,13 @@ export default async function BlogPostPage({ params }: Props) {
                                     <p className="text-xl text-gray-800 leading-relaxed font-medium">
                                         {post.featuredSnippet}
                                     </p>
+                                </div>
+                            )}
+
+                            {/* Table of Contents */}
+                            {headings.length >= 3 && TableOfContents && (
+                                <div className="mb-12">
+                                    <TableOfContents headings={headings} />
                                 </div>
                             )}
 
@@ -238,15 +248,26 @@ export default async function BlogPostPage({ params }: Props) {
                         "@type": "BlogPosting",
                         "headline": post.title,
                         "description": post.excerpt,
-                        "image": post.featuredImage,
+                        "image": {
+                            "@type": "ImageObject",
+                            "url": post.featuredImage,
+                            "width": 1200,
+                            "height": 630
+                        },
                         "datePublished": post.publishedAt,
                         "dateModified": post.updatedAt,
                         "author": {
                             "@type": "Person",
                             "name": post.author,
+                            "jobTitle": post.author.includes("Dmitry") ? "Lead Developer" : "CEO & Web-Stratege",
                             "url": post.author.includes("Dmitry")
                                 ? "https://www.linkedin.com/in/dmitrypashlov/"
-                                : "https://www.linkedin.com/in/thomasuhlir/"
+                                : "https://www.linkedin.com/in/thomasuhlir/",
+                            "sameAs": [
+                                post.author.includes("Dmitry")
+                                    ? "https://www.linkedin.com/in/dmitrypashlov/"
+                                    : "https://www.linkedin.com/in/thomasuhlir/"
+                            ]
                         },
                         "publisher": {
                             "@type": "Organization",
@@ -259,7 +280,11 @@ export default async function BlogPostPage({ params }: Props) {
                         "mainEntityOfPage": {
                             "@type": "WebPage",
                             "@id": `https://web.redrabbit.media/tipps/${slug}`
-                        }
+                        },
+                        "wordCount": post.content.split(/\s+/).length,
+                        "timeRequired": `PT${readingTime}M`,
+                        "articleSection": post.category,
+                        "keywords": post.tags.join(', ')
                     }),
                 }}
             />

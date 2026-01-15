@@ -1,0 +1,42 @@
+Using Node: /Users/McTomson/.nvm/versions/node/v20.19.6/bin/node
+ ⚠ Invalid next.config.ts options detected: 
+ ⚠     Unrecognized key(s) in object: 'outputFileTracingRoot' at "experimental"
+ ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+ ⚠ `experimental.outputFileTracingRoot` has been moved to `outputFileTracingRoot`. Please update your next.config.ts file accordingly.
+   ▲ Next.js 15.5.9
+   - Local:        http://localhost:3000
+   - Network:      http://10.0.0.39:3000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     · outputFileTracingRoot: "/Users/McTomson/Desktop/Tomson/Websiten Intern/webredrabbitmedia"
+     · optimizePackageImports
+
+ ✓ Starting...
+ ✓ Ready in 2.7s
+ ⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+   ▲ Next.js 15.5.9
+   - Local:        http://localhost:3000
+   - Network:      http://10.0.0.39:3000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+ ✓ Starting...
+ ✓ Ready in 1897ms
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 512ms (114 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 10.2s (1378 modules)
+ GET / 200 in 11840ms
+ GET / 200 in 1431ms
+ ○ Compiling /icon.png ...
+ ✓ Compiled /tipps in 7.3s (768 modules)
+ ✓ Compiled in 966ms (615 modules)
+ GET /icon.png?73013a6b54b3d06a 200 in 9341ms
+ GET /tipps 200 in 4698ms
+ GET /tipps 200 in 129ms
+ ✓ Compiled /_not-found in 356ms (1453 modules)
+ GET /images/blog/strategy_meeting_1768272957615.png 404 in 698ms
+ ⨯ The requested resource isn't a valid image for /images/blog/strategy_meeting_1768272957615.png received null
+ ✓ Compiled /tipps/[slug] in 463ms (1476 modules)
+ GET /tipps/website-kosten-oesterreich-2026 200 in 1554ms

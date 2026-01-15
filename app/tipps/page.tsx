@@ -36,9 +36,24 @@ export default async function BlogPage() {
         }
     };
 
+    // FAQ Schema for Featured Snippets (Position Zero optimization)
+    const faqSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': posts.slice(0, 5).map(post => ({
+            '@type': 'Question',
+            'name': post.title,
+            'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': post.excerpt
+            }
+        }))
+    };
+
     return (
         <div className="min-h-screen bg-white">
             <JsonLd data={jsonLd} />
+            <JsonLd data={faqSchema} />
             <main>
                 <BlogFilter initialPosts={posts} />
             </main>

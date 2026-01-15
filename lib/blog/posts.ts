@@ -155,3 +155,23 @@ export async function searchPosts(query: string): Promise<BlogPostMeta[]> {
         post.tags.some((tag) => tag.toLowerCase().includes(lowerQuery))
     );
 }
+
+// Extract headings from markdown content for Table of Contents
+export function extractHeadings(content: string): Array<{
+    id: string;
+    text: string;
+    level: number;
+}> {
+    const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+    const headings: Array<{ id: string; text: string; level: number }> = [];
+    let match;
+
+    while ((match = headingRegex.exec(content)) !== null) {
+        const level = match[1].length; // 2 for ##, 3 for ###
+        const text = match[2];
+        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        headings.push({ id, text, level });
+    }
+
+    return headings;
+}

@@ -12,4 +12,4 @@ if [ -z "$NODE_PATH" ]; then
 fi
 
 echo "Using Node: $NODE_PATH"
-"$NODE_PATH" node_modules/next/dist/bin/next dev -p 8000
+"$NODE_PATH" node_modules/next/dist/bin/next dev -p 3000

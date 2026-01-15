@@ -50,6 +50,33 @@ function TableOfContents({ headings }: { headings: Array<{ id: string; text: str
     );
 }
 
+// Featured List Component for Position Zero optimization
+function FeaturedList({ title, items }: { title: string; items: string[] }) {
+    return (
+        <div
+            className="my-8 p-6 bg-blue-50 border-l-4 border-blue-600 rounded-r-lg"
+            itemScope
+            itemType="https://schema.org/ItemList"
+        >
+            <h3 className="font-bold text-lg mb-4 text-gray-900">{title}</h3>
+            <ol className="space-y-2 list-decimal list-inside">
+                {items.map((item, i) => (
+                    <li
+                        key={i}
+                        itemProp="itemListElement"
+                        itemScope
+                        itemType="https://schema.org/ListItem"
+                        className="text-gray-700"
+                    >
+                        <meta itemProp="position" content={String(i + 1)} />
+                        <span itemProp="name">{item}</span>
+                    </li>
+                ))}
+            </ol>
+        </div>
+    );
+}
+
 // Custom MDX Components
 export function useMDXComponents(components: MDXComponents): MDXComponents {
     return {
@@ -82,7 +109,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
         // Paragraphs
         p: ({ children, ...props }) => (
-            <p className="text-base leading-relaxed mb-4 text-gray-700" {...props}>
+            <p className="text-base leading-relaxed mb-6 text-gray-700" {...props}>
                 {children}
             </p>
         ),
@@ -207,6 +234,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         // Custom Components
         FeaturedSnippet,
         TableOfContents,
+        FeaturedList,
 
         ...components,
     };
