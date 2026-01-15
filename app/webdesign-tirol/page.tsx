@@ -6,6 +6,12 @@ import { regionalContent } from "@/lib/regional-content";
 import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
 import SkipLinks from "@/components/SkipLinks";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Webdesign Tirol: Gipfelstürmer-Design für Betriebe | ⭐ 4.8",
+  description: "Bringen Sie Ihr Business nach ganz oben. Website ab 790€. Robust, schnell & mobil-optimiert. Erfolg ohne Vorkasse.",
+};
 
 const Portfolio = dynamic(() => import('@/components/Portfolio'));
 const Process = dynamic(() => import('@/components/Process'));

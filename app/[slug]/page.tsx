@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
 
     return {
-        title: `Webdesign ${city.name} | Red Rabbit Media`,
-        description: `Professionelles Webdesign in ${city.name} ab 790€. Wir erstellen Ihre Website - modern, responsive und suchmaschinenoptimiert.`,
+        title: `Webdesign ${city.name}: Premium Website & SEO | ⭐ 4.8`,
+        description: `Wir bringen ${city.name} online. ⭐ 4.8 Bewertung. Maßgeschneidertes Webdesign ab 790€ ohne Vorkasse. Perfekt für lokale Dienstleister & KMUs.`,
     };
 }
 

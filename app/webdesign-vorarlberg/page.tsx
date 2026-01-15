@@ -6,6 +6,12 @@ import { regionalContent } from "@/lib/regional-content";
 import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
 import SkipLinks from "@/components/SkipLinks";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Webdesign Vorarlberg: Qualität, die sich rechnet | ⭐ 4.8",
+  description: "Gscheit online gehen. Premium-Website ab 790€. Wir schaffen Werte für Ihr Unternehmen. 0% Risiko, 100% Leistung.",
+};
 
 const Portfolio = dynamic(() => import('@/components/Portfolio'));
 const Process = dynamic(() => import('@/components/Process'));

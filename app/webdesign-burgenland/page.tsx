@@ -6,6 +6,12 @@ import Header from "@/components/Header";
 import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
 import SkipLinks from "@/components/SkipLinks";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Webdesign Burgenland: Digitaler Aufschwung | ab 790€ | ⭐ 4.8",
+  description: "Modern, leistbar & regional. Website ab 790€. Wir bringen burgenländische Betriebe groß raus. Zahlung erst bei Erfolg.",
+};
 
 const Portfolio = dynamic(() => import('@/components/Portfolio'));
 const Process = dynamic(() => import('@/components/Process'));

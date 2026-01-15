@@ -6,6 +6,12 @@ import Header from "@/components/Header";
 import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
 import SkipLinks from "@/components/SkipLinks";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Webdesign Niederösterreich: Wachstum für Ihr Business | ⭐ 4.8",
+  description: "Modernster Webauftritt für NÖ-Betriebe. Ab 790€ Fixpreis. Wir digitalisieren Ihren Erfolg. Erst zahlen, wenn Sie begeistert sind.",
+};
 
 const Portfolio = dynamic(() => import('@/components/Portfolio'));
 const Process = dynamic(() => import('@/components/Process'));

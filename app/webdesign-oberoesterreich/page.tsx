@@ -3,13 +3,17 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
-// Above-the-fold - synchron laden
+import { regionalContent } from "@/lib/regional-content";
 import Header from "@/components/Header";
 import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
 import SkipLinks from "@/components/SkipLinks";
+import { Metadata } from 'next';
 
-import { regionalContent } from "@/lib/regional-content";
+export const metadata: Metadata = {
+    title: "Webdesign OÖ: Digitaler Vorsprung für Macher | ab 790€ | ⭐ 4.8",
+    description: "Innovation trifft Fairness. Website ab 790€ für OÖ Unternehmen. Kein 'Larifari', nur Ergebnisse. Zahlung erst nach Abnahme.",
+};
 
 // Below-the-fold - lazy laden
 const Portfolio = dynamic(() => import('@/components/Portfolio'));

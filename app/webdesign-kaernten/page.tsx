@@ -6,6 +6,12 @@ import { regionalContent } from "@/lib/regional-content";
 import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
 import SkipLinks from "@/components/SkipLinks";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Webdesign Kärnten: Online-Erfolg im Süden | ab 790€ | ⭐ 4.8",
+  description: "Websites so attraktiv wie unser Land. Ab 790€ Fixpreis. Perfekt für Tourismus & Gewerbe. Erst sehen, dann zahlen.",
+};
 
 const Portfolio = dynamic(() => import('@/components/Portfolio'));
 const Process = dynamic(() => import('@/components/Process'));

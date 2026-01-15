@@ -6,6 +6,12 @@ import { regionalContent } from "@/lib/regional-content";
 import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
 import SkipLinks from "@/components/SkipLinks";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Webdesign Steiermark: Echte Qualität, Klarer Preis | ⭐ 4.8",
+  description: "Steirische Handschlagqualität digital übersetzt. Website ab 790€. Ohne versteckte Kosten. Erst Entwurf, dann Rechnung.",
+};
 
 const Portfolio = dynamic(() => import('@/components/Portfolio'));
 const Process = dynamic(() => import('@/components/Process'));

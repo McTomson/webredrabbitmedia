@@ -11,8 +11,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Red Rabbit Media | Professionelles Webdesign ab 790€",
-  description: "Professionelle Website ab 790€. Über 315 zufriedene Kunden. Erst zahlen wenn zufrieden. DSGVO-konform & mobil-optimiert.",
+  title: "Webdesign Österreich: Premium-Qualität zum Fixpreis | ⭐ 4.8",
+  description: "Exklusives Webdesign ab 790€. Für Unternehmer, die smart rechnen. Kein Baukasten, keine Abos. Zahlung erst bei 100% Zufriedenheit. 315+ Kunden.",
   metadataBase: new URL('https://web.redrabbit.media'),
 
   // Open Graph
@@ -125,13 +125,6 @@ const jsonLd = {
         }
       ],
       "priceRange": "ab 790€",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "315",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
       "speakable": {
         "@type": "SpeakableSpecification",
         "cssSelector": [".speakable-content", "h1", "h2"]

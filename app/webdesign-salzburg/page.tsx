@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { regionalContent } from "@/lib/regional-content";
@@ -10,8 +9,8 @@ import SkipLinks from "@/components/SkipLinks";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: "Webdesign Wien: Exklusiver Look, fairer Preis | ab 790€ | ⭐ 4.8",
-    description: "Ihre neue Website in 7 Tagen. ⭐ 4.8 Premium-Design ohne Agentur-Aufschlag. Null Risiko: Erst Entwurf prüfen, dann entscheiden. Top Service.",
+    title: "Webdesign Salzburg: Weltklasse Design, Lokal betreut | ⭐ 4.8",
+    description: "Ein Auftritt mit Stil für Salzburger Betriebe. Ab 790€. Exklusiv, elegant & effektiv. Zahlen Sie nur bei 100% Zufriedenheit. ⭐ 4.8",
 };
 
 const Portfolio = dynamic(() => import('@/components/Portfolio'));
@@ -26,34 +25,29 @@ const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: f
 const AccessibilityWidget = dynamic(() => import('@/components/AccessibilityWidget'), { ssr: false });
 const ContactForm = dynamic(() => import('@/components/ContactForm'), { ssr: false });
 
-export default function WienPage() {
+export default function SalzburgPage() {
     const [isFormOpen, setIsFormOpen] = useState(false);
 
     const regionalData = {
-        region: "Wien",
-        mainCity: "Wien",
-        mainCitySlug: "wien",
-        population: "1,9 Mio.",
-        cities: ["Wien", "Döbling", "Hietzing", "Favoriten", "Floridsdorf"],
-        landmarks: ["Stephansdom", "Schloss Schönbrunn", "Prater", "Hofburg"],
-        keywords: "Webdesign Wien, Webdesign Agentur Wien, Homepage Agentur Wien, Webentwicklung Wien",
+        region: "Salzburg",
+        mainCity: "Salzburg",
+        mainCitySlug: "salzburg",
+        population: "0,5 Mio.",
+        cities: ["Salzburg", "Hallein", "Saalfelden", "St. Johann", "Bischofshofen"],
+        landmarks: ["Festung Hohensalzburg", "Getreidegasse", "Dom", "Mirabellgarten"],
+        keywords: "Webdesign Salzburg, Website erstellen Salzburg, Homepage Salzburg, Webagentur Salzburg",
     };
 
     return (
         <div className="min-h-screen">
-            <SkipLinks />
-            <AccessibilityWidget />
-            <CookieBanner />
-            <FloatingWhatsApp />
+            <SkipLinks /><AccessibilityWidget /><CookieBanner /><FloatingWhatsApp />
             <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
             <Header onFormOpen={() => setIsFormOpen(true)} />
-            <RegionalSEOContent data={regionalData} content={regionalContent["Wien"]} />
+            <RegionalSEOContent data={regionalData} content={regionalContent["Salzburg"]} />
             <main id="main-content" className="relative">
                 <RegionalHero data={regionalData} onFormOpen={() => setIsFormOpen(true)} />
-                <Portfolio />
-                <Process onFormOpen={() => setIsFormOpen(true)} />
-                <SeoOptimization />
-                <About />
+                <Portfolio /><Process onFormOpen={() => setIsFormOpen(true)} />
+                <SeoOptimization /><About />
                 <Pricing onFormOpen={() => setIsFormOpen(true)} />
                 <RegionalFAQ data={regionalData} />
                 <Contact onFormOpen={() => setIsFormOpen(true)} />
