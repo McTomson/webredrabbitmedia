@@ -1,11 +1,5 @@
-"use client";
-import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import { regionalContent } from "@/lib/regional-content";
-import Header from "@/components/Header";
-import RegionalHero from "@/components/RegionalHero";
-import RegionalSEOContent from "@/components/RegionalSEOContent";
-import SkipLinks from "@/components/SkipLinks";
+import RegionalLandingPage from "@/components/RegionalLandingPage";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,21 +7,7 @@ export const metadata: Metadata = {
     description: "Ein Auftritt mit Stil für Salzburger Betriebe. Ab 790€. Exklusiv, elegant & effektiv. Zahlen Sie nur bei 100% Zufriedenheit. ⭐ 4.8",
 };
 
-const Portfolio = dynamic(() => import('@/components/Portfolio'));
-const Process = dynamic(() => import('@/components/Process'));
-const SeoOptimization = dynamic(() => import('@/components/SeoOptimization'));
-const About = dynamic(() => import('@/components/About'));
-const Pricing = dynamic(() => import('@/components/Pricing'));
-const RegionalFAQ = dynamic(() => import('@/components/RegionalFAQ'));
-const Contact = dynamic(() => import('@/components/Contact'));
-const FloatingWhatsApp = dynamic(() => import('@/components/FloatingWhatsApp'), { ssr: false });
-const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
-const AccessibilityWidget = dynamic(() => import('@/components/AccessibilityWidget'), { ssr: false });
-const ContactForm = dynamic(() => import('@/components/ContactForm'), { ssr: false });
-
 export default function SalzburgPage() {
-    const [isFormOpen, setIsFormOpen] = useState(false);
-
     const regionalData = {
         region: "Salzburg",
         mainCity: "Salzburg",
@@ -38,20 +18,5 @@ export default function SalzburgPage() {
         keywords: "Webdesign Salzburg, Website erstellen Salzburg, Homepage Salzburg, Webagentur Salzburg",
     };
 
-    return (
-        <div className="min-h-screen">
-            <SkipLinks /><AccessibilityWidget /><CookieBanner /><FloatingWhatsApp />
-            <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
-            <Header onFormOpen={() => setIsFormOpen(true)} />
-            <RegionalSEOContent data={regionalData} content={regionalContent["Salzburg"]} />
-            <main id="main-content" className="relative">
-                <RegionalHero data={regionalData} onFormOpen={() => setIsFormOpen(true)} />
-                <Portfolio /><Process onFormOpen={() => setIsFormOpen(true)} />
-                <SeoOptimization /><About />
-                <Pricing onFormOpen={() => setIsFormOpen(true)} />
-                <RegionalFAQ data={regionalData} />
-                <Contact onFormOpen={() => setIsFormOpen(true)} />
-            </main>
-        </div>
-    );
+    return <RegionalLandingPage data={regionalData} content={regionalContent["Salzburg"]} />;
 }

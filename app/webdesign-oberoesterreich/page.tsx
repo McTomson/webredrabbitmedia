@@ -1,51 +1,13 @@
-"use client";
-
-import { useState } from 'react';
-import dynamic from 'next/dynamic';
-
 import { regionalContent } from "@/lib/regional-content";
-import Header from "@/components/Header";
-import RegionalHero from "@/components/RegionalHero";
-import RegionalSEOContent from "@/components/RegionalSEOContent";
-import SkipLinks from "@/components/SkipLinks";
+import RegionalLandingPage from "@/components/RegionalLandingPage";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: "Webdesign OÖ: Digitaler Vorsprung für Macher | ab 790€ | ⭐ 4.8",
-    description: "Innovation trifft Fairness. Website ab 790€ für OÖ Unternehmen. Kein 'Larifari', nur Ergebnisse. Zahlung erst nach Abnahme.",
+    description: "Innovation trifft Fairness. ⭐ 4.8 Bewertung. Website ab 790€ für OÖ Unternehmen. Kein 'Larifari', nur Ergebnisse. Zahlung erst nach Abnahme.",
 };
 
-// Below-the-fold - lazy laden
-const Portfolio = dynamic(() => import('@/components/Portfolio'));
-const Process = dynamic(() => import('@/components/Process'));
-const SeoOptimization = dynamic(() => import('@/components/SeoOptimization'));
-const About = dynamic(() => import('@/components/About'));
-const Pricing = dynamic(() => import('@/components/Pricing'));
-const RegionalFAQ = dynamic(() => import('@/components/RegionalFAQ'));
-const Contact = dynamic(() => import('@/components/Contact'));
-
-// Client-only Widgets
-const FloatingWhatsApp = dynamic(() => import('@/components/FloatingWhatsApp'), {
-    ssr: false
-});
-const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
-    ssr: false
-});
-const AccessibilityWidget = dynamic(() => import('@/components/AccessibilityWidget'), {
-    ssr: false
-});
-const ContactForm = dynamic(() => import('@/components/ContactForm'), {
-    ssr: false
-});
-
 export default function OberoesterreichPage() {
-    const [isFormOpen, setIsFormOpen] = useState(false);
-
-    const handleFormOpen = () => {
-        setIsFormOpen(true);
-    };
-
-    // Regional data for Oberösterreich
     const regionalData = {
         region: "Oberösterreich",
         mainCity: "Linz",
@@ -56,45 +18,5 @@ export default function OberoesterreichPage() {
         keywords: "Webdesign Oberösterreich, Website erstellen Oberösterreich, Homepage OÖ, Webentwicklung Oberösterreich",
     };
 
-    return (
-        <div className="min-h-screen">
-            <SkipLinks />
-            <AccessibilityWidget />
-            <CookieBanner />
-            <FloatingWhatsApp />
-            <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
-
-            {/* Header Navigation */}
-            <Header onFormOpen={handleFormOpen} />
-
-            {/* SEO Content for Crawlers (hidden) */}
-            <RegionalSEOContent data={regionalData} content={regionalContent["Oberösterreich"]} />
-
-            <main id="main-content" className="relative">
-                {/* Regional Hero Section */}
-                <RegionalHero data={regionalData} onFormOpen={handleFormOpen} />
-
-                {/* Portfolio Section */}
-                <Portfolio />
-
-                {/* Process Section */}
-                <Process onFormOpen={handleFormOpen} />
-
-                {/* SEO Optimization Section */}
-                <SeoOptimization />
-
-                {/* About Section */}
-                <About />
-
-                {/* Pricing Section */}
-                <Pricing onFormOpen={handleFormOpen} />
-
-                {/* Regional FAQ Section */}
-                <RegionalFAQ data={regionalData} />
-
-                {/* Contact Section */}
-                <Contact onFormOpen={handleFormOpen} />
-            </main>
-        </div>
-    );
+    return <RegionalLandingPage data={regionalData} content={regionalContent["Oberösterreich"]} />;
 }
