@@ -10,7 +10,7 @@ export interface City {
     marketTrends: string;
     localFacts: readonly string[];
     projectCount?: number;
-    cluster: "metropolis" | "tourism" | "regional" | "graz" | "salzburg";
+    cluster: "metropolis" | "tourism" | "regional" | "graz" | "salzburg" | "innsbruck" | "klagenfurt" | "eisenstadt";
 }
 
 export type CityCluster = City["cluster"];
@@ -70,25 +70,25 @@ export const cities: Record<string, City> = {
         name: "Innsbruck",
         region: "Tirol",
         population: "132.000",
-        description: "Die Hauptstadt der Alpen zieht sportliche und aktive Zielgruppen an. Webdesign muss hier dynamisch und emotional sein.",
-        keywords: "Webdesign Innsbruck, Website erstellen Innsbruck, SEO Tirol",
+        description: "In der Sporthauptstadt zählen Leistung und Ausdauer. Webdesign für Innsbruck muss stark, schnell und robust sein.",
+        keywords: "Webdesign Innsbruck, Website erstellen Innsbruck, SEO Agentur Tirol",
         landmarks: ["Goldenes Dachl", "Nordkette", "Bergisel"],
-        seoText: "In Innsbruck trifft der urbane Raum direkt auf die alpine Wildnis. Dieses Spannungsfeld nutzen wir im Webdesign: Klare, starke Bilderwelten und eine robuste Performance, die auch bei schlechtem Netz am Berg funktioniert. SEO in Tirol bedeutet oft, für hyper-lokale Suchbegriffe ('Skiverleih Innsbruck') und saisonale Trends optimiert zu sein.",
-        marketTrends: "Stark saisonabhängiges Geschäft. Websites müssen flexibel auf Winter/Sommer umstellbar sein. Outdoor-Ästhetik dominiert.",
+        seoText: "Innsbruck ist ein dynamischer Markt. Hier treffen Traditionsbetriebe auf sportliche Innovation. Innsbrucker Unternehmen brauchen Websites, die dieses Tempo mitgehen: Technisch robust, extrem schnell und klar in der Aussage. Wir liefern digitales Equipment für Ihren geschäftlichen Aufstieg – für Handwerk, Handel und Dienstleister.",
+        marketTrends: "Hoher Wettbewerb in allen Sektoren. Fokus auf mobile Performance für eine aktive Zielgruppe.",
         localFacts: ["Universitätsstadt mit jungem Flair", "Zentrum des Alpentourismus", "Starke Verbindung von Sport und Business"],
-        cluster: "tourism"
+        cluster: "innsbruck"
     },
     klagenfurt: {
         name: "Klagenfurt",
         region: "Kärnten",
         population: "101.000",
-        description: "Am Wörthersee gelegen, steht Klagenfurt für Lebensqualität. Webdesign darf hier entspannter, aber nicht weniger professionell sein.",
-        keywords: "Webdesign Klagenfurt, Website erstellen Klagenfurt, Kärnten Web",
+        description: "Der Süden Österreichs ist mehr als Urlaubsziel. Klagenfurt ist Tech-Hub und Wirtschaftsstandort. Wir bringen Kärntner Unternehmen groß raus.",
+        keywords: "Webdesign Klagenfurt, Website erstellen Kärnten, Online Marketing Klagenfurt",
         landmarks: ["Wörthersee", "Minimundus", "Lindwurm"],
-        seoText: "Klagenfurt ist das Tor zum Süden. Die digitale Kommunikation ist hier oft persönlicher und wärmer als im Rest Österreichs. Wir setzen für Klagenfurter Unternehmen auf Storytelling und starke visuelle Elemente, die das Lebensgefühl der Region transportieren, ohne die geschäftlichen Ziele aus den Augen zu verlieren.",
-        marketTrends: "Tourismus und Dienstleistung dominieren. Wachsende IT-Szene im Lakeside Park verlangt nach High-End Web-Lösungen.",
+        seoText: "Klagenfurt verbindet Lebensqualität mit wirtschaftlicher Stärke. Vom Lakeside Park bis zur Innenstadt: Hier entstehen Innovationen. Wir bieten Webdesign, das diesen Spirit einfängt: Modern, offen und technisch brillant. Für alle Branchen – vom Installateur bis zum Start-up.",
+        marketTrends: "Starkes Wachstum im Technologie-Sektor (Lakeside Park). Bedarf an hochwertigen B2B-Lösungen für Industrie und Gewerbe.",
         localFacts: ["Lakeside Science & Technology Park", "Drehscheibe im Alpen-Adria-Raum", "Hohe Lebensqualität als Standortfaktor"],
-        cluster: "tourism"
+        cluster: "klagenfurt"
     },
     bregenz: {
         name: "Bregenz",
@@ -106,13 +106,13 @@ export const cities: Record<string, City> = {
         name: "Eisenstadt",
         region: "Burgenland",
         population: "15.000",
-        description: "Klein, aber fein. In Eisenstadt zählt der persönliche Kontakt. Webseiten müssen hier Vertrauen und Nähe aufbauen.",
-        keywords: "Webdesign Eisenstadt, Website erstellen Burgenland, Neusiedl Webdesign",
+        description: "Das Burgenland holt auf. Eisenstadt ist der Motor. Wir liefern digitale PS für burgenländische Betriebe.",
+        keywords: "Webdesign Eisenstadt, Website erstellen Burgenland, SEO Agentur Eisenstadt",
         landmarks: ["Schloss Esterházy", "Haydnhaus", "Schlosspark"],
-        seoText: "Als kleinste Landeshauptstadt hat Eisenstadt eine familiäre Business-Struktur. SEO funktioniert hier stark über persönliche Netzwerke und lokale Reputation. Unsere Websites für das Burgenland sind darauf optimiert, digitale Visitenkarten zu sein, die den persönlichen Handschlag vorbereiten – freundlich, offen und direkt.",
-        marketTrends: "Weinbau und Tourismus sind wichtige Treiber. Wachsender Bedarf an E-Commerce Lösungen für lokale Produzenten.",
+        seoText: "Eisenstadt wächst. Die Wirtschaft im Burgenland wird digitaler und selbstbewusster. Unsere Websites spiegeln das wider: Kein 'kleines' Design für 'kleine' Betriebe, sondern selbstbewusste Auftritte, die zeigen, was Sie können. Für Winzer, Handwerker und Dienstleister, die überregional erfolgreich sein wollen.",
+        marketTrends: "Digitalisierungsschub durch Förderungen. Winzer und lokale Produzenten setzen zunehmend auf professionelle E-Commerce Lösungen.",
         localFacts: ["Weinbau als Wirtschaftsfaktor", "Nähe zum Ballungsraum Wien", "Starke regionale Identität"],
-        cluster: "regional"
+        cluster: "eisenstadt"
     },
     "st-poelten": {
         name: "St. Pölten",

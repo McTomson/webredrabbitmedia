@@ -375,7 +375,7 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials }:
                                         className="flex transition-transform duration-300 ease-out"
                                         style={{
                                             transform: `translateX(-${currentSlide * (100 / 3)}%)`,
-                                            width: `${testimonials.length * 100}%`
+                                            width: `${displayTestimonials.length * 100}%`
                                         }}
                                     >
                                         {displayTestimonials.map((testimonial, index) => (

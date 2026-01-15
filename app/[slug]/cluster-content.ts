@@ -313,6 +313,336 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
             subline: (city) => `Ein unverbindliches Gespräch über Ihre Ziele in ${city}. Diskret und professionell.`
         }
     },
+    innsbruck: {
+        hero: {
+            headline: (city) => `Starker Auftritt für ${city}.`,
+            subline: (city) => `Websites mit der Power der Alpen. Für Unternehmen in ${city}, die hoch hinaus wollen.`
+        },
+        intro: {
+            headline: (city) => `Performance zählt in ${city}.`,
+            text: (city) => `Ob Handwerk, Handel oder Dienstleistung: In ${city} setzt man auf Ausdauer und Qualität. Wir bauen Websites, die genau das liefern: Technisch robust, blitzschnell und bereit für den Aufstieg in Google.`
+        },
+        process: {
+            headline: "Der direkte Weg zum Ziel.",
+            text: "Wir machen keine Umwege. Wir analysieren die Route und gehen mit Ihnen direkt zum Gipfel. Effizient und ohne Ballast.",
+            steps: [
+                { title: "Der Plan", description: "Wir checken Ihre Ausrüstung und legen die Strategie fest. Klar und verständlich.", highlight: "Strategisch" },
+                { title: "Der Aufstieg", description: "Wir bauen Ihre Seite. Stabil, schnell und sicher. Technisch auf höchstem Niveau.", highlight: "Kraftvoll" },
+                { title: "Der Gipfel", description: "Wir bringen Sie online. Damit Sie von ganz oben gesehen werden.", highlight: "Sichtbar" }
+            ],
+            benefits: [
+                { title: "Top-Kondition", description: "Ladezeiten unter 0.5 Sekunden. Fit für jedes Rennen gegen die Konkurrenz.", highlight: "Speed", redText: "Blitzschnell" },
+                { title: "Robust", description: "Technik, die hält. Wartungsarm und sicher wie ein Fels.", highlight: "Stabil", redText: "Sicher" },
+                { title: "Für Gewinner", description: "Design, das überzeugt. Verwandeln Sie Besucher in echte Kunden.", highlight: "Conversion", redText: "Umsatz" },
+                { title: "Sichtbarkeit", description: "Wir optimieren für Platz 1. Damit Sie in Tirol gefunden werden.", highlight: "Ranking", redText: "Google Top" }
+            ]
+        },
+        portfolio: {
+            headline: "Projekte mit Profil.",
+            text: (city) => `Starke Marken aus ${city}, die wir digital fit gemacht haben.`
+        },
+        seo: {
+            headline: "Gefunden werden ist kein Glück.",
+            subline: "Top-Rankings sind das Ergebnis von hartem Training. Wir optimieren Ihren Code so, dass Google Sie liebt.",
+            strategyHeadline: "Warum Sie in Innsbruck sichtbar sein müssen.",
+            comparisonHeadline: (city) => `Der Wettbewerb in ${city} schläft nicht.`,
+            features: [
+                { title: "Lokale Dominanz", text: (city) => `Wir sorgen dafür, dass Sie bei "Ihre Branche + ${city}" ganz oben stehen.` },
+                { title: "Mobile Power", text: (city) => `Viele suchen unterwegs. Ihre Seite muss am Handy genauso stark sein wie am Desktop.` },
+                { title: "Dauerhafter Erfolg", text: (city) => `Keine kurzfristigen Tricks. Wir bauen eine nachhaltige Strategie für langfristige Rankings.` }
+            ],
+            strategyItems: [
+                { title: "Das Ziel", text: "Sie wollen mehr Aufträge. Mehr Kunden. Mehr Umsatz. Das ist unser Fokus." },
+                { title: "Der Weg", text: "Wir leiten die Besucher gezielt durch Ihre Seite. Vom ersten Klick bis zur Anfrage." },
+                { title: "Ihr Gewinn", text: "Eine Website, die für Sie arbeitet. 24 Stunden am Tag, 7 Tage die Woche." }
+            ],
+            comparisonItems: [
+                { name: "Design", other: "Langweilig", us: "Dynamisch" },
+                { name: "Technik", other: "Veraltet", us: "High-Performance" },
+                { name: "Fokus", other: "Nur Optik", us: "Umsatz & Ziele" },
+                { name: "Betreuung", other: "Träge", us: "Aktiv" },
+                { name: "Preis", other: "Versteckt", us: "Transparent" }
+            ]
+        },
+        about: {
+            headline: "Ihr digitaler Bergführer",
+            text: "Wir kennen das Gelände. Seit 15 Jahren führen wir Unternehmen sicher durch den digitalen Dschungel. Wir sind Ihr Partner für den geschäftlichen Aufstieg.",
+            testimonialsHeadline: (city) => `Stimmen aus ${city}`,
+            features: [
+                { title: "Erfahren", text: "Wir wissen, was funktioniert und was nicht." },
+                { title: "Direkt", text: "Wir reden Klartext. Ehrliche Beratung ohne Bla-Bla." },
+                { title: "Erfolgreich", text: "Unsere Kunden wachsen. Das ist unser einziger Maßstab." }
+            ],
+            testimonials: [
+                {
+                    stars: "⭐️⭐️⭐️⭐️⭐️",
+                    rating: "5/5",
+                    quote: "\"Endlich eine Website, die unsere Leistung widerspiegelt. Schnell, modern und direkt auf den Punkt. Seitdem haben wir deutlich mehr Anfragen.\"",
+                    author: "Markus T.",
+                    company: "Sportfachhandel",
+                    avatar: "🏂"
+                },
+                {
+                    stars: "⭐️⭐️⭐️⭐️⭐️",
+                    rating: "5/5",
+                    quote: "\"Wir sind Handwerker, keine Web-Profis. Red Rabbit hat uns das technisch komplett abgenommen. Das Ergebnis ist top.\"",
+                    author: "Andreas W.",
+                    company: "Bauleitung",
+                    avatar: "🏗️"
+                },
+                {
+                    stars: "⭐️⭐️⭐️⭐️",
+                    rating: "4/5",
+                    quote: "\"Kompetente Beratung und schnelle Umsetzung. Genau so stellen wir uns eine Zusammenarbeit vor.\"",
+                    author: "Julia S.",
+                    company: "Physiotherapie",
+                    avatar: "physio"
+                }
+            ]
+        },
+        faq: {
+            headline: (city) => `Fragen aus ${city}`,
+            subline: (city, region) => `Klare Antworten für Unternehmer in ${city}.`,
+            questions: [
+                {
+                    question: (city) => `Lohnt sich das für mein Geschäft in ${city}?`,
+                    answer: (city, region) => `Ja. Egal ob Handwerker, Arzt oder Händler: Wer in ${city} nicht gefunden wird, verliert Geschäft an die Konkurrenz. Eine starke Website ist Ihre Basis.`
+                },
+                {
+                    question: (city) => `Muss ich mich um die Technik kümmern?`,
+                    answer: (city, region) => `Nein. Wir übernehmen Hosting, Domains, Updates und Sicherheit. Sie konzentrieren sich voll auf Ihr Geschäft in ${city}.`
+                },
+                {
+                    question: (city) => `Wie schnell bin ich online?`,
+                    answer: (city, region) => `Sportlich schnell. In der Regel steht Ihre Seite in 7 Tagen. Bereit für Ihre Kunden.`
+                }
+            ]
+        },
+        contact: {
+            headline: "Starten wir durch.",
+            subline: (city) => `Holen Sie sich den digitalen Vorsprung in ${city}. Jetzt unverbindlich anfragen.`
+        }
+    },
+    klagenfurt: {
+        hero: {
+            headline: (city) => `Digitaler Erfolg im Süden.`,
+            subline: (city) => `Websites für Kärntner Unternehmen. Modern, sonnig und technisch brillant.`
+        },
+        intro: {
+            headline: (city) => `Business mit Lebensqualität.`,
+            text: (city) => `Klagenfurt ist mehr als Wörthersee. Es ist ein Standort für Innovation und solide Wirtschaft. Wir bauen Websites, die genau das zeigen: Kärntner Charme, verbunden mit harter technischer Performance.`
+        },
+        process: {
+            headline: "Entspannt zum Ziel.",
+            text: "Wir bringen südliche Gelassenheit in Ihr Projekt – aber mit absolutem Fokus auf das Ergebnis. Kein Stress, nur Lösungen.",
+            steps: [
+                { title: "Kennenlernen", description: "Wir trinken einen Kaffee (oder zoomen) und besprechen Ihre Vision.", highlight: "Sympathisch" },
+                { title: "Designen", description: "Wir entwerfen einen Look, der Ihre Kunden begeistert. Frisch und modern.", highlight: "Kreativ" },
+                { title: "Launchen", description: "Wir gehen live. Sie lehnen sich zurück und genießen den Erfolg.", highlight: "Souverän" }
+            ],
+            benefits: [
+                { title: "Für alle Branchen", description: "Egal ob Lakeside Park oder Altstadt-Handwerk. Wir kennen Ihren Markt.", highlight: "Vielseitig", redText: "100% Kärnten" },
+                { title: "Technik-Leader", description: "Was im Silicon Valley Standard ist, bringen wir nach Kärnten.", highlight: "Modern", redText: "High-Tech" },
+                { title: "Faire Preise", description: "Handschlagqualität beim Preis. Fix und transparent.", highlight: "Fair", redText: "Fixpreis" },
+                { title: "Sichtbarkeit", description: "Wir machen Sie zur Nummer 1 in der Region. Von Villach bis Wolfsberg.", highlight: "Regio-SEO", redText: "Top Ranking" }
+            ]
+        },
+        portfolio: {
+            headline: "Erfolg made in Kärnten.",
+            text: (city) => `Unternehmen in ${city} und Umgebung, die uns vertrauen.`
+        },
+        seo: {
+            headline: "Sichtbar im ganzen Alpe-Adria-Raum.",
+            subline: "Wir optimieren nicht nur für Google, sondern für Ihre Kunden. Damit Sie genau dann gefunden werden, wenn es zählt.",
+            strategyHeadline: "Warum Kärntner Betriebe online aufholen müssen.",
+            comparisonHeadline: (city) => `Der digitale Wandel in ${city}.`,
+            features: [
+                { title: "Regionale Stärke", text: (city) => `Wir stärken Ihre Marke in Kärnten. Damit die Aufträge in der Region bleiben.` },
+                { title: "Überregionale Reichweite", text: (city) => `Sie wollen über die Pack hinaus verkaufen? Wir bauen Ihre digitale Brücke.` },
+                { title: "Schnelligkeit", text: (city) => `Niemand wartet gerne. Unsere Seiten laden sofort. Auch am Wörthersee.` }
+            ],
+            strategyItems: [
+                { title: "Die Chance", text: "Viele Kärntner Websites sind veraltet. Nutzen Sie das und überholen Sie die Konkurrenz jetzt." },
+                { title: "Unser Beitrag", text: "Wir liefern Ihnen die Technik der Marktführer zum Preis für den Mittelstand." },
+                { title: "Das Ergebnis", text: "Eine Website, die verkauft. Tag und Nacht." }
+            ],
+            comparisonItems: [
+                { name: "Design", other: "Altbacken", us: "Frisch & Modern" },
+                { name: "Technik", other: "Langsam", us: "Turboschnell" },
+                { name: "Fokus", other: "Nur Tourismus", us: "Alle Branchen" },
+                { name: "Ansprechpartner", other: "Wechselnd", us: "Persönlich" },
+                { name: "Preis", other: "Unklar", us: "Fixpreis garantier" }
+            ]
+        },
+        about: {
+            headline: "Ihr Partner im Süden",
+            text: "Wir verbinden technische Exzellenz mit Kärntner Lebensart. Wir sind keine abgehobene Agentur, sondern Partner auf Augenhöhe. Für Ihren Erfolg.",
+            testimonialsHeadline: (city) => `Stimmen aus Kärnten`,
+            features: [
+                { title: "Kompetent", text: "Wir wissen, wie modernes Webdesign geht." },
+                { title: "Verlässlich", text: "Ein Wort ist ein Wort. Wir halten Termine." },
+                { title: "Sympathisch", text: "Zusammenarbeit soll auch Spaß machen." }
+            ],
+            testimonials: [
+                {
+                    stars: "⭐️⭐️⭐️⭐️⭐️",
+                    rating: "5/5",
+                    quote: "\"Wir sind ein Tech-Startup im Lakeside Park und brauchten eine Seite, die international mithalten kann. Red Rabbit hat geliefert.\"",
+                    author: "Thomas M.",
+                    company: "IT-Solutions",
+                    avatar: "💻"
+                },
+                {
+                    stars: "⭐️⭐️⭐️⭐️⭐️",
+                    rating: "5/5",
+                    quote: "\"Als Installateur brauche ich keine Spielereien, sondern Anfragen. Die neue Seite funktioniert perfekt.\"",
+                    author: "Hannes K.",
+                    company: "Haustechnik",
+                    avatar: "🔧"
+                },
+                {
+                    stars: "⭐️⭐️⭐️⭐️",
+                    rating: "4/5",
+                    quote: "\"Endlich kümmert sich jemand darum, dass wir auch gefunden werden. Die Beratung war top.\"",
+                    author: "Sabine L.",
+                    company: "Rechtsanwältin",
+                    avatar: "⚖️"
+                }
+            ]
+        },
+        faq: {
+            headline: (city) => `Fragen aus ${city}`,
+            subline: (city, region) => `Antworten für Unternehmer in ${city}.`,
+            questions: [
+                {
+                    question: (city) => `Betreuen Sie auch Kunden außerhalb von ${city}?`,
+                    answer: (city, region) => `Ja, wir sind in ganz ${region} tätig. Von Villach bis St. Veit betreuen wir zufriedene Kunden.`
+                },
+                {
+                    question: (city) => `Ist das auch was für kleine Betriebe?`,
+                    answer: (city, region) => `Absolut. Unser Angebot ab 790€ ist perfekt für EPU und KMU in ${city}, die professionell auftreten wollen, ohne ein Vermögen auszugeben.`
+                },
+                {
+                    question: (city) => `Können wir uns persönlich treffen?`,
+                    answer: (city, region) => `Wir lösen 99% digital – das spart Ihnen Zeit. Aber wir sind "greifbar" und immer für Sie da, wenn Sie uns brauchen.`
+                }
+            ]
+        },
+        contact: {
+            headline: "Zeit für Veränderung?",
+            subline: (city) => `Machen Sie Ihr Unternehmen in ${city} fit für die Zukunft. Unverbindlich afragen.`
+        }
+    },
+    eisenstadt: {
+        hero: {
+            headline: (city) => `Großes Kino für ${city}.`,
+            subline: (city) => `Websites, die mehr können. Für Burgenlands Betriebe, die überregional strahlen wollen.`
+        },
+        intro: {
+            headline: (city) => `Der Aufschwung ist digital.`,
+            text: (city) => `${city} wächst. Das Burgenland holt auf. Wir sorgen dafür, dass Ihr Betrieb ganz vorne dabei ist: Mit Webseiten, die modern sind, verkaufen und stolz auf die Region sind.`
+        },
+        process: {
+            headline: "Handschlagqualität.",
+            text: "Wir machen keine komplizierten Verträge. Ein Wort zählt. Wir arbeiten transparent, schnell und bodenständig.",
+            steps: [
+                { title: "Reden", description: "Sie sagen uns, wo der Schuh drückt. Wir hören zu.", highlight: "Offen" },
+                { title: "Machen", description: "Wir setzen um. Ohne ewiges Hin-und-Her. Zügig und sauber.", highlight: "Tatkräftig" },
+                { title: "Freuen", description: "Sie bekommen eine Seite, auf die Sie stolz sein können.", highlight: "Perfekt" }
+            ],
+            benefits: [
+                { title: "Regionale Nähe", description: "Wir verstehen die burgenländische Seele. Kein abgehobenes Agentur-Gehabe.", highlight: "Nah", redText: "Aus der Region" },
+                { title: "E-Commerce Ready", description: "Verkaufen Sie Ihren Wein oder Ihre Produkte direkt online.", highlight: "Shop", redText: "Online Verkaufen" },
+                { title: "Moderne Technik", description: "Ihre Seite läuft am Handy so flüssig wie eine App.", highlight: "Mobile", redText: "100% Smartphone" },
+                { title: "Wachstum", description: "Wir bauen Seiten, die mit Ihrem Betrieb mitwachsen.", highlight: "Skalierbar", redText: "Zukunftssicher" }
+            ]
+        },
+        portfolio: {
+            headline: "Stolz aus dem Burgenland.",
+            text: (city) => `Erfolgsgeschichten aus ${city} und der Region.`
+        },
+        seo: {
+            headline: "Nicht suchen. Finden.",
+            subline: "Wir sorgen dafür, dass Kunden aus Wien und dem Burgenland genau bei Ihnen landen.",
+            strategyHeadline: "Warum 'Mundpropaganda' heute digital funktioniert.",
+            comparisonHeadline: (city) => `Online-Erfolg in ${city}.`,
+            features: [
+                { title: "Wien-Nähe nutzen", text: (city) => `Wir optimieren so, dass Sie auch Kunden aus dem Ballungsraum Wien abholen.` },
+                { title: "Lokale Helden", text: (city) => `Wer in ${city} sucht, muss Sie finden. Ganz oben.` },
+                { title: "Verkaufen", text: (city) => `Mehr als nur Info: Wir verwandeln Besucher in Käufer und Gäste.` }
+            ],
+            strategyItems: [
+                { title: "Die Situation", text: "Viele Betriebe im Burgenland haben noch keine gute Website. Das ist Ihre Chance." },
+                { title: "Die Lösung", text: "Ein professioneller Auftritt, der Sie sofort als Marktführer in Ihrer Nische positioniert." },
+                { title: "Der Effekt", text: "Sie gewinnen neue Kundenkreise, die sonst zur Konkurrenz gegangen wären." }
+            ],
+            comparisonItems: [
+                { name: "Auftritt", other: "Bescheiden", us: "Selbstbewusst" },
+                { name: "Verkauf", other: "Fehlt", us: "Integriert" },
+                { name: "Reichweite", other: "Lokal", us: "Überregional" },
+                { name: "Technik", other: "Baukasten", us: "Profi-Code" },
+                { name: "Kosten", other: "Teuer", us: "Fairer Fixpreis" }
+            ]
+        },
+        about: {
+            headline: "Digitales Handwerk",
+            text: "Wir sehen Webdesign als Handwerk. Ehrlich, sauber, langlebig. Wir bauen keine Luftschlösser, sondern solide Fundamente für Ihren Geschäftserfolg.",
+            testimonialsHeadline: (city) => `Feedback aus der Region`,
+            features: [
+                { title: "Bodenständig", text: "Wir bleiben am Teppich. Auch beim Preis." },
+                { title: "Innovativ", text: "Wir nutzen die neuste Technik für Ihren Vorteil." },
+                { title: "Partnerschaftlich", text: "Wir wachsen gemeinsam mit Ihnen." }
+            ],
+            testimonials: [
+                {
+                    stars: "⭐️⭐️⭐️⭐️⭐️",
+                    rating: "5/5",
+                    quote: "\"Wir wollten unseren Wein online verkaufen. Der Shop läuft super und ist kinderleicht zu bedienen.\"",
+                    author: "Familie E.",
+                    company: "Weingut",
+                    avatar: "🍷"
+                },
+                {
+                    stars: "⭐️⭐️⭐️⭐️⭐️",
+                    rating: "5/5",
+                    quote: "\"Unsere alte Seite war peinlich. Die neue ist unser ganzer Stolz. Danke für die geduldige Betreuung!\"",
+                    author: "Petra S.",
+                    company: "Floristik",
+                    avatar: "🌻"
+                },
+                {
+                    stars: "⭐️⭐️⭐️⭐️",
+                    rating: "4/5",
+                    quote: "\"Gute Arbeit, fairer Preis. Die Baustellen-Anfragen über die Website haben zugenommen.\"",
+                    author: "Franz K.",
+                    company: "Bauunternehmen",
+                    avatar: "🧱"
+                }
+            ]
+        },
+        faq: {
+            headline: (city) => `Fragen aus ${city}`,
+            subline: (city, region) => `Antworten für burgenländische Betriebe.`,
+            questions: [
+                {
+                    question: (city) => `Können Sie einen Shop einbauen?`,
+                    answer: (city, region) => `Ja. Wir bauen Ihnen einen rechtssicheren Online-Shop, mit dem Sie Ihre Produkte einfach verkaufen können.`
+                },
+                {
+                    question: (city) => `Kommen Sie zu uns in den Betrieb?`,
+                    answer: (city, region) => `Wir arbeiten effizient digital, kommen bei größeren Projekten aber auch gerne für einen Handschlag vorbei.`
+                },
+                {
+                    question: (city) => `Gibt es Förderungen?`,
+                    answer: (city, region) => `Oft gibt es Digitalisierungsförderungen für Betriebe im Burgenland. Wir helfen Ihnen gerne mit Infos weiter.`
+                }
+            ]
+        },
+        contact: {
+            headline: "Auf geht's.",
+            subline: (city) => `Bringen wir frischen Wind in Ihren Auftritt in ${city}. Jetzt anfragen.`
+        }
+    },
     tourism: {
         hero: {
             headline: (city) => `Mehr Gäste für ${city}.`,
