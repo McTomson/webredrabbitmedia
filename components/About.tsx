@@ -5,14 +5,36 @@ import { AOSWrapper } from './AnimatedSection';
 import { useState, useEffect, useRef } from 'react';
 import Image from "next/image";
 
-const About = () => {
+interface Feature {
+    title: string;
+    text: string;
+}
+
+interface Testimonial {
+    stars: string;
+    rating: string;
+    quote: string;
+    author: string;
+    company: string;
+    avatar: string;
+}
+
+interface AboutProps {
+    headline?: string;
+    text?: string;
+    testimonialsHeadline?: string;
+    features?: Feature[];
+    testimonials?: Testimonial[];
+}
+
+const About = ({ headline, text, testimonialsHeadline, features, testimonials }: AboutProps) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
     const [currentX, setCurrentX] = useState(0);
     const carouselRef = useRef<HTMLDivElement>(null);
 
-    const testimonials = [
+    const defaultTestimonials = [
         {
             stars: "⭐️⭐️⭐️⭐️⭐️",
             rating: "5/5",
@@ -38,6 +60,11 @@ const About = () => {
             avatar: "👷‍♂️"
         }
     ];
+
+    // Use the prop if available, otherwise default. The variable name conflicts with prop name, so we use `testimonialsProp` in destructuring or just assign here.
+    // Actually, I already destructured `testimonials` from props in Step 274.
+    // So the local variable `testimonials` shadows the prop. I should rename the local variable to `displayTestimonials`.
+    const displayTestimonials = testimonials || defaultTestimonials;
 
     // Auto-advance carousel
     useEffect(() => {
@@ -184,58 +211,41 @@ const About = () => {
                         <div className="space-y-8">
                             <AOSWrapper animation="fade-left" delay={200}>
                                 <h2 className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight">
-                                    Über Red Rabbit Media
+                                    {headline || "Über Red Rabbit Media"}
                                 </h2>
                             </AOSWrapper>
 
                             <AOSWrapper animation="fade-left" delay={300}>
                                 <p className="text-xl text-gray-600 leading-relaxed">
-                                    Wir entwickeln professionelle Websites, die Ihr Unternehmen online erfolgreich machen.
-                                    Mit über 15 Jahren Erfahrung verstehen wir, was Ihre Kunden erwarten
-                                    und wie Sie online überzeugen.
+                                    {text || "Wir entwickeln professionelle Websites, die Ihr Unternehmen online erfolgreich machen. Mit über 15 Jahren Erfahrung verstehen wir, was Ihre Kunden erwarten und wie Sie online überzeugen."}
                                 </p>
                             </AOSWrapper>
 
                             {/* Features */}
                             <AOSWrapper animation="fade-left" delay={400}>
                                 <div className="space-y-6">
-                                    <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                            <DollarSign className="w-6 h-6 text-red-600" />
+                                    {(features || [
+                                        { title: "Transparente Preise", text: "Keine versteckten Kosten - Sie wissen von Anfang an, was Ihre Website kostet." },
+                                        { title: "Strategisch durchdacht", text: "Jede Website wird so konzipiert, dass sie Ihre Geschäftsziele erreicht." },
+                                        { title: "🎯 Rundum-sorglos-Paket", text: "Wir übernehmen alles: Texte, Bilder, Struktur, Design - Sie lehnen sich zurück und erhalten Ihre fertige Website." }
+                                    ]).map((feature, index) => (
+                                        <div key={index} className="flex items-start gap-4">
+                                            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                                {index === 0 && <DollarSign className="w-6 h-6 text-red-600" />}
+                                                {index === 1 && <Target className="w-6 h-6 text-red-600" />}
+                                                {index === 2 && <Zap className="w-6 h-6 text-red-600" />}
+                                            </div>
+                                            <div>
+                                                <h3 className="font-medium text-gray-900 mb-2">{feature.title}</h3>
+                                                <p className="text-gray-600 text-sm">
+                                                    {feature.text}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h3 className="font-medium text-gray-900 mb-2">Transparente Preise</h3>
-                                            <p className="text-gray-600 text-sm">
-                                                Keine versteckten Kosten - Sie wissen von Anfang an, was Ihre Website kostet.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                            <Target className="w-6 h-6 text-red-600" />
-                                        </div>
-                                        <div>
-                                            <h3 className="font-medium text-gray-900 mb-2">Strategisch durchdacht</h3>
-                                            <p className="text-gray-600 text-sm">
-                                                Jede Website wird so konzipiert, dass sie Ihre Geschäftsziele erreicht.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                            <Zap className="w-6 h-6 text-red-600" />
-                                        </div>
-                                        <div>
-                                            <h3 className="font-medium text-gray-900 mb-2">🎯 Rundum-sorglos-Paket</h3>
-                                            <p className="text-gray-600 text-sm">
-                                                Wir übernehmen alles: Texte, Bilder, Struktur, Design - Sie lehnen sich zurück und erhalten Ihre fertige Website.
-                                            </p>
-                                        </div>
-                                    </div>
+                                    ))}
                                 </div>
                             </AOSWrapper>
+
 
                             {/* Contact Info */}
                             <AOSWrapper animation="fade-left" delay={500}>
@@ -253,10 +263,10 @@ const About = () => {
                                     </div>
                                 </div>
                             </AOSWrapper>
-                        </div>
+                        </div >
 
                         {/* Right Side - Visual */}
-                        <AOSWrapper animation="fade-right" delay={300}>
+                        < AOSWrapper animation="fade-right" delay={300} >
                             <div className="relative">
                                 <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden relative">
                                     <Image
@@ -280,14 +290,14 @@ const About = () => {
 
                                 {/* Floating Elements */}
                             </div>
-                        </AOSWrapper>
-                    </div>
+                        </AOSWrapper >
+                    </div >
 
                     {/* Testimonials - Completely redesigned with animations */}
-                    <AOSWrapper animation="fade-up" delay={600}>
+                    < AOSWrapper animation="fade-up" delay={600} >
                         <div className="mt-60">
                             <h3 className="text-3xl lg:text-4xl font-light text-center mb-6 text-gray-900">
-                                Was unsere Kunden sagen
+                                {testimonialsHeadline || "Was unsere Kunden sagen"}
                             </h3>
                             <p className="text-xl text-gray-600 text-center mb-20 max-w-2xl mx-auto">
                                 Echte Erfahrungen von Kunden, die mit uns erfolgreich geworden sind
@@ -295,7 +305,7 @@ const About = () => {
 
                             {/* Desktop Grid Layout */}
                             <div className="hidden lg:grid md:grid-cols-3 gap-8">
-                                {testimonials.map((testimonial, index) => (
+                                {displayTestimonials.map((testimonial, index) => (
                                     <AOSWrapper
                                         key={index}
                                         animation="fade-up"
@@ -368,7 +378,7 @@ const About = () => {
                                             width: `${testimonials.length * 100}%`
                                         }}
                                     >
-                                        {testimonials.map((testimonial, index) => (
+                                        {displayTestimonials.map((testimonial, index) => (
                                             <div
                                                 key={index}
                                                 className="w-full flex-shrink-0 px-2"
@@ -470,9 +480,9 @@ const About = () => {
                                 </div>
                             </div>
                         </div>
-                    </AOSWrapper>
-                </div>
-            </section>
+                    </AOSWrapper >
+                </div >
+            </section >
         </>
     );
 };

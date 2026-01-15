@@ -5,15 +5,23 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, HelpCircle } from 'lucide-react';
 import { City } from '../app/[slug]/cities';
 
-interface CityFAQProps {
-    city: City;
+interface FAQItem {
+    question: string;
+    answer: string;
 }
 
-const CityFAQ = ({ city }: CityFAQProps) => {
+interface CityFAQProps {
+    city: City;
+    headline?: string;
+    subline?: string;
+    questions?: FAQItem[];
+}
+
+const CityFAQ = ({ city, headline, subline, questions }: CityFAQProps) => {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     // City-specific FAQ Data - Unique mix and phrasing
-    const faqData = [
+    const defaultFaqData = [
         {
             question: `Gibt es versteckte Kosten für Unternehmen aus ${city.name}?`,
             answer: `Nein. Unser Fixpreis von 790€ gilt auch für Kunden aus ${city.name} und Umgebung. Darin enthalten sind Design, technische Umsetzung, SEO-Grundlagen und DSGVO-Sicherheit. Transparenz ist uns wichtig, gerade für die lokale Zusammenarbeit in ${city.region}.`
@@ -40,6 +48,8 @@ const CityFAQ = ({ city }: CityFAQProps) => {
         }
     ];
 
+    const faqData = questions || defaultFaqData;
+
     const faqSchema = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -64,10 +74,10 @@ const CityFAQ = ({ city }: CityFAQProps) => {
                 <div className="text-center mb-16">
                     <span className="text-red-600 font-semibold tracking-wider uppercase text-sm">Häufige Fragen</span>
                     <h2 className="text-3xl md:text-5xl font-light text-gray-900 mt-3 mb-6">
-                        Fragen zu Webdesign in {city.name}
+                        {headline || `Fragen zu Webdesign in ${city.name}`}
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        Antworten für Unternehmer aus {city.name} und {city.region}.
+                        {subline || `Antworten für Unternehmer aus ${city.name} und ${city.region}.`}
                     </p>
                 </div>
 

@@ -7,9 +7,11 @@ import { AOSWrapper } from './AnimatedSection';
 
 interface ContactProps {
     onFormOpen: () => void;
+    headline?: string;
+    subline?: string;
 }
 
-const Contact = ({ onFormOpen }: ContactProps) => {
+const Contact = ({ onFormOpen, headline, subline }: ContactProps) => {
     return (
         <section id="contact" className="py-24 bg-gray-50">
             <div className="max-w-7xl mx-auto px-8">
@@ -18,16 +20,13 @@ const Contact = ({ onFormOpen }: ContactProps) => {
                     <div className="space-y-8">
                         <AOSWrapper animation="fade-left" delay={200}>
                             <h2 className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight">
-                                Bereit für deine
-                                <br />
-                                neue Website?
+                                {headline || <>Bereit für deine<br />neue Website?</>}
                             </h2>
                         </AOSWrapper>
 
                         <AOSWrapper animation="fade-left" delay={300}>
                             <p className="text-xl text-gray-600 leading-relaxed">
-                                Starte jetzt mit deinem kostenlosen Website-Vorschlag.
-                                Kein Risiko, kein Aufwand – nur Ergebnisse.
+                                {subline || "Starte jetzt mit deinem kostenlosen Website-Vorschlag. Kein Risiko, kein Aufwand – nur Ergebnisse."}
                             </p>
                         </AOSWrapper>
 

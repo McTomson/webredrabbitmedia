@@ -8,6 +8,7 @@ import { City } from './cities';
 import CityHero from '@/components/CityHero'; // New component
 import CitySEOContent from '@/components/CitySEOContent'; // New component
 import CityFAQ from '@/components/CityFAQ'; // New component
+import { clusterContent } from './cluster-content';
 
 const Portfolio = dynamic(() => import('@/components/Portfolio'));
 const Process = dynamic(() => import('@/components/Process'));
@@ -26,6 +27,7 @@ interface CityContentProps {
 
 export default function CityContent({ city }: CityContentProps) {
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const content = clusterContent[city.cluster];
 
     return (
         <div className="min-h-screen">
@@ -41,13 +43,54 @@ export default function CityContent({ city }: CityContentProps) {
 
             <main id="main-content" className="relative">
                 <CityHero city={city} onFormOpen={() => setIsFormOpen(true)} />
-                <Portfolio />
-                <Process onFormOpen={() => setIsFormOpen(true)} />
-                <SeoOptimization />
-                <About />
+                <Portfolio
+                    headline={content.portfolio.headline}
+                    subline={content.portfolio.text(city.name)}
+                />
+                <Process
+                    onFormOpen={() => setIsFormOpen(true)}
+                    headline={content.process.headline}
+                    subline={content.process.text}
+                    steps={content.process.steps}
+                    benefits={content.process.benefits}
+                />
+                <SeoOptimization
+                    headline={content.seo.headline}
+                    subline={content.seo.subline}
+                    strategyHeadline={content.seo.strategyHeadline}
+                    comparisonHeadline={content.seo.comparisonHeadline(city.name)}
+                    features={content.seo.features.map(f => ({
+                        title: f.title,
+                        text: f.text(city.name)
+                    }))}
+                    strategyItems={content.seo.strategyItems}
+                    comparisonItems={content.seo.comparisonItems}
+                />
+                <About
+                    headline={content.about.headline}
+                    text={content.about.text}
+                    testimonialsHeadline={content.about.testimonialsHeadline(city.name)}
+                    features={content.about.features.map(f => ({
+                        title: f.title,
+                        text: f.text
+                    }))}
+                    testimonials={content.about.testimonials}
+                />
                 <Pricing onFormOpen={() => setIsFormOpen(true)} />
-                <CityFAQ city={city} />
-                <Contact onFormOpen={() => setIsFormOpen(true)} />
+                <CityFAQ
+                    city={city}
+                    headline={content.faq?.headline(city.name)}
+                    subline={content.faq?.subline(city.name, city.region)}
+                    questions={content.faq?.questions.map(q => ({
+                        question: q.question(city.name),
+                        answer: q.answer(city.name, city.region)
+                    }))}
+                />
+                <Contact
+                    onFormOpen={() => setIsFormOpen(true)}
+                    headline={content.contact.headline}
+                    subline={content.contact.subline(city.name)}
+                />
             </main>
         </div>
     );

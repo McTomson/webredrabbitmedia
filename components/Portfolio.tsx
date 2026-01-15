@@ -225,7 +225,12 @@ const PerformanceScores = ({ scores }: { scores: { performance: number; accessib
     );
 };
 
-const Portfolio = () => {
+interface PortfolioProps {
+    headline?: string;
+    subline?: string;
+}
+
+const Portfolio = ({ headline, subline }: PortfolioProps) => {
     const [showAllProjects, setShowAllProjects] = useState(false);
     const isMobile = useIsMobile();
 
@@ -368,10 +373,10 @@ const Portfolio = () => {
                 <div className="text-center mb-16">
                     <AOSWrapper animation="fade-up" delay={100}>
                         <h2 className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight mb-6">
-                            Portfolio
+                            {headline || "Portfolio"}
                         </h2>
                         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                            Unsere realisierten Webprojekte für zufriedene Kunden.
+                            {subline || "Unsere realisierten Webprojekte für zufriedene Kunden."}
                         </p>
                     </AOSWrapper>
                 </div>

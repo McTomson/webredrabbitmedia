@@ -3,31 +3,84 @@
 import { FileText, Lightbulb, CreditCard, Clock, Shield, Zap, Users, CheckCircle } from 'lucide-react';
 import { AOSWrapper } from './AnimatedSection';
 
-interface ProcessProps {
-    onFormOpen?: () => void;
+interface Step {
+    title: string;
+    description: string;
+    highlight: string;
 }
 
-const Process = ({ onFormOpen }: ProcessProps) => {
-    const steps = [
+interface Benefit {
+    title: string;
+    description: string;
+    highlight: string;
+    redText: string;
+}
+
+interface ProcessProps {
+    onFormOpen?: () => void;
+    headline?: string;
+    subline?: string;
+    steps?: Step[];
+    benefits?: Benefit[];
+}
+
+const Process = ({ onFormOpen, headline, subline, steps: stepsProp, benefits: benefitsProp }: ProcessProps) => {
+    const defaultSteps = [
         {
-            number: "01",
             title: "Formular ausfüllen",
             description: "Du füllst unser kurzes Formular aus. Dauert nur 2 Minuten und ist komplett kostenlos.",
             highlight: "2 Minuten"
         },
         {
-            number: "02",
             title: "Kostenlosen Vorschlag erhalten",
             description: "Innerhalb von 7 Tagen erhältst du einen individuellen Website-Vorschlag von uns.",
             highlight: "7 Tage"
         },
         {
-            number: "03",
             title: "Nur zahlen, wenn's gefällt",
             description: "Gefällt dir unser Vorschlag? Perfekt! Wenn nicht, entstehen dir keinerlei Kosten.",
             highlight: "Kein Risiko"
         }
     ];
+
+    const steps = (stepsProp || defaultSteps).map((step, index) => ({
+        ...step,
+        number: `0${index + 1}`
+    }));
+
+    const defaultBenefits = [
+        {
+            title: "Keine Meetings",
+            description: "Alles läuft digital ab. Du sparst Zeit.",
+            highlight: "Digital",
+            redText: "2 Minuten"
+        },
+        {
+            title: "Kein Aufwand",
+            description: "Du machst nichts. Wir kümmern uns um alles.",
+            highlight: "Entspannt",
+            redText: "0 Aufwand"
+        },
+        {
+            title: "Sicher",
+            description: "100% DSGVO-konform. Deine Daten sind sicher.",
+            highlight: "DSGVO",
+            redText: "100% Sicher"
+        },
+        {
+            title: "Professionell",
+            description: "Deine Website ist in 7 Tagen fertig.",
+            highlight: "Schnell",
+            redText: "7 Tage"
+        }
+    ];
+
+    const icons = [Clock, Users, Shield, Zap];
+
+    const benefits = (benefitsProp || defaultBenefits).map((benefit, index) => ({
+        ...benefit,
+        icon: icons[index] || Zap
+    }));
 
     return (
         <section id="process" className="py-24 bg-white">
@@ -36,11 +89,10 @@ const Process = ({ onFormOpen }: ProcessProps) => {
                 <div className="text-center mb-16">
                     <AOSWrapper animation="fade-up" delay={100}>
                         <h2 className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight mb-6">
-                            So funktioniert's
+                            {headline || "So funktioniert's"}
                         </h2>
                         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                            Unsicherheiten abbauen, Klarheit schaffen.
-                            Drei einfache Schritte zu deiner neuen Website.
+                            {subline || "Unsicherheiten abbauen, Klarheit schaffen. Drei einfache Schritte zu deiner neuen Website."}
                         </p>
                         <div className="mt-4 text-red-600 font-medium">
                             ⚡ Deine Website ist in nur 7 Tagen fertig
@@ -102,36 +154,7 @@ const Process = ({ onFormOpen }: ProcessProps) => {
                 <AOSWrapper animation="fade-up" delay={800}>
                     <div className="mt-60">
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-8">
-                            {[
-                                {
-                                    title: "Keine Meetings",
-                                    description: "Alles läuft digital ab. Du sparst Zeit.",
-                                    icon: Clock,
-                                    highlight: "Digital",
-                                    redText: "2 Minuten"
-                                },
-                                {
-                                    title: "Kein Aufwand",
-                                    description: "Du machst nichts. Wir kümmern uns um alles.",
-                                    icon: Users,
-                                    highlight: "Entspannt",
-                                    redText: "0 Aufwand"
-                                },
-                                {
-                                    title: "Sicher",
-                                    description: "100% DSGVO-konform. Deine Daten sind sicher.",
-                                    icon: Shield,
-                                    highlight: "DSGVO",
-                                    redText: "100% Sicher"
-                                },
-                                {
-                                    title: "Professionell",
-                                    description: "Deine Website ist in 7 Tagen fertig.",
-                                    icon: Zap,
-                                    highlight: "Schnell",
-                                    redText: "7 Tage"
-                                }
-                            ].map((benefit, index) => (
+                            {benefits.map((benefit, index) => (
                                 <AOSWrapper
                                     key={index}
                                     animation="fade-up"

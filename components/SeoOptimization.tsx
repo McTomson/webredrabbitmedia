@@ -19,7 +19,50 @@ const StaggerContainer = ({ children, className }: { children: React.ReactNode; 
     );
 };
 
-const SeoOptimization = () => {
+interface Feature {
+    title: string;
+    text: string;
+}
+
+interface StrategyItem {
+    title: string;
+    text: string;
+}
+
+interface ComparisonItem {
+    name: string;
+    other: string;
+    us: string;
+}
+
+interface SeoOptimizationProps {
+    headline?: string;
+    subline?: string;
+    strategyHeadline?: string;
+    comparisonHeadline?: string;
+    features?: Feature[];
+    strategyItems?: StrategyItem[];
+    comparisonItems?: ComparisonItem[];
+}
+
+const SeoOptimization = ({ headline, subline, strategyHeadline, comparisonHeadline, features, strategyItems, comparisonItems }: SeoOptimizationProps) => {
+    const defaultStrategyItems = [
+        {
+            title: "Warum wichtig?",
+            text: "Die schönste Website nützt Ihnen nichts, wenn sie auf Seite 2 bei Google landet. 90% der Nutzer klicken nur auf die ersten 3 Ergebnisse."
+        },
+        {
+            title: "Was wir tun",
+            text: "Wir überlassen nichts dem Zufall. Wir analysieren genau, was Ihre Kunden suchen und bereiten Ihre Daten so auf, dass KI-Modelle wie ChatGPT Sie als beste Antwort empfehlen."
+        },
+        {
+            title: "Ihr Vorteil",
+            text: "Sie bekommen nicht nur ein Design, sondern einen 24/7 Vertriebsmitarbeiter. Während andere für teure Werbeanzeigen zahlen müssen, kommen Kunden bei Ihnen organisch auf die Seite."
+        }
+    ];
+
+    const strategy = strategyItems || defaultStrategyItems;
+
     return (
         <section className="py-24 bg-white relative" id="seo">
             {/* Background Elements */}
@@ -32,48 +75,38 @@ const SeoOptimization = () => {
                 <div className="text-center mb-20">
                     <AOSWrapper animation="fade-up">
                         <h2 className="text-3xl md:text-5xl font-light text-gray-900 mb-6">
-                            Wir bauen keine Websites. <br />
-                            <span className="text-red-600 font-medium">Wir bauen Wachstum.</span>
+                            {headline || <>Wir bauen keine Websites. <br /><span className="text-red-600 font-medium">Wir bauen Wachstum.</span></>}
                         </h2>
                         <p className="text-xl text-gray-600 max-w-3xl mx-auto font-light leading-relaxed">
-                            Eine schöne Hülle bringt keinen Umsatz. Wir liefern den Motor gleich mit:
-                            Premium SEO und KI-Optimierung sind bei uns Standard – nicht Extra.
+                            {subline || "Eine schöne Hülle bringt keinen Umsatz. Wir liefern den Motor gleich mit: Premium SEO und KI-Optimierung sind bei uns Standard – nicht Extra."}
                         </p>
                     </AOSWrapper>
                 </div>
 
-                {/* The 3 Pillars */}
-                <StaggerContainer className="grid lg:grid-cols-3 gap-8 mb-24">
-                    {[
-                        {
-                            icon: <Zap className="w-8 h-8 text-red-600" />,
-                            title: "Technisches Fundament",
-                            desc: "Google liebt Geschwindigkeit. Wir bauen auf modernster Technologie, die Ladezeiten minimiert und Rankings maximiert."
-                        },
-                        {
-                            icon: <Target className="w-8 h-8 text-red-600" />,
-                            title: "Strategische SEO",
-                            desc: "Wir analysieren nicht nur Keywords, sondern Kaufabsichten. Damit du genau dann gefunden wirst, wenn deine Kunden bereit sind zu kaufen."
-                        },
-                        {
-                            icon: <Database className="w-8 h-8 text-red-600" />,
-                            title: "AI & LLM Ready",
-                            desc: "Die Zukunft der Suche ist KI. Wir strukturieren deine Daten so, dass ChatGPT & Co. dich als beste Antwort verstehen und empfehlen."
-                        }
-                    ].map((item, index) => (
-                        <motion.div key={index} variants={fadeInUp} className="h-full">
-                            <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 h-full group">
-                                <div className="p-4 bg-red-50 rounded-xl w-fit mb-6 group-hover:scale-110 transition-transform duration-300">
-                                    {item.icon}
+                {/* 3 Pillars */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+                    {(features || [
+                        { title: "Technisches Fundament", text: "Google liebt Geschwindigkeit. Wir bauen auf modernster Technologie, die Ladezeiten minimiert und Rankings maximiert." },
+                        { title: "Strategische SEO", text: "Wir analysieren nicht nur Keywords, sondern Kaufabsichten. Damit du genau dann gefunden wirst, wenn deine Kunden bereit sind zu kaufen." },
+                        { title: "AI & LLM Ready", text: "Die Zukunft der Suche ist KI. Wir strukturieren deine Daten so, dass ChatGPT & Co. dich als beste Antwort verstehen und empfehlen." }
+                    ]).map((feature, index) => (
+                        <AOSWrapper key={index} animation="fade-up" delay={index * 100}>
+                            <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                                <div className="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                    {index === 0 && <Zap className="w-7 h-7 text-red-600" />}
+                                    {index === 1 && <Target className="w-7 h-7 text-red-600" />}
+                                    {index === 2 && <Database className="w-7 h-7 text-red-600" />}
                                 </div>
-                                <h3 className="text-xl font-medium text-gray-900 mb-4">{item.title}</h3>
-                                <p className="text-gray-600 font-light leading-relaxed">
-                                    {item.desc}
+                                <h3 className="text-xl font-medium text-gray-900 mb-4 group-hover:text-red-600 transition-colors">
+                                    {feature.title}
+                                </h3>
+                                <p className="text-gray-600 leading-relaxed">
+                                    {feature.text}
                                 </p>
                             </div>
-                        </motion.div>
+                        </AOSWrapper>
                     ))}
-                </StaggerContainer>
+                </div>
 
                 {/* Detailed Explanation */}
                 <div className="mb-24">
@@ -86,7 +119,7 @@ const SeoOptimization = () => {
                     >
                         <div className="max-w-4xl mx-auto">
                             <h3 className="text-2xl md:text-3xl font-light text-gray-900 mb-8 text-center">
-                                Warum eine Website ohne Strategie <span className="text-red-600 font-medium">Geldverschwendung</span> ist.
+                                {strategyHeadline || <>Warum eine Website ohne Strategie <span className="text-red-600 font-medium">Geldverschwendung</span> ist.</>}
                             </h3>
 
                             <div className="grid md:grid-cols-3 gap-8 md:gap-12">
@@ -141,8 +174,7 @@ const SeoOptimization = () => {
                         <div className="grid lg:grid-cols-2 gap-12 items-center relative z-10">
                             <div>
                                 <h3 className="text-3xl font-light mb-6">
-                                    Warum andere <span className="text-red-500 font-medium">extra kosten</span>,<br />
-                                    und wir <span className="text-red-500 font-medium">mehr liefern</span>.
+                                    {comparisonHeadline || <>Warum andere <span className="text-red-500 font-medium">extra kosten</span>,<br />und wir <span className="text-red-500 font-medium">mehr liefern</span>.</>}
                                 </h3>
                                 <p className="text-gray-400 text-lg font-light mb-8 leading-relaxed">
                                     Bei den meisten Agenturen ist SEO ein teures Zusatzpaket. Bei uns ist es das Fundament.
@@ -163,26 +195,27 @@ const SeoOptimization = () => {
 
                             {/* Comparison Card */}
                             <div className="bg-white rounded-2xl p-4 md:p-6 lg:p-8 text-gray-900 shadow-2xl transform lg:rotate-2 hover:rotate-0 transition-transform duration-500">
-                                <div className="grid grid-cols-3 gap-2 md:gap-4 mb-4 md:mb-6 border-b border-gray-100 pb-3 md:pb-4">
-                                    <div className="col-span-1 font-medium text-gray-400 text-xs md:text-sm uppercase tracking-wider">Feature</div>
-                                    <div className="col-span-1 font-medium text-gray-400 text-xs md:text-sm uppercase tracking-wider text-center">Andere</div>
-                                    <div className="col-span-1 font-bold text-red-600 text-xs md:text-sm uppercase tracking-wider text-center">Red Rabbit</div>
-                                </div>
+                                {/* Comparison Table */}
+                                <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl">
+                                    <div className="grid grid-cols-3 bg-gray-900 text-white p-6 text-sm md:text-base font-medium">
+                                        <div>Feature</div>
+                                        <div className="text-center opacity-70">Standard Agentur</div>
+                                        <div className="text-center text-red-500 font-bold">Red Rabbit</div>
+                                    </div>
 
-                                <div className="space-y-4 md:space-y-6">
-                                    {[
+                                    {(comparisonItems || [
                                         { name: "Design", other: "Standard Template", us: "Premium Custom" },
                                         { name: "SEO Basics", other: "Extra Kosten", us: "Inklusive" },
                                         { name: "Ladezeit", other: "Oft langsam", us: "High-Speed" },
                                         { name: "AI-Ready", other: "Nicht vorhanden", us: "Standard" },
-                                        { name: "Kosten", other: "Intransparent", us: "Fixpreis" },
-                                    ].map((row, i) => (
-                                        <div key={i} className="grid grid-cols-3 gap-2 md:gap-4 items-center">
-                                            <div className="col-span-1 font-medium text-gray-700 text-xs md:text-sm break-words">{row.name}</div>
-                                            <div className="col-span-1 text-center text-gray-400 text-xs md:text-sm break-words">{row.other}</div>
-                                            <div className="col-span-1 text-center font-bold text-gray-900 flex justify-center items-center gap-1 md:gap-2 text-xs md:text-sm break-words">
-                                                {(i === 1 || i === 3) ? <Check className="w-3 h-3 md:w-4 md:h-4 text-red-600 flex-shrink-0" /> : null}
-                                                <span className="break-words">{row.us}</span>
+                                        { name: "Kosten", other: "Intransparent", us: "Fixpreis" }
+                                    ]).map((row, index) => (
+                                        <div key={index} className="grid grid-cols-3 p-6 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
+                                            <div className="font-medium text-gray-900">{row.name}</div>
+                                            <div className="text-center text-gray-500">{row.other}</div>
+                                            <div className="text-center text-red-600 font-medium flex items-center justify-center gap-2">
+                                                <Check className="w-4 h-4" />
+                                                {row.us}
                                             </div>
                                         </div>
                                     ))}
