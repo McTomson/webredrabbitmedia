@@ -16,10 +16,7 @@ export function middleware(request: NextRequest) {
         response.headers.set('Vary', 'User-Agent');
     }
 
-    // 3. Security Headers (SEO-relevant) handled in next.config.ts
-
-
-    // 4. Cache-Control für statische Assets
+    // 3. Cache-Control für statische Assets
     if (url.pathname.startsWith('/_next/static') || url.pathname.startsWith('/images')) {
         response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
     }

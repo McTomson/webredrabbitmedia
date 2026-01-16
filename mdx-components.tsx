@@ -1,6 +1,9 @@
 import type { MDXComponents } from 'mdx/types';
 import Image from 'next/image';
 import Link from 'next/link';
+import { KeyTakeaways } from '@/components/blog/content/KeyTakeaways';
+import { InlineCTA } from '@/components/blog/content/InlineCTA';
+import { ConclusionCTA } from '@/components/blog/content/ConclusionCTA';
 
 // Featured Snippet Component
 function FeaturedSnippet({ children }: { children: React.ReactNode }) {
@@ -235,6 +238,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         FeaturedSnippet,
         TableOfContents,
         FeaturedList,
+
+        // Neil Patel-style Components
+        KeyTakeaways,
+        InlineCTA,
+        ConclusionCTA,
 
         ...components,
     };

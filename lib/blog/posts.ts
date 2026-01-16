@@ -3,6 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { compileMDX } from 'next-mdx-remote/rsc';
 import { useMDXComponents } from '@/mdx-components';
+import { generateFAQsFromHeadings, type FAQ } from './faqGenerator';
 
 const BLOG_DIR = path.join(process.cwd(), 'content/blog');
 
@@ -20,6 +21,12 @@ export interface BlogPost {
     featuredImage: string;
     sources?: Array<{ name: string; url: string }>;
     content: string;
+    // Neil Patel-style enhancements
+    keyTakeaways?: string[];
+    conclusionStats?: Array<{ label: string; value: string }>;
+    autoGenerateFAQs?: boolean;
+    customFAQs?: FAQ[];
+    faqs?: FAQ[]; // Runtime-generated
 }
 
 export interface BlogPostMeta extends Omit<BlogPost, 'content'> {
@@ -62,6 +69,16 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 
         const { data, content } = matter(fileContent);
 
+        // Extract headings for FAQ generation
+        const headings = extractHeadings(content);
+
+        // Generate or use custom FAQs
+        const faqs = data.customFAQs
+            ? data.customFAQs
+            : (data.autoGenerateFAQs !== false) // Default to true
+                ? generateFAQsFromHeadings(headings, data.title, content)
+                : [];
+
         return {
             slug,
             title: data.title,
@@ -76,6 +93,12 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
             featuredImage: data.featuredImage,
             sources: data.sources,
             content,
+            // Neil Patel-style enhancements
+            keyTakeaways: data.keyTakeaways,
+            conclusionStats: data.conclusionStats,
+            autoGenerateFAQs: data.autoGenerateFAQs !== false,
+            customFAQs: data.customFAQs,
+            faqs,
         };
     } catch (error) {
         console.error(`Error reading post ${slug}:`, error);
