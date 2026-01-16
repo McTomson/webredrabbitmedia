@@ -1,175 +1,234 @@
 ---
-title: "10 tödliche Fehler beim Website-Erstellen: Ein technischer Deep-Dive (2025)"
-excerpt: "Warum rankt Ihre Website nicht? Warum springen Besucher ab? Dmitry Pashlov (Lead Dev) analysiert die 10 schlimmsten technischen Sünden – von LCP-Problemen bis zu Mobile-First Katastrophen."
-featuredSnippet: "Die häufigsten Website-Fehler, die das Ranking zerstören, sind schlechte Mobile-Optimierung, langsame Ladezeiten (LCP > 2.5s) durch unkomprimierte Bilder, fehlende SSL-Verschlüsselung und Layout-Shifts (CLS). Technisch wiegen auch fehlende strukturierte Daten (Schema.org) und blockierendes JavaScript schwer, da sie Google daran hindern, die Inhalte korrekt zu indexieren."
-featuredSnippetTitle: "Was sind die schlimmsten Website-Fehler für SEO?"
+title: "10 tödliche Fehler beim Website-Erstellen: Der technische Deep-Dive [Sicher & Schnell]"
+slug: "10-fehler-beim-website-erstellen"
+excerpt: "Warum wird Ihre Webseite nicht gefunden? Warum springen potenzielle Kunden sofort ab? Dmitry Pashlov (Lead Entwickler) analysiert die 10 schlimmsten technischen Fehler im Jahr 2026 – von Ladezeit-Problemen bis hin zu rechtlichen Fallstricken in Österreich."
+featuredSnippetTitle: "Was sind die größten Fehler beim Website-Erstellen?"
+featuredSnippet: "Die häufigsten Fehler beim Website-Erstellen, die den Erfolg verhindern, sind eine schlechte Optimierung für mobile Endgeräte, extrem langsame Ladezeiten (LCP > 2,5 Sek.) durch unkomprimierte Datenmengen, fehlende rechtliche Absicherung (DSGVO) und mangelnde Barrierefreiheit. Technisch wiegen zudem fehlende strukturierte Daten (Schema.org) und blockierende Skripte schwer, da sie moderne Suchmaschinen-Systeme und KIs daran hindern, Ihre Inhalte korrekt zu verstehen und einzuordnen."
 author: "Dmitry Pashlov"
-publishedAt: "2024-12-28"
-updatedAt: "2025-01-13"
-category: "Technische SEO & Performance"
-tags: ["SEO Fehler", "Core Web Vitals", "Next.js", "Webentwicklung", "PageSpeed"]
-featuredImage: "/images/blog/debugging_hero_tech_1768273023735.png"
+publishedAt: "2026-01-02"
+updatedAt: "2026-01-16"
+category: "Technik & Performance"
+tags: ["Entwickler Tipps", "Internetauftritt Wien", "Suchmaschinen-Optimierung", "Fehlervermeidung", "Web-Sicherheit"]
+featuredImage: "/images/blog/webdesign-fehler-website-erstellen-wien-hero.webp"
 sources:
-  - name: "Google PageSpeed Insights (Tool)"
-    url: "https://pagespeed.web.dev/"
-  - name: "Mozilla Developer Network (Web Performance)"
-    url: "https://developer.mozilla.org/en-US/docs/Web/Performance"
-  - name: "Google Search Central (Core Web Vitals)"
+  - name: "Google Suche-Zentrale (Core Web Vitals Guide)"
     url: "https://developers.google.com/search/docs/appearance/core-web-vitals"
+  - name: "Wirtschaftskammer Österreich - Leitfaden für E-Commerce"
+    url: "https://www.wko.at"
+  - name: "Mozilla Entwickler-Netzwerk (Web-Leistung)"
+    url: "https://developer.mozilla.org/de/docs/Web/Performance"
+
+keyTakeaways:
+  - "Ladezeit ist bares Geld: Jede Sekunde Verzögerung reduziert die Abschluss-Quote Ihres Unternehmens messbar."
+  - "Mobile-First ist Gesetz: Suchmaschinen betrachten Ihre Webseite heute ausschließlich durch die Brille eines mobilen Endgeräts."
+  - "Bilder als Bremse: Falsch formatierte Grafiken sind der Hauptgrund für langsame Seitenaufrufe auf dem Smartphone."
+  - "Rechtssicherheit in Wien: Fehlende lokale Einbindungen von Schriftarten oder falsche Cookie-Lösungen führen zu teuren Abmahnungen."
+  - "KI-Bereitschaft: Strukturierter Code (Schema.org) entscheidet darüber, ob Ihre Firma in KI-Antworten auftaucht."
+
+conclusionStats:
+  - label: "Optimierte Ladezeit"
+    value: "< 1.2s"
+  - label: "Mobile-Eignung"
+    value: "100%"
+  - label: "Sicherheits-Standard"
+    value: "A+"
+  - label: "Ranking-Potenzial"
+    value: "Hoch"
+
+autoGenerateFAQs: true
 ---
 
-## Code ist Poesie – aber nur, wenn er lädt.
+# 10 tödliche Fehler beim Website-Erstellen: Der technische Deep-Dive
 
-Als Lead Developer bei Red Rabbit Media sehe ich mir jede Woche dutzende Websites an. Oft sehen sie auf den ersten Blick gut aus. "Modernes Design", sagen die Kunden. "Gute Farben".
+## Was sind die größten Fehler beim Website-Erstellen?
 
-Aber wenn ich die Entwickler-Konsole öffne (F12), sehe ich das Grauen.
+Als technischer Leiter bei Red Rabbit Media verbringe ich einen großen Teil meines Arbeitstages damit, den Quelltext von Webseiten zu sezieren. Wir bei Red Rabbit setzen auf technische Exzellenz – doch was ich oft bei Projekten sehe, die "einfach mal so nebenbei" oder mit billigen Baukästen erstellt wurden, bereitet mir fast körperliche Schmerzen.
 
-Rote Fehlermeldungen. 10MB große Bilder, die im Hintergrund laden. JavaScript-Dateien, die den Seitenaufbau blockieren. Für einen Nutzer mag die Seite "okay" aussehen. Für Google ist sie kaputt. Und eine kaputte Seite rankt nicht.
-
-In diesem technischen Deep-Dive gehe ich nicht auf Design-Geschmacksfragen ein. Wir sprechen über harte Fakten. Über Millisekunden, Rendering-Pfade und Indexierbarkeit.
-
-Hier sind die 10 Fehler, die ich am häufigsten finde – und wie wir sie bei Red Rabbit Media fixen.
-
----
-
-## 1. Die Bilder-Katastrophe (LCP-Killer Nr. 1)
-
-"Ein Bild sagt mehr als 1000 Worte" – aber ein 5MB großes Bild sagt dem Browser vor allem eines: "Warte!"
-
-### Das technische Problem
-Viele Website-Betreiber laden Fotos direkt vom Smartphone oder der DSLR-Kamera hoch. Diese Bilder haben oft Auflösungen von 4000x3000 Pixeln und sind 5-10 MB groß.
-Der Browser muss dieses riesige Datenpaket herunterladen, nur um es dann in ein kleines 300x200 Pixel Fenster zu quetschen.
-
-**Auswirkung auf Core Web Vitals:** Ihr **LCP (Largest Contentful Paint)** schießt durch die Decke. Google erwartet einen LCP von unter 2,5 Sekunden. Ein 5MB Bild braucht im 4G-Netz oft allein 4 Sekunden.
-
-### Der Fix: Next-Gen Formate
-Wir nutzen bei Red Rabbit Media ausschließlich **WebP** oder **AVIF**. Diese Formate sind bei gleicher Qualität oft 30-50% kleiner als JPG.
-Außerdem nutzen wir das `<Image>` Component von Next.js, das automatisch:
-1.  Das Bild in der passenden Größe für das jeweilige Gerät ausliefert (Responsive Images).
-2.  Das Bild erst lädt, wenn es im Viewport erscheint (Lazy Loading).
-3.  Einen Platzhalter (Blur) anzeigt, um Layout Shifts zu vermeiden.
-
----
-
-## 2. Mobile "Last" statt Mobile First
-
-Österreich hat eine mobile Internetnutzung von fast 90%. Wer heute noch am Desktop designt und "hofft", dass es am Handy passt, hat verloren.
-
-### Der Realitäts-Check
-Google nutzt seit Jahren **Mobile-First Indexing**. Das heißt: Google sieht Ihre Desktop-Seite gar nicht an. Der Bot besucht Ihre Seite als "iPhone" oder "Android Phone".
-Wenn Ihre Seite am Desktop wunderschön ist, aber am Handy Buttons überlappen oder Texte aus dem Bildschirm ragen, stuft Google die ganze Seite als "minderwertig" ein.
-
-![Mobile Fail Comparison](/images/blog/mobile_fail_comparison_1768273040082.png)
-
-### Typische Mobile-Fehler:
-*   **Touch Targets zu klein**: Buttons müssen mindestens 44x44 Pixel groß sein (Daumengröße).
-*   **Horizontaler Scroll**: Wenn ein Element breiter ist als 100vw (Viewport Width), wackelt die ganze Seite.
-*   **Hover-Effekte**: Es gibt keinen "Mauszeiger" am Handy. Menüs, die nur per Hover aufgehen, sind unbedienbar.
+Ein Internetauftritt ist heute weit mehr als eine digitale Visitenkarte. Er ist ein komplexes Geflecht aus Programm-Code, Datenbank-Abfragen und Netzwerk-Protokollen. In diesem technischen Deep-Dive zeige ich Ihnen die 10 schlimmsten Fehler auf, die ich jede Woche bei Wiener Unternehmen finde. Mein Ziel ist es nicht, Sie mit Fachbegriffen zu verwirren, sondern Ihnen zu zeigen, warum Ihre Seite bei Google unsichtbar bleibt und wie wir das bei uns lösen.
 
 ---
 
-## 3. Client-Side Rendering (CSR) ohne Hydration Strategy
+## 1. Die Bilder-Katastrophe: Wenn Megabytes den Erfolg verhindern
 
-Das ist ein Problem moderner Frameworks wie React (wenn man sie falsch benutzt).
+Es ist der Klassiker unter den Fehlern: Ein Kunde lädt ein wunderschönes Foto direkt von seiner hochauflösenden Kamera oder dem neuesten Smartphone hoch. Das Bild sieht am Bildschirm toll aus, aber es ist fünf Megabyte groß.
 
-### Das Problem
-Bei einer reinen Single Page Application (SPA) bekommt der Browser initial nur eine leere weiße Seite (`<div id="root"></div>`) und ein riesiges JavaScript-Bundle. Der Browser muss erst das JS laden und ausführen, um Text anzuzeigen.
-Suchmaschinen-Bots tun sich damit schwer. Sie sehen oft nur die weiße Seite und geben auf.
+### Die technische Falle
+Wenn ein Nutzer in der Wiener U-Bahn mit seinem Mobiltelefon Ihre Seite aufruft, muss dieses massive Datenpaket durch die mobile Leitung. Der Browser benötigt Sekunden, um die Daten zu verarbeiten. 
 
-### Die Lösung: Server-Side Rendering (SSR) & SSG
-Deshalb setzen wir auf **Next.js**.
-*   **SSR (Server-Side Rendering):** Der Server baut die HTML-Seite fertig zusammen und schickt das fertige HTML zum Browser. Google sieht sofort Text.
-*   **SSG (Static Site Generation):** Für Blogs oder Landingpages generieren wir die HTML-Dateien schon beim "Build" (Vorkochen). Die Seite ist dann so schnell wie eine einfache Textdatei.
+In den **Kernmetriken des Internets** (Core Web Vitals) nennen wir das den **LCP (Largest Contentful Paint)**. Das ist der Moment, in dem das größte Element auf dem Bildschirm sichtbar wird. Ist dieser Wert über 2,5 Sekunden, straft Google Sie gnadenlos ab.
 
----
+### Wie wir es bei Red Rabbit lösen
+Wir nutzen ausschließlich moderne Bild-Formate wie **WebP** oder **AVIF**. Diese sind bei gleicher Qualität bis zu 80% kleiner als herkömmliche JPG-Dateien. Zudem setzen wir auf **"Verzögertes Laden"** (Lazy Loading): Das Bild wird erst dann vom Server geholt, wenn der Nutzer tatsächlich dorthin scrollt. Das spart Bandbreite und sorgt für einen sofortigen Seitenaufbau.
 
-## 4. Langsame Server-Response (TTFB)
-
-Wenn der Server 2 Sekunden "überlegt", bevor er das erste Byte schickt (Time to First Byte), ist das Spiel schon verloren.
-
-**Ursache:** Billiges Shared-Hosting für 2,99€. Hier teilen Sie sich die CPU-Leistung mit 5000 anderen Websites. Wenn eine davon gehackt wird oder viel Traffic hat, wird Ihre Seite langsam.
-**Unsere Lösung:** Wir hosten auf **Vercel** (Edge Network). Ihre Website liegt nicht auf *einem* Server in Frankfurt, sondern wird weltweit auf hunderte Server verteilt. Der User bekommt die Daten immer vom schnellsten Server in seiner Nähe.
+![Infografik: Bild-Optimierung & Ladezeit-Vorteil für den Internetauftritt Wien](/images/blog/webdesign-bild-optimierung-ladezeit-vorteil-wien.webp)
+{/* Wartet auf Generierung: 'Isometric 3D comparison. Left: A heavy, rusted iron block labeled 5MB JPG. Right: A glowing, light crystal labeled 200KB WebP. Red Rabbit Red accents. Integrated Logo.' */}
 
 ---
 
-## 5. Ignorieren der Core Web Vitals (CLS)
+## 2. Mobile Vernachlässigung: Die Desktop-Brille absetzen
 
-Haben Sie schon mal versucht, einen Artikel zu lesen, und plötzlich springt der Text weg, weil ein Werbebanner nachgeladen hat? Das ist ein **Layout Shift (CLS)**.
+Obwohl fast 90% aller Suchanfragen in Wien mittlerweile vom Smartphone kommen, werden Webseiten oft noch immer primär für den Desktop-Monitor entworfen.
 
-### Warum Google CLS hasst
-Google möchte eine stabile User Experience. Wenn sich Elemente nachträglich verschieben, klicken Nutzer oft aus Versehen auf den falschen Button (z.B. "Kaufen" statt "Abbrechen").
-CLS ist ab 2021 ein direkter Ranking-Faktor.
+### Das Prinzip der Handy-Präferenz (Mobile First)
+Viele machen den Fehler, eine Seite erst für den großen Bildschirm zu bauen und sie dann mühsam für das Handy "zusammenzuquetschen". Das Ergebnis sind oft zu kleine Knöpfe, überlappende Texte oder Menüs, die man mit dem Daumen nicht bedienen kann.
 
-**Wie wir CLS verhindern:**
-*   Jedes Bild und Video bekommt feste `width` und `height` Attribute im CSS (Aspect Ratio). Der Browser reserviert den Platz, bevor das Bild geladen ist.
-*   Schriftarten werden vorgeladen (`font-display: swap`), damit kein Text-Flimmern (FOIT) entsteht.
+Suchmaschinen wie Google nutzen das **Mobile-First-Indexverfahren**. Das bedeutet: Die Desktop-Version Ihrer Seite ist für Google praktisch unsichtbar. Wer am Handy versagt, existiert im Internet nicht.
 
-![PageSpeed Score 100](/images/blog/pagespeed_score_100_1768273054731.png)
+### Die technische Umsetzung
+Wir programmieren unsere Oberflächen flüssig. Wir achten penibel auf **Treffer-Flächen** (Touch Targets). Ein Knopf muss mindestens 44 mal 44 Pixel groß sein, damit er fehlerfrei mit dem Finger bedient werden kann. Wenn Sie in der Straßenbahn stehen und mit einer Hand surfen, muss Ihre Webseite funktionieren. Punkt.
 
 ---
 
-## 6. Fehlende oder falsche Meta-Daten
+## 3. Blockierende Scripte: Die weiße Wand des Todes
 
-Ein technischer Fehler, der nichts mit Performance zu tun hat, aber mit Sichtbarkeit.
+Kennen Sie das? Sie rufen eine Seite auf, und für zwei Sekunden sehen Sie nur eine weiße Fläche, bevor sich plötzlich alles auf einmal aufbaut. Das ist ein technisches Verbrechen am Nutzer.
 
-Jede URL Ihrer Website braucht einen einzigartigen `<title>` und eine `<meta name="description">`.
-*   Der Title ist der blaue Link bei Google.
-*   Die Description ist der graue Text darunter.
+### Client-Side Rendering vs. Server-Side Rendering
+Viele moderne Agenturen machen den Fehler, alles vom Browser des Nutzers berechnen zu lassen (Client-Side Rendering). Der Server schickt ein leeres Gerüst, und ein riesiges Paket an JavaScript-Anweisungen muss erst verarbeitet werden, bevor der erste Buchstabe erscheint.
 
-**Der Fehler:** Viele CMS generieren automatisch Duplicate Content (z.B. "Home - Seite 1", "Home - Seite 2").
-**Der Fix:** Wir programmieren dynamische Metadaten. Bei einer Produktseite generiert sich der Titel automatisch aus: `Produktname | Kategorie | Marke`.
+Für eine künstliche Intelligenz (wie den Google Bot) ist das Gift. Er sieht oft nur die weiße Wand und zieht weiter.
 
----
-
-## 7. Unsichere Plugins (WordPress Krankheit)
-
-WordPress ist toll. Aber Plugins sind das Sicherheitsrisiko Nr. 1.
-
-Jedes Plugin ist fremder Code auf Ihrem Server. Wenn Sie 30 Plugins installiert haben, haben Sie 30 potenzielle Hintertüren für Hacker.
-Außerdem lädt jedes Plugin eigene CSS- und JS-Dateien. Ich habe Seiten gesehen, die 15 verschiedene CSS-Dateien geladen haben, nur für einen Slider, ein Kontaktformular und eine Cookie-Bar.
-
-**Unser Ansatz:** Wir programmieren Features selbst, statt Plugins zu installieren. Ein Kontaktformular braucht kein 5MB Plugin. Es braucht 50 Zeilen Code.
+### Die Lösung: Vorgekochtes HTML
+Wir bei Red Rabbit nutzen **Next.js**. Diese Technik ermöglicht es uns, die Webseite auf unserem Server "vorzukochen". Der Nutzer (und Google) erhält sofort fertiges HTML. Die Webseite ist in Millisekunden lesbar, während im Hintergrund die interaktiven Elemente geladen werden. Wir nennen das "Hydrierung".
 
 ---
 
-## 8. Kein Caching
+## 4. Die Hosting-Sünde: Der billigste Platz ist oft der teuerste
 
-Warum muss die "Über uns" Seite jedes Mal neu aus der Datenbank generiert werden? Der Text ändert sich doch nur alle paar Jahre.
+Ein Hosting-Paket für 1,99 Euro im Monat klingt verlockend. Doch Sie teilen sich dort einen Rechenserver mit tausenden anderen Kunden. Wenn die Seite Ihres Nachbarn gehackt wird oder viel Verkehr hat, geht Ihr Internetauftritt in die Knie.
 
-Ohne Caching muss der Server bei jedem Besucher rechnen. Das kostet Energie und Zeit.
-Mit **Caching** (z.B. Redis oder Varnish) speichern wir die fertige Seite im Arbeitsspeicher. Der Server liefert sie in 0,05 Sekunden aus.
+### Die Time-to-First-Byte (TTFB) Problematik
+Der wichtigste Wert beim Hosting ist die Zeit bis zum ersten Byte. Wenn Ihr Server zwei Sekunden "überlegt", bevor er die ersten Daten sendet, ist der Nutzer längst weg. In Wien sind die Erwartungen an Schnelligkeit hoch.
 
----
+### Unser Ansatz: Weltweite Verteilung (Edge Hosting)
+Wir hosten unsere Projekte in globalen Netzwerken (**Vercel Edge**). Ihre Webseite liegt nicht auf einem einsamen Computer in einem Keller, sondern wird von hunderten Servern weltweit (und natürlich lokal in Europa) gleichzeitig bereitgestellt. Der Nutzer erhält die Daten immer vom nächstgelegenen Standort. Das ist unschlagbar schnell.
 
-## 9. Text in Bildern verstecken
-
-Ein Klassiker bei Designern, die Print gewohnt sind.
-Sie erstellen eine wunderschöne Grafik in Photoshop, schreiben dort "Unser Angebot: Website ab 790€" rein und speichern es als JPG.
-
-**Das Problem:** Google kann Text in Bildern nicht zuverlässig lesen. Für die Suchmaschine ist das Angebot unsichtbar.
-Außerdem: Wenn der Nutzer hereinzoomt, wird der Text pixelig. Und ein Screenreader für Blinde kann es gar nicht vorlesen (Barrierefreiheit!).
-
-**Der Fix:** Text ist immer HTML. Design ist CSS.
+![Infografik: Globales Edge-Netzwerk vs. Lokal-Hosting in Österreich](/images/blog/webdesign-edge-hosting-netzwerk-oesterreich.webp)
+{/* Wartet auf Generierung: 'A digital 3D map of Europe and Austria. Many glowing nodes (Edge Servers) connected to a central laptop in Vienna. Fast glowing light trails. German text: Edge Hosting Geschwindigkeit. Integrated Red Rabbit logo.' */}
 
 ---
 
-## 10. DSGVO-Sünden (Google Fonts)
+## 5. Layout-Instabilität: Wenn der Text plötzlich weghüpft
 
-Ein juristischer Fehler, der technisch vermeidbar ist.
-Wenn Sie Google Fonts direkt von den Google-Servern einbinden, wird bei jedem Aufruf die IP-Adresse des Besuchers an Google (USA) übertragen. Das ist laut Urteilen in Deutschland und Österreich illegal ohne Einwilligung.
+Haben Sie schon einmal versucht, einen Absatz zu lesen, und plötzlich schiebt sich ein Bild oder eine Werbefläche von oben rein und der Text springt nach unten? In der Fachsprache nennen wir das den **CLS (Cumulative Layout Shift)**.
 
-**Die Lösung:** Wir laden die Schriftarten herunter und speichern sie lokal auf dem Webserver (`/fonts/inter.woff2`).
-Vorteil 1: 100% DSGVO-konform.
-Vorteil 2: Schneller, da kein DNS-Request zu Google nötig ist.
+### Warum das Google (und Nutzer) wütend macht
+Es zerstört das Vertrauen. Schlimmstenfalls klickt der Nutzer durch den Sprung auf den falschen Knopf (z. B. "Zahlungspflichtig bestellen" statt "Abbrechen"). Google misst diese Bewegung auf der Seite und wertet instabile Webseiten massiv ab.
+
+### Die technische Prävention
+Jede Grafik auf einer Red Rabbit Webseite erhält im Quelltext feste Platzhalter-Maße (Seitenverhältnis). Der Browser weiß also schon, wie groß das Bild sein wird, bevor er die Datei überhaupt geladen hat. So bleibt das Layout stabil wie ein Fels in der Brandung.
+
+![Infografik: Core Web Vitals & Layout-Stabilität für Suchmaschinen-Optimierung](/images/blog/webdesign-core-web-vitals-layout-stabilitaet.webp)
+{/* Wartet auf Generierung: '3D isometric laboratory scene. A technician measuring CLS (Cumulative Layout Shift) with glowing laser lines. Sturdy digital blocks vs shaking ones. German text: Stabile Architektur. Integrated Logo.' */}
+
+## 6. Fehlende oder falsche Metadaten: Das unsichtbare Schild
+
+Manche Webseiten sind technisch schnell, aber sie werden nicht gefunden, weil sie kein "Schild" nach außen tragen. Metadaten sind Informationen über Ihre Daten, die im Hintergrund der Webseite liegen und dem Browser sowie Suchmaschinen sagen, worum es auf dieser Seite geht.
+
+### Der Titel-Tag und die Diskription
+Der **Titel-Tag** ist der blaue Link, den Sie bei Google sehen. Die **Diskription** ist der graue Text darunter. Viele Baukasten-Systeme generieren diese Daten automatisch und oft extrem mangelhaft (z. B. "Home - Seite 1"). 
+
+Ein gravierender technischer Fehler ist es, wenn jede Unterseite den gleichen Titel trägt. Google weiß dann nicht, welche Seite für welches Thema relevant ist. Wir programmieren diese Daten dynamisch: Jede Seite erhält automatisch einen Titel, der auf dem echten Inhalt basiert, kombiniert mit regionalen Begriffen wie "Wien" oder "Österreich". Das erhöht die Klick-Wahrscheinlichkeit massiv.
+
+### Strukturierte Architektur (Schema.org)
+Das ist die "Königsdisziplin" der modernen Webentwicklung. Wir geben Suchmaschinen und KIs (wie ChatGPT oder Google Gemini) eine Art **Bedienungsanleitung** für Ihre Webseite mit. Durch spezielle Code-Blöcke (JSON-LD) sagen wir der Maschine präzise: "Das hier ist der Preis unserer Dienstleistung, das hier ist der Autor des Artikels, und das hier ist unser physischer Standort im 6. Wiener Bezirk." KIs bevorzugen strukturierte Daten – wer sie nutzt, wird in KI-gestützten Antworten deutlich häufiger als vertrauenswürdige Quelle genannt.
 
 ---
 
-## Fazit: Qualität ist kein Zufall
+## 7. Der Plugin-Wildwuchs: Ein Sicherheitsrisiko auf Raten
 
-Eine Website zu bauen ist einfach. Eine *gute* Website zu bauen ist Handwerk.
-Die meisten dieser Fehler passieren, weil Baukästen oder unerfahrene Designer nicht wissen, was im Hintergrund passiert.
+Besonders bei weltweit verbreiteten Systemen wie WordPress sehe ich oft, dass für jede noch so kleine Funktion ein neues Zusatzprogramm (Plugin) installiert wird. Ein Plugin für das Kontaktformular, eines für die Bildergalerie, eines für die Farbe der Schaltflächen.
 
-Bei Red Rabbit Media ist technische SEO keine "Zusatzleistung". Sie ist das Fundament. Wir bauen Websites so, dass Google sie liebt – damit Sie gefunden werden.
+### Die "Blähbauch-Webseite"
+Jedes dieser Zusatzprogramme enthält fremden Programm-Code, den Sie als Betreiber nicht kontrollieren können. Das führt zu zwei Hauptproblemen:
+1.  **Sicherheitslücken:** Plugins sind das Einfallstor Nummer eins für Datendiebstahl und Hack-Angriffe.
+2.  **Ladezeit-Bremse:** Jedes Plugin lädt eigene Dateien (CSS und JavaScript) mit. Ich habe Seiten analysiert, die über 20 verschiedene Scripte laden mussten, nur um eine einfache Kontakt-Anfrage zu ermöglichen. Das bremst auch moderne Browser aus.
 
-**Wollen Sie wissen, wie Ihre Seite abschneidet?**
-[Machen Sie den Technik-Check](/kontakt) oder lesen Sie, [was Sie bei einer Restaurant-Website beachten müssen](/tipps/restaurant-website-must-haves).
+### Unser Credo: Selber machen statt einkaufen
+Bei Red Rabbit Media programmieren wir Funktionen selbst. Ein Kontaktformular braucht kein massives Zusatzprogramm, es braucht sauberen, effizienten Programm-Code. Das macht die Seite sicher, schlank und extrem schnell – exakt so, wie Suchmaschinen es lieben.
+
+---
+
+## 8. Mangelndes Caching: Jedes Mal neu rechnen ist Verschwendung
+
+Warum soll Ihr Server jedes Mal aufs Neue berechnen, wie Ihre "Über uns" Seite aussieht, wenn sich der Text dort monatelang nicht ändert? Das ist energetische und zeitliche Verschwendung.
+
+### Das Prinzip des "Zwischenspeicherns" (Caching)
+Ohne intelligentes Caching muss der Server bei jedem einzelnen Besucher die Datenbank abfragen, Grafiken neu berechnen und das HTML-Dokument mühsam zusammenbauen. Das kostet Zeit und wertvolle Rechenleistung auf dem Server.
+
+Wir nutzen **Edge Caching** (Kanten-Speicherung). Das bedeutet, wir speichern die fertig berechnete Webseite weltweit im Arbeitsspeicher unserer Hochleistungs-Server. Wenn ein Nutzer Ihre Seite aufruft, muss der Server gar nicht mehr "denken" – er liefert die fertige Seite in etwa 0,05 Sekunden aus. Das fühlt sich für den Nutzer so schnell an, als stünden die Daten bereits auf seinem eigenen Gerät bereit.
+
+---
+
+## 9. Text in Grafiken verstecken: Ein SEO-Selbstmord
+
+Ein Fehler, der oft aus einer künstlerischen Ambition heraus entsteht. Ein Grafiker entwirft ein wunderschönes Banner für die Startseite, schreibt dort "Das beste Webdesign in Wien" direkt in das Bild hinein und speichert das Ganze als ein einziges JPG-Bild ab.
+
+### Das Problem der Lesbarkeit für Maschinen
+Künstliche Intelligenzen und Suchmaschinen-Bots sind zwar schlau, aber sie "lesen" Text in Bildern nicht annähernd so zuverlässig wie echten Programm-Code. Für Google ist Ihr wichtigster Werbeslogan in diesem Fall einfach unsichtbar.
+
+Dazu kommt das wichtige Thema der **Barrierefreiheit**. Menschen mit Sehbehinderung nutzen spezielle Vorlese-Programme. Diese Software kann Text in Bildern nicht erfassen. Wir trennen streng zwischen Design und Inhalt: Texte sind bei uns immer echter Code, Bilder dienen nur der visuellen Untermalung und werden zusätzlich mit "Alt-Texten" für Sehbehinderte beschrieben.
+
+---
+
+## 10. Die DSGVO-Falle: Schriftarten vom falschen Server
+
+Ein juristischer Fehler, der technisch begründet ist. Wer Google-Schriftarten direkt von den US-Servern lädt, begeht in Österreich (nach zahlreichen Urteilen) einen schweren Datenschutz-Verstoß. Bei jedem Seitenaufruf wird die IP-Adresse Ihres Besuchers ungefragt an Google in die USA übertragen.
+
+### Die technische Lösung
+Wir laden alle Schriftarten herunter und speichern sie direkt auf Ihrem Webserver in Europa (Lokal-Hosting). Das ist nicht nur rechtssicher, sondern auch technisch schneller, da der Browser keine zusätzliche Verbindung zu fremden Servern aufbauen muss. Es ist eine Win-Win-Situation für Datenschutz und Geschwindigkeit.
+
+---
+
+## Bonus: Mangelnde Barrierefreiheit (Das Gesetz 2026)
+
+Ein Thema, das viele Unternehmen in Wien unterschätzen: Ab 2025/2026 werden viele Webseiten gesetzlich verpflichtet sein, barrierefrei zu sein (**Barrierefreiheitsstärkungsgesetz**). 
+
+### Mehr als nur Ethik: Ein harter Ranking-Faktor
+Technisch bedeutet Barrierefreiheit:
+*   **Logische Überschriften-Struktur:** Eine einzige H1-Hauptüberschrift, dann sinnvoll abgestufte H2 und H3. Nicht wild durcheinander, nur weil eine Schriftgröße gerade besser gefällt.
+*   **Hohe Kontrast-Verhältnisse:** Texte müssen auch für Menschen mit eingeschränktem Sehvermögen gut lesbar sein.
+*   **Tastatur-Bedienbarkeit:** Man muss durch die gesamte Seite navigieren können, ohne jemals eine Maus benutzen zu müssen.
+
+Suchmaschinen stufen barrierefreie Webseiten als qualitativ hochwertiger ein. Es ist also nicht nur eine rechtliche Pflicht, sondern ein echter Vorteil bei der Platzierung in den Suchergebnissen.
+
+---
+
+## KI-Optimierung (LLM Readiness): Ist Ihr Code bereit für die Zukunft?
+
+Im Jahr 2026 suchen Menschen nicht mehr nur über Suchmasken, sondern fragen ihre KIs direkt: "Welche Agentur in Wien hat die meiste Erfahrung mit schnellen Webseiten?"
+
+### Wie eine KI Ihre Kompetenz bewertet
+Eine KI analysiert den **semantischen Gehalt** Ihres Codes. Wenn Ihre Seite technisch unsauber aufgebaut ist (z. B. falsche Tags nutzt oder wichtige Informationen nur in Bildern versteckt), wird die KI Ihre Kompetenz nicht korrekt erfassen können. Wir achten darauf, dass der Code so strukturiert ist, dass Maschinen Ihre Expertise sofort verstehen. Wir bauen für Sie die technologische "Brücke" zwischen Ihren Fachinhalten und dem Verständnis der KI-Systeme.
+
+---
+
+## Häufig gestellte Fragen (FAQ) – Typische Website-Fehler
+
+### Wie erkenne ich, ob meine Webseite technische Fehler besitzt?
+Der schnellste Weg ist ein kostenloser Test mit **Google PageSpeed Insights**. Dort sehen Sie sofort, ob Ihre Ladezeiten im grünen Bereich liegen. Wenn Sie Warnmeldungen bei den "Kernmetriken des Internets" (Core Web Vitals) sehen, sollten Sie schnell handeln.
+
+### Warum ist die Anpassung an mobile Endgeräte heute wichtiger als PC-Design?
+Weil Suchmaschinen heute ausschließlich die mobile Version Ihrer Webseite für die Positions-Bewertung heranziehen. Ein Design für den PC ist nur noch für Nutzer wichtig, die im Büro sitzen – für Ihren Gesamterfolg im Netz spielt es eine untergeordnete Rolle.
+
+### Kann ich technische Fehler bei einem Baukasten selbst beheben?
+Nur in sehr begrenztem Maße. Viele grundlegende technische Einstellungen (wie die Rechner-Konfiguration, die grundlegende Code-Struktur oder das Caching-Verfahren) sind bei Baukästen vom Hersteller fest vorgegeben. Sie können Bilder verkleiner, aber an den eigentlichen "Motor" der Webseite gelangen Sie nicht heran.
+
+### Was regelt das Barrierefreiheitsstärkungsgesetz (BFSG)?
+Dieses Gesetz verpflichtet viele Unternehmen dazu, ihre digitalen Angebote so zu gestalten, dass sie für Menschen mit körperlichen Einschränkungen uneingeschränkt nutzbar sind. Verstöße können ab 2025 zu hohen Bußgeldern und Unterlassungs-Aufforderungen führen.
+
+### Warum stellt die Einbindung von Schriftarten ein Datenschutzproblem dar?
+Wenn eine Schriftart von einem Server im Ausland geladen wird, fließen Nutzerdaten (IP-Adressen) ungefragt ab. In der EU ist das ohne ausdrückliche Einwilligung illegal. Wir lösen dies durch das Speichern der Schriften auf Ihrem eigenen Server in Europa.
+
+---
+
+## Fazit: Echte Qualität ist kein Zufallsprodukt
+
+Optische Schönheit allein gewinnt im heutigen Internet keinen Blumentopf mehr. Es ist das unsichtbare technische Fundament, das darüber entscheidet, ob Ihr Wiener Unternehmen digital wächst oder in der Masse untergeht.
+
+Bei Red Rabbit Media verstehen wir Webentwicklung als präzises Handwerk. Wir vermeiden diese 10 Sünden nicht nur, um den Algorithmen der Suchmaschinen zu schmeicheln, sondern weil wir an ein Internet glauben, das schnell für jeden Nutzer, sicher vor Zugriffen und für alle Menschen zugänglich ist.
+
+Möchten Sie wissen, ob Ihre Webseite technische Altlasten mit sich herumträgt? Gerne werfen meine Kollegen und ich einen völlig unverbindlichen Blick auf Ihren aktuellen technischen Stand.
+
+[Jetzt kostenlose Technik-Analyse anfordern](/kontakt)
+

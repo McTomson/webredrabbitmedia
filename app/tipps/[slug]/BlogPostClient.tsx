@@ -141,15 +141,15 @@ export function BlogPostClient({
 
                         {/* Main Content Column */}
                         <article className="min-w-0">
+                            {/* Featured Image (Hero) - Jetzt als erstes visuelles Element */}
+                            <div className="relative aspect-video w-full mb-12 rounded-2xl overflow-hidden shadow-soft border border-gray-100">
+                                <Image src={post.featuredImage} alt={post.title} fill className="object-cover" priority />
+                            </div>
+
                             {/* Key Takeaways */}
                             {post.keyTakeaways && post.keyTakeaways.length > 0 && (
                                 <KeyTakeaways items={post.keyTakeaways} />
                             )}
-
-                            {/* Featured Image */}
-                            <div className="relative aspect-video w-full mb-12 rounded-2xl overflow-hidden shadow-soft border border-gray-100">
-                                <Image src={post.featuredImage} alt={post.title} fill className="object-cover" priority />
-                            </div>
 
                             {/* Main Content (MDX) */}
                             <div className="prose prose-lg max-w-none prose-headings:text-[#141414] prose-headings:font-bold prose-p:text-gray-600 prose-p:leading-relaxed prose-strong:text-[#141414] prose-a:text-[#dc2626] prose-a:no-underline hover:prose-a:underline">

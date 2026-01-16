@@ -21,7 +21,7 @@ export function SidebarAbout() {
             {/* Logo */}
             <div className="mb-6">
                 <Image
-                    src="/images/hero/redrabbitmedialogo.png"
+                    src="/images/logo.webp"
                     alt="Red Rabbit Media"
                     width={180}
                     height={60}
