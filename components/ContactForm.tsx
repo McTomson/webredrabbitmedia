@@ -221,7 +221,7 @@ const ContactForm = ({ isOpen, onClose }: ContactFormProps) => {
                                     <div className="flex items-center gap-4 mb-6">
                                         <div className="relative h-12 w-auto">
                                             <Image
-                                                src="/images/logo.png"
+                                                src="/images/logo.webp"
                                                 alt="Red Rabbit Media Logo"
                                                 width={50}
                                                 height={50}

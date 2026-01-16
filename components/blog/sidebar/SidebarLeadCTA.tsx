@@ -20,7 +20,7 @@ export function SidebarLeadCTA({ onFormOpen }: SidebarLeadCTAProps) {
                         alt="Red Rabbit Media Logo"
                         width={40}
                         height={40}
-                        className="object-contain"
+                        className="object-contain brightness-0 invert"
                     />
                 </div>
             </div>
