@@ -5,6 +5,7 @@ import { KeyTakeaways } from '@/components/blog/content/KeyTakeaways';
 import { InlineCTA } from '@/components/blog/content/InlineCTA';
 import { ConclusionCTA } from '@/components/blog/content/ConclusionCTA';
 import RelatedArticles from '@/components/blog/RelatedArticles';
+import HeroldComparisonTable from '@/components/HeroldComparisonTable';
 
 // Featured Snippet Component
 function FeaturedSnippet({ children }: { children: React.ReactNode }) {
@@ -247,6 +248,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
         // Internal Linking
         RelatedArticles,
+
+        // Comparison Tables
+        HeroldComparisonTable,
 
         ...components,
     };
