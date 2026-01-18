@@ -93,6 +93,12 @@ export function convertToQuestion(text: string): string {
     // Pattern-basierte Konvertierung
     const lowerText = clean.toLowerCase();
 
+    // Check if it already starts with a question word but lacks a question mark
+    const startsWithQuestionWord = /^(Was|Wie|Warum|Welche|Wann|Wo|Wer|Wessen|Inwiefern|Wieso)/i.test(clean);
+    if (startsWithQuestionWord) {
+        return clean + '?';
+    }
+
     // Kosten/Preis Keywords
     if (lowerText.match(/kosten|preis|tarif|gebühr|investition/)) {
         return inferCostQuestion(clean);

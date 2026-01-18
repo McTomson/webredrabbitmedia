@@ -236,7 +236,7 @@ export default function RootLayout({
 
         <Script id="json-ld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
-      <body className={`${inter.variable} font-sans antialiased bg-[#fafafa] text-[#141414]`}>
+      <body className={`${inter.variable} font-sans antialiased bg-[#fafafa] text-[#141414]`} suppressHydrationWarning>
 
         <noscript>
           <iframe
