@@ -6,6 +6,7 @@ import { InlineCTA } from '@/components/blog/content/InlineCTA';
 import { ConclusionCTA } from '@/components/blog/content/ConclusionCTA';
 import RelatedArticles from '@/components/blog/RelatedArticles';
 import HeroldComparisonTable from '@/components/HeroldComparisonTable';
+import RegionComparisonTable from '@/components/RegionComparisonTable';
 
 // Featured Snippet Component
 function FeaturedSnippet({ children }: { children: React.ReactNode }) {
@@ -251,6 +252,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
         // Comparison Tables
         HeroldComparisonTable,
+        RegionComparisonTable,
 
         ...components,
     };

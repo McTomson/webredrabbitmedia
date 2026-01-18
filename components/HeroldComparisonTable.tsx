@@ -11,17 +11,17 @@ const heroldComparisonData = [
     {
         criterion: 'Monatliche Kosten',
         herold: '65-140 € (je nach Paket)',
-        agency: '10-15 € (nur Hosting)'
+        agency: '0 € (Vercel Hosting inkl.)'
     },
     {
         criterion: 'Kosten nach 12 Monaten',
         herold: '780-1.680 € + Einrichtung',
-        agency: '790 € + 120-180 € Hosting'
+        agency: '790 € (einmalig)'
     },
     {
         criterion: 'Kosten nach 36 Monaten',
         herold: '2.340-5.040 €',
-        agency: '790 € + 360-540 € Hosting'
+        agency: '790 € (einmalig)'
     },
     {
         criterion: 'Eigentum am Code',
@@ -119,8 +119,8 @@ export default function HeroldComparisonTable() {
             />
             <p style={{ marginTop: '1.5rem', fontWeight: 600, fontSize: '1.1rem' }}>
                 <strong>Langzeit-Ersparnis:</strong> Nach 3 Jahren sparen Sie mit Red Rabbit Media durchschnittlich{' '}
-                <span style={{ color: '#16a34a', fontWeight: 700 }}>1.500-3.700 €</span> gegenüber Herold –
-                und besitzen eine technisch überlegene Website.
+                <span style={{ color: '#16a34a', fontWeight: 700 }}>1.550-4.250 €</span> gegenüber Herold –
+                und besitzen eine technisch überlegene Website ohne monatliche Kosten.
             </p>
         </>
     );
