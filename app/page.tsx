@@ -15,6 +15,7 @@ const Process = dynamic(() => import('@/components/Process'));
 const SeoOptimization = dynamic(() => import('@/components/SeoOptimization'));
 const About = dynamic(() => import('@/components/About'));
 const Pricing = dynamic(() => import('@/components/Pricing'));
+const FeaturedBlogPosts = dynamic(() => import('@/components/FeaturedBlogPosts'));
 const FAQ = dynamic(() => import('@/components/FAQ'));
 const Contact = dynamic(() => import('@/components/Contact'));
 
@@ -72,6 +73,9 @@ export default function Home() {
 
         {/* Pricing Section */}
         <Pricing onFormOpen={handleFormOpen} />
+
+        {/* Featured Blog Posts - SEO Internal Linking */}
+        <FeaturedBlogPosts />
 
         {/* FAQ Section */}
         <FAQ />

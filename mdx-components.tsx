@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { KeyTakeaways } from '@/components/blog/content/KeyTakeaways';
 import { InlineCTA } from '@/components/blog/content/InlineCTA';
 import { ConclusionCTA } from '@/components/blog/content/ConclusionCTA';
+import RelatedArticles from '@/components/blog/RelatedArticles';
 
 // Featured Snippet Component
 function FeaturedSnippet({ children }: { children: React.ReactNode }) {
@@ -243,6 +244,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         KeyTakeaways,
         InlineCTA,
         ConclusionCTA,
+
+        // Internal Linking
+        RelatedArticles,
 
         ...components,
     };
