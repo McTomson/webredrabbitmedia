@@ -1,33 +1,13 @@
-"use client";
-
 import { motion } from 'framer-motion';
 import { Zap, Target, Database, Check } from 'lucide-react';
-import { AnimatedSection, AOSWrapper } from '@/components/AnimatedSection';
-import { fadeInUp, staggerContainer } from '@/lib/animations';
+import { AOSWrapper } from '@/components/AnimatedSection';
 
-const StaggerContainer = ({ children, className }: { children: React.ReactNode; className?: string }) => {
-    return (
-        <motion.div
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            className={className}
-        >
-            {children}
-        </motion.div>
-    );
-};
 
 interface Feature {
     title: string;
     text: string;
 }
 
-interface StrategyItem {
-    title: string;
-    text: string;
-}
 
 interface ComparisonItem {
     name: string;
@@ -41,27 +21,11 @@ interface SeoOptimizationProps {
     strategyHeadline?: string;
     comparisonHeadline?: string;
     features?: Feature[];
-    strategyItems?: StrategyItem[];
     comparisonItems?: ComparisonItem[];
 }
 
-const SeoOptimization = ({ headline, subline, strategyHeadline, comparisonHeadline, features, strategyItems, comparisonItems }: SeoOptimizationProps) => {
-    const defaultStrategyItems = [
-        {
-            title: "Warum wichtig?",
-            text: "Die schönste Website nützt Ihnen nichts, wenn sie auf Seite 2 bei Google landet. 90% der Nutzer klicken nur auf die ersten 3 Ergebnisse."
-        },
-        {
-            title: "Was wir tun",
-            text: "Wir überlassen nichts dem Zufall. Wir analysieren genau, was Ihre Kunden suchen und bereiten Ihre Daten so auf, dass KI-Modelle wie ChatGPT Sie als beste Antwort empfehlen."
-        },
-        {
-            title: "Ihr Vorteil",
-            text: "Sie bekommen nicht nur ein Design, sondern einen 24/7 Vertriebsmitarbeiter. Während andere für teure Werbeanzeigen zahlen müssen, kommen Kunden bei Ihnen organisch auf die Seite."
-        }
-    ];
-
-    const strategy = strategyItems || defaultStrategyItems;
+const SeoOptimization = (props: SeoOptimizationProps) => {
+    const { headline, subline, strategyHeadline, comparisonHeadline, features, comparisonItems } = props;
 
     return (
         <section className="py-24 bg-white relative" id="seo">
@@ -128,8 +92,8 @@ const SeoOptimization = ({ headline, subline, strategyHeadline, comparisonHeadli
                                         <span className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm font-bold">1</span>
                                         Warum wichtig?
                                     </h4>
-                                    <p className="text-gray-600 font-light leading-relaxed text-sm">
-                                        Die schönste Website nützt Ihnen nichts, wenn sie auf Seite 2 bei Google landet. 90% der Nutzer klicken nur auf die ersten 3 Ergebnisse. Wenn Sie dort nicht sind, existieren Sie für Ihre Kunden nicht.
+                                    <p className="text-gray-600 mb-8">
+                                        Sind Sie bereit, Ihre digitale Präsenz auf die nächste Stufe zu heben? Lassen Sie uns gemeinsam eine Website entwickeln, die nicht nur gut aussieht, sondern Ihre Geschäftsziele unterstützt. Klicken Sie auf &quot;Projekt anfragen&quot;, um ein kostenloses Erstgespräch zu vereinbaren, oder rufen Sie uns direkt an unter &quot;+43 676 9000955&quot;. Wir freuen uns darauf, von Ihnen zu hören!
                                     </p>
                                 </div>
 
