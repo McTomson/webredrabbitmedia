@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import ContactFormHighEnd from "@/components/contact/ContactFormHighEnd";
 import ContactMap from "@/components/contact/ContactMap";
-import { Mail, Phone, MapPin, CheckCircle, Clock } from "lucide-react";
+import { Mail, Phone, MapPin, CheckCircle } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {

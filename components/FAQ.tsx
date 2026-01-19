@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronDown } from 'lucide-react';
-import { AOSWrapper } from './AnimatedSection';
 import { useState } from 'react';
 
 const FAQ = () => {

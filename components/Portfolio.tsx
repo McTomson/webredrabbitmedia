@@ -1,7 +1,7 @@
 "use client";
 
 import { ExternalLink, ArrowUpRight, Check, ChevronDown } from 'lucide-react';
-import { AnimatedSection, AOSWrapper } from '@/components/AnimatedSection';
+import { AOSWrapper } from '@/components/AnimatedSection';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';

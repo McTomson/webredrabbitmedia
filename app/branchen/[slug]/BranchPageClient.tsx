@@ -12,7 +12,7 @@ import { useState } from 'react';
 
 export default function BranchPageClient() {
     const params = useParams();
-    const slug = params.slug as BranchSlug;
+    const { slug } = params as { slug: BranchSlug };
     const branch = branches[slug];
 
     if (!branch) {
@@ -63,7 +63,7 @@ export default function BranchPageClient() {
                         <div className="bg-gray-100 rounded-2xl p-8">
                             <h3 className="text-2xl font-medium mb-4 text-black">Das sagen unsere Kunden</h3>
                             <blockquote className="text-gray-600 italic mb-4">
-                                "Endlich eine Agentur, die versteht, dass wir keine Zeit für technische Spielereien haben. Die Seite läuft und bringt Kunden."
+                                &quot;Endlich eine Agentur, die versteht, dass wir keine Zeit für technische Spielereien haben. Die Seite läuft und bringt Kunden.&quot;
                             </blockquote>
                             <div className="flex items-center gap-4">
                                 <div className="w-10 h-10 bg-gray-300 rounded-full"></div>

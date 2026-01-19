@@ -176,7 +176,7 @@ const Pricing = ({ onFormOpen }: PricingProps) => {
                                                 • Fehlende Barrierefreiheit kann teuer werden
                                             </p>
                                             <p className="text-sm">
-                                                • Der Preis gilt nur bei Formularnutzung – danach wird's teurer
+                                                • Der Preis gilt nur bei Formularnutzung – danach wird&apos;s teurer
                                             </p>
                                         </div>
                                     </div>

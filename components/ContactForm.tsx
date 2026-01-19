@@ -160,10 +160,11 @@ const ContactForm = ({ isOpen, onClose }: ContactFormProps) => {
                 honeyPot: ''
             });
 
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.';
             console.error(error);
             setIsSubmitting(false);
-            setSubmitError(error.message || 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.');
+            setSubmitError(errorMessage);
         }
     };
 

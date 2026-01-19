@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { cities, type CitySlug, generateStaticParams } from './cities';
-import { notFound } from 'next/navigation';
 
 export { generateStaticParams };
 
@@ -29,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     return {
         title: `Webdesign ${city.name} | Professionelle Website ab 790€`,
-        description: `Professionelles Webdesign in ${city.name}, ${city.region}. Website erstellen lassen ab 790€ statt 2.800€. ✓ 15 Jahre Erfahrung ✓ 800+ zufriedene Kunden ✓ Erst zahlen wenn zufrieden.`,
+        description: `Professionelles Webdesign in ${city.name}, ${city.region}. Website erstellen lassen ab 790€ statt 2.800€. ✓ 15 Jahre Erfahrung ✓ 800 + zufriedene Kunden ✓ Erst zahlen wenn zufrieden.`,
         keywords: city.keywords,
         openGraph: {
             title: `Webdesign ${city.name} - Red Rabbit Media`,

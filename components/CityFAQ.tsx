@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Minus, HelpCircle } from 'lucide-react';
+import { Plus, Minus } from "lucide-react";
 import { City } from '../app/[slug]/cities';
 
 interface FAQItem {

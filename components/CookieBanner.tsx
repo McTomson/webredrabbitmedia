@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect } from 'react';
 import { Cookie, Settings, X, Check } from 'lucide-react';
+import Link from 'next/link';
 
 // TypeScript interface for consent
 interface ConsentData {
@@ -15,7 +15,7 @@ interface ConsentData {
 // TypeScript declaration for gtag
 declare global {
     interface Window {
-        gtag: (...args: any[]) => void;
+        gtag: (...args: Array<string | object | Date>) => void;
     }
 }
 

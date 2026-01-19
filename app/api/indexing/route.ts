@@ -58,17 +58,17 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         console.error('Indexing API Error:', error);
 
         // Fallback: Try Search Console API
         try {
-            const body = await request.clone().json();
-            return await fallbackToSearchConsole(body.url);
-        } catch (fallbackError) {
+            return await fallbackToSearchConsole(request);
+        } catch {
             return NextResponse.json(
                 {
                     error: 'Failed to index URL',
-                    details: (error as Error).message
+                    details: errorMessage
                 },
                 { status: 500 }
             );
@@ -77,7 +77,8 @@ export async function POST(request: NextRequest) {
 }
 
 // Fallback to Search Console API
-async function fallbackToSearchConsole(url: string) {
+async function fallbackToSearchConsole(_request: NextRequest) {
+    // await request.json(); // Don't re-read if not needed, or just ignore
 
     // Ping sitemap instead
     const sitemapUrl = 'https://web.redrabbit.media/sitemap.xml';

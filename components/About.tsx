@@ -1,15 +1,6 @@
 "use client";
 
-import {
-    Heart,
-    Zap,
-    MessageCircle,
-    CheckCircle,
-    DollarSign,
-    ChevronLeft,
-    ChevronRight,
-    Star
-} from 'lucide-react';
+import { MapPin, Award, Star, Trophy, DollarSign, Zap, ChevronLeft, ChevronRight, Target } from 'lucide-react';
 import { AOSWrapper } from './AnimatedSection';
 import { useState, useEffect, useRef } from 'react';
 import Image from "next/image";
@@ -47,7 +38,7 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials }:
         {
             stars: "⭐️⭐️⭐️⭐️⭐️",
             rating: "5/5",
-            quote: "\"Ich hatte keine Lust mich damit zu beschäftigen wusste aber das ich eine neue Webseite benötigte. RED hat alles gemacht und ich musste nur einmal ein feedback geben. Jetzt hab ich eine moderne Website und bin online sichtbar – ohne Stress.\"",
+            quote: "&quot;Ich hatte keine Lust mich damit zu beschäftigen wusste aber das ich eine neue Webseite benötigte. RED hat alles gemacht und ich musste nur einmal ein feedback geben. Jetzt hab ich eine moderne Website und bin online sichtbar – ohne Stress.&quot;",
             author: "Daniel W.",
             company: "Sanitär & Heizung",
             avatar: "👨‍🔧"
@@ -55,7 +46,7 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials }:
         {
             stars: "⭐️⭐️⭐️⭐️⭐️",
             rating: "5/5",
-            quote: "\"Ich war erst skeptisch. Aber das Team hat geliefert – schnell, unkompliziert und die Seite sieht top aus. Danke nochmals!\"",
+            quote: "&quot;Ich war erst skeptisch. Aber das Team hat geliefert – schnell, unkompliziert und die Seite sieht top aus. Danke nochmals!&quot;",
             author: "Stefan H.",
             company: "Elektrotechnik",
             avatar: "👨‍💻"
@@ -63,7 +54,7 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials }:
         {
             stars: "⭐️⭐️⭐️⭐️",
             rating: "4/5",
-            quote: "\"Nachdem ich Google Analytics gecheckt habe sah ich das meine Kunden nach 30 sec die Seite wieder verlassen haben und mich nicht kontaktiert haben. Jetzt bekomme ich jeden Monat neue Anfragen.\"",
+            quote: "&quot;Nachdem ich Google Analytics gecheckt habe sah ich das meine Kunden nach 30 sec die Seite wieder verlassen haben und mich nicht kontaktiert haben. Jetzt bekomme ich jeden Monat neue Anfragen.&quot;",
             author: "Ali K.",
             company: "Bauunternehmen",
             avatar: "👷‍♂️"

@@ -3,7 +3,6 @@ import path from 'path';
 import matter from 'gray-matter';
 import { branches } from '@/app/branchen/[slug]/data';
 
-const APP_DIR = path.join(process.cwd(), 'app');
 const BLOG_DIR = path.join(process.cwd(), 'content/blog');
 const BASE_URL = 'https://web.redrabbit.media';
 

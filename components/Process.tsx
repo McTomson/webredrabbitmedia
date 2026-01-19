@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, Lightbulb, CreditCard, Clock, Shield, Zap, Users, CheckCircle } from 'lucide-react';
+import { Clock, Shield, Zap, Users, CheckCircle } from 'lucide-react';
 import { AOSWrapper } from './AnimatedSection';
 
 interface Step {
@@ -37,7 +37,7 @@ const Process = ({ onFormOpen, headline, subline, steps: stepsProp, benefits: be
             highlight: "7 Tage"
         },
         {
-            title: "Nur zahlen, wenn's gefällt",
+            title: "Nur zahlen, wenn&apos;s gefällt",
             description: "Gefällt dir unser Vorschlag? Perfekt! Wenn nicht, entstehen dir keinerlei Kosten.",
             highlight: "Kein Risiko"
         }
@@ -115,7 +115,7 @@ const Process = ({ onFormOpen, headline, subline, steps: stepsProp, benefits: be
                                                     {step.number === "03" ? (
                                                         <>
                                                             Nur zahlen,<br />
-                                                            wenn's gefällt
+                                                            wenn&apos;s gefällt
                                                         </>
                                                     ) : (
                                                         step.title

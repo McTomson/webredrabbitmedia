@@ -180,7 +180,7 @@ export function BlogPostClient({
                                             <h4 className="text-2xl font-bold text-[#141414] mb-4">Experten-Profil: Dmitry Pashlov</h4>
                                             <p className="text-gray-600 leading-relaxed mb-6">
                                                 Dmitry Pashlov ist der technische Kopf hinter Red Rabbit Media. Als Lead Developer spezialisiert er sich auf Next.js, High-Performance-Architekturen und technische SEO.
-                                                Sein Credo: "Code is Poetry – aber nur, wenn er lädt." Er sorgt dafür, dass Ihre Website nicht nur gut aussieht, sondern auch technisch bei Google gewinnt.
+                                                Sein Credo: &quot;Code is Poetry – aber nur, wenn er lädt.&quot; Er sorgt dafür, dass Ihre Website nicht nur gut aussieht, sondern auch technisch bei Google gewinnt.
                                             </p>
                                             <div className="flex flex-wrap justify-center md:justify-start gap-4">
                                                 <button

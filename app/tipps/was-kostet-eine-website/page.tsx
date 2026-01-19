@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import { ArrowRight, Check, Star } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
-import Image from 'next/image';
 
 export const metadata: Metadata = {
     title: 'Was kostet eine Website 2026 in Österreich? | Red Rabbit Media',
@@ -15,7 +14,6 @@ export default function BlogPost() {
             <div className="bg-gray-50 pt-32 pb-16 px-8">
                 <div className="max-w-3xl mx-auto">
                     <span className="text-red-600 font-medium mb-4 block">Ratgeber & Kosten</span>
-                    <p className="text-gray-500 font-medium">Kostenloses Angebot &quot;Was kostet eine Website?&quot; anfordern</p>
                     <h1 className="text-4xl lg:text-6xl font-light mb-8 leading-tight">
                         Was kostet eine professionelle Website 2026 in Österreich?
                     </h1>
@@ -43,8 +41,8 @@ export default function BlogPost() {
                 {/* Main Content */}
                 <div className="prose prose-lg max-w-none text-gray-700">
                     <p>
-                        "Was kostet eine Website?" ist die häufigste Frage, die wir als Agentur gestellt bekommen.
-                        Und leider ist die Antwort oft: "Es kommt darauf an."
+                        &quot;Was kostet eine Website?&quot; ist die häufigste Frage, die wir als Agentur gestellt bekommen.
+                        Und leider ist die Antwort oft: &quot;Es kommt darauf an.&quot;
                     </p>
                     <p>
                         Aber damit geben wir uns 2026 nicht zufrieden. In diesem Artikel schlüsseln wir die Preise für den österreichischen Markt transparent auf – von der Freelancer-Lösung bis zur High-End Agentur.
@@ -96,7 +94,7 @@ export default function BlogPost() {
                     <p>
                         Viele unserer Kunden in Wien und Graz wechseln von WordPress zu Next.js. Warum? Weil die Wartungskosten wegfallen.
                         Bei WordPress müssen Sie Plugins aktualisieren, Sicherheitslücken schließen und PHP-Updates machen.
-                        Eine Next.js Seite ist statisch generiert – sie kann nicht "gehackt" werden wie eine Datenbank.
+                        Eine Next.js Seite ist statisch generiert – sie kann nicht &quot;gehackt&quot; werden wie eine Datenbank.
                     </p>
 
                 </div>

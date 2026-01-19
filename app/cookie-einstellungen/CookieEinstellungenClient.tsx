@@ -15,7 +15,7 @@ interface ConsentData {
 
 declare global {
     interface Window {
-        gtag: (...args: any[]) => void;
+        gtag: (...args: Array<string | object | Date>) => void;
     }
 }
 
