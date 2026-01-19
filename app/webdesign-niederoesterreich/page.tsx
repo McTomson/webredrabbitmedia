@@ -5,6 +5,21 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: "Webdesign Niederösterreich: Wachstum für Ihr Business | ⭐ 4.8",
   description: "Modernster Webauftritt für NÖ-Betriebe. ⭐ 4.8 Bewertung. Ab 790€ Fixpreis. Wir digitalisieren Ihren Erfolg. Erst zahlen, wenn Sie begeistert sind.",
+  alternates: {
+    canonical: 'https://web.redrabbit.media/webdesign-niederoesterreich',
+  },
+  openGraph: {
+    title: "Webdesign Niederösterreich: Wachstum für Ihr Business | ⭐ 4.8",
+    description: "Modernster Webauftritt für NÖ-Betriebe. ⭐ 4.8 Bewertung. Ab 790€ Fixpreis. Wir digitalisieren Ihren Erfolg. Erst zahlen, wenn Sie begeistert sind.",
+    url: 'https://web.redrabbit.media/webdesign-niederoesterreich',
+    siteName: 'Red Rabbit Media',
+    locale: 'de_AT',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function NiederoesterreichPage() {

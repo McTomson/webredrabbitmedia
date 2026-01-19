@@ -5,6 +5,21 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: "Webdesign Kärnten: Online-Erfolg im Süden | ab 790€ | ⭐ 4.8",
   description: "Websites so attraktiv wie unser Land. ⭐ 4.8 Bewertung. Ab 790€ Fixpreis. Perfekt für Tourismus & Gewerbe. Erst sehen, dann zahlen.",
+  alternates: {
+    canonical: 'https://web.redrabbit.media/webdesign-kaernten',
+  },
+  openGraph: {
+    title: "Webdesign Kärnten: Online-Erfolg im Süden | ab 790€ | ⭐ 4.8",
+    description: "Websites so attraktiv wie unser Land. ⭐ 4.8 Bewertung. Ab 790€ Fixpreis. Perfekt für Tourismus & Gewerbe. Erst sehen, dann zahlen.",
+    url: 'https://web.redrabbit.media/webdesign-kaernten',
+    siteName: 'Red Rabbit Media',
+    locale: 'de_AT',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function KaerntenPage() {

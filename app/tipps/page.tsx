@@ -9,7 +9,15 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Webdesign & SEO Experten-Wissen | Thomas Uhlir MBA",
         description: "Exklusive Tipps für deinen Online-Erfolg. Lerne, wie du mit deiner Website Kunden gewinnst.",
+        url: 'https://web.redrabbit.media/tipps',
         type: 'website',
+    },
+    alternates: {
+        canonical: 'https://web.redrabbit.media/tipps',
+    },
+    robots: {
+        index: true,
+        follow: true,
     }
 };
 

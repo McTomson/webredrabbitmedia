@@ -5,6 +5,21 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: "Webdesign Burgenland: Digitaler Aufschwung | ab 790€ | ⭐ 4.8",
   description: "Modern, leistbar & regional. ⭐ 4.8 Bewertung. Website ab 790€. Wir bringen burgenländische Betriebe groß raus. Zahlung erst bei Erfolg.",
+  alternates: {
+    canonical: 'https://web.redrabbit.media/webdesign-burgenland',
+  },
+  openGraph: {
+    title: "Webdesign Burgenland: Digitaler Aufschwung | ab 790€ | ⭐ 4.8",
+    description: "Modern, leistbar & regional. ⭐ 4.8 Bewertung. Website ab 790€. Wir bringen burgenländische Betriebe groß raus. Zahlung erst bei Erfolg.",
+    url: 'https://web.redrabbit.media/webdesign-burgenland',
+    siteName: 'Red Rabbit Media',
+    locale: 'de_AT',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function BurgenlandPage() {
