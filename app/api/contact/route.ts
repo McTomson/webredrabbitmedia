@@ -15,7 +15,7 @@ const contactSchema = z.object({
     company: z.string().max(100).optional(),
     email: z.string().email("Ungültige E-Mail-Adresse"),
     phone: z.string().max(50).optional(),
-    website: z.string().url("Ungültige Website-URL").optional().or(z.literal('')),
+    service: z.string().optional(),
     message: z.string().max(2000, "Nachricht zu lang (max 2000 Zeichen)").optional(),
     honeyPot: z.string().optional()
 });
@@ -61,13 +61,13 @@ export async function POST(req: Request) {
             );
         }
 
-        const { name, company, email, phone, website, message } = result.data;
+        const { name, company, email, phone, service, message } = result.data;
 
         // Escape outputs
         const safeName = escapeHtml(name);
         const safeCompany = company ? escapeHtml(company) : 'Nicht angegeben';
         const safePhone = phone ? escapeHtml(phone) : 'Nicht angegeben';
-        const safeWebsite = website ? escapeHtml(website) : 'Nicht angegeben';
+        const safeService = service ? escapeHtml(service) : 'Nicht angegeben';
         const safeMessage = message ? escapeHtml(message).replace(/\n/g, '<br>') : 'Keine Nachricht';
 
         // Create transporter
@@ -100,7 +100,7 @@ Name: ${name}
 Unternehmen: ${company || 'Nicht angegeben'}
 E-Mail: ${email}
 Telefon: ${phone || 'Nicht angegeben'}
-Website: ${website || 'Nicht angegeben'}
+Service: ${service || 'Nicht angegeben'}
 
 Nachricht:
 ${message || 'Keine Nachricht'}
@@ -114,7 +114,7 @@ Gesendet von der Red Rabbit Media Website
 <p><strong>Unternehmen:</strong> ${safeCompany}</p>
 <p><strong>E-Mail:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
 <p><strong>Telefon:</strong> ${safePhone}</p>
-<p><strong>Website:</strong> ${website ? `<a href="${escapeHtml(website)}" target="_blank">${safeWebsite}</a>` : 'Nicht angegeben'}</p>
+<p><strong>Service:</strong> ${safeService}</p>
 
 <h3>Nachricht:</h3>
 <p>${safeMessage}</p>

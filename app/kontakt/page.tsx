@@ -1,174 +1,196 @@
-"use client";
+import { Metadata } from "next";
+import ContactFormHighEnd from "@/components/contact/ContactFormHighEnd";
+import ContactMap from "@/components/contact/ContactMap";
+import { Mail, Phone, MapPin, CheckCircle, Clock } from "lucide-react";
+import Link from "next/link";
 
-import { useState } from 'react';
-import { Breadcrumbs } from '@/components/Breadcrumbs';
-import Container from '@/components/Container';
-import { Mail, Phone, MapPin, Linkedin, Clock, CheckCircle, ArrowRight } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-import ContactForm from '@/components/ContactForm';
+export const metadata: Metadata = {
+    title: "Kontakt | Red Rabbit Media - Ihre Webdesign Agentur in Wien",
+    description: "Starten Sie Ihr digitales Projekt mit Red Rabbit Media. Kostenlose Beratung, Premium Webdesign & SEO aus Österreich. Antwort innerhalb von 24h.",
+    alternates: {
+        canonical: "https://www.redrabbit.media/kontakt",
+    },
+};
+
+// SEO Schema for Contact Page
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Kontakt - Red Rabbit Media",
+    "description": "Kontaktieren Sie Red Rabbit Media für Premium Webdesign und SEO.",
+    "mainEntity": {
+        "@type": "ProfessionalService",
+        "name": "Red Rabbit Media GmbH",
+        "image": "https://www.redrabbit.media/images/logo.webp",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Grabnergasse 8",
+            "addressLocality": "Wien",
+            "postalCode": "1060",
+            "addressCountry": "AT"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 48.1916366,
+            "longitude": 16.3513361
+        },
+        "url": "https://www.redrabbit.media",
+        "telephone": "+436769000955",
+        "email": "office@redrabbit.media",
+        "openingHoursSpecification": [
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                "opens": "09:00",
+                "closes": "18:00"
+            }
+        ],
+        "areaServed": ["AT", "CH", "DE"],
+        "priceRange": "$$"
+    }
+};
 
 export default function ContactPage() {
-    const [isFormOpen, setIsFormOpen] = useState(false);
-
     return (
-        <div className="min-h-screen bg-[#fafafa] pt-20">
-            {/* Contact Form Modal */}
-            <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
 
-            <main className="py-12 md:py-20">
-                <Container>
-                    <div className="max-w-6xl mx-auto">
-                        {/* Breadcrumbs */}
-                        <div className="mb-8">
-                            <Breadcrumbs items={[
-                                { name: 'Home', url: '/' },
-                                { name: 'Kontakt', url: '/kontakt' }
-                            ]} />
-                        </div>
+            {/* Hero Section */}
+            <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden bg-background text-foreground">
+                <div className="absolute inset-0 bg-[url('/images/noise.png')] opacity-30 mix-blend-overlay pointer-events-none"></div>
+                {/* Abstract Gradient Background - Lighter/Warmer tones */}
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none translate-x-1/3 -translate-y-1/3 animate-pulse"></div>
+                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-100/40 rounded-full blur-[100px] pointer-events-none -translate-x-1/3 translate-y-1/3"></div>
 
-                        {/* Header */}
-                        <div className="text-center mb-16">
-                            <h1 className="text-4xl md:text-6xl font-bold text-[#141414] mb-6">
-                                Kontaktieren Sie uns
-                            </h1>
-                            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                                Wir bauen nicht nur Websites, wir schaffen digitale Werte.
-                                <br />
-                                Lernen Sie das Team kennen oder starten Sie direkt Ihr Projekt.
-                            </p>
-                        </div>
+                <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10 text-center">
+                    <span className="inline-block py-1 px-3 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-medium tracking-wide mb-6 animate-fade-in-up">
+                        Antwort innerhalb von 24h
+                    </span>
+                    <h1 className="text-display font-bold mb-6 text-foreground leading-tight animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+                        Lassen Sie uns <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70">
+                            Großes erschaffen.
+                        </span>
+                    </h1>
+                    <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+                        Egal, ob Sie eine komplett neue Website benötigen oder Ihre bestehende Präsenz auf das nächste Level heben wollen – wir sind bereit.
+                    </p>
+                </div>
+            </section>
 
-                        {/* Contact Grid */}
-                        <div className="grid lg:grid-cols-2 gap-12 items-start mb-24">
-                            {/* Left: Contact Info */}
-                            <div className="bg-white p-8 md:p-12 rounded-2xl shadow-soft border border-gray-100">
-                                <h3 className="text-2xl font-bold text-[#141414] mb-8">Direkter Draht</h3>
+            {/* Main Content: Split Layout */}
+            <section className="relative py-20 bg-background overflow-hidden">
+                <div className="max-w-7xl mx-auto px-6 md:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
 
-                                <div className="space-y-8">
-                                    <div className="flex items-start gap-6">
-                                        <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center flex-shrink-0 text-[#dc2626]">
-                                            <Phone size={24} />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Telefon & WhatsApp</p>
-                                            <a href="tel:+436769000955" className="text-xl font-medium text-[#141414] hover:text-[#dc2626] transition-colors block mb-1">
-                                                +43 676 9000 955
-                                            </a>
-                                            <p className="text-sm text-gray-500">Mo-Fr, 09:00 - 18:00 Uhr</p>
-                                        </div>
+                        {/* Left Column: Contact Info & Trust */}
+                        <div className="lg:col-span-5 space-y-12">
+
+                            {/* Direct Contact Cards */}
+                            <div className="space-y-6">
+                                <h2 className="text-3xl font-light text-foreground">Direkter Draht</h2>
+
+                                <a href="tel:+436769000955" className="flex items-start gap-4 p-6 rounded-xl border border-border/60 hover:border-primary/30 hover:shadow-lg transition-all group bg-card">
+                                    <div className="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                                        <Phone className="w-5 h-5" />
                                     </div>
-
-                                    <div className="flex items-start gap-6">
-                                        <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center flex-shrink-0 text-[#dc2626]">
-                                            <Mail size={24} />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">E-Mail</p>
-                                            <a href="mailto:office@redrabbit.media" className="text-xl font-medium text-[#141414] hover:text-[#dc2626] transition-colors">
-                                                office@redrabbit.media
-                                            </a>
-                                            <p className="text-sm text-gray-500 mt-1">Antwort innerhalb von 24h</p>
-                                        </div>
+                                    <div>
+                                        <h3 className="font-medium text-lg text-foreground">Telefon & WhatsApp</h3>
+                                        <p className="text-primary font-semibold text-xl mt-1">+43 676 9000 955</p>
+                                        <p className="text-sm text-muted-foreground mt-2">Mo-Fr, 09:00 - 18:00 Uhr</p>
                                     </div>
+                                </a>
 
-                                    <div className="flex items-start gap-6">
-                                        <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center flex-shrink-0 text-[#dc2626]">
-                                            <MapPin size={24} />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Büro Wien</p>
-                                            <address className="not-italic text-lg text-gray-700 leading-relaxed">
-                                                Grabnergasse 8<br />
-                                                1060 Wien<br />
-                                                Österreich
-                                            </address>
-                                        </div>
+                                <a href="mailto:office@redrabbit.media" className="flex items-start gap-4 p-6 rounded-xl border border-border/60 hover:border-primary/30 hover:shadow-lg transition-all group bg-card">
+                                    <div className="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                                        <Mail className="w-5 h-5" />
                                     </div>
-                                </div>
+                                    <div>
+                                        <h3 className="font-medium text-lg text-foreground">E-Mail</h3>
+                                        <p className="text-primary font-semibold text-xl mt-1">office@redrabbit.media</p>
+                                        <p className="text-sm text-muted-foreground mt-2">Wir antworten garantiert am selben Werktag.</p>
+                                    </div>
+                                </a>
+                            </div>
 
-                                <div className="mt-12 pt-8 border-t border-gray-100">
-                                    <button
-                                        onClick={() => setIsFormOpen(true)}
-                                        className="w-full btn-primary py-4 text-center justify-center group"
-                                    >
-                                        <span className="font-bold text-lg">Projekt-Anfrage starten</span>
-                                        <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-                                    </button>
-                                    <p className="text-xs text-center text-gray-400 mt-4">
-                                        100% kostenlos & unverbindlich. Antwort in max. 24h.
-                                    </p>
+                            {/* Office Location */}
+                            <div className="space-y-6">
+                                <h2 className="text-3xl font-light text-foreground">Unser Büro</h2>
+                                <div className="flex items-start gap-4">
+                                    <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-foreground/70 shrink-0">
+                                        <MapPin className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-medium text-lg text-foreground">Red Rabbit Media GmbH</h3>
+                                        <p className="text-muted-foreground leading-relaxed mt-1">
+                                            Grabnergasse 8<br />
+                                            1060 Wien<br />
+                                            Österreich
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Right: Map */}
-                            <div className="h-full min-h-[400px] bg-gray-100 rounded-2xl overflow-hidden shadow-soft border border-gray-100 relative">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2659.431298539656!2d16.35084931267468!3d48.19234857112003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476d07851963955d%3A0xc351918456f43e5!2sGrabnergasse%208%2C%201060%20Wien!5e0!3m2!1sde!2sat!4v1710326400000!5m2!1sde!2sat"
-                                    width="100%"
-                                    height="100%"
-                                    style={{ border: 0, minHeight: '500px' }}
-                                    allowFullScreen
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    className="grayscale hover:grayscale-0 transition-all duration-700"
-                                ></iframe>
+                            {/* Trust Signals */}
+                            <div className="pt-8 border-t border-border">
+                                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-6">Warum Red Rabbit?</h3>
+                                <ul className="space-y-4">
+                                    {[
+                                        "315+ Zufriedene Kunden",
+                                        "100% DSGVO-Konform",
+                                        "Österreichische Qualität & Hosting",
+                                        "Transparente Fixpreise"
+                                    ].map((item, i) => (
+                                        <li key={i} className="flex items-center gap-3 text-foreground/80">
+                                            <CheckCircle className="w-5 h-5 text-success" />
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         </div>
 
-                        {/* Team Section (Trust) */}
-                        <div className="mb-24">
-                            <div className="text-center mb-12">
-                                <h2 className="text-3xl font-bold text-[#141414] mb-4">Ihr Experten-Team</h2>
-                                <p className="text-gray-600">
-                                    Keine anonyme Agentur. Wir stehen persönlich für die Qualität unserer Arbeit.
-                                </p>
-                            </div>
-
-                            <div className="grid md:grid-cols-2 gap-8">
-                                {/* Thomas */}
-                                <div className="bg-white p-8 rounded-xl shadow-soft border border-gray-100 flex flex-col items-center text-center hover:shadow-medium transition-shadow">
-                                    <div className="w-32 h-32 rounded-full bg-gray-100 mb-6 flex items-center justify-center overflow-hidden border-4 border-white shadow-sm">
-                                        {/* Placeholder for Image */}
-                                        <span className="text-3xl font-bold text-gray-300">TU</span>
-                                    </div>
-                                    <h3 className="text-2xl font-bold text-[#141414] mb-1">Thomas Uhlir MBA</h3>
-                                    <p className="text-[#dc2626] font-medium text-sm uppercase tracking-widest mb-4">Gründer & Strategie</p>
-                                    <p className="text-gray-600 mb-6 leading-relaxed">
-                                        "Eine Website muss Geld verdienen, nicht nur schön aussehen. Mein Fokus liegt auf messbaren Ergebnissen für Ihr Unternehmen."
-                                    </p>
-                                    <a href="https://www.linkedin.com/in/thomasuhlir/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-gray-400 hover:text-[#0077b5] transition-colors">
-                                        <Linkedin size={20} />
-                                        <span className="text-sm font-medium">LinkedIn Profil</span>
-                                    </a>
-                                </div>
-
-                                {/* Dmitry */}
-                                <div className="bg-white p-8 rounded-xl shadow-soft border border-gray-100 flex flex-col items-center text-center hover:shadow-medium transition-shadow">
-                                    <div className="w-32 h-32 rounded-full bg-blue-50 mb-6 flex items-center justify-center overflow-hidden border-4 border-white shadow-sm relative">
-                                        <Image
-                                            src="/images/dmitry-pashlov.jpg"
-                                            alt="Dmitry Pashlov"
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    </div>
-                                    <h3 className="text-2xl font-bold text-[#141414] mb-1">Dmitry Pashlov</h3>
-                                    <p className="text-[#dc2626] font-medium text-sm uppercase tracking-widest mb-4">Tech Lead & Development</p>
-                                    <p className="text-gray-600 mb-6 leading-relaxed">
-                                        "Performance ist kein Zufall. Ich sorge dafür, dass Ihre Website technisch perfekt läuft und von Google geliebt wird."
-                                    </p>
-                                    <a href="https://www.linkedin.com/in/dmitrypashlov" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-gray-400 hover:text-[#0077b5] transition-colors">
-                                        <Linkedin size={20} />
-                                        <span className="text-sm font-medium">LinkedIn Profil</span>
-                                    </a>
-                                </div>
+                        {/* Right Column: Form */}
+                        <div className="lg:col-span-7">
+                            <div className="sticky top-32">
+                                <ContactFormHighEnd />
                             </div>
                         </div>
-
                     </div>
-                </Container>
-            </main>
-        </div>
+                </div>
+            </section>
+
+            {/* Map Section */}
+            <section className="h-[500px] w-full relative z-0">
+                <ContactMap />
+            </section>
+
+            {/* Regional Footer Links (SEO) */}
+            <section className="bg-secondary/30 py-12 border-t border-border">
+                <div className="max-w-7xl mx-auto px-6 md:px-8 text-center">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-6">Wir sind in ganz Österreich für Sie da</h3>
+                    <div className="flex flex-wrap justify-center gap-4 md:gap-8">
+                        {[
+                            { name: "Wien", href: "/webdesign-wien" },
+                            { name: "Graz", href: "/webdesign-graz" },
+                            { name: "Linz", href: "/webdesign-linz" },
+                            { name: "Salzburg", href: "/webdesign-salzburg" },
+                            { name: "Innsbruck", href: "/webdesign-innsbruck" },
+                            { name: "Klagenfurt", href: "/webdesign-klagenfurt" },
+                            { name: "St. Pölten", href: "/webdesign-st-poelten" },
+                            { name: "Bregenz", href: "/webdesign-bregenz" },
+                            { name: "Eisenstadt", href: "/webdesign-eisenstadt" },
+                        ].map((city) => (
+                            <Link key={city.name} href={city.href} className="text-sm text-foreground/60 hover:text-primary transition-colors">
+                                Webdesign {city.name}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        </>
     );
 }

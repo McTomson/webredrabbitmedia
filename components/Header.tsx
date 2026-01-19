@@ -32,7 +32,7 @@ export default function Header({ onFormOpen }: HeaderProps) {
         { name: 'Tipps', href: '/tipps' },
         { name: 'Preis', href: '/#pricing' },
         { name: 'FAQ', href: '/#faq' },
-        { name: 'Kontakt', href: '/#contact' }
+        { name: 'Kontakt', href: '/kontakt' }
     ];
 
     return (
