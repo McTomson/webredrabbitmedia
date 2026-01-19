@@ -80,7 +80,7 @@ function generateTitleFAQ(title: string, content: string): FAQ | null {
  */
 export function convertToQuestion(text: string): string {
     // Bereinigung
-    let clean = text
+    const clean = text
         .replace(/^\d+\.\s*/, '') // Entferne Nummern
         .replace(/^[#\s]+/, '') // Entferne # und Spaces
         .trim();

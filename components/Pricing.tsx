@@ -114,7 +114,7 @@ const Pricing = ({ onFormOpen }: PricingProps) => {
                                                 Warum so günstig?
                                             </h3>
                                             <p className="text-gray-600 text-sm">
-                                                Wir wollen zeigen, was wir können – ohne Risiko für dich.
+                                                Inklusive Hosting &amp; Domain f&uuml;r das 1. Jahr &ndash; keine versteckten Kosten, kein Riskio, nur Top-Leistung. Sichern Sie sich Ihr unverbindliches Angebot!
                                             </p>
                                         </div>
 

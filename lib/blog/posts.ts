@@ -110,6 +110,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 export async function compileBlogPost(content: string) {
     const { content: compiledContent } = await compileMDX({
         source: content,
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         components: useMDXComponents({}),
         options: {
             parseFrontmatter: false,

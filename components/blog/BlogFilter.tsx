@@ -81,27 +81,27 @@ export default function BlogFilter({ initialPosts, onFormOpen }: BlogFilterProps
                 {filteredPosts.length > 0 ? (
                     <BlogTimeline posts={filteredPosts} />
                 ) : (
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-                    <div className="text-center">
-                        <div className="inline-block p-6 rounded-full bg-gray-50 mb-6">
-                            <Search size={48} className="text-gray-300" />
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                        <div className="text-center">
+                            <div className="inline-block p-6 rounded-full bg-gray-50 mb-6">
+                                <Search size={48} className="text-gray-300" />
+                            </div>
+                            <h3 className="text-2xl font-bold text-gray-900 mb-2">Keine Artikel gefunden</h3>
+                            <p className="text-gray-500">
+                                Keine Ergebnisse für &quot;{searchQuery}&quot; {activeLetter && `starten mit &quot;${activeLetter}&quot;`}.
+                                <br />Versuche einen anderen Suchbegriff.
+                            </p>
+                            <button
+                                onClick={() => {
+                                    setSearchQuery('');
+                                    setActiveLetter(null);
+                                }}
+                                className="mt-8 px-8 py-3 bg-[#141414] text-white rounded-lg font-bold hover:bg-[#dc2626] transition-colors"
+                            >
+                                Alle Artikel anzeigen
+                            </button>
                         </div>
-                        <h3 className="text-2xl font-bold text-gray-900 mb-2">Keine Artikel gefunden</h3>
-                        <p className="text-gray-500">
-                            Keine Ergebnisse für "{searchQuery}" {activeLetter && `starten mit "${activeLetter}"`}.
-                            <br />Versuche einen anderen Suchbegriff.
-                        </p>
-                        <button
-                            onClick={() => {
-                                setSearchQuery('');
-                                setActiveLetter(null);
-                            }}
-                            className="mt-8 px-8 py-3 bg-[#141414] text-white rounded-lg font-bold hover:bg-[#dc2626] transition-colors"
-                        >
-                            Alle Artikel anzeigen
-                        </button>
                     </div>
-                </div>
                 )}
             </div>
         </div>

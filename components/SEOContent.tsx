@@ -156,6 +156,9 @@ const SEOContent = () => {
                         </p>
 
                         <h3>Für wen bietet die Webdesign Agentur Wien Services an?</h3>
+                        <p className="text-gray-600 mb-8">
+                            Sind Sie bereit, Ihre digitale Präsenz auf die nächste Stufe zu heben? Lassen Sie uns gemeinsam eine Website entwickeln, die nicht nur gut aussieht, sondern Ihre Geschäftsziele unterstützt. Klicken Sie auf &quot;Projekt anfragen&quot;, um ein kostenloses Erstgespräch zu vereinbaren, oder rufen Sie uns direkt an unter &quot;+43 676 9000955&quot;. Wir freuen uns darauf, von Ihnen zu hören!
+                        </p>
                         <p>
                             Unsere Homepage Agentur Wien erstellt Websites für jeden, der eine professionelle
                             Online-Präsenz benötigt. Wir bedienen Unternehmen aller Branchen und Größen - von

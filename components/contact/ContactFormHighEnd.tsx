@@ -3,6 +3,7 @@
 import { useState } from "react";
 import * as z from "zod";
 import { Loader2, Send } from "lucide-react";
+import Link from "next/link";
 
 // Schema definition (same as before)
 const formSchema = z.object({
@@ -211,8 +212,8 @@ export default function ContactFormHighEnd() {
                             <label
                                 key={option}
                                 className={`cursor-pointer border rounded-lg px-4 py-3 text-sm text-center transition-all ${formData.service === option
-                                        ? "bg-primary text-primary-foreground border-primary"
-                                        : "hover:border-primary/50 text-foreground"
+                                    ? "bg-primary text-primary-foreground border-primary"
+                                    : "hover:border-primary/50 text-foreground"
                                     } relative overflow-hidden group`}
                             >
                                 <input
@@ -248,9 +249,8 @@ export default function ContactFormHighEnd() {
                     {errors.message && <p className="text-xs text-destructive">{errors.message}</p>}
                 </div>
 
-                {/* Privacy Note */}
                 <p className="text-xs text-muted-foreground">
-                    Mit dem Absenden erkläre ich mich mit der <a href="/datenschutz" className="underline hover:text-primary">Datenschutzerklärung</a> einverstanden.
+                    Mit dem Absenden erkläre ich mich mit der <Link href="/datenschutz" className="underline hover:text-primary">Datenschutzerklärung</Link> einverstanden.
                 </p>
 
                 {/* Submit Button */}

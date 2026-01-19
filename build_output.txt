@@ -1,0 +1,231 @@
+
+> webredrabbitmedia-nextjs@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.9
+   - Environments: .env.local
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 9.8s
+   Linting and checking validity of types ...
+
+Failed to compile.
+
+./app/[slug]/cluster-content.ts
+119:50  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+176:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+180:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+184:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+191:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+192:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+196:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+209:23  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+212:24  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+240:53  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+241:48  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+242:53  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+260:36  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+295:29  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+298:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+299:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+299:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+302:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+303:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+306:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+307:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+307:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+351:49  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+352:55  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+405:29  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+409:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+412:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+413:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+416:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+417:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+417:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+428:24  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+429:23  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+432:24  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+433:20  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+460:53  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+461:61  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+462:50  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+480:36  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+515:29  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+522:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+523:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+526:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+527:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+527:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+539:23  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+542:24  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+570:53  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+572:46  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+590:36  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+625:23  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+625:29  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+628:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+629:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+629:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+632:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+633:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+633:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+636:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+637:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+637:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+652:24  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+681:53  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+738:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+739:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+739:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+742:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+743:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+743:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+746:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+747:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+762:24  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+810:58  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+811:53  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+812:51  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+873:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+877:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+885:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+885:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+889:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+889:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+901:23  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+944:20  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+950:34  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+952:52  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+953:53  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+954:51  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+1007:23  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+1007:29  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+1011:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+1011:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+1014:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+1015:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+1015:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+1018:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+1019:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+1019:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+1023:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+1026:32  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+1027:30  Warning: 'city' is defined but never used.  @typescript-eslint/no-unused-vars
+1027:36  Warning: 'region' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/[slug]/layout.tsx
+3:10  Warning: 'notFound' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/indexing/route.ts
+60:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+66:18  Warning: 'fallbackError' is defined but never used.  @typescript-eslint/no-unused-vars
+80:13  Warning: 'url' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/branchen/[slug]/BranchPageClient.tsx
+66:33  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+66:158  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./app/cookie-einstellungen/CookieEinstellungenClient.tsx
+18:25  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/impressum/ImpressumClient.tsx
+103:74  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./app/kontakt/page.tsx
+4:44  Warning: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/layout.tsx
+206:9  Warning: `rel="preconnect"` is missing from Google Font. See: https://nextjs.org/docs/messages/google-font-preconnect  @next/next/google-font-preconnect
+
+./app/tipps/[slug]/BlogPostClient.tsx
+183:61  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+183:102  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./app/tipps/was-kostet-eine-website/page.tsx
+2:22  Warning: 'Check' is defined but never used.  @typescript-eslint/no-unused-vars
+2:29  Warning: 'Star' is defined but never used.  @typescript-eslint/no-unused-vars
+4:8  Warning: 'Image' is defined but never used.  @typescript-eslint/no-unused-vars
+45:25  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+45:50  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+46:57  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+46:77  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+98:84  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+98:92  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/About.tsx
+3:18  Warning: 'Users' is defined but never used.  @typescript-eslint/no-unused-vars
+3:25  Warning: 'Award' is defined but never used.  @typescript-eslint/no-unused-vars
+3:38  Warning: 'Trophy' is defined but never used.  @typescript-eslint/no-unused-vars
+3:46  Warning: 'Wrench' is defined but never used.  @typescript-eslint/no-unused-vars
+3:54  Warning: 'Shield' is defined but never used.  @typescript-eslint/no-unused-vars
+3:72  Warning: 'MapPinIcon' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/CityFAQ.tsx
+5:23  Warning: 'HelpCircle' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/CitySEOContent.tsx
+69:103  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+69:125  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+70:30  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+70:68  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+78:60  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+78:75  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/ContactForm.tsx
+163:25  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/CookieBanner.tsx
+17:25  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+227:33  Error: Do not use an `<a>` element to navigate to `/datenschutz/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./components/FAQ.tsx
+4:10  Warning: 'AOSWrapper' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/JsonLd.tsx
+1:65  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/Portfolio.tsx
+4:10  Warning: 'AnimatedSection' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/Pricing.tsx
+179:103  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./components/Process.tsx
+3:10  Warning: 'FileText' is defined but never used.  @typescript-eslint/no-unused-vars
+3:20  Warning: 'Lightbulb' is defined but never used.  @typescript-eslint/no-unused-vars
+3:31  Warning: 'CreditCard' is defined but never used.  @typescript-eslint/no-unused-vars
+118:65  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./components/SEOContent.tsx
+176:46  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+176:61  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+176:64  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+176:87  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+176:90  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+176:110  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+177:29  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+177:57  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+177:60  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+177:82  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+177:85  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+177:105  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/SeoOptimization.tsx
+5:10  Warning: 'AnimatedSection' is defined but never used.  @typescript-eslint/no-unused-vars
+6:10  Warning: 'fadeInUp' is defined but never used.  @typescript-eslint/no-unused-vars
+8:7  Warning: 'StaggerContainer' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+64:11  Warning: 'strategy' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/blog/sidebar/SidebarRelatedArticles.tsx
+2:10  Warning: 'FileText' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/contact/ContactFormHighEnd.tsx
+95:18  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/blog/sitemap-utils.ts
+6:7  Warning: 'APP_DIR' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

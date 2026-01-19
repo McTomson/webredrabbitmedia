@@ -224,7 +224,9 @@ const CookieBanner = () => {
                         <div className="mt-6 pt-4 border-t border-gray-200 text-center">
                             <p className="text-xs text-gray-500">
                                 Weitere Informationen findest du in unserer{' '}
-                                <a href="/datenschutz" className="text-red-600 hover:underline">Datenschutzerklärung</a>.
+                                <Link href="/datenschutz/" className="underline hover:text-white transition-colors">
+                                    Datenschutzerklärung
+                                </Link>
                                 Du kannst deine Einstellungen jederzeit ändern.
                             </p>
                         </div>

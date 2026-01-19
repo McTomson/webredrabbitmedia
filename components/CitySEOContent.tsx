@@ -54,6 +54,9 @@ const CitySEOContent = ({ city }: CitySEOContentProps) => {
                         Wir verstehen die Dynamik der {city.name}er Wirtschaft und bieten maßgeschneiderte Lösungen.
                         {projectCount > 0 && `Bereits über ${projectCount} erfolgreiche Projekte haben wir in der Region realisiert.`}
                     </p>
+                    <p className="text-gray-600 mb-8">
+                        Sind Sie bereit, Ihre digitale Präsenz in {city.name} auf die nächste Stufe zu heben? Lassen Sie uns gemeinsam eine Website entwickeln, die nicht nur gut aussieht, sondern Ihre regionalen Ziele unterstützt. Klicken Sie auf &quot;Projekt anfragen&quot;, um ein kostenloses Erstgespräch zu vereinbaren, oder rufen Sie uns direkt an unter &quot;+43 676 9000955&quot;.
+                    </p>
 
                     <h3>Persönlicher Service vor Ort in {city.name}</h3>
                     <p>
