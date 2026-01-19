@@ -1,6 +1,15 @@
 "use client";
 
-import { MapPin, Users, Award, Star, Trophy, Wrench, Shield, MapPin as MapPinIcon, Target, DollarSign, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+    Heart,
+    Zap,
+    MessageCircle,
+    CheckCircle,
+    DollarSign,
+    ChevronLeft,
+    ChevronRight,
+    Star
+} from 'lucide-react';
 import { AOSWrapper } from './AnimatedSection';
 import { useState, useEffect, useRef } from 'react';
 import Image from "next/image";

@@ -15,6 +15,7 @@ export default function BlogPost() {
             <div className="bg-gray-50 pt-32 pb-16 px-8">
                 <div className="max-w-3xl mx-auto">
                     <span className="text-red-600 font-medium mb-4 block">Ratgeber & Kosten</span>
+                    <p className="text-gray-500 font-medium">Kostenloses Angebot &quot;Was kostet eine Website?&quot; anfordern</p>
                     <h1 className="text-4xl lg:text-6xl font-light mb-8 leading-tight">
                         Was kostet eine professionelle Website 2026 in Österreich?
                     </h1>
