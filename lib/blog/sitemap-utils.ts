@@ -49,47 +49,40 @@ export async function getAllBranchenSitemap(): Promise<SitemapEntry[]> {
     }));
 }
 
-// 3. Get Static Pages (Recursive Scan)
+// 3. Get Static Pages (Safe Static List)
 export async function getAllStaticPagesSitemap(): Promise<SitemapEntry[]> {
-    const pages: SitemapEntry[] = [];
+    const currentDate = new Date().toISOString();
+    return [
+        // Homepage
+        { url: BASE_URL, lastModified: currentDate, changeFrequency: 'weekly', priority: 1.0 },
 
-    function scanDirectory(currentPath: string, route: string) {
-        if (!fs.existsSync(currentPath)) return;
+        // Legal Pages
+        { url: `${BASE_URL}/impressum`, lastModified: currentDate, changeFrequency: 'yearly', priority: 0.3 },
+        { url: `${BASE_URL}/datenschutz`, lastModified: currentDate, changeFrequency: 'yearly', priority: 0.3 },
+        { url: `${BASE_URL}/agb`, lastModified: currentDate, changeFrequency: 'yearly', priority: 0.3 },
+        { url: `${BASE_URL}/cookie-einstellungen`, lastModified: currentDate, changeFrequency: 'yearly', priority: 0.2 },
 
-        const items = fs.readdirSync(currentPath, { withFileTypes: true });
+        // Blog Index
+        { url: `${BASE_URL}/tipps`, lastModified: currentDate, changeFrequency: 'weekly', priority: 0.8 },
 
-        for (const item of items) {
-            if (item.isDirectory()) {
-                // Ignore special folders
-                if (item.name.startsWith('api') || item.name.startsWith('_') || item.name.startsWith('.')) continue;
-                // Ignore dynamic routes (handled by other functions)
-                if (item.name.includes('[') || item.name.includes(']')) continue;
+        // City Hub Pages (The 9 Capitals)
+        { url: `${BASE_URL}/webdesign-wien`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.9 },
+        { url: `${BASE_URL}/webdesign-graz`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/webdesign-linz`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/webdesign-salzburg`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/webdesign-innsbruck`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/webdesign-klagenfurt`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.7 },
+        { url: `${BASE_URL}/webdesign-st-poelten`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.7 },
+        { url: `${BASE_URL}/webdesign-bregenz`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.7 },
+        { url: `${BASE_URL}/webdesign-eisenstadt`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.7 },
 
-                // Handle Route Groups (e.g. (marketing)) - don't add to URL
-                if (item.name.startsWith('(') && item.name.endsWith(')')) {
-                    scanDirectory(path.join(currentPath, item.name), route);
-                } else {
-                    scanDirectory(path.join(currentPath, item.name), `${route}/${item.name}`);
-                }
-            } else if (item.isFile()) {
-                if (item.name === 'page.tsx' || item.name === 'page.js') {
-                    // It's a page!
-                    pages.push({
-                        url: route === '' ? BASE_URL : `${BASE_URL}${route}`,
-                        lastModified: new Date().toISOString(),
-                        changeFrequency: 'monthly',
-                        priority: route === '' ? 1.0 : 0.8, // Homepage = 1.0, others 0.8 default
-                    });
-                }
-            }
-        }
-    }
-
-    try {
-        scanDirectory(APP_DIR, '');
-        return pages;
-    } catch (error) {
-        console.error('Error in getAllStaticPagesSitemap:', error);
-        return [];
-    }
+        // Bundesland Hub Pages
+        { url: `${BASE_URL}/webdesign-oberoesterreich`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.9 },
+        { url: `${BASE_URL}/webdesign-niederoesterreich`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/webdesign-steiermark`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/webdesign-tirol`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/webdesign-kaernten`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.7 },
+        { url: `${BASE_URL}/webdesign-vorarlberg`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.7 },
+        { url: `${BASE_URL}/webdesign-burgenland`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.7 },
+    ];
 }
