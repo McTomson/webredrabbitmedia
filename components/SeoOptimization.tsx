@@ -1,13 +1,33 @@
+"use client";
+
 import { motion } from 'framer-motion';
 import { Zap, Target, Database, Check } from 'lucide-react';
 import { AOSWrapper } from '@/components/AnimatedSection';
+import { staggerContainer as staggerContainerAnim } from '@/lib/animations';
 
+const StaggerContainer = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+    return (
+        <motion.div
+            variants={staggerContainerAnim}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className={className}
+        >
+            {children}
+        </motion.div>
+    );
+};
 
 interface Feature {
     title: string;
     text: string;
 }
 
+interface StrategyItem {
+    title: string;
+    text: string;
+}
 
 interface ComparisonItem {
     name: string;
@@ -21,11 +41,27 @@ interface SeoOptimizationProps {
     strategyHeadline?: string;
     comparisonHeadline?: string;
     features?: Feature[];
+    strategyItems?: StrategyItem[];
     comparisonItems?: ComparisonItem[];
 }
 
-const SeoOptimization = (props: SeoOptimizationProps) => {
-    const { headline, subline, strategyHeadline, comparisonHeadline, features, comparisonItems } = props;
+const SeoOptimization = ({ headline, subline, strategyHeadline, comparisonHeadline, features, strategyItems, comparisonItems }: SeoOptimizationProps) => {
+    const defaultStrategyItems = [
+        {
+            title: "Warum wichtig?",
+            text: "Die schönste Website nützt Ihnen nichts, wenn sie auf Seite 2 bei Google landet. 90% der Nutzer klicken nur auf die ersten 3 Ergebnisse."
+        },
+        {
+            title: "Was wir tun",
+            text: "Wir überlassen nichts dem Zufall. Wir analysieren genau, was Ihre Kunden suchen und bereiten Ihre Daten so auf, dass KI-Modelle wie ChatGPT Sie als beste Antwort empfehlen."
+        },
+        {
+            title: "Ihr Vorteil",
+            text: "Sie bekommen nicht nur ein Design, sondern einen 24/7 Vertriebsmitarbeiter. Während andere für teure Werbeanzeigen zahlen müssen, kommen Kunden bei Ihnen organisch auf die Seite."
+        }
+    ];
+
+    const strategy = strategyItems || defaultStrategyItems;
 
     return (
         <section className="py-24 bg-white relative" id="seo">

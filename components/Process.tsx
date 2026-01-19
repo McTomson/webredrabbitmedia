@@ -137,7 +137,6 @@ const Process = ({ onFormOpen, headline, subline, steps: stepsProp, benefits: be
                                             </div>
                                         </div>
                                     </div>
-                                    Sind Sie bereit, Ihre digitale Präsenz auf die nächste Stufe zu heben? Lassen Sie uns gemeinsam eine Website entwickeln, die nicht nur gut aussieht, sondern Ihre Geschäftsziele unterstützt. Klicken Sie auf &quot;Projekt anfragen&quot;, um ein kostenloses Erstgespräch zu vereinbaren, oder rufen Sie uns direkt an unter &quot;+43 676 9000955&quot;. Wir freuen uns darauf, von Ihnen zu hören!
                                 </AOSWrapper>
 
                                 {/* Connecting Line - Only between steps, not after the last one */}
