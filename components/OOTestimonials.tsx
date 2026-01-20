@@ -133,7 +133,7 @@ export default function OOTestimonials() {
                     <div className="flex-1 mb-6">
                       <Quote className="w-10 h-10 text-red-200 mb-4" />
                       <p className="text-gray-700 leading-relaxed italic">
-                        "{testimonial.text}"
+                        &quot;{testimonial.text}&quot;
                       </p>
                     </div>
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from 'framer-motion';
 import { AOSWrapper } from './AnimatedSection';
 
 interface RegionalIntroProps {

@@ -115,7 +115,7 @@ const Process = ({ onFormOpen, headline, subline, steps: stepsProp, benefits: be
                                                     {step.number === "03" ? (
                                                         <>
                                                             Nur zahlen,<br />
-                                                            wenn's gefällt
+                                                            wenn&apos;s gefällt
                                                         </>
                                                     ) : (
                                                         step.title
