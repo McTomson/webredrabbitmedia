@@ -174,7 +174,6 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                                             <span className="text-2xl font-light text-gray-500 mr-1">ab</span>
                                             790 €
                                         </span>
-                                        <span className="text-xl text-gray-500 line-through">statt 2.800 €</span>
                                     </div>
                                     <div className="text-sm text-gray-600">nur bei direkter Anfrage - stressfrei</div>
                                 </motion.div>

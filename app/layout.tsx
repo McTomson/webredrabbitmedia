@@ -165,7 +165,6 @@ const jsonLd = {
         "url": "https://web.redrabbit.media",
         "priceCurrency": "EUR",
         "lowPrice": "790",
-        "highPrice": "2800",
         "offerCount": "1",
         "priceValidUntil": "2026-12-31"
       },

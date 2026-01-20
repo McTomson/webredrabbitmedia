@@ -39,7 +39,7 @@ const Contact = ({ onFormOpen, headline, subline }: ContactProps) => {
 
                                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                                     <p className="text-red-800 text-sm">
-                                        Aktuell bekommst du deinen maßgeschneiderten Website-Vorschlag zum Sonderpreis von 790 € statt 2.800 € – aber nur, wenn du jetzt anfragst.
+                                        Sichere dir jetzt deinen maßgeschneiderten Website-Vorschlag ab 790 € – unverbindlich und ohne Risiko.
                                     </p>
                                 </div>
 

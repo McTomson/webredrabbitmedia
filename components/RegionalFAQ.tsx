@@ -77,10 +77,7 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
             question: "Was brauchen Sie von mir?",
             answer: "Fast nichts! Wir machen Ihnen proaktiv Vorschläge für Design und Texte. Wenn Sie bereits eine alte Website haben, übernehmen wir gerne bestehende Inhalte. Wenn nicht, erstellen wir alles neu. Sie müssen uns nur sagen, ob es Ihnen gefällt – wir kümmern uns um den Rest."
         },
-        {
-            question: "Auf was zahle ich für den Host?",
-            answer: "Nichts! Wir hosten Ihre Website auf modernen Plattformen wie Vercel, wo für normale Unternehmenswebsites keine Hosting-Gebühren anfallen. Sie zahlen lediglich ca. 10-15 € pro Jahr für Ihre Domain (z.B. .at Adresse) direkt an den Registrar."
-        },
+
         {
             question: "Bieten Sie Vor-Ort-Termine in OÖ an?",
             answer: "Ja, wir schätzen den persönlichen Kontakt. Für größere Projekte oder wenn Sie es wünschen, kommen wir gerne zu einem Beratungsgespräch in Ihren Betrieb – egal ob in Linz, Wels, Steyr oder im ländlichen Raum."

@@ -13,7 +13,7 @@ const comparisonData = [
         criterion: 'Monatliche Kosten',
         diy: '10 - 20 € (Hosting)',
         builder: '15 - 50 € (Dauerhaft)',
-        agency: '0 € (Vercel Hosting)'
+        agency: '0 € (Keine monatl. Gebühren)'
     },
     {
         criterion: 'Zeitaufwand (Erstellung)',

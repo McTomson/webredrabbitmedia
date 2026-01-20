@@ -94,11 +94,7 @@ const Pricing = ({ onFormOpen }: PricingProps) => {
                                 <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-8 text-center">
                                     <h3 className="text-3xl font-light mb-2">Premium Website</h3>
                                     <div className="flex items-center justify-center gap-4 mb-4">
-                                        <span className="text-4xl font-bold">790 €</span>
-                                        <div className="text-left">
-                                            <div className="text-sm line-through opacity-80">statt 2.800 €</div>
-                                            <div className="text-sm">nur bei direkter Anfrage</div>
-                                        </div>
+                                        <span className="text-4xl font-bold">ab 790 €</span>
                                     </div>
                                     <p className="text-red-100 text-sm">
                                         Deine Website in nur 7 Tagen fertig
@@ -109,15 +105,6 @@ const Pricing = ({ onFormOpen }: PricingProps) => {
                                 <div className="p-8">
                                     {/* Why so cheap section */}
                                     <div className="mb-8 pb-6 border-b border-gray-200">
-                                        <div className="text-center mb-4">
-                                            <h3 className="text-lg font-medium text-gray-900 mb-2">
-                                                Warum so günstig?
-                                            </h3>
-                                            <p className="text-gray-600 text-sm">
-                                                Inklusive Hosting &amp; Domain f&uuml;r das 1. Jahr &ndash; keine versteckten Kosten, kein Riskio, nur Top-Leistung. Sichern Sie sich Ihr unverbindliches Angebot!
-                                            </p>
-                                        </div>
-
                                         <p className="text-gray-700 text-sm text-center mb-4">
                                             Du zahlst <span className="text-red-600 font-semibold">erst</span>, wenn dir unser Vorschlag gefällt. Ansonsten nicht.
                                         </p>
@@ -158,32 +145,6 @@ const Pricing = ({ onFormOpen }: PricingProps) => {
                         </AOSWrapper>
                     </div>
 
-                    {/* FOMO Section */}
-                    <AOSWrapper animation="fade-up" delay={400}>
-                        <div className="mt-16 max-w-4xl mx-auto">
-                            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-8">
-                                <div className="flex items-start gap-4">
-                                    <AlertTriangle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
-                                    <div>
-                                        <h4 className="text-lg font-medium text-yellow-800 mb-2">
-                                            Warum jetzt handeln?
-                                        </h4>
-                                        <div className="space-y-2 text-yellow-700">
-                                            <p className="text-sm">
-                                                • Strafen bis zu <strong>80.000 €</strong> bei DSGVO-Fehlern
-                                            </p>
-                                            <p className="text-sm">
-                                                • Fehlende Barrierefreiheit kann teuer werden
-                                            </p>
-                                            <p className="text-sm">
-                                                • Der Preis gilt nur bei Formularnutzung – danach wird&apos;s teurer
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </AOSWrapper>
 
                     {/* Trust Indicators */}
                     <AOSWrapper animation="fade-up" delay={600}>

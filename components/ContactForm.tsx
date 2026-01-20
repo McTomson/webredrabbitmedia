@@ -471,8 +471,8 @@ const ContactForm = ({ isOpen, onClose }: ContactFormProps) => {
                                     </div>
                                     <div className="bg-white border border-gray-200 rounded-none p-4 text-center shadow-sm">
                                         <CreditCard className="w-6 h-6 text-red-600 mx-auto mb-2" />
-                                        <h3 className="font-medium text-gray-900 mb-1">Aktionspreis gesichert</h3>
-                                        <p className="text-sm text-gray-600">ab 790€</p>
+                                        <h3 className="font-medium text-gray-900 mb-1">ab 790€</h3>
+                                        <p className="text-sm text-gray-600">Keine versteckten Kosten</p>
                                     </div>
                                     <div className="bg-white border border-gray-200 rounded-none p-4 text-center shadow-sm">
                                         <MessageCircle className="w-6 h-6 text-red-600 mx-auto mb-2" />

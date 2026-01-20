@@ -37,9 +37,8 @@ const Footer = () => {
                                     />
                                     <span className="text-xl font-light">Red Rabbit Media</span>
                                 </div>
-                                <p className="text-gray-400 mb-6 max-w-md">
-                                    Dein Partner für moderne, DSGVO-konforme Websites.
-                                    Spezialisiert auf digitale Dienstleistungen mit über 15 Jahren Erfahrung.
+                                <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
+                                    Dein Partner für moderne, DSGVO-konforme Websites. Spezialisiert auf digitale Dienstleistungen mit fundierter Erfahrung seit 2019.
                                 </p>
 
                                 {/* Contact Info */}

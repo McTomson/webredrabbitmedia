@@ -217,7 +217,7 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials, h
                             </AOSWrapper>
 
                             <AOSWrapper animation="fade-left" delay={300}>
-                                <p className="text-xl text-gray-600 leading-relaxed">
+                                <p className="text-xl text-gray-600 leading-relaxed font-light">
                                     {text || "Wir entwickeln professionelle Websites, die Ihr Unternehmen online erfolgreich machen. Mit über 15 Jahren Erfahrung verstehen wir, was Ihre Kunden erwarten und wie Sie online überzeugen."}
                                 </p>
                             </AOSWrapper>
@@ -237,8 +237,8 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials, h
                                                 {index === 2 && <Zap className="w-6 h-6 text-red-600" />}
                                             </div>
                                             <div>
-                                                <h3 className="font-medium text-gray-900 mb-2">{feature.title}</h3>
-                                                <p className="text-gray-600 text-sm">
+                                                <h3 className="font-medium text-gray-900 mb-1">{feature.title}</h3>
+                                                <p className="text-gray-600 text-sm leading-relaxed">
                                                     {feature.text}
                                                 </p>
                                             </div>
@@ -247,19 +247,22 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials, h
                                 </div>
                             </AOSWrapper>
 
-
                             {/* Contact Info */}
                             <AOSWrapper animation="fade-left" delay={500}>
                                 <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
                                     <h3 className="font-medium text-gray-900 mb-3">Red Rabbit GmbH</h3>
-                                    <div className="space-y-2 text-sm text-gray-600">
-                                        <div className="flex items-center gap-2">
-                                            <MapPin className="w-4 h-4" />
+                                    <div className="space-y-3 text-sm text-gray-600">
+                                        <div className="flex items-center gap-3">
+                                            <MapPin className="w-4 h-4 text-red-600" />
                                             <span>Grabnergasse 8/8, 1060 Wien, Österreich</span>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <Star className="w-4 h-4" />
-                                            <span>Geprüfter Webdesign-Partner</span>
+                                        <div className="flex items-center gap-3">
+                                            <Award className="w-4 h-4 text-red-600" />
+                                            <span>Geprüfter Webdesign-Partner seit 2019</span>
+                                        </div>
+                                        <div className="flex items-start gap-3 mt-4 text-xs italic">
+                                            <Zap className="w-4 h-4 text-red-600 flex-shrink-0" />
+                                            <span>Trotz Wiener Standort sind wir für unsere Kunden in ganz OÖ persönlich vor Ort und digital für Sie da.</span>
                                         </div>
                                     </div>
                                 </div>

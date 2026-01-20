@@ -11,7 +11,7 @@ const heroldComparisonData = [
     {
         criterion: 'Monatliche Kosten',
         herold: '65-140 € (je nach Paket)',
-        agency: '0 € (Vercel Hosting inkl.)'
+        agency: '0 €'
     },
     {
         criterion: 'Kosten nach 12 Monaten',

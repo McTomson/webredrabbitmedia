@@ -61,10 +61,9 @@ export default function AGB() {
                                 <h2 className="text-2xl font-light text-gray-900 mb-6">2. Vertragsabschluss & Preisbindung</h2>
                                 <div className="space-y-4 text-gray-700">
                                     <p>Ein Vertrag kommt durch das Absenden des vollständig ausgefüllten Kontaktformulars auf unserer Website zustande.</p>
-                                    <p>Nur in diesem Fall gilt ein vergünstigter Fixpreis von 690 € netto.</p>
+                                    <p>Nur in diesem Fall gilt der vergünstigte Fixpreis ab 790 € netto.</p>
                                     <ul className="list-disc list-inside space-y-2 ml-4">
-                                        <li>Der reguläre Preis für das Websiteprojekt beträgt 2.800 € netto.</li>
-                                        <li>Der Aktionspreis ist 30 Tage gültig. Danach kann die Red Rabbit GmbH das Angebot einseitig ändern oder zurückziehen.</li>
+                                        <li>Das Angebot ist 30 Tage gültig. Danach kann die Red Rabbit GmbH das Angebot einseitig ändern oder zurückziehen.</li>
                                     </ul>
                                 </div>
                             </section>

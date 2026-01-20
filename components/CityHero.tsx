@@ -94,8 +94,7 @@ const CityHero = ({ onFormOpen, city }: CityHeroProps) => {
                                     </div>
                                     <div className="text-2xl font-semibold text-gray-900">Premium Website</div>
                                     <div className="flex items-baseline gap-3 justify-center lg:justify-start">
-                                        <span className="text-4xl font-bold text-red-600">790 €</span>
-                                        <span className="text-xl text-gray-400 line-through decoration-1">2.800 €</span>
+                                        <span className="text-4xl font-bold text-red-600">ab 790 €</span>
                                     </div>
                                     <div className="text-sm text-gray-600 border-t border-gray-200 pt-2 mt-1">
                                         Exklusiv für Unternehmen in {city.name}

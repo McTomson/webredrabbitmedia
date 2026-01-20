@@ -77,7 +77,7 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                 {/* Process Section */}
                 <Process
                     onFormOpen={handleFormOpen}
-                    headline={data.region === "Oberösterreich" ? "Dein Weg zur OÖ-Website" : undefined}
+                    headline={data.region === "Oberösterreich" ? "Dein weg zu deiner Website" : undefined}
                     subline={data.region === "Oberösterreich" ? "Professionell. Regional. Unkompliziert. In 3 Schritten online." : undefined}
                 />
 
