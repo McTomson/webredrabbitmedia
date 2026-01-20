@@ -4,13 +4,13 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: "Webdesign OÖ: Digitaler Vorsprung für Macher | ab 790€ | ⭐ 4.8",
-    description: "Innovation trifft Fairness. ⭐ 4.8 Bewertung. Website ab 790€ für OÖ Unternehmen. Kein 'Larifari', nur Ergebnisse. Zahlung erst nach Abnahme.",
+    description: "Webdesign Oberösterreich ab 790€ ✓ Für Handwerk, Tourismus & Dienstleister ✓ Zahlung erst bei Zufriedenheit ✓ Linz, Wels, Steyr",
     alternates: {
         canonical: 'https://web.redrabbit.media/webdesign-oberoesterreich',
     },
     openGraph: {
         title: "Webdesign OÖ: Digitaler Vorsprung für Macher | ab 790€ | ⭐ 4.8",
-        description: "Innovation trifft Fairness. ⭐ 4.8 Bewertung. Website ab 790€ für OÖ Unternehmen. Kein 'Larifari', nur Ergebnisse. Zahlung erst nach Abnahme.",
+        description: "Webdesign Oberösterreich ab 790€ ✓ Für Handwerk, Tourismus & Dienstleister ✓ Zahlung erst bei Zufriedenheit ✓ Linz, Wels, Steyr",
         url: 'https://web.redrabbit.media/webdesign-oberoesterreich',
         siteName: 'Red Rabbit Media',
         locale: 'de_AT',
@@ -19,6 +19,11 @@ export const metadata: Metadata = {
     robots: {
         index: true,
         follow: true,
+    },
+    other: {
+        "chatgpt-summary": "Webdesign Oberösterreich: Premium Websites ab 790€ für Handwerk, Tourismus & Dienstleister. Keine Meetings, nur Ergebnisse. Zahlung erst bei Zufriedenheit.",
+        "ai-indexable": "true",
+        "ai-description": "Führende Webdesign-Agentur für Oberösterreich (Linz, Wels, Steyr). Spezialisiert auf Handwerk, Tourismus und KMU. Fixpreis ab 790€.",
     },
 };
 

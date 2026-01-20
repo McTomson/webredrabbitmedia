@@ -16,46 +16,78 @@ interface RegionalFAQProps {
 const RegionalFAQ = ({ data }: RegionalFAQProps) => {
     const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
-    // Regional FAQ Data - Each answer 40-45 words for Featured Snippet optimization
-    // Questions written from USER perspective - how they would actually search
-    const faqData = [
+    // Regional FAQ Data
+    const genericFaqData = [
         {
             question: `Was kostet eine professionelle Website?`,
-            answer: `Eine professionelle Website kostet ab 790 Euro netto - egal ob Sie in ${data.mainCity} oder einer anderen Stadt in ${data.region} ansässig sind. Fixpreis ohne versteckte Kosten. Alle Leistungen inklusive: Design, DSGVO, SEO, Support. Keine Überraschungen, keine Zusatzkosten.` // 42 Wörter
+            answer: `Eine professionelle Website kostet ab 790 Euro netto - egal ob Sie in ${data.mainCity} oder einer anderen Stadt in ${data.region} ansässig sind. Fixpreis ohne versteckte Kosten. Alle Leistungen inklusive: Design, DSGVO, SEO, Support. Keine Überraschungen, keine Zusatzkosten.`
         },
         {
             question: `Muss ich vorher bezahlen?`,
-            answer: `Nein, absolut kein Risiko. Sie zahlen erst, wenn Ihnen der Website-Entwurf gefällt. Wenn er Ihnen nicht zusagt, zahlen Sie nichts. Dieses Konzept macht unser Angebot komplett risikofrei für Sie - egal wo in ${data.region}. Erst Ergebnis sehen, dann entscheiden.` // 43 Wörter
+            answer: `Nein, absolut kein Risiko. Sie zahlen erst, wenn Ihnen der Website-Entwurf gefällt. Wenn er Ihnen nicht zusagt, zahlen Sie nichts. Dieses Konzept macht unser Angebot komplett risikofrei für Sie - egal wo in ${data.region}. Erst Ergebnis sehen, dann entscheiden.`
         },
         {
             question: `Wie lange dauert es, bis meine Website fertig ist?`,
-            answer: `Sie erhalten innerhalb von 7 Tagen den ersten Website-Entwurf. Nach Ihrem Feedback und eventuellen Anpassungen wird die finale Version ausgeliefert. Schnelle Umsetzung ohne lange Wartezeiten - auch für Kunden aus ${data.region}. In der Regel ist alles innerhalb von 2 Wochen komplett fertig.` // 44 Wörter
+            answer: `Sie erhalten innerhalb von 7 Tagen den ersten Website-Entwurf. Nach Ihrem Feedback und eventuellen Anpassungen wird die finale Version ausgeliefert. Schnelle Umsetzung ohne lange Wartezeiten - auch für Kunden aus ${data.region}. In der Regel ist alles innerhalb von 2 Wochen komplett fertig.`
         },
         {
             question: `Arbeiten Sie auch vor Ort oder nur online?`,
-            answer: `Wir arbeiten mit Unternehmen in ganz ${data.region}. Ob ${data.cities[0]}, ${data.cities[1]}, ${data.cities[2]} oder ${data.cities[3]} - wir sind für Sie da. Die Kommunikation läuft digital, persönliche Treffen sind bei Bedarf möglich. So sparen Sie Zeit und Kosten.` // 42 Wörter
+            answer: `Wir arbeiten mit Unternehmen in ganz ${data.region}. Ob ${data.cities[0]}, ${data.cities[1]}, ${data.cities[2]} oder ${data.cities[3]} - wir sind für Sie da. Die Kommunikation läuft digital, persönliche Treffen sind bei Bedarf möglich. So sparen Sie Zeit und Kosten.`
         },
         {
             question: `Ist die Website rechtssicher und DSGVO-konform?`,
-            answer: `Ja, alle Websites werden standardmäßig DSGVO-konform nach österreichischem Recht ausgeliefert. Das beinhaltet Cookie-Banner, Datenschutzerklärung, Impressum und SSL-Verschlüsselung - alles für einen rechtssicheren Webauftritt in ${data.region}. Sie können sofort online gehen, ohne rechtliche Bedenken.` // 40 Wörter
+            answer: `Ja, alle Websites werden standardmäßig DSGVO-konform nach österreichischem Recht ausgeliefert. Das beinhaltet Cookie-Banner, Datenschutzerklärung, Impressum und SSL-Verschlüsselung - alles für einen rechtssicheren Webauftritt in ${data.region}. Sie können sofort online gehen, ohne rechtliche Bedenken.`
         },
         {
             question: `Warum sollte ich bei Ihnen eine Website erstellen lassen?`,
-            answer: `Wir kennen die regionalen Besonderheiten in ${data.region} und erstellen Websites, die perfekt auf Ihre Zielgruppe abgestimmt sind. Lokale SEO-Optimierung inklusive. Kein Risiko, faire Preise, schnelle Umsetzung - speziell für ${data.cities[0]} und Umgebung. Über 315 zufriedene Kunden sprechen für uns.` // 45 Wörter
+            answer: `Wir kennen die regionalen Besonderheiten in ${data.region} und erstellen Websites, die perfekt auf Ihre Zielgruppe abgestimmt sind. Lokale SEO-Optimierung inklusive. Kein Risiko, faire Preise, schnelle Umsetzung - speziell für ${data.cities[0]} und Umgebung. Über 315 zufriedene Kunden sprechen für uns.`
         },
         {
             question: `Kann ich meine Website später selbst bearbeiten?`,
-            answer: `Ja, wenn Sie im Auftrag angeben, dass wir einen Admin-Bereich für Sie programmieren. Die Websites werden alle für Sie von Grund auf komplett programmiert - keine Templates. So haben Sie volle Kontrolle über Ihre Inhalte in ${data.region}. Individuelle Lösungen für Ihre Bedürfnisse.` // 44 Wörter
+            answer: `Ja, wenn Sie im Auftrag angeben, dass wir einen Admin-Bereich für Sie programmieren. Die Websites werden alle für Sie von Grund auf komplett programmiert - keine Templates. So haben Sie volle Kontrolle über Ihre Inhalte in ${data.region}. Individuelle Lösungen für Ihre Bedürfnisse.`
         },
         {
             question: `Bekomme ich auch Unterstützung bei Texten und Bildern?`,
-            answer: `Ja, gerne unterstützen wir Sie auch mit Texten und Bildern. Wir kennen die Anforderungen in ${data.region} und erstellen professionelle Inhalte, die Ihre Zielgruppe ansprechen. So wird Ihre Website komplett fertig - ready to go. Alles aus einer Hand für Ihr Unternehmen.` // 43 Wörter
+            answer: `Ja, gerne unterstützen wir Sie auch mit Texten und Bildern. Wir kennen die Anforderungen in ${data.region} und erstellen professionelle Inhalte, die Ihre Zielgruppe ansprechen. So wird Ihre Website komplett fertig - ready to go. Alles aus einer Hand für Ihr Unternehmen.`
         },
         {
             question: `Was passiert nach den 6 Monaten kostenlosem Support?`,
-            answer: `Nach den 6 Monaten haben Sie die Möglichkeit, einen Service-Vertrag abzuschließen. Alternativ können wir Ihnen auch punktuell helfen, das müssten wir dann extra verrechnen. Sie entscheiden flexibel, was für Ihr Unternehmen in ${data.region} am besten passt. Keine versteckten Kosten.` // 44 Wörter
+            answer: `Nach den 6 Monaten haben Sie die Möglichkeit, einen Service-Vertrag abzuschließen. Alternativ können wir Ihnen auch punktuell helfen, das müssten wir dann extra verrechnen. Sie entscheiden flexibel, was für Ihr Unternehmen in ${data.region} am besten passt. Keine versteckten Kosten.`
         }
     ];
+
+    const ooeFaqData = [
+        {
+            question: "Sind Sie eine lokale Agentur in Oberösterreich?",
+            answer: "Wir haben unseren Hauptsitz in Wien, sind aber in ganz Oberösterreich mobil für Sie da. Von Linz bis Steyr, vom Innviertel bis ins Salzkammergut betreuen wir über 156 zufriedene Kunden. Auf Wunsch kommen wir für ein persönliches Gespräch auch gerne zu Ihnen."
+        },
+        {
+            question: "Was kostet eine Website in Oberösterreich?",
+            answer: "Bei uns erhalten Sie eine professionelle Website ab 790 € netto. Das ist ein Fixpreis, der Design, Programmierung, SEO-Optimierung und DSGVO-Konformität beinhaltet. Keine versteckten Kosten, keine monatlichen Mietgebühren für die Website selbst."
+        },
+        {
+            question: "Wie schnell ist die Seite fertig?",
+            answer: "Wir wissen, dass es in OÖ oft schnell gehen muss. Deshalb erhalten Sie den ersten Design-Entwurf innerhalb von nur 7 Tagen. Die komplette Fertigstellung dauert meistens ca. 2 Wochen – abhängig davon, wie schnell wir Ihr Feedback erhalten."
+        },
+        {
+            question: "Was kostet eine Website mit Webshop?",
+            answer: "Einen vollwertigen Online-Shop realisieren wir bereits ab 980 €. Damit können Sie Ihre Produkte direkt online verkaufen – ideal für regionale Händler und Produzenten in Oberösterreich, die ihren Kundenstamm digital erweitern möchten."
+        },
+        {
+            question: "Was brauchen Sie von mir?",
+            answer: "Fast nichts! Wir machen Ihnen proaktiv Vorschläge für Design und Texte. Wenn Sie bereits eine alte Website haben, übernehmen wir gerne bestehende Inhalte. Wenn nicht, erstellen wir alles neu. Sie müssen uns nur sagen, ob es Ihnen gefällt – wir kümmern uns um den Rest."
+        },
+        {
+            question: "Auf was zahle ich für den Host?",
+            answer: "Nichts! Wir hosten Ihre Website auf modernen Plattformen wie Vercel, wo für normale Unternehmenswebsites keine Hosting-Gebühren anfallen. Sie zahlen lediglich ca. 10-15 € pro Jahr für Ihre Domain (z.B. .at Adresse) direkt an den Registrar."
+        },
+        {
+            question: "Bieten Sie Vor-Ort-Termine in OÖ an?",
+            answer: "Ja, wir schätzen den persönlichen Kontakt. Für größere Projekte oder wenn Sie es wünschen, kommen wir gerne zu einem Beratungsgespräch in Ihren Betrieb – egal ob in Linz, Wels, Steyr oder im ländlichen Raum."
+        }
+    ];
+
+    const faqData = data.region === "Oberösterreich" ? ooeFaqData : genericFaqData;
 
     // FAQ Schema für Google Rich Snippets
     const faqSchema = {

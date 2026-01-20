@@ -18,10 +18,10 @@ export const regionalContent: Record<string, RegionalContent> = {
     },
     "Oberösterreich": {
         hook: "Quality",
-        introNarrative: "Oberösterreich ist das Land der Macher. Hier zählen Handschlagqualität und Ergebnisse, keine leeren Versprechungen.",
-        economicContext: "Als das industrielle Herz Österreichs verlangt der Standort OÖ nach robusten, leistungsfähigen Lösungen. Egal ob Stahlindustrie in Linz oder Mittelstand im Innviertel – wir liefern Webdesign, das so zuverlässig arbeitet wie Ihre Produktion.",
+        introNarrative: "Oberösterreich ist das Land der Unternehmer. Hier zählen Handschlagqualität und Ergebnisse, keine leeren Versprechungen.",
+        economicContext: "Von der Industrie in Linz über Handwerksbetriebe in Wels bis zu Hotels im Salzkammergut – wir liefern Webdesign, das so zuverlässig arbeitet wie Ihre Produktion. Egal ob Installateur, Arzt, Restaurant oder Einzelhändler – wir verstehen Ihr Geschäft und kennen die Bedürfnisse oberösterreichischer Betriebe.",
         landmarks: ["Ars Electronica Center", "Pöstlingberg", "Traunsee", "Kulturhauptstadt Bad Ischl"],
-        localProof: "Von der Stahlwelt in Linz bis zum Salzkammergut – Qualität, die bleibt.",
+        localProof: "Von Linz bis Steyr, vom Innviertel bis ins Salzkammergut – Qualität, die bleibt.",
         projectCount: 156
     },
     "Niederösterreich": {

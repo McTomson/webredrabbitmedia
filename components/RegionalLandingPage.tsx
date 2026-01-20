@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import Header from "@/components/Header";
 import RegionalHero from "@/components/RegionalHero";
 import RegionalSEOContent from "@/components/RegionalSEOContent";
 import SkipLinks from "@/components/SkipLinks";
 import { RegionalContent } from "@/lib/regional-content";
 
 // Lazy imports shared across all regional pages
+const RegionalIntro = dynamic(() => import('@/components/RegionalIntro'));
 const Portfolio = dynamic(() => import('@/components/Portfolio'));
 const Process = dynamic(() => import('@/components/Process'));
 const SeoOptimization = dynamic(() => import('@/components/SeoOptimization'));
@@ -16,6 +16,11 @@ const About = dynamic(() => import('@/components/About'));
 const Pricing = dynamic(() => import('@/components/Pricing'));
 const RegionalFAQ = dynamic(() => import('@/components/RegionalFAQ'));
 const Contact = dynamic(() => import('@/components/Contact'));
+
+// OÖ-specific components
+const OOBranchenSection = dynamic(() => import('@/components/OOBranchenSection'));
+const OOTestimonials = dynamic(() => import('@/components/OOTestimonials'));
+const RegionalCityLinks = dynamic(() => import('@/components/RegionalCityLinks'));
 
 // Client-only Widgets
 const FloatingWhatsApp = dynamic(() => import('@/components/FloatingWhatsApp'), { ssr: false });
@@ -53,9 +58,6 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
             <FloatingWhatsApp />
             <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
 
-            {/* Header Navigation */}
-            <Header onFormOpen={handleFormOpen} />
-
             {/* SEO Content for Crawlers (hidden) */}
             <RegionalSEOContent data={data} content={content} />
 
@@ -63,17 +65,33 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                 {/* Regional Hero Section */}
                 <RegionalHero data={data} onFormOpen={handleFormOpen} />
 
+                {/* Intro Section with SEO Text */}
+                <RegionalIntro data={data} />
+
                 {/* Portfolio Section */}
                 <Portfolio />
 
+                {/* OÖ-specific: Branchen Section */}
+                {data.region === "Oberösterreich" && <OOBranchenSection />}
+
                 {/* Process Section */}
-                <Process onFormOpen={handleFormOpen} />
+                <Process
+                    onFormOpen={handleFormOpen}
+                    headline={data.region === "Oberösterreich" ? "Dein Weg zur OÖ-Website" : undefined}
+                    subline={data.region === "Oberösterreich" ? "Professionell. Regional. Unkompliziert. In 3 Schritten online." : undefined}
+                />
 
                 {/* SEO Optimization Section */}
                 <SeoOptimization />
 
                 {/* About Section */}
-                <About />
+                <About
+                    hideTestimonials={data.region === "Oberösterreich"}
+                    headline={data.region === "Oberösterreich" ? "Dein Partner in Oberösterreich" : undefined}
+                />
+
+                {/* OÖ-specific: Testimonials */}
+                {data.region === "Oberösterreich" && <OOTestimonials />}
 
                 {/* Pricing Section */}
                 <Pricing onFormOpen={handleFormOpen} />
@@ -82,7 +100,14 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                 <RegionalFAQ data={data} />
 
                 {/* Contact Section */}
-                <Contact onFormOpen={handleFormOpen} />
+                <Contact
+                    onFormOpen={handleFormOpen}
+                    headline={data.region === "Oberösterreich" ? "Bereit für deinen Erfolg in OÖ?" : undefined}
+                    subline={data.region === "Oberösterreich" ? "Starte jetzt mit deiner Website für Linz, Wels & Steyr." : undefined}
+                />
+
+                {/* Regional City Links (Replaces OO Footer content) */}
+                <RegionalCityLinks data={data} />
             </main>
         </div>
     );

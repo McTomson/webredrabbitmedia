@@ -13,6 +13,7 @@
     "@types/aos": "^3.0.7",
     "@types/nodemailer": "^6.4.17",
     "aos": "^2.3.4",
+    "embla-carousel-react": "^8.6.0",
     "framer-motion": "^11.11.17",
     "googleapis": "^144.0.0",
     "gray-matter": "^4.0.3",

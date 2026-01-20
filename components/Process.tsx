@@ -37,7 +37,7 @@ const Process = ({ onFormOpen, headline, subline, steps: stepsProp, benefits: be
             highlight: "7 Tage"
         },
         {
-            title: "Nur zahlen, wenn&apos;s gefällt",
+            title: "Nur zahlen, wenn's gefällt",
             description: "Gefällt dir unser Vorschlag? Perfekt! Wenn nicht, entstehen dir keinerlei Kosten.",
             highlight: "Kein Risiko"
         }
@@ -115,7 +115,7 @@ const Process = ({ onFormOpen, headline, subline, steps: stepsProp, benefits: be
                                                     {step.number === "03" ? (
                                                         <>
                                                             Nur zahlen,<br />
-                                                            wenn&apos;s gefällt
+                                                            wenn's gefällt
                                                         </>
                                                     ) : (
                                                         step.title

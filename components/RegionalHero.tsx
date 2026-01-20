@@ -30,11 +30,11 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
     }, []);
 
     return (
-        <section className="min-h-screen bg-white relative overflow-hidden pt-20">
-            {/* Animated Background Shapes */}
+        <section className="h-screen bg-slate-900 relative overflow-hidden flex flex-col justify-center">
+            {/* Animated Background Shapes - Made subtler for dark theme */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 <motion.div
-                    className="absolute top-20 left-20 w-32 h-32 bg-red-100 rounded-full opacity-30"
+                    className="absolute top-20 left-20 w-32 h-32 bg-white rounded-full opacity-5"
                     animate={{
                         x: [0, 30, 0],
                         y: [0, -20, 0],
@@ -46,228 +46,100 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
                         ease: "easeInOut"
                     }}
                 />
-                <motion.div
-                    className="absolute top-40 right-32 w-24 h-24 bg-red-200 rounded-full opacity-20"
-                    animate={{
-                        x: [0, -25, 0],
-                        y: [0, 15, 0],
-                        scale: [1, 1.2, 1],
-                    }}
-                    transition={{
-                        duration: 6,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                />
-                <motion.div
-                    className="absolute bottom-40 left-1/3 w-20 h-20 bg-red-300 rounded-full opacity-25"
-                    animate={{
-                        x: [0, 20, 0],
-                        y: [0, -10, 0],
-                        rotate: [0, -180, -360],
-                    }}
-                    transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                />
+
             </div>
 
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/images/dashboard.webp"
-                    alt={`Red Rabbit Media Webdesign ${data.region}`}
+                    src={data.region === "Oberösterreich"
+                        ? "/images/ooe/hero/webdesign-oberoesterreich-see-schiff-v2.png"
+                        : "/images/dashboard.webp"
+                    }
+                    alt={data.region === "Oberösterreich"
+                        ? "Webdesign Oberösterreich - See mit Boot im Nebel"
+                        : `Red Rabbit Media Webdesign ${data.region}`
+                    }
                     fill
-                    className="w-full h-full object-cover opacity-50"
+                    className="w-full h-full object-cover object-bottom"
                     priority
                 />
-                <div className="absolute inset-0 bg-white/85"></div>
+                {/* Subtle dark gradient for better text readability */}
+                <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-black/60 to-transparent"></div>
+                <div className="absolute inset-0 bg-black/30"></div>
             </div>
 
             {/* Main Hero Content */}
-            <div className="max-w-7xl mx-auto px-8 pt-20 pb-16 relative z-10">
-                <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[70vh]">
-                    {/* Left Side - Floating Red Logo */}
-                    <div className="hidden lg:flex justify-center lg:justify-end">
-                        <motion.div
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="text-center lg:text-right"
-                        >
-                            <motion.div
-                                animate={{
-                                    y: [0, -20, 0],
-                                    rotate: [0, 5, -5, 0],
-                                }}
-                                transition={{
-                                    duration: 4,
-                                    repeat: Infinity,
-                                    ease: "easeInOut"
-                                }}
-                                className="mb-8"
-                            >
-                                <Image
-                                    src="/images/logo.webp"
-                                    alt="Red Rabbit Media Logo"
-                                    width={280}
-                                    height={280}
-                                    className="w-64 h-auto"
-                                />
-                            </motion.div>
-                            <motion.h2
-                                className="text-3xl font-light text-gray-700"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5, duration: 0.8 }}
-                            >
-                                Red Rabbit Media
-                            </motion.h2>
-                            <motion.p
-                                className="text-gray-500 mt-2"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.7, duration: 0.8 }}
-                            >
-                                Webdesign in {data.region}
-                            </motion.p>
-                        </motion.div>
-                    </div>
+            <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10 w-full mb-0 md:mb-12">
+                <div className="text-center max-w-5xl mx-auto">
 
-                    {/* Right Side - Main Content */}
-                    <div className="space-y-6 lg:space-y-8 text-center lg:text-left">
-                        <motion.div
-                            initial={{ opacity: 0, x: 50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="relative"
-                        >
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 leading-tight">
-                                <motion.span
-                                    className="block"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.4 }}
-                                >
-                                    Webdesign {data.region}.
-                                </motion.span>
-                                <motion.span
-                                    className="block"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.6 }}
-                                >
-                                    Keine Meetings.
-                                </motion.span>
-                                <motion.span
-                                    className="text-red-600 font-medium block"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.8 }}
-                                    whileHover={{ scale: 1.05, originX: 0 }}
-                                >
-                                    Nur Ergebnisse.
-                                </motion.span>
-                                <motion.div
-                                    className="mt-6 space-y-2"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 1.0 }}
-                                >
-                                    <div className="text-2xl font-semibold text-gray-900">Premium Website</div>
-                                    <div className="flex items-baseline gap-3 justify-center lg:justify-start">
-                                        <span className="text-4xl font-bold text-red-600">
-                                            <span className="text-2xl font-light text-gray-500 mr-1">ab</span>
-                                            790 €
-                                        </span>
-                                        <span className="text-xl text-gray-500 line-through">statt 2.800 €</span>
-                                    </div>
-                                    <div className="text-sm text-gray-600">nur bei direkter Anfrage - stressfrei</div>
-                                </motion.div>
-                            </h1>
-                        </motion.div>
-
-                        <motion.p
-                            className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0"
+                    {/* Main Headline */}
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-thin text-white leading-[1.1] mb-6 md:mb-10 tracking-wide drop-shadow-xl">
+                        <motion.span
+                            className="block"
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 1.2 }}
+                            transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
                         >
-                            Professionelles Webdesign für {data.cities.slice(0, 3).join(', ')} und ganz {data.region}.
-                            Du füllst nur das Formular aus – wir übernehmen den Rest. Kein Aufwand. Kein Risiko.
-                        </motion.p>
-
-                        {/* Regional Info Badge */}
-                        <motion.div
-                            className="flex items-center justify-center lg:justify-start gap-3 py-2"
-                            initial={{ opacity: 0, y: 20 }}
+                            DIGITAL.
+                        </motion.span>
+                        <motion.span
+                            className="block font-light"
+                            initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 1.25 }}
+                            transition={{ duration: 1.5, delay: 1.2, ease: "easeOut" }}
                         >
-                            <div className="px-4 py-2 bg-red-50 border border-red-200 rounded-lg">
-                                <p className="text-sm text-gray-700">
-                                    <span className="font-semibold text-red-600">{data.population}</span> Menschen in {data.region}
-                                </p>
-                            </div>
-                            <Link
-                                href={`/webdesign-${data.mainCitySlug}`}
-                                className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors"
-                            >
-                                <p className="text-sm text-gray-700">
-                                    Speziell für <span className="font-semibold text-gray-900">{data.mainCity}</span> →
-                                </p>
-                            </Link>
-                        </motion.div>
+                            {data.region.toUpperCase()}.
+                        </motion.span>
+                    </h1>
 
-                        {/* Trust / Reviews */}
-                        <motion.div
-                            className="flex items-center justify-center lg:justify-start gap-4 py-2"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 1.3 }}
+                    <motion.p
+                        className="text-base sm:text-lg md:text-2xl text-gray-200 font-extralight mb-10 md:mb-16 max-w-2xl mx-auto drop-shadow-md tracking-wider px-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 2.5, duration: 1.5 }}
+                    >
+                        Webauftritte, die begeistern und Conversions erzielen.<br />
+                        <span className="text-gray-400 text-sm md:text-lg block mt-2 md:mt-3 font-light">Keine Spielereien. Nur Ergebnisse.</span>
+                    </motion.p>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.5, delay: 3.5 }}
+                        className="flex justify-center"
+                    >
+                        <button
+                            onClick={onFormOpen}
+                            className="group flex items-center gap-3 md:gap-4 px-8 py-3 md:px-12 md:py-5 bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white hover:text-gray-900 transition-all duration-700 rounded-sm"
                         >
-                            <div className="flex gap-1">
-                                {[1, 2, 3, 4, 5].map((star) => (
-                                    <svg key={star} className="w-5 h-5 text-yellow-500 fill-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                ))}
-                            </div>
-                            <div className="text-sm font-medium text-gray-700">
-                                <span className="font-bold">4.8/5</span> • <span className="underline decoration-gray-300 underline-offset-4">315 Bewertungen</span>
-                            </div>
-                        </motion.div>
-
-                        <div className="flex justify-center lg:justify-start">
-                            <motion.button
-                                onClick={onFormOpen}
-                                className="group flex items-center justify-center gap-3 px-6 md:px-8 py-3 md:py-4 bg-red-600 text-white hover:bg-red-700 transition-all duration-500 rounded-none shadow-lg shadow-red-500/30"
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8, delay: 1.4 }}
-                                whileHover={{
-                                    scale: 1.05,
-                                    boxShadow: "0 15px 30px rgba(220, 38, 38, 0.4)"
-                                }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                <span className="text-lg font-medium">Jetzt kostenlos starten</span>
-                                <motion.div
-                                    animate={{ y: [0, 5, 0] }}
-                                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                                >
-                                    <ArrowDown className="w-5 h-5" />
-                                </motion.div>
-                            </motion.button>
-                        </div>
-                    </div>
+                            <span className="text-sm md:text-lg tracking-[0.2em] font-light">JETZT STARTEN</span>
+                        </button>
+                    </motion.div>
                 </div>
             </div>
+            <motion.div
+                className="absolute bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-100 py-4 z-20 hidden md:block"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1.0 }}
+            >
+                <div className="max-w-7xl mx-auto px-8 flex justify-between items-center text-xs md:text-sm text-gray-500 uppercase tracking-widest font-medium">
+                    <div className="flex gap-8">
+                        <span>{data.cities?.[0] || 'Linz'}</span>
+                        <span>{data.cities?.[1] || 'Wels'}</span>
+                        <span>{data.cities?.[2] || 'Steyr'}</span>
+                        <span>{data.cities?.[3] || 'Gmunden'}</span>
+                    </div>
+                    <div className="flex gap-8">
+                        <span className="text-gray-900">AB 790 €</span>
+                        <span className="text-gray-900">PREMIUM WEBDESIGN</span>
+                    </div>
+                </div>
+            </motion.div>
 
             {/* Mouse Trail Effect */}
-            <motion.div
+            < motion.div
                 className="fixed pointer-events-none z-50 mix-blend-multiply"
                 style={{
                     left: mousePosition.x - 10,
@@ -285,8 +157,8 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
                 }}
             >
                 <div className="w-6 h-6 bg-red-400/30 rounded-full blur-md"></div>
-            </motion.div>
-        </section>
+            </motion.div >
+        </section >
     );
 };
 

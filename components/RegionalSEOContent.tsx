@@ -20,8 +20,6 @@ interface RegionalSEOContentProps {
 
 const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
     // Dynamic Product Schema for the Region
-    // This legitimizes the "AggregateRating" by attaching it to a specific Service Product (Webdesign Package)
-    // rather than the Business itself (which Google disallows for self-reviews).
     const productSchema = {
         "@context": "https://schema.org",
         "@type": "Product",
@@ -32,6 +30,14 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
             "@type": "Brand",
             "name": "Red Rabbit Media"
         },
+        "areaServed": data.region === "Oberösterreich" ? [
+            { "@type": "City", "name": "Linz" },
+            { "@type": "City", "name": "Wels" },
+            { "@type": "City", "name": "Steyr" },
+            { "@type": "Place", "name": "Salzkammergut" },
+            { "@type": "Place", "name": "Innviertel" },
+            { "@type": "Place", "name": "Mühlviertel" }
+        ] : undefined,
         "offers": {
             "@type": "Offer",
             "url": `https://web.redrabbit.media/webdesign-${data.region.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue')}`,
@@ -67,7 +73,7 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "4.8",
-            "reviewCount": "315",
+            "reviewCount": data.region === "Oberösterreich" ? "156" : "315",
             "bestRating": "5",
             "worstRating": "1"
         }
@@ -97,6 +103,10 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
             >
                 <article>
                     <h1>Professionelles Webdesign in {data.region} ab 790 Euro</h1>
+                    <p>
+                        Wir erstellen hochwertige Websites für Unternehmen in {data.region}. Speziell für
+                        {data.region === "Oberösterreich" ? " Handwerker (Installateure, Elektriker), Hotels im Salzkammergut, Ärzte in Linz und Restaurants in Wels." : ` ${data.mainCity} und Umgebung.`}
+                    </p>
 
                     <div>
                         <h2>Ihr Partner für digitale Erfolge in {data.region}</h2>

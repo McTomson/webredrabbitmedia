@@ -25,9 +25,10 @@ interface AboutProps {
     testimonialsHeadline?: string;
     features?: Feature[];
     testimonials?: Testimonial[];
+    hideTestimonials?: boolean;
 }
 
-const About = ({ headline, text, testimonialsHeadline, features, testimonials }: AboutProps) => {
+const About = ({ headline, text, testimonialsHeadline, features, testimonials, hideTestimonials = false }: AboutProps) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
@@ -38,7 +39,7 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials }:
         {
             stars: "⭐️⭐️⭐️⭐️⭐️",
             rating: "5/5",
-            quote: "&quot;Ich hatte keine Lust mich damit zu beschäftigen wusste aber das ich eine neue Webseite benötigte. RED hat alles gemacht und ich musste nur einmal ein feedback geben. Jetzt hab ich eine moderne Website und bin online sichtbar – ohne Stress.&quot;",
+            quote: "\"Ich hatte keine Lust mich damit zu beschäftigen wusste aber das ich eine neue Webseite benötigte. RED hat alles gemacht und ich musste nur einmal ein feedback geben. Jetzt hab ich eine moderne Website und bin online sichtbar – ohne Stress.\"",
             author: "Daniel W.",
             company: "Sanitär & Heizung",
             avatar: "👨‍🔧"
@@ -46,7 +47,7 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials }:
         {
             stars: "⭐️⭐️⭐️⭐️⭐️",
             rating: "5/5",
-            quote: "&quot;Ich war erst skeptisch. Aber das Team hat geliefert – schnell, unkompliziert und die Seite sieht top aus. Danke nochmals!&quot;",
+            quote: "\"Ich war erst skeptisch. Aber das Team hat geliefert – schnell, unkompliziert und die Seite sieht top aus. Danke nochmals!\"",
             author: "Stefan H.",
             company: "Elektrotechnik",
             avatar: "👨‍💻"
@@ -54,7 +55,7 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials }:
         {
             stars: "⭐️⭐️⭐️⭐️",
             rating: "4/5",
-            quote: "&quot;Nachdem ich Google Analytics gecheckt habe sah ich das meine Kunden nach 30 sec die Seite wieder verlassen haben und mich nicht kontaktiert haben. Jetzt bekomme ich jeden Monat neue Anfragen.&quot;",
+            quote: "\"Nachdem ich Google Analytics gecheckt habe sah ich das meine Kunden nach 30 sec die Seite wieder verlassen haben und mich nicht kontaktiert haben. Jetzt bekomme ich jeden Monat neue Anfragen.\"",
             author: "Ali K.",
             company: "Bauunternehmen",
             avatar: "👷‍♂️"
@@ -294,193 +295,195 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials }:
                     </div >
 
                     {/* Testimonials - Completely redesigned with animations */}
-                    < AOSWrapper animation="fade-up" delay={600} >
-                        <div className="mt-60">
-                            <h3 className="text-3xl lg:text-4xl font-light text-center mb-6 text-gray-900">
-                                {testimonialsHeadline || "Was unsere Kunden sagen"}
-                            </h3>
-                            <p className="text-xl text-gray-600 text-center mb-20 max-w-2xl mx-auto">
-                                Echte Erfahrungen von Kunden, die mit uns erfolgreich geworden sind
-                            </p>
+                    {!hideTestimonials && (
+                        < AOSWrapper animation="fade-up" delay={600} >
+                            <div className="mt-60">
+                                <h3 className="text-3xl lg:text-4xl font-light text-center mb-6 text-gray-900">
+                                    {testimonialsHeadline || "Was unsere Kunden sagen"}
+                                </h3>
+                                <p className="text-xl text-gray-600 text-center mb-20 max-w-2xl mx-auto">
+                                    Echte Erfahrungen von Kunden, die mit uns erfolgreich geworden sind
+                                </p>
 
-                            {/* Desktop Grid Layout */}
-                            <div className="hidden lg:grid md:grid-cols-3 gap-8">
-                                {displayTestimonials.map((testimonial, index) => (
-                                    <AOSWrapper
-                                        key={index}
-                                        animation="fade-up"
-                                        delay={700 + (index * 150)}
-                                    >
-                                        <div className="group relative bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 hover:border-red-300 hover:-translate-y-2 overflow-hidden">
-                                            {/* Subtle background pattern */}
-                                            <div className="absolute inset-0 opacity-5">
-                                                <div className="absolute top-4 right-4 w-20 h-20 bg-red-200 rounded-full"></div>
-                                                <div className="absolute bottom-4 left-4 w-16 h-16 bg-gray-200 rounded-full"></div>
-                                            </div>
+                                {/* Desktop Grid Layout */}
+                                <div className="hidden lg:grid md:grid-cols-3 gap-8">
+                                    {displayTestimonials.map((testimonial, index) => (
+                                        <AOSWrapper
+                                            key={index}
+                                            animation="fade-up"
+                                            delay={700 + (index * 150)}
+                                        >
+                                            <div className="group relative bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 hover:border-red-300 hover:-translate-y-2 overflow-hidden">
+                                                {/* Subtle background pattern */}
+                                                <div className="absolute inset-0 opacity-5">
+                                                    <div className="absolute top-4 right-4 w-20 h-20 bg-red-200 rounded-full"></div>
+                                                    <div className="absolute bottom-4 left-4 w-16 h-16 bg-gray-200 rounded-full"></div>
+                                                </div>
 
-                                            <div className="relative z-10 flex flex-col h-full">
-                                                {/* Stars and rating */}
-                                                <div className="flex items-center justify-between mb-6">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="text-xl text-yellow-400">
-                                                            {testimonial.stars}
+                                                <div className="relative z-10 flex flex-col h-full">
+                                                    {/* Stars and rating */}
+                                                    <div className="flex items-center justify-between mb-6">
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="text-xl text-yellow-400">
+                                                                {testimonial.stars}
+                                                            </div>
+                                                            <span className="text-sm text-gray-500 font-medium">
+                                                                {testimonial.rating}
+                                                            </span>
                                                         </div>
-                                                        <span className="text-sm text-gray-500 font-medium">
-                                                            {testimonial.rating}
-                                                        </span>
+                                                        <div className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
+                                                            Verifiziert
+                                                        </div>
                                                     </div>
-                                                    <div className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
-                                                        Verifiziert
-                                                    </div>
-                                                </div>
 
-                                                {/* Quote */}
-                                                <div className="flex-1 mb-6">
-                                                    <blockquote className="text-gray-700 leading-relaxed text-base font-light">
-                                                        {testimonial.quote}
-                                                    </blockquote>
-                                                </div>
-
-                                                {/* Author section */}
-                                                <div className="pt-6 border-t border-gray-100">
-                                                    <div className="font-medium text-gray-900 text-sm">
-                                                        {testimonial.author}
+                                                    {/* Quote */}
+                                                    <div className="flex-1 mb-6">
+                                                        <blockquote className="text-gray-700 leading-relaxed text-base font-light">
+                                                            {testimonial.quote}
+                                                        </blockquote>
                                                     </div>
-                                                    <div className="text-gray-400 text-xs">
-                                                        {testimonial.company}
+
+                                                    {/* Author section */}
+                                                    <div className="pt-6 border-t border-gray-100">
+                                                        <div className="font-medium text-gray-900 text-sm">
+                                                            {testimonial.author}
+                                                        </div>
+                                                        <div className="text-gray-400 text-xs">
+                                                            {testimonial.company}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </AOSWrapper>
-                                ))}
-                            </div>
+                                        </AOSWrapper>
+                                    ))}
+                                </div>
 
-                            {/* Mobile/Tablet Carousel */}
-                            <div className="lg:hidden relative max-w-4xl mx-auto">
-                                {/* Carousel */}
-                                <div
-                                    ref={carouselRef}
-                                    className="overflow-hidden rounded-2xl"
-                                    onMouseDown={handleMouseDown}
-                                    onMouseMove={handleMouseMove}
-                                    onMouseUp={handleMouseUp}
-                                    onMouseLeave={handleMouseUp}
-                                    onTouchStart={handleTouchStart}
-                                    onTouchMove={handleTouchMove}
-                                    onTouchEnd={handleTouchEnd}
-                                    style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-                                >
+                                {/* Mobile/Tablet Carousel */}
+                                <div className="lg:hidden relative max-w-4xl mx-auto">
+                                    {/* Carousel */}
                                     <div
-                                        className="flex transition-transform duration-300 ease-out"
-                                        style={{
-                                            transform: `translateX(-${currentSlide * (100 / 3)}%)`,
-                                            width: `${displayTestimonials.length * 100}%`
-                                        }}
+                                        ref={carouselRef}
+                                        className="overflow-hidden rounded-2xl"
+                                        onMouseDown={handleMouseDown}
+                                        onMouseMove={handleMouseMove}
+                                        onMouseUp={handleMouseUp}
+                                        onMouseLeave={handleMouseUp}
+                                        onTouchStart={handleTouchStart}
+                                        onTouchMove={handleTouchMove}
+                                        onTouchEnd={handleTouchEnd}
+                                        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
                                     >
-                                        {displayTestimonials.map((testimonial, index) => (
-                                            <div
-                                                key={index}
-                                                className="w-full flex-shrink-0 px-2"
-                                                style={{ width: `${100 / 3}%` }}
-                                            >
-                                                <div className="group relative bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 hover:border-red-300 overflow-hidden">
-                                                    {/* Subtle background pattern */}
-                                                    <div className="absolute inset-0 opacity-5">
-                                                        <div className="absolute top-4 right-4 w-20 h-20 bg-red-200 rounded-full"></div>
-                                                        <div className="absolute bottom-4 left-4 w-16 h-16 bg-gray-200 rounded-full"></div>
-                                                    </div>
+                                        <div
+                                            className="flex transition-transform duration-300 ease-out"
+                                            style={{
+                                                transform: `translateX(-${currentSlide * (100 / 3)}%)`,
+                                                width: `${displayTestimonials.length * 100}%`
+                                            }}
+                                        >
+                                            {displayTestimonials.map((testimonial, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="w-full flex-shrink-0 px-2"
+                                                    style={{ width: `${100 / 3}%` }}
+                                                >
+                                                    <div className="group relative bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 hover:border-red-300 overflow-hidden">
+                                                        {/* Subtle background pattern */}
+                                                        <div className="absolute inset-0 opacity-5">
+                                                            <div className="absolute top-4 right-4 w-20 h-20 bg-red-200 rounded-full"></div>
+                                                            <div className="absolute bottom-4 left-4 w-16 h-16 bg-gray-200 rounded-full"></div>
+                                                        </div>
 
-                                                    <div className="relative z-10 flex flex-col h-full">
-                                                        {/* Stars and rating */}
-                                                        <div className="flex items-center justify-between mb-6">
-                                                            <div className="flex items-center gap-2">
-                                                                <div className="text-xl text-yellow-400">
-                                                                    {testimonial.stars}
+                                                        <div className="relative z-10 flex flex-col h-full">
+                                                            {/* Stars and rating */}
+                                                            <div className="flex items-center justify-between mb-6">
+                                                                <div className="flex items-center gap-2">
+                                                                    <div className="text-xl text-yellow-400">
+                                                                        {testimonial.stars}
+                                                                    </div>
+                                                                    <span className="text-sm text-gray-500 font-medium">
+                                                                        {testimonial.rating}
+                                                                    </span>
                                                                 </div>
-                                                                <span className="text-sm text-gray-500 font-medium">
-                                                                    {testimonial.rating}
-                                                                </span>
+                                                                <div className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
+                                                                    Verifiziert
+                                                                </div>
                                                             </div>
-                                                            <div className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
-                                                                Verifiziert
-                                                            </div>
-                                                        </div>
 
-                                                        {/* Quote */}
-                                                        <div className="flex-1 mb-6">
-                                                            <blockquote className="text-gray-700 leading-relaxed text-base font-light">
-                                                                {testimonial.quote}
-                                                            </blockquote>
-                                                        </div>
-
-                                                        {/* Author section */}
-                                                        <div className="pt-6 border-t border-gray-100">
-                                                            <div className="font-medium text-gray-900 text-sm">
-                                                                {testimonial.author}
+                                                            {/* Quote */}
+                                                            <div className="flex-1 mb-6">
+                                                                <blockquote className="text-gray-700 leading-relaxed text-base font-light">
+                                                                    {testimonial.quote}
+                                                                </blockquote>
                                                             </div>
-                                                            <div className="text-gray-400 text-xs">
-                                                                {testimonial.company}
+
+                                                            {/* Author section */}
+                                                            <div className="pt-6 border-t border-gray-100">
+                                                                <div className="font-medium text-gray-900 text-sm">
+                                                                    {testimonial.author}
+                                                                </div>
+                                                                <div className="text-gray-400 text-xs">
+                                                                    {testimonial.company}
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Navigation Arrows */}
+                                    <button
+                                        onClick={() => setCurrentSlide((prev) => (prev - 1 + 3) % 3)}
+                                        className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-600 transition-colors duration-300"
+                                        aria-label="Vorherige Bewertung"
+                                    >
+                                        <ChevronLeft className="w-5 h-5" />
+                                    </button>
+                                    <button
+                                        onClick={() => setCurrentSlide((prev) => (prev + 1) % 3)}
+                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-600 transition-colors duration-300"
+                                        aria-label="Nächste Bewertung"
+                                    >
+                                        <ChevronRight className="w-5 h-5" />
+                                    </button>
+
+                                    {/* Lines Indicator */}
+                                    <div className="flex justify-center mt-6 space-x-1">
+                                        {[0, 1, 2].map((index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => setCurrentSlide(index)}
+                                                className={`h-1 transition-all duration-300 ${index === currentSlide
+                                                    ? 'w-8 bg-red-600'
+                                                    : 'w-4 bg-gray-300 hover:bg-gray-400'
+                                                    }`}
+                                                aria-label={`Gehe zu Bewertung ${index + 1}`}
+                                            />
                                         ))}
                                     </div>
                                 </div>
 
-                                {/* Navigation Arrows */}
-                                <button
-                                    onClick={() => setCurrentSlide((prev) => (prev - 1 + 3) % 3)}
-                                    className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-600 transition-colors duration-300"
-                                    aria-label="Vorherige Bewertung"
-                                >
-                                    <ChevronLeft className="w-5 h-5" />
-                                </button>
-                                <button
-                                    onClick={() => setCurrentSlide((prev) => (prev + 1) % 3)}
-                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-600 transition-colors duration-300"
-                                    aria-label="Nächste Bewertung"
-                                >
-                                    <ChevronRight className="w-5 h-5" />
-                                </button>
-
-                                {/* Lines Indicator */}
-                                <div className="flex justify-center mt-6 space-x-1">
-                                    {[0, 1, 2].map((index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setCurrentSlide(index)}
-                                            className={`h-1 transition-all duration-300 ${index === currentSlide
-                                                ? 'w-8 bg-red-600'
-                                                : 'w-4 bg-gray-300 hover:bg-gray-400'
-                                                }`}
-                                            aria-label={`Gehe zu Bewertung ${index + 1}`}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Trust indicators */}
-                            <div className="mt-16 text-center">
-                                <div className="inline-flex items-center space-x-8 text-sm text-gray-500">
-                                    <div className="flex items-center space-x-2">
-                                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                                        <span>Echte Kunden</span>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <span>Verifizierte Bewertungen</span>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                                        <span>Durchschnitt: 4.8/5</span>
+                                {/* Trust indicators */}
+                                <div className="mt-16 text-center">
+                                    <div className="inline-flex items-center space-x-8 text-sm text-gray-500">
+                                        <div className="flex items-center space-x-2">
+                                            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                            <span>Echte Kunden</span>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                            <span>Verifizierte Bewertungen</span>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                            <span>Durchschnitt: 4.8/5</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </AOSWrapper >
+                        </AOSWrapper >
+                    )}
                 </div >
             </section >
         </>
