@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
+import Link from 'next/link';
+
 interface RegionalHeroProps {
     onFormOpen: () => void;
     data: {
@@ -16,6 +18,17 @@ interface RegionalHeroProps {
 }
 
 const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
+    // Helper to generate slug from city name
+    const getSlug = (city: string) => {
+        const slug = city.toLowerCase()
+            .replace('ü', 'ue')
+            .replace('ö', 'oe')
+            .replace('ä', 'ae')
+            .replace('ß', 'ss')
+            .replace(' ', '-');
+        return `/webdesign-${slug}`;
+    };
+
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
@@ -26,6 +39,8 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
         window.addEventListener('mousemove', handleMouseMove);
         return () => window.removeEventListener('mousemove', handleMouseMove);
     }, []);
+
+    const heroCities = data.cities?.slice(0, 4) || ['Linz', 'Wels', 'Steyr', 'Gmunden'];
 
     return (
         <section className="h-screen bg-slate-900 relative overflow-hidden flex flex-col justify-center">
@@ -124,10 +139,15 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
             >
                 <div className="max-w-7xl mx-auto px-8 flex justify-between items-center text-xs md:text-sm text-gray-500 uppercase tracking-widest font-medium">
                     <div className="flex gap-8">
-                        <span>{data.cities?.[0] || 'Linz'}</span>
-                        <span>{data.cities?.[1] || 'Wels'}</span>
-                        <span>{data.cities?.[2] || 'Steyr'}</span>
-                        <span>{data.cities?.[3] || 'Gmunden'}</span>
+                        {heroCities.map((city) => (
+                            <Link
+                                key={city}
+                                href={getSlug(city)}
+                                className="hover:text-red-600 transition-all duration-300 hover:underline decoration-red-600/30 underline-offset-4"
+                            >
+                                {city}
+                            </Link>
+                        ))}
                     </div>
                     <div className="flex gap-8">
                         <span className="text-gray-900">AB 790 €</span>
@@ -137,7 +157,7 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
             </motion.div>
 
             {/* Mouse Trail Effect */}
-            < motion.div
+            <motion.div
                 className="fixed pointer-events-none z-50 mix-blend-multiply"
                 style={{
                     left: mousePosition.x - 10,
@@ -155,8 +175,8 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
                 }}
             >
                 <div className="w-6 h-6 bg-red-400/30 rounded-full blur-md"></div>
-            </motion.div >
-        </section >
+            </motion.div>
+        </section>
     );
 };
 

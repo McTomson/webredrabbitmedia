@@ -9,7 +9,7 @@ const SEOContent = () => {
     // Schema in ein sauberes Product-Objekt auslagern für bessere Lesbarkeit & Validierung
     const productSchema = {
         "@context": "https://schema.org",
-        "@type": "Product",
+        "@type": "Service",
         "name": "Premium Website Paket",
         "description": "Professionelles Webdesign ab 790€. Inkl. Design, SEO & Mobiloptimierung. Zahlung erst bei 100% Zufriedenheit.",
         "image": "https://web.redrabbit.media/images/og-image.jpg",
@@ -24,34 +24,26 @@ const SEOContent = () => {
             "price": "790",
             "priceValidUntil": "2026-12-31",
             "availability": "https://schema.org/InStock",
-            "shippingDetails": {
-                "@type": "OfferShippingDetails",
-                "shippingRate": {
-                    "@type": "MonetaryAmount",
-                    "value": "0",
-                    "currency": "EUR"
-                },
-                "shippingDestination": {
-                    "@type": "DefinedRegion",
-                    "addressCountry": "AT"
-                }
-            },
-            "hasMerchantReturnPolicy": {
-                "@type": "MerchantReturnPolicy",
-                "applicableCountry": "AT",
-                "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-                "merchantReturnDays": 14,
-                "returnMethod": "https://schema.org/ReturnByMail",
-                "returnFees": "https://schema.org/FreeReturn"
-            },
             "seller": {
                 "@type": "Organization",
                 "name": "Red Rabbit Media"
             }
         },
+        "serviceType": "Web Design and Development",
+        "provider": {
+            "@id": "https://web.redrabbit.media/#organization"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Small and Medium-sized Enterprises, Startups, Local Businesses"
+        },
+        "areaServed": {
+            "@type": "Country",
+            "name": "AT"
+        },
         "aggregateRating": {
             "@type": "AggregateRating",
-            "ratingValue": "4.8",
+            "ratingValue": "4.9",
             "reviewCount": "315",
             "bestRating": "5",
             "worstRating": "1"

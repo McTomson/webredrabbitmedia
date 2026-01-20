@@ -126,6 +126,19 @@ const jsonLd = {
         }
       ],
       "priceRange": "ab 790€",
+      "currenciesAccepted": "EUR",
+      "paymentAccepted": "Bank Transfer, Invoice, Cash",
+      "knowsAbout": [
+        "Webdesign",
+        "Search Engine Optimization (SEO)",
+        "Next.js",
+        "React",
+        "Frontend Engineering",
+        "Conversion Rate Optimization",
+        "Performance Optimization",
+        "Google Search Console",
+        "Online Marketing Österreich"
+      ],
       "speakable": {
         "@type": "SpeakableSpecification",
         "cssSelector": [".speakable-content", "h1", "h2"]
@@ -143,7 +156,7 @@ const jsonLd = {
       ]
     },
     {
-      "@type": "Product",
+      "@type": "Service",
       "name": "Premium Website",
       "description": "Professionelle Website inkl. Design, SEO & Mobiloptimierung",
       "image": "https://web.redrabbit.media/images/og-image.jpg",

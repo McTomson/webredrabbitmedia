@@ -22,7 +22,7 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
     // Dynamic Product Schema for the Region
     const productSchema = {
         "@context": "https://schema.org",
-        "@type": "Product",
+        "@type": "Service",
         "name": `Premium Webdesign ${data.region}`, // e.g. "Premium Webdesign Wien"
         "description": `Professionelles Webdesign für ${data.region}. ${content.hook} für lokale Unternehmen. Ab 790€.`,
         "image": "https://web.redrabbit.media/images/og-image.jpg",
@@ -37,7 +37,10 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
             { "@type": "Place", "name": "Salzkammergut" },
             { "@type": "Place", "name": "Innviertel" },
             { "@type": "Place", "name": "Mühlviertel" }
-        ] : undefined,
+        ] : {
+            "@type": "AdministrativeArea",
+            "name": data.region
+        },
         "offers": {
             "@type": "Offer",
             "url": `https://web.redrabbit.media/webdesign-${data.region.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue')}`,
@@ -45,26 +48,6 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
             "price": "790",
             "priceValidUntil": "2026-12-31",
             "availability": "https://schema.org/InStock",
-            "shippingDetails": {
-                "@type": "OfferShippingDetails",
-                "shippingRate": {
-                    "@type": "MonetaryAmount",
-                    "value": "0",
-                    "currency": "EUR"
-                },
-                "shippingDestination": {
-                    "@type": "DefinedRegion",
-                    "addressCountry": "AT"
-                }
-            },
-            "hasMerchantReturnPolicy": {
-                "@type": "MerchantReturnPolicy",
-                "applicableCountry": "AT",
-                "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-                "merchantReturnDays": 14,
-                "returnMethod": "https://schema.org/ReturnByMail",
-                "returnFees": "https://schema.org/FreeReturn"
-            },
             "seller": {
                 "@type": "Organization",
                 "name": "Red Rabbit Media"
@@ -72,10 +55,13 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
         },
         "aggregateRating": {
             "@type": "AggregateRating",
-            "ratingValue": "4.8",
+            "ratingValue": "4.9",
             "reviewCount": data.region === "Oberösterreich" ? "156" : "315",
             "bestRating": "5",
             "worstRating": "1"
+        },
+        "provider": {
+            "@id": "https://web.redrabbit.media/#organization"
         }
     };
 
