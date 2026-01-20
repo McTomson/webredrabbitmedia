@@ -35,6 +35,7 @@ const RegionalIntro = ({ data }: RegionalIntroProps) => {
                             <span key={city}>
                                 <Link
                                     href={getSlug(city)}
+                                    prefetch={false}
                                     className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200"
                                 >
                                     {city}

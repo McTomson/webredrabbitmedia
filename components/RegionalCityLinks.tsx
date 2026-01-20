@@ -35,6 +35,7 @@ const RegionalCityLinks = ({ data }: RegionalCityLinksProps) => {
                                 <div key={index} className="flex items-center">
                                     <Link
                                         href={getSlug(city)}
+                                        prefetch={false}
                                         className="text-gray-500 hover:text-red-400 text-sm transition-colors"
                                     >
                                         {city}

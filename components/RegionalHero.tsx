@@ -143,6 +143,7 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
                             <Link
                                 key={city}
                                 href={getSlug(city)}
+                                prefetch={false}
                                 className="hover:text-red-600 transition-all duration-300 hover:underline decoration-red-600/30 underline-offset-4"
                             >
                                 {city}
