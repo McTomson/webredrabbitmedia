@@ -57,12 +57,47 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 179
     },
     "Kärnten": {
-        hook: "Quality",
-        introNarrative: "Lebensqualität und Business gehen Hand in Hand. Wir sorgen dafür, dass Ihre Website für Sie arbeitet, nicht umgekehrt.",
-        economicContext: "Kärnten verbindet den Alpen-Adria-Raum. Wir erstellen mehrsprachige, weltoffene Webseiten, die Kärntner Unternehmen als Tor zum Süden positionieren. Entspannt zum Erfolg, mit Technik, die funktioniert.",
-        landmarks: ["Wörthersee", "Großglockner", "Burg Hochosterwitz", "Minimundus"],
-        localProof: "Vom Wörtersee bis ins Lavanttal – Sichtbarkeit für Kärntens Wirtschaft.",
-        projectCount: 151
+        heroHeadline: "Webdesign. <span class=\"text-red-500\">Kärnten.</span>",
+        heroSubline: "Wir bringen Kärntner Unternehmen groß raus. Vom Wörthersee bis in die Nockberge.",
+        introHeadline: "Webdesign Agentur für alle Branchen in Kärnten",
+        introText: `
+            <p class="mb-6">
+                Egal ob Dienstleister in Villach, Handwerker im Lavanttal oder Start-up in Klagenfurt: Wer heute gefunden werden will, braucht mehr als nur eine Visitenkarte im Netz. Du willst eine <strong>Website machen lassen</strong>, die nicht nur gut aussieht, sondern Kunden bringt?
+            </p>
+            <p>
+                Wir sind deine Partner für digitalen Erfolg. Wir verstehen, dass jeder Betrieb anders tickt. Deshalb gibt es bei uns kein "Schema F", sondern maßgeschneiderte Lösungen für dein <strong>Webdesign in Kärnten</strong>.
+            </p>
+        `,
+        aboutHeadline: "Digitaler Erfolg für Kärntner Betriebe",
+        aboutText: `
+            <p class="mb-6">
+                Red Rabbit Media steht für Ergebnisse. Wir helfen dir, deine PS auf die Straße zu bringen. Unsere Mission: Deine Expertise digital sichtbar machen.
+            </p>
+            <p>
+                Wir betreuen Kunden in ganz Kärnten – von Spittal bis Völkermarkt. Dabei ist uns egal, ob du Zimmer vermietest, Häuser baust oder Beratungen anbietest. Wichtig ist nur eines: Dass du mit deiner neuen Website Erfolg hast.
+            </p>
+        `,
+        seoText: `
+            <h3>Gefunden werden statt suchen lassen</h3>
+            <p>
+                Die schönste Seite nützt nichts, wenn sie keiner sieht. Wir sorgen dafür, dass du bei Google oben stehst. Professionelles <strong>SEO machen</strong> heißt für uns: Technisch sauber, inhaltlich stark und lokal relevant.
+            </p>
+            <p>
+                Wenn jemand nach deiner Dienstleistung in Kärnten sucht, soll er dich finden. Punkt. Wir optimieren Ladezeiten, Strukturen und Texte so, dass Suchmaschinen und Menschen begeistert sind.
+            </p>
+            
+            <h3>Technik, die funktioniert</h3>
+            <p>
+                Deine Kunden nutzen Smartphones, Tablets und Laptops. Dein <strong>Webdesign Kärnten</strong> muss überall perfekt funktionieren. Wir garantieren Responsive Design, das auf jedem Gerät eine gute Figur macht.
+            </p>
+
+            <h3>Warum Profis ranlassen?</h3>
+            <p>
+                Baukästen sind verlockend, aber oft eine Sackgasse. Wenn du eine <strong>Website machen lassen</strong> willst, die mit deinem Unternehmen wächst, brauchst du ein festes Fundament. Wir bieten dir Freiheit, Flexibilität und einen Partner, der auch nach dem Launch für dich da ist.
+            </p>
+        `,
+        economicContext: "Kärnten ist ein Land der Vielfalt – wirtschaftlich wie landschaftlich. Wir geben Kärntner Unternehmen die digitale Bühne, die sie verdienen.",
+        localProof: "Erfolgreiche Projekte von Klagenfurt bis Hermagor.",
     },
     "Burgenland": {
         hook: "Security",

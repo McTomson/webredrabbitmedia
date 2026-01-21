@@ -21,6 +21,11 @@ const Contact = dynamic(() => import('@/components/Contact'));
 const OOBranchenSection = dynamic(() => import('@/components/OOBranchenSection'));
 const OOTestimonials = dynamic(() => import('@/components/OOTestimonials'));
 
+// Kärnten-specific components
+const KaerntenUSPSection = dynamic(() => import('@/components/KaerntenUSPSection'));
+const KaerntenBranchenSection = dynamic(() => import('@/components/KaerntenBranchenSection'));
+const KaerntenTestimonials = dynamic(() => import('@/components/KaerntenTestimonials'));
+
 // NÖ-specific components
 const NOEUSPSection = dynamic(() => import('@/components/NOEUSPSection'));
 const NOETestimonials = dynamic(() => import('@/components/NOETestimonials'));
@@ -76,17 +81,31 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                 {/* NÖ-specific: USP Section (Why choose us) */}
                 {data.region === "Niederösterreich" && <NOEUSPSection />}
 
+                {/* Kärnten-specific: USP Section */}
+                {data.region === "Kärnten" && <KaerntenUSPSection />}
+
                 {/* Portfolio Section */}
                 <Portfolio />
 
                 {/* OÖ-specific: Branchen Section */}
                 {data.region === "Oberösterreich" && <OOBranchenSection />}
 
+                {/* Kärnten-specific: Branchen Section */}
+                {data.region === "Kärnten" && <KaerntenBranchenSection />}
+
                 {/* Process Section */}
                 <Process
                     onFormOpen={handleFormOpen}
-                    headline={data.region === "Oberösterreich" ? "Dein weg zu deiner Website" : data.region === "Niederösterreich" ? "So entsteht Ihre Webseite" : undefined}
-                    subline={data.region === "Oberösterreich" ? "Professionell. Regional. Unkompliziert. In 3 Schritten online." : data.region === "Niederösterreich" ? "Transparente Schritte. Klare Ergebnisse. Von der Idee bis zum Go-Live." : undefined}
+                    headline={
+                        data.region === "Oberösterreich" ? "Dein weg zu deiner Website" :
+                            data.region === "Niederösterreich" ? "So entsteht Ihre Webseite" :
+                                data.region === "Kärnten" ? "Unser Weg zum Erfolg" : undefined
+                    }
+                    subline={
+                        data.region === "Oberösterreich" ? "Professionell. Regional. Unkompliziert. In 3 Schritten online." :
+                            data.region === "Niederösterreich" ? "Transparente Schritte. Klare Ergebnisse. Von der Idee bis zum Go-Live." :
+                                data.region === "Kärnten" ? "Unkompliziert, transparent und auf Augenhöhe. So arbeiten wir." : undefined
+                    }
                 />
 
                 {/* SEO Optimization Section */}
@@ -94,8 +113,12 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
 
                 {/* About Section */}
                 <About
-                    hideTestimonials={data.region === "Oberösterreich" || data.region === "Niederösterreich"}
-                    headline={data.region === "Oberösterreich" ? "Dein Partner in Oberösterreich" : data.region === "Niederösterreich" ? "Die Werbeagentur für Niederösterreich" : undefined}
+                    hideTestimonials={data.region === "Oberösterreich" || data.region === "Niederösterreich" || data.region === "Kärnten"}
+                    headline={
+                        data.region === "Oberösterreich" ? "Dein Partner in Oberösterreich" :
+                            data.region === "Niederösterreich" ? "Die Werbeagentur für Niederösterreich" :
+                                data.region === "Kärnten" ? "Ihre Webagentur für Kärnten" : undefined
+                    }
                 />
 
                 {/* OÖ-specific: Testimonials */}
@@ -103,6 +126,9 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
 
                 {/* NÖ-specific: Testimonials */}
                 {data.region === "Niederösterreich" && <NOETestimonials />}
+
+                {/* Kärnten-specific: Testimonials */}
+                {data.region === "Kärnten" && <KaerntenTestimonials />}
 
                 {/* Pricing Section */}
                 <Pricing onFormOpen={handleFormOpen} />
@@ -113,8 +139,16 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                 {/* Contact Section */}
                 <Contact
                     onFormOpen={handleFormOpen}
-                    headline={data.region === "Oberösterreich" ? "Bereit für deinen Erfolg in OÖ?" : data.region === "Niederösterreich" ? "Bereit für Wachstum?" : undefined}
-                    subline={data.region === "Oberösterreich" ? "Starte jetzt mit deiner Website für Linz, Wels & Steyr." : data.region === "Niederösterreich" ? "Lassen Sie uns gemeinsam Ihren digitalen Fußabdruck in Niederösterreich vergrößern." : undefined}
+                    headline={
+                        data.region === "Oberösterreich" ? "Bereit für deinen Erfolg in OÖ?" :
+                            data.region === "Niederösterreich" ? "Bereit für Wachstum?" :
+                                data.region === "Kärnten" ? "Kontaktieren Sie uns" : undefined
+                    }
+                    subline={
+                        data.region === "Oberösterreich" ? "Starte jetzt mit deiner Website für Linz, Wels & Steyr." :
+                            data.region === "Niederösterreich" ? "Lassen Sie uns gemeinsam Ihren digitalen Fußabdruck in Niederösterreich vergrößern." :
+                                data.region === "Kärnten" ? "Wir freuen uns auf ein persönliches Gespräch über Ihr Projekt." : undefined
+                    }
                 />
 
                 {/* Regional City Links (Replaces OO Footer content) */}
