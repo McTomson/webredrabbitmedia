@@ -30,22 +30,45 @@ const RegionalIntro = ({ data }: RegionalIntroProps) => {
                         Ihr Partner für <span className="font-semibold text-red-600">Webdesign in {data.region}</span>
                     </h2>
                     <p className="text-xl text-gray-600 leading-relaxed font-light">
-                        Professionelles Webdesign für {' '}
-                        {data.cities.slice(0, 3).map((city, index) => (
-                            <span key={city}>
-                                <Link
-                                    href={getSlug(city)}
-                                    prefetch={false}
-                                    className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200"
-                                >
-                                    {city}
-                                </Link>
-                                {index < 2 ? ', ' : ''}
-                            </span>
-                        ))}
-                        {' '} und ganz {data.region}.
-                        Wir entwickeln Webauftritte, die nicht nur gut aussehen, sondern Kunden gewinnen.
-                        Du füllst nur das Formular aus – wir übernehmen den Rest.
+                        {data.region === "Niederösterreich" ? (
+                            <>
+                                Sie suchen eine Werbeagentur in Niederösterreich, die Ihre Webseite professionell erstellt?
+                                Von {' '}
+                                {data.cities.slice(0, 3).map((city, index) => (
+                                    <span key={city}>
+                                        <Link
+                                            href={getSlug(city)}
+                                            prefetch={false}
+                                            className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200"
+                                        >
+                                            {city}
+                                        </Link>
+                                        {index < 2 ? ', ' : ''}
+                                    </span>
+                                ))}
+                                {' '} bis Amstetten, vom Waldviertel bis Baden – wir entwickeln Webauftritte, die nicht nur gut aussehen, sondern Kunden gewinnen.
+                                Du füllst nur das Formular aus – wir übernehmen den Rest.
+                            </>
+                        ) : (
+                            <>
+                                Professionelles Webdesign für {' '}
+                                {data.cities.slice(0, 3).map((city, index) => (
+                                    <span key={city}>
+                                        <Link
+                                            href={getSlug(city)}
+                                            prefetch={false}
+                                            className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200"
+                                        >
+                                            {city}
+                                        </Link>
+                                        {index < 2 ? ', ' : ''}
+                                    </span>
+                                ))}
+                                {' '} und ganz {data.region}.
+                                Wir entwickeln Webauftritte, die nicht nur gut aussehen, sondern Kunden gewinnen.
+                                Du füllst nur das Formular aus – wir übernehmen den Rest.
+                            </>
+                        )}
                     </p>
                     <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm text-gray-400 uppercase tracking-widest">
                         <span>Kein Aufwand</span>

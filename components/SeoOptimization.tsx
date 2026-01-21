@@ -71,9 +71,9 @@ const SeoOptimization = ({ headline, subline, strategyHeadline, comparisonHeadli
                 {/* 3 Pillars */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
                     {(features || [
-                        { title: "Technisches Fundament", text: "Google liebt Geschwindigkeit. Wir bauen auf modernster Technologie, die Ladezeiten minimiert und Rankings maximiert." },
-                        { title: "Strategische SEO", text: "Wir analysieren nicht nur Keywords, sondern Kaufabsichten. Damit du genau dann gefunden wirst, wenn deine Kunden bereit sind zu kaufen." },
-                        { title: "AI & LLM Ready", text: "Die Zukunft der Suche ist KI. Wir strukturieren deine Daten so, dass ChatGPT & Co. dich als beste Antwort verstehen und empfehlen." }
+                        { title: "Solide Technik", text: "Google liebt Geschwindigkeit. Wir bauen auf modernster Technologie, die Ladezeiten minimiert und Rankings maximiert." },
+                        { title: "Suchmaschinen-Optimierung", text: "Wir analysieren nicht nur Suchbegriffe, sondern Kaufabsichten. Damit Sie genau dann gefunden werden, wenn Ihre Kunden bereit sind zu kaufen." },
+                        { title: "Zukunftssicher", text: "Die Zukunft der Suche ist KI. Wir strukturieren Ihre Daten so, dass ChatGPT & Co. Sie als beste Antwort verstehen und empfehlen." }
                     ]).map((feature, index) => (
                         <AOSWrapper key={index} animation="fade-up" delay={index * 100}>
                             <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 group">
@@ -189,10 +189,10 @@ const SeoOptimization = ({ headline, subline, strategyHeadline, comparisonHeadli
                                     </div>
 
                                     {(comparisonItems || [
-                                        { name: "Design", other: "Standard Template", us: "Premium Custom" },
-                                        { name: "SEO Basics", other: "Extra Kosten", us: "Inklusive" },
-                                        { name: "Ladezeit", other: "Oft langsam", us: "High-Speed" },
-                                        { name: "AI-Ready", other: "Nicht vorhanden", us: "Standard" },
+                                        { name: "Design", other: "Standard-Vorlage", us: "Maßgeschneidert" },
+                                        { name: "Suchmaschinen-Optimierung", other: "Extra Kosten", us: "Inklusive" },
+                                        { name: "Ladezeit", other: "Oft langsam", us: "Blitzschnell" },
+                                        { name: "Zukunftssicher", other: "Nicht vorhanden", us: "Standard" },
                                         { name: "Kosten", other: "Intransparent", us: "Fixpreis" }
                                     ]).map((row, index) => (
                                         <div key={index} className="grid grid-cols-3 p-6 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">

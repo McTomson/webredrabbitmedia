@@ -84,7 +84,38 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
         }
     ];
 
-    const faqData = data.region === "Oberösterreich" ? ooeFaqData : genericFaqData;
+    const noeFaqData = [
+        {
+            question: "Was kostet eine Webseite für mein Unternehmen in Niederösterreich?",
+            answer: "Eine professionelle Webseite kostet bei uns ab 790 € Fixpreis. Keine versteckten Kosten, keine monatlichen Gebühren. Egal ob Sie in St. Pölten, Krems oder einem kleinen Ort im Waldviertel ansässig sind – der Preis bleibt gleich."
+        },
+        {
+            question: "Muss ich für ein Treffen in ein Büro kommen?",
+            answer: "Nein, alles läuft online. Sie müssen nirgendwo hinfahren. Das spart Ihnen Zeit und Aufwand. Die Kommunikation erfolgt digital über E-Mail und Telefon. Kein Zeitverlust für Sie."
+        },
+        {
+            question: "Wie lange dauert die Erstellung meiner Webseite?",
+            answer: "In der Regel erhalten Sie den ersten Entwurf innerhalb von 7 Tagen. Nach Ihrer Freigabe und eventuellen Anpassungen ist die Webseite meist innerhalb von 2-3 Wochen komplett fertig und online."
+        },
+        {
+            question: "Arbeitet ihr auch im Waldviertel / Weinviertel / Mostviertel / Industrieviertel?",
+            answer: "Ja, wir betreuen Kunden in ganz Niederösterreich. Vom Waldviertel bis ins Industrieviertel, von kleinen Orten bis zu größeren Städten wie Wiener Neustadt oder Baden. Die Zusammenarbeit läuft komplett digital."
+        },
+        {
+            question: "Was ist, wenn mir die Webseite nicht gefällt?",
+            answer: "Sie zahlen erst, wenn Sie mit dem Ergebnis zufrieden sind. Wenn Ihnen der Entwurf nicht gefällt, zahlen Sie nichts. Kein Risiko für Sie. Das ist unsere Zufriedenheitsgarantie."
+        },
+        {
+            question: "Bekomme ich auch Hilfe bei Texten und Bildern?",
+            answer: "Ja, gerne unterstützen wir Sie auch mit Texten und Bildern. Wir erstellen professionelle Inhalte, die Ihre Zielgruppe ansprechen. So wird Ihre Webseite komplett fertig – ready to go. Alles aus einer Hand."
+        },
+        {
+            question: "Was passiert, wenn ich später Änderungen brauche?",
+            answer: "In den ersten 6 Monaten ist der Support kostenlos. Danach können Sie entweder einen Service-Vertrag abschließen oder wir helfen Ihnen punktuell gegen Verrechnung. Sie entscheiden flexibel, was für Sie am besten passt."
+        }
+    ];
+
+    const faqData = data.region === "Oberösterreich" ? ooeFaqData : data.region === "Niederösterreich" ? noeFaqData : genericFaqData;
 
     // FAQ Schema für Google Rich Snippets
     const faqSchema = {

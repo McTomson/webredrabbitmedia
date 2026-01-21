@@ -218,7 +218,7 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials, h
 
                             <AOSWrapper animation="fade-left" delay={300}>
                                 <p className="text-xl text-gray-600 leading-relaxed font-light">
-                                    {text || "Wir entwickeln professionelle Websites, die Ihr Unternehmen online erfolgreich machen. Mit über 15 Jahren Erfahrung verstehen wir, was Ihre Kunden erwarten und wie Sie online überzeugen."}
+                                    {text || "Wir entwickeln professionelle Websites, die Ihr Unternehmen online erfolgreich machen. Seit 2019 verstehen wir, was Ihre Kunden erwarten und wie Sie online überzeugen."}
                                 </p>
                             </AOSWrapper>
 
@@ -262,7 +262,7 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials, h
                                         </div>
                                         <div className="flex items-start gap-3 mt-4 text-xs italic">
                                             <Zap className="w-4 h-4 text-red-600 flex-shrink-0" />
-                                            <span>Trotz Wiener Standort sind wir für unsere Kunden in ganz OÖ persönlich vor Ort und digital für Sie da.</span>
+                                            <span>Trotz Wiener Standort sind wir für unsere Kunden in ganz Niederösterreich persönlich vor Ort und digital für Sie da.</span>
                                         </div>
                                     </div>
                                 </div>
@@ -286,7 +286,7 @@ const About = ({ headline, text, testimonialsHeadline, features, testimonials, h
                                                 Persönlich. Transparent. Zuverlässig.
                                             </p>
                                             <p className="text-white/90 text-base mt-3 drop-shadow-md">
-                                                Über 800 zufriedene Kunden. 15 Jahre Erfahrung.
+                                                Über 800 zufriedene Kunden. Seit 2019.
                                             </p>
                                         </div>
                                     </div>

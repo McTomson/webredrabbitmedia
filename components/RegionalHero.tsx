@@ -67,11 +67,15 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
                 <Image
                     src={data.region === "Oberösterreich"
                         ? "/images/ooe/hero/webdesign-oberoesterreich-see-schiff-v2.png"
-                        : "/images/dashboard.webp"
+                        : data.region === "Niederösterreich"
+                            ? "/images/noe/hero/webdesign-niederoesterreich-hero.png"
+                            : "/images/dashboard.webp"
                     }
                     alt={data.region === "Oberösterreich"
                         ? "Webdesign Oberösterreich - See mit Boot im Nebel"
-                        : `Red Rabbit Media Webdesign ${data.region}`
+                        : data.region === "Niederösterreich"
+                            ? "Webdesign Niederösterreich – Landschaft mit Dorf und Bergen"
+                            : `Red Rabbit Media Webdesign ${data.region}`
                     }
                     fill
                     className="w-full h-full object-cover object-bottom"

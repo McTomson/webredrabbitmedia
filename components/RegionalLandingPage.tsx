@@ -20,6 +20,11 @@ const Contact = dynamic(() => import('@/components/Contact'));
 // OÖ-specific components
 const OOBranchenSection = dynamic(() => import('@/components/OOBranchenSection'));
 const OOTestimonials = dynamic(() => import('@/components/OOTestimonials'));
+
+// NÖ-specific components
+const NOEUSPSection = dynamic(() => import('@/components/NOEUSPSection'));
+const NOETestimonials = dynamic(() => import('@/components/NOETestimonials'));
+
 const RegionalCityLinks = dynamic(() => import('@/components/RegionalCityLinks'));
 
 // Client-only Widgets
@@ -68,6 +73,9 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                 {/* Intro Section with SEO Text */}
                 <RegionalIntro data={data} />
 
+                {/* NÖ-specific: USP Section (Why choose us) */}
+                {data.region === "Niederösterreich" && <NOEUSPSection />}
+
                 {/* Portfolio Section */}
                 <Portfolio />
 
@@ -77,8 +85,8 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                 {/* Process Section */}
                 <Process
                     onFormOpen={handleFormOpen}
-                    headline={data.region === "Oberösterreich" ? "Dein weg zu deiner Website" : undefined}
-                    subline={data.region === "Oberösterreich" ? "Professionell. Regional. Unkompliziert. In 3 Schritten online." : undefined}
+                    headline={data.region === "Oberösterreich" ? "Dein weg zu deiner Website" : data.region === "Niederösterreich" ? "So entsteht Ihre Webseite" : undefined}
+                    subline={data.region === "Oberösterreich" ? "Professionell. Regional. Unkompliziert. In 3 Schritten online." : data.region === "Niederösterreich" ? "Transparente Schritte. Klare Ergebnisse. Von der Idee bis zum Go-Live." : undefined}
                 />
 
                 {/* SEO Optimization Section */}
@@ -86,12 +94,15 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
 
                 {/* About Section */}
                 <About
-                    hideTestimonials={data.region === "Oberösterreich"}
-                    headline={data.region === "Oberösterreich" ? "Dein Partner in Oberösterreich" : undefined}
+                    hideTestimonials={data.region === "Oberösterreich" || data.region === "Niederösterreich"}
+                    headline={data.region === "Oberösterreich" ? "Dein Partner in Oberösterreich" : data.region === "Niederösterreich" ? "Die Werbeagentur für Niederösterreich" : undefined}
                 />
 
                 {/* OÖ-specific: Testimonials */}
                 {data.region === "Oberösterreich" && <OOTestimonials />}
+
+                {/* NÖ-specific: Testimonials */}
+                {data.region === "Niederösterreich" && <NOETestimonials />}
 
                 {/* Pricing Section */}
                 <Pricing onFormOpen={handleFormOpen} />
@@ -102,8 +113,8 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                 {/* Contact Section */}
                 <Contact
                     onFormOpen={handleFormOpen}
-                    headline={data.region === "Oberösterreich" ? "Bereit für deinen Erfolg in OÖ?" : undefined}
-                    subline={data.region === "Oberösterreich" ? "Starte jetzt mit deiner Website für Linz, Wels & Steyr." : undefined}
+                    headline={data.region === "Oberösterreich" ? "Bereit für deinen Erfolg in OÖ?" : data.region === "Niederösterreich" ? "Bereit für Wachstum?" : undefined}
+                    subline={data.region === "Oberösterreich" ? "Starte jetzt mit deiner Website für Linz, Wels & Steyr." : data.region === "Niederösterreich" ? "Lassen Sie uns gemeinsam Ihren digitalen Fußabdruck in Niederösterreich vergrößern." : undefined}
                 />
 
                 {/* Regional City Links (Replaces OO Footer content) */}

@@ -25,12 +25,12 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 156
     },
     "Niederösterreich": {
-        hook: "Security",
-        introNarrative: "Bodenständigkeit und Weitblick schließen sich nicht aus. Wir bieten Webdesign, das sicher in die Zukunft führt, ohne Wurzeln zu vergessen.",
-        economicContext: "Niederösterreichs Wirtschaft ist so vielfältig wie seine Landschaft – vom Weinviertler Winzer bis zum Rieder Tech-Park. Wir verstehen diese Breite und bieten Web-Lösungen, die mit Ihrem Betrieb mitwachsen, aber das Risiko minimieren.",
-        landmarks: ["Wachau", "Semmering", "Stift Melk", "Ötscher"],
-        localProof: "Vom Waldviertel bis ins Industrieviertel – wir sind Ihr Partner in der Region.",
-        projectCount: 143
+        hook: "Innovation",
+        introNarrative: "Niederösterreich ist das Land der Weite und der Möglichkeiten. Wir verbinden bodenständige Werte mit digitalem Fortschritt für Betriebe, die mehr erreichen wollen.",
+        economicContext: "Von den zukunftsorientierten Technologie-Zentren im Wiener Umland bis zum traditionsreichen Weinbau in der Wachau – die Wirtschaft Niederösterreichs ist so vielfältig wie ihre Landschaft. Wir bieten maßgeschneiderte Webseiten-Gestaltung, die die lokale Identität wahrt und gleichzeitig höchste Maßstäbe in Technik und Suchmaschinen-Optimierung setzt. Egal ob Sie als Winzer, Industrieller oder Dienstleister agieren: Wir bringen Ihren Erfolg auf den Punkt.",
+        landmarks: ["Stift Melk", "Schneeberg", "Wachau", "St. Pöltner Landhausviertel"],
+        localProof: "Vom Waldviertel bis ins Industrieviertel – wir sind die Werbeagentur für den niederösterreichischen Mittelstand.",
+        projectCount: 164
     },
     "Salzburg": {
         hook: "Tourism",
