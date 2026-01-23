@@ -5,6 +5,14 @@ export interface RegionalContent {
     landmarks: string[];
     localProof: string; // Specific localized sentence (e.g., "From X to Y")
     projectCount: number; // Number of completed projects in this region
+    // Extended content fields
+    heroHeadline?: string;
+    heroSubline?: string;
+    introHeadline?: string;
+    introText?: string;
+    aboutHeadline?: string;
+    aboutText?: string;
+    seoText?: string;
 }
 
 export const regionalContent: Record<string, RegionalContent> = {
@@ -57,6 +65,11 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 179
     },
     "Kärnten": {
+        hook: "Tourism",
+        introNarrative: "Kärnten verbindet Lebensqualität mit Wirtschaftskraft. Wir bringen diese Stärke ins Netz.",
+        landmarks: ["Wörthersee", "Pyramidenkogel", "Burg Hochosterwitz", "Großglockner"],
+        localProof: "Erfolgreiche Projekte von Klagenfurt bis Hermagor.",
+        projectCount: 142,
         heroHeadline: "Webdesign. <span class=\"text-red-500\">Kärnten.</span>",
         heroSubline: "Wir bringen Kärntner Unternehmen groß raus. Vom Wörthersee bis in die Nockberge.",
         introHeadline: "Webdesign Agentur für alle Branchen in Kärnten",
@@ -97,7 +110,6 @@ export const regionalContent: Record<string, RegionalContent> = {
             </p>
         `,
         economicContext: "Kärnten ist ein Land der Vielfalt – wirtschaftlich wie landschaftlich. Wir geben Kärntner Unternehmen die digitale Bühne, die sie verdienen.",
-        localProof: "Erfolgreiche Projekte von Klagenfurt bis Hermagor.",
     },
     "Burgenland": {
         hook: "Security",
