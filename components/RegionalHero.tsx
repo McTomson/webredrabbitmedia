@@ -15,9 +15,13 @@ interface RegionalHeroProps {
         population: string;
         cities: string[];
     };
+    content: {
+        heroImage?: string;
+        heroImageAlt?: string;
+    };
 }
 
-const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
+const RegionalHero = ({ onFormOpen, data, content }: RegionalHeroProps) => {
     // Helper to generate slug from city name
     const getSlug = (city: string) => {
         const slug = city.toLowerCase()
@@ -65,26 +69,8 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src={data.region === "Oberösterreich"
-                        ? "/images/ooe/hero/webdesign-oberoesterreich-see-schiff-v2.png"
-                        : data.region === "Niederösterreich"
-                            ? "/images/noe/hero/webdesign-niederoesterreich-hero.png"
-                            : data.region === "Kärnten"
-                                ? "/images/webdesign-kaernten-woerthersee.png"
-                                : data.region === "Steiermark"
-                                    ? "/images/webdesign-steiermark-hero.jpg"
-                                    : "/images/dashboard.webp"
-                    }
-                    alt={data.region === "Oberösterreich"
-                        ? "Webdesign Oberösterreich - See mit Boot im Nebel"
-                        : data.region === "Niederösterreich"
-                            ? "Webdesign Niederösterreich – Landschaft mit Dorf und Bergen"
-                            : data.region === "Kärnten"
-                                ? "Webdesign Kärnten - Wörthersee am Morgen mit Schiff"
-                                : data.region === "Steiermark"
-                                    ? "Webdesign Steiermark - Malerische Hügellandschaft im Sonnenaufgang"
-                                    : `Red Rabbit Media Webdesign ${data.region}`
-                    }
+                    src={content.heroImage || "/images/dashboard.webp"}
+                    alt={content.heroImageAlt || `Red Rabbit Media Webdesign ${data.region}`}
                     fill
                     className="w-full h-full object-cover object-bottom"
                     priority

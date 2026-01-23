@@ -8,6 +8,8 @@ export interface RegionalContent {
     // Extended content fields
     heroHeadline?: string;
     heroSubline?: string;
+    heroImage?: string;
+    heroImageAlt?: string;
     introHeadline?: string;
     introText?: string;
     aboutHeadline?: string;
@@ -29,6 +31,8 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 187,
         heroHeadline: "Digital. <br /><span class=\"text-red-500\">Wien.</span>",
         heroSubline: "Blitzschnelles Webdesign für die Hauptstadt. Keine Anfahrt, keine Parkplatzsuche – 100% digitaler Erfolg.",
+        heroImage: "/images/dashboard.webp",
+        heroImageAlt: "Digitales Webdesign Wien - Modernes Dashboard Design",
         introHeadline: "Ihre Werbeagentur für Webdesign in Wien",
         introText: `
             <p class="mb-6">
@@ -92,7 +96,7 @@ export const regionalContent: Record<string, RegionalContent> = {
                 text: "Wir sind für unsere Wiener Kunden immer erreichbar – digital und direkt."
             }
         ],
-        sectionOrder: ["intro", "seo", "portfolio", "branchen", "about", "pricing", "faq", "contact"]
+        sectionOrder: ["intro", "process", "seo", "portfolio", "branchen", "about", "pricing", "faq", "contact"]
     },
     "Oberösterreich": {
         hook: "Quality",
@@ -101,7 +105,9 @@ export const regionalContent: Record<string, RegionalContent> = {
         landmarks: ["Ars Electronica Center", "Pöstlingberg", "Traunsee", "Kulturhauptstadt Bad Ischl"],
         localProof: "Von Linz bis Steyr, vom Innviertel bis ins Salzkammergut – Qualität, die bleibt.",
         projectCount: 156,
-        sectionOrder: ["intro", "portfolio", "branchen", "about", "testimonials", "pricing", "faq", "contact"]
+        heroImage: "/images/ooe/hero/webdesign-oberoesterreich-see-schiff-v2.png",
+        heroImageAlt: "Webdesign Oberösterreich - See mit Boot im Nebel",
+        sectionOrder: ["process", "intro", "portfolio", "branchen", "about", "testimonials", "pricing", "faq", "contact"]
     },
     "Niederösterreich": {
         hook: "Innovation",
@@ -110,7 +116,9 @@ export const regionalContent: Record<string, RegionalContent> = {
         landmarks: ["Stift Melk", "Schneeberg", "Wachau", "St. Pöltner Landhausviertel"],
         localProof: "Vom Waldviertel bis ins Industrieviertel – wir sind die Werbeagentur für den niederösterreichischen Mittelstand.",
         projectCount: 164,
-        sectionOrder: ["intro", "usp", "portfolio", "about", "testimonials", "pricing", "faq", "contact"]
+        heroImage: "/images/noe/hero/webdesign-niederoesterreich-hero.png",
+        heroImageAlt: "Webdesign Niederösterreich – Landschaft mit Dorf und Bergen",
+        sectionOrder: ["intro", "usp", "process", "portfolio", "about", "testimonials", "pricing", "faq", "contact"]
     },
     "Salzburg": {
         hook: "Tourism",
@@ -121,6 +129,8 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 134,
         heroHeadline: "Exzellenz. <br /><span class=\"text-red-500\">Salzburg.</span>",
         heroSubline: "Premium Webdesign für die Weltbühne. Wir machen Ihre Marke digital unvergesslich.",
+        heroImage: "/images/webdesign-salzburg-hero.png",
+        heroImageAlt: "Webdesign Salzburg - Blick über die Salzburger Altstadt bei Sonnenuntergang",
         introHeadline: "Ihre Agentur für Webdesign in Salzburg",
         introText: `
             <p class="mb-6">
@@ -130,7 +140,7 @@ export const regionalContent: Record<string, RegionalContent> = {
                 Ob Sie in der <strong>Stadt Salzburg</strong> innovative Dienstleistungen anbieten oder im <strong>Pinzgau</strong> im Tourismus erfolgreich sind: Wir bauen Webseiten, die ästhetisch glänzen und technisch auf höchstem Niveau arbeiten.
             </p>
         `,
-        aboutHeadline: "Webdesign mit Salzburger Qualitätsanspruch",
+        aboutHeadline: "Webdesign with Salzburger Qualitätsanspruch",
         aboutText: `
             <p class="mb-6">
                 In einer Region, die für ihre Kunst und Kultur berühmt ist, zählt das Auge fürs Detail. Wir gestalten Webauftritte, die Ihre Werte transportieren und gleichzeitig für maximale Konversion optimiert sind.
@@ -184,7 +194,7 @@ export const regionalContent: Record<string, RegionalContent> = {
                 text: "Wir sagen Ihnen direkt, was für Ihren Erfolg in Salzburg nötig ist."
             }
         ],
-        sectionOrder: ["intro", "portfolio", "about", "branchen", "seo", "pricing", "faq", "contact"]
+        sectionOrder: ["intro", "process", "portfolio", "about", "branchen", "seo", "pricing", "faq", "contact"]
     },
     "Tirol": {
         hook: "Tourism",
@@ -195,6 +205,8 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 168,
         heroHeadline: "Performance. <br /><span class=\"text-red-500\">Tirol.</span>",
         heroSubline: "Ihr Gipfelsieg im Netz. High-Speed Webdesign für Tiroler Unternehmen mit Weitblick.",
+        heroImage: "/images/dashboard.webp",
+        heroImageAlt: "Webdesign Tirol - High Performance Webentwicklung",
         introHeadline: "Ihr Partner für Webdesign in Tirol",
         introText: `
             <p class="mb-6">
@@ -227,7 +239,7 @@ export const regionalContent: Record<string, RegionalContent> = {
             },
             {
                 title: "Stabiles Fundament",
-                text: "Wir nutzen Technologien like Next.js for blitzschnelle Ladezeiten und höchste Sicherheit – egal wie viele Besucher kommen."
+                text: "Wir nutzen Technologien like Next.js for blitzschnelle Ladezeiten and höchste Sicherheit – egal wie viele Besucher kommen."
             }
         ],
         seoFeatures: [
@@ -269,6 +281,8 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 179,
         heroHeadline: "Innovation. <br /><span class=\"text-red-500\">Steiermark.</span>",
         heroSubline: "Blitzschnelles Webdesign für steirische Betriebe. Ohne leere Kilometer, direkt zum Ergebnis.",
+        heroImage: "/images/webdesign-steiermark-hero.jpg",
+        heroImageAlt: "Webdesign Steiermark - Malerische Hügellandschaft im Sonnenaufgang",
         introHeadline: "Ihr Partner für Webdesign in der Steiermark",
         introText: `
             <p class="mb-6">
@@ -346,6 +360,8 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 142,
         heroHeadline: "Sonnenseite. <br /><span class=\"text-red-500\">Kärnten.</span>",
         heroSubline: "Hochwertiges Webdesign für Kärntner Betriebe. Wir machen Ihren Erfolg digital sichtbar.",
+        heroImage: "/images/webdesign-kaernten-woerthersee.png",
+        heroImageAlt: "Webdesign Kärnten - Wörthersee am Morgen mit Schiff",
         introHeadline: "Webdesign Agentur für Kärnten",
         introText: `
             <p class="mb-6">
@@ -417,7 +433,10 @@ export const regionalContent: Record<string, RegionalContent> = {
         economicContext: "Das Burgenland hat sich vom Agrarland zum Energie- und Weinpionier gewandelt. Wir begleiten diesen Wandel mit Webseiten, die Nachhaltigkeit ausstrahlen und budgetfreundlich sind – ideal für KMUs und Direktvermarkter.",
         landmarks: ["Neusiedler See", "Schloss Esterházy", "Burg Forchtenstein", "Kellerstöckl"],
         localProof: "Vom Seewinkel bis Jennersdorf – wir vernetzen das Burgenland.",
-        projectCount: 128
+        heroImage: "/images/dashboard.webp",
+        heroImageAlt: "Webdesign Burgenland - Regionale Webentwicklung",
+        projectCount: 128,
+        sectionOrder: ["intro", "process", "portfolio", "about", "faq", "contact"]
     },
     "Vorarlberg": {
         hook: "Innovation",
@@ -428,6 +447,8 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 145,
         heroHeadline: "Präzision. <br /><span class=\"text-red-500\">Vorarlberg.</span>",
         heroSubline: "Digitale Exzellenz für das Ländle. Webdesign, das so präzise arbeitet wie Ihre Fertigung.",
+        heroImage: "/images/dashboard.webp",
+        heroImageAlt: "Webdesign Vorarlberg - Präzise Webentwicklung aus dem Ländle",
         introHeadline: "Ihre Webagentur für Vorarlberg",
         introText: `
             <p class="mb-6">

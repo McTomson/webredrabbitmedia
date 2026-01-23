@@ -35,7 +35,20 @@ const SteiermarkUSPSection = dynamic(() => import('@/components/SteiermarkUSPSec
 const SteiermarkBranchenSection = dynamic(() => import('@/components/SteiermarkBranchenSection'));
 const SteiermarkTestimonials = dynamic(() => import('@/components/SteiermarkTestimonials'));
 
+// Wien-specific components
+const WienTestimonials = dynamic(() => import('@/components/WienTestimonials'));
+
+// Salzburg-specific components
+const SalzburgTestimonials = dynamic(() => import('@/components/SalzburgTestimonials'));
+
+// Tirol-specific components
+const TirolTestimonials = dynamic(() => import('@/components/TirolTestimonials'));
+
+// Vorarlberg-specific components
+const VorarlbergTestimonials = dynamic(() => import('@/components/VorarlbergTestimonials'));
+
 const RegionalCityLinks = dynamic(() => import('@/components/RegionalCityLinks'));
+const FeaturedBlogPosts = dynamic(() => import('@/components/FeaturedBlogPosts'));
 
 // Client-only Widgets
 const FloatingWhatsApp = dynamic(() => import('@/components/FloatingWhatsApp'), { ssr: false });
@@ -65,7 +78,7 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
         setIsFormOpen(true);
     };
 
-    const defaultOrder = ["intro", "usp", "portfolio", "branchen", "process", "seo", "about", "testimonials", "pricing", "faq", "contact"];
+    const defaultOrder = ["intro", "usp", "portfolio", "branchen", "process", "seo", "about", "blog", "testimonials", "pricing", "faq", "contact"];
     const sectionOrder = content.sectionOrder || defaultOrder;
 
     const renderSection = (sectionId: string) => {
@@ -100,7 +113,7 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                         key="process"
                         onFormOpen={handleFormOpen}
                         headline={
-                            data.region === "Oberösterreich" ? "Dein weg zu deiner Website" :
+                            data.region === "Oberösterreich" ? "Ihr Weg zu Ihrer Website" :
                                 data.region === "Niederösterreich" ? "So entsteht Ihre Webseite" :
                                     data.region === "Kärnten" ? "Unser Weg zum Erfolg" :
                                         data.region === "Steiermark" ? "Der direkte Weg zum Erfolg" : undefined
@@ -129,7 +142,7 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                         key="about"
                         hideTestimonials={true}
                         headline={
-                            data.region === "Oberösterreich" ? "Dein Partner in Oberösterreich" :
+                            data.region === "Oberösterreich" ? "Ihr Partner in Oberösterreich" :
                                 data.region === "Niederösterreich" ? "Die Werbeagentur für Niederösterreich" :
                                     data.region === "Kärnten" ? "Ihre Webagentur für Kärnten" :
                                         data.region === "Steiermark" ? "Ihre Webagentur für die Steiermark" : undefined
@@ -140,6 +153,9 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                     />
                 );
 
+            case "blog":
+                return <FeaturedBlogPosts key="blog" />;
+
             case "testimonials":
                 return (
                     <div key="testimonials">
@@ -147,6 +163,10 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                         {data.region === "Niederösterreich" && <NOETestimonials />}
                         {data.region === "Kärnten" && <KaerntenTestimonials />}
                         {data.region === "Steiermark" && <SteiermarkTestimonials />}
+                        {data.region === "Wien" && <WienTestimonials />}
+                        {data.region === "Salzburg" && <SalzburgTestimonials />}
+                        {data.region === "Tirol" && <TirolTestimonials />}
+                        {data.region === "Vorarlberg" && <VorarlbergTestimonials />}
                     </div>
                 );
 
@@ -162,13 +182,13 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                         key="contact"
                         onFormOpen={handleFormOpen}
                         headline={
-                            data.region === "Oberösterreich" ? "Bereit für deinen Erfolg in OÖ?" :
+                            data.region === "Oberösterreich" ? "Bereit für Ihren Erfolg in OÖ?" :
                                 data.region === "Niederösterreich" ? "Bereit für Wachstum?" :
                                     data.region === "Kärnten" ? "Kontaktieren Sie uns" :
                                         data.region === "Steiermark" ? "Starten wir Ihr Projekt in der Steiermark" : undefined
                         }
                         subline={
-                            data.region === "Oberösterreich" ? "Starte jetzt mit deiner Website für Linz, Wels & Steyr." :
+                            data.region === "Oberösterreich" ? "Starten Sie jetzt mit Ihrer Website für Linz, Wels & Steyr." :
                                 data.region === "Niederösterreich" ? "Lassen Sie uns gemeinsam Ihren digitalen Fußabdruck in Niederösterreich vergrößern." :
                                     data.region === "Kärnten" ? "Wir freuen uns auf ein persönliches Gespräch über Ihr Projekt." :
                                         data.region === "Steiermark" ? "Lassen Sie uns unverbindlich über Ihre neue Website sprechen. Wir sparen Ihnen Zeit und Nerven." : undefined
@@ -194,7 +214,7 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
 
             <main id="main-content" className="relative">
                 {/* Regional Hero Section - Always first */}
-                <RegionalHero data={data} onFormOpen={handleFormOpen} />
+                <RegionalHero data={data} content={content} onFormOpen={handleFormOpen} />
 
                 {/* Dynamic Sections Based on regional-content.ts */}
                 {sectionOrder.map((sectionId) => renderSection(sectionId))}

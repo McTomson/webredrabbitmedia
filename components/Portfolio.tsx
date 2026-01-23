@@ -236,22 +236,29 @@ const Portfolio = ({ headline, subline, region }: PortfolioProps) => {
 
     // Helper to get image path based on region
     const getImagePath = (originalPath: string, projectId: number) => {
-        if (region === "Kärnten") {
-            const regionalMap: Record<number, string> = {
-                1: "/images/webdesign-kaernten-referenz-bau.png",
-                2: "/images/webdesign-kaernten-referenz-installation.png",
-                3: "/images/webdesign-kaernten-referenz-kosmetik.png"
-            };
-            return regionalMap[projectId] || originalPath;
-        }
+        if (!region) return originalPath;
 
-        if (region === "Steiermark") {
-            const regionalMap: Record<number, string> = {
-                1: "/images/webdesign-steiermark-referenz-bau.png",
-                2: "/images/webdesign-steiermark-referenz-installation.png",
-                3: "/images/webdesign-steiermark-referenz-kosmetik.png"
+        const regionSlugs: Record<string, string> = {
+            "Wien": "wien",
+            "Niederösterreich": "niederoesterreich",
+            "Oberösterreich": "oberoesterreich",
+            "Salzburg": "salzburg",
+            "Tirol": "tirol",
+            "Vorarlberg": "vorarlberg",
+            "Burgenland": "burgenland",
+            "Kärnten": "kaernten",
+            "Steiermark": "steiermark"
+        };
+
+        const slug = regionSlugs[region];
+        if (slug && projectId <= 3) {
+            const projectTypes: Record<number, string> = {
+                1: "bau",
+                2: "installation",
+                3: "kosmetik"
             };
-            return regionalMap[projectId] || originalPath;
+            const type = projectTypes[projectId];
+            return `/images/webdesign-${slug}-referenz-${type}.png`;
         }
 
         return originalPath;
