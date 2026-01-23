@@ -236,21 +236,33 @@ const Portfolio = ({ headline, subline, region }: PortfolioProps) => {
 
     // Helper to get image path based on region
     const getImagePath = (originalPath: string, projectId: number) => {
-        if (region !== "Kärnten") return originalPath;
+        if (region === "Kärnten") {
+            const regionalMap: Record<number, string> = {
+                1: "/images/webdesign-kaernten-referenz-bau.png",
+                2: "/images/webdesign-kaernten-referenz-installation.png",
+                3: "/images/webdesign-kaernten-referenz-kosmetik.png"
+            };
+            return regionalMap[projectId] || originalPath;
+        }
 
-        // Define map for duplicated Kärnten images
-        const regionalMap: Record<number, string> = {
-            1: "/images/webdesign-kaernten-referenz-bau.png",
-            2: "/images/webdesign-kaernten-referenz-installation.png",
-            3: "/images/webdesign-kaernten-referenz-kosmetik.png"
-        };
+        if (region === "Steiermark") {
+            const regionalMap: Record<number, string> = {
+                1: "/images/webdesign-steiermark-referenz-bau.png",
+                2: "/images/webdesign-steiermark-referenz-installation.png",
+                3: "/images/webdesign-kaernten-referenz-kosmetik.png" // Fallback or duplicate this too if needed, currently reusing Kaernten specific if similar
+            };
+            return regionalMap[projectId] || originalPath;
+        }
 
-        return regionalMap[projectId] || originalPath;
+        return originalPath;
     };
 
     const getAltText = (originalAlt: string, category: string) => {
         if (region === "Kärnten") {
             return `Webdesign Kärnten Referenz - ${category} Website`;
+        }
+        if (region === "Steiermark") {
+            return `Webdesign Steiermark Referenz - ${category} Website`;
         }
         return originalAlt;
     };

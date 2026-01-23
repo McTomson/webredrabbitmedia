@@ -108,35 +108,17 @@ const SeoOptimization = ({ headline, subline, strategyHeadline, comparisonHeadli
                             </h3>
 
                             <div className="grid md:grid-cols-3 gap-8 md:gap-12">
-                                <div className="space-y-4">
-                                    <h4 className="text-lg font-medium text-gray-900 flex items-center gap-2">
-                                        <span className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm font-bold">1</span>
-                                        Warum wichtig?
-                                    </h4>
-                                    <p className="text-gray-600 font-light leading-relaxed text-sm">
-                                        Die schönste Website nützt Ihnen nichts, wenn sie auf Seite 2 bei Google landet. 90% der Nutzer klicken nur auf die ersten 3 Ergebnisse. Wenn Sie dort nicht sind, existieren Sie für Ihre Kunden nicht.
-                                    </p>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <h4 className="text-lg font-medium text-gray-900 flex items-center gap-2">
-                                        <span className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm font-bold">2</span>
-                                        Was wir tun
-                                    </h4>
-                                    <p className="text-gray-600 font-light leading-relaxed text-sm">
-                                        Wir überlassen nichts dem Zufall. Wir analysieren genau, was Ihre Kunden suchen und bereiten Ihre Daten so auf, dass KI-Modelle wie ChatGPT Sie als beste Antwort empfehlen. Die meisten Websites sind darauf nicht vorbereitet – das ist Ihr Wettbewerbsvorteil.
-                                    </p>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <h4 className="text-lg font-medium text-gray-900 flex items-center gap-2">
-                                        <span className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm font-bold">3</span>
-                                        Ihr Vorteil
-                                    </h4>
-                                    <p className="text-gray-600 font-light leading-relaxed text-sm">
-                                        Sie bekommen nicht nur ein Design, sondern einen 24/7 Vertriebsmitarbeiter. Während andere für teure Werbeanzeigen zahlen müssen, kommen Kunden bei Ihnen organisch – also kostenlos – auf die Seite.
-                                    </p>
-                                </div>
+                                {strategy.map((item, index) => (
+                                    <div key={index} className="space-y-4">
+                                        <h4 className="text-lg font-medium text-gray-900 flex items-center gap-2">
+                                            <span className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm font-bold">{index + 1}</span>
+                                            {item.title}
+                                        </h4>
+                                        <p className="text-gray-600 font-light leading-relaxed text-sm">
+                                            {item.text}
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </motion.div>
@@ -182,7 +164,7 @@ const SeoOptimization = ({ headline, subline, strategyHeadline, comparisonHeadli
                             <div className="bg-white rounded-2xl p-4 md:p-6 lg:p-8 text-gray-900 shadow-2xl transform lg:rotate-2 hover:rotate-0 transition-transform duration-500">
                                 {/* Comparison Table */}
                                 <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl">
-                                    <div className="grid grid-cols-3 bg-gray-900 text-white p-6 text-sm md:text-base font-medium">
+                                    <div className="grid grid-cols-3 bg-gray-900 text-white p-3 md:p-6 text-xs md:text-base font-medium items-center">
                                         <div>Feature</div>
                                         <div className="text-center opacity-70">Standard Agentur</div>
                                         <div className="text-center text-red-500 font-bold">Red Rabbit</div>
@@ -195,12 +177,12 @@ const SeoOptimization = ({ headline, subline, strategyHeadline, comparisonHeadli
                                         { name: "Zukunftssicher", other: "Nicht vorhanden", us: "Standard" },
                                         { name: "Kosten", other: "Intransparent", us: "Fixpreis" }
                                     ]).map((row, index) => (
-                                        <div key={index} className="grid grid-cols-3 p-6 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
-                                            <div className="font-medium text-gray-900">{row.name}</div>
-                                            <div className="text-center text-gray-500">{row.other}</div>
-                                            <div className="text-center text-red-600 font-medium flex items-center justify-center gap-2">
-                                                <Check className="w-4 h-4" />
-                                                {row.us}
+                                        <div key={index} className="grid grid-cols-3 p-3 md:p-6 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors items-center text-xs md:text-base">
+                                            <div className="font-medium text-gray-900 hyphens-auto break-words pr-1">{row.name}</div>
+                                            <div className="text-center text-gray-500 hyphens-auto break-words px-1">{row.other}</div>
+                                            <div className="text-center text-red-600 font-medium flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2">
+                                                <Check className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
+                                                <span className="hyphens-auto break-words">{row.us}</span>
                                             </div>
                                         </div>
                                     ))}

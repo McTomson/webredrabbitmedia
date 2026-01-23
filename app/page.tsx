@@ -48,8 +48,7 @@ export default function Home() {
       <FloatingWhatsApp />
       <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
 
-      {/* Header Navigation */}
-      <Header onFormOpen={handleFormOpen} />
+
 
       {/* SEO Content for Crawlers (hidden) */}
       <SEOContent />

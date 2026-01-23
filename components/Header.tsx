@@ -90,13 +90,23 @@ export default function Header({ onFormOpen }: HeaderProps) {
                                     <Phone className="w-4 h-4" />
                                     <span>Gerne Anrufen</span>
                                 </a>
-                                <button
-                                    onClick={onFormOpen}
-                                    className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-none hover:bg-red-700 transition-all duration-300 font-light text-sm tracking-wide group outline-none focus:outline-none"
-                                >
-                                    <span>Jetzt starten</span>
-                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                </button>
+                                {onFormOpen ? (
+                                    <button
+                                        onClick={onFormOpen}
+                                        className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-none hover:bg-red-700 transition-all duration-300 font-light text-sm tracking-wide group outline-none focus:outline-none"
+                                    >
+                                        <span>Jetzt starten</span>
+                                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                    </button>
+                                ) : (
+                                    <Link
+                                        href="/kontakt"
+                                        className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-none hover:bg-red-700 transition-all duration-300 font-light text-sm tracking-wide group outline-none focus:outline-none"
+                                    >
+                                        <span>Jetzt starten</span>
+                                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                    </Link>
+                                )}
                             </div>
                         </nav>
                     </div>
@@ -138,16 +148,27 @@ export default function Header({ onFormOpen }: HeaderProps) {
                             <Phone className="w-5 h-5" />
                             <span>Gerne Anrufen</span>
                         </a>
-                        <button
-                            onClick={() => {
-                                setIsMenuOpen(false);
-                                onFormOpen?.();
-                            }}
-                            className="flex items-center justify-center gap-3 w-full py-4 bg-red-600 text-white font-light rounded-none active:scale-95 transition-all"
-                        >
-                            <span>Jetzt starten</span>
-                            <ArrowRight className="w-5 h-5" />
-                        </button>
+                        {onFormOpen ? (
+                            <button
+                                onClick={() => {
+                                    setIsMenuOpen(false);
+                                    onFormOpen?.();
+                                }}
+                                className="flex items-center justify-center gap-3 w-full py-4 bg-red-600 text-white font-light rounded-none active:scale-95 transition-all"
+                            >
+                                <span>Jetzt starten</span>
+                                <ArrowRight className="w-5 h-5" />
+                            </button>
+                        ) : (
+                            <Link
+                                href="/kontakt"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="flex items-center justify-center gap-3 w-full py-4 bg-red-600 text-white font-light rounded-none active:scale-95 transition-all"
+                            >
+                                <span>Jetzt starten</span>
+                                <ArrowRight className="w-5 h-5" />
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>

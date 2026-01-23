@@ -141,34 +141,34 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                             <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 leading-tight">
                                 <motion.span
                                     className="block"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.4, delay: 0.1 }}
+                                    initial={{ opacity: 1, y: 0 }}
+                                // animate={{ opacity: 1, y: 0 }} // Disabled for LCP
+                                // transition={{ duration: 0.4, delay: 0.1 }}
                                 >
                                     Keine Meetings.
                                 </motion.span>
                                 <motion.span
                                     className="block"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.4, delay: 0.2 }}
+                                    initial={{ opacity: 1, y: 0 }}
+                                // animate={{ opacity: 1, y: 0 }} // Disabled for LCP
+                                // transition={{ duration: 0.4, delay: 0.2 }}
                                 >
                                     Kein Aufwand.
                                 </motion.span>
                                 <motion.span
                                     className="text-red-600 font-medium block"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.4, delay: 0.3 }}
+                                    initial={{ opacity: 1, y: 0 }}
+                                    // animate={{ opacity: 1, y: 0 }} // Disabled for LCP
+                                    // transition={{ duration: 0.4, delay: 0.3 }}
                                     whileHover={{ scale: 1.05, originX: 0 }}
                                 >
                                     Nur Ergebnisse.
                                 </motion.span>
                                 <motion.div
                                     className="mt-6 space-y-2"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 1.0 }}
+                                    initial={{ opacity: 1, y: 0 }}
+                                // animate={{ opacity: 1, y: 0 }} // Disabled for LCP
+                                // transition={{ duration: 0.6, delay: 1.0 }}
                                 >
                                     <div className="text-2xl font-semibold text-gray-900">Premium Website</div>
                                     <div className="flex items-baseline gap-3 justify-center lg:justify-start">

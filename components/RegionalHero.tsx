@@ -71,7 +71,9 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
                             ? "/images/noe/hero/webdesign-niederoesterreich-hero.png"
                             : data.region === "Kärnten"
                                 ? "/images/webdesign-kaernten-woerthersee.png"
-                                : "/images/dashboard.webp"
+                                : data.region === "Steiermark"
+                                    ? "/images/webdesign-steiermark-hero.jpg"
+                                    : "/images/dashboard.webp"
                     }
                     alt={data.region === "Oberösterreich"
                         ? "Webdesign Oberösterreich - See mit Boot im Nebel"
@@ -79,7 +81,9 @@ const RegionalHero = ({ onFormOpen, data }: RegionalHeroProps) => {
                             ? "Webdesign Niederösterreich – Landschaft mit Dorf und Bergen"
                             : data.region === "Kärnten"
                                 ? "Webdesign Kärnten - Wörthersee am Morgen mit Schiff"
-                                : `Red Rabbit Media Webdesign ${data.region}`
+                                : data.region === "Steiermark"
+                                    ? "Webdesign Steiermark - Malerische Hügellandschaft im Sonnenaufgang"
+                                    : `Red Rabbit Media Webdesign ${data.region}`
                     }
                     fill
                     className="w-full h-full object-cover object-bottom"

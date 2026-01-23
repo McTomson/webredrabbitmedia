@@ -62,7 +62,46 @@ export const regionalContent: Record<string, RegionalContent> = {
         economicContext: "Die Steiermark ist Innovationsführer, vom Autocluster bis zur Kulinarik. Wir spiegeln diesen Erfindergeist wider: Mit Websites, die technisch am Puls der Zeit sind, aber den steirischen Charme nicht verlieren.",
         landmarks: ["Uhrturm", "Schloßberg", "Dachstein", "Thermenland"],
         localProof: "Ob Grazer Start-up oder Buschenschank in der Südsteiermark – wir verstehen Sie.",
-        projectCount: 179
+        projectCount: 179,
+        heroHeadline: "Webdesign. <span class=\"text-red-500\">Steiermark.</span>",
+        heroSubline: "Digitaler Erfolg für steirische Unternehmen. Von Graz bis ins Ennstal.",
+        introHeadline: "Webdesign Agentur für die Steiermark",
+        introText: `
+            <p class="mb-6">
+                Die Steiermark ist der Innovationsmotor Österreichs. Deine Website sollte dem in nichts nachstehen. Egal ob Industriebetrieb im Murtal, Winzer in der Südsteiermark oder Dienstleister in Graz: Wir bringen dich groß raus.
+            </p>
+            <p>
+                Du suchst modernes <strong>Webdesign Steiermark</strong>, das nicht nur gut aussieht, sondern auch Kunden gewinnt? Wir verbinden steirische Handschlagqualität mit High-End Technologie.
+            </p>
+        `,
+        aboutHeadline: "Wir sprechen Steirisch. Und Digital.",
+        aboutText: `
+            <p class="mb-6">
+                Websites von der Stange gibt es genug. Wir setzen auf Maßarbeit. Wir analysieren deinen Markt, deine Konkurrenz und deine Zielgruppe, um eine Lösung zu bauen, die wirklich funktioniert.
+            </p>
+            <p>
+                Von Leoben bis Feldbach, von Bruck bis Liezen – wir sind dein Partner vor Ort. Wir wissen, wie die steirische Wirtschaft tickt und was deine Kunden erwarten.
+            </p>
+        `,
+        seoText: `
+            <h3>Sichtbarkeit in der grünen Mark</h3>
+            <p>
+                Eine Website ohne Besucher ist wie ein Buschenschank ohne Wein. Wir sorgen mit professionellem SEO dafür, dass du bei Google ganz oben stehst – egal ob jemand nach "Installateur Graz" oder "Hotel Schladming" sucht.
+            </p>
+            <p>
+                Unser <strong>Webdesign Steiermark</strong> ist von Grund auf für Suchmaschinen optimiert. Schnelle Ladezeiten, saubere Strukturen und relevante Inhalte sind bei uns Standard, nicht Extra.
+            </p>
+            
+            <h3>High-Tech für High-Performance</h3>
+            <p>
+                Wir nutzen modernste Technologien wie Next.js, um deiner Website den Turbo zu zünden. Das bedeutet: Blitzschnelle Ladezeiten, höchste Sicherheit und perfekte Darstellung auf allen Geräten.
+            </p>
+
+            <h3>Warum Red Rabbit Media?</h3>
+            <p>
+                Weil wir keine 08/15 Agentur sind. Wir sehen uns als deinen strategischen Partner. Wenn du eine <strong>Website erstellen lassen</strong> willst, die dein Unternehmen wirklich weiterbringt, dann bist du bei uns richtig.
+            </p>
+        `
     },
     "Kärnten": {
         hook: "Tourism",
