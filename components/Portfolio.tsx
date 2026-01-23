@@ -1,7 +1,6 @@
 "use client";
 
 import { ExternalLink, ArrowUpRight, Check, ChevronDown } from 'lucide-react';
-import { AOSWrapper } from '@/components/AnimatedSection';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -228,11 +227,33 @@ const PerformanceScores = ({ scores }: { scores: { performance: number; accessib
 interface PortfolioProps {
     headline?: string;
     subline?: string;
+    region?: string;
 }
 
-const Portfolio = ({ headline, subline }: PortfolioProps) => {
+const Portfolio = ({ headline, subline, region }: PortfolioProps) => {
     const [showAllProjects, setShowAllProjects] = useState(false);
     const isMobile = useIsMobile();
+
+    // Helper to get image path based on region
+    const getImagePath = (originalPath: string, projectId: number) => {
+        if (region !== "Kärnten") return originalPath;
+
+        // Define map for duplicated Kärnten images
+        const regionalMap: Record<number, string> = {
+            1: "/images/webdesign-kaernten-referenz-bau.png",
+            2: "/images/webdesign-kaernten-referenz-installation.png",
+            3: "/images/webdesign-kaernten-referenz-kosmetik.png"
+        };
+
+        return regionalMap[projectId] || originalPath;
+    };
+
+    const getAltText = (originalAlt: string, category: string) => {
+        if (region === "Kärnten") {
+            return `Webdesign Kärnten Referenz - ${category} Website`;
+        }
+        return originalAlt;
+    };
 
     const allProjects = [
         {
@@ -371,23 +392,30 @@ const Portfolio = ({ headline, subline }: PortfolioProps) => {
             <div className="max-w-7xl mx-auto px-8">
                 {/* Section Header */}
                 <div className="text-center mb-16">
-                    <AOSWrapper animation="fade-up" delay={100}>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                    >
                         <h2 className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight mb-6">
                             {headline || "Portfolio"}
                         </h2>
                         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                             {subline || "Unsere realisierten Webprojekte für zufriedene Kunden."}
                         </p>
-                    </AOSWrapper>
+                    </motion.div>
                 </div>
 
                 {/* 2-Column Grid with more spacing */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
                     {displayedProjects.map((project, index) => (
-                        <AOSWrapper
+                        <motion.div
                             key={project.id}
-                            animation="fade-up"
-                            delay={100 + (index * 50)}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
                         >
                             <motion.div
                                 className="group relative bg-white border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col h-full"
@@ -403,12 +431,13 @@ const Portfolio = ({ headline, subline }: PortfolioProps) => {
                                     >
                                         {/* Using Next.js Image for optimization, fallback logic included via state if needed, but here simple */}
                                         <Image
-                                            src={project.screenshot}
-                                            alt={`${project.name} - Webdesign Referenz ${project.category} | Red Rabbit Media`}
+                                            src={getImagePath(project.screenshot, project.id)}
+                                            alt={getAltText(`${project.name} - Webdesign Referenz ${project.category} | Red Rabbit Media`, project.category)}
                                             width={606}
                                             height={313}
                                             className="w-full h-full object-contain object-top transition-transform duration-700 group-hover:scale-105"
                                             loading="lazy"
+                                            sizes="(max-width: 768px) 100vw, 50vw"
                                         />
                                     </a>
 
@@ -460,7 +489,7 @@ const Portfolio = ({ headline, subline }: PortfolioProps) => {
                                         ))}
                                     </ul>
 
-                                    {/* Bottom Link */}
+                                    {/* Bottom Info */}
                                     <div className="pt-6 border-t border-gray-100">
                                         <a
                                             href={project.url}
@@ -474,13 +503,18 @@ const Portfolio = ({ headline, subline }: PortfolioProps) => {
                                     </div>
                                 </div>
                             </motion.div>
-                        </AOSWrapper>
+                        </motion.div>
                     ))}
                 </div>
 
                 {/* Load More Button */}
                 {allProjects.length > 6 && (
-                    <AOSWrapper animation="fade-up" delay={800}>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
                         <div className="text-center mt-12">
                             {!showAllProjects ? (
                                 <motion.button
@@ -501,7 +535,7 @@ const Portfolio = ({ headline, subline }: PortfolioProps) => {
                                 </div>
                             )}
                         </div>
-                    </AOSWrapper>
+                    </motion.div>
                 )}
 
                 {/* Disclaimer */}

@@ -203,6 +203,32 @@ export default function RegionComparisonTable() {
           
           .bold { font-weight: 700; color: #dc2626; }
         }
+
+        @media (max-width: 480px) {
+          .mobile-card {
+             padding: 1.25rem;
+          }
+          .highlight {
+             margin: 0 -1.25rem -1.25rem -1.25rem; /* Match new padding */
+             padding: 1rem 1.25rem;
+          }
+
+          .card-row {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .label {
+            margin-bottom: 0.25rem;
+            font-size: 0.85rem;
+          }
+
+          .value {
+            text-align: left;
+            width: 100%;
+            word-break: break-word; /* Prevent overflow */
+          }
+        }
       `}</style>
         </div>
     );

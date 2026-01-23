@@ -25,7 +25,13 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
         "@type": "Service",
         "name": `Premium Webdesign ${data.region}`, // e.g. "Premium Webdesign Wien"
         "description": `Professionelles Webdesign für ${data.region}. ${content.hook} für lokale Unternehmen. Ab 790€.`,
-        "image": "https://web.redrabbit.media/images/og-image.jpg",
+        "image": data.region === "Oberösterreich"
+            ? "https://web.redrabbit.media/images/ooe/hero/webdesign-oberoesterreich-see-schiff-v2.png"
+            : data.region === "Niederösterreich"
+                ? "https://web.redrabbit.media/images/noe/hero/webdesign-niederoesterreich-hero.png"
+                : data.region === "Kärnten"
+                    ? "https://web.redrabbit.media/images/webdesign-kaernten-woerthersee.png"
+                    : "https://web.redrabbit.media/images/og-image.jpg",
         "brand": {
             "@type": "Brand",
             "name": "Red Rabbit Media"

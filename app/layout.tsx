@@ -57,6 +57,13 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+
+  // Icons configuration
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
 };
 
 const jsonLd = {

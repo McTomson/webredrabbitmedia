@@ -74,6 +74,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                     fill
                     className="w-full h-full object-cover opacity-50"
                     priority
+                    sizes="100vw"
                 />
                 <div className="absolute inset-0 bg-white/85"></div>
             </div>
@@ -86,7 +87,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                         <motion.div
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            transition={{ duration: 0.6, ease: "easeOut" }}
                             className="text-center lg:text-right"
                         >
                             <motion.div
@@ -107,13 +108,14 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                                     width={280}
                                     height={280}
                                     className="w-64 h-auto"
+                                    sizes="(max-width: 1024px) 100vw, 280px"
                                 />
                             </motion.div>
                             <motion.h2
                                 className="text-3xl font-light text-gray-700"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5, duration: 0.8 }}
+                                transition={{ delay: 0.2, duration: 0.6 }}
                             >
                                 Red Rabbit Media
                             </motion.h2>
@@ -121,7 +123,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                                 className="text-gray-500 mt-2"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ delay: 0.7, duration: 0.8 }}
+                                transition={{ delay: 0.3, duration: 0.6 }}
                             >
                                 Webdesign & digitale Dienstleistungen
                             </motion.p>
@@ -133,7 +135,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                         <motion.div
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            transition={{ duration: 0.6, ease: "easeOut" }}
                             className="relative"
                         >
                             <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 leading-tight">
@@ -141,7 +143,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                                     className="block"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.4 }}
+                                    transition={{ duration: 0.4, delay: 0.1 }}
                                 >
                                     Keine Meetings.
                                 </motion.span>
@@ -149,7 +151,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                                     className="block"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.6 }}
+                                    transition={{ duration: 0.4, delay: 0.2 }}
                                 >
                                     Kein Aufwand.
                                 </motion.span>
@@ -157,7 +159,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                                     className="text-red-600 font-medium block"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.8 }}
+                                    transition={{ duration: 0.4, delay: 0.3 }}
                                     whileHover={{ scale: 1.05, originX: 0 }}
                                 >
                                     Nur Ergebnisse.

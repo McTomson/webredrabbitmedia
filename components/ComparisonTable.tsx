@@ -219,7 +219,8 @@ export default function ComparisonTable({ data, title }: ComparisonTableProps) {
 
         @media (max-width: 480px) {
           .comparison-table-wrapper {
-            margin: 1.5rem -1rem;
+            margin: 1.5rem 0;
+            width: 100%;
           }
 
           .comparison-card {

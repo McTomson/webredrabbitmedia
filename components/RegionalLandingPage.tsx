@@ -85,7 +85,7 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                 {data.region === "Kärnten" && <KaerntenUSPSection />}
 
                 {/* Portfolio Section */}
-                <Portfolio />
+                <Portfolio region={data.region} />
 
                 {/* OÖ-specific: Branchen Section */}
                 {data.region === "Oberösterreich" && <OOBranchenSection />}
@@ -119,6 +119,7 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                             data.region === "Niederösterreich" ? "Die Werbeagentur für Niederösterreich" :
                                 data.region === "Kärnten" ? "Ihre Webagentur für Kärnten" : undefined
                     }
+                    region={data.region}
                 />
 
                 {/* OÖ-specific: Testimonials */}
