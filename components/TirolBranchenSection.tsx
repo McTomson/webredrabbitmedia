@@ -1,36 +1,36 @@
 "use client";
 
-import { Hammer, Grape, Factory, ShieldCheck } from 'lucide-react';
+import { Mountain, UtensilsCrossed, Footprints, Wrench } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const industries = [
     {
-        icon: Hammer,
-        title: "Modernes Handwerk",
-        description: "Qualität, die man sieht. Wir helfen Handwerksbetrieben in Niederösterreich dabei, ihre Projekte professionell online zu präsentieren und qualifizierte Mitarbeiter zu finden.",
-        features: ["Digitale Projektmappen", "Mitarbeiter-Recruiting", "Local SEO für Ihren Bezirk"]
+        icon: Mountain,
+        title: "Alpiner Tourismus",
+        description: "Wo Berge auf Webdesign treffen. Wir bauen Webseiten für Tourismusverbände und Bergbahnen, die Lust auf den nächsten Gipfelsieg machen – am Handy wie am Desktop.",
+        features: ["Interaktive Pistenpläne", "Saisonale Inhalts-Steuerung", "Maximale Mobile-Performance"]
     },
     {
-        icon: Grape,
-        title: "Weinbau & Genuss",
-        description: "Von der Wachau bis ins Weinviertel. Wir entwickeln emotionale Webauftritte für Winzer und regionale Produzenten – inklusive Webshop und Reservierungssystem.",
-        features: ["Kreatives Storytelling", "Einfache Shop-Lösungen", "Optimiert für Mobilgeräte"]
+        icon: UtensilsCrossed,
+        title: "Gastronomie & Hospitality",
+        description: "Tiroler Genuss digital serviert. Wir sorgen dafür, dass Gäste online den Weg zu Ihnen finden und direkt einen Tisch oder ein Zimmer in Ihrer Hütte oder Ihrem Hotel reservieren.",
+        features: ["Digitale Speisekarten", "Reservierungssysteme", "Gästebewertungs-Management"]
     },
     {
-        icon: Factory,
-        title: "Industrie & KMU",
-        description: "Bodenständigkeit trifft Fortschritt. Wir zeigen die Stärke niederösterreichischer Industriebetriebe und sorgen für eine internationale Sichtbarkeit bei Kunden und Partnern.",
-        features: ["Technisches B2B SEO", "Karriere-Portale", "Mehrsprachige Websites"]
+        icon: Footprints,
+        title: "Outdoor & Sport",
+        description: "Ihre Ausrüstung für das Internet. Wir unterstützen Sportgeschäfte und Bergführer dabei, ihre Leistungen und Produkte so zu präsentieren, dass Profis und Einsteiger vertrauen.",
+        features: ["Intuitive Nutzerführung", "Lokale GEO-Optimierung", "Verkaufsstarke Landingpages"]
     },
     {
-        icon: ShieldCheck,
-        title: "Dienstleistung & Gesundheit",
-        description: "Vertrauen ist die Basis. Ob Kanzlei oder Arztpraxis: Wir erstellen Webseiten, die Sicherheit vermitteln und den administrativen Aufwand im Alltag reduzieren.",
-        features: ["Online-Terminanfragen", "Strukturierte Inhalte", "Höchster Datenschutz"]
+        icon: Wrench,
+        title: "Spezialisiertes Handwerk",
+        description: "Stabilität und Präzision. Wir zeigen die Kompetenz Tiroler Handwerker – vom Holzbau bis zur Haustechnik – so überzeugend, dass Referenzen für sich selbst sprechen.",
+        features: ["Hochwertige Bildergalerien", "Einfache Kontaktwege", "Lokale Such-Sichtbarkeit"]
     }
 ];
 
-export default function NOEBranchenSection() {
+export default function TirolBranchenSection() {
     return (
         <section className="py-24 bg-white border-t border-gray-100">
             <div className="max-w-7xl mx-auto px-8">
@@ -42,10 +42,10 @@ export default function NOEBranchenSection() {
                         transition={{ duration: 0.6 }}
                     >
                         <h2 className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight mb-6">
-                            Spezialisiert auf <span className="text-red-600 font-medium">Niederösterreichs Wirtschaft</span>
+                            Digitale Power für <span className="text-red-500 font-medium">Tiroler Betriebe</span>
                         </h2>
                         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Wir verstehen die Anforderungen niederösterreichischer Betriebe. Ob traditionsreiches Familienunternehmen oder innovativer Dienstleister – wir bringen Ihren Erfolg ins Netz.
+                            In Tirol zählen Taten. Wir liefern Webdesign, das hält, was es verspricht – pfeilschnell, stabil und exakt auf Ihre Zielgruppe in den Alpen angepasst.
                         </p>
                     </motion.div>
                 </div>
@@ -61,7 +61,7 @@ export default function NOEBranchenSection() {
                         >
                             <div className="group p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 h-full flex flex-col">
                                 <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <industry.icon className="w-7 h-7 text-gray-600 group-hover:text-red-600 transition-colors" />
+                                    <industry.icon className="w-7 h-7 text-gray-600 group-hover:text-red-500 transition-colors" />
                                 </div>
                                 <h3 className="text-xl font-medium text-gray-900 mb-3">{industry.title}</h3>
                                 <p className="text-sm text-gray-600 leading-relaxed mb-6 flex-grow">
@@ -70,7 +70,7 @@ export default function NOEBranchenSection() {
                                 <ul className="space-y-2 mt-auto">
                                     {industry.features.map((feature, i) => (
                                         <li key={i} className="text-xs text-gray-500 font-medium flex items-center gap-2">
-                                            <span className="w-1 h-1 bg-red-600 rounded-full"></span>
+                                            <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
                                             {feature}
                                         </li>
                                     ))}

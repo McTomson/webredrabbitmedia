@@ -54,7 +54,7 @@ export default function Header({ onFormOpen }: HeaderProps) {
                                         alt="Red Rabbit Media Logo"
                                         fill
                                         className="object-contain object-left"
-                                        priority // Fix LCP warning
+                                        priority={true}
                                         sizes="(max-width: 768px) 130px, 150px"
                                     />
                                 </div>

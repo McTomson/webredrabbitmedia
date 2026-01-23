@@ -1,36 +1,36 @@
 "use client";
 
-import { Hammer, Grape, Factory, ShieldCheck } from 'lucide-react';
+import { Hotel, Music, Gem, Globe2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const industries = [
     {
-        icon: Hammer,
-        title: "Modernes Handwerk",
-        description: "Qualität, die man sieht. Wir helfen Handwerksbetrieben in Niederösterreich dabei, ihre Projekte professionell online zu präsentieren und qualifizierte Mitarbeiter zu finden.",
-        features: ["Digitale Projektmappen", "Mitarbeiter-Recruiting", "Local SEO für Ihren Bezirk"]
+        icon: Hotel,
+        title: "Hotellerie & Tourismus",
+        description: "Salzburger Gastlandschaften digital erlebbar machen. Wir erstellen Webseiten für Hotels und Resorts, die sofort Urlaubsstimmung wecken und Direktbuchungen maximieren.",
+        features: ["Integration von Buchungstools", "Emotionale Bildwelten", "Mehrsprachige SEO"]
     },
     {
-        icon: Grape,
-        title: "Weinbau & Genuss",
-        description: "Von der Wachau bis ins Weinviertel. Wir entwickeln emotionale Webauftritte für Winzer und regionale Produzenten – inklusive Webshop und Reservierungssystem.",
-        features: ["Kreatives Storytelling", "Einfache Shop-Lösungen", "Optimiert für Mobilgeräte"]
+        icon: Music,
+        title: "Kultur & Events",
+        description: "Wo die Kunst zu Hause ist. Wir begleiten Veranstalter und Kulturbetriebe bei der digitalen Inszenierung ihrer Projekte – modern, ästhetisch und nutzerfreundlich.",
+        features: ["Event-Management Tools", "Interaktive Terminkalender", "Klares, edles Design"]
     },
     {
-        icon: Factory,
-        title: "Industrie & KMU",
-        description: "Bodenständigkeit trifft Fortschritt. Wir zeigen die Stärke niederösterreichischer Industriebetriebe und sorgen für eine internationale Sichtbarkeit bei Kunden und Partnern.",
-        features: ["Technisches B2B SEO", "Karriere-Portale", "Mehrsprachige Websites"]
+        icon: Gem,
+        title: "Manufakturen & Handwerk",
+        description: "Beste Qualität verdient beste Präsentation. Wir setzen Salzburger Traditionsbetriebe und Manufakturen so in Szene, dass die Wertigkeit Ihrer Arbeit online spürbar wird.",
+        features: ["Detailverliebte Galerien", "Marken-Storytelling", "Anfrage-Optimierung"]
     },
     {
-        icon: ShieldCheck,
-        title: "Dienstleistung & Gesundheit",
-        description: "Vertrauen ist die Basis. Ob Kanzlei oder Arztpraxis: Wir erstellen Webseiten, die Sicherheit vermitteln und den administrativen Aufwand im Alltag reduzieren.",
-        features: ["Online-Terminanfragen", "Strukturierte Inhalte", "Höchster Datenschutz"]
+        icon: Globe2,
+        title: "Export & Dienstleistung",
+        description: "Von Salzburg aus die Welt erobern. Wir unterstützen exportstarke Unternehmen dabei, ihre Kompetenz international sichtbar zu machen – technisch präzise und überzeugend.",
+        features: ["KI-gestützte Übersetzung", "B2B-Leadgenerierung", "Globale SEO-Strategie"]
     }
 ];
 
-export default function NOEBranchenSection() {
+export default function SalzburgBranchenSection() {
     return (
         <section className="py-24 bg-white border-t border-gray-100">
             <div className="max-w-7xl mx-auto px-8">
@@ -42,10 +42,10 @@ export default function NOEBranchenSection() {
                         transition={{ duration: 0.6 }}
                     >
                         <h2 className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight mb-6">
-                            Spezialisiert auf <span className="text-red-600 font-medium">Niederösterreichs Wirtschaft</span>
+                            Exzellenz für <span className="text-red-500 font-medium">Salzburger Branchen</span>
                         </h2>
                         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Wir verstehen die Anforderungen niederösterreichischer Betriebe. Ob traditionsreiches Familienunternehmen oder innovativer Dienstleister – wir bringen Ihren Erfolg ins Netz.
+                            In Salzburg zählt der erste Eindruck. Wir entwickeln Webauftritte, die Ihren hohen Qualitätsanspruch widerspiegeln und Ihre Kunden nachhaltig beeindrucken.
                         </p>
                     </motion.div>
                 </div>
@@ -61,7 +61,7 @@ export default function NOEBranchenSection() {
                         >
                             <div className="group p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 h-full flex flex-col">
                                 <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                                    <industry.icon className="w-7 h-7 text-gray-600 group-hover:text-red-600 transition-colors" />
+                                    <industry.icon className="w-7 h-7 text-gray-600 group-hover:text-red-500 transition-colors" />
                                 </div>
                                 <h3 className="text-xl font-medium text-gray-900 mb-3">{industry.title}</h3>
                                 <p className="text-sm text-gray-600 leading-relaxed mb-6 flex-grow">
@@ -70,7 +70,7 @@ export default function NOEBranchenSection() {
                                 <ul className="space-y-2 mt-auto">
                                     {industry.features.map((feature, i) => (
                                         <li key={i} className="text-xs text-gray-500 font-medium flex items-center gap-2">
-                                            <span className="w-1 h-1 bg-red-600 rounded-full"></span>
+                                            <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
                                             {feature}
                                         </li>
                                     ))}

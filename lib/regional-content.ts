@@ -118,7 +118,7 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 164,
         heroImage: "/images/noe/hero/webdesign-niederoesterreich-hero.png",
         heroImageAlt: "Webdesign Niederösterreich – Landschaft mit Dorf und Bergen",
-        sectionOrder: ["intro", "usp", "process", "portfolio", "about", "testimonials", "pricing", "faq", "contact"]
+        sectionOrder: ["intro", "usp", "branchen", "process", "portfolio", "about", "testimonials", "pricing", "faq", "contact"]
     },
     "Salzburg": {
         hook: "Tourism",
@@ -436,7 +436,7 @@ export const regionalContent: Record<string, RegionalContent> = {
         heroImage: "/images/dashboard.webp",
         heroImageAlt: "Webdesign Burgenland - Regionale Webentwicklung",
         projectCount: 128,
-        sectionOrder: ["intro", "process", "portfolio", "about", "faq", "contact"]
+        sectionOrder: ["intro", "process", "branchen", "portfolio", "about", "faq", "contact"]
     },
     "Vorarlberg": {
         hook: "Innovation",

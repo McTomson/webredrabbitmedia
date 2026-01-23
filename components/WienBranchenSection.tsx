@@ -1,36 +1,36 @@
 "use client";
 
-import { Hammer, Grape, Factory, ShieldCheck } from 'lucide-react';
+import { Briefcase, Building2, Rocket, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const industries = [
     {
-        icon: Hammer,
-        title: "Modernes Handwerk",
-        description: "Qualität, die man sieht. Wir helfen Handwerksbetrieben in Niederösterreich dabei, ihre Projekte professionell online zu präsentieren und qualifizierte Mitarbeiter zu finden.",
-        features: ["Digitale Projektmappen", "Mitarbeiter-Recruiting", "Local SEO für Ihren Bezirk"]
+        icon: Briefcase,
+        title: "Kanzleien & Beratung",
+        description: "In Wien zählen Vertrauen und Professionalität. Wir erstellen Webseiten für Rechtsanwälte, Steuerberater und Consulter, die Kompetenz ausstrahlen und neue Mandanten gewinnen.",
+        features: ["Rechtssichere Struktur", "Professionelles Fotoshooting-Konzept", "KI-optimierte Texte"]
     },
     {
-        icon: Grape,
-        title: "Weinbau & Genuss",
-        description: "Von der Wachau bis ins Weinviertel. Wir entwickeln emotionale Webauftritte für Winzer und regionale Produzenten – inklusive Webshop und Reservierungssystem.",
-        features: ["Kreatives Storytelling", "Einfache Shop-Lösungen", "Optimiert für Mobilgeräte"]
+        icon: Rocket,
+        title: "Tech-Startups",
+        description: "Innovation aus der Hauptstadt. Wir bauen Hochleistungs-Websites für Wiener Startups, die Investoren überzeugen und Nutzer begeistern – skalierbar und blitzschnell.",
+        features: ["Modernster Tech-Stack", "Investor-Pitch Readyness", "Maximale Performance"]
     },
     {
-        icon: Factory,
-        title: "Industrie & KMU",
-        description: "Bodenständigkeit trifft Fortschritt. Wir zeigen die Stärke niederösterreichischer Industriebetriebe und sorgen für eine internationale Sichtbarkeit bei Kunden und Partnern.",
-        features: ["Technisches B2B SEO", "Karriere-Portale", "Mehrsprachige Websites"]
+        icon: Building2,
+        title: "Immobilien & Bauträger",
+        description: "Vom ersten Bezirk bis in die Donaustadt. Wir visualisieren Ihre Projekte so hochwertig, dass Objekte schneller verwertet werden und Ihr Portfolio glänzt.",
+        features: ["Interaktive Projektkarten", "Hochwertige Galerien", "SEO für Wiener Bezirke"]
     },
     {
-        icon: ShieldCheck,
-        title: "Dienstleistung & Gesundheit",
-        description: "Vertrauen ist die Basis. Ob Kanzlei oder Arztpraxis: Wir erstellen Webseiten, die Sicherheit vermitteln und den administrativen Aufwand im Alltag reduzieren.",
-        features: ["Online-Terminanfragen", "Strukturierte Inhalte", "Höchster Datenschutz"]
+        icon: ShoppingBag,
+        title: "Urbaner Handel",
+        description: "Gezielte Sichtbarkeit für Wiener Ladengeschäfte und Boutiquen. Wir sorgen dafür, dass Kunden Sie online finden und direkt in Ihr Geschäft kommen.",
+        features: ["Local SEO Strategie", "Google Maps Integration", "Mobile-First Design"]
     }
 ];
 
-export default function NOEBranchenSection() {
+export default function WienBranchenSection() {
     return (
         <section className="py-24 bg-white border-t border-gray-100">
             <div className="max-w-7xl mx-auto px-8">
@@ -42,10 +42,10 @@ export default function NOEBranchenSection() {
                         transition={{ duration: 0.6 }}
                     >
                         <h2 className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight mb-6">
-                            Spezialisiert auf <span className="text-red-600 font-medium">Niederösterreichs Wirtschaft</span>
+                            Branchen-Fokus für <span className="text-red-600 font-medium">Wiener Unternehmen</span>
                         </h2>
                         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Wir verstehen die Anforderungen niederösterreichischer Betriebe. Ob traditionsreiches Familienunternehmen oder innovativer Dienstleister – wir bringen Ihren Erfolg ins Netz.
+                            Wien ist vielfältig und anspruchsvoll. Wir bieten maßgeschneidertes Webdesign, das genau auf Ihre Branche und Ihre Wiener Zielgruppe zugeschnitten ist.
                         </p>
                     </motion.div>
                 </div>

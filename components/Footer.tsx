@@ -30,10 +30,10 @@ const Footer = () => {
                                     <Image
                                         src="/images/logo.webp"
                                         alt="Red Rabbit Media Logo"
-                                        width={32}
+                                        width={120}
                                         height={32}
                                         className="h-8 w-auto"
-                                        style={{ width: 'auto', height: 'auto' }} // Fix aspect ratio warning
+                                        style={{ height: '32px', width: 'auto' }}
                                     />
                                     <span className="text-xl font-light">Red Rabbit Media</span>
                                 </div>

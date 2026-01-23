@@ -37,15 +37,25 @@ const SteiermarkTestimonials = dynamic(() => import('@/components/SteiermarkTest
 
 // Wien-specific components
 const WienTestimonials = dynamic(() => import('@/components/WienTestimonials'));
+const WienBranchenSection = dynamic(() => import('@/components/WienBranchenSection'));
 
 // Salzburg-specific components
 const SalzburgTestimonials = dynamic(() => import('@/components/SalzburgTestimonials'));
+const SalzburgBranchenSection = dynamic(() => import('@/components/SalzburgBranchenSection'));
 
 // Tirol-specific components
 const TirolTestimonials = dynamic(() => import('@/components/TirolTestimonials'));
+const TirolBranchenSection = dynamic(() => import('@/components/TirolBranchenSection'));
 
 // Vorarlberg-specific components
 const VorarlbergTestimonials = dynamic(() => import('@/components/VorarlbergTestimonials'));
+const VorarlbergBranchenSection = dynamic(() => import('@/components/VorarlbergBranchenSection'));
+
+// NÖ-specific components
+const NOEBranchenSection = dynamic(() => import('@/components/NOEBranchenSection'));
+
+// Burgenland-specific components
+const BurgenlandBranchenSection = dynamic(() => import('@/components/BurgenlandBranchenSection'));
 
 const RegionalCityLinks = dynamic(() => import('@/components/RegionalCityLinks'));
 const FeaturedBlogPosts = dynamic(() => import('@/components/FeaturedBlogPosts'));
@@ -104,6 +114,12 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                         {data.region === "Oberösterreich" && <OOBranchenSection />}
                         {data.region === "Kärnten" && <KaerntenBranchenSection />}
                         {data.region === "Steiermark" && <SteiermarkBranchenSection />}
+                        {data.region === "Wien" && <WienBranchenSection />}
+                        {data.region === "Niederösterreich" && <NOEBranchenSection />}
+                        {data.region === "Salzburg" && <SalzburgBranchenSection />}
+                        {data.region === "Tirol" && <TirolBranchenSection />}
+                        {data.region === "Vorarlberg" && <VorarlbergBranchenSection />}
+                        {data.region === "Burgenland" && <BurgenlandBranchenSection />}
                     </div>
                 );
 

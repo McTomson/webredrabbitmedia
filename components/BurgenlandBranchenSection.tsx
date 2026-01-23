@@ -1,36 +1,36 @@
 "use client";
 
-import { Hammer, Grape, Factory, ShieldCheck } from 'lucide-react';
+import { GlassWater, Sun, Store, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const industries = [
     {
-        icon: Hammer,
-        title: "Modernes Handwerk",
-        description: "Qualität, die man sieht. Wir helfen Handwerksbetrieben in Niederösterreich dabei, ihre Projekte professionell online zu präsentieren und qualifizierte Mitarbeiter zu finden.",
-        features: ["Digitale Projektmappen", "Mitarbeiter-Recruiting", "Local SEO für Ihren Bezirk"]
+        icon: GlassWater,
+        title: "Weinbau & Direktvermarktung",
+        description: "Vom Seewinkel bis ins Südburgenland. Wir erstellen Webseiten für Winzer und Hofläden, die Ihre Tradition modern präsentieren und den Ab-Hof-Verkauf digital ankurbeln.",
+        features: ["Einfache Webshop-Systeme", "Emotionale Bildsprache", "Event-Ankündigungen"]
     },
     {
-        icon: Grape,
-        title: "Weinbau & Genuss",
-        description: "Von der Wachau bis ins Weinviertel. Wir entwickeln emotionale Webauftritte für Winzer und regionale Produzenten – inklusive Webshop und Reservierungssystem.",
-        features: ["Kreatives Storytelling", "Einfache Shop-Lösungen", "Optimiert für Mobilgeräte"]
+        icon: Sun,
+        title: "Erneuerbare Energien",
+        description: "Power aus dem Sonnenland. Wir unterstützen Betriebe im Bereich Photovoltaik und Windkraft dabei, ihre Kompetenz sichtbar zu machen und Anfragen effizient zu generieren.",
+        features: ["SEO für Energiethemen", "Anfrage-Konfiguratoren", "Technische Beratung online"]
     },
     {
-        icon: Factory,
-        title: "Industrie & KMU",
-        description: "Bodenständigkeit trifft Fortschritt. Wir zeigen die Stärke niederösterreichischer Industriebetriebe und sorgen für eine internationale Sichtbarkeit bei Kunden und Partnern.",
-        features: ["Technisches B2B SEO", "Karriere-Portale", "Mehrsprachige Websites"]
+        icon: Store,
+        title: "Regionales Kleingewerbe",
+        description: "Lokale Stärke digital nutzen. Wir bauen bezahlbare Webseiten für burgenländische Kleinbetriebe, die bei Google in der Region ganz oben erscheinen wollen.",
+        features: ["Fixpreis-Garantie", "Local SEO Burgenland", "Schnelle Umsetzung"]
     },
     {
-        icon: ShieldCheck,
-        title: "Dienstleistung & Gesundheit",
-        description: "Vertrauen ist die Basis. Ob Kanzlei oder Arztpraxis: Wir erstellen Webseiten, die Sicherheit vermitteln und den administrativen Aufwand im Alltag reduzieren.",
-        features: ["Online-Terminanfragen", "Strukturierte Inhalte", "Höchster Datenschutz"]
+        icon: Leaf,
+        title: "Naturtourismus & Freizeit",
+        description: "Erholung am Neusiedler See. Wir begleiten Pensionen und Freizeitbetriebe bei der Gewinnung neuer Gäste durch einladendes Design und einfache Buchungswege.",
+        features: ["Mobil-optimierte Buchung", "Freizeit-Tipp Blogs", "Emotionale Kundenreise"]
     }
 ];
 
-export default function NOEBranchenSection() {
+export default function BurgenlandBranchenSection() {
     return (
         <section className="py-24 bg-white border-t border-gray-100">
             <div className="max-w-7xl mx-auto px-8">
@@ -42,10 +42,10 @@ export default function NOEBranchenSection() {
                         transition={{ duration: 0.6 }}
                     >
                         <h2 className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight mb-6">
-                            Spezialisiert auf <span className="text-red-600 font-medium">Niederösterreichs Wirtschaft</span>
+                            Regionale Lösungen für <span className="text-red-600 font-medium">Burgenlands Betriebe</span>
                         </h2>
                         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Wir verstehen die Anforderungen niederösterreichischer Betriebe. Ob traditionsreiches Familienunternehmen oder innovativer Dienstleister – wir bringen Ihren Erfolg ins Netz.
+                            Ehrlich, direkt und effektiv. Wir liefern Webdesign für das Burgenland, das genau zu Ihrem Budget passt und Ihre Ziele in der Region sicher erreicht.
                         </p>
                     </motion.div>
                 </div>
@@ -70,7 +70,7 @@ export default function NOEBranchenSection() {
                                 <ul className="space-y-2 mt-auto">
                                     {industry.features.map((feature, i) => (
                                         <li key={i} className="text-xs text-gray-500 font-medium flex items-center gap-2">
-                                            <span className="w-1 h-1 bg-red-600 rounded-full"></span>
+                                            <span className="w-1.5 h-1.5 bg-red-600 rounded-full"></span>
                                             {feature}
                                         </li>
                                     ))}

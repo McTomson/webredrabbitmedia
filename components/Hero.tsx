@@ -108,6 +108,8 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                                     width={280}
                                     height={280}
                                     className="w-64 h-auto"
+                                    priority={true}
+                                    style={{ height: 'auto' }}
                                     sizes="(max-width: 1024px) 100vw, 280px"
                                 />
                             </motion.div>
