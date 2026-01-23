@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import Header from "@/components/Header";
+
 import SkipLinks from "@/components/SkipLinks";
 import { City } from './cities';
 import CityHero from '@/components/CityHero'; // New component
@@ -37,7 +37,7 @@ export default function CityContent({ city }: CityContentProps) {
             <FloatingWhatsApp />
             <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
 
-            <Header onFormOpen={() => setIsFormOpen(true)} />
+
 
             <CitySEOContent city={city} />
 

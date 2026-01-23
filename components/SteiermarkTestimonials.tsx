@@ -1,6 +1,8 @@
 "use client";
 
-import { Star, Quote } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const testimonials = [
@@ -8,94 +10,150 @@ const testimonials = [
         name: "Andreas H.",
         role: "Weinbau & Buschenschank",
         location: "Südsteiermark",
+        rating: 5,
         text: "Wir wollten unsere Weine auch online besser verkaufen. Red Rabbit Media hat das perfekt verstanden. Modern, aber passend zu unserer Tradition. Die Bestellungen sind spürbar gestiegen.",
-        stars: 5,
         initial: "A"
     },
     {
         name: "Tech-Start-up Graz",
         role: "Head of Marketing",
         location: "Graz",
+        rating: 5,
         text: "Als Tech-Firma war uns wichtig, dass der Code sauber ist und die Performance stimmt. Hier weiß man, was man tut. Next.js war die richtige Wahl. Top Umsetzung!",
-        stars: 5,
         initial: "T"
     },
     {
         name: "Gasthof zur Post",
         role: "Inhaber",
         location: "Murtal",
+        rating: 5,
         text: "Endlich eine unkomplizierte Zusammenarbeit. Einer kümmert sich um alles, ich muss mich nicht mit Technik ärgern. Die neue Seite bringt uns viele Reservierungen.",
-        stars: 5,
         initial: "G"
     },
     {
         name: "Lisa M.",
         role: "Selbstständige Beraterin",
         location: "Leoben",
+        rating: 5,
         text: "Der Fixpreis war für mich entscheidend. Keine versteckten Kosten, klares Angebot. Das Ergebnis kann sich sehen lassen, ich bekomme viele Komplimente für die Seite.",
-        stars: 5,
         initial: "L"
     }
 ];
 
 export default function SteiermarkTestimonials() {
-    return (
-        <section className="py-24 bg-gray-50 overflow-hidden" id="stimmen">
-            <div className="max-w-7xl mx-auto px-8 relative">
-                {/* Background Decorative Elements */}
-                <div className="absolute top-0 left-0 w-64 h-64 bg-green-50 rounded-full blur-3xl opacity-30 -translate-x-1/2 -translate-y-1/2"></div>
-                <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-100 rounded-full blur-3xl opacity-30 translate-x-1/3 translate-y-1/3"></div>
+    const [emblaRef, emblaApi] = useEmblaCarousel({
+        loop: true,
+        align: 'center',
+        slidesToScroll: 1,
+    });
 
-                <div className="relative z-10">
-                    <div className="text-center mb-16">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <h2 className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight mb-6">
-                                Das sagt die <span className="text-red-600 font-medium">Steiermark</span>
-                            </h2>
-                            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                                Zufriedene Kunden von Graz bis ins Ausseerland.
-                            </p>
-                        </motion.div>
+    const [selectedIndex, setSelectedIndex] = useState(0);
+
+    const scrollPrev = useCallback(() => {
+        if (emblaApi) emblaApi.scrollPrev();
+    }, [emblaApi]);
+
+    const scrollNext = useCallback(() => {
+        if (emblaApi) emblaApi.scrollNext();
+    }, [emblaApi]);
+
+    const onSelect = useCallback(() => {
+        if (!emblaApi) return;
+        setSelectedIndex(emblaApi.selectedScrollSnap());
+    }, [emblaApi]);
+
+    useEffect(() => {
+        if (!emblaApi) return;
+        onSelect();
+        emblaApi.on('select', onSelect);
+
+        const autoScroll = setInterval(() => {
+            emblaApi.scrollNext();
+        }, 10000);
+
+        return () => {
+            clearInterval(autoScroll);
+            emblaApi.off('select', onSelect);
+        };
+    }, [emblaApi, onSelect]);
+
+    return (
+        <section className="py-24 bg-gray-50" id="stimmen">
+            <div className="max-w-4xl mx-auto px-8 text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    className="mb-16"
+                >
+                    <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4 tracking-tight">
+                        Das sagt die <span className="text-red-600 font-medium">Steiermark</span>
+                    </h2>
+                </motion.div>
+
+                <div className="relative">
+                    <div className="overflow-hidden" ref={emblaRef}>
+                        <div className="flex">
+                            {testimonials.map((testimonial, index) => (
+                                <div key={index} className="flex-[0_0_100%] min-w-0">
+                                    <motion.div
+                                        initial={{ opacity: 0.5, scale: 0.95 }}
+                                        animate={{
+                                            opacity: selectedIndex === index ? 1 : 0.4,
+                                            scale: selectedIndex === index ? 1 : 0.95
+                                        }}
+                                        transition={{ duration: 0.5 }}
+                                        className="p-10"
+                                    >
+                                        <div className="flex justify-center gap-1 mb-8">
+                                            {[...Array(5)].map((_, i) => (
+                                                <Star
+                                                    key={i}
+                                                    className={`w-5 h-5 ${i < testimonial.rating ? 'fill-[#fbbc04] text-[#fbbc04]' : 'fill-gray-200 text-gray-200'}`}
+                                                />
+                                            ))}
+                                        </div>
+
+                                        <blockquote className="text-2xl md:text-3xl font-light text-gray-800 leading-relaxed mb-10 italic">
+                                            &quot;{testimonial.text}&quot;
+                                        </blockquote>
+
+                                        <div className="mt-10">
+                                            <p className="text-lg font-medium text-gray-900">{testimonial.name}</p>
+                                            <p className="text-sm text-gray-400 mt-1 uppercase tracking-widest">
+                                                {testimonial.role} • {testimonial.location}
+                                            </p>
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {testimonials.map((testimonial, index) => (
-                            <motion.div
+                    <button
+                        onClick={scrollPrev}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-gray-300 hover:text-red-600 transition-colors"
+                        aria-label="Vorheriges Testimonial"
+                    >
+                        <ChevronLeft className="w-8 h-8" />
+                    </button>
+                    <button
+                        onClick={scrollNext}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-gray-300 hover:text-red-600 transition-colors"
+                        aria-label="Nächstes Testimonial"
+                    >
+                        <ChevronRight className="w-8 h-8" />
+                    </button>
+
+                    <div className="flex justify-center gap-3 mt-12">
+                        {testimonials.map((_, index) => (
+                            <button
                                 key={index}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                            >
-                                <div className="bg-white p-8 lg:p-10 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 h-full flex flex-col relative group">
-                                    <Quote className="absolute top-8 right-8 w-12 h-12 text-gray-100 group-hover:text-red-50 transition-colors duration-300" />
-
-                                    <div className="flex gap-1 mb-6">
-                                        {[...Array(5)].map((_, i) => (
-                                            <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                                        ))}
-                                    </div>
-
-                                    <blockquote className="text-lg text-gray-700 leading-relaxed mb-8 flex-grow italic">
-                                        &quot;{testimonial.text}&quot;
-                                    </blockquote>
-
-                                    <div className="flex items-center gap-4 mt-auto">
-                                        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-700 font-bold text-xl">
-                                            {testimonial.initial}
-                                        </div>
-                                        <div>
-                                            <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                                            <div className="text-sm text-gray-500">{testimonial.role} | {testimonial.location}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </motion.div>
+                                onClick={() => emblaApi?.scrollTo(index)}
+                                className={`h-0.5 rounded-full transition-all duration-500 ${index === selectedIndex ? 'bg-red-600 w-12' : 'bg-gray-200 w-6'}`}
+                                aria-label={`Gehe zu Testimonial ${index + 1}`}
+                            />
                         ))}
                     </div>
                 </div>
@@ -103,3 +161,4 @@ export default function SteiermarkTestimonials() {
         </section>
     );
 }
+

@@ -5,28 +5,28 @@ import { motion } from 'framer-motion';
 
 const industries = [
     {
-        icon: Utensils,
-        title: "Gastronomie & Tourismus",
-        description: "Vom Buschenschank in der Südsteiermark bis zum Hotel in Schladming. Wir sorgen für mehr Reservierungen und Buchungen.",
-        features: ["Digitale Speisekarte", "Buchungssystem", "Event-Kalender"]
-    },
-    {
         icon: Factory,
-        title: "Industrie & Gewerbe",
-        description: "Der Motor der Steiermark. Wir präsentieren Ihre Produkte und Leistungen international professionell und überzeugend.",
-        features: ["Produkt-Kataloge", "Mitarbeiter-Suche", "Mehrsprachigkeit"]
+        title: "Industrie & Export",
+        description: "Das Rückgrat der Steiermark. Wir präsentieren Ihre Fertigungsprozesse und Produkte für den Weltmarkt – technisch brillant und überzeugend.",
+        features: ["B2B-Produktwelten", "Internationale SEO", "Karriere-Portale"]
     },
     {
         icon: Cpu,
-        title: "Startups & Tech",
-        description: "Graz ist Tech-Hauptstadt. Wir liefern Webdesign, das Investoren überzeugt und skalierbar mit Ihrem Wachstum mithält.",
-        features: ["Modernster Tech-Stack", "High-Performance", "Schnelle Iterationen"]
+        title: "GreenTech & Innovation",
+        description: "Nachhaltigkeit trifft High-End. Wir bauen Webseiten für Pioniere im Bereich Energie und Technik, die Vertrauen bei Investoren und Kunden schaffen.",
+        features: ["Clean-Code Architektur", "Schnelle Ladezeiten", "Messbarer Vorsprung"]
+    },
+    {
+        icon: Utensils,
+        title: "Tourismus & Genuss",
+        description: "Vom Schilcher-Winzer bis zum Ski-Resort. Wir bringen das steirische Lebensgefühl ins Netz und sorgen für volle Auftragsbücher und Reservierungen.",
+        features: ["E-Commerce & Buchung", "Emotionale Journeys", "Regionales Marketing"]
     },
     {
         icon: Hammer,
-        title: "Handwerk & Bau",
-        description: "Ehrliches Handwerk braucht eine ehrliche Website. Zeigen Sie Ihre Referenzprojekte und gewinnen Sie neue Aufträge.",
-        features: ["Projekt-Galerien", "Anfrage-Formulare", "Regionales SEO"]
+        title: "Modernes Handwerk",
+        description: "Präzision aus der Region. Wir zeigen Ihre Referenzen so hochwertig, dass Qualität direkt spürbar wird – von Bruck bis Deutschlandsberg.",
+        features: ["Projekt-Visualisierung", "Lokale Sichtbarkeit", "Einfache Anfrage-Tools"]
     }
 ];
 

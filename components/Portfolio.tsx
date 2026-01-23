@@ -249,7 +249,7 @@ const Portfolio = ({ headline, subline, region }: PortfolioProps) => {
             const regionalMap: Record<number, string> = {
                 1: "/images/webdesign-steiermark-referenz-bau.png",
                 2: "/images/webdesign-steiermark-referenz-installation.png",
-                3: "/images/webdesign-kaernten-referenz-kosmetik.png" // Fallback or duplicate this too if needed, currently reusing Kaernten specific if similar
+                3: "/images/webdesign-steiermark-referenz-kosmetik.png"
             };
             return regionalMap[projectId] || originalPath;
         }
@@ -258,11 +258,21 @@ const Portfolio = ({ headline, subline, region }: PortfolioProps) => {
     };
 
     const getAltText = (originalAlt: string, category: string) => {
-        if (region === "Kärnten") {
-            return `Webdesign Kärnten Referenz - ${category} Website`;
-        }
-        if (region === "Steiermark") {
-            return `Webdesign Steiermark Referenz - ${category} Website`;
+        if (!region) return originalAlt;
+        const regionalTerms: Record<string, string> = {
+            "Wien": "Wien",
+            "Niederösterreich": "Niederösterreich",
+            "Oberösterreich": "Oberösterreich",
+            "Salzburg": "Salzburg",
+            "Tirol": "Tirol",
+            "Vorarlberg": "Vorarlberg",
+            "Burgenland": "Burgenland",
+            "Kärnten": "Kärnten",
+            "Steiermark": "Steiermark"
+        };
+        const term = regionalTerms[region];
+        if (term) {
+            return `Webdesign ${term} Referenz - ${category} Website | Red Rabbit Media`;
         }
         return originalAlt;
     };

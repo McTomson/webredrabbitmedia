@@ -5,28 +5,28 @@ import { motion } from 'framer-motion';
 
 const usps = [
     {
-        icon: Handshake,
-        title: "Steirische Handschlagqualität",
-        description: "Ein Wort ist ein Wort. Wir verstecken uns nicht hinter Klauseln, sondern liefern ab. Verlässlich, pünktlich und ehrlich.",
-        highlight: "Ehrlich & Direkt"
+        icon: Gauge,
+        title: "Maximale Performance",
+        description: "In der Steiermark zählt Effizienz. Unsere Websites laden blitzschnell, damit Ihre Kunden nicht warten müssen – und Google Sie liebt.",
+        highlight: "High-Speed Webdesign"
     },
     {
         icon: Lightbulb,
-        title: "Innovation & Tradition",
-        description: "Die Steiermark ist Forschungsland. Wir bringen diesen Geist in deine Website: Modernste Technik, die trotzdem bodenständig bleibt.",
-        highlight: "Smart & Überlegt"
+        title: "Direkt & Schnörkellos",
+        description: "Wir kommen direkt zum Punkt. Keine unnötigen Fachbegriffe oder leere Kilometer, sondern digitale Ergebnisse, die Ihr Geschäft voranbringen.",
+        highlight: "Klarer Fokus"
     },
     {
-        icon: Gauge,
-        title: "Leistung, die ankommt",
-        description: "Schnelle Ladezeiten sind kein Luxus, sondern Pflicht. Wie ein gut eingestellter Motor läuft deine Website bei uns auf Hochtouren.",
-        highlight: "High-Performance"
+        icon: Handshake,
+        title: "Ehrliche Beratung",
+        description: "Wir sagen Ihnen ehrlich, was funktioniert und was nicht. Transparente Fixpreise und Handschlagqualität sind unser Standard für die Steiermark.",
+        highlight: "100% Transparent"
     },
     {
-        icon: MapPin,
-        title: "Regionale Partner",
-        description: "Von Graz bis Schladming: Wir sind keine anonyme Internet-Firma, sondern dein Partner vor Ort. Wir kennen den steirischen Markt.",
-        highlight: "Vor Ort"
+        icon: CheckCircle,
+        title: "Zukunftssicherheit",
+        description: "Mit Next.js und KI-Optimierung bauen wir heute die Website, die auch morgen noch technisch an der Spitze der grünen Mark steht.",
+        highlight: "Modernster Stack"
     }
 ];
 

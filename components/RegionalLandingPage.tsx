@@ -76,104 +76,143 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
             {/* SEO Content for Crawlers (hidden) */}
             <RegionalSEOContent data={data} content={content} />
 
-            <main id="main-content" className="relative">
-                {/* Regional Hero Section */}
-                <RegionalHero data={data} onFormOpen={handleFormOpen} />
+            const defaultOrder = ["intro", "usp", "portfolio", "branchen", "process", "seo", "about", "testimonials", "pricing", "faq", "contact"];
+            const sectionOrder = content.sectionOrder || defaultOrder;
 
-                {/* Intro Section with SEO Text */}
-                <RegionalIntro data={data} />
+    const renderSection = (sectionId: string) => {
+        switch (sectionId) {
+            case "intro":
+            return <RegionalIntro key="intro" data={data} />;
 
-                {/* NÖ-specific: USP Section (Why choose us) */}
+            case "usp":
+            return (
+            <div key="usp">
                 {data.region === "Niederösterreich" && <NOEUSPSection />}
-
-                {/* Kärnten-specific: USP Section */}
                 {data.region === "Kärnten" && <KaerntenUSPSection />}
-
-                {/* Steiermark-specific: USP Section */}
                 {data.region === "Steiermark" && <SteiermarkUSPSection />}
+            </div>
+            );
 
-                {/* Portfolio Section */}
-                <Portfolio region={data.region} />
+            case "portfolio":
+            return <Portfolio key="portfolio" region={data.region} />;
 
-                {/* OÖ-specific: Branchen Section */}
+            case "branchen":
+            return (
+            <div key="branchen">
                 {data.region === "Oberösterreich" && <OOBranchenSection />}
-
-                {/* Kärnten-specific: Branchen Section */}
                 {data.region === "Kärnten" && <KaerntenBranchenSection />}
-
-                {/* Steiermark-specific: Branchen Section */}
                 {data.region === "Steiermark" && <SteiermarkBranchenSection />}
+            </div>
+            );
 
-                {/* Process Section */}
-                <Process
-                    onFormOpen={handleFormOpen}
-                    headline={
-                        data.region === "Oberösterreich" ? "Dein weg zu deiner Website" :
-                            data.region === "Niederösterreich" ? "So entsteht Ihre Webseite" :
-                                data.region === "Kärnten" ? "Unser Weg zum Erfolg" :
-                                    data.region === "Steiermark" ? "So läuft das bei uns" : undefined
-                    }
-                    subline={
-                        data.region === "Oberösterreich" ? "Professionell. Regional. Unkompliziert. In 3 Schritten online." :
-                            data.region === "Niederösterreich" ? "Transparente Schritte. Klare Ergebnisse. Von der Idee bis zum Go-Live." :
-                                data.region === "Kärnten" ? "Unkompliziert, transparent und auf Augenhöhe. So arbeiten wir." :
-                                    data.region === "Steiermark" ? "Kein Fachchinesisch, keine leeren Kilometer. Direkt zum Ziel." : undefined
-                    }
-                />
+            case "process":
+            return (
+            <Process
+                key="process"
+                onFormOpen={handleFormOpen}
+                headline={
+                    data.region === "Oberösterreich" ? "Dein weg zu deiner Website" :
+                        data.region === "Niederösterreich" ? "So entsteht Ihre Webseite" :
+                            data.region === "Kärnten" ? "Unser Weg zum Erfolg" :
+                                data.region === "Steiermark" ? "Der direkte Weg zum Erfolg" : undefined
+                }
+                subline={
+                    data.region === "Oberösterreich" ? "Professionell. Regional. Unkompliziert. In 3 Schritten online." :
+                        data.region === "Niederösterreich" ? "Transparente Schritte. Klare Ergebnisse. Von der Idee bis zum Go-Live." :
+                            data.region === "Kärnten" ? "Unkompliziert, transparent und auf Augenhöhe. So arbeiten wir." :
+                                data.region === "Steiermark" ? "Wir verzichten auf unnötige Schleifen. Von der Anfrage bis zum Go-Live in Bestzeit." : undefined
+                }
+            />
+            );
 
-                {/* SEO Optimization Section */}
-                <SeoOptimization />
+            case "seo":
+            return (
+            <SeoOptimization
+                key="seo"
+                strategyItems={content.strategyItems}
+                features={content.seoFeatures}
+            />
+            );
 
-                {/* About Section */}
-                <About
-                    hideTestimonials={data.region === "Oberösterreich" || data.region === "Niederösterreich" || data.region === "Kärnten" || data.region === "Steiermark"}
-                    headline={
-                        data.region === "Oberösterreich" ? "Dein Partner in Oberösterreich" :
-                            data.region === "Niederösterreich" ? "Die Werbeagentur für Niederösterreich" :
-                                data.region === "Kärnten" ? "Ihre Webagentur für Kärnten" :
-                                    data.region === "Steiermark" ? "Webdesign aus der und für die Steiermark" : undefined
-                    }
-                    region={data.region}
-                />
+            case "about":
+            return (
+            <About
+                key="about"
+                hideTestimonials={true}
+                headline={
+                    data.region === "Oberösterreich" ? "Dein Partner in Oberösterreich" :
+                        data.region === "Niederösterreich" ? "Die Werbeagentur für Niederösterreich" :
+                            data.region === "Kärnten" ? "Ihre Webagentur für Kärnten" :
+                                data.region === "Steiermark" ? "Ihre Webagentur für die Steiermark" : undefined
+                }
+                text={content.aboutSecondaryText}
+                features={content.aboutFeatures}
+                region={data.region}
+            />
+            );
 
-                {/* OÖ-specific: Testimonials */}
+            case "testimonials":
+            return (
+            <div key="testimonials">
                 {data.region === "Oberösterreich" && <OOTestimonials />}
-
-                {/* NÖ-specific: Testimonials */}
                 {data.region === "Niederösterreich" && <NOETestimonials />}
-
-                {/* Kärnten-specific: Testimonials */}
                 {data.region === "Kärnten" && <KaerntenTestimonials />}
-
-                {/* Steiermark-specific: Testimonials */}
                 {data.region === "Steiermark" && <SteiermarkTestimonials />}
+            </div>
+            );
 
-                {/* Pricing Section */}
-                <Pricing onFormOpen={handleFormOpen} />
+            case "pricing":
+            return <Pricing key="pricing" onFormOpen={handleFormOpen} />;
 
-                {/* Regional FAQ Section */}
-                <RegionalFAQ data={data} />
+            case "faq":
+            return <RegionalFAQ key="faq" data={data} />;
 
-                {/* Contact Section */}
-                <Contact
-                    onFormOpen={handleFormOpen}
-                    headline={
-                        data.region === "Oberösterreich" ? "Bereit für deinen Erfolg in OÖ?" :
-                            data.region === "Niederösterreich" ? "Bereit für Wachstum?" :
-                                data.region === "Kärnten" ? "Kontaktieren Sie uns" :
-                                    data.region === "Steiermark" ? "Red' ma miteinand'" : undefined
-                    }
-                    subline={
-                        data.region === "Oberösterreich" ? "Starte jetzt mit deiner Website für Linz, Wels & Steyr." :
-                            data.region === "Niederösterreich" ? "Lassen Sie uns gemeinsam Ihren digitalen Fußabdruck in Niederösterreich vergrößern." :
-                                data.region === "Kärnten" ? "Wir freuen uns auf ein persönliches Gespräch über Ihr Projekt." :
-                                    data.region === "Steiermark" ? "Schick uns eine Anfrage oder ruf an. Wir beißen nicht." : undefined
-                    }
-                />
+            case "contact":
+            return (
+            <Contact
+                key="contact"
+                onFormOpen={handleFormOpen}
+                headline={
+                    data.region === "Oberösterreich" ? "Bereit für deinen Erfolg in OÖ?" :
+                        data.region === "Niederösterreich" ? "Bereit für Wachstum?" :
+                            data.region === "Kärnten" ? "Kontaktieren Sie uns" :
+                                data.region === "Steiermark" ? "Starten wir Ihr Projekt in der Steiermark" : undefined
+                }
+                subline={
+                    data.region === "Oberösterreich" ? "Starte jetzt mit deiner Website für Linz, Wels & Steyr." :
+                        data.region === "Niederösterreich" ? "Lassen Sie uns gemeinsam Ihren digitalen Fußabdruck in Niederösterreich vergrößern." :
+                            data.region === "Kärnten" ? "Wir freuen uns auf ein persönliches Gespräch über Ihr Projekt." :
+                                data.region === "Steiermark" ? "Lassen Sie uns unverbindlich über Ihre neue Website sprechen. Wir sparen Ihnen Zeit und Nerven." : undefined
+                }
+            />
+            );
 
-                {/* Regional City Links (Replaces OO Footer content) */}
-                <RegionalCityLinks data={data} />
-            </main>
-        </div>
-    );
+            default:
+            return null;
+        }
+    };
+
+            return (
+            <div className="min-h-screen">
+                <SkipLinks />
+                <AccessibilityWidget />
+                <CookieBanner />
+                <FloatingWhatsApp />
+                <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
+
+                {/* SEO Content for Crawlers (hidden) */}
+                <RegionalSEOContent data={data} content={content} />
+
+                <main id="main-content" className="relative">
+                    {/* Regional Hero Section - Always first */}
+                    <RegionalHero data={data} onFormOpen={handleFormOpen} />
+
+                    {/* Dynamic Sections Based on regional-content.ts */}
+                    {sectionOrder.map((sectionId) => renderSection(sectionId))}
+
+                    {/* Regional City Links (Replaces OO Footer content) - Always last */}
+                    <RegionalCityLinks data={data} />
+                </main>
+            </div>
+            );
 }

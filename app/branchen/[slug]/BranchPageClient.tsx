@@ -2,8 +2,7 @@
 
 import { branches, type BranchSlug } from './data';
 import { notFound, useParams } from 'next/navigation';
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+
 import Contact from "@/components/Contact";
 import ContactForm from "@/components/ContactForm";
 import Link from 'next/link';
@@ -25,7 +24,7 @@ export default function BranchPageClient() {
     return (
         <div className="min-h-screen bg-white">
             <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
-            <Header onFormOpen={handleFormOpen} />
+
 
             <main>
                 {/* Hero */}
@@ -79,7 +78,7 @@ export default function BranchPageClient() {
                 <Contact onFormOpen={handleFormOpen} />
             </main>
 
-            <Footer />
+
         </div>
     );
 }
