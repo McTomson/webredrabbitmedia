@@ -56,8 +56,7 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
-  max-width: 100vw;
+  /* Safari fix: remove overflow-x from html to prevent scroll-lock */
 }
 
 body {
@@ -68,8 +67,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeSpeed;
   -webkit-text-size-adjust: 100%;
+
+  /* Mobile Scroll Fix: Centralized overflow handling */
   overflow-x: hidden;
   max-width: 100vw;
+  position: relative;
+
+  /* Prioritize vertical scrolling on mobile */
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Optimize images */

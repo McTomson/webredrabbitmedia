@@ -6,11 +6,12 @@ import 'aos/dist/aos.css';
 
 const AOSInit = () => {
     useEffect(() => {
+        const isMobile = window.innerWidth < 768;
         AOS.init({
             once: true,
             duration: 800,
             easing: 'ease-out-cubic',
-            offset: 100,
+            offset: isMobile ? 50 : 100, // Trigger earlier on mobile for smoother feel
         });
     }, []);
 

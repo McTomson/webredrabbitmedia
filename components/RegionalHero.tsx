@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
+import { useIsMobile } from '@/hooks/use-mobile';
 import Link from 'next/link';
 
 interface RegionalHeroProps {
@@ -24,6 +25,7 @@ interface RegionalHeroProps {
 }
 
 const RegionalHero = ({ onFormOpen, data, content }: RegionalHeroProps) => {
+    const isMobile = useIsMobile();
     // Helper to generate slug from city name
     const getSlug = (city: string) => {
         const slug = city.toLowerCase()
@@ -175,26 +177,28 @@ const RegionalHero = ({ onFormOpen, data, content }: RegionalHeroProps) => {
                 </div>
             </motion.div>
 
-            {/* Mouse Trail Effect */}
-            <motion.div
-                className="fixed pointer-events-none z-50 mix-blend-multiply"
-                style={{
-                    left: mousePosition.x - 10,
-                    top: mousePosition.y - 10,
-                }}
-                animate={{
-                    scale: [0, 1, 0],
-                    opacity: [0, 0.5, 0],
-                }}
-                transition={{
-                    duration: 1.5,
-                    ease: "easeOut",
-                    repeat: Infinity,
-                    repeatDelay: 0.1
-                }}
-            >
-                <div className="w-6 h-6 bg-red-400/30 rounded-full blur-md"></div>
-            </motion.div>
+            {/* Mouse Trail Effect - Disabled on mobile for performance and to prevent scroll interference */}
+            {!isMobile && (
+                <motion.div
+                    className="fixed pointer-events-none z-50 mix-blend-multiply"
+                    style={{
+                        left: mousePosition.x - 10,
+                        top: mousePosition.y - 10,
+                    }}
+                    animate={{
+                        scale: [0, 1, 0],
+                        opacity: [0, 0.5, 0],
+                    }}
+                    transition={{
+                        duration: 1.5,
+                        ease: "easeOut",
+                        repeat: Infinity,
+                        repeatDelay: 0.1
+                    }}
+                >
+                    <div className="w-6 h-6 bg-red-400/30 rounded-full blur-md"></div>
+                </motion.div>
+            )}
         </section>
     );
 };

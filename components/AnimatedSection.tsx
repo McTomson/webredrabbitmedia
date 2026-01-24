@@ -14,7 +14,10 @@ export const AnimatedSection = ({ children, delay = 0, className, ...props }: An
         <motion.section
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{
+                once: true,
+                margin: typeof window !== 'undefined' && window.innerWidth < 768 ? "-40px" : "-100px"
+            }}
             transition={{ duration: 0.8, delay, ease: "easeOut" }}
             className={className}
             {...props}
