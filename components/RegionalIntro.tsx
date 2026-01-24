@@ -52,7 +52,17 @@ const RegionalIntro = ({ data }: RegionalIntroProps) => {
                         ) : data.region === "Steiermark" ? (
                             <>
                                 Sie suchen eine Webagentur in der Steiermark, die Ihr Unternehmen als Innovationsführer positioniert?
-                                Von <Link href={getSlug(data.cities[0])} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">{data.cities[0]}</Link> über <Link href={getSlug(data.cities[1])} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">{data.cities[1]}</Link> bis nach <Link href={getSlug(data.cities[2])} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">{data.cities[2]}</Link>
+                                {data.cities.length > 0 && (
+                                    <>
+                                        Von <Link href={getSlug(data.cities[0])} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">{data.cities[0]}</Link>
+                                        {data.cities.length > 1 && (
+                                            <> über <Link href={getSlug(data.cities[1])} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">{data.cities[1]}</Link></>
+                                        )}
+                                        {data.cities.length > 2 && (
+                                            <> bis nach <Link href={getSlug(data.cities[2])} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">{data.cities[2]}</Link></>
+                                        )}
+                                    </>
+                                )}
                                 – wir entwickeln High-End Webauftritte für das wirtschaftliche Rückgrat der grünen Mark.
                                 Keine Standard-Vorlagen, sondern maßgeschneiderte Lösungen mit Fokus auf messbare Ergebnisse und überragende Ladezeiten.
                             </>

@@ -80,7 +80,6 @@ const Hero = () => {
                     className="w-full h-full object-cover opacity-50"
                     priority
                     sizes="100vw"
-                    {...({ fetchPriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>)}
                 />
                 <div className="absolute inset-0 bg-white/85"></div>
             </div>
