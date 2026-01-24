@@ -4,6 +4,7 @@ import { Clock, Shield, Zap, Users, CheckCircle } from 'lucide-react';
 import { AOSWrapper } from './AnimatedSection';
 
 interface ProcessProps {
+    onFormOpen?: () => void;
     headline?: string;
     subline?: string;
     steps?: {
@@ -21,8 +22,9 @@ interface ProcessProps {
 
 import { useContactForm } from './ContactFormProvider';
 
-const Process = ({ headline, subline, steps: stepsProp, benefits: benefitsProp }: ProcessProps) => {
+const Process = ({ onFormOpen, headline, subline, steps: stepsProp, benefits: benefitsProp }: ProcessProps) => {
     const { openForm } = useContactForm();
+    const handleFormOpen = onFormOpen || openForm;
     const defaultSteps = [
         {
             title: "Formular ausfüllen",
@@ -200,7 +202,7 @@ const Process = ({ headline, subline, steps: stepsProp, benefits: benefitsProp }
                 {/* Formular ausfüllen Button - Moved down and made rectangular */}
                 <div className="flex justify-center mt-20">
                     <button
-                        onClick={openForm}
+                        onClick={handleFormOpen}
                         className="px-12 py-4 bg-red-600 text-white rounded-none text-lg font-medium shadow-lg hover:bg-red-700 transition-all duration-300"
                     >
                         Formular ausfüllen

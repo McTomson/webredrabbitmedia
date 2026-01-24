@@ -6,8 +6,15 @@ import { motion } from 'framer-motion';
 import { AOSWrapper } from './AnimatedSection';
 import { useContactForm } from './ContactFormProvider';
 
-const Contact = ({ headline, subline }: Omit<ContactProps, 'onFormOpen'>) => {
+interface ContactProps {
+    onFormOpen?: () => void;
+    headline?: string;
+    subline?: string;
+}
+
+const Contact = ({ onFormOpen, headline, subline }: ContactProps) => {
     const { openForm } = useContactForm();
+    const handleFormOpen = onFormOpen || openForm;
     return (
         <section id="contact" className="py-24 bg-gray-50">
             <div className="max-w-7xl mx-auto px-8">
@@ -62,7 +69,7 @@ const Contact = ({ headline, subline }: Omit<ContactProps, 'onFormOpen'>) => {
 
                         <AOSWrapper animation="fade-left" delay={500}>
                             <button
-                                onClick={openForm}
+                                onClick={handleFormOpen}
                                 className="group inline-flex items-center gap-3 px-8 py-4 bg-red-600 text-white hover:bg-red-700 transition-all duration-500"
                             >
                                 <span className="text-lg">Jetzt unverbindlich starten</span>
