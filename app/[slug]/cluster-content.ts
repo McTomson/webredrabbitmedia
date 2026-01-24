@@ -116,7 +116,7 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
             features: [
                 { title: "Schnelle Ladezeiten", text: city => `Ihre Seite lädt in einem Wimpernschlag. Google belohnt Geschwindigkeit – besonders in Märkten wie ${city}.` },
                 { title: "Intelligente Suche", text: city => `Wir optimieren so, dass Kunden Ihre Seite auch dann finden, wenn sie nur allgemein nach Ihrem Angebot suchen. So finden Sie genau die Kunden in ${city}, die wirklich kaufen wollen.` },
-                { title: "Zukunftssichere Daten", text: _city => `Wir strukturieren Ihre Informationen so, dass auch moderne Assistenz-Systeme Ihr Geschäft verstehen und empfehlen.` }
+                { title: "Zukunftssichere Daten", text: city => `Wir strukturieren Ihre Informationen so, dass auch moderne Assistenz-Systeme Ihr Geschäft verstehen und empfehlen.` }
             ],
             strategyItems: [
                 { title: "Die Realität", text: "Die meisten Websites in Ihrer Branche sind digitale Visitenkarten ohne Motor. Sie sehen nett aus, werden aber nicht gefunden." },
@@ -173,15 +173,15 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
             questions: [
                 {
                     question: city => `Gibt es versteckte Kosten bei Projekten in ${city}?`,
-                    answer: (city, _region) => `Definitiv nicht. Unser Angebot ist ein Pauschalpreis. Beratung, Design, Entwicklung und der Launch in ${city} sind inkludiert. Sie behalten volle Kostensicherheit.`
+                    answer: (city, region) => `Definitiv nicht. Unser Angebot ist ein Pauschalpreis. Beratung, Design, Entwicklung und der Launch in ${city} sind inkludiert. Sie behalten volle Kostensicherheit.`
                 },
                 {
                     question: city => `Warum sollte ich mich in ${city} für euch entscheiden?`,
-                    answer: (city, _region) => `Weil wir nicht nur "hübsch" machen, sondern "erfolgreich". Wir kennen den Wettbewerb in ${city} und statten Sie mit der Technologie aus, um diesen digital zu überholen.`
+                    answer: (city, region) => `Weil wir nicht nur "hübsch" machen, sondern "erfolgreich". Wir kennen den Wettbewerb in ${city} und statten Sie mit der Technologie aus, um diesen digital zu überholen.`
                 },
                 {
                     question: city => `Macht ihr Fotos bei uns vor Ort in ${city}?`,
-                    answer: (city, _region) => `Wir konzentrieren uns auf das Webdesign. Für High-End Fotografie in ${city} empfehlen wir spezialisierte Partner oder nutzen Ihr bestehendes Material bestmöglich.`
+                    answer: (city, region) => `Wir konzentrieren uns auf das Webdesign. Für High-End Fotografie in ${city} empfehlen wir spezialisierte Partner oder nutzen Ihr bestehendes Material bestmöglich.`
                 },
                 {
                     question: city => `Referenzen in ${city}?`,
@@ -189,11 +189,11 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
                 },
                 {
                     question: city => `Wie funktioniert die Abstimmung ohne Meetings?`,
-                    answer: (city, _region) => `Besser als Sie denken. Durch präzise Formulare und direkten Chat/Mail-Support entfallen Wartezeiten und Anfahrten im ${city}er Verkehr. Wir arbeiten dann, wenn Sie Zeit haben.`
+                    answer: (city, region) => `Besser als Sie denken. Durch präzise Formulare und direkten Chat/Mail-Support entfallen Wartezeiten und Anfahrten im ${city}er Verkehr. Wir arbeiten dann, wenn Sie Zeit haben.`
                 },
                 {
                     question: city => `Ist die Seite fit für den Markt in ${city}?`,
-                    answer: (city, _region) => `Ja. Wir optimieren spezifisch auf lokale Suchanfragen ("Local SEO") für ${city}, damit Sie genau dort sichtbar sind, wo Ihre Kunden suchen.`
+                    answer: (city, region) => `Ja. Wir optimieren spezifisch auf lokale Suchanfragen ("Local SEO") für ${city}, damit Sie genau dort sichtbar sind, wo Ihre Kunden suchen.`
                 }
             ]
         },
@@ -206,10 +206,10 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
     salzburg: {
         hero: {
             headline: city => `Stilvolles Webdesign für ${city}.`,
-            subline: _city => `Zeigen Sie sich von Ihrer besten Seite. Digitaler Auftritt mit Salzburger Charme und internationaler Klasse.`
+            subline: city => `Zeigen Sie sich von Ihrer besten Seite. Digitaler Auftritt mit Salzburger Charme und internationaler Klasse.`
         },
         intro: {
-            headline: _city => `Tradition trifft Moderne.`,
+            headline: city => `Tradition trifft Moderne.`,
             text: city => `In ${city} hat Qualität Tradition. Das gilt auch im Internet. Wir bauen Websites, die Ihre Werte widerspiegeln: Elegant, beständig und offen für die Welt.`
         },
         process: {
@@ -237,9 +237,9 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
             strategyHeadline: "Warum 'Gut' in Salzburg nicht reicht.",
             comparisonHeadline: city => `Der Qualitäts-Unterschied für ${city}.`,
             features: [
-                { title: "Mehrsprachigkeit", text: _city => `Salzburg ist international. Wir sorgen dafür, dass Google Ihre Seite in allen Sprachen richtig einordnet.` },
-                { title: "Bildsprache", text: _city => `Bilder sagen mehr als 1000 Worte. Wir optimieren Ihre Fotos für maximale Wirkung und schnelle Ladezeiten.` },
-                { title: "Lokale Exzellenz", text: _city => `Wir stärken Ihren Ruf in der Region. Damit Sie die erste Wahl für anspruchsvolle Kunden sind.` }
+                { title: "Mehrsprachigkeit", text: city => `Salzburg ist international. Wir sorgen dafür, dass Google Ihre Seite in allen Sprachen richtig einordnet.` },
+                { title: "Bildsprache", text: city => `Bilder sagen mehr als 1000 Worte. Wir optimieren Ihre Fotos für maximale Wirkung und schnelle Ladezeiten.` },
+                { title: "Lokale Exzellenz", text: city => `Wir stärken Ihren Ruf in der Region. Damit Sie die erste Wahl für anspruchsvolle Kunden sind.` }
             ],
             strategyItems: [
                 { title: "Der Anspruch", text: "Ihre Kunden erwarten Perfektion. Eine langsame oder unübersichtliche Website passt nicht zu Ihrem Angebot." },
@@ -257,7 +257,7 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
         about: {
             headline: "Wir verstehen Qualität",
             text: "Wir sind keine laute Werbeagentur. Wir sind Handwerker des Digitalen. Wir lieben schöne Dinge und saubere Arbeit. Genau wie Sie.",
-            testimonialsHeadline: _city => `Was Salzburger Unternehmer sagen`,
+            testimonialsHeadline: city => `Was Salzburger Unternehmer sagen`,
             features: [
                 { title: "Stilvoll", text: "Design, das nicht schreit, sondern überzeugt." },
                 { title: "Diskret", text: "Wir arbeiten im Hintergrund für Ihren Erfolg." },
@@ -402,19 +402,19 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
         },
         faq: {
             headline: city => `Fragen aus ${city}`,
-            subline: (city, _region) => `Klare Antworten für Unternehmer in ${city}.`,
+            subline: (city, region) => `Klare Antworten für Unternehmer in ${city}.`,
             questions: [
                 {
                     question: city => `Lohnt sich das für mein Geschäft in ${city}?`,
-                    answer: (city, _region) => `Ja. Egal ob Handwerker, Arzt oder Händler: Wer in ${city} nicht gefunden wird, verliert Geschäft an die Konkurrenz. Eine starke Website ist Ihre Basis.`
+                    answer: (city, region) => `Ja. Egal ob Handwerker, Arzt oder Händler: Wer in ${city} nicht gefunden wird, verliert Geschäft an die Konkurrenz. Eine starke Website ist Ihre Basis.`
                 },
                 {
                     question: city => `Muss ich mich um die Technik kümmern?`,
-                    answer: (city, _region) => `Nein. Wir übernehmen Hosting, Domains, Updates und Sicherheit. Sie konzentrieren sich voll auf Ihr Geschäft in ${city}.`
+                    answer: (city, region) => `Nein. Wir übernehmen Hosting, Domains, Updates und Sicherheit. Sie konzentrieren sich voll auf Ihr Geschäft in ${city}.`
                 },
                 {
                     question: city => `Wie schnell bin ich online?`,
-                    answer: (_city, _region) => `Sportlich schnell. In der Regel steht Ihre Seite in 7 Tagen. Bereit für Ihre Kunden.`
+                    answer: (city, region) => `Sportlich schnell. In der Regel steht Ihre Seite in 7 Tagen. Bereit für Ihre Kunden.`
                 }
             ]
         },
@@ -429,7 +429,7 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
             subline: city => `Websites für Kärntner Unternehmen. Modern, sonnig und technisch brillant.`
         },
         intro: {
-            headline: _city => `Business mit Lebensqualität.`,
+            headline: city => `Business mit Lebensqualität.`,
             text: city => `Klagenfurt ist mehr als Wörthersee. Es ist ein Standort für Innovation und solide Wirtschaft. Wir bauen Websites, die genau das zeigen: Kärntner Charme, verbunden mit harter technischer Performance.`
         },
         process: {
@@ -512,19 +512,19 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
         },
         faq: {
             headline: city => `Fragen aus ${city}`,
-            subline: (city, _region) => `Antworten für Unternehmer in ${city}.`,
+            subline: (city, region) => `Antworten für Unternehmer in ${city}.`,
             questions: [
                 {
                     question: city => `Betreuen Sie auch Kunden außerhalb von ${city}?`,
-                    answer: (_city, region) => `Ja, wir sind in ganz ${region} tätig. Von Villach bis St. Veit betreuen wir zufriedene Kunden.`
+                    answer: (city, region) => `Ja, wir sind in ganz ${region} tätig. Von Villach bis St. Veit betreuen wir zufriedene Kunden.`
                 },
                 {
                     question: city => `Ist das auch was für kleine Betriebe?`,
-                    answer: (city, _region) => `Absolut. Unser Angebot ab 790€ ist perfekt für EPU und KMU in ${city}, die professionell auftreten wollen, ohne ein Vermögen auszugeben.`
+                    answer: (city, region) => `Absolut. Unser Angebot ab 790€ ist perfekt für EPU und KMU in ${city}, die professionell auftreten wollen, ohne ein Vermögen auszugeben.`
                 },
                 {
                     question: city => `Können wir uns persönlich treffen?`,
-                    answer: (_city, _region) => `Wir lösen 99% digital – das spart Ihnen Zeit. Aber wir sind "greifbar" und immer für Sie da, wenn Sie uns brauchen.`
+                    answer: (city, region) => `Wir lösen 99% digital – das spart Ihnen Zeit. Aber wir sind "greifbar" und immer für Sie da, wenn Sie uns brauchen.`
                 }
             ]
         },
@@ -622,19 +622,19 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
         },
         faq: {
             headline: city => `Fragen aus ${city}`,
-            subline: (_city, _region) => `Antworten für burgenländische Betriebe.`,
+            subline: (city, region) => `Antworten für burgenländische Betriebe.`,
             questions: [
                 {
                     question: city => `Können Sie einen Shop einbauen?`,
-                    answer: (_city, _region) => `Ja. Wir bauen Ihnen einen rechtssicheren Online-Shop, mit dem Sie Ihre Produkte einfach verkaufen können.`
+                    answer: (city, region) => `Ja. Wir bauen Ihnen einen rechtssicheren Online-Shop, mit dem Sie Ihre Produkte einfach verkaufen können.`
                 },
                 {
                     question: city => `Kommen Sie zu uns in den Betrieb?`,
-                    answer: (_city, _region) => `Wir arbeiten effizient digital, kommen bei größeren Projekten aber auch gerne für einen Handschlag vorbei.`
+                    answer: (city, region) => `Wir arbeiten effizient digital, kommen bei größeren Projekten aber auch gerne für einen Handschlag vorbei.`
                 },
                 {
                     question: city => `Gibt es Förderungen?`,
-                    answer: (_city, _region) => `Oft gibt es Digitalisierungsförderungen für Betriebe im Burgenland. Wir helfen Ihnen gerne mit Infos weiter.`
+                    answer: (city, region) => `Oft gibt es Digitalisierungsförderungen für Betriebe im Burgenland. Wir helfen Ihnen gerne mit Infos weiter.`
                 }
             ]
         },
@@ -736,7 +736,7 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
             questions: [
                 {
                     question: city => `Können wir Texte selbst ändern?`,
-                    answer: (_city, _region) => `Ja, absolut. Wir zeigen Ihnen, wie Sie aktuelle Angebote oder Öffnungszeiten ganz einfach selbst anpassen. Ohne Techniker.`
+                    answer: (city, region) => `Ja, absolut. Wir zeigen Ihnen, wie Sie aktuelle Angebote oder Öffnungszeiten ganz einfach selbst anpassen. Ohne Techniker.`
                 },
                 {
                     question: city => `Wie lange dauert das?`,
@@ -744,7 +744,7 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
                 },
                 {
                     question: city => `Helfen Sie bei der Bildauswahl?`,
-                    answer: (city, _region) => `Ja. Bilder sind im Tourismus das Wichtigste. Wir helfen bei der Auswahl oder vermitteln Fotografen in ${city}.`
+                    answer: (city, region) => `Ja. Bilder sind im Tourismus das Wichtigste. Wir helfen bei der Auswahl oder vermitteln Fotografen in ${city}.`
                 }
             ]
         },
@@ -870,11 +870,11 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
                 },
                 {
                     question: city => `Wie hebe ich mich von der Konkurrenz in ${city} ab?`,
-                    answer: (city, _region) => `Durch individuelles Design statt Templates. ${city} ist ein kompetitiver Markt. Wir analysieren Ihre lokalen Mitbewerber in ${city} und positionieren Ihre Website so, dass sie genau Ihre Stärken hervorhebt und Sie in den lokalen Suchergebnissen sichtbar macht.`
+                    answer: (city, region) => `Durch individuelles Design statt Templates. ${city} ist ein kompetitiver Markt. Wir analysieren Ihre lokalen Mitbewerber in ${city} und positionieren Ihre Website so, dass sie genau Ihre Stärken hervorhebt und Sie in den lokalen Suchergebnissen sichtbar macht.`
                 },
                 {
                     question: city => `Können Sie auch Bilder von meinem Standort in ${city} machen?`,
-                    answer: (city, _region) => `Wir arbeiten meist mit vorhandenem Material oder hochwertigen Stock-Medien. Für authentische Fotos aus ${city} empfehlen wir lokale Fotografen, mit denen wir Sie gerne vernetzen. Einbindung und Optimierung der Bilder übernehmen selbstverständlich wir.`
+                    answer: (city, region) => `Wir arbeiten meist mit vorhandenem Material oder hochwertigen Stock-Medien. Für authentische Fotos aus ${city} empfehlen wir lokale Fotografen, mit denen wir Sie gerne vernetzen. Einbindung und Optimierung der Bilder übernehmen selbstverständlich wir.`
                 },
                 {
                     question: city => `Betreuen Sie auch andere Kunden in ${city}?`,
@@ -882,11 +882,11 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
                 },
                 {
                     question: city => `Wie läuft die Zusammenarbeit ab, wenn ich in ${city} sitze?`,
-                    answer: (city, _region) => `Sehr effizient. Wir nutzen Video-Calls, WhatsApp und Telefon. Das spart Ihnen Zeit und uns Ressourcen.`
+                    answer: (city, region) => `Sehr effizient. Wir nutzen Video-Calls, WhatsApp und Telefon. Das spart Ihnen Zeit und uns Ressourcen.`
                 },
                 {
                     question: city => `Ist die Website für den ${city}er Markt optimiert?`,
-                    answer: (city, _region) => `Absolut. Wir richten die SEO-Strategie auf lokale Keywords aus.`
+                    answer: (city, region) => `Absolut. Wir richten die SEO-Strategie auf lokale Keywords aus.`
                 }
             ]
         },
@@ -1004,27 +1004,27 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
         },
         faq: {
             headline: city => `Fragen zu Ihrem Projekt in ${city}`,
-            subline: (_city, _region) => `Wir antworten gerne auf Ihre Fragen. Direkt und verständlich.`,
+            subline: (city, region) => `Wir antworten gerne auf Ihre Fragen. Direkt und verständlich.`,
             questions: [
                 {
                     question: city => `Kommen Sie für eine Besprechung nach ${city}?`,
-                    answer: (_city, _region) => `Wir setzen auf effiziente, digitale Kommunikation per Video oder Telefon. Das spart nicht nur Anfahrtskosten, sondern auch wertvolle Zeit, die wir lieber in Ihre Website investieren.`
+                    answer: (city, region) => `Wir setzen auf effiziente, digitale Kommunikation per Video oder Telefon. Das spart nicht nur Anfahrtskosten, sondern auch wertvolle Zeit, die wir lieber in Ihre Website investieren.`
                 },
                 {
                     question: city => `Was kostet das Ganze wirklich?`,
-                    answer: (_city, _region) => `Es bleibt bei 790€. Das ist unser Fixpreis für Ihr Komplettpaket. Keine versteckten Gebühren, keine bösen Überraschungen.`
+                    answer: (city, region) => `Es bleibt bei 790€. Das ist unser Fixpreis für Ihr Komplettpaket. Keine versteckten Gebühren, keine bösen Überraschungen.`
                 },
                 {
                     question: city => `Wie lange dauert es bis zur fertigen Seite?`,
-                    answer: (_city, _region) => `In der Regel ist Ihre neue Website in 7 Tagen online. Wir arbeiten zügig und strukturiert.`
+                    answer: (city, region) => `In der Regel ist Ihre neue Website in 7 Tagen online. Wir arbeiten zügig und strukturiert.`
                 },
                 {
                     question: city => `Brauche ich eigene Fotos aus ${city}?`,
-                    answer: (city, _region) => `Wenn Sie welche haben, super! Wenn nicht, nutzen wir hochwertige Symbolbilder oder helfen Ihnen, einen Fotografen in ${city} zu finden.`
+                    answer: (city, region) => `Wenn Sie welche haben, super! Wenn nicht, nutzen wir hochwertige Symbolbilder oder helfen Ihnen, einen Fotografen in ${city} zu finden.`
                 },
                 {
                     question: city => `Helfen Sie auch nach dem Start weiter?`,
-                    answer: (_city, _region) => `Selbstverständlich. Wir lassen Sie nicht allein. Wir kümmern uns um Wartung und Updates, damit Ihre Seite sicher bleibt.`
+                    answer: (city, region) => `Selbstverständlich. Wir lassen Sie nicht allein. Wir kümmern uns um Wartung und Updates, damit Ihre Seite sicher bleibt.`
                 }
             ]
         },
