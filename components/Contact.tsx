@@ -4,14 +4,10 @@ import { Mail, Phone, MessageSquare, ArrowRight, CheckCircle } from 'lucide-reac
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { AOSWrapper } from './AnimatedSection';
+import { useContactForm } from './ContactFormProvider';
 
-interface ContactProps {
-    onFormOpen: () => void;
-    headline?: string;
-    subline?: string;
-}
-
-const Contact = ({ onFormOpen, headline, subline }: ContactProps) => {
+const Contact = ({ headline, subline }: Omit<ContactProps, 'onFormOpen'>) => {
+    const { openForm } = useContactForm();
     return (
         <section id="contact" className="py-24 bg-gray-50">
             <div className="max-w-7xl mx-auto px-8">
@@ -66,7 +62,7 @@ const Contact = ({ onFormOpen, headline, subline }: ContactProps) => {
 
                         <AOSWrapper animation="fade-left" delay={500}>
                             <button
-                                onClick={onFormOpen}
+                                onClick={openForm}
                                 className="group inline-flex items-center gap-3 px-8 py-4 bg-red-600 text-white hover:bg-red-700 transition-all duration-500"
                             >
                                 <span className="text-lg">Jetzt unverbindlich starten</span>

@@ -32,8 +32,7 @@ const CookieBanner = () => {
         // Check if user has already made a choice
         const cookieConsent = localStorage.getItem('redrabbit-cookie-consent');
         if (!cookieConsent) {
-            // Show banner after a short delay for better UX
-            setTimeout(() => setShowBanner(true), 2000);
+            setShowBanner(true);
         }
     }, []);
 

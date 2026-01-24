@@ -206,6 +206,10 @@ const jsonLd = {
   ]
 };
 
+import { ContactFormProvider } from "@/components/ContactFormProvider";
+import ContactFormWrapper from "@/components/ContactFormWrapper";
+import AOSInit from "@/components/AOSInit";
+
 export default function RootLayout({
   children,
 }: {
@@ -235,10 +239,13 @@ export default function RootLayout({
         <Script id="json-ld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className={`${inter.variable} font-sans antialiased bg-[#fafafa] text-[#141414] overflow-x-hidden`} suppressHydrationWarning>
-
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <ContactFormProvider>
+          <AOSInit />
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <ContactFormWrapper />
+        </ContactFormProvider>
       </body>
     </html>
   );

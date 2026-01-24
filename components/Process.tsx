@@ -16,15 +16,10 @@ interface Benefit {
     redText: string;
 }
 
-interface ProcessProps {
-    onFormOpen?: () => void;
-    headline?: string;
-    subline?: string;
-    steps?: Step[];
-    benefits?: Benefit[];
-}
+import { useContactForm } from './ContactFormProvider';
 
-const Process = ({ onFormOpen, headline, subline, steps: stepsProp, benefits: benefitsProp }: ProcessProps) => {
+const Process = ({ headline, subline, steps: stepsProp, benefits: benefitsProp }: ProcessProps) => {
+    const { openForm } = useContactForm();
     const defaultSteps = [
         {
             title: "Formular ausfüllen",
@@ -202,7 +197,7 @@ const Process = ({ onFormOpen, headline, subline, steps: stepsProp, benefits: be
                 {/* Formular ausfüllen Button - Moved down and made rectangular */}
                 <div className="flex justify-center mt-20">
                     <button
-                        onClick={onFormOpen}
+                        onClick={openForm}
                         className="px-12 py-4 bg-red-600 text-white rounded-none text-lg font-medium shadow-lg hover:bg-red-700 transition-all duration-300"
                     >
                         Formular ausfüllen

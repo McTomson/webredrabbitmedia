@@ -40,13 +40,6 @@ export const AOSWrapper = ({
     duration = 800,
     className = ""
 }: AOSWrapperProps) => {
-    useEffect(() => {
-        AOS.init({
-            once: true,
-            duration: duration,
-            easing: 'ease-out-cubic',
-        });
-    }, [duration]);
 
     return (
         <div

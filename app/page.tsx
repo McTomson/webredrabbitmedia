@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 // Above-the-fold - synchron laden für schnelles Initial Rendering
@@ -19,74 +16,31 @@ const FeaturedBlogPosts = dynamic(() => import('@/components/FeaturedBlogPosts')
 const FAQ = dynamic(() => import('@/components/FAQ'));
 const Contact = dynamic(() => import('@/components/Contact'));
 
-// Client-only Widgets - mit ssr: false für reine Client-Side Komponenten
-const FloatingWhatsApp = dynamic(() => import('@/components/FloatingWhatsApp'), {
-  ssr: false
-});
-const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
-  ssr: false
-});
-const AccessibilityWidget = dynamic(() => import('@/components/AccessibilityWidget'), {
-  ssr: false
-});
-const ContactForm = dynamic(() => import('@/components/ContactForm'), {
-  ssr: false
-});
+import ClientWidgets from "@/components/ClientWidgets";
 
 export default function Home() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-
-  const handleFormOpen = () => {
-    setIsFormOpen(true);
-  };
-
   return (
     <div className="min-h-screen">
       <SkipLinks />
-      <AccessibilityWidget />
-      <CookieBanner />
-      <FloatingWhatsApp />
-      <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
-
-
+      <ClientWidgets />
 
       {/* SEO Content for Crawlers (hidden) */}
       <SEOContent />
 
       <main id="main-content" className="relative">
-
-        {/* Hero Section */}
-        <Hero onFormOpen={handleFormOpen} />
-
-        {/* Portfolio Section */}
+        <Hero />
         <Portfolio />
-
-        {/* Process Section */}
-        <Process onFormOpen={handleFormOpen} />
-
-        {/* SEO Optimization Section (NEW) */}
+        <Process />
         <SeoOptimization />
-
-        {/* About Section */}
         <About />
-
-        {/* Pricing Section */}
-        <Pricing onFormOpen={handleFormOpen} />
-
-        {/* Featured Blog Posts - SEO Internal Linking */}
+        <Pricing />
         <FeaturedBlogPosts />
-
-        {/* FAQ Section */}
         <FAQ />
-
-        {/* Contact Section */}
-        <Contact onFormOpen={handleFormOpen} />
+        <Contact />
       </main>
 
       {/* Global Background Image (Absolute, verify position/visibility) */}
       <div className="absolute top-0 left-0 w-full h-[100vh] -z-10 bg-gray-50 pointer-events-none hidden">
-        {/* Placeholder for potential global background handling if needed, 
-             mostly handled by Hero specific background now */}
       </div>
     </div>
   );

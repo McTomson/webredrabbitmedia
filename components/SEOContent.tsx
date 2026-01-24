@@ -72,7 +72,7 @@ const SEOContent = () => {
                 }}
             >
                 <article>
-                    <h1>Website ab 790 Euro - Red Rabbit Media</h1>
+                    <h2 className="text-xl font-bold">Website ab 790 Euro - Red Rabbit Media</h2>
 
                     <div>
                         <h2>Professionelle Website-Entwicklung ab 790 Euro in Wien</h2>

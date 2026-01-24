@@ -5,20 +5,25 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-interface HeroProps {
-    onFormOpen: () => void;
-}
+import { useContactForm } from './ContactFormProvider';
 
-const Hero = ({ onFormOpen }: HeroProps) => {
+const Hero = () => {
+    const { openForm } = useContactForm();
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
+        let rafId: number;
         const handleMouseMove = (e: MouseEvent) => {
-            setMousePosition({ x: e.clientX, y: e.clientY });
+            rafId = requestAnimationFrame(() => {
+                setMousePosition({ x: e.clientX, y: e.clientY });
+            });
         };
 
         window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            cancelAnimationFrame(rafId);
+        };
     }, []);
 
     return (
@@ -75,6 +80,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
                     className="w-full h-full object-cover opacity-50"
                     priority
                     sizes="100vw"
+                    {...({ fetchPriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>)}
                 />
                 <div className="absolute inset-0 bg-white/85"></div>
             </div>
@@ -215,7 +221,7 @@ const Hero = ({ onFormOpen }: HeroProps) => {
 
                         <div className="flex justify-center lg:justify-start">
                             <motion.button
-                                onClick={onFormOpen}
+                                onClick={openForm}
                                 className="group flex items-center justify-center gap-3 px-6 md:px-8 py-3 md:py-4 bg-red-600 text-white hover:bg-red-700 transition-all duration-500 rounded-none shadow-lg shadow-red-500/30"
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
