@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from 'framer-motion';
+
 import { Wine, TreePine, Factory, Mountain } from 'lucide-react';
 import { AOSWrapper } from './AnimatedSection';
 

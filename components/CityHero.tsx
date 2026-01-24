@@ -1,6 +1,5 @@
 "use client";
 
-import { ArrowDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -13,16 +12,7 @@ interface CityHeroProps {
 }
 
 const CityHero = ({ onFormOpen, city }: CityHeroProps) => {
-    // Helper to generate slug from city name
-    const getSlug = (city: string) => {
-        const slug = city.toLowerCase()
-            .replace('ü', 'ue')
-            .replace('ö', 'oe')
-            .replace('ä', 'ae')
-            .replace('ß', 'ss')
-            .replace(' ', '-');
-        return `/webdesign-${slug}`;
-    };
+
 
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 

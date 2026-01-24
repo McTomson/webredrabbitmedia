@@ -3,17 +3,20 @@
 import { Clock, Shield, Zap, Users, CheckCircle } from 'lucide-react';
 import { AOSWrapper } from './AnimatedSection';
 
-interface Step {
-    title: string;
-    description: string;
-    highlight: string;
-}
-
-interface Benefit {
-    title: string;
-    description: string;
-    highlight: string;
-    redText: string;
+interface ProcessProps {
+    headline?: string;
+    subline?: string;
+    steps?: {
+        title: string;
+        description: string;
+        highlight: string;
+    }[];
+    benefits?: {
+        title: string;
+        description: string;
+        highlight: string;
+        redText: string;
+    }[];
 }
 
 import { useContactForm } from './ContactFormProvider';

@@ -1,11 +1,17 @@
 "use client";
 
-import { Check, AlertTriangle } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { AOSWrapper } from './AnimatedSection';
 import { useContactForm } from './ContactFormProvider';
 
-const Pricing = () => {
+interface PricingProps {
+    onFormOpen?: () => void;
+}
+
+const Pricing = ({ onFormOpen }: PricingProps) => {
     const { openForm } = useContactForm();
+
+    const handleFormOpen = onFormOpen || openForm;
 
     const features = [
         "Moderne, responsive Website (inkl. 4 Seiten)",
@@ -129,7 +135,7 @@ const Pricing = () => {
                                     {/* CTA Button */}
                                     <div className="text-center">
                                         <button
-                                            onClick={openForm}
+                                            onClick={handleFormOpen}
                                             className="w-full bg-red-600 text-white py-4 px-8 text-lg font-medium hover:bg-red-700 transition-all duration-300 hover:scale-105 cursor-pointer"
                                         >
                                             Jetzt kostenlosen Vorschlag anfordern

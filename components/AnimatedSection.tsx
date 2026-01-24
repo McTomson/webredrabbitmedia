@@ -1,8 +1,7 @@
 "use client";
 
 import { motion, HTMLMotionProps } from "framer-motion";
-import { ReactNode, useEffect } from "react";
-import AOS from 'aos';
+import { ReactNode } from "react";
 import 'aos/dist/aos.css';
 
 interface AnimatedSectionProps extends HTMLMotionProps<"section"> {

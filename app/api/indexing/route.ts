@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Fallback to Search Console API
-async function fallbackToSearchConsole(_request: NextRequest) {
+async function fallbackToSearchConsole(__request: NextRequest) {
     // await request.json(); // Don't re-read if not needed, or just ignore
 
     // Ping sitemap instead

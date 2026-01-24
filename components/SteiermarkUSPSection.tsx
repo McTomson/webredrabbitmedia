@@ -1,6 +1,6 @@
 "use client";
 
-import { Handshake, Gauge, MapPin, CheckCircle, Lightbulb } from 'lucide-react';
+import { Handshake, Gauge, CheckCircle, Lightbulb } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const usps = [

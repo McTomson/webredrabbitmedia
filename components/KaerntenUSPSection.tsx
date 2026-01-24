@@ -1,6 +1,6 @@
 "use client";
 
-import { Euro, Shield, Zap, MapPin, CheckCircle, Palmtree } from 'lucide-react';
+import { Euro, Zap, MapPin, CheckCircle, Palmtree } from 'lucide-react';
 import { AOSWrapper } from './AnimatedSection';
 
 const usps = [
