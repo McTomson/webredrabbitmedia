@@ -21,6 +21,8 @@ const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: f
 const AccessibilityWidget = dynamic(() => import('@/components/AccessibilityWidget'), { ssr: false });
 const ContactForm = dynamic(() => import('@/components/ContactForm'), { ssr: false });
 
+const RegionalIntro = dynamic(() => import('@/components/RegionalIntro'));
+
 interface CityContentProps {
     city: City;
 }
@@ -43,9 +45,12 @@ export default function CityContent({ city }: CityContentProps) {
 
             <main id="main-content" className="relative">
                 <CityHero city={city} onFormOpen={() => setIsFormOpen(true)} />
+                <RegionalIntro data={{ region: city.region, cities: [city.name] }} />
                 <Portfolio
                     headline={content.portfolio.headline}
                     subline={content.portfolio.text(city.name)}
+                    cityName={city.name}
+                    citySlug={city.name.toLowerCase().replace('ö', 'oe').replace('ä', 'ae').replace('ü', 'ue').replace('ß', 'ss').replace(' ', '-')}
                 />
                 <Process
                     onFormOpen={() => setIsFormOpen(true)}

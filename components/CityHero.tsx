@@ -13,6 +13,17 @@ interface CityHeroProps {
 }
 
 const CityHero = ({ onFormOpen, city }: CityHeroProps) => {
+    // Helper to generate slug from city name
+    const getSlug = (city: string) => {
+        const slug = city.toLowerCase()
+            .replace('ü', 'ue')
+            .replace('ö', 'oe')
+            .replace('ä', 'ae')
+            .replace('ß', 'ss')
+            .replace(' ', '-');
+        return `/webdesign-${slug}`;
+    };
+
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
@@ -24,166 +35,136 @@ const CityHero = ({ onFormOpen, city }: CityHeroProps) => {
         return () => window.removeEventListener('mousemove', handleMouseMove);
     }, []);
 
+    // Placeholder for city-specific hero images - if not available, use dashboard
+    const heroImage = city.name === "Wien" ? "/images/dashboard.webp" :
+        city.name === "Salzburg" ? "/images/webdesign-salzburg-hero.png" :
+            "/images/dashboard.webp";
+
     return (
-        <section className="min-h-screen bg-white relative overflow-hidden pt-20">
-            {/* Animated Background Shapes - Different colors/timing than Regional for variety */}
+        <section className="h-screen bg-slate-900 relative overflow-hidden flex flex-col justify-center">
+            {/* Animated Background Shapes */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 <motion.div
-                    className="absolute top-20 right-20 w-40 h-40 bg-blue-100 rounded-full opacity-20" // Blue shift for cities
+                    className="absolute top-20 left-20 w-32 h-32 bg-white rounded-full opacity-5"
                     animate={{
-                        x: [0, -30, 0],
-                        y: [0, 20, 0],
-                        scale: [1, 1.1, 1],
+                        x: [0, 30, 0],
+                        y: [0, -20, 0],
+                        rotate: [0, 180, 360],
                     }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div
-                    className="absolute bottom-40 left-10 w-24 h-24 bg-red-100 rounded-full opacity-30"
-                    animate={{
-                        x: [0, 20, 0],
-                        y: [0, -15, 0],
-                        rotate: [0, 90, 0],
+                    transition={{
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: "easeInOut"
                     }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                 />
             </div>
 
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/images/dashboard.webp"
+                    src={heroImage}
                     alt={`Webdesign ${city.name} - Red Rabbit Media`}
                     fill
-                    className="w-full h-full object-cover opacity-40"
+                    className="w-full h-full object-cover object-bottom"
                     priority
                 />
-                <div className="absolute inset-0 bg-white/90"></div>
+                <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-black/60 to-transparent"></div>
+                <div className="absolute inset-0 bg-black/40"></div>
             </div>
 
             {/* Main Hero Content */}
-            <div className="max-w-7xl mx-auto px-8 pt-20 pb-16 relative z-10">
-                <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[70vh]">
-
-                    {/* Content Side (Left on Desktop for variety vs Regional) */}
-                    <div className="space-y-6 lg:space-y-8 text-center lg:text-left order-2 lg:order-1">
-                        <motion.div
-                            initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
-                        >
-                            <h2 className="text-red-600 font-medium tracking-wide section-subtitle uppercase text-sm md:text-base mb-4">
-                                Webdesign Agentur für {city.name}
-                            </h2>
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 leading-tight">
-                                <motion.span className="block">
-                                    Ihre Website in
-                                </motion.span>
-                                <motion.span className="font-bold text-gray-900 block mt-1">
-                                    {city.name}.
-                                </motion.span>
-
-                                <motion.div
-                                    className="mt-8 space-y-3 p-6 bg-gray-50 rounded-xl border border-gray-100 inline-block text-center lg:text-left w-full lg:w-auto"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.6 }}
-                                >
-                                    <div className="flex items-center gap-3 justify-center lg:justify-start">
-                                        <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
-                                        <span className="text-sm font-medium text-gray-500 uppercase tracking-wider">Angebot</span>
-                                    </div>
-                                    <div className="text-2xl font-semibold text-gray-900">Premium Website</div>
-                                    <div className="flex items-baseline gap-3 justify-center lg:justify-start">
-                                        <span className="text-4xl font-bold text-red-600">ab 790 €</span>
-                                    </div>
-                                    <div className="text-sm text-gray-600 border-t border-gray-200 pt-2 mt-1">
-                                        Exklusiv für Unternehmen in {city.name}
-                                    </div>
-                                </motion.div>
-                            </h1>
-                        </motion.div>
-
-                        <motion.p
-                            className="text-lg text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.8 }}
-                        >
-                            {city.description} Wir bringen Ihr Unternehmen in {city.name} digital nach vorne.
-                            Ohne Baukasten, ohne Abo-Falle.
-                        </motion.p>
-
-                        <motion.div
-                            className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4"
-                            initial={{ opacity: 0, y: 20 }}
+            <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10 w-full">
+                <div className="text-center max-w-5xl mx-auto">
+                    {/* Main Headline - OÖ Style */}
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-thin text-white leading-[1.1] mb-6 md:mb-10 tracking-wide drop-shadow-xl">
+                        <motion.span
+                            className="block"
+                            initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1.0 }}
+                            transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
                         >
-                            <button
-                                onClick={onFormOpen}
-                                className="w-full sm:w-auto px-8 py-4 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-all shadow-lg hover:shadow-red-500/30 flex items-center justify-center gap-2"
-                            >
-                                Jetzt Angebot anfragen
-                                <ArrowDown className="w-4 h-4" />
-                            </button>
-                            <Link
-                                href={`/webdesign-${city.region.toLowerCase()}`}
-                                className="w-full sm:w-auto px-6 py-4 bg-white text-gray-700 font-medium rounded-lg border border-gray-200 hover:bg-gray-50 transition-all flex items-center justify-center"
-                            >
-                                Mehr zu {city.region}
-                            </Link>
-                        </motion.div>
-
-                        <div className="pt-6 flex justify-center lg:justify-start gap-6 text-sm text-gray-500">
-                            <div className="flex items-center gap-2">
-                                <span className="text-green-500">✓</span> 100% DSGVO-konform
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <span className="text-green-500">✓</span> Inklusive SEO-Start
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Image/Visual Side */}
-                    <div className="hidden lg:block order-1 lg:order-2 relative">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1 }}
-                            className="relative"
+                            DIREKT.
+                        </motion.span>
+                        <motion.span
+                            className="block font-light"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1.5, delay: 1.2, ease: "easeOut" }}
                         >
-                            <div className="absolute -inset-4 bg-gradient-to-r from-red-100 to-blue-50 rounded-2xl blur-2xl opacity-60"></div>
-                            <Image
-                                src="/images/hero-portrait.jpg" // Or specific city image if available
-                                alt={`Webdesign in ${city.name}`}
-                                width={600}
-                                height={700}
-                                className="relative rounded-2xl shadow-2xl z-10 w-full object-cover max-h-[700px]"
-                                sizes="(max-width: 1024px) 100vw, 50vw" // Fix missing sizes warning
-                                priority // Hero images should be priority
-                            />
+                            {city.name.toUpperCase()}.
+                        </motion.span>
+                    </h1>
 
-                            {/* Floating Badge */}
-                            <motion.div
-                                className="absolute -bottom-10 -left-10 bg-white p-6 rounded-xl shadow-xl z-20 max-w-xs"
-                                animate={{ y: [0, 10, 0] }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                            >
-                                <p className="font-semibold text-gray-900 text-lg mb-1">Ihr Partner in {city.name}</p>
-                                <p className="text-gray-600 text-sm">
-                                    Wir kennen den Markt in {city.name} und {city.region}.
-                                    {city.localFacts[0]}? Wir wissen wie man das nutzt.
-                                </p>
-                            </motion.div>
-                        </motion.div>
-                    </div>
+                    <motion.p
+                        className="text-base sm:text-lg md:text-2xl text-gray-200 font-extralight mb-10 md:mb-16 max-w-2xl mx-auto drop-shadow-md tracking-wider px-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 2.5, duration: 1.5 }}
+                    >
+                        Professionelle Webseiten und Suchmaschinenoptimierung.<br />
+                        <span className="text-gray-400 text-sm md:text-lg block mt-2 md:mt-3 font-light">Ehrlich. Regional. Ohne Risiko.</span>
+                    </motion.p>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.5, delay: 3.5 }}
+                        className="flex justify-center"
+                    >
+                        <button
+                            onClick={onFormOpen}
+                            className="group flex items-center gap-3 md:gap-4 px-8 py-3 md:px-12 md:py-5 bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white hover:text-gray-900 transition-all duration-700 rounded-sm"
+                        >
+                            <span className="text-sm md:text-lg tracking-[0.2em] font-light uppercase">Angebot anfragen</span>
+                        </button>
+                    </motion.div>
                 </div>
             </div>
 
+            {/* Bottom Info Bar */}
             <motion.div
-                className="fixed pointer-events-none z-50 rounded-full mix-blend-multiply blur-xl opacity-40 bg-blue-400 w-8 h-8"
-                style={{ left: mousePosition.x, top: mousePosition.y }}
-            />
+                className="absolute bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-100 py-4 z-20 hidden md:block"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1.0 }}
+            >
+                <div className="max-w-7xl mx-auto px-8 flex justify-between items-center text-xs md:text-sm text-gray-500 uppercase tracking-widest font-medium">
+                    <div className="flex gap-8">
+                        <span className="text-gray-900">AB 790 €</span>
+                        <span className="text-gray-900">KEINE VORKASSE</span>
+                        <span className="text-gray-900">100% DSGVO-KONFORM</span>
+                    </div>
+                    <div className="flex gap-8">
+                        <Link
+                            href={`/webdesign-${city.region.toLowerCase().replace('ö', 'oe').replace('ä', 'ae').replace('ü', 'ue').replace('ß', 'ss').replace(' ', '-')}`}
+                            className="text-red-600 font-bold underline underline-offset-4 decoration-red-200 hover:text-red-800 transition-colors"
+                        >
+                            {city.region.toUpperCase()}
+                        </Link>
+                    </div>
+                </div>
+            </motion.div>
+
+            {/* Mouse Trail Effect */}
+            <motion.div
+                className="fixed pointer-events-none z-50 mix-blend-multiply"
+                style={{
+                    left: mousePosition.x - 10,
+                    top: mousePosition.y - 10,
+                }}
+                animate={{
+                    scale: [0, 1, 0],
+                    opacity: [0, 0.5, 0],
+                }}
+                transition={{
+                    duration: 1.5,
+                    ease: "easeOut",
+                    repeat: Infinity,
+                    repeatDelay: 0.1
+                }}
+            >
+                <div className="w-6 h-6 bg-red-400/30 rounded-full blur-md"></div>
+            </motion.div>
         </section>
     );
 };

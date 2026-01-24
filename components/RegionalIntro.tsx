@@ -52,36 +52,36 @@ const RegionalIntro = ({ data }: RegionalIntroProps) => {
                         ) : data.region === "Steiermark" ? (
                             <>
                                 Sie suchen eine Webagentur in der Steiermark, die Ihr Unternehmen als Innovationsführer positioniert?
-                                Von <strong>{data.cities[0]}</strong> über <strong>{data.cities[1]}</strong> bis nach <strong>{data.cities[2]}</strong>
+                                Von <Link href={getSlug(data.cities[0])} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">{data.cities[0]}</Link> über <Link href={getSlug(data.cities[1])} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">{data.cities[1]}</Link> bis nach <Link href={getSlug(data.cities[2])} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">{data.cities[2]}</Link>
                                 – wir entwickeln High-End Webauftritte für das wirtschaftliche Rückgrat der grünen Mark.
                                 Keine Standard-Vorlagen, sondern maßgeschneiderte Lösungen mit Fokus auf messbare Ergebnisse und überragende Ladezeiten.
                             </>
                         ) : data.region === "Wien" ? (
                             <>
                                 Wien verlangt nach Tempo und Perfektion. Sie suchen eine Agentur für <strong>Webdesign in Wien</strong>, die Ihren urbanen Vorsprung versteht?
-                                Vom <strong>{data.cities[0]}</strong> bis <strong>Donaustadt</strong> – wir digitalisieren die Hauptstadt.
+                                Vom <Link href={getSlug(data.cities[0])} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">{data.cities[0]}</Link> bis <strong>Donaustadt</strong> – wir digitalisieren die Hauptstadt.
                                 Keine Parkplatzsuche, keine leeren Kilometer, sondern direkt zum Erfolg für Ihr Wiener Unternehmen.
                             </>
                         ) : data.region === "Kärnten" ? (
                             <>
                                 Sie suchen Webdesign in Kärnten, das die Sonnenseite Ihres Betriebs hervorhebt?
-                                Von <strong>{data.cities[0]}</strong> über <strong>Villach</strong> bis <strong>Spittal</strong> – wir bringen die Kärntner Qualität und Gastfreundschaft auf den digitalen Bildschirm.
+                                Von <Link href={getSlug(data.cities[0])} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">{data.cities[0]}</Link> über <Link href={getSlug("Villach")} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">Villach</Link> bis <Link href={getSlug("Spittal")} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">Spittal</Link> – wir bringen die Kärntner Qualität und Gastfreundschaft auf den digitalen Bildschirm.
                                 Professionell, nahbar und mit klarem Fokus auf Ihre regionale Sichtbarkeit.
                             </>
                         ) : data.region === "Salzburg" ? (
                             <>
                                 Auf der Salzburger Weltbühne zählt der erste Eindruck. Sie suchen exzellentes <strong>Webdesign in Salzburg</strong>, das internationalen Standards gerecht wird?
-                                Von der <strong>Stadt Salzburg</strong> bis in den <strong>Pinzgau</strong> – wir entwickeln Webauftritte mit Festspiel-Niveau. Ästhetisch brillant und technisch kompromisslos.
+                                Von der <Link href={getSlug("Salzburg")} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">Stadt Salzburg</Link> bis in den <strong>Pinzgau</strong> – wir entwickeln Webauftritte mit Festspiel-Niveau. Ästhetisch brillant und technisch kompromisslos.
                             </>
                         ) : data.region === "Tirol" ? (
                             <>
                                 In den Alpen zählen Ausdauer und die richtige Strategie. Sie suchen professionelles <strong>Webdesign in Tirol</strong>, das Ihr Unternehmen an die Spitze führt?
-                                Von <strong>Innsbruck</strong> über <strong>Kufstein</strong> bis <strong>Lienz</strong> – wir bauen digitale Fundamente, die so stabil sind wie ein Gipfelkreuz. Performance für Gipfelstürmer.
+                                Von <Link href={getSlug("Innsbruck")} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">Innsbruck</Link> über <Link href={getSlug("Kufstein")} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">Kufstein</Link> bis <Link href={getSlug("Lienz")} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">Lienz</Link> – wir bauen digitale Fundamente, die so stabil sind wie ein Gipfelkreuz. Performance für Gipfelstürmer.
                             </>
                         ) : data.region === "Vorarlberg" ? (
                             <>
                                 Im Ländle zählt das Schaffen. Sie suchen Webdesign in Vorarlberg, das so präzise arbeitet wie Ihre Fertigung?
-                                Von <strong>Bregenz</strong> über <strong>Dornbirn</strong> bis nach <strong>Feldkirch</strong> – wir liefern digitales Handwerk mit Vorarlberger Präzision. Klar, funktional und hocheffizient.
+                                Von <Link href={getSlug("Bregenz")} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">Bregenz</Link> über <Link href={getSlug("Dornbirn")} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">Dornbirn</Link> bis nach <Link href={getSlug("Feldkirch")} className="font-medium text-gray-900 hover:text-red-600 transition-colors underline decoration-gray-200 underline-offset-4 hover:decoration-red-200">Feldkirch</Link> – wir liefern digitales Handwerk mit Vorarlberger Präzision. Klar, funktional und hocheffizient.
                             </>
                         ) : (
                             <>

@@ -82,26 +82,26 @@ interface ClusterContent {
 export const clusterContent: Record<CityCluster, ClusterContent> = {
     metropolis: {
         hero: {
-            headline: (city) => `Webvorsprung für ${city}.`,
-            subline: (city) => `High-Performance Webdesign für den Wettbewerb in ${city}. Schneller, sicherer und konvertierungsstark.`
+            headline: (city) => `Vorsprung im Netz für ${city}.`,
+            subline: (city) => `Besonders leistungsstarkes Webdesign für den Wettbewerb in ${city}. Schnell, sicher und darauf ausgelegt, Kunden zu gewinnen.`
         },
         intro: {
             headline: (city) => `Erfolg ist in ${city} kein Zufall.`,
-            text: (city) => `In der Wirtschaftsregion ${city} entscheiden Sekunden über den Kundenkontakt. Wir liefern keine Standard-Lösungen, sondern digitale Performance-Systeme. Technologisch führend und speziell für den Wettbewerb in ${city} entwickelt.`
+            text: (city) => `In der Wirtschaftsregion ${city} entscheiden Sekunden darüber, ob ein Besucher zum Kunden wird. Wir liefern keine Standard-Lösungen, sondern digitale Systeme, die wirklich funktionieren. Technologisch führend und speziell für den Wettbewerb in ${city} entwickelt.`
         },
         process: {
             headline: "Effizienz statt Bürokratie.",
             text: "Ihr Unternehmen in braucht Lösungen, keine Meetings. Wir arbeiten rein digital, datenbasiert und mit vollem Fokus auf Ihren wirtschaftlichen Erfolg.",
             steps: [
-                { title: "Smartes Briefing", description: "Vergessen Sie lange Vorgespräche. Unser digitaler Onboarding-Prozess in 2 Minuten klärt alle Anforderungen präzise.", highlight: "2 Minuten" },
-                { title: "Marktanalyse & Konzept", description: "Wir analysieren Ihre Mitbewerber in der Region und erstellen in 7 Tagen einen Strategie-Entwurf, der Sie abhebt.", highlight: "Datengestützt" },
+                { title: "Einfacher Start", description: "Vergessen Sie lange Vorgespräche. Unser kurzer Ablauf zum Start klärt alle Anforderungen in nur 2 Minuten.", highlight: "2 Minuten" },
+                { title: "Analyse & Konzept", description: "Wir schauen uns Ihre Mitstreiter in der Region an und erstellen in 7 Tagen einen Entwurf, der Sie abhebt.", highlight: "Datengestützt" },
                 { title: "Entscheidung ohne Risiko", description: "Sie sehen das Ergebnis, bevor Sie zahlen. Gefällt Ihnen der Entwurf nicht? Kein Cent Kosten für Sie.", highlight: "Risikofrei" }
             ],
             benefits: [
-                { title: "Asynchron & Schnell", description: "Keine Zeitverschwendung durch Termine. Wir kommunizieren effizient und dokumentiert.", highlight: "Fokus", redText: "100% Digital" },
-                { title: "Full-Service", description: "Vom Hosting bis zum Text: Wir liefern das komplette Paket schlüsselfertig.", highlight: "Komplett", redText: "Alles in einem" },
-                { title: "Datenschutz First", description: "Rechtssicherheit nach aktuellen Standards. Ihre Daten bleiben in Europa.", highlight: "Sicher", redText: "DSGVO Safe" },
-                { title: "Investitionsschutz", description: "Unsere Tech-Stacks sind wartungsarm und skalieren mit Ihrem Wachstum mit.", highlight: "Skalierbar", redText: "Zukunftssicher" }
+                { title: "Schnell & Sicher", description: "Keine Zeitverschwendung durch unnötige Termine. Wir kommunizieren effizient und direkt.", highlight: "Fokus", redText: "100% Digital" },
+                { title: "Rundum-Betreuung", description: "Vom Speicherplatz bis zum Text: Wir liefern das komplette Paket schlüsselfertig.", highlight: "Komplett", redText: "Alles aus einer Hand" },
+                { title: "Datenschutz", description: "Rechtssicherheit nach aktuellen Standards. Ihre Daten bleiben sicher.", highlight: "Sicher", redText: "Rechtssicher" },
+                { title: "Zukunftssicher", description: "Unsere Technik ist wartungsarm und wächst mit Ihrem Betrieb mit.", highlight: "Skalierbar", redText: "Zukunftssicher" }
             ]
         },
         portfolio: {
@@ -114,9 +114,9 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
             strategyHeadline: "Warum 'Dabei sein' nicht mehr reicht.",
             comparisonHeadline: (city) => `Der Unterschied: Agentur vs. Performance-Partner in ${city}.`,
             features: [
-                { title: "Speed Architecture", text: (city) => `Ladezeiten im Millisekunden-Bereich. Google belohnt Geschwindigkeit – besonders in kompetitiven Märkten wie ${city}.` },
-                { title: "Semantische Suche", text: (city) => `Wir optimieren nicht nur auf Keywords, sondern auf Suchintention. So finden Sie genau die Kunden in ${city}, die kaufen wollen.` },
-                { title: "AI-Ready Data", text: (city) => `Strukturierte Daten sorgen dafür, dass KI-Assistenten Ihr Geschäft verstehen und aktiv empfehlen.` }
+                { title: "Schnelle Ladezeiten", text: (city) => `Ihre Seite lädt in einem Wimpernschlag. Google belohnt Geschwindigkeit – besonders in Märkten wie ${city}.` },
+                { title: "Intelligente Suche", text: (city) => `Wir optimieren so, dass Kunden Ihre Seite auch dann finden, wenn sie nur allgemein nach Ihrem Angebot suchen. So finden Sie genau die Kunden in ${city}, die wirklich kaufen wollen.` },
+                { title: "Zukunftssichere Daten", text: (city) => `Wir strukturieren Ihre Informationen so, dass auch moderne Assistenz-Systeme Ihr Geschäft verstehen und empfehlen.` }
             ],
             strategyItems: [
                 { title: "Die Realität", text: "Die meisten Websites in Ihrer Branche sind digitale Visitenkarten ohne Motor. Sie sehen nett aus, werden aber nicht gefunden." },
@@ -136,9 +136,9 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
             text: "Erfahrung trifft auf Innovation. Wir sind keine klassische Werbeagentur, sondern ein Technologie-Partner für Unternehmen, die messbares Wachstum wollen.",
             testimonialsHeadline: (city) => `Feedback von Leistungsträgern in ${city}`,
             features: [
-                { title: "Klarheit statt Floskeln", text: "Wir versprechen keine Wunder, wir liefern Daten und Ergebnisse." },
-                { title: "Enterprise Technologie", text: "Wir nutzen denselben Tech-Stack wie Netflix oder Uber – für Ihren Erfolg." },
-                { title: "Kompromisslose Qualität", text: "Jedes Pixel, jede Zeile Code wird geprüft. Perfektion ist unser Anspruch." }
+                { title: "Klartext statt Floskeln", text: "Wir versprechen keine Wunder, wir liefern echte Ergebnisse." },
+                { title: "Beste Technologie", text: "Wir nutzen modernste Technik für Ihren Erfolg." },
+                { title: "Qualität ohne Kompromisse", text: "Jeder Punkt, jede Zeile wird geprüft. Perfektion ist unser Anspruch." }
             ],
             testimonials: [
                 {
@@ -221,10 +221,10 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
                 { title: "Veröffentlichen", description: "Wir kümmern uns um den Start. Damit Sie sofort glänzen können.", highlight: "Sorglos" }
             ],
             benefits: [
-                { title: "International", description: "Wir übersetzen Ihre Seite für Gäste aus aller Welt.", highlight: "Weltweit", redText: "Mehrsprachig" },
-                { title: "Ästhetisch", description: "Design, das dem Ruf der Kulturstadt gerecht wird.", highlight: "Schön", redText: "Premium Design" },
-                { title: "Einfach", description: "Technik, die funktioniert. Ohne, dass Sie sich darum kümmern müssen.", highlight: "Simpel", redText: "0 Stress" },
-                { title: "Gefunden werden", description: "Wir bringen Sie in Google nach vorne. Bei lokalen und internationalen Suchanfragen.", highlight: "Sichtbar", redText: "Top Ranking" }
+                { title: "Auf der ganzen Welt", description: "Wir übersetzen Ihre Seite für Gäste aus aller Welt.", highlight: "Weltweit", redText: "Mehrsprachig" },
+                { title: "Wunderschön", description: "Design, das dem Ruf der Kulturstadt gerecht wird.", highlight: "Schön", redText: "Premium Design" },
+                { title: "Ganz einfach", description: "Technik, die funktioniert. Ohne, dass Sie sich darum kümmern müssen.", highlight: "Simpel", redText: "0 Stress" },
+                { title: "Gesehen werden", description: "Wir bringen Sie in Google nach vorne. Bei lokalen und internationalen Suchanfragen.", highlight: "Sichtbar", redText: "Gute Platzierung" }
             ]
         },
         portfolio: {
@@ -249,9 +249,9 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
             comparisonItems: [
                 { name: "Design", other: "Massenware", us: "Handverlesen" },
                 { name: "Sprachen", other: "Automatisch", us: "Professionell" },
-                { name: "Technik", other: "Veraltet", us: "State-of-the-Art" },
+                { name: "Technik", other: "Veraltet", us: "Modernste Technik" },
                 { name: "Anspruch", other: "Mittelmaß", us: "Exzellenz" },
-                { name: "Service", other: "Callcenter", us: "Persönlich" }
+                { name: "Zusammenarbeit", other: "Callcenter", us: "Persönlich" }
             ]
         },
         about: {
@@ -331,10 +331,10 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
                 { title: "Der Gipfel", description: "Wir bringen Sie online. Damit Sie von ganz oben gesehen werden.", highlight: "Sichtbar" }
             ],
             benefits: [
-                { title: "Top-Kondition", description: "Ladezeiten unter 0.5 Sekunden. Fit für jedes Rennen gegen die Konkurrenz.", highlight: "Speed", redText: "Blitzschnell" },
-                { title: "Robust", description: "Technik, die hält. Wartungsarm und sicher wie ein Fels.", highlight: "Stabil", redText: "Sicher" },
-                { title: "Für Gewinner", description: "Design, das überzeugt. Verwandeln Sie Besucher in echte Kunden.", highlight: "Conversion", redText: "Umsatz" },
-                { title: "Sichtbarkeit", description: "Wir optimieren für Platz 1. Damit Sie in Tirol gefunden werden.", highlight: "Ranking", redText: "Google Top" }
+                { title: "Bestform", description: "Ladezeiten im Millisekunden-Bereich. Bereit für jedes Rennen gegen die Konkurrenz.", highlight: "Schnelligkeit", redText: "Pfeilschnell" },
+                { title: "Stark", description: "Technik, die hält. Wartungsarm und sicher wie ein Fels.", highlight: "Stabil", redText: "Sicher" },
+                { title: "Zum Gewinnen", description: "Design, das überzeugt. Verwandeln Sie Besucher in echte Kunden.", highlight: "Überzeugend", redText: "Mehr Umsatz" },
+                { title: "Präsenz", description: "Wir optimieren für Platz 1. Damit Sie in Tirol gefunden werden.", highlight: "Platzierung", redText: "Ganz oben" }
             ]
         },
         portfolio: {

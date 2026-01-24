@@ -228,29 +228,35 @@ interface PortfolioProps {
     headline?: string;
     subline?: string;
     region?: string;
+    citySlug?: string;
+    cityName?: string;
 }
 
-const Portfolio = ({ headline, subline, region }: PortfolioProps) => {
+const Portfolio = ({ headline, subline, region, citySlug, cityName }: PortfolioProps) => {
     const [showAllProjects, setShowAllProjects] = useState(false);
     const isMobile = useIsMobile();
 
-    // Helper to get image path based on region
+    // Helper to get image path based on region or city
     const getImagePath = (originalPath: string, projectId: number) => {
-        if (!region) return originalPath;
+        let slug = "";
 
-        const regionSlugs: Record<string, string> = {
-            "Wien": "wien",
-            "Niederösterreich": "niederoesterreich",
-            "Oberösterreich": "oberoesterreich",
-            "Salzburg": "salzburg",
-            "Tirol": "tirol",
-            "Vorarlberg": "vorarlberg",
-            "Burgenland": "burgenland",
-            "Kärnten": "kaernten",
-            "Steiermark": "steiermark"
-        };
+        if (citySlug) {
+            slug = citySlug;
+        } else if (region) {
+            const regionSlugs: Record<string, string> = {
+                "Wien": "wien",
+                "Niederösterreich": "niederoesterreich",
+                "Oberösterreich": "oberoesterreich",
+                "Salzburg": "salzburg",
+                "Tirol": "tirol",
+                "Vorarlberg": "vorarlberg",
+                "Burgenland": "burgenland",
+                "Kärnten": "kaernten",
+                "Steiermark": "steiermark"
+            };
+            slug = regionSlugs[region] || "";
+        }
 
-        const slug = regionSlugs[region];
         if (slug && projectId <= 3) {
             const projectTypes: Record<number, string> = {
                 1: "bau",
@@ -265,19 +271,7 @@ const Portfolio = ({ headline, subline, region }: PortfolioProps) => {
     };
 
     const getAltText = (originalAlt: string, category: string) => {
-        if (!region) return originalAlt;
-        const regionalTerms: Record<string, string> = {
-            "Wien": "Wien",
-            "Niederösterreich": "Niederösterreich",
-            "Oberösterreich": "Oberösterreich",
-            "Salzburg": "Salzburg",
-            "Tirol": "Tirol",
-            "Vorarlberg": "Vorarlberg",
-            "Burgenland": "Burgenland",
-            "Kärnten": "Kärnten",
-            "Steiermark": "Steiermark"
-        };
-        const term = regionalTerms[region];
+        const term = cityName || region;
         if (term) {
             return `Webdesign ${term} Referenz - ${category} Website | Red Rabbit Media`;
         }

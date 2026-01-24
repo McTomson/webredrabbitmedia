@@ -107,7 +107,7 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 156,
         heroImage: "/images/ooe/hero/webdesign-oberoesterreich-see-schiff-v2.png",
         heroImageAlt: "Webdesign Oberösterreich - See mit Boot im Nebel",
-        sectionOrder: ["process", "intro", "portfolio", "branchen", "about", "testimonials", "pricing", "faq", "contact"]
+        sectionOrder: ["intro", "process", "portfolio", "branchen", "about", "testimonials", "pricing", "faq", "contact"]
     },
     "Niederösterreich": {
         hook: "Innovation",
