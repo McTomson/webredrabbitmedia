@@ -1012,7 +1012,7 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
                 },
                 {
                     question: city => `Was kostet das Ganze wirklich?`,
-                    answer: (city, region) => `Es bleibt bei 790€. Das ist unser Fixpreis für Ihr Komplettpaket. Keine versteckten Gebühren, keine bösen Überraschungen.`
+                    answer: (city, region) => `Das Paket startet bei 790€ netto für ein Komplettpaket (inkl. 4 Seiten). Wenn Sie mehr Seiten oder spezielle Funktionen benötigen, erstellen wir Ihnen gerne ein individuelles Angebot. In jedem Fall bleibt es transparent und fair.`
                 },
                 {
                     question: city => `Wie lange dauert es bis zur fertigen Seite?`,

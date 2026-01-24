@@ -41,13 +41,13 @@ const Pricing = ({ onFormOpen }: PricingProps) => {
             "@id": "https://web.redrabbit.media/#localbusiness"
         },
         "offers": {
-            "@type": "Offer",
+            "@type": "AggregateOffer",
             "name": "Basis Website-Paket",
             "description": "Professionelle Website ab 790€ inkl. DSGVO, Mobile-Optimierung, SEO-Basics, Kontaktformular, Google Maps, WhatsApp Integration und 6 Monate Support",
-            "price": "790",
+            "lowPrice": "790",
             "priceCurrency": "EUR",
             "availability": "https://schema.org/InStock",
-            "priceValidUntil": "2026-12-31",
+            "offerCount": "1",
             "itemOffered": {
                 "@type": "Service",
                 "name": "Website-Erstellung",

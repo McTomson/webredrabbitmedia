@@ -14,15 +14,15 @@ const FAQ = () => {
         },
         {
             question: "Muss ich wirklich nichts zahlen, wenn mir die Seite nicht gefällt?",
-            answer: "Ganz genau. 0 Risiko. 0 Euro. 0 Aufwand. Wenn du sagst: \"Gefällt mir – macht fertig!\", zahlst du die 790 € netto. Davor musst du nichts tun."
+            answer: "Ganz genau. 0 Risiko. 0 Euro. 0 Aufwand. Wenn du sagst: \"Gefällt mir – macht fertig!\", startet dein Paket ab 790 € netto (inkl. 4 Seiten). Davor musst du nichts tun."
         },
         {
             question: "Warum ist das so günstig – wo ist der Haken?",
-            answer: "Es gibt keinen Haken. Wir wollen zeigen, was wir können – und langfristig Partner gewinnen. Deshalb bekommst du deine Website zum Fixpreis – ohne Risiko. Wir liefern dir erst Ergebnisse, bevor du zahlst. Fair und transparent."
+            answer: "Es gibt keinen Haken. Wir wollen zeigen, was wir können – und langfristig Partner gewinnen. Deshalb bieten wir den Start zum Fixpreis ab 790 € netto an – ohne Risiko. Wir liefern dir erst Ergebnisse, bevor du zahlst. Fair und transparent."
         },
         {
             question: "Was ist im Preis von 790 € alles enthalten?",
-            answer: "Eine komplette Premium-Website inkl. Mobiloptimierung, Kontaktformular, Google Maps, Cookie-Banner, SEO-Basics, QR-Code, Support u. v. m. – alles DSGVO-konform, mobil-optimiert & ready to go."
+            answer: "Das Basis-Paket (ab 790 €) inkludiert 4 professionelle Seiten inkl. Mobiloptimierung, Kontaktformular, Google Maps, Cookie-Banner, SEO-Basics, QR-Code, Support u. v. m. – alles DSGVO-konform & ready to go. Mehr Seiten sind jederzeit flexibel möglich."
         },
         {
             question: "Wie schnell ist meine Website fertig?",
@@ -34,7 +34,7 @@ const FAQ = () => {
         },
         {
             question: "Wie bezahle ich, wenn mir die Seite gefällt?",
-            answer: "Du bekommst eine Rechnung über 790 € netto. Zahlung per Banküberweisung – einfach & sicher. Danach wird deine Website online geschaltet."
+            answer: "Du bekommst eine Rechnung gemäß deinem gewählten Paket (ab 790 € netto). Zahlung per Banküberweisung – einfach & sicher. Danach wird deine Website online geschaltet."
         }
     ];
 

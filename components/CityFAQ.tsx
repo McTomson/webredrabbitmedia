@@ -24,7 +24,7 @@ const CityFAQ = ({ city, headline, subline, questions }: CityFAQProps) => {
     const defaultFaqData = [
         {
             question: `Gibt es versteckte Kosten für Unternehmen aus ${city.name}?`,
-            answer: `Nein. Unser Fixpreis von 790€ gilt auch für Kunden aus ${city.name} und Umgebung. Darin enthalten sind Design, technische Umsetzung, SEO-Grundlagen und DSGVO-Sicherheit. Transparenz ist uns wichtig, gerade für die lokale Zusammenarbeit in ${city.region}.`
+            answer: `Nein. Unser Basis-Paket startet bei 790€ netto (inkl. 4 Seiten) für Kunden aus ${city.name} und Umgebung. Darin enthalten sind Design, technische Umsetzung, SEO-Grundlagen und DSGVO-Sicherheit. Wenn Sie mehr Seiten benötigen, erstellen wir Ihnen gerne ein individuelles Angebot.`
         },
         {
             question: `Wie hebe ich mich von der Konkurrenz in ${city.name} ab?`,

@@ -20,7 +20,7 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
     const genericFaqData = [
         {
             question: `Was kostet eine professionelle Website?`,
-            answer: `Eine professionelle Website kostet ab 790 Euro netto - egal ob Sie in ${data.mainCity} oder einer anderen Stadt in ${data.region} ansässig sind. Fixpreis ohne versteckte Kosten. Alle Leistungen inklusive: Design, DSGVO, SEO, Support. Keine Überraschungen, keine Zusatzkosten.`
+            answer: `Eine professionelle Website bieten wir ab 790 Euro netto an (inkl. 4 Seiten) - egal ob Sie in ${data.mainCity} oder einer anderen Stadt in ${data.region} ansässig sind. Fixpreis-Paket für Transparenz. Alle Leistungen inklusive: Design, DSGVO, SEO, Support. Weitere Seiten oder Funktionen sind jederzeit möglich.`
         },
         {
             question: `Muss ich vorher bezahlen?`,
@@ -63,7 +63,7 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
         },
         {
             question: "Was kostet eine Website in Oberösterreich?",
-            answer: "Bei uns erhalten Sie eine professionelle Website ab 790 € netto. Das ist ein Fixpreis, der Design, Programmierung, SEO-Optimierung und DSGVO-Konformität beinhaltet. Keine versteckten Kosten, keine monatlichen Mietgebühren für die Website selbst."
+            answer: "Bei uns erhalten Sie eine professionelle Website ab 790 € netto (Basis-Paket inkl. 4 Seiten). Das ist ein Fixpreis für diesen Umfang, der Design, Programmierung, SEO-Optimierung und DSGVO-Konformität beinhaltet. Mehr Seiten oder individuelle Anforderungen sind flexibel möglich."
         },
         {
             question: "Wie schnell ist die Seite fertig?",
@@ -87,7 +87,7 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
     const wienFaqData = [
         {
             question: "Was kostet eine professionelle Website für mein Wiener Unternehmen?",
-            answer: "Wir bieten Premium-Webdesign ab einem Fixpreis von 790 € netto an. In Wien profitieren Unternehmen von unserer schnellen, volldigitalen Arbeitsweise – keine versteckten Kosten, inkl. SEO-Basics und DSGVO-Konformität."
+            answer: "Wir bieten Premium-Webdesign ab einem Fixpreis von 790 € netto an (inkl. 4 Seiten). In Wien profitieren Unternehmen von unserer schnellen, volldigitalen Arbeitsweise – transparent, inkl. SEO-Basics und DSGVO-Konformität. Größere Projekte kalkulieren wir individuell und fair."
         },
         {
             question: "Muss ich für ein Erstgespräch in Ihr Büro kommen?",
@@ -110,7 +110,7 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
     const kaerntenFaqData = [
         {
             question: "Was kostet eine Website in Kärnten?",
-            answer: "Professionelles Webdesign startet bei uns ab 790 € netto Fixpreis. Egal ob Sie in Klagenfurt, Villach oder Wolfsberg ansässig sind – der Preis ist transparent und fair, ohne monatliche Mietgebühren."
+            answer: "Professionelles Webdesign startet bei uns ab 790 € netto (Basis-Paket inkl. 4 Seiten). Egal ob Sie in Klagenfurt, Villach oder Wolfsberg ansässig sind – der Preis ist transparent und fair, ohne monatliche Mietgebühren für die Webpräsenz selbst."
         },
         {
             question: "Haben Sie Erfahrung mit Tourismus-Websites in Kärnten?",
@@ -133,7 +133,7 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
     const salzburgFaqData = [
         {
             question: "Was kostet Full-Service Webdesign in Salzburg?",
-            answer: "Wir realisieren hochwertige Webauftritte ab 790 € netto. In Salzburg setzen wir auf Exzellenz und Detailliebe – dieser Fixpreis beinhaltet das komplette Paket von Design bis SEO."
+            answer: "Wir realisieren hochwertige Webauftritte ab 790 € netto (inkl. 4 Seiten). In Salzburg setzen wir auf Exzellenz und Detailliebe – dieser Fixpreis für das Basis-Paket beinhaltet von Design bis SEO alles Wesentliche."
         },
         {
             question: "Sind Sie auch für Export-Unternehmen in Salzburg tätig?",
@@ -156,7 +156,7 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
     const tirolFaqData = [
         {
             question: "Was kostet eine neue Website für Tiroler Betriebe?",
-            answer: "Eine professionelle Website kostet bei uns ab 790 € netto Fixpreis. Keine Abos, keine versteckten Kosten. Ein ehrliches Angebot für Tiroler Handschlagqualität."
+            answer: "Eine professionelle Website kostet bei uns ab 790 € netto (inkl. 4 Seiten). Keine Abos, keine monatliche Miete. Ein ehrliches Angebot für Tiroler Handschlagqualität – transparent und fair."
         },
         {
             question: "Ist die Website mobil optimiert für Gäste in Tirol?",
@@ -179,7 +179,7 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
     const vorarlbergFaqData = [
         {
             question: "Was kostet Webdesign mit Ländle-Präzision?",
-            answer: "Wir bieten professionelle Lösungen ab 790 € netto an. In Vorarlberg zählt das Ergebnis – unser Fixpreis beinhaltet alles, was Sie für einen erfolgreichen Start im Netz brauchen."
+            answer: "Wir bieten professionelle Lösungen ab 790 € netto an (Basis-Paket inkl. 4 Seiten). In Vorarlberg zählt das Ergebnis – unser Paket beinhaltet alles, was Sie für einen erfolgreichen Start im Netz brauchen."
         },
         {
             question: "Wie sicher ist meine Website bei Ihnen?",
@@ -202,7 +202,7 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
     const noeFaqData = [
         {
             question: "Was kostet eine Webseite für mein Unternehmen in Niederösterreich?",
-            answer: "Eine professionelle Webseite kostet bei uns ab 790 € Fixpreis. Keine versteckten Kosten, keine monatlichen Gebühren. Egal ob Sie in St. Pölten, Krems oder einem kleinen Ort im Waldviertel ansässig sind – der Preis bleibt gleich."
+            answer: "Eine professionelle Webseite kostet bei uns ab 790 € (Basis-Paket inkl. 4 Seiten). Keine monatlichen Gebühren für die Erstellung. Egal ob Sie in St. Pölten, Krems oder im Waldviertel ansässig sind – der Startpreis bleibt gleich und fair."
         },
         {
             question: "Muss ich für ein Treffen in ein Büro kommen?",
@@ -233,7 +233,7 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
     const steiermarkFaqData = [
         {
             question: "Was kostet eine professionelle Website in der Steiermark?",
-            answer: `Bei uns erhalten Sie eine High-End Website ab einem Fixpreis von 790 € netto. Dieses Angebot gilt für alle steirischen Unternehmen, egal ob in Graz, Leoben oder Kapfenberg. Wir garantieren volle Kostentransparenz ohne versteckte Gebühren oder monatliche Mietkosten.`
+            answer: `Bei uns erhalten Sie eine High-End Website ab einem Fixpreis von 790 € netto (inkl. 4 Seiten). Dieses Angebot gilt für alle steirischen Unternehmen. Wir garantieren volle Kostentransparenz; größere Projekte mit mehr Seiten kalkulieren wir individuell und fair.`
         },
         {
             question: "Warum ist Ihre Webagentur die richtige Wahl für steirische Unternehmen?",

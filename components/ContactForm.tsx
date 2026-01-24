@@ -245,10 +245,6 @@ const ContactForm = ({ isOpen, onClose }: ContactFormProps) => {
                                             <Mail className="w-4 h-4" />
                                             <span>office@redrabbit.media</span>
                                         </div>
-                                        <div className="flex items-center gap-2 text-gray-600">
-                                            <MapPin className="w-4 h-4" />
-                                            <span>Grabnergasse 8/8, 1060 Wien</span>
-                                        </div>
                                     </div>
                                 </div>
 

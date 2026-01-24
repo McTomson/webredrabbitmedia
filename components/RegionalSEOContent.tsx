@@ -48,12 +48,12 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
             "name": data.region
         },
         "offers": {
-            "@type": "Offer",
+            "@type": "AggregateOffer",
             "url": `https://web.redrabbit.media/webdesign-${data.region.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue')}`,
             "priceCurrency": "EUR",
-            "price": "790",
-            "priceValidUntil": "2026-12-31",
+            "lowPrice": "790",
             "availability": "https://schema.org/InStock",
+            "offerCount": "1",
             "seller": {
                 "@type": "Organization",
                 "name": "Red Rabbit Media"
