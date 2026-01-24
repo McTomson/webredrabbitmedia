@@ -18,6 +18,8 @@ interface RegionalHeroProps {
     content: {
         heroImage?: string;
         heroImageAlt?: string;
+        heroHeadline?: string;
+        heroSubline?: string;
     };
 }
 
@@ -86,22 +88,34 @@ const RegionalHero = ({ onFormOpen, data, content }: RegionalHeroProps) => {
 
                     {/* Main Headline */}
                     <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-thin text-white leading-[1.1] mb-6 md:mb-10 tracking-wide drop-shadow-xl">
-                        <motion.span
-                            className="block"
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
-                        >
-                            DIGITAL.
-                        </motion.span>
-                        <motion.span
-                            className="block font-light"
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1.5, delay: 1.2, ease: "easeOut" }}
-                        >
-                            {data.region.toUpperCase()}.
-                        </motion.span>
+                        {content.heroHeadline ? (
+                            <motion.span
+                                className="block"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
+                                dangerouslySetInnerHTML={{ __html: content.heroHeadline }}
+                            />
+                        ) : (
+                            <>
+                                <motion.span
+                                    className="block"
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
+                                >
+                                    DIGITAL.
+                                </motion.span>
+                                <motion.span
+                                    className="block font-light"
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 1.5, delay: 1.2, ease: "easeOut" }}
+                                >
+                                    {data.region.toUpperCase()}.
+                                </motion.span>
+                            </>
+                        )}
                     </h1>
 
                     <motion.p
@@ -110,8 +124,14 @@ const RegionalHero = ({ onFormOpen, data, content }: RegionalHeroProps) => {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 2.5, duration: 1.5 }}
                     >
-                        Webauftritte, die begeistern und Conversions erzielen.<br />
-                        <span className="text-gray-400 text-sm md:text-lg block mt-2 md:mt-3 font-light">Keine Spielereien. Nur Ergebnisse.</span>
+                        {content.heroSubline ? (
+                            <span dangerouslySetInnerHTML={{ __html: content.heroSubline }} />
+                        ) : (
+                            <>
+                                Webauftritte, die begeistern und Conversions erzielen.<br />
+                                <span className="text-gray-400 text-sm md:text-lg block mt-2 md:mt-3 font-light">Keine Spielereien. Nur Ergebnisse.</span>
+                            </>
+                        )}
                     </motion.p>
 
                     <motion.div
