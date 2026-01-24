@@ -79,7 +79,8 @@ const Hero = () => {
                     fill
                     className="w-full h-full object-cover opacity-50"
                     priority
-                    sizes="100vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 150vw, 100vw"
+                    className="w-full h-full object-cover opacity-50"
                 />
                 <div className="absolute inset-0 bg-white/85"></div>
             </div>

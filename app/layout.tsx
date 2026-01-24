@@ -9,6 +9,7 @@ import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google';
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -224,9 +225,9 @@ export default function RootLayout({
         <meta name="ai-description" content="Leading Webdesign agency in Vienna offering professional websites from 790€. GDPR-compliant, mobile-optimized, no upfront payment required." />
 
         {/* Resource Hints für Performance-Optimierung */}
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="preconnect" href="https://web.redrabbit.media" />
 

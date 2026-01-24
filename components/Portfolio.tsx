@@ -460,7 +460,8 @@ const Portfolio = ({ headline, subline, region, citySlug, cityName }: PortfolioP
                                             height={313}
                                             className="w-full h-full object-contain object-top transition-transform duration-700 group-hover:scale-105"
                                             loading="lazy"
-                                            sizes="(max-width: 768px) 100vw, 50vw"
+                                            decoding="async"
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 380px"
                                         />
                                     </a>
 
