@@ -183,6 +183,23 @@ const SEOContent = () => {
                             <li>Schnelle Umsetzung (7 Tage für ersten Entwurf)</li>
                             <li>Professionelle Webentwicklung für jeden der eine Website benötigt</li>
                         </ul>
+                        <h2>Unsere Leistungen für verschiedene Branchen</h2>
+                        <ul>
+                            <li><a href="https://web.redrabbit.media/branchen/handwerk">Webdesign für Handwerk</a></li>
+                            <li><a href="https://web.redrabbit.media/branchen/gastronomie">Webdesign für Gastronomie</a></li>
+                            <li><a href="https://web.redrabbit.media/branchen/einzelhandel">Webdesign für Einzelhandel</a></li>
+                            <li><a href="https://web.redrabbit.media/branchen/dienstleistung">Webdesign für Dienstleister</a></li>
+                        </ul>
+
+                        <h2>Aktuelle Ratgeber & Tipps</h2>
+                        <ul>
+                            <li><a href="https://web.redrabbit.media/tipps/was-kostet-eine-website">Website Kosten Österreich 2026</a></li>
+                            <li><a href="https://web.redrabbit.media/tipps/website-selbst-erstellen-vs-agentur">Website selbst erstellen vs. Agentur</a></li>
+                            <li><a href="https://web.redrabbit.media/tipps/10-fehler-beim-website-erstellen">10 Fehler beim Website erstellen</a></li>
+                            <li><a href="https://web.redrabbit.media/tipps/herold-webseite-vs-agentur-vergleich">Herold vs. Agentur Vergleich</a></li>
+                            <li><a href="https://web.redrabbit.media/tipps/restaurant-website-must-haves">Restaurant Website Must-Haves</a></li>
+                            <li><a href="https://web.redrabbit.media/tipps/wie-lange-dauert-website-erstellung">Dauer Website Erstellung</a></li>
+                        </ul>
                     </div>
                 </article>
             </div>

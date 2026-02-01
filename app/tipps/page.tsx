@@ -33,7 +33,7 @@ export default async function BlogPage() {
             '@type': 'Person',
             'name': 'Thomas Uhlir MBA',
             'jobTitle': 'Webdesign & SEO Experte',
-            'url': 'https://red-rabbit-media.at/tipps', // Assuming this is the canonical URL
+            'url': 'https://web.redrabbit.media/tipps', // Corrected canonical URL
             'aggregateRating': {
                 '@type': 'AggregateRating',
                 'ratingValue': '4.8',
