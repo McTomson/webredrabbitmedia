@@ -1,9 +1,15 @@
 import { Metadata } from 'next';
-import { branches, type BranchSlug } from './data';
+import { branches, type BranchSlug } from '../data';
 import BranchPageClient from './BranchPageClient';
 
 interface Props {
     params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+    return Object.keys(branches).map((slug) => ({
+        slug,
+    }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

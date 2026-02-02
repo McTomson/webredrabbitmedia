@@ -1,6 +1,6 @@
 "use client";
 
-import { branches, type BranchSlug } from './data';
+import { branches, type BranchSlug } from '../data';
 import { notFound, useParams } from 'next/navigation';
 
 import Contact from "@/components/Contact";
@@ -11,8 +11,8 @@ import { useState } from 'react';
 
 export default function BranchPageClient() {
     const params = useParams();
-    const { slug } = params as { slug: BranchSlug };
-    const branch = branches[slug];
+    const slug = params?.slug as BranchSlug;
+    const branch = slug ? branches[slug] : null;
 
     if (!branch) {
         notFound();

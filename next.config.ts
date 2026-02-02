@@ -117,6 +117,12 @@ const nextConfig = {
         destination: '/webdesign-kaernten',
         permanent: true,
       },
+      // Generic redirects for legacy paths
+      {
+        source: '/uber-uns',
+        destination: '/#about',
+        permanent: true,
+      },
     ]
   },
 

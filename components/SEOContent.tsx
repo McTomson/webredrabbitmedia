@@ -188,7 +188,8 @@ const SEOContent = () => {
                             <li><a href="https://web.redrabbit.media/branchen/handwerk">Webdesign für Handwerk</a></li>
                             <li><a href="https://web.redrabbit.media/branchen/gastronomie">Webdesign für Gastronomie</a></li>
                             <li><a href="https://web.redrabbit.media/branchen/einzelhandel">Webdesign für Einzelhandel</a></li>
-                            <li><a href="https://web.redrabbit.media/branchen/dienstleistung">Webdesign für Dienstleister</a></li>
+                            <li><a href="https://web.redrabbit.media/branchen/dienstleister">Webdesign für Dienstleister</a></li>
+                            <li><a href="https://web.redrabbit.media/branchen/aerzte">Webdesign für Ärzte & Praxen</a></li>
                         </ul>
 
                         <h2>Aktuelle Ratgeber & Tipps</h2>

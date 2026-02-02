@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { branches } from '@/app/branchen/[slug]/data';
+import { branches } from '@/app/branchen/data';
 
 const BLOG_DIR = path.join(process.cwd(), 'content/blog');
 const BASE_URL = 'https://web.redrabbit.media';
