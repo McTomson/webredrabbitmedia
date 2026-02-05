@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
             success: true,
             data: response.data,
-            message: `Successfully notified Google about ${url}`
+            message: `Successfully notified Google about ${url} `
         });
 
     } catch (error: unknown) {
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Fallback to Search Console API
-async function fallbackToSearchConsole(__request: NextRequest) {
+async function fallbackToSearchConsole(_request: NextRequest) {
     // await request.json(); // Don't re-read if not needed, or just ignore
 
     // Ping sitemap instead

@@ -114,9 +114,9 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
             strategyHeadline: "Warum 'Dabei sein' nicht mehr reicht.",
             comparisonHeadline: city => `Der Unterschied: Agentur vs. Performance-Partner in ${city}.`,
             features: [
-                { title: "Schnelle Ladezeiten", text: city => `Ihre Seite lädt in einem Wimpernschlag. Google belohnt Geschwindigkeit – besonders in Märkten wie ${city}.` },
-                { title: "Intelligente Suche", text: city => `Wir optimieren so, dass Kunden Ihre Seite auch dann finden, wenn sie nur allgemein nach Ihrem Angebot suchen. So finden Sie genau die Kunden in ${city}, die wirklich kaufen wollen.` },
-                { title: "Zukunftssichere Daten", text: city => `Wir strukturieren Ihre Informationen so, dass auch moderne Assistenz-Systeme Ihr Geschäft verstehen und empfehlen.` }
+                { title: "Schnelle Ladezeiten", text: _city => `Ihre Seite lädt in einem Wimpernschlag. Google belohnt Geschwindigkeit – besonders in Märkten wie Wien & Umgebung.` },
+                { title: "Intelligente Suche", text: _city => `Wir optimieren so, dass Kunden Ihre Seite auch dann finden, wenn sie nur allgemein nach Ihrem Angebot suchen. So finden Sie genau die Kunden, die wirklich kaufen wollen.` },
+                { title: "Zukunftssichere Daten", text: _city => `Wir strukturieren Ihre Informationen so, dass auch moderne Assistenz-Systeme Ihr Geschäft verstehen und empfehlen.` }
             ],
             strategyItems: [
                 { title: "Die Realität", text: "Die meisten Websites in Ihrer Branche sind digitale Visitenkarten ohne Motor. Sie sehen nett aus, werden aber nicht gefunden." },
@@ -172,28 +172,28 @@ export const clusterContent: Record<CityCluster, ClusterContent> = {
             subline: (city, region) => `Konkrete Fakten für Entscheider in ${city} und ${region}.`,
             questions: [
                 {
-                    question: city => `Gibt es versteckte Kosten bei Projekten in ${city}?`,
-                    answer: (city, region) => `Definitiv nicht. Unser Angebot ist ein Pauschalpreis. Beratung, Design, Entwicklung und der Launch in ${city} sind inkludiert. Sie behalten volle Kostensicherheit.`
+                    question: _city => `Gibt es versteckte Kosten bei Projekten?`,
+                    answer: (_city, _region) => `Definitiv nicht. Unser Angebot ist ein Pauschalpreis. Beratung, Design, Entwicklung und der Launch sind inkludiert. Sie behalten volle Kostensicherheit.`
                 },
                 {
-                    question: city => `Warum sollte ich mich in ${city} für euch entscheiden?`,
-                    answer: (city, region) => `Weil wir nicht nur "hübsch" machen, sondern "erfolgreich". Wir kennen den Wettbewerb in ${city} und statten Sie mit der Technologie aus, um diesen digital zu überholen.`
+                    question: _city => `Warum sollte ich mich für euch entscheiden?`,
+                    answer: (city, _region) => `Weil wir nicht nur "hübsch" machen, sondern "erfolgreich". Wir kennen den Wettbewerb in ${city} und statten Sie mit der Technologie aus, um diesen digital zu überholen.`
                 },
                 {
-                    question: city => `Macht ihr Fotos bei uns vor Ort in ${city}?`,
-                    answer: (city, region) => `Wir konzentrieren uns auf das Webdesign. Für High-End Fotografie in ${city} empfehlen wir spezialisierte Partner oder nutzen Ihr bestehendes Material bestmöglich.`
+                    question: _city => `Macht ihr Fotos bei uns vor Ort?`,
+                    answer: (city, _region) => `Wir konzentrieren uns auf das Webdesign. Für High-End Fotografie in ${city} empfehlen wir spezialisierte Partner oder nutzen Ihr bestehendes Material bestmöglich.`
                 },
                 {
-                    question: city => `Referenzen in ${city}?`,
-                    answer: (city, region) => `Wir arbeiten mit diversen Branchen in ${region} zusammen. Die Anforderungen in ${city} an Professionalität und Speed sind uns bestens vertraut.`
+                    question: _city => `Referenzen?`,
+                    answer: (_city, region) => `Wir arbeiten mit diversen Branchen in ${region} zusammen. Die Anforderungen an Professionalität und Speed sind uns bestens vertraut.`
                 },
                 {
-                    question: city => `Wie funktioniert die Abstimmung ohne Meetings?`,
-                    answer: (city, region) => `Besser als Sie denken. Durch präzise Formulare und direkten Chat/Mail-Support entfallen Wartezeiten und Anfahrten im ${city}er Verkehr. Wir arbeiten dann, wenn Sie Zeit haben.`
+                    question: _city => `Wie funktioniert die Abstimmung ohne Meetings?`,
+                    answer: (city, _region) => `Besser als Sie denken. Durch präzise Formulare und direkten Chat/Mail-Support entfallen Wartezeiten und Anfahrten im ${city}er Verkehr. Wir arbeiten dann, wenn Sie Zeit haben.`
                 },
                 {
-                    question: city => `Ist die Seite fit für den Markt in ${city}?`,
-                    answer: (city, region) => `Ja. Wir optimieren spezifisch auf lokale Suchanfragen ("Local SEO") für ${city}, damit Sie genau dort sichtbar sind, wo Ihre Kunden suchen.`
+                    question: _city => `Ist die Seite fit für den Markt?`,
+                    answer: (city, _region) => `Ja. Wir optimieren spezifisch auf lokale Suchanfragen ("Local SEO") für ${city}, damit Sie genau dort sichtbar sind, wo Ihre Kunden suchen.`
                 }
             ]
         },

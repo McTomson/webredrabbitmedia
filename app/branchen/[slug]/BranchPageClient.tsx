@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Check, ChevronDown, Rocket, Search, Settings } from 'lucide-react';
+import { ArrowRight, Check, ChevronDown, Search } from 'lucide-react';
 import { branches, type BranchSlug } from '../data';
 import { notFound, useParams } from 'next/navigation';
 

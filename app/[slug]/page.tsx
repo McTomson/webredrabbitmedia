@@ -54,8 +54,8 @@ export default async function CityPage({ params }: PageProps) {
         "@context": "https://schema.org",
         "@type": isWien ? "LocalBusiness" : "ProfessionalService",
         "name": `${COMPANY_NAME} ${city.name}`,
-        "description": `Premium Webdesign für ${city.name} und ganz ${city.region}. Wir erstellen rechtssichere Websites ab ${PRICING.baseline} ohne Vorkasse.`,
-        "url": `${SITE_URL}/webdesign-${city.slug}`,
+        "description": `Premium Webdesign für ${city.name} mit über ${projectCount} realisierten Projekten. Wir erstellen rechtssichere Websites ab ${PRICING.baseline} ohne Vorkasse.`,
+        "url": `${SITE_URL}/webdesign-${citySlug}`,
         "telephone": "+43 676 9000955",
         "address": {
             "@type": "PostalAddress",
