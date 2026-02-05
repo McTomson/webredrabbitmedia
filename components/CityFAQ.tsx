@@ -50,25 +50,9 @@ const CityFAQ = ({ city, headline, subline, questions }: CityFAQProps) => {
 
     const faqData = questions || defaultFaqData;
 
-    const faqSchema = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": faqData.map(faq => ({
-            "@type": "Question",
-            "name": faq.question,
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": faq.answer
-            }
-        }))
-    };
 
     return (
         <section className="py-20 bg-gray-50 relative overflow-hidden" id="faq">
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-            />
 
             <div className="max-w-4xl mx-auto px-8 relative z-10">
                 <div className="text-center mb-16">

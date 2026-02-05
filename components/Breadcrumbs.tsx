@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { SITE_URL } from '@/lib/config';
 
 interface BreadcrumbItem {
     name: string;
@@ -18,7 +19,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
             "@type": "ListItem",
             "position": index + 1,
             "name": item.name,
-            "item": item.url
+            "item": `${SITE_URL}${item.url.startsWith('/') ? '' : '/'}${item.url}`
         }))
     };
 
