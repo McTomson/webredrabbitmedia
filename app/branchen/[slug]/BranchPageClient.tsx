@@ -148,11 +148,7 @@ export default function BranchPageClient() {
                     <section className="py-24 px-4 md:px-8 bg-white border-y border-gray-100">
                         <div className="max-w-4xl mx-auto text-center">
                             <div className="w-20 h-20 bg-gray-100 rounded-full mx-auto mb-8 flex items-center justify-center overflow-hidden border-2 border-red-500 p-1">
-                                {'image' in branch.testimonial && branch.testimonial.image ? (
-                                    <img src={String(branch.testimonial.image)} alt={branch.testimonial.name} className="w-full h-full object-cover rounded-full" />
-                                ) : (
-                                    <span className="text-2xl font-bold text-gray-400">{branch.testimonial.name.charAt(0)}</span>
-                                )}
+                                <span className="text-2xl font-bold text-gray-400">{branch.testimonial.name.charAt(0)}</span>
                             </div>
                             <blockquote className="text-2xl md:text-3xl font-medium text-gray-900 leading-relaxed mb-8">
                                 &quot;{branch.testimonial.quote}&quot;
