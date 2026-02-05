@@ -11,6 +11,11 @@ export const branches = {
             "Mitarbeiter-Suche Funktion",
             "DSGVO-konform & mobil-optimiert"
         ],
+        testimonial: {
+            name: "Herbert Müller",
+            role: "Malermeister Müller & Söhne",
+            quote: "Seit wir die neue Seite haben, klingelt das Telefon durchgehend. Endlich finden uns die Kunden online und wir sparen uns viel Zeit bei der Terminvergabe."
+        }
     },
     gastronomie: {
         name: "Gastronomie",
@@ -24,6 +29,11 @@ export const branches = {
             "Kundenbewertungen präsentieren",
             "Öffnungszeiten & Anfahrt"
         ],
+        testimonial: {
+            name: "Elena Rossini",
+            role: "Trattoria Bella Vista",
+            quote: "Die Online-Reservierung spart uns täglich Zeit am Telefon. Unsere Gäste lieben das moderne Design unserer Speisekarte."
+        }
     },
     einzelhandel: {
         name: "Einzelhandel",
@@ -37,6 +47,11 @@ export const branches = {
             "Kundenbindung durch Newsletter",
             "Click & Collect Integration"
         ],
+        testimonial: {
+            name: "Markus Weber",
+            role: "Modehaus Weber",
+            quote: "Unser lokaler Shop wird jetzt endlich bei Google gefunden. Der Click & Collect Service wird von unseren Stammkunden super angenommen."
+        }
     },
     dienstleistung: {
         name: "Dienstleistung",
@@ -50,6 +65,11 @@ export const branches = {
             "Kontaktformular für Anfragen",
             "SEO-optimiert für lokale Suche"
         ],
+        testimonial: {
+            name: "Sabine Kurz",
+            role: "Steuerberatung K&P",
+            quote: "Kompetent, schnell und zuverlässig. Red Rabbit hat unsere Expertise perfekt digital übersetzt. Wir wirken jetzt viel moderner."
+        }
     },
     aerzte: {
         name: "Ärzte",
@@ -63,6 +83,11 @@ export const branches = {
             "Patienten-Informationen",
             "Digitale Visitenkarte"
         ],
+        testimonial: {
+            name: "Dr. Stefan Berger",
+            role: "Zahnarztpraxis am Ring",
+            quote: "Patienten können Termine jetzt direkt buchen. Das entlastet unsere Rezeption enorm und wirkt sehr professionell auf neue Patienten."
+        }
     }
 } as const;
 
