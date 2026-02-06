@@ -22,7 +22,7 @@ export async function GET() {
       title: post.title,
       description: post.excerpt,
       url: `https://web.redrabbit.media/tipps/${post.slug}`,
-      date: post.publishedAt || post.date || new Date().toISOString(),
+      date: post.publishedAt || new Date().toISOString(),
       author: 'Thomas Uhlir MBA',
       categories: post.tags || [post.category],
       enclosure: post.featuredImage ? {
