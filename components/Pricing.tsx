@@ -30,42 +30,10 @@ const Pricing = ({ onFormOpen }: PricingProps) => {
         "Vieles mehr"
     ];
 
-    // Product/Service Schema für Google Rich Snippets
-    // Product/Service Schema für Google Rich Snippets
-    const pricingSchema = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "@id": "https://web.redrabbit.media/#premium-website-package",
-        "name": "Basis Website-Paket",
-        "description": "Professionelle Website ab 790€ inkl. DSGVO, Mobile-Optimierung, SEO-Basics, Kontaktformular, Google Maps, WhatsApp Integration und 6 Monate Support",
-        "image": "https://web.redrabbit.media/images/og-image.jpg",
-        "brand": {
-            "@id": "https://web.redrabbit.media/#organization"
-        },
-        "offers": {
-            "@type": "AggregateOffer",
-            "url": "https://web.redrabbit.media",
-            "priceCurrency": "EUR",
-            "lowPrice": "790",
-            "availability": "https://schema.org/InStock",
-            "offerCount": "1",
-            "itemOffered": {
-                "@id": "https://web.redrabbit.media/#premium-website-package"
-            }
-        },
-        "areaServed": {
-            "@type": "Country",
-            "name": "Österreich"
-        }
-    };
-
     return (
         <>
-            {/* Product/Service Schema for SEO */}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema) }}
-            />
+
+
 
             <section id="pricing" className="py-24 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-8">
