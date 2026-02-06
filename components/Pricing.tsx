@@ -31,35 +31,27 @@ const Pricing = ({ onFormOpen }: PricingProps) => {
     ];
 
     // Product/Service Schema für Google Rich Snippets
+    // Product/Service Schema für Google Rich Snippets
     const pricingSchema = {
         "@context": "https://schema.org",
-        "@type": "Service",
-        "serviceType": "Webdesign & Website-Entwicklung",
-        "provider": {
-            "@type": "LocalBusiness",
-            "name": "Red Rabbit Media",
-            "@id": "https://web.redrabbit.media/#localbusiness"
+        "@type": "Product",
+        "@id": "https://web.redrabbit.media/#premium-website-package",
+        "name": "Basis Website-Paket",
+        "description": "Professionelle Website ab 790€ inkl. DSGVO, Mobile-Optimierung, SEO-Basics, Kontaktformular, Google Maps, WhatsApp Integration und 6 Monate Support",
+        "image": "https://web.redrabbit.media/images/og-image.jpg",
+        "brand": {
+            "@id": "https://web.redrabbit.media/#organization"
         },
         "offers": {
             "@type": "AggregateOffer",
-            "name": "Basis Website-Paket",
-            "description": "Professionelle Website ab 790€ inkl. DSGVO, Mobile-Optimierung, SEO-Basics, Kontaktformular, Google Maps, WhatsApp Integration und 6 Monate Support",
-            "lowPrice": "790",
+            "url": "https://web.redrabbit.media",
             "priceCurrency": "EUR",
+            "lowPrice": "790",
             "availability": "https://schema.org/InStock",
             "offerCount": "1",
             "itemOffered": {
-                "@type": "Service",
-                "name": "Website-Erstellung",
-                "description": features.join(", ")
+                "@id": "https://web.redrabbit.media/#premium-website-package"
             }
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "315",
-            "bestRating": "5",
-            "worstRating": "1"
         },
         "areaServed": {
             "@type": "Country",

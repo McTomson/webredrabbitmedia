@@ -9,13 +9,13 @@ const SEOContent = () => {
     // Schema in ein sauberes Product-Objekt auslagern für bessere Lesbarkeit & Validierung
     const productSchema = {
         "@context": "https://schema.org",
-        "@type": "Service",
+        "@type": "Product",
+        "@id": "https://web.redrabbit.media/#premium-website-package",
         "name": "Premium Website Paket",
         "description": "Professionelles Webdesign ab 790€. Inkl. Design, SEO & Mobiloptimierung. Zahlung erst bei 100% Zufriedenheit.",
         "image": "https://web.redrabbit.media/images/og-image.jpg",
         "brand": {
-            "@type": "Brand",
-            "name": "Red Rabbit Media"
+            "@id": "https://web.redrabbit.media/#organization"
         },
         "offers": {
             "@type": "Offer",
@@ -25,21 +25,8 @@ const SEOContent = () => {
             "priceValidUntil": "2026-12-31",
             "availability": "https://schema.org/InStock",
             "seller": {
-                "@type": "Organization",
-                "name": "Red Rabbit Media"
+                "@id": "https://web.redrabbit.media/#organization"
             }
-        },
-        "serviceType": "Web Design and Development",
-        "provider": {
-            "@id": "https://web.redrabbit.media/#organization"
-        },
-        "audience": {
-            "@type": "Audience",
-            "audienceType": "Small and Medium-sized Enterprises, Startups, Local Businesses"
-        },
-        "areaServed": {
-            "@type": "Country",
-            "name": "AT"
         },
         "aggregateRating": {
             "@type": "AggregateRating",

@@ -22,7 +22,8 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
     // Dynamic Product Schema for the Region
     const productSchema = {
         "@context": "https://schema.org",
-        "@type": "Service",
+        "@type": "Product",
+        "@id": "https://web.redrabbit.media/#premium-website-package",
         "name": `Premium Webdesign ${data.region}`, // e.g. "Premium Webdesign Wien"
         "description": `Professionelles Webdesign für ${data.region}. ${content.hook} für lokale Unternehmen. Ab 790€.`,
         "image": data.region === "Oberösterreich"
@@ -33,19 +34,7 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
                     ? "https://web.redrabbit.media/images/webdesign-kaernten-woerthersee.png"
                     : "https://web.redrabbit.media/images/og-image.jpg",
         "brand": {
-            "@type": "Brand",
-            "name": "Red Rabbit Media"
-        },
-        "areaServed": data.region === "Oberösterreich" ? [
-            { "@type": "City", "name": "Linz" },
-            { "@type": "City", "name": "Wels" },
-            { "@type": "City", "name": "Steyr" },
-            { "@type": "Place", "name": "Salzkammergut" },
-            { "@type": "Place", "name": "Innviertel" },
-            { "@type": "Place", "name": "Mühlviertel" }
-        ] : {
-            "@type": "AdministrativeArea",
-            "name": data.region
+            "@id": "https://web.redrabbit.media/#organization"
         },
         "offers": {
             "@type": "AggregateOffer",
@@ -55,8 +44,18 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
             "availability": "https://schema.org/InStock",
             "offerCount": "1",
             "seller": {
-                "@type": "Organization",
-                "name": "Red Rabbit Media"
+                "@id": "https://web.redrabbit.media/#organization"
+            },
+            "areaServed": data.region === "Oberösterreich" ? [
+                { "@type": "City", "name": "Linz" },
+                { "@type": "City", "name": "Wels" },
+                { "@type": "City", "name": "Steyr" },
+                { "@type": "Place", "name": "Salzkammergut" },
+                { "@type": "Place", "name": "Innviertel" },
+                { "@type": "Place", "name": "Mühlviertel" }
+            ] : {
+                "@type": "AdministrativeArea",
+                "name": data.region
             }
         },
         "aggregateRating": {
@@ -65,9 +64,6 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
             "reviewCount": data.region === "Oberösterreich" ? "156" : "315",
             "bestRating": "5",
             "worstRating": "1"
-        },
-        "provider": {
-            "@id": "https://web.redrabbit.media/#organization"
         }
     };
 

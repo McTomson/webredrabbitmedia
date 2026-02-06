@@ -151,11 +151,7 @@ const jsonLd = {
         "Performance Optimization",
         "Google Search Console",
         "Online Marketing Österreich"
-      ],
-      "speakable": {
-        "@type": "SpeakableSpecification",
-        "cssSelector": [".speakable-content", "h1", "h2"]
-      }
+      ]
     },
     {
       "@type": "Organization",
@@ -169,21 +165,24 @@ const jsonLd = {
       ]
     },
     {
-      "@type": "Service",
-      "name": "Premium Website",
-      "description": "Professionelle Website inkl. Design, SEO & Mobiloptimierung",
+      "@type": "Product",
+      "@id": "https://web.redrabbit.media/#premium-website-package",
+      "name": "Premium Website Paket",
+      "description": "Professionelles Webdesign ab 790€. Inkl. Design, SEO & Mobiloptimierung. Zahlung erst bei 100% Zufriedenheit.",
       "image": "https://web.redrabbit.media/images/og-image.jpg",
+      "brand": {
+        "@id": "https://web.redrabbit.media/#organization"
+      },
       "offers": {
-        "@type": "AggregateOffer",
+        "@type": "Offer",
         "url": "https://web.redrabbit.media",
         "priceCurrency": "EUR",
-        "lowPrice": "790",
-        "offerCount": "1",
-        "priceValidUntil": "2026-12-31"
-      },
-      "brand": {
-        "@type": "Brand",
-        "name": "Red Rabbit Media"
+        "price": "790",
+        "priceValidUntil": "2026-12-31",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@id": "https://web.redrabbit.media/#organization"
+        }
       },
       "aggregateRating": {
         "@type": "AggregateRating",
@@ -191,22 +190,6 @@ const jsonLd = {
         "reviewCount": "315",
         "bestRating": "5",
         "worstRating": "1"
-      }
-    },
-    {
-      "@type": "ProfessionalService",
-      "name": "Red Rabbit Media Webdesign",
-      "description": "Professionelles Webdesign und SEO Agentur aus Wien.",
-      "url": "https://web.redrabbit.media",
-      "image": "https://web.redrabbit.media/images/og-image.jpg",
-      "telephone": "+436769000955",
-      "priceRange": "€€",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Grabnergasse 8",
-        "addressLocality": "Wien",
-        "postalCode": "1060",
-        "addressCountry": "AT"
       }
     }
   ]
