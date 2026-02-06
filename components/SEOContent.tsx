@@ -7,15 +7,56 @@
 
 const SEOContent = () => {
     // Schema in ein sauberes Product-Objekt auslagern für bessere Lesbarkeit & Validierung
+    // Schema 1: LocalBusiness (Die Agentur)
+    const localBusinessSchema = {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": "https://web.redrabbit.media/#organization",
+        "name": "Red Rabbit Media",
+        "url": "https://web.redrabbit.media",
+        "logo": "https://web.redrabbit.media/logo.png",
+        "image": "https://web.redrabbit.media/images/og-image.jpg",
+        "email": "office@redrabbit.media",
+        "telephone": "+43 676 9000955",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Grabnergasse 8",
+            "addressLocality": "Wien",
+            "postalCode": "1060",
+            "addressCountry": "AT"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 48.1945,
+            "longitude": 16.3533
+        },
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday"
+            ],
+            "opens": "09:00",
+            "closes": "18:00"
+        },
+        "priceRange": "ab 790€"
+    };
+
+    // Schema 2: Product (Das Angebot/Paket) - Hier ist AggregateRating erlaubt!
     const productSchema = {
         "@context": "https://schema.org",
-        "@type": "Product",
+        "@type": "Product", // WICHTIG: Product statt Service für Rich Snippets
         "@id": "https://web.redrabbit.media/#premium-website-package",
         "name": "Premium Website Paket",
         "description": "Professionelles Webdesign ab 790€. Inkl. Design, SEO & Mobiloptimierung. Zahlung erst bei 100% Zufriedenheit.",
         "image": "https://web.redrabbit.media/images/og-image.jpg",
+        "sku": "WEB-PREMIUM-AT",
         "brand": {
-            "@id": "https://web.redrabbit.media/#organization"
+            "@type": "Brand",
+            "name": "Red Rabbit Media"
         },
         "offers": {
             "@type": "Offer",
@@ -24,6 +65,7 @@ const SEOContent = () => {
             "price": "790",
             "priceValidUntil": "2026-12-31",
             "availability": "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition",
             "seller": {
                 "@id": "https://web.redrabbit.media/#organization"
             }
@@ -40,6 +82,11 @@ const SEOContent = () => {
     return (
         <>
             {/* JSON-LD Schema direkt injizieren - Sicherste Methode für Google */}
+            {/* JSON-LD Schema direkt injizieren - Sicherste Methode für Google */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+            />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
