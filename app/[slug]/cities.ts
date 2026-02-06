@@ -11,6 +11,7 @@ export interface City {
     localFacts: readonly string[];
     projectCount?: number;
     cluster: "metropolis" | "tourism" | "regional" | "graz" | "salzburg" | "innsbruck" | "klagenfurt" | "eisenstadt";
+    heroImage?: string;
 }
 
 export type CityCluster = City["cluster"];

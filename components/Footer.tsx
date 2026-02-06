@@ -82,99 +82,98 @@ const Footer = () => {
 
                         {/* Quick Links & QR */}
                         <div className="md:col-span-2 lg:col-span-1">
-                            <AOSWrapper animation="fade-up" delay={300}>
-                                <h4 className="text-lg font-medium mb-6">Rechtliches</h4>
-                                <ul className="space-y-3 text-gray-400 mb-6">
-                                    <li>
-                                        <Link href="/impressum" className="hover:text-red-400 transition-colors">Impressum</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/datenschutz" className="hover:text-red-400 transition-colors">Datenschutz</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/agb" className="hover:text-red-400 transition-colors">AGB</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/cookie-einstellungen" className="hover:text-red-400 transition-colors">Cookie-Einstellungen</Link>
-                                    </li>
-                                </ul>
 
-                                {/* QR Code */}
-                                <div>
-                                    <h5 className="font-medium mb-2 text-sm">QR-Code</h5>
-                                    <button
-                                        onClick={() => setShowQRCode(true)}
-                                        className="px-4 py-2 border border-gray-700 text-gray-400 hover:text-red-400 hover:border-red-600 transition-all duration-300"
-                                    >
-                                        <QrCode className="w-4 h-4 mr-2 inline" />
-                                        QR-Code anzeigen
-                                    </button>
-                                </div>
-                            </AOSWrapper>
+                            <h4 className="text-lg font-medium mb-6">Rechtliches</h4>
+                            <ul className="space-y-3 text-gray-400 mb-6">
+                                <li>
+                                    <Link href="/impressum" className="hover:text-red-400 transition-colors">Impressum</Link>
+                                </li>
+                                <li>
+                                    <Link href="/datenschutz" className="hover:text-red-400 transition-colors">Datenschutz</Link>
+                                </li>
+                                <li>
+                                    <Link href="/agb" className="hover:text-red-400 transition-colors">AGB</Link>
+                                </li>
+                                <li>
+                                    <Link href="/cookie-einstellungen" className="hover:text-red-400 transition-colors">Cookie-Einstellungen</Link>
+                                </li>
+                            </ul>
+
+                            {/* QR Code */}
+                            <div>
+                                <h5 className="font-medium mb-2 text-sm">QR-Code</h5>
+                                <button
+                                    onClick={() => setShowQRCode(true)}
+                                    className="px-4 py-2 border border-gray-700 text-gray-400 hover:text-red-400 hover:border-red-600 transition-all duration-300"
+                                >
+                                    <QrCode className="w-4 h-4 mr-2 inline" />
+                                    QR-Code anzeigen
+                                </button>
+                            </div>
+
                         </div>
                     </div>
 
 
 
                     {/* SEO Links Section */}
-                    <AOSWrapper animation="fade-up" delay={350}>
-                        <div className="border-t border-gray-800 mt-12 pt-8 pb-4">
-                            <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-y-2 gap-x-1 text-xs text-gray-500 text-center md:text-left">
-                                <span className="font-medium text-gray-400 mr-2">Bundesländer:</span>
-                                <Link href="/webdesign-wien" className="hover:text-red-400 transition-colors">Wien</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-niederoesterreich" className="hover:text-red-400 transition-colors">Niederösterreich</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-oberoesterreich" className="hover:text-red-400 transition-colors">Oberösterreich</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-burgenland" className="hover:text-red-400 transition-colors">Burgenland</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-steiermark" className="hover:text-red-400 transition-colors">Steiermark</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-kaernten" className="hover:text-red-400 transition-colors">Kärnten</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-salzburg" className="hover:text-red-400 transition-colors">Salzburg</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-tirol" className="hover:text-red-400 transition-colors">Tirol</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-vorarlberg" className="hover:text-red-400 transition-colors">Vorarlberg</Link>
 
-                                <span className="w-full my-2 border-t border-gray-800/50"></span>
+                    <div className="border-t border-gray-800 mt-12 pt-8 pb-4">
+                        <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-y-2 gap-x-1 text-xs text-gray-500 text-center md:text-left">
+                            <span className="font-medium text-gray-400 mr-2">Bundesländer:</span>
+                            <Link href="/webdesign-wien" className="hover:text-red-400 transition-colors">Wien</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-niederoesterreich" className="hover:text-red-400 transition-colors">Niederösterreich</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-oberoesterreich" className="hover:text-red-400 transition-colors">Oberösterreich</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-burgenland" className="hover:text-red-400 transition-colors">Burgenland</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-steiermark" className="hover:text-red-400 transition-colors">Steiermark</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-kaernten" className="hover:text-red-400 transition-colors">Kärnten</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-salzburg" className="hover:text-red-400 transition-colors">Salzburg</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-tirol" className="hover:text-red-400 transition-colors">Tirol</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-vorarlberg" className="hover:text-red-400 transition-colors">Vorarlberg</Link>
 
-                                <span className="font-medium text-gray-400 mr-2">Städte:</span>
+                            <span className="w-full my-2 border-t border-gray-800/50"></span>
 
-                                {/* Cities */}
-                                <Link href="/webdesign-wien" className="hover:text-red-400 transition-colors">Wien</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-graz" className="hover:text-red-400 transition-colors">Graz</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-linz" className="hover:text-red-400 transition-colors">Linz</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-salzburg" className="hover:text-red-400 transition-colors">Salzburg</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-innsbruck" className="hover:text-red-400 transition-colors">Innsbruck</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-klagenfurt" className="hover:text-red-400 transition-colors">Klagenfurt</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-st-poelten" className="hover:text-red-400 transition-colors">St. Pölten</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-bregenz" className="hover:text-red-400 transition-colors">Bregenz</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/webdesign-eisenstadt" className="hover:text-red-400 transition-colors">Eisenstadt</Link>
+                            <span className="font-medium text-gray-400 mr-2">Städte:</span>
 
-                                {/* Separator */}
-                                <span className="hidden md:inline mx-3 text-gray-600">|</span>
-                                <span className="md:hidden w-full h-1"></span>
+                            {/* Cities */}
+                            <Link href="/webdesign-wien" className="hover:text-red-400 transition-colors">Wien</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-graz" className="hover:text-red-400 transition-colors">Graz</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-linz" className="hover:text-red-400 transition-colors">Linz</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-salzburg" className="hover:text-red-400 transition-colors">Salzburg</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-innsbruck" className="hover:text-red-400 transition-colors">Innsbruck</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-klagenfurt" className="hover:text-red-400 transition-colors">Klagenfurt</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-st-poelten" className="hover:text-red-400 transition-colors">St. Pölten</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-bregenz" className="hover:text-red-400 transition-colors">Bregenz</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/webdesign-eisenstadt" className="hover:text-red-400 transition-colors">Eisenstadt</Link>
 
-                                {/* SEO Keywords */}
-                                <Link href="/" className="hover:text-red-400 transition-colors">Website erstellen lassen</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/" className="hover:text-red-400 transition-colors">Homepage erstellen lassen</Link>
-                                <span className="hidden md:inline mx-1">·</span>
-                                <Link href="/tipps/was-kostet-eine-website" className="hover:text-red-400 transition-colors">Website Kosten</Link>
-                            </div>
+                            {/* Separator */}
+                            <span className="hidden md:inline mx-3 text-gray-600">|</span>
+                            <span className="md:hidden w-full h-1"></span>
+
+                            {/* SEO Keywords */}
+                            <Link href="/" className="hover:text-red-400 transition-colors">Website erstellen lassen</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/" className="hover:text-red-400 transition-colors">Homepage erstellen lassen</Link>
+                            <span className="hidden md:inline mx-1">·</span>
+                            <Link href="/tipps/was-kostet-eine-website" className="hover:text-red-400 transition-colors">Website Kosten</Link>
                         </div>
-                    </AOSWrapper>
+                    </div>
 
                     {/* Bottom Bar */}
                     <AOSWrapper animation="fade-up" delay={400}>

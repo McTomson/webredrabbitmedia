@@ -33,7 +33,7 @@ const RegionalHero = ({ onFormOpen, data, content }: RegionalHeroProps) => {
             .replace('ö', 'oe')
             .replace('ä', 'ae')
             .replace('ß', 'ss')
-            .replace(' ', '-');
+            .replace(/ /g, '-');
         return `/webdesign-${slug}`;
     };
 
@@ -76,7 +76,7 @@ const RegionalHero = ({ onFormOpen, data, content }: RegionalHeroProps) => {
                     src={content.heroImage || "/images/dashboard.webp"}
                     alt={content.heroImageAlt || `Red Rabbit Media Webdesign ${data.region}`}
                     fill
-                    className="w-full h-full object-cover object-bottom"
+                    className="w-full h-full object-cover object-top"
                     priority
                 />
                 {/* Subtle dark gradient for better text readability */}

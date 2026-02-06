@@ -13,5 +13,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]);
 
     // Combine all entries
-    return [...staticPages, ...branchenPages, ...blogPosts];
+    return [
+        ...staticPages,
+        ...branchenPages,
+        ...blogPosts,
+        {
+            url: 'https://web.redrabbit.media/feed.xml',
+            lastModified: new Date(),
+            changeFrequency: 'daily',
+            priority: 0.8,
+        }
+    ];
 }

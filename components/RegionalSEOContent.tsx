@@ -19,20 +19,32 @@ interface RegionalSEOContentProps {
 }
 
 const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
+    // Helper to get correct hero image based on content
+    const heroImage = content.heroImage
+        ? `https://web.redrabbit.media${content.heroImage}`
+        : "https://web.redrabbit.media/images/og-image.jpg";
+
     // Dynamic Product Schema for the Region
     const productSchema = {
         "@context": "https://schema.org",
         "@type": "Product",
         "@id": "https://web.redrabbit.media/#premium-website-package",
-        "name": `Premium Webdesign ${data.region}`, // e.g. "Premium Webdesign Wien"
+        "name": `Premium Webdesign ${data.region}`,
         "description": `Professionelles Webdesign für ${data.region}. ${content.hook} für lokale Unternehmen. Ab 790€.`,
-        "image": data.region === "Oberösterreich"
-            ? "https://web.redrabbit.media/images/ooe/hero/webdesign-oberoesterreich-see-schiff-v2.png"
-            : data.region === "Niederösterreich"
-                ? "https://web.redrabbit.media/images/noe/hero/webdesign-niederoesterreich-hero.png"
-                : data.region === "Kärnten"
-                    ? "https://web.redrabbit.media/images/webdesign-kaernten-woerthersee.png"
-                    : "https://web.redrabbit.media/images/og-image.jpg",
+        "image": {
+            "@type": "ImageObject",
+            "url": heroImage,
+            "contentLocation": {
+                "@type": "Place",
+                "name": data.mainCity,
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressRegion": data.region,
+                    "addressCountry": "AT"
+                }
+            },
+            "description": content.heroImageAlt || `Webdesign in ${data.region}`
+        },
         "brand": {
             "@id": "https://web.redrabbit.media/#organization"
         },
@@ -46,22 +58,19 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
             "seller": {
                 "@id": "https://web.redrabbit.media/#organization"
             },
-            "areaServed": data.region === "Oberösterreich" ? [
-                { "@type": "City", "name": "Linz" },
-                { "@type": "City", "name": "Wels" },
-                { "@type": "City", "name": "Steyr" },
-                { "@type": "Place", "name": "Salzkammergut" },
-                { "@type": "Place", "name": "Innviertel" },
-                { "@type": "Place", "name": "Mühlviertel" }
-            ] : {
+            "areaServed": {
                 "@type": "AdministrativeArea",
-                "name": data.region
+                "name": data.region,
+                "containsPlace": data.cities.map(city => ({
+                    "@type": "City",
+                    "name": city
+                }))
             }
         },
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "4.9",
-            "reviewCount": data.region === "Oberösterreich" ? "156" : "315",
+            "reviewCount": String(content.projectCount || "150"),
             "bestRating": "5",
             "worstRating": "1"
         }

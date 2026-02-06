@@ -19,40 +19,28 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
     // Regional FAQ Data
     const genericFaqData = [
         {
-            question: `Was kostet eine professionelle Website?`,
-            answer: `Eine professionelle Website bieten wir ab 790 Euro netto an (inkl. 4 Seiten) - egal ob Sie in ${data.mainCity} oder einer anderen Stadt in ${data.region} ansässig sind. Fixpreis-Paket für Transparenz. Alle Leistungen inklusive: Design, DSGVO, SEO, Support. Weitere Seiten oder Funktionen sind jederzeit möglich.`
+            question: "Wie läuft das Ganze ab?",
+            answer: "Ganz unkompliziert. Wir sprechen kurz über Ihre Wünsche, dann erstellen wir einen ersten Entwurf. Den bekommen Sie nach einer Woche zugeschickt. Wenn er Ihnen gefällt, finalisieren wir die Seite. Wenn nicht, zahlen Sie nichts."
         },
         {
-            question: `Muss ich vorher bezahlen?`,
-            answer: `Nein, absolut kein Risiko. Sie zahlen erst, wenn Ihnen der Website-Entwurf gefällt. Wenn er Ihnen nicht zusagt, zahlen Sie nichts. Dieses Konzept macht unser Angebot komplett risikofrei für Sie - egal wo in ${data.region}. Erst Ergebnis sehen, dann entscheiden.`
+            question: "Muss ich im Voraus etwas zahlen?",
+            answer: "Nein. Sie zahlen erst, wenn das Ergebnis für Sie passt. Wir wollen, dass Sie zufrieden sind, nicht dass Sie die Katze im Sack kaufen."
         },
         {
-            question: `Wie lange dauert es, bis meine Website fertig ist?`,
-            answer: `Sie erhalten innerhalb von 7 Tagen den ersten Website-Entwurf. Nach Ihrem Feedback und eventuellen Anpassungen wird die finale Version ausgeliefert. Schnelle Umsetzung ohne lange Wartezeiten - auch für Kunden aus ${data.region}. In der Regel ist alles innerhalb von 2 Wochen komplett fertig.`
+            question: "Kann ich den Auftrag stornieren, wenn mir der Entwurf nicht gefällt?",
+            answer: "Ja. Das ist unser Risiko, nicht Ihres. Wenn der Design-Vorschlag nicht Ihren Vorstellungen entspricht, sind Sie zu nichts verpflichtet."
         },
         {
-            question: `Arbeiten Sie auch vor Ort oder nur online?`,
-            answer: `Wir arbeiten mit Unternehmen in ganz ${data.region}. Ob ${data.cities[0]}, ${data.cities[1]}, ${data.cities[2]} oder ${data.cities[3]} - wir sind für Sie da. Die Kommunikation läuft digital, persönliche Treffen sind bei Bedarf möglich. So sparen Sie Zeit und Kosten.`
+            question: "Warum Red Rabbit Media und keine andere Agentur?",
+            answer: "Wir sind schneller und technologisch moderner als die meisten klassischen Agenturen. Wir nutzen keine veralteten Baukästen, sondern programmieren individuell (Next.js). Das merken Sie an der Geschwindigkeit und Google an der Qualität."
         },
         {
-            question: `Ist die Website rechtssicher und DSGVO-konform?`,
-            answer: `Ja, alle Websites werden standardmäßig DSGVO-konform nach österreichischem Recht ausgeliefert. Das beinhaltet Cookie-Banner, Datenschutzerklärung, Impressum und SSL-Verschlüsselung - alles für einen rechtssicheren Webauftritt in ${data.region}. Sie können sofort online gehen, ohne rechtliche Bedenken.`
+            question: "Sind die Websites auch für Google optimiert (SEO)?",
+            answer: "Absolut. Geschwindigkeit und saubere Technik sind die wichtigsten Faktoren für Google heute. Da sind unsere Seiten meist weit vor der Konkurrenz. Die technische Basis für gute Rankings ist also perfekt gelegt."
         },
         {
-            question: `Warum sollte ich bei Ihnen eine Website erstellen lassen?`,
-            answer: `Wir kennen die regionalen Besonderheiten in ${data.region} und erstellen Websites, die perfekt auf Ihre Zielgruppe abgestimmt sind. Lokale SEO-Optimierung inklusive. Kein Risiko, faire Preise, schnelle Umsetzung - speziell für ${data.cities[0]} und Umgebung. Über 315 zufriedene Kunden sprechen für uns.`
-        },
-        {
-            question: `Kann ich meine Website später selbst bearbeiten?`,
-            answer: `Ja, wenn Sie im Auftrag angeben, dass wir einen Admin-Bereich für Sie programmieren. Die Websites werden alle für Sie von Grund auf komplett programmiert - keine Templates. So haben Sie volle Kontrolle über Ihre Inhalte in ${data.region}. Individuelle Lösungen für Ihre Bedürfnisse.`
-        },
-        {
-            question: `Bekomme ich auch Unterstützung bei Texten und Bildern?`,
-            answer: `Ja, gerne unterstützen wir Sie auch mit Texten und Bildern. Wir kennen die Anforderungen in ${data.region} und erstellen professionelle Inhalte, die Ihre Zielgruppe ansprechen. So wird Ihre Website komplett fertig - ready to go. Alles aus einer Hand für Ihr Unternehmen.`
-        },
-        {
-            question: `Was passiert nach den 6 Monaten kostenlosem Support?`,
-            answer: `Nach den 6 Monaten haben Sie die Möglichkeit, einen Service-Vertrag abzuschließen. Alternativ können wir Ihnen auch punktuell helfen, das müssten wir dann extra verrechnen. Sie entscheiden flexibel, was für Ihr Unternehmen in ${data.region} am besten passt. Keine versteckten Kosten.`
+            question: "Was kostet mich die Website am Ende?",
+            answer: "Das Basispaket kostet 790 € netto. Das ist ein Fixpreis. Domain & Hosting kosten extra (ca. 10-15€ im Monat bei einem Anbieter Ihrer Wahl), aber die Erstellung der Seite bleibt beim vereinbarten Preis."
         }
     ];
 
@@ -86,24 +74,28 @@ const RegionalFAQ = ({ data }: RegionalFAQProps) => {
 
     const wienFaqData = [
         {
-            question: "Was kostet eine professionelle Website für mein Wiener Unternehmen?",
-            answer: "Wir bieten Premium-Webdesign ab einem Fixpreis von 790 € netto an (inkl. 4 Seiten). In Wien profitieren Unternehmen von unserer schnellen, volldigitalen Arbeitsweise – transparent, inkl. SEO-Basics und DSGVO-Konformität. Größere Projekte kalkulieren wir individuell und fair."
+            question: "Wie läuft das Ganze ab?",
+            answer: "Ganz entspannt. Wir telefonieren kurz oder machen einen Video-Call, um zu verstehen, was Sie brauchen. Innerhalb von 7 Tagen bekommen Sie den ersten fertigen Design-Entwurf. Erst wenn Sie sagen 'Ja, das ist es', machen wir den Rest fertig."
         },
         {
-            question: "Muss ich für ein Erstgespräch in Ihr Büro kommen?",
-            answer: "Nein, wir verzichten bewusst auf physische Bürokratie. Die Kommunikation erfolgt effizient via Video-Call, Telefon und E-Mail. Das spart Ihnen in Wien wertvolle Zeit und ermöglicht uns die attraktiven Fixpreise."
+            question: "Muss ich im Voraus etwas zahlen?",
+            answer: "Nein. Wir gehen in Vorleistung. Sie zahlen erst, wenn Sie mit dem Design zu 100% zufrieden sind. Kein Risiko, keine Katze im Sack."
         },
         {
-            question: "Wie schnell ist meine Website in Wien online?",
-            answer: "Zeit ist in der Hauptstadt kritisch. Meist erhalten Sie den ersten Entwurf innerhalb von 7 Tagen. Nach Ihrem Feedback ist die Seite oft in weniger als 2 Wochen komplett fertig und für Google optimiert."
+            question: "Kann ich auch 'Nein' sagen, wenn mir der Entwurf nicht gefällt?",
+            answer: "Ja, absolut. Wenn Ihnen unser Vorschlag nicht gefällt und wir keine gemeinsame Lösung finden, müssen Sie nichts bezahlen. Wir trennen uns dann einfach wieder. Das kommt aber so gut wie nie vor."
         },
         {
-            question: "Sind die Websites für Wiener Startups und Kanzleien geeignet?",
-            answer: "Absolut. Wir bauen keine Standard-Templates, sondern programmieren individuell. Ob modernes Startup-Design oder seriöser Auftritt für eine Kanzlei oder Praxis – wir treffen den richtigen Ton für Ihre Zielgruppe."
+            question: "Warum sollte ich bei euch buchen und nicht woanders?",
+            answer: "Weil wir keine leeren Versprechungen machen. Wir sind schnell (Wien-Tempo), wir sind direkt und wir liefern Premium-Qualität zum Fixpreis, wo andere Agenturen oft das Dreifache verlangen. Und: Wir programmieren alles selbst (Next.js), was Ihre Seite extrem schnell und sicher macht."
         },
         {
-            question: "Ist eine SEO-Optimierung für Wien inkludiert?",
-            answer: "Ja, technisches SEO ist bei uns Standard. Wir strukturieren Ihre Seite so, dass sie in den Wiener Bezirken optimal gefunden wird. Zudem bereiten wir alles für die KI-Suche (ChatGPT & Co.) vor."
+            question: "Sind eure Websites auch schnell und SEO-optimiert?",
+            answer: "Ja, extrem schnell. Da wir keinen Baukasten (wie Wordpress oder Wix) nutzen, sondern moderne Technologie (Next.js), laden unsere Seiten blitzschnell. Google liebt das – und technische SEO-Optimierung für Wien ist bei uns immer standardmäßig dabei."
+        },
+        {
+            question: "Was kostet das wirklich? Gibt es versteckte Kosten?",
+            answer: "Es bleibt bei ab 790 € netto für das Standard-Paket (4 Seiten). Das ist ein Fixpreis. Wenn Sie später spezielle Extra-Wünsche haben, sagen wir Ihnen vorher genau, was das kostet. Keine Überraschungen."
         }
     ];
 

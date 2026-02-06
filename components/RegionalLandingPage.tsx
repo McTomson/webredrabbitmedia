@@ -132,13 +132,15 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                             data.region === "Oberösterreich" ? "Ihr Weg zu Ihrer Website" :
                                 data.region === "Niederösterreich" ? "So entsteht Ihre Webseite" :
                                     data.region === "Kärnten" ? "Unser Weg zum Erfolg" :
-                                        data.region === "Steiermark" ? "Der direkte Weg zum Erfolg" : undefined
+                                        data.region === "Steiermark" ? "Der direkte Weg zum Erfolg" :
+                                            data.region === "Wien" ? "Ihr Weg zur Wiener Website" : undefined
                         }
                         subline={
                             data.region === "Oberösterreich" ? "Professionell. Regional. Unkompliziert. In 3 Schritten online." :
                                 data.region === "Niederösterreich" ? "Transparente Schritte. Klare Ergebnisse. Von der Idee bis zum Go-Live." :
                                     data.region === "Kärnten" ? "Unkompliziert, transparent und auf Augenhöhe. So arbeiten wir." :
-                                        data.region === "Steiermark" ? "Wir verzichten auf unnötige Schleifen. Von der Anfrage bis zum Go-Live in Bestzeit." : undefined
+                                        data.region === "Steiermark" ? "Wir verzichten auf unnötige Schleifen. Von der Anfrage bis zum Go-Live in Bestzeit." :
+                                            data.region === "Wien" ? "Schnell, digital und effizient. Wir verschwenden keine Zeit." : undefined
                         }
                     />
                 );
@@ -161,7 +163,8 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                             data.region === "Oberösterreich" ? "Ihr Partner in Oberösterreich" :
                                 data.region === "Niederösterreich" ? "Die Werbeagentur für Niederösterreich" :
                                     data.region === "Kärnten" ? "Ihre Webagentur für Kärnten" :
-                                        data.region === "Steiermark" ? "Ihre Webagentur für die Steiermark" : undefined
+                                        data.region === "Steiermark" ? "Ihre Webagentur für die Steiermark" :
+                                            data.region === "Wien" ? "Ihre Webdesign Agentur in Wien" : undefined
                         }
                         text={content.aboutSecondaryText}
                         features={content.aboutFeatures}
@@ -201,13 +204,15 @@ export default function RegionalLandingPage({ data, content }: RegionalLandingPa
                             data.region === "Oberösterreich" ? "Bereit für Ihren Erfolg in OÖ?" :
                                 data.region === "Niederösterreich" ? "Bereit für Wachstum?" :
                                     data.region === "Kärnten" ? "Kontaktieren Sie uns" :
-                                        data.region === "Steiermark" ? "Starten wir Ihr Projekt in der Steiermark" : undefined
+                                        data.region === "Steiermark" ? "Starten wir Ihr Projekt in der Steiermark" :
+                                            data.region === "Wien" ? "Kostenloses Erstgespräch in Wien" : undefined
                         }
                         subline={
                             data.region === "Oberösterreich" ? "Starten Sie jetzt mit Ihrer Website für Linz, Wels & Steyr." :
                                 data.region === "Niederösterreich" ? "Lassen Sie uns gemeinsam Ihren digitalen Fußabdruck in Niederösterreich vergrößern." :
                                     data.region === "Kärnten" ? "Wir freuen uns auf ein persönliches Gespräch über Ihr Projekt." :
-                                        data.region === "Steiermark" ? "Lassen Sie uns unverbindlich über Ihre neue Website sprechen. Wir sparen Ihnen Zeit und Nerven." : undefined
+                                        data.region === "Steiermark" ? "Lassen Sie uns unverbindlich über Ihre neue Website sprechen. Wir sparen Ihnen Zeit und Nerven." :
+                                            data.region === "Wien" ? "Lassen Sie uns bei einem Kaffee oder Call über Ihre Ziele sprechen. Unverbindlich & ehrlich." : undefined
                         }
                     />
                 );

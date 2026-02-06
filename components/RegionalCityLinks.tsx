@@ -18,7 +18,7 @@ const RegionalCityLinks = ({ data }: RegionalCityLinksProps) => {
             .replace('ö', 'oe')
             .replace('ä', 'ae')
             .replace('ß', 'ss')
-            .replace(' ', '-');
+            .replace(/ /g, '-');
         return `/webdesign-${slug}`;
     };
 

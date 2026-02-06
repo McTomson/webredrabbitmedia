@@ -25,34 +25,38 @@ export const regionalContent: Record<string, RegionalContent> = {
     "Wien": {
         hook: "Speed",
         introNarrative: "In einer Metropole, die niemals stillsteht, ist Zeit die wertvollste Währung. Wir entwickeln Webauftritte für Wiener Unternehmen, die sofort überzeugen – ohne langwierige Meetings, dafür mit maximalen Ergebnissen.",
-        economicContext: "Wien ist der Motor der österreichischen Wirtschaft. Vom innovativen Start-up in den Außenbezirken bis zur etablierten Kanzlei im ersten Bezirk – wir liefern Webdesign, das dieser Dynamik gerecht wird. Wir verstehen die urbanen Anforderungen an Sichtbarkeit und digitale Professionalität.",
+        economicContext: "Wien ist nicht nur lebenswerteste Stadt der Welt, sondern auch ihr digitaler Herzschlag. Vom traditionellen Kaffeehaus im 1. Bezirk bis zum Fintech am Wienerberg – wir liefern Webdesign, das die Wiener Seele versteht und technisch weltweit mithalten kann.",
         landmarks: ["Stephansplatz", "Donau City", "MuseumsQuartier", "Naschmarkt"],
         localProof: "Vom ersten Bezirk bis nach Aspern – wir digitalisieren die Hauptstadt.",
         projectCount: 187,
         heroHeadline: "Digital. <br /><span class=\"text-red-500\">Wien.</span>",
-        heroSubline: "Blitzschnelles Webdesign für die Hauptstadt. Keine Anfahrt, keine Parkplatzsuche – 100% digitaler Erfolg.",
+        heroSubline: "Ihr Webdesign Partner vor Ort. Wir bringen Wiener Unternehmen groß raus – mit High-End Technik und lokalem Verständnis.",
         heroImage: "/images/dashboard.webp",
-        heroImageAlt: "Digitales Webdesign Wien - Modernes Dashboard Design",
-        introHeadline: "Ihre Werbeagentur für Webdesign in Wien",
+        heroImageAlt: "Webdesign Wien - High Performance Webentwicklung",
+        introHeadline: "Exklusives Webdesign für Wien",
         introText: `
             <p class="mb-6">
                 Wien ist international, schnell und anspruchsvoll. Ihre Website sollte das widerspiegeln. Wir unterstützen Dienstleister, Agenturen und Betriebe in ganz Wien dabei, ihre digitale Visitenkarte in eine echte Verkaufsmaschine zu verwandeln.
             </p>
-            <p>
+            <p class="mb-8">
                 Ob Sie im <strong>1. Bezirk</strong>, in <strong>Donaustadt</strong> oder <strong>Meidling</strong> sitzen: Wir bieten Ihnen professionelles Webdesign, das genau auf die Wiener Zielgruppe zugeschnitten ist. Mit Fokus auf mobile Performance und SEO-Exzellenz.
             </p>
+            <div class="my-10">
+                <img src="/images/webdesign-wien-isometric.png" alt="High-Tech Webentwicklung Wien Datenströme" class="rounded-xl shadow-lg w-full h-auto border border-gray-100" loading="lazy" />
+                <p class="text-sm text-gray-500 mt-2 text-center italic">Modernste Web-Technologie trifft auf Wiener Qualität.</p>
+            </div>
         `,
         aboutHeadline: "Urbaner Vorsprung durch High-End Programmierung",
         aboutText: `
             <p class="mb-6">
-                In einer Stadt mit so viel Wettbewerb wie Wien reicht ein Standard-Design nicht aus. Wir setzen auf modernste Technologien, um Ihre Ladezeiten zu minimieren und Ihre Rankings zu maximieren.
+                In einer Stadt mit so viel Wettbewerb wie Wien reicht ein Standard-Design nicht aus. Wer am Graben oder auf der Mariahilfer Straße bestehen will, braucht Exzellenz. Wir setzen auf modernste Technologien (Next.js), um Ihre Ladezeiten zu minimieren und Ihre Rankings zu maximieren.
             </p>
             <p>
-                Wir sind Ihr Partner für <strong>Webdesign Wien</strong>. Wir begleiten Sie von der ersten Idee bis zum Go-Live und sorgen dafür, dass Sie bei Google dort stehen, wo Ihre Kunden suchen: Ganz oben.
+                Wir sind Ihr Partner für <strong>Webdesign Wien</strong>. Wir begleiten Sie von der ersten Idee bis zum Go-Live und sorgen dafür, dass Sie bei Google dort stehen, wo Ihre Kunden suchen: Ganz oben - egal ob lokal in Simmering oder international.
             </p>
         `,
         aboutSecondaryText: `
-            Wien verlangt nach Exzellenz. Seit 2019 entwickeln wir für Wiener Unternehmen Webauftritte, die technisch und optisch Maßstäbe setzen. Wir glauben an klare Prozesse, faire Fixpreise und Ergebnisse, die sich in Zahlen messen lassen.
+            Wien verlangt nach Exzellenz. Seit 2019 entwickeln wir für Wiener Unternehmen Webauftritte, die technisch und optisch Maßstäbe setzen. Wir glauben an klare Prozesse, faire Fixpreise und Ergebnisse, die sich in Zahlen messen lassen. Kein "Schau ma mal", sondern "Passt schon" - im besten Sinne.
         `,
         strategyItems: [
             {
@@ -71,7 +75,7 @@ export const regionalContent: Record<string, RegionalContent> = {
         seoFeatures: [
             {
                 title: "Local SEO Wien",
-                text: "Gezielte Sichtbarkeit in den relevanten Bezirken und für spezifische Wiener Suchbegriffe."
+                text: "Gezielte Sichtbarkeit in den relevanten Bezirken (1010 bis 1230) und für spezifische Wiener Suchbegriffe."
             },
             {
                 title: "High-Speed Hosting",
@@ -85,7 +89,7 @@ export const regionalContent: Record<string, RegionalContent> = {
         aboutFeatures: [
             {
                 title: "Full-Service Digital",
-                text: "Von der Strategie bis zur fertigen Website – alles aus einer Hand."
+                text: "Von der Strategie bis zur fertigen Website – alles aus einer Hand, direkt aus Wien."
             },
             {
                 title: "Transparente Fixpreise",
@@ -93,7 +97,7 @@ export const regionalContent: Record<string, RegionalContent> = {
             },
             {
                 title: "Persönlicher Support",
-                text: "Wir sind für unsere Wiener Kunden immer erreichbar – digital und direkt."
+                text: "Wir sind für unsere Wiener Kunden immer erreichbar – gerne auch auf einen Kaffee im 6. Bezirk."
             }
         ],
         sectionOrder: ["intro", "process", "seo", "portfolio", "branchen", "about", "pricing", "faq", "contact"]
@@ -105,8 +109,8 @@ export const regionalContent: Record<string, RegionalContent> = {
         landmarks: ["Ars Electronica Center", "Pöstlingberg", "Traunsee", "Kulturhauptstadt Bad Ischl"],
         localProof: "Von Linz bis Steyr, vom Innviertel bis ins Salzkammergut – Qualität, die bleibt.",
         projectCount: 156,
-        heroImage: "/images/ooe/hero/webdesign-oberoesterreich-see-schiff-v2.png",
-        heroImageAlt: "Webdesign Oberösterreich - See mit Boot im Nebel",
+        heroImage: "/images/dashboard.webp",
+        heroImageAlt: "Webdesign Oberösterreich - High Performance Webentwicklung",
         sectionOrder: ["intro", "process", "portfolio", "branchen", "about", "testimonials", "pricing", "faq", "contact"]
     },
     "Niederösterreich": {
@@ -281,8 +285,8 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 179,
         heroHeadline: "Innovation. <br /><span class=\"text-red-500\">Steiermark.</span>",
         heroSubline: "Blitzschnelles Webdesign für steirische Betriebe. Ohne leere Kilometer, direkt zum Ergebnis.",
-        heroImage: "/images/webdesign-steiermark-hero.jpg",
-        heroImageAlt: "Webdesign Steiermark - Malerische Hügellandschaft im Sonnenaufgang",
+        heroImage: "/images/dashboard.webp",
+        heroImageAlt: "Webdesign Steiermark - High Performance Webentwicklung",
         introHeadline: "Ihr Partner für Webdesign in der Steiermark",
         introText: `
             <p class="mb-6">
@@ -360,8 +364,8 @@ export const regionalContent: Record<string, RegionalContent> = {
         projectCount: 142,
         heroHeadline: "Sonnenseite. <br /><span class=\"text-red-500\">Kärnten.</span>",
         heroSubline: "Hochwertiges Webdesign für Kärntner Betriebe. Wir machen Ihren Erfolg digital sichtbar.",
-        heroImage: "/images/webdesign-kaernten-woerthersee.png",
-        heroImageAlt: "Webdesign Kärnten - Wörthersee am Morgen mit Schiff",
+        heroImage: "/images/dashboard.webp",
+        heroImageAlt: "Webdesign Kärnten - High Performance Webentwicklung",
         introHeadline: "Webdesign Agentur für Kärnten",
         introText: `
             <p class="mb-6">

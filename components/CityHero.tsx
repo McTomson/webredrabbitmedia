@@ -25,10 +25,12 @@ const CityHero = ({ onFormOpen, city }: CityHeroProps) => {
         return () => window.removeEventListener('mousemove', handleMouseMove);
     }, []);
 
-    // Placeholder for city-specific hero images - if not available, use dashboard
-    const heroImage = city.name === "Wien" ? "/images/dashboard.webp" :
-        city.name === "Salzburg" ? "/images/webdesign-salzburg-hero.png" :
-            "/images/dashboard.webp";
+    // Use city-specific hero image if available, otherwise fallback to dashboard
+    const heroImage = city.heroImage || (
+        city.name === "Wien" ? "/images/dashboard.webp" :
+            city.name === "Salzburg" ? "/images/webdesign-salzburg-hero.png" :
+                "/images/dashboard.webp"
+    );
 
     return (
         <section className="h-screen bg-slate-900 relative overflow-hidden flex flex-col justify-center">
