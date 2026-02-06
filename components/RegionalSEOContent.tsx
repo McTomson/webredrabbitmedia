@@ -24,6 +24,44 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
         ? `https://web.redrabbit.media${content.heroImage}`
         : "https://web.redrabbit.media/images/og-image.jpg";
 
+    // Mobile Webdesign Image (identisch zur Startseite)
+    const localBusinessSchema = {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": "https://web.redrabbit.media/#organization",
+        "name": "Red Rabbit Media",
+        "url": "https://web.redrabbit.media",
+        "logo": "https://web.redrabbit.media/logo.png",
+        "image": "https://web.redrabbit.media/images/og-image.jpg",
+        "email": "office@redrabbit.media",
+        "telephone": "+43 676 9000955",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Grabnergasse 8",
+            "addressLocality": "Wien",
+            "postalCode": "1060",
+            "addressCountry": "AT"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 48.1945,
+            "longitude": 16.3533
+        },
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday"
+            ],
+            "opens": "09:00",
+            "closes": "18:00"
+        },
+        "priceRange": "ab 790€"
+    };
+
     // Dynamic Product Schema for the Region
     const productSchema = {
         "@context": "https://schema.org",
@@ -46,7 +84,8 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
             "description": content.heroImageAlt || `Webdesign in ${data.region}`
         },
         "brand": {
-            "@id": "https://web.redrabbit.media/#organization"
+            "@type": "Brand",
+            "name": "Red Rabbit Media"
         },
         "offers": {
             "@type": "AggregateOffer",
@@ -79,6 +118,10 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
     return (
         <>
             {/* JSON-LD Schema Injection */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+            />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
