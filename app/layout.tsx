@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     'dns-prefetch': 'https://www.googletagmanager.com',
   },
   verification: {
-    google: 'google105d480748b226f1',
+    google: 'Z8sJwBHULpdZo5gD7gglo4G_tmQHTKYeAuF2F8jX8cM',
   }
 };
 
