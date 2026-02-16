@@ -69,6 +69,9 @@ export const metadata: Metadata = {
   // Resource Hints
   other: {
     'dns-prefetch': 'https://www.googletagmanager.com',
+  },
+  verification: {
+    google: 'google105d480748b226f1',
   }
 };
 
