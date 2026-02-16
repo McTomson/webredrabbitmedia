@@ -20,7 +20,7 @@
     "lru-cache": "^10.4.3",
     "lucide-react": "^0.469.0",
     "next": "^15.5.9",
-    "next-mdx-remote": "^5.0.0",
+    "next-mdx-remote": "^6.0.0",
     "nodemailer": "^6.9.16",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
