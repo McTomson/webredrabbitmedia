@@ -34,6 +34,10 @@ Update this file at the end of every session when a debugging lesson, setup issu
   - `RegionalSEOContent` had the same manual offscreen positioning issue as `SEOContent`; rely on `sr-only`.
 - ESLint cleanup on 2026-06-02 removed unused imports and changed unused `catch (_err)` to `catch`; `app/[slug]/cluster-content.ts` keeps a file-local unused-vars disable because its generated/template content intentionally includes unused placeholder parameters.
 - `npm view next version` returned `16.2.7` on 2026-06-02. The remaining audit finding still reports vulnerable `next/postcss` with no fix available, so do not churn dependencies until a safe Next release exists.
+- Vercel deployment lesson from 2026-06-02:
+  - A fresh checkout without `.vercel/project.json` can create a new Vercel project during `vercel --prod --yes` instead of deploying to the existing custom-domain project.
+  - Add `.vercelignore` to avoid uploading local caches/logs/build output; this reduced the upload from 399.7 MB to 194.4 MB and allowed the second deploy to complete.
+  - Do not alias `web.redrabbit.media` to a newly created Vercel project until the existing production environment variables are confirmed or migrated.
 
 ## Session-End Checklist
 
