@@ -1,0 +1,13 @@
+.git
+.next
+.vercel
+node_modules
+coverage
+out
+build
+
+*.log
+server.log
+server_debug.log
+server_verification.log
+build_output.txt
