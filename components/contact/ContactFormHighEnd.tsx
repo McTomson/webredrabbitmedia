@@ -92,7 +92,7 @@ export default function ContactFormHighEnd() {
                 service: "Webdesign",
                 message: ""
             });
-        } catch (_err) {
+        } catch {
             setFormError("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.");
         } finally {
             setIsSubmitting(false);

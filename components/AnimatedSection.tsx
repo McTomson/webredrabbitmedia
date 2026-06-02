@@ -42,10 +42,11 @@ export const AOSWrapper = ({
     duration = 800,
     className = ""
 }: AOSWrapperProps) => {
+    const safeAnimation = animation === "fade-left" || animation === "fade-right" ? "fade-up" : animation;
 
     return (
         <div
-            data-aos={animation}
+            data-aos={safeAnimation}
             data-aos-delay={delay}
             data-aos-duration={duration}
             className={className}

@@ -140,8 +140,8 @@ const Hero = () => {
                     {/* Right Side - Main Content */}
                     <div className="space-y-6 lg:space-y-8 text-center lg:text-left">
                         <motion.div
-                            initial={{ opacity: 0, x: 50 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 24 }}
+                            animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, ease: "easeOut" }}
                             className="relative"
                         >

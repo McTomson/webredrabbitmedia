@@ -268,15 +268,14 @@ const About = ({ headline, text, testimonialsHeadline, features = defaultFeature
                                     <div
                                         className="flex transition-transform duration-300 ease-out"
                                         style={{
-                                            transform: `translateX(-${currentSlide * (100 / 3)}%)`,
-                                            width: `${displayTestimonials.length * 100}%`
+                                            transform: `translateX(-${currentSlide * 100}%)`,
+                                            width: "100%"
                                         }}
                                     >
                                         {displayTestimonials.map((testimonial, index) => (
                                             <div
                                                 key={index}
                                                 className="w-full flex-shrink-0 px-2"
-                                                style={{ width: `${100 / 3}%` }}
                                             >
                                                 <div className="group relative bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 hover:border-red-300 overflow-hidden">
                                                     {/* Subtle background pattern */}

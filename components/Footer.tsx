@@ -119,7 +119,7 @@ const Footer = () => {
                     {/* SEO Links Section */}
 
                     <div className="border-t border-gray-800 mt-12 pt-8 pb-4">
-                        <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-y-2 gap-x-1 text-xs text-gray-500 text-center md:text-left">
+                        <div className="flex max-w-full flex-col md:flex-row flex-wrap items-center justify-center gap-y-2 gap-x-1 overflow-hidden break-words text-xs text-gray-500 text-center md:text-left">
                             <span className="font-medium text-gray-400 mr-2">Bundesländer:</span>
                             <Link href="/webdesign-wien" className="hover:text-red-400 transition-colors">Wien</Link>
                             <span className="hidden md:inline mx-1">·</span>
@@ -139,7 +139,7 @@ const Footer = () => {
                             <span className="hidden md:inline mx-1">·</span>
                             <Link href="/webdesign-vorarlberg" className="hover:text-red-400 transition-colors">Vorarlberg</Link>
 
-                            <span className="w-full my-2 border-t border-gray-800/50"></span>
+                            <span className="w-full min-w-0 my-2 border-t border-gray-800/50"></span>
 
                             <span className="font-medium text-gray-400 mr-2">Städte:</span>
 
@@ -164,7 +164,7 @@ const Footer = () => {
 
                             {/* Separator */}
                             <span className="hidden md:inline mx-3 text-gray-600">|</span>
-                            <span className="md:hidden w-full h-1"></span>
+                            <span className="md:hidden w-full min-w-0 h-1"></span>
 
                             {/* SEO Keywords */}
                             <Link href="/" className="hover:text-red-400 transition-colors">Website erstellen lassen</Link>

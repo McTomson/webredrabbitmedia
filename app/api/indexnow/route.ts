@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { submitUrlToIndexNow, submitBatchToIndexNow } from '@/lib/indexnow';
+import { isWebRedRabbitUrl, requireAdminToken } from '@/lib/api-security';
 
 /**
  * IndexNow API Route
@@ -17,6 +18,11 @@ import { submitUrlToIndexNow, submitBatchToIndexNow } from '@/lib/indexnow';
  */
 export async function POST(request: NextRequest) {
     try {
+        const authError = requireAdminToken(request);
+        if (authError) {
+            return authError;
+        }
+
         const body = await request.json();
         const { url, urls } = body;
 
@@ -37,9 +43,9 @@ export async function POST(request: NextRequest) {
 
         // Submit single URL
         if (url) {
-            if (typeof url !== 'string' || !url.startsWith('https://')) {
+            if (!isWebRedRabbitUrl(url)) {
                 return NextResponse.json(
-                    { error: 'Invalid URL format. Must be a valid HTTPS URL' },
+                    { error: 'Invalid URL format. Must be a web.redrabbit.media HTTPS URL' },
                     { status: 400 }
                 );
             }
@@ -71,7 +77,7 @@ export async function POST(request: NextRequest) {
 
             // Validate all URLs
             for (const u of urls) {
-                if (typeof u !== 'string' || !u.startsWith('https://')) {
+                if (!isWebRedRabbitUrl(u)) {
                     return NextResponse.json(
                         { error: `Invalid URL in batch: ${u}` },
                         { status: 400 }
@@ -104,9 +110,11 @@ export async function POST(request: NextRequest) {
 // GET endpoint to check if IndexNow is configured
 export async function GET() {
     const apiKey = process.env.INDEXNOW_API_KEY;
+    const hasAdminToken = Boolean(process.env.ADMIN_API_TOKEN || process.env.INDEXING_API_TOKEN);
 
     return NextResponse.json({
         configured: !!apiKey,
+        protected: hasAdminToken,
         message: apiKey
             ? 'IndexNow is configured and ready to use'
             : 'IndexNow API key not configured. Set INDEXNOW_API_KEY in .env.local'

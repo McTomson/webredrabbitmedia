@@ -132,14 +132,6 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
             <div
                 className="sr-only"
                 aria-hidden="true"
-                style={{
-                    position: 'absolute',
-                    left: '-10000px',
-                    top: 'auto',
-                    width: '1px',
-                    height: '1px',
-                    overflow: 'hidden'
-                }}
             >
                 <article>
                     <h1>Professionelles Webdesign in {data.region} ab 790 Euro</h1>

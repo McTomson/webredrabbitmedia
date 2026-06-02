@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX, RefreshCw } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 
 interface SimpleAudioPlayerProps {
     src: string;

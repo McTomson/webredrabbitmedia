@@ -35,7 +35,7 @@ export async function POST(req: Request) {
         // Rate Limiting
         const ip = req.headers.get('x-forwarded-for') || 'Anonymous';
         try {
-            await limiter.check(50, ip); // 50 requests per minute (increased for debugging)
+            await limiter.check(5, ip);
         } catch {
             return NextResponse.json(
                 { error: 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.' },
@@ -70,17 +70,30 @@ export async function POST(req: Request) {
         const safeService = service ? escapeHtml(service) : 'Nicht angegeben';
         const safeMessage = message ? escapeHtml(message).replace(/\n/g, '<br>') : 'Keine Nachricht';
 
+        const smtpUser = process.env.SMTP_USER;
+        const smtpPassword = process.env.SMTP_PASSWORD || process.env.SMTP_PASS;
+        const smtpFrom = process.env.SMTP_FROM || smtpUser;
+        const smtpTo = process.env.SMTP_TO;
+
+        if (!smtpUser || !smtpPassword || !smtpFrom || !smtpTo) {
+            console.error('SMTP configuration is incomplete');
+            return NextResponse.json(
+                { error: 'Kontaktformular ist derzeit nicht konfiguriert.' },
+                { status: 500 }
+            );
+        }
+
         // Create transporter
         const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST || 'smtp.ionos.de',
             port: Number(process.env.SMTP_PORT) || 587,
-            secure: false, // true for 465, false for other ports
+            secure: Number(process.env.SMTP_PORT) === 465,
             auth: {
-                user: process.env.SMTP_USER || 'office@redrabbit.media',
-                pass: process.env.SMTP_PASSWORD || 'Redsagnichts90#!',
+                user: smtpUser,
+                pass: smtpPassword,
             },
             tls: {
-                ciphers: 'SSLv3'
+                minVersion: 'TLSv1.2'
             }
         });
 
@@ -89,8 +102,8 @@ export async function POST(req: Request) {
 
         // Prepare email content
         const mailOptions = {
-            from: `"${process.env.SMTP_FROM || 'office@redrabbit.media'}" <${process.env.SMTP_FROM || 'office@redrabbit.media'}>`,
-            to: process.env.SMTP_TO || 'd.pashlov@redrabbit.media,t.uhlir@redrabbit.media',
+            from: `"${smtpFrom}" <${smtpFrom}>`,
+            to: smtpTo,
             replyTo: email,
             subject: `Neue Anfrage via Website: ${safeName}`,
             text: `
@@ -132,7 +145,7 @@ Gesendet von der Red Rabbit Media Website
     } catch (error) {
         console.error('Error sending email:', error);
         return NextResponse.json(
-            { error: `Fehler beim Senden der E-Mail: ${(error as Error).message}` },
+            { error: 'Fehler beim Senden der E-Mail.' },
             { status: 500 }
         );
     }

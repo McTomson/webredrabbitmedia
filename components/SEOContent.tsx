@@ -96,14 +96,6 @@ const SEOContent = () => {
             <div
                 className="sr-only"
                 aria-hidden="true"
-                style={{
-                    position: 'absolute',
-                    left: '-10000px',
-                    top: 'auto',
-                    width: '1px',
-                    height: '1px',
-                    overflow: 'hidden'
-                }}
             >
                 <article>
                     <h2 className="text-xl font-bold">Website ab 790 Euro - Red Rabbit Media</h2>

@@ -211,9 +211,6 @@ export default function RootLayout({
     <html lang="de" className="scroll-smooth" suppressHydrationWarning>
       <head>
         {/* Priority Resource Hints */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
         {/* RSS Feed */}

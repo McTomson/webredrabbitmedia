@@ -1,7 +1,5 @@
 import dynamic from 'next/dynamic';
 
-// Above-the-fold - synchron laden für schnelles Initial Rendering
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import SEOContent from "@/components/SEOContent";
 import SkipLinks from "@/components/SkipLinks";

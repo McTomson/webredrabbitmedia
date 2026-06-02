@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { X, Send, Building, User, Mail, Phone, MapPin, MessageSquare, Globe, CheckCircle, Clock, CreditCard, MessageCircle } from 'lucide-react';
+import { X, Send, Building, User, Mail, Phone, MessageSquare, Globe, CheckCircle, Clock, CreditCard, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 

@@ -12,7 +12,7 @@ interface BlogTimelineCardProps {
     index: number;
 }
 
-export default function BlogTimelineCard({ post, position, index }: BlogTimelineCardProps) {
+export default function BlogTimelineCard({ post, index }: BlogTimelineCardProps) {
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         return new Intl.DateTimeFormat('de-AT', {
@@ -24,8 +24,8 @@ export default function BlogTimelineCard({ post, position, index }: BlogTimeline
 
     return (
         <motion.article
-            initial={{ opacity: 0, x: position === 'left' ? -50 : 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{
                 duration: 0.6,

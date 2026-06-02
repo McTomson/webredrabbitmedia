@@ -63,14 +63,14 @@ export default function Header({ onFormOpen }: HeaderProps) {
 
                         {/* Mobile Menu Toggle */}
                         <button
-                            className="md:hidden p-2 text-gray-800 outline-none focus:outline-none"
+                            className="lg:hidden p-2 text-gray-800 outline-none focus:outline-none"
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             aria-label={isMenuOpen ? "Menü schließen" : "Menü öffnen"}
                         >
                             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </button>
 
-                        <nav className="hidden md:flex items-center gap-8 outline-none focus:outline-none">
+                        <nav className="hidden lg:flex items-center gap-8 outline-none focus:outline-none">
                             {navLinks.map((item) => (
                                 <Link
                                     key={item.name}
@@ -114,64 +114,60 @@ export default function Header({ onFormOpen }: HeaderProps) {
             </header>
 
             {/* Mobile Menu Drawer */}
-            <div
-                className={`fixed inset-0 z-40 md:hidden transition-all duration-500 ${isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
-                    }`}
-            >
-                <div
-                    className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-                    onClick={() => setIsMenuOpen(false)}
-                />
-                <div
-                    className={`absolute right-0 top-0 bottom-0 w-[80%] max-w-sm bg-white shadow-2xl transition-transform duration-500 flex flex-col ${isMenuOpen ? "translate-x-0" : "translate-x-full"
-                        }`}
-                >
-                    <div className="p-8 pt-24 flex-1">
-                        <nav className="flex flex-col gap-6">
-                            {navLinks.map((item) => (
-                                <Link
-                                    key={item.name}
-                                    href={item.href}
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="text-xl font-light text-gray-800 hover:text-red-600 transition-colors"
+            {isMenuOpen && (
+                <div className="fixed inset-0 z-40 overflow-hidden lg:hidden">
+                    <div
+                        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                        onClick={() => setIsMenuOpen(false)}
+                    />
+                    <div className="absolute right-0 top-0 bottom-0 w-[80%] max-w-sm bg-white shadow-2xl flex flex-col">
+                        <div className="p-8 pt-24 flex-1">
+                            <nav className="flex flex-col gap-6">
+                                {navLinks.map((item) => (
+                                    <Link
+                                        key={item.name}
+                                        href={item.href}
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="text-xl font-light text-gray-800 hover:text-red-600 transition-colors"
+                                    >
+                                        {item.name}
+                                    </Link>
+                                ))}
+                            </nav>
+                        </div>
+                        <div className="p-8 border-t border-gray-100 flex flex-col gap-4">
+                            <a
+                                href="tel:+436769000955"
+                                className="flex items-center justify-center gap-3 w-full py-4 bg-[#172554] text-white font-light rounded-none active:scale-95 transition-all"
+                            >
+                                <Phone className="w-5 h-5" />
+                                <span>Gerne Anrufen</span>
+                            </a>
+                            {onFormOpen ? (
+                                <button
+                                    onClick={() => {
+                                        setIsMenuOpen(false);
+                                        onFormOpen?.();
+                                    }}
+                                    className="flex items-center justify-center gap-3 w-full py-4 bg-red-600 text-white font-light rounded-none active:scale-95 transition-all"
                                 >
-                                    {item.name}
+                                    <span>Jetzt starten</span>
+                                    <ArrowRight className="w-5 h-5" />
+                                </button>
+                            ) : (
+                                <Link
+                                    href="/kontakt"
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="flex items-center justify-center gap-3 w-full py-4 bg-red-600 text-white font-light rounded-none active:scale-95 transition-all"
+                                >
+                                    <span>Jetzt starten</span>
+                                    <ArrowRight className="w-5 h-5" />
                                 </Link>
-                            ))}
-                        </nav>
-                    </div>
-                    <div className="p-8 border-t border-gray-100 flex flex-col gap-4">
-                        <a
-                            href="tel:+436769000955"
-                            className="flex items-center justify-center gap-3 w-full py-4 bg-[#172554] text-white font-light rounded-none active:scale-95 transition-all"
-                        >
-                            <Phone className="w-5 h-5" />
-                            <span>Gerne Anrufen</span>
-                        </a>
-                        {onFormOpen ? (
-                            <button
-                                onClick={() => {
-                                    setIsMenuOpen(false);
-                                    onFormOpen?.();
-                                }}
-                                className="flex items-center justify-center gap-3 w-full py-4 bg-red-600 text-white font-light rounded-none active:scale-95 transition-all"
-                            >
-                                <span>Jetzt starten</span>
-                                <ArrowRight className="w-5 h-5" />
-                            </button>
-                        ) : (
-                            <Link
-                                href="/kontakt"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="flex items-center justify-center gap-3 w-full py-4 bg-red-600 text-white font-light rounded-none active:scale-95 transition-all"
-                            >
-                                <span>Jetzt starten</span>
-                                <ArrowRight className="w-5 h-5" />
-                            </Link>
-                        )}
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </>
     );
 }

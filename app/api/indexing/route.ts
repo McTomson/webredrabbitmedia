@@ -2,6 +2,7 @@
 import { google } from 'googleapis';
 import { NextRequest, NextResponse } from 'next/server';
 import rateLimit from '@/lib/rate-limit';
+import { isWebRedRabbitUrl, requireAdminToken } from '@/lib/api-security';
 
 // Rate Limiter: 10 requests per minute per IP (higher limit for indexing if multiple URLs updated)
 const limiter = rateLimit({
@@ -11,6 +12,11 @@ const limiter = rateLimit({
 
 export async function POST(request: NextRequest) {
     try {
+        const authError = requireAdminToken(request);
+        if (authError) {
+            return authError;
+        }
+
         // Rate Limiting
         const ip = request.headers.get('x-forwarded-for') || 'Anonymous';
         try {
@@ -25,9 +31,16 @@ export async function POST(request: NextRequest) {
         const { url, type = 'URL_UPDATED' } = await request.json();
 
         // Validate URL
-        if (!url || !url.startsWith('https://web.redrabbit.media')) {
+        if (!isWebRedRabbitUrl(url)) {
             return NextResponse.json(
                 { error: 'Invalid URL' },
+                { status: 400 }
+            );
+        }
+
+        if (type !== 'URL_UPDATED' && type !== 'URL_DELETED') {
+            return NextResponse.json(
+                { error: 'Invalid notification type' },
                 { status: 400 }
             );
         }
@@ -63,7 +76,7 @@ export async function POST(request: NextRequest) {
 
         // Fallback: Try Search Console API
         try {
-            return await fallbackToSearchConsole(request);
+            return await fallbackToSearchConsole();
         } catch {
             return NextResponse.json(
                 {
@@ -77,9 +90,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Fallback to Search Console API
-async function fallbackToSearchConsole(_request: NextRequest) {
-    // await request.json(); // Don't re-read if not needed, or just ignore
-
+async function fallbackToSearchConsole() {
     // Ping sitemap instead
     const sitemapUrl = 'https://web.redrabbit.media/sitemap.xml';
 
