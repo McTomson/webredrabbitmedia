@@ -42,6 +42,27 @@ Update this file at the end of every session when a debugging lesson, setup issu
   - Do not trust `vercel env add` in this environment unless followed by a verified `env pull`, dashboard check, or live endpoint result. It returned exit 0 with only `Retrieving project…`, but `/api/indexnow` still showed missing env.
   - Vercel API DNS for `api.vercel.com` was intermittent; retry from a stable network or use the Vercel dashboard for env changes.
 
+## 2026-06-03 (Content-Engine Planung)
+
+- iCloud-Desktop-Checkout (`Desktop/Tomson/.../webredrabbitmedia`) lässt git hängen (ausgelagerte
+  dataless Packs). Lösung: frischer `git clone` von origin nach `~/dev/redrabbit`. Dort weiterarbeiten.
+  `mv` aus iCloud vermeiden (lädt erst herunter → hängt). Dateinamen listen geht, Datei-INHALTE
+  lesen hängt; Workaround `perl -e 'alarm N; exec @ARGV'` als timeout.
+- VOICE-LEKTION: Die bestehenden `content/blog/*`-Artikel sind KI-generiert und taugen NICHT als
+  Stil-Vorbild für den echten Autor. Stil aus den ECHTEN Texten des Users ziehen (gesendete Mails).
+  Word-Docs auf dem Rechner waren entweder Verträge/Exposés oder KI-Coaching-Texte (FÜR ihn, nicht
+  VON ihm) → ungeeignet + teils sensibel.
+- Thomas' stärkster KI-Tell = **Gedankenstrich "–"** (tippt er nie; KI ständig). Außerdem
+  Dreierfiguren/rule-of-three, "nicht nur…sondern auch", Hochglanz-Marketing. Harte Content-Regel:
+  kein "–". Verankert in `content-engine/voice/house.md`.
+- Vor dem Planen neuer Infra IMMER Repo prüfen: GA4 (`G-09FNC6THTD`), Google Indexing API
+  (`app/api/indexing/route.ts`, Service-Account), IndexNow, SMTP, `ADMIN_API_TOKEN` waren BEREITS da.
+- Bildgenerierung: Claude/Claude Code hat KEIN natives Bildmodell; Design-Skills nutzen Gemini
+  (kostet) oder HTML→Screenshot. Bester 0€-Weg: `codex` CLI `imagegen`-Skill (Terminal, headless via
+  Shell aus der Pipeline aufrufbar, läuft über ChatGPT-Plus-Limit).
+- GSC ist verifiziert (`web.redrabbit.media`), aber Baseline ~11 Klicks/3 Monate = nahe Null →
+  ehrliche Erwartung: Top-10 nur für gewinnbare Long-Tail/lokal, ~3-6 Monate, kompoundierend.
+
 ## Session-End Checklist
 
 - Add new lessons with dates.
