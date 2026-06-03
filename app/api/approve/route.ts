@@ -1,0 +1,101 @@
+import { verifyToken } from '@/lib/approvalToken';
+import { submitUrlToIndexNow } from '@/lib/indexnow';
+import { SITE_URL } from '@/lib/config';
+
+export const runtime = 'nodejs';
+
+// One-tap approval endpoint for the daily review email. A signed token carries the slug
+// and action. Approve flips the article's frontmatter status draft -> published via the
+// GitHub Contents API (a commit), which triggers a Vercel redeploy, then pings IndexNow.
+// Works from a phone, no local machine needed. Single-use: an already-published article
+// ignores a second approve.
+
+function page(title: string, body: string, ok = true): Response {
+    const color = ok ? '#1a7f37' : '#b42318';
+    const html = `<!doctype html><html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>${title}</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f6f7f8;margin:0;padding:40px 20px;color:#1a1a1a}
+.card{max-width:520px;margin:0 auto;background:#fff;border-radius:14px;padding:32px;box-shadow:0 2px 14px rgba(0,0,0,.07)}
+h1{font-size:20px;margin:0 0 12px;color:${color}}p{line-height:1.55;margin:8px 0}a{color:#E2231A}</style></head>
+<body><div class="card"><h1>${title}</h1>${body}</div></body></html>`;
+    return new Response(html, { status: ok ? 200 : 400, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+}
+
+interface GhFile {
+    content: string;
+    sha: string;
+}
+
+async function ghGet(repo: string, path: string, token: string): Promise<GhFile | null> {
+    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=main`, {
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'User-Agent': 'redrabbit-approve' },
+    });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`GitHub GET ${res.status}`);
+    const j = await res.json();
+    return { content: Buffer.from(j.content, 'base64').toString('utf8'), sha: j.sha };
+}
+
+async function ghPut(repo: string, path: string, token: string, content: string, sha: string, message: string): Promise<void> {
+    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'User-Agent': 'redrabbit-approve' },
+        body: JSON.stringify({ message, content: Buffer.from(content, 'utf8').toString('base64'), sha, branch: 'main' }),
+    });
+    if (!res.ok) throw new Error(`GitHub PUT ${res.status}: ${await res.text()}`);
+}
+
+export async function GET(req: Request): Promise<Response> {
+    const url = new URL(req.url);
+    const token = url.searchParams.get('token') || '';
+    const secret = process.env.APPROVAL_SECRET;
+    if (!secret) return page('Konfigurationsfehler', '<p>APPROVAL_SECRET fehlt am Server.</p>', false);
+
+    const v = verifyToken(token, secret);
+    if (!v.valid) {
+        return page('Link ungueltig', `<p>${v.expired ? 'Dieser Freigabe-Link ist abgelaufen.' : 'Dieser Link ist ungueltig.'} Bitte den Artikel neu anstossen.</p>`, false);
+    }
+
+    const slug = v.slug!;
+    const previewUrl = `${SITE_URL}/tipps/${slug}`;
+
+    if (v.action === 'reject') {
+        return page('Notiz: nicht freigegeben', `<p>Alles klar, der Artikel <strong>${slug}</strong> bleibt Entwurf und geht NICHT online.</p><p>Antworten Sie einfach auf die Review-Mail mit Ihren Aenderungswuenschen, ich arbeite sie ein.</p><p><a href="${previewUrl}">Entwurf ansehen</a></p>`);
+    }
+
+    // approve
+    const repo = process.env.GITHUB_REPO || 'McTomson/webredrabbitmedia';
+    const ghToken = process.env.GITHUB_TOKEN;
+    if (!ghToken) return page('Konfigurationsfehler', '<p>GITHUB_TOKEN fehlt am Server, Freigabe kann nicht committen.</p>', false);
+
+    const path = `content/blog/${slug}.mdx`;
+    try {
+        const file = await ghGet(repo, path, ghToken);
+        if (!file) return page('Nicht gefunden', `<p>Artikel <strong>${slug}</strong> existiert nicht (mehr).</p>`, false);
+
+        if (!/^status:\s*["']?draft["']?\s*$/m.test(file.content)) {
+            return page('Bereits freigegeben', `<p>Dieser Artikel ist schon veroeffentlicht. Kein zweites Mal noetig.</p><p><a href="${previewUrl}">Artikel ansehen</a></p>`);
+        }
+
+        const today = new Date().toISOString().slice(0, 10);
+        const updated = file.content
+            .replace(/^status:\s*["']?draft["']?\s*$/m, 'status: "published"')
+            .replace(/^updatedAt:\s*["']?[\d-]+["']?\s*$/m, `updatedAt: "${today}"`);
+
+        await ghPut(repo, path, ghToken, updated, file.sha, `feat(blog): publish ${slug} (approved via review email)`);
+
+        // Best-effort search-engine ping (non-blocking failure).
+        let indexNote = '';
+        try {
+            await submitUrlToIndexNow(previewUrl);
+            indexNote = '<p>Suchmaschinen wurden via IndexNow benachrichtigt.</p>';
+        } catch {
+            indexNote = '<p>Hinweis: IndexNow-Ping nicht moeglich (Artikel ist trotzdem freigegeben).</p>';
+        }
+
+        return page('Freigegeben und veroeffentlicht', `<p>Der Artikel <strong>${slug}</strong> ist jetzt online. Vercel deployt die Aenderung in ein, zwei Minuten.</p>${indexNote}<p><a href="${previewUrl}">Artikel ansehen</a></p>`);
+    } catch (e: any) {
+        return page('Fehler bei der Freigabe', `<p>${e.message}</p><p>Bitte spaeter erneut versuchen oder lokal freigeben.</p>`, false);
+    }
+}
