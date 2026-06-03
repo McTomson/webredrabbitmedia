@@ -1,0 +1,2591 @@
+# topics/queue.yaml — Themen-Backlog der Content-Engine
+# Generiert aus source-365-fragen.md. Status-Quelle der Wahrheit fuer die Pipeline.
+# status: todo | drafting | review | published | covered (schon durch Bestandsartikel)
+# winnability: unknown bis Leicht-Check (PAA/Autocomplete) bei Auswahl; lokal/Long-Tail bevorzugt.
+# is_pillar: Grundlagen-/Hub-Artikel je Cluster zuerst, Supporting danach.
+# demo: true = einer der 3 ersten Demo-Artikel dieser Runde.
+
+meta:
+  total: 365
+  generated: "2026-06-03"
+  existing_articles:  # Dedup-Referenz (Orchestrator prueft neue Slugs hiergegen)
+    - 10-fehler-beim-website-erstellen
+    - herold-webseite-vs-agentur-vergleich
+    - restaurant-website-must-haves
+    - was-kostet-eine-website
+    - website-10-seiten-kosten
+    - website-5-seiten-kosten
+    - website-kosten-oesterreich-2026
+    - website-optimierung-kosten
+    - website-regio-preise
+    - website-selbst-erstellen-vs-agentur
+    - wie-lange-dauert-website-erstellung
+
+clusters:
+  1: "Strategie & Kosten"
+  2: "Technik & Performance"
+  3: "KI & Automatisierung"
+  4: "SEO & GEO"
+  5: "Design & UX"
+  6: "Recht & Sicherheit"
+  7: "Wartung & Analyse"
+
+topics:
+  - id: 1
+    frage: "Was kostet eine professionelle Website für Unternehmen?"
+    slug: was-kostet-eine-professionelle-website-fuer-unternehmen
+    cluster: 1
+    status: covered
+    winnability: unknown
+    is_pillar: true
+  - id: 2
+    frage: "Wie setzen sich die Kosten für eine Website zusammen?"
+    slug: wie-setzen-sich-die-kosten-fuer-eine-website-zusammen
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 3
+    frage: "Wie viel kostet eine Website im Unterhalt?"
+    slug: wie-viel-kostet-eine-website-im-unterhalt
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 4
+    frage: "Was kostet eine Website mit 10 Seiten?"
+    slug: was-kostet-eine-website-mit-10-seiten
+    cluster: 1
+    status: covered
+    winnability: unknown
+    is_pillar: false
+  - id: 5
+    frage: "Warum sind manche Webdesign-Agenturen deutlich teurer als andere?"
+    slug: warum-sind-manche-webdesign-agenturen-deutlich-teurer-als-andere
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 6
+    frage: "Was kostet ein professioneller Website-Relaunch?"
+    slug: was-kostet-ein-professioneller-website-relaunch
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 7
+    frage: "Wie viel Budget muss für ein neues Web-Projekt eingeplant werden?"
+    slug: wie-viel-budget-muss-fuer-ein-neues-web-projekt
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 8
+    frage: "Zu welchen Zeitpunkten muss die Website bezahlt werden?"
+    slug: zu-welchen-zeitpunkten-muss-die-website-bezahlt-werden
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 9
+    frage: "Welche versteckten Kosten gibt es bei der Website-Erstellung?"
+    slug: welche-versteckten-kosten-gibt-es-bei-der-website-erstellung
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 10
+    frage: "Was kostet eine maßgeschneiderte E-Commerce Website?"
+    slug: was-kostet-eine-massgeschneiderte-e-commerce-website
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 11
+    frage: "Wie hoch sind die laufenden Kosten für Webhosting und Domain?"
+    slug: wie-hoch-sind-die-laufenden-kosten-fuer-webhosting-und
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 12
+    frage: "Sind die Kosten für eine Website steuerlich absetzbar?"
+    slug: sind-die-kosten-fuer-eine-website-steuerlich-absetzbar
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+    demo: true
+  - id: 13
+    frage: "Lohnt sich ein monatlicher Wartungsvertrag für eine Website?"
+    slug: lohnt-sich-ein-monatlicher-wartungsvertrag-fuer-eine-website
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+    demo: true
+  - id: 14
+    frage: "Ab wann rechnet sich das Investment in eine neue Website?"
+    slug: ab-wann-rechnet-sich-das-investment-in-eine-neue
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 15
+    frage: "Wie lange dauert es, eine Website erstellen zu lassen?"
+    slug: wie-lange-dauert-es-eine-website-erstellen-zu-lassen
+    cluster: 1
+    status: covered
+    winnability: unknown
+    is_pillar: false
+  - id: 16
+    frage: "Wie sieht der genaue Ablauf bei der Erstellung einer Website aus?"
+    slug: wie-sieht-der-genaue-ablauf-bei-der-erstellung-einer
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 17
+    frage: "Was muss vorbereitet sein, bevor eine Agentur beauftragt wird?"
+    slug: was-muss-vorbereitet-sein-bevor-eine-agentur-beauftragt-wird
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 18
+    frage: "Wer übernimmt die Texterstellung für die neue Website?"
+    slug: wer-uebernimmt-die-texterstellung-fuer-die-neue-website
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 19
+    frage: "Müssen Bilder und Grafiken selbst geliefert werden?"
+    slug: muessen-bilder-und-grafiken-selbst-geliefert-werden
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 20
+    frage: "Wie viele Korrekturschleifen sind in einem Web-Projekt üblich?"
+    slug: wie-viele-korrekturschleifen-sind-in-einem-web-projekt-ueblich
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 21
+    frage: "Was passiert direkt nach dem Launch der Website?"
+    slug: was-passiert-direkt-nach-dem-launch-der-website
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 22
+    frage: "Wie lange dauert ein kompletter Website-Relaunch?"
+    slug: wie-lange-dauert-ein-kompletter-website-relaunch
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 23
+    frage: "Kann die alte Domain beim Relaunch behalten werden?"
+    slug: kann-die-alte-domain-beim-relaunch-behalten-werden
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 24
+    frage: "Wie viel eigene Zeit muss in das Website-Projekt investiert werden?"
+    slug: wie-viel-eigene-zeit-muss-in-das-website-projekt
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 25
+    frage: "Welches System ist das beste für eine Firmenwebsite?"
+    slug: welches-system-ist-das-beste-fuer-eine-firmenwebsite
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 26
+    frage: "Was sind die Vorteile von modernen Frameworks wie Next.js gegenüber WordPress?"
+    slug: was-sind-die-vorteile-von-modernen-frameworks-wie-next
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 27
+    frage: "Warum ist die Ladezeit (PageSpeed) entscheidend für den Umsatz?"
+    slug: warum-ist-die-ladezeit-pagespeed-entscheidend-fuer-den-umsatz
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 28
+    frage: "Ist ein Baukasten-System für ein seriöses Unternehmen ausreichend?"
+    slug: ist-ein-baukasten-system-fuer-ein-serioeses-unternehmen-ausreichend
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 29
+    frage: "Wie wird sichergestellt, dass die Website auf allen Smartphones perfekt funktioniert?"
+    slug: wie-wird-sichergestellt-dass-die-website-auf-allen-smartphones
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 30
+    frage: "Was bedeutet Responsive Design in der Praxis?"
+    slug: was-bedeutet-responsive-design-in-der-praxis
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 31
+    frage: "Wie wird ein bestehendes CRM-System an die Website angebunden?"
+    slug: wie-wird-ein-bestehendes-crm-system-an-die-website
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 32
+    frage: "Wo wird die Website DSGVO-konform gehostet?"
+    slug: wo-wird-die-website-dsgvo-konform-gehostet
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 33
+    frage: "Gehört der Code der Website nach der Fertigstellung dem Kunden?"
+    slug: gehoert-der-code-der-website-nach-der-fertigstellung-dem
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 34
+    frage: "Wie sicher ist die neue Website gegen Hackerangriffe?"
+    slug: wie-sicher-ist-die-neue-website-gegen-hackerangriffe
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 35
+    frage: "Wie gewinnt ein Unternehmen über die Website neue Kunden?"
+    slug: wie-gewinnt-ein-unternehmen-ueber-die-website-neue-kunden
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 36
+    frage: "Was macht eine High-End Firmenwebsite aus?"
+    slug: was-macht-eine-high-end-firmenwebsite-aus
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 37
+    frage: "Wie hebt sich eine Website optisch und inhaltlich von der Konkurrenz ab?"
+    slug: wie-hebt-sich-eine-website-optisch-und-inhaltlich-von
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 38
+    frage: "Was ist eine Landingpage und wann wird sie benötigt?"
+    slug: was-ist-eine-landingpage-und-wann-wird-sie-benoetigt
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 39
+    frage: "Wie wird der Erfolg einer neuen Website messbar gemacht?"
+    slug: wie-wird-der-erfolg-einer-neuen-website-messbar-gemacht
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 40
+    frage: "Was ist eine gute Conversion Rate für B2B-Websites?"
+    slug: was-ist-eine-gute-conversion-rate-fuer-b2b-websites
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 41
+    frage: "Warum verlassen Besucher eine Website nach wenigen Sekunden wieder?"
+    slug: warum-verlassen-besucher-eine-website-nach-wenigen-sekunden-wieder
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 42
+    frage: "Wie wird Vertrauen und Autorität über das Webdesign aufgebaut?"
+    slug: wie-wird-vertrauen-und-autoritaet-ueber-das-webdesign-aufgebaut
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 43
+    frage: "Wie lassen sich Prozesse über die Unternehmenswebsite automatisieren?"
+    slug: wie-lassen-sich-prozesse-ueber-die-unternehmenswebsite-automatisieren
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 44
+    frage: "Kann ein KI-Chatbot auf der Website qualifizierte Leads sammeln?"
+    slug: kann-ein-ki-chatbot-auf-der-website-qualifizierte-leads
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 45
+    frage: "Wie wird die neue Website bei Google gefunden?"
+    slug: wie-wird-die-neue-website-bei-google-gefunden
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 46
+    frage: "Wie funktioniert Suchmaschinenoptimierung (SEO) für komplett neue Websites?"
+    slug: wie-funktioniert-suchmaschinenoptimierung-seo-fuer-komplett-neue-websites
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 47
+    frage: "Wie lange dauert es, bis SEO-Maßnahmen messbare Ergebnisse liefern?"
+    slug: wie-lange-dauert-es-bis-seo-massnahmen-messbare-ergebnisse
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 48
+    frage: "Was ist der Unterschied zwischen klassischem SEO und Generative Engine Optimization (GEO)?"
+    slug: was-ist-der-unterschied-zwischen-klassischem-seo-und-generative
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 49
+    frage: "Was muss zwingend in ein rechtssicheres Impressum?"
+    slug: was-muss-zwingend-in-ein-rechtssicheres-impressum
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 50
+    frage: "Wie wird die DSGVO auf der Website technisch umgesetzt?"
+    slug: wie-wird-die-dsgvo-auf-der-website-technisch-umgesetzt
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 51
+    frage: "Wann wird ein Cookie-Banner rechtlich benötigt?"
+    slug: wann-wird-ein-cookie-banner-rechtlich-benoetigt
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 52
+    frage: "Wer haftet bei Abmahnungen wegen rechtlicher Fehler auf der Website?"
+    slug: wer-haftet-bei-abmahnungen-wegen-rechtlicher-fehler-auf-der
+    cluster: 1
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 53
+    frage: "Was ist der technologische Unterschied zwischen einer statischen und einer dynamischen Website?"
+    slug: was-ist-der-technologische-unterschied-zwischen-einer-statischen-und
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: true
+  - id: 54
+    frage: "Warum scheitern traditionelle CMS-Systeme oft bei den Google Core Web Vitals?"
+    slug: warum-scheitern-traditionelle-cms-systeme-oft-bei-den-google
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 55
+    frage: "Was versteht man unter Headless CMS und für wen lohnt es sich?"
+    slug: was-versteht-man-unter-headless-cms-und-fuer-wen
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 56
+    frage: "Wie beeinflusst das Webhosting die Ladegeschwindigkeit einer Seite?"
+    slug: wie-beeinflusst-das-webhosting-die-ladegeschwindigkeit-einer-seite
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 57
+    frage: "Warum ist Time to First Byte (TTFB) eine kritische Metrik für den Projekterfolg?"
+    slug: warum-ist-time-to-first-byte-ttfb-eine-kritische
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 58
+    frage: "Was ist serverseitiges Rendering (SSR) und welche Vorteile bietet es für SEO?"
+    slug: was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 59
+    frage: "Was bedeutet Static Site Generation (SSG) im modernen Webdesign?"
+    slug: was-bedeutet-static-site-generation-ssg-im-modernen-webdesign
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 60
+    frage: "Warum veraltet nativer PHP-Code auf Websites ohne ständige Updates?"
+    slug: warum-veraltet-nativer-php-code-auf-websites-ohne-staendige
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 61
+    frage: "Welche Rolle spielt JavaScript für interaktive Elemente auf High-End-Websites?"
+    slug: welche-rolle-spielt-javascript-fuer-interaktive-elemente-auf-high
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 62
+    frage: "Wie optimiert man große Bilddateien für das Web, ohne dass die Qualität leidet?"
+    slug: wie-optimiert-man-grosse-bilddateien-fuer-das-web-ohne
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 63
+    frage: "Was ist ein Content Delivery Network (CDN) und wann braucht eine KMU-Website eines?"
+    slug: was-ist-ein-content-delivery-network-cdn-und-wann
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 64
+    frage: "Warum ist eine saubere HTML-Struktur wichtig für Screenreader und Suchmaschinen?"
+    slug: warum-ist-eine-saubere-html-struktur-wichtig-fuer-screenreader
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 65
+    frage: "Wie funktioniert das Caching auf modernen Servern und warum ist es fehleranfällig?"
+    slug: wie-funktioniert-das-caching-auf-modernen-servern-und-warum
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 66
+    frage: "Was ist der Unterschied zwischen Next.js und einer reinen React-Applikation?"
+    slug: was-ist-der-unterschied-zwischen-next-js-und-einer
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 67
+    frage: "Warum ist eine fehlerhafte API-Anbindung ein Sicherheitsrisiko für Firmenwebsites?"
+    slug: warum-ist-eine-fehlerhafte-api-anbindung-ein-sicherheitsrisiko-fuer
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 68
+    frage: "Wie verhindert man Ausfallzeiten (Downtime) während eines Website-Relaunches?"
+    slug: wie-verhindert-man-ausfallzeiten-downtime-waehrend-eines-website-relaunches
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 69
+    frage: "Was ist der Unterschied zwischen HTTP/2 und HTTP/3 für die Website-Performance?"
+    slug: was-ist-der-unterschied-zwischen-http-2-und-http
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 70
+    frage: "Warum sollten CSS- und JS-Dateien minifiziert werden?"
+    slug: warum-sollten-css-und-js-dateien-minifiziert-werden
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 71
+    frage: "Wie misst man die echte Performance einer Website abseits von synthetischen Tests?"
+    slug: wie-misst-man-die-echte-performance-einer-website-abseits
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 72
+    frage: "Was sind die Nachteile von zu vielen aktiven Plugins auf einer WordPress-Seite?"
+    slug: was-sind-die-nachteile-von-zu-vielen-aktiven-plugins
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 73
+    frage: "Wie funktioniert die Gzip- oder Brotli-Komprimierung auf Webservern?"
+    slug: wie-funktioniert-die-gzip-oder-brotli-komprimierung-auf-webservern
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 74
+    frage: "Warum führt fehlerhaftes Skript-Laden zu visuellem Ruckeln (Cumulative Layout Shift)?"
+    slug: warum-fuehrt-fehlerhaftes-skript-laden-zu-visuellem-ruckeln-cumulative
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 75
+    frage: "Was ist der Unterschied zwischen Shared Hosting und einem Dedicated Server?"
+    slug: was-ist-der-unterschied-zwischen-shared-hosting-und-einem
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 76
+    frage: "Warum ist eine relationale Datenbank manchmal langsamer als eine dateibasierte Lösung?"
+    slug: warum-ist-eine-relationale-datenbank-manchmal-langsamer-als-eine
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 77
+    frage: "Wie erstellt man eine skalierbare Architektur für stark wachsende Besucherzahlen?"
+    slug: wie-erstellt-man-eine-skalierbare-architektur-fuer-stark-wachsende
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 78
+    frage: "Was ist der Unterschied zwischen einer Web-App und einer klassischen Website?"
+    slug: was-ist-der-unterschied-zwischen-einer-web-app-und
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 79
+    frage: "Warum sind Custom-Code-Lösungen sichurer vor automatisierten Hacker-Skripten?"
+    slug: warum-sind-custom-code-loesungen-sichurer-vor-automatisierten-hacker
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 80
+    frage: "Wie funktioniert das Lazy Loading von Bildern und Videos technisch?"
+    slug: wie-funktioniert-das-lazy-loading-von-bildern-und-videos
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 81
+    frage: "Warum blockieren externe Schriften (wie Google Fonts) oft den Seitenaufbau?"
+    slug: warum-blockieren-externe-schriften-wie-google-fonts-oft-den
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 82
+    frage: "Was bedeutet „Clean Code“ im Webdesign und wer kontrolliert das?"
+    slug: was-bedeutet-clean-code-im-webdesign-und-wer-kontrolliert
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 83
+    frage: "Wie bindet man externe Skripte (wie Tracking-Tools) geschwindigkeitsoptimiert ein?"
+    slug: wie-bindet-man-externe-skripte-wie-tracking-tools-geschwindigkeitsoptimiert
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 84
+    frage: "Warum führt ein schlechtes Mobile-Rendering zu schlechteren Desktop-Rankings?"
+    slug: warum-fuehrt-ein-schlechtes-mobile-rendering-zu-schlechteren-desktop
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 85
+    frage: "Was ist der Unterschied zwischen Node.js und traditionellen Webservern?"
+    slug: was-ist-der-unterschied-zwischen-node-js-und-traditionellen
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 86
+    frage: "Wie strukturiert man CSS-Code auf großen Websites, um Redundanzen zu vermeiden?"
+    slug: wie-strukturiert-man-css-code-auf-grossen-websites-um
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 87
+    frage: "Warum sind veraltete SSL-Zertifikate oder TLS-Versionen eine Gefahr?"
+    slug: warum-sind-veraltete-ssl-zertifikate-oder-tls-versionen-eine
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 88
+    frage: "Wie funktionieren Service Worker und was machen sie auf einer Website?"
+    slug: wie-funktionieren-service-worker-und-was-machen-sie-auf
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 89
+    frage: "Was ist eine Progressive Web App (PWA) und wann ersetzt sie eine native App?"
+    slug: was-ist-eine-progressive-web-app-pwa-und-wann
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 90
+    frage: "Warum führt fehlerhafte Server-Konfiguration zu permanenten 500er-Fehlern?"
+    slug: warum-fuehrt-fehlerhafte-server-konfiguration-zu-permanenten-500er-fehlern
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 91
+    frage: "Wie optimiert man Schriftdateien durch das WOFF2-Format?"
+    slug: wie-optimiert-man-schriftdateien-durch-das-woff2-format
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 92
+    frage: "Warum sollten iFrames auf modernen Business-Websites vermieden werden?"
+    slug: warum-sollten-iframes-auf-modernen-business-websites-vermieden-werden
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 93
+    frage: "Wie stellt man sicher, dass Formulare auch bei hoher Serverlast zuverlässig ankommen?"
+    slug: wie-stellt-man-sicher-dass-formulare-auch-bei-hoher
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 94
+    frage: "Was ist DNS-Prefetching und wie beschleunigt es externe Links?"
+    slug: was-ist-dns-prefetching-und-wie-beschleunigt-es-externe
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 95
+    frage: "Warum ist eine Versionskontrolle (z. B. via GitHub) bei Web-Projekten Standard?"
+    slug: warum-ist-eine-versionskontrolle-z-b-via-github-bei
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 96
+    frage: "Wie funktionieren Webhooks bei der Synchronisation von Website-Daten?"
+    slug: wie-funktionieren-webhooks-bei-der-synchronisation-von-website-daten
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 97
+    frage: "Was ist der Unterschied zwischen clientseitigem und serverseitigem Tracking?"
+    slug: was-ist-der-unterschied-zwischen-clientseitigem-und-serverseitigem-tracking
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 98
+    frage: "Warum lohnen sich Serverstandorte in Österreich oder Deutschland für lokale Unternehmen?"
+    slug: warum-lohnen-sich-serverstandorte-in-oesterreich-oder-deutschland-fuer
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 99
+    frage: "Wie geht man mit veralteten Programmierbibliotheken (Dependencies) um?"
+    slug: wie-geht-man-mit-veralteten-programmierbibliotheken-dependencies-um
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 100
+    frage: "Warum führen Weiterleitungsketten (Redirect Chains) zu Performance-Verlusten?"
+    slug: warum-fuehren-weiterleitungsketten-redirect-chains-zu-performance-verlusten
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 101
+    frage: "Was ist der DOM-Tree und warum verlangsamt ein zu tiefer Baum das Rendering?"
+    slug: was-ist-der-dom-tree-und-warum-verlangsamt-ein
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 102
+    frage: "Wie integriert man interne Suchfunktionen, ohne die Datenbank zu überlasten?"
+    slug: wie-integriert-man-interne-suchfunktionen-ohne-die-datenbank-zu
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 103
+    frage: "Warum ist ein staging-Server vor jeder Live-Schaltung absolute Pflicht?"
+    slug: warum-ist-ein-staging-server-vor-jeder-live-schaltung
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 104
+    frage: "Was passiert technisch, wenn eine Website gecrasht ist, und wie stellt man sie wieder her?"
+    slug: was-passiert-technisch-wenn-eine-website-gecrasht-ist-und
+    cluster: 2
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 105
+    frage: "Wie verändern KI-Technologien die Erstellung von modernen Websites?"
+    slug: wie-veraendern-ki-technologien-die-erstellung-von-modernen-websites
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: true
+  - id: 106
+    frage: "Was ist der Unterschied zwischen einer KI-generierten Website und menschlicher Programmierung?"
+    slug: was-ist-der-unterschied-zwischen-einer-ki-generierten-website
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 107
+    frage: "Wie integriert man intelligente Sprachmodelle direkt in das Kundenportal einer Website?"
+    slug: wie-integriert-man-intelligente-sprachmodelle-direkt-in-das-kundenportal
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 108
+    frage: "Können KI-Chatbots komplexe Verkaufsgespräche auf einer B2B-Website übernehmen?"
+    slug: koennen-ki-chatbots-komplexe-verkaufsgespraeche-auf-einer-b2b-website
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 109
+    frage: "Wie funktioniert die automatisierte Lead-Qualifizierung durch KI-gestützte Formulare?"
+    slug: wie-funktioniert-die-automatisierte-lead-qualifizierung-durch-ki-gestuetzte
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 110
+    frage: "Was fordert der EU AI Act für den Einsatz von KI auf Unternehmenswebsites?"
+    slug: was-fordert-der-eu-ai-act-fuer-den-einsatz
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 111
+    frage: "Ab wann riskieren Unternehmen Strafen bei der Nutzung von intransparenten KI-Tools?"
+    slug: ab-wann-riskieren-unternehmen-strafen-bei-der-nutzung-von
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 112
+    frage: "Wie automatisiert man die Inhaltspflege einer Website mithilfe von KI-Schnittstellen?"
+    slug: wie-automatisiert-man-die-inhaltspflege-einer-website-mithilfe-von
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 113
+    frage: "Können Produktbeschreibungen im Online-Shop vollautomatisch durch KI generiert werden?"
+    slug: koennen-produktbeschreibungen-im-online-shop-vollautomatisch-durch-ki-generiert
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 114
+    frage: "Wie verbindet man die Firmenwebsite mit Automatisierungs-Tools wie Zapier oder Make?"
+    slug: wie-verbindet-man-die-firmenwebsite-mit-automatisierungs-tools-wie
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 115
+    frage: "Wie baut man einen vollautomatischen Buchungsprozess für Dienstleister auf?"
+    slug: wie-baut-man-einen-vollautomatischen-buchungsprozess-fuer-dienstleister-auf
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 116
+    frage: "Können Kundenanfragen über die Website direkt in ein CRM-System wie HubSpot fließen?"
+    slug: koennen-kundenanfragen-ueber-die-website-direkt-in-ein-crm
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 117
+    frage: "Wie filtert eine KI Spam-Nachrichten in Kontaktformularen heraus, ohne Captchas zu nutzen?"
+    slug: wie-filtert-eine-ki-spam-nachrichten-in-kontaktformularen-heraus
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 118
+    frage: "Wie erstellt man personalisierte Website-Inhalte basierend auf dem Nutzerverhalten via KI?"
+    slug: wie-erstellt-man-personalisierte-website-inhalte-basierend-auf-dem
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 119
+    frage: "Ist KI-generierter Content schädlich für das Google-Ranking?"
+    slug: ist-ki-generierter-content-schaedlich-fuer-das-google-ranking
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 120
+    frage: "Wie kennzeichnet man KI-Inhalte auf der Website richtig, um rechtssicher zu sein?"
+    slug: wie-kennzeichnet-man-ki-inhalte-auf-der-website-richtig
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 121
+    frage: "Wie automatisieren Agenturen das wöchentliche Performance-Reporting für Kunden?"
+    slug: wie-automatisieren-agenturen-das-woechentliche-performance-reporting-fuer-kunden
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 122
+    frage: "Kann KI Fehler im Code einer Website selbstständig finden und reparieren?"
+    slug: kann-ki-fehler-im-code-einer-website-selbststaendig-finden
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 123
+    frage: "Wie liest eine KI Nutzerfeedback aus Formularen aus und kategorisiert es intern?"
+    slug: wie-liest-eine-ki-nutzerfeedback-aus-formularen-aus-und
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 124
+    frage: "Wie lässt sich das Bewerbermanagement (Recruiting) über die Website automatisieren?"
+    slug: wie-laesst-sich-das-bewerbermanagement-recruiting-ueber-die-website
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 125
+    frage: "Kann ein intelligenter KI-Assistent Terminkonflikte im Kalender direkt über die Website lösen?"
+    slug: kann-ein-intelligenter-ki-assistent-terminkonflikte-im-kalender-direkt
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 126
+    frage: "Wie schützt man KI-Schnittstellen auf der Website vor Missbrauch (Prompt Injection)?"
+    slug: wie-schuetzt-man-ki-schnittstellen-auf-der-website-vor
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 127
+    frage: "Welche Prozesse im Kundenservice lassen sich durch eine smarte Website sofort einsparen?"
+    slug: welche-prozesse-im-kundenservice-lassen-sich-durch-eine-smarte
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 128
+    frage: "Wie lernt eine KI exakt im Corporate Language Stil des Unternehmens zu antworten?"
+    slug: wie-lernt-eine-ki-exakt-im-corporate-language-stil
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 129
+    frage: "Können Übersetzungen einer Website in Echtzeit durch hochentwickelte KI fehlerfrei erfolgen?"
+    slug: koennen-uebersetzungen-einer-website-in-echtzeit-durch-hochentwickelte-ki
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 130
+    frage: "Wie lässt sich das Onboarding neuer Kunden über eine geschützte Web-Plattform automatisieren?"
+    slug: wie-laesst-sich-das-onboarding-neuer-kunden-ueber-eine
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 131
+    frage: "Welche Daten darf eine Website-KI verarbeiten, ohne gegen die DSGVO zu verstoßen?"
+    slug: welche-daten-darf-eine-website-ki-verarbeiten-ohne-gegen
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 132
+    frage: "Wie erstellt man dynamische Dashboards für Kunden, die sich automatisch aktualisieren?"
+    slug: wie-erstellt-man-dynamische-dashboards-fuer-kunden-die-sich
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 133
+    frage: "Können Rechnungen und Angebote nach einer Website-Aktion vollautomatisch erstellt werden?"
+    slug: koennen-rechnungen-und-angebote-nach-einer-website-aktion-vollautomatisch
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 134
+    frage: "Wie optimiert KI das Nutzerverhalten durch automatische A/B-Tests von Überschriften?"
+    slug: wie-optimiert-ki-das-nutzerverhalten-durch-automatische-a-b
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 135
+    frage: "Was ist der Unterschied zwischen einfacher regelbasierter Automation und echter KI auf Websites?"
+    slug: was-ist-der-unterschied-zwischen-einfacher-regelbasierter-automation-und
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 136
+    frage: "Wie hoch sind die API-Kosten für den Betrieb eines KI-Modells auf der eigenen Website?"
+    slug: wie-hoch-sind-die-api-kosten-fuer-den-betrieb
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 137
+    frage: "Welche Berufe in der Web-Erstellung werden durch KI ersetzt und welche werden wichtiger?"
+    slug: welche-berufe-in-der-web-erstellung-werden-durch-ki
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 138
+    frage: "Wie nutzt man KI zur präzisen Analyse der Absprungursachen auf einer Landingpage?"
+    slug: wie-nutzt-man-ki-zur-praezisen-analyse-der-absprungursachen
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 139
+    frage: "Kann eine KI barrierefreie Alternativtexte für alle Bilder einer Website autonom erstellen?"
+    slug: kann-eine-ki-barrierefreie-alternativtexte-fuer-alle-bilder-einer
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 140
+    frage: "Wie synchronisiert man Lagerbestände im Hintergrund automatisch mit der Website?"
+    slug: wie-synchronisiert-man-lagerbestaende-im-hintergrund-automatisch-mit-der
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 141
+    frage: "Wie steuert man E-Mail-Marketing-Sequenzen direkt nach einem Download auf der Website?"
+    slug: wie-steuert-man-e-mail-marketing-sequenzen-direkt-nach
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 142
+    frage: "Kann KI das Webdesign einer Seite basierend auf den Vorlieben des Betrachters anpassen?"
+    slug: kann-ki-das-webdesign-einer-seite-basierend-auf-den
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 143
+    frage: "Wie automatisiert man die Erstellung von Rechnungen bei digitalen Infoprodukten?"
+    slug: wie-automatisiert-man-die-erstellung-von-rechnungen-bei-digitalen
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 144
+    frage: "Warum scheitern einfache Plug-and-Play KI-Lösungen oft an den Erwartungen von Premium-Kunden?"
+    slug: warum-scheitern-einfache-plug-and-play-ki-loesungen-oft
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 145
+    frage: "Wie generiert man automatische SMS- oder WhatsApp-Benachrichtigungen bei Website-Leads?"
+    slug: wie-generiert-man-automatische-sms-oder-whatsapp-benachrichtigungen-bei
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 146
+    frage: "Wie hilft KI dabei, Trends im Suchverhalten der Kunden frühzeitig auf der Website abzubilden?"
+    slug: wie-hilft-ki-dabei-trends-im-suchverhalten-der-kunden
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 147
+    frage: "Kann eine Website Kundenbewertungen automatisch prüfen und freischalten?"
+    slug: kann-eine-website-kundenbewertungen-automatisch-pruefen-und-freischalten
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 148
+    frage: "Wie baut man ein automatisiertes FAQ-System auf, das sich durch Kundenfragen selbst erweitert?"
+    slug: wie-baut-man-ein-automatisiertes-faq-system-auf-das
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 149
+    frage: "Was sind die Grenzen der Automatisierung bei der Neukundengewinnung über das Web?"
+    slug: was-sind-die-grenzen-der-automatisierung-bei-der-neukundengewinnung
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 150
+    frage: "Wie verbindet man Altsysteme (Legacy-Software) über moderne Web-Schnittstellen mit der Cloud?"
+    slug: wie-verbindet-man-altsysteme-legacy-software-ueber-moderne-web
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 151
+    frage: "Welche Tools sind am besten geeignet, um Workflows zwischen Website und HR-Abteilung zu bauen?"
+    slug: welche-tools-sind-am-besten-geeignet-um-workflows-zwischen
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 152
+    frage: "Wie bleibt die menschliche Note auf einer Website trotz umfassender Automatisierung erhalten?"
+    slug: wie-bleibt-die-menschliche-note-auf-einer-website-trotz
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 153
+    frage: "Können komplexe Kalkulatoren auf Websites durch generative KI flexibler gestaltet werden?"
+    slug: koennen-komplexe-kalkulatoren-auf-websites-durch-generative-ki-flexibler
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 154
+    frage: "Wie analysiert man die Conversion-Trichter der Website vollautomatisch?"
+    slug: wie-analysiert-man-die-conversion-trichter-der-website-vollautomatisch
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 155
+    frage: "Welche Sicherheitsaudits sind für KI-gestützte Webseiten zwingend erforderlich?"
+    slug: welche-sicherheitsaudits-sind-fuer-ki-gestuetzte-webseiten-zwingend-erforderlich
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 156
+    frage: "Wie verändert Automatisierung die Erwartungshaltung von B2B-Einkäufern an eine Website?"
+    slug: wie-veraendert-automatisierung-die-erwartungshaltung-von-b2b-einkaeufern-an
+    cluster: 3
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 157
+    frage: "Wie sorgt man dafür, dass eine neue Website sofort im Google-Index landet?"
+    slug: wie-sorgt-man-dafuer-dass-eine-neue-website-sofort
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 158
+    frage: "Was ist Generative Engine Optimization (GEO) und warum ersetzt es klassisches SEO?"
+    slug: was-ist-generative-engine-optimization-geo-und-warum-ersetzt
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: true
+  - id: 159
+    frage: "Wie optimiert man Website-Inhalte für die KI-Suche von ChatGPT (Search), Perplexity und Google Gemini?"
+    slug: wie-optimiert-man-website-inhalte-fuer-die-ki-suche
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 160
+    frage: "Warum reicht ein gutes Google-Ranking 2026 nicht mehr aus, um Leads zu generieren?"
+    slug: warum-reicht-ein-gutes-google-ranking-2026-nicht-mehr
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 161
+    frage: "Wie zitiert eine KI-Suchmaschine eine Firmenwebsite als vertrauenswürdige Quelle?"
+    slug: wie-zitiert-eine-ki-suchmaschine-eine-firmenwebsite-als-vertrauenswuerdige
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 162
+    frage: "Was ist der Unterschied zwischen informationalem und transaktionalem Such-Intent?"
+    slug: was-ist-der-unterschied-zwischen-informationalem-und-transaktionalem-such
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 163
+    frage: "Wie führt man eine professionelle Keyword-Analyse durch, die echte Käufer anzieht?"
+    slug: wie-fuehrt-man-eine-professionelle-keyword-analyse-durch-die
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 164
+    frage: "Warum ist Local SEO für Unternehmen in Städten wie Wien oder Berlin überlebenswichtig?"
+    slug: warum-ist-local-seo-fuer-unternehmen-in-staedten-wie
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 165
+    frage: "Wie optimiert man den Google Business Profile Eintrag passend zur Website?"
+    slug: wie-optimiert-man-den-google-business-profile-eintrag-passend
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 166
+    frage: "Was sind Backlinks und warum ist ihre Qualität wichtiger als die reine Quantität?"
+    slug: was-sind-backlinks-und-warum-ist-ihre-qualitaet-wichtiger
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 167
+    frage: "Wie schaden toxische Links dem Ranking einer mühsam aufgebauten Website?"
+    slug: wie-schaden-toxische-links-dem-ranking-einer-muehsam-aufgebauten
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 168
+    frage: "Was versteht man unter E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) bei Google?"
+    slug: was-versteht-man-unter-e-e-a-t-experience
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 169
+    frage: "Warum straft Google kopierte Inhalte (Duplicate Content) konsequent ab?"
+    slug: warum-straft-google-kopierte-inhalte-duplicate-content-konsequent-ab
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 170
+    frage: "Wie schreibt man SEO-Texte, die für Suchmaschinen optimiert sind, aber menschlich klingen?"
+    slug: wie-schreibt-man-seo-texte-die-fuer-suchmaschinen-optimiert
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 171
+    frage: "Was ist der Unterschied zwischen On-Page- und Off-Page-SEO?"
+    slug: was-ist-der-unterschied-zwischen-on-page-und-off
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 172
+    frage: "Warum ist die XML-Sitemap wichtig und wie wird sie fehlerfrei generiert?"
+    slug: warum-ist-die-xml-sitemap-wichtig-und-wie-wird
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 173
+    frage: "Wie optimiert man die robots.txt-Datei, um wichtige Bereiche vor Bots zu schützen?"
+    slug: wie-optimiert-man-die-robots-txt-datei-um-wichtige
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 174
+    frage: "Was bedeuten strukturierte Daten (Schema.org) und wie helfen sie Suchmaschinen?"
+    slug: was-bedeuten-strukturierte-daten-schema-org-und-wie-helfen
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 175
+    frage: "Wie sorgt man dafür, dass Rich Snippets (z. B. Sterne-Bewertungen) in den Suchergebnissen erscheinen?"
+    slug: wie-sorgt-man-dafuer-dass-rich-snippets-z-b
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 176
+    frage: "Warum führt ein falscher Einsatz von kanonischen Tags (Canonical Tags) zu Ranking-Verlusten?"
+    slug: warum-fuehrt-ein-falscher-einsatz-von-kanonischen-tags-canonical
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 177
+    frage: "Wie bereitet man eine Website auf Sprachsuchanfragen (Voice Search Optimization) vor?"
+    slug: wie-bereitet-man-eine-website-auf-sprachsuchanfragen-voice-search
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 178
+    frage: "Warum ist die Optimierung für Bildersuche (Alt-Attribute, Dateinamen) ein unterschätzter Traffic-Bringer?"
+    slug: warum-ist-die-optimierung-fuer-bildersuche-alt-attribute-dateinamen
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 179
+    frage: "Wie funktioniert ein SEO-Audit für eine bestehende Firmenwebsite?"
+    slug: wie-funktioniert-ein-seo-audit-fuer-eine-bestehende-firmenwebsite
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 180
+    frage: "Warum führen fehlerhafte 404-Seiten ohne Weiterleitung zum Verlust von wertvollem Linkjuice?"
+    slug: warum-fuehren-fehlerhafte-404-seiten-ohne-weiterleitung-zum-verlust
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 181
+    frage: "Was ist eine 301-Weiterleitung und wann muss sie zwingend eingesetzt werden?"
+    slug: was-ist-eine-301-weiterleitung-und-wann-muss-sie
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 182
+    frage: "Wie oft sollte neuer Content auf dem Firmenblog veröffentlicht werden, um sichtbar zu bleiben?"
+    slug: wie-oft-sollte-neuer-content-auf-dem-firmenblog-veroeffentlicht
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 183
+    frage: "Warum führt eine schlechte interne Verlinkung dazu, dass wichtige Seiten nicht ranken?"
+    slug: warum-fuehrt-eine-schlechte-interne-verlinkung-dazu-dass-wichtige
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 184
+    frage: "Was sind Long-Tail-Keywords und warum konvertieren sie oft besser als kurze Suchbegriffe?"
+    slug: was-sind-long-tail-keywords-und-warum-konvertieren-sie
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 185
+    frage: "Wie überwacht man die Rankings seiner Website mit Tools wie der Google Search Console?"
+    slug: wie-ueberwacht-man-die-rankings-seiner-website-mit-tools
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 186
+    frage: "Was ist der Unterschied zwischen organischem Traffic und bezahlter Werbung (Google Ads)?"
+    slug: was-ist-der-unterschied-zwischen-organischem-traffic-und-bezahlter
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 187
+    frage: "Wie verhindert man, dass Suchmaschinen-Crawler die Website durch endlose Filterseiten überlasten?"
+    slug: wie-verhindert-man-dass-suchmaschinen-crawler-die-website-durch
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 188
+    frage: "Warum sinken die Rankings nach einem Website-Relaunch oft ab und wie verhindert man das?"
+    slug: warum-sinken-die-rankings-nach-einem-website-relaunch-oft
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 189
+    frage: "Was ist der Sichtbarkeitsindex und wie verlässlich ist diese Kennzahl?"
+    slug: was-ist-der-sichtbarkeitsindex-und-wie-verlaesslich-ist-diese
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 190
+    frage: "Wie optimiert man eine Website für internationale Märkte (Hreflang-Tags)?"
+    slug: wie-optimiert-man-eine-website-fuer-internationale-maerkte-hreflang
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 191
+    frage: "Warum ist der Anchor-Text (Linktext) bei internen Links entscheidend für den SEO-Erfolg?"
+    slug: warum-ist-der-anchor-text-linktext-bei-internen-links
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 192
+    frage: "Wie entfernt man veraltete oder ungewollte Seiten dauerhaft aus dem Google-Index?"
+    slug: wie-entfernt-man-veraltete-oder-ungewollte-seiten-dauerhaft-aus
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 193
+    frage: "Was ist die Search Intent Fracture und warum passen alte Blogartikel oft nicht mehr zum Suchverhalten?"
+    slug: was-ist-die-search-intent-fracture-und-warum-passen
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 194
+    frage: "Wie optimiert man Content für Kategorieseiten im E-Commerce?"
+    slug: wie-optimiert-man-content-fuer-kategorieseiten-im-e-commerce
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 195
+    frage: "Warum ist eine flache Website-Hierarchie (maximal 3 Klicks bis zu jeder Seite) besser für SEO?"
+    slug: warum-ist-eine-flache-website-hierarchie-maximal-3-klicks
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 196
+    frage: "Wie beeinflussen Nutzersignale (wie die Verweildauer) das organische Ranking?"
+    slug: wie-beeinflussen-nutzersignale-wie-die-verweildauer-das-organische-ranking
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 197
+    frage: "Was versteht man unter „Pogo-Sticking“ und warum wertet Google das als negatives Signal?"
+    slug: was-versteht-man-unter-pogo-sticking-und-warum-wertet
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 198
+    frage: "Wie nutzt man FAQ-Bereiche strategisch, um in den PAA-Boxen von Google zu erscheinen?"
+    slug: wie-nutzt-man-faq-bereiche-strategisch-um-in-den
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 199
+    frage: "Warum ist semantische Suche wichtiger geworden als das bloße Zählen von Keyword-Dichten?"
+    slug: warum-ist-semantische-suche-wichtiger-geworden-als-das-blosse
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 200
+    frage: "Wie schützt man seine Website vor negativem SEO durch Konkurrenten?"
+    slug: wie-schuetzt-man-seine-website-vor-negativem-seo-durch
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 201
+    frage: "Was ist der Unterschied zwischen Noindex und Nofollow Attributen?"
+    slug: was-ist-der-unterschied-zwischen-noindex-und-nofollow-attributen
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 202
+    frage: "Warum ist Content Decay ein Problem und wie aktualisiert man alte Inhalte richtig?"
+    slug: warum-ist-content-decay-ein-problem-und-wie-aktualisiert
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 203
+    frage: "Wie optimiert man PDF-Dokumente auf der Website, damit sie in der Suche ranken?"
+    slug: wie-optimiert-man-pdf-dokumente-auf-der-website-damit
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 204
+    frage: "Wie wichtig ist die Domain-Endung (.at, .de, .ch vs. .com) für das lokale Ranking?"
+    slug: wie-wichtig-ist-die-domain-endung-at-de-ch
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 205
+    frage: "Wie findet man heraus, für welche Suchbegriffe die direkte Konkurrenz organischen Traffic bekommt?"
+    slug: wie-findet-man-heraus-fuer-welche-suchbegriffe-die-direkte
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 206
+    frage: "Warum sollten Fokus-Keywords nicht auf mehreren Unterseiten gleichzeitig optimiert werden (Keyword-Kannibalisierung)?"
+    slug: warum-sollten-fokus-keywords-nicht-auf-mehreren-unterseiten-gleichzeitig
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 207
+    frage: "Wie nutzt man das Hub-and-Spoke-Modell (Themencluster) für maximale Themenautorität?"
+    slug: wie-nutzt-man-das-hub-and-spoke-modell-themencluster
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 208
+    frage: "Wie bereitet man die SEO-Strategie auf radikale Updates des Google-Algorithmus vor?"
+    slug: wie-bereitet-man-die-seo-strategie-auf-radikale-updates
+    cluster: 4
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 209
+    frage: "Was ist der Unterschied zwischen reinem Grafikdesign und funktionalem User Experience (UX) Design?"
+    slug: was-ist-der-unterschied-zwischen-reinem-grafikdesign-und-funktionalem
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: true
+  - id: 210
+    frage: "Warum konvertieren minimalistische Website-Layouts im Premium-Segment besser als überladene Designs?"
+    slug: warum-konvertieren-minimalistische-website-layouts-im-premium-segment-besser
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 211
+    frage: "Wie beeinflusst die Farbpsychologie im Webdesign das Kaufverhalten von Website-Besuchern?"
+    slug: wie-beeinflusst-die-farbpsychologie-im-webdesign-das-kaufverhalten-von
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 212
+    frage: "Was macht eine Typografie (Schriftauswahl) exklusiv und gut lesbar auf Bildschirmen?"
+    slug: was-macht-eine-typografie-schriftauswahl-exklusiv-und-gut-lesbar
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 213
+    frage: "Warum ist der Bereich „Above the Fold“ (ohne Scrollen sichtbar) der wichtigste Teil der Website?"
+    slug: warum-ist-der-bereich-above-the-fold-ohne-scrollen
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 214
+    frage: "Wie lenkt man das Auge des Besuchers gezielt zu den wichtigsten Call-to-Action (CTA) Elementen?"
+    slug: wie-lenkt-man-das-auge-des-besuchers-gezielt-zu
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 215
+    frage: "Was versteht man unter der „F-Form-Leserichtung“ und wie nutzt man sie im Layout?"
+    slug: was-versteht-man-unter-der-f-form-leserichtung-und
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 216
+    frage: "Warum sind echte Mitarbeiterfotos im B2B-Bereich effektiver als generische Stock-Bilder?"
+    slug: warum-sind-echte-mitarbeiterfotos-im-b2b-bereich-effektiver-als
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 217
+    frage: "Wie baut man eine emotionale Bindung zur Marke über das digitale Design auf?"
+    slug: wie-baut-man-eine-emotionale-bindung-zur-marke-ueber
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 218
+    frage: "Was ist White Space (Leerraum) und warum ist er ein Qualitätsmerkmal im Premium-Design?"
+    slug: was-ist-white-space-leerraum-und-warum-ist-er
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 219
+    frage: "Wie sorgt ein konsistentes Designsystem (UI-Kit) für Professionalität auf allen Unterseiten?"
+    slug: wie-sorgt-ein-konsistentes-designsystem-ui-kit-fuer-professionalitaet
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 220
+    frage: "Warum scheitern kreative, unkonventionelle Navigationsmenüs meistens an der Usability?"
+    slug: warum-scheitern-kreative-unkonventionelle-navigationsmenues-meistens-an-der-usability
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 221
+    frage: "Wie gestaltet man Kontaktformulare so, dass die Abbruchrate minimiert wird?"
+    slug: wie-gestaltet-man-kontaktformulare-so-dass-die-abbruchrate-minimiert
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 222
+    frage: "Was ist der Hero-Bereich und welche 3 Fragen muss er innerhalb von 3 Sekunden beantworten?"
+    slug: was-ist-der-hero-bereich-und-welche-3-fragen
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 223
+    frage: "Wie integriert man Videos auf der Website, ohne das Design oder den Lesefluss zu stören?"
+    slug: wie-integriert-man-videos-auf-der-website-ohne-das
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 224
+    frage: "Was versteht man unter „Visual Hierarchy“ (visueller Hierarchie) im Webdesign?"
+    slug: was-versteht-man-unter-visual-hierarchy-visueller-hierarchie-im
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 225
+    frage: "Warum ist ein Dark Mode für bestimmte Branchen sinnvoll und für andere nicht?"
+    slug: warum-ist-ein-dark-mode-fuer-bestimmte-branchen-sinnvoll
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 226
+    frage: "Wie stellt man sicher, dass das Branding gedruckter Broschüren exakt digital übersetzt wird?"
+    slug: wie-stellt-man-sicher-dass-das-branding-gedruckter-broschueren
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 227
+    frage: "Was macht ein Kunden-Dashboard im B2B-Bereich intuitiv bedienbar?"
+    slug: was-macht-ein-kunden-dashboard-im-b2b-bereich-intuitiv
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 228
+    frage: "Wie optimiert man Produktseiten im Online-Shop für eine maximale Conversion Rate?"
+    slug: wie-optimiert-man-produktseiten-im-online-shop-fuer-eine
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 229
+    frage: "Warum führen zu viele Animationen und Effekte zu einer Abwertung der Markenwahrnehmung?"
+    slug: warum-fuehren-zu-viele-animationen-und-effekte-zu-einer
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 230
+    frage: "Wie nutzt man Mikro-Interaktionen, um die User Experience unbemerkt zu verbessern?"
+    slug: wie-nutzt-man-mikro-interaktionen-um-die-user-experience
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 231
+    frage: "Was ist der Unterschied zwischen Mobile-First- und Desktop-First-Design?"
+    slug: was-ist-der-unterschied-zwischen-mobile-first-und-desktop
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 232
+    frage: "Wie baut man Social Proof (Bewertungen, Kundenzitate) elegant in ein Premium-Design ein?"
+    slug: wie-baut-man-social-proof-bewertungen-kundenzitate-elegant-in
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 233
+    frage: "Warum ist die Gestaltung des Footers (Seitenfuß) entscheidend für das Vertrauen der Nutzer?"
+    slug: warum-ist-die-gestaltung-des-footers-seitenfuss-entscheidend-fuer
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 234
+    frage: "Wie vermeidet man optische Brüche beim Wechsel von der Hauptwebsite zu externen Tools (z. B. Buchungstools)?"
+    slug: wie-vermeidet-man-optische-brueche-beim-wechsel-von-der
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 235
+    frage: "Was versteht man unter Barrierefreiheit im Webdesign und wie setzt man sie ästhetisch um?"
+    slug: was-versteht-man-unter-barrierefreiheit-im-webdesign-und-wie
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 236
+    frage: "Wie wirken quadratische vs. runde Designelemente auf den Betrachter?"
+    slug: wie-wirken-quadratische-vs-runde-designelemente-auf-den-betrachter
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 237
+    frage: "Warum sollten wichtige Texte niemals als Bilddatei abgespeichert in die Website eingebunden werden?"
+    slug: warum-sollten-wichtige-texte-niemals-als-bilddatei-abgespeichert-in
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 238
+    frage: "Wie testet man das Design einer Website vor dem Launch mit echten Testnutzern (Usability Testing)?"
+    slug: wie-testet-man-das-design-einer-website-vor-dem
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 239
+    frage: "Was macht eine Team-Seite authentisch und sympathisch für potenzielle Bewerber?"
+    slug: was-macht-eine-team-seite-authentisch-und-sympathisch-fuer
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 240
+    frage: "Wie visualisiert man komplexe Dienstleistungen oder Datenströme durch sauberes Infodesign?"
+    slug: wie-visualisiert-man-komplexe-dienstleistungen-oder-datenstroeme-durch-sauberes
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 241
+    frage: "Warum ist der Kontrast zwischen Text und Hintergrund ein wichtiges UX-Kriterium?"
+    slug: warum-ist-der-kontrast-zwischen-text-und-hintergrund-ein
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 242
+    frage: "Wie gestaltet man Preistabellen so, dass das favorisierte Angebot sofort ins Auge sticht?"
+    slug: wie-gestaltet-man-preistabellen-so-dass-das-favorisierte-angebot
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 243
+    frage: "Was ist der Unterschied zwischen UI (User Interface) und UX (User Experience)?"
+    slug: was-ist-der-unterschied-zwischen-ui-user-interface-und
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 244
+    frage: "Warum zerstören Cookie-Banner oft das gesamte visuelle Premium-Erlebnis und wie löst man das?"
+    slug: warum-zerstoeren-cookie-banner-oft-das-gesamte-visuelle-premium
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 245
+    frage: "Wie sorgt man für eine konsistente Markenwahrnehmung bei internationalen, mehrsprachigen Webseiten?"
+    slug: wie-sorgt-man-fuer-eine-konsistente-markenwahrnehmung-bei-internationalen
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 246
+    frage: "Warum ist das Laden von Standard-Systemschriftarten manchmal die beste Design-Entscheidung?"
+    slug: warum-ist-das-laden-von-standard-systemschriftarten-manchmal-die
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 247
+    frage: "Wie inszeniert man exklusive Immobilien oder physische Premium-Produkte auf einer Website?"
+    slug: wie-inszeniert-man-exklusive-immobilien-oder-physische-premium-produkte
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 248
+    frage: "Was sind Sticky-Menüs und wann verbessern sie die Navigation auf langen Seiten?"
+    slug: was-sind-sticky-menues-und-wann-verbessern-sie-die
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 249
+    frage: "Warum führt ein Mangel an Whitespace dazu, dass Angebote billig wirken?"
+    slug: warum-fuehrt-ein-mangel-an-whitespace-dazu-dass-angebote
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 250
+    frage: "Wie nutzt man Icons und Symbole richtig, ohne dass die Website wie ein Comic wirkt?"
+    slug: wie-nutzt-man-icons-und-symbole-richtig-ohne-dass
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 251
+    frage: "Wie verhindert man, dass Slider oder Karussell-Elemente die Aufmerksamkeit der Nutzer zerstören?"
+    slug: wie-verhindert-man-dass-slider-oder-karussell-elemente-die
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 252
+    frage: "Was macht ein überzeugendes Storytelling-Layout für eine Brand-Story aus?"
+    slug: was-macht-ein-ueberzeugendes-storytelling-layout-fuer-eine-brand
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 253
+    frage: "Wie optimiert man Suchbalken-Designs für inhaltsstarke Plattformen?"
+    slug: wie-optimiert-man-suchbalken-designs-fuer-inhaltsstarke-plattformen
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 254
+    frage: "Warum sind klare Kanten und Symmetrie im Corporate Design oft sicherer als organische Formen?"
+    slug: warum-sind-klare-kanten-und-symmetrie-im-corporate-design
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 255
+    frage: "Wie transportiert man Exklusivität über das Webdesign, ohne arrogant zu wirken?"
+    slug: wie-transportiert-man-exklusivitaet-ueber-das-webdesign-ohne-arrogant
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 256
+    frage: "Wie visualisiert man Fallstudien (Case Studies) so, dass der geschäftliche Erfolg sofort sichtbar wird?"
+    slug: wie-visualisiert-man-fallstudien-case-studies-so-dass-der
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 257
+    frage: "Warum sollten Hover-Effekte auf Desktop-Websites immer ein visuelles Feedback geben?"
+    slug: warum-sollten-hover-effekte-auf-desktop-websites-immer-ein
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 258
+    frage: "Wie verhindert man, dass Breadcrumb-Navigationen das Layout auf mobilen Geräten zerstören?"
+    slug: wie-verhindert-man-dass-breadcrumb-navigationen-das-layout-auf
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 259
+    frage: "Was macht ein gelungenes Redesign aus, ohne bestehende Stammkunden zu verwirren?"
+    slug: was-macht-ein-gelungenes-redesign-aus-ohne-bestehende-stammkunden
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 260
+    frage: "Wie misst man die emotionale Wirkung eines Webdesigns im Rahmen des Markenaufbaus?"
+    slug: wie-misst-man-die-emotionale-wirkung-eines-webdesigns-im
+    cluster: 5
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 261
+    frage: "Welche rechtlichen Pflichtangaben gehören zwingend in ein Impressum in Österreich/Deutschland?"
+    slug: welche-rechtlichen-pflichtangaben-gehoeren-zwingend-in-ein-impressum-in
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 262
+    frage: "Wie setzt man die DSGVO auf einer Unternehmenswebsite lückenlos und abmahnsicher um?"
+    slug: wie-setzt-man-die-dsgvo-auf-einer-unternehmenswebsite-lueckenlos
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: true
+  - id: 263
+    frage: "Warum ist das unverschlüsselte Laden von externen Google Fonts ein akutes Abmahnrisiko?"
+    slug: warum-ist-das-unverschluesselte-laden-von-externen-google-fonts
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 264
+    frage: "Wann ist ein Cookie-Consent-Banner rechtlich zwingend erforderlich und wann reicht berechtigtes Interesse?"
+    slug: wann-ist-ein-cookie-consent-banner-rechtlich-zwingend-erforderlich
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 265
+    frage: "Wie müssen Kontaktformulare rechtlich gestaltet sein (Stichwort: Datensparsamkeit)?"
+    slug: wie-muessen-kontaktformulare-rechtlich-gestaltet-sein-stichwort-datensparsamkeit
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 266
+    frage: "Was droht Unternehmen bei Verstößen gegen das Barrierefreiheit-Stärkungsgesetz (BFSG)?"
+    slug: was-droht-unternehmen-bei-verstoessen-gegen-das-barrierefreiheit-staerkungsgesetz
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+    demo: true
+  - id: 267
+    frage: "Welche Webseiten müssen zwingend barrierefrei sein und welche Übergangsfristen gelten?"
+    slug: welche-webseiten-muessen-zwingend-barrierefrei-sein-und-welche-uebergangsfristen
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 268
+    frage: "Wie formuliert man eine Datenschutzerklärung, die den aktuellen Anforderungen der Rechtsprechung entspricht?"
+    slug: wie-formuliert-man-eine-datenschutzerklaerung-die-den-aktuellen-anforderungen
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 269
+    frage: "Warum ist ein SSL-Zertifikat (HTTPS) gesetzlich für fast alle Webseiten vorgeschrieben?"
+    slug: warum-ist-ein-ssl-zertifikat-https-gesetzlich-fuer-fast
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 270
+    frage: "Wer haftet bei Urheberrechtsverletzungen durch Bilder, die von der Agentur oder dem Kunden hochgeladen wurden?"
+    slug: wer-haftet-bei-urheberrechtsverletzungen-durch-bilder-die-von-der
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 271
+    frage: "Wie bindet man YouTube-Videos oder Google Maps rechtssicher ein (Zwei-Klick-Lösung)?"
+    slug: wie-bindet-man-youtube-videos-oder-google-maps-rechtssicher
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 272
+    frage: "Was muss beim rechtssicheren Betrieb eines Newsletters über die Website beachtet werden (Double-Opt-In)?"
+    slug: was-muss-beim-rechtssicheren-betrieb-eines-newsletters-ueber-die
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 273
+    frage: "Welche rechtlichen Besonderheiten gelten für Online-Shops im B2B- vs. B2C-Bereich?"
+    slug: welche-rechtlichen-besonderheiten-gelten-fuer-online-shops-im-b2b
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 274
+    frage: "Warum ist ein „Impressum“-Link, der erst durch langes Suchen oder Scrollen auffindbar ist, illegal?"
+    slug: warum-ist-ein-impressum-link-der-erst-durch-langes
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 275
+    frage: "Wie sichert man Kunden- und Formulardaten auf dem Transportweg zum Server richtig ab?"
+    slug: wie-sichert-man-kunden-und-formulardaten-auf-dem-transportweg
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 276
+    frage: "Was ist eine Auftragsverarbeitungs-Vereinbarung (AVV) und wann muss sie mit dem Hoster geschlossen werden?"
+    slug: was-ist-eine-auftragsverarbeitungs-vereinbarung-avv-und-wann-muss
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 277
+    frage: "Warum dürfen Analyse-Tools wie Google Analytics nicht ohne Einwilligung des Nutzers Daten erfassen?"
+    slug: warum-duerfen-analyse-tools-wie-google-analytics-nicht-ohne
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 278
+    frage: "Welche Strafen sieht die DSGVO bei schwerwiegenden Datenlecks auf Webseiten vor?"
+    slug: welche-strafen-sieht-die-dsgvo-bei-schwerwiegenden-datenlecks-auf
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 279
+    frage: "Wie schützt man eine WordPress-Website vor Brute-Force-Angriffen auf das Login-Fenster?"
+    slug: wie-schuetzt-man-eine-wordpress-website-vor-brute-force
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 280
+    frage: "Was ist Cross-Site Scripting (XSS) und wie verhindern Entwickler diese Sicherheitslücke?"
+    slug: was-ist-cross-site-scripting-xss-und-wie-verhindern
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 281
+    frage: "Warum sind regelmäßige Backups der Website-Daten nicht nur eine Sicherheits-, sondern eine Existenzfrage?"
+    slug: warum-sind-regelmaessige-backups-der-website-daten-nicht-nur
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 282
+    frage: "Wo liegt der rechtliche Unterschied zwischen einer Datenschutzerklärung und den Allgemeinen Geschäftsbedingungen (AGB)?"
+    slug: wo-liegt-der-rechtliche-unterschied-zwischen-einer-datenschutzerklaerung-und
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 283
+    frage: "Was muss ein Unternehmen tun, wenn die Firmenwebsite gehackt und Kundendaten gestohlen wurden?"
+    slug: was-muss-ein-unternehmen-tun-wenn-die-firmenwebsite-gehackt
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 284
+    frage: "Sind KI-generierte Texte und Bilder auf der Website urheberrechtlich geschützt?"
+    slug: sind-ki-generierte-texte-und-bilder-auf-der-website
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 285
+    frage: "Wie geht man rechtssicher mit Kundenbewertungen um, um Schleichwerbung oder Fake-Vorwürfe zu vermeiden?"
+    slug: wie-geht-man-rechtssicher-mit-kundenbewertungen-um-um-schleichwerbung
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 286
+    frage: "Was ist SQL-Injection und warum sind maßgeschneiderte Frameworks oft resistenter dagegen?"
+    slug: was-ist-sql-injection-und-warum-sind-massgeschneiderte-frameworks
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 287
+    frage: "Warum ist das Speichern von Passwörtern im Klartext in einer Website-Datenbank grob fahrlässig?"
+    slug: warum-ist-das-speichern-von-passwoertern-im-klartext-in
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 288
+    frage: "Welche Sicherheitsstandards (z. B. ISO 27001) sollten moderne Webhoster erfüllen?"
+    slug: welche-sicherheitsstandards-z-b-iso-27001-sollten-moderne-webhoster
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 289
+    frage: "Wie setzt man Zwei-Faktor-Authentisierung (2FA) für den Admin-Bereich der Website um?"
+    slug: wie-setzt-man-zwei-faktor-authentisierung-2fa-fuer-den
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 290
+    frage: "Warum sind veraltete PHP-Versionen auf dem Server ein massives Sicherheitsrisiko?"
+    slug: warum-sind-veraltete-php-versionen-auf-dem-server-ein
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 291
+    frage: "Was ist eine Content Security Policy (CSP) und wie schützt sie die Website?"
+    slug: was-ist-eine-content-security-policy-csp-und-wie
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 292
+    frage: "Wann müssen Social-Media-Icons (wie LinkedIn oder Instagram) als reiner Link statt als Plugin eingebunden werden?"
+    slug: wann-muessen-social-media-icons-wie-linkedin-oder-instagram
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 293
+    frage: "Welche rechtlichen Regeln gelten für Gewinnspiele, die über die Website abgewickelt werden?"
+    slug: welche-rechtlichen-regeln-gelten-fuer-gewinnspiele-die-ueber-die
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 294
+    frage: "Warum ist die Zweckbindung bei der Erfassung von Bewerberdaten über ein Karriereportal wichtig?"
+    slug: warum-ist-die-zweckbindung-bei-der-erfassung-von-bewerberdaten
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 295
+    frage: "Wie schützt man Dateiuploads (z. B. PDF-Bewerbungen) im Karrierebereich vor Schadsoftware?"
+    slug: wie-schuetzt-man-dateiuploads-z-b-pdf-bewerbungen-im
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 296
+    frage: "Was ist DDoS-Schutz (Distributed Denial of Service) und wann benötigt eine Website diesen?"
+    slug: was-ist-ddos-schutz-distributed-denial-of-service-und
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 297
+    frage: "Wie prüft man, ob das genutzte Cookie-Banner die Skripte wirklich erst *nach* dem Klick blockiert oder zulässt?"
+    slug: wie-prueft-man-ob-das-genutzte-cookie-banner-die
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 298
+    frage: "Warum sind Disclaimer („Mit Urteil vom... distanziere ich mich von Links“) rechtlich nutzlos und veraltet?"
+    slug: warum-sind-disclaimer-mit-urteil-vom-distanziere-ich-mich
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 299
+    frage: "Welche Kennzeichnungspflichten gelten für Affiliate-Links oder gesponserte Inhalte auf Blogs?"
+    slug: welche-kennzeichnungspflichten-gelten-fuer-affiliate-links-oder-gesponserte-inhalte
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 300
+    frage: "Wie setzt man die Altersverifikation auf Webseiten rechtssicher um?"
+    slug: wie-setzt-man-die-altersverifikation-auf-webseiten-rechtssicher-um
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 301
+    frage: "Warum ist der unbefugte Zugriff auf die Konfigurationsdateien (z.B. .env oder wp-config.php) fatal?"
+    slug: warum-ist-der-unbefugte-zugriff-auf-die-konfigurationsdateien-z
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 302
+    frage: "Wie stellt man sicher, dass Subunternehmer (z. B. externe Texter) die DSGVO-Vorgaben einhalten?"
+    slug: wie-stellt-man-sicher-dass-subunternehmer-z-b-externe
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 303
+    frage: "Was ist der Unterschied zwischen einer Abmahnung durch einen Konkurrenten und einer Strafe durch die Datenschutzbehörde?"
+    slug: was-ist-der-unterschied-zwischen-einer-abmahnung-durch-einen
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 304
+    frage: "Wie rechtssicher sind länderspezifische Einschränkungen von Inhalten (Geoblocking)?"
+    slug: wie-rechtssicher-sind-laenderspezifische-einschraenkungen-von-inhalten-geoblocking
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 305
+    frage: "Warum ist ein automatisierter Sicherheits-Scan der Website einmal pro Woche sinnvoll?"
+    slug: warum-ist-ein-automatisierter-sicherheits-scan-der-website-einmal
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 306
+    frage: "Welche Rechte haben Webseiten-Besucher bezüglich Auskunft und Löschung ihrer gespeicherten Daten?"
+    slug: welche-rechte-haben-webseiten-besucher-bezueglich-auskunft-und-loeschung
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 307
+    frage: "Wie bindet man Webanalyse-Tools wie Matomo datenschutzkonform ohne Cookies ein?"
+    slug: wie-bindet-man-webanalyse-tools-wie-matomo-datenschutzkonform-ohne
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 308
+    frage: "Warum ist ein fehlerhaftes SSL-Zertifikat ein geschäftsschädigender Faktor für das Kundenvertrauen?"
+    slug: warum-ist-ein-fehlerhaftes-ssl-zertifikat-ein-geschaeftsschaedigender-faktor
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 309
+    frage: "Welche rechtlichen Fallen drohen bei der Übernahme von Inhalten aus einer alten Website auf eine neue?"
+    slug: welche-rechtlichen-fallen-drohen-bei-der-uebernahme-von-inhalten
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 310
+    frage: "Wie müssen Preise im Online-Shop für Endverbraucher korrekt ausgewiesen werden (Grundpreisverordnung)?"
+    slug: wie-muessen-preise-im-online-shop-fuer-endverbraucher-korrekt
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 311
+    frage: "Wer dokumentiert die rechtssichere Einwilligung (Consent-Log) bei Cookie-Bannern und wie lange muss diese aufgehoben werden?"
+    slug: wer-dokumentiert-die-rechtssichere-einwilligung-consent-log-bei-cookie
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 312
+    frage: "Wie reagiert man am besten auf eine unberechtigte oder automatisierte Massenabmahnung?"
+    slug: wie-reagiert-man-am-besten-auf-eine-unberechtigte-oder
+    cluster: 6
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 313
+    frage: "Warum ist eine Website mit dem Tag des Live-Gangs nicht „fertig“, sondern der Startpunkt?"
+    slug: warum-ist-eine-website-mit-dem-tag-des-live
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: true
+  - id: 314
+    frage: "Was beinhaltet eine professionelle Website-Wartung durch eine Agentur im Detail?"
+    slug: was-beinhaltet-eine-professionelle-website-wartung-durch-eine-agentur
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 315
+    frage: "Wie oft müssen Content-Management-Systeme und Plugins upgedatet werden?"
+    slug: wie-oft-muessen-content-management-systeme-und-plugins-upgedatet
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 316
+    frage: "Warum zerschießt ein unkontrolliertes Update oft das Design oder die Funktionen einer Website?"
+    slug: warum-zerschiesst-ein-unkontrolliertes-update-oft-das-design-oder
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 317
+    frage: "Wie analysiert man das Nutzerverhalten legal, um Schwachstellen im Conversion-Trichter zu finden?"
+    slug: wie-analysiert-man-das-nutzerverhalten-legal-um-schwachstellen-im
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 318
+    frage: "Was ist der Unterschied zwischen Google Analytics und datenschutzfreundlichen Alternativen wie Fathom oder Plausible?"
+    slug: was-ist-der-unterschied-zwischen-google-analytics-und-datenschutzfreundlichen
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 319
+    frage: "Wie interpretiert man Kennzahlen wie die Absprungrate (Bounce Rate) im Kontext der Content-Qualität?"
+    slug: wie-interpretiert-man-kennzahlen-wie-die-absprungrate-bounce-rate
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 320
+    frage: "Warum ist eine hohe Verweildauer (Time on Page) nicht immer ein positives Zeichen?"
+    slug: warum-ist-eine-hohe-verweildauer-time-on-page-nicht
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 321
+    frage: "Wie führt man erfolgreiche A/B-Tests durch, um Landingpages schrittweise zu optimieren?"
+    slug: wie-fuehrt-man-erfolgreiche-a-b-tests-durch-um
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 322
+    frage: "Warum veralten Texte und Angebote auf Firmenwebsites oft schneller, als das Management denkt?"
+    slug: warum-veralten-texte-und-angebote-auf-firmenwebsites-oft-schneller
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 323
+    frage: "Wie schult man Mitarbeiter im Unternehmen, damit sie News und Blogbeiträge fehlerfrei selbst einpflegen können?"
+    slug: wie-schult-man-mitarbeiter-im-unternehmen-damit-sie-news
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 324
+    frage: "Was versteht man unter Content Decay und wie rettet man sinkenden organischen Traffic?"
+    slug: was-versteht-man-unter-content-decay-und-wie-rettet
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 325
+    frage: "Wie oft sollte das visuelle Design einer Website modernisiert werden (Relaunch-Zyklen)?"
+    slug: wie-oft-sollte-das-visuelle-design-einer-website-modernisiert
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 326
+    frage: "Warum sind regelmäßige Backups auf externen Servern der beste Schutz vor digitalem Totalverlust?"
+    slug: warum-sind-regelmaessige-backups-auf-externen-servern-der-beste
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 327
+    frage: "Wie monitort man die Uptime (Verfügbarkeit) einer Website rund um die Uhr automatisch?"
+    slug: wie-monitort-man-die-uptime-verfuegbarkeit-einer-website-rund
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 328
+    frage: "Was tun, wenn ein bestimmtes Plugin nicht mehr vom Entwickler unterstützt wird und Sicherheitslücken aufweist?"
+    slug: was-tun-wenn-ein-bestimmtes-plugin-nicht-mehr-vom
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 329
+    frage: "Wie nutzt man Heatmaps, um zu sehen, wie weit Besucher auf einer Seite wirklich scrollen?"
+    slug: wie-nutzt-man-heatmaps-um-zu-sehen-wie-weit
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 330
+    frage: "Warum ist ein monatliches SEO-Monitoring wichtig, um verlorene Rankings sofort zu korrigieren?"
+    slug: warum-ist-ein-monatliches-seo-monitoring-wichtig-um-verlorene
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 331
+    frage: "Wie integriert man ein neues Produkt oder eine neue Dienstleistung nahtlos in eine bestehende Website-Struktur?"
+    slug: wie-integriert-man-ein-neues-produkt-oder-eine-neue
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 332
+    frage: "Was ist der Customer Lifetime Value im Kontext einer kontinuierlich optimierten Website?"
+    slug: was-ist-der-customer-lifetime-value-im-kontext-einer
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 333
+    frage: "Wie erkennt man fehlerhafte Links (Broken Links) auf der eigenen Seite und wie repariert man sie?"
+    slug: wie-erkennt-man-fehlerhafte-links-broken-links-auf-der
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 334
+    frage: "Warum führt das unkoordinierte Löschen von alten Unterseiten zu massiven Google-Ranking-Verlusten?"
+    slug: warum-fuehrt-das-unkoordinierte-loeschen-von-alten-unterseiten-zu
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 335
+    frage: "Wie liest man Berichte zur mobilen Nutzerfreundlichkeit in der Google Search Console richtig?"
+    slug: wie-liest-man-berichte-zur-mobilen-nutzerfreundlichkeit-in-der
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 336
+    frage: "Was tun, wenn der Webhoster die Server-Performance drosselt, weil der Traffic steigt?"
+    slug: was-tun-wenn-der-webhoster-die-server-performance-drosselt
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 337
+    frage: "Wie hängen technische Wartung und Suchmaschinen-Rankings direkt zusammen?"
+    slug: wie-haengen-technische-wartung-und-suchmaschinen-rankings-direkt-zusammen
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 338
+    frage: "Warum sollten ungenutzte Themes, Plugins oder Code-Fragmente konsequent gelöscht werden?"
+    slug: warum-sollten-ungenutzte-themes-plugins-oder-code-fragmente-konsequent
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 339
+    frage: "Wie optimiert man die interne Suchfunktion der Website anhand der echten Suchanfragen der Besucher?"
+    slug: wie-optimiert-man-die-interne-suchfunktion-der-website-anhand
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 340
+    frage: "Was ist der Unterschied zwischen einem technischen Fehler und einem logischen UX-Fehler auf einer Website?"
+    slug: was-ist-der-unterschied-zwischen-einem-technischen-fehler-und
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 341
+    frage: "Wie trackt man Datei-Downloads (z. B. Whitepaper-PDFs) DSGVO-konform?"
+    slug: wie-trackt-man-datei-downloads-z-b-whitepaper-pdfs
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 342
+    frage: "Warum scheitern viele KMUs daran, ihre Website als aktiven Vertriebskanal weiterzuentwickeln?"
+    slug: warum-scheitern-viele-kmus-daran-ihre-website-als-aktiven
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 343
+    frage: "Wie erstellt man einen Redaktionsplan für die Website, der strategisch auf die Quartalsziele einzahlt?"
+    slug: wie-erstellt-man-einen-redaktionsplan-fuer-die-website-der
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 344
+    frage: "Was ist der Unterschied zwischen Core-Updates und Sicherheits-Patches?"
+    slug: was-ist-der-unterschied-zwischen-core-updates-und-sicherheits
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 345
+    frage: "Wie schützt man Bilder auf der eigenen Website vor automatisiertem Scraping durch fremde KI-Modelle?"
+    slug: wie-schuetzt-man-bilder-auf-der-eigenen-website-vor
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 346
+    frage: "Warum ist die Ladezeit-Optimierung ein fortlaufender Prozess und keine einmalige Aufgabe?"
+    slug: warum-ist-die-ladezeit-optimierung-ein-fortlaufender-prozess-und
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 347
+    frage: "Wie verknüpft man das Website-Tracking mit den KPIs der gesamten Marketing-Abteilung?"
+    slug: wie-verknuepft-man-das-website-tracking-mit-den-kpis
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 348
+    frage: "Was tun, wenn nach einem Update das Kontaktformular keine E-Mails mehr sendet?"
+    slug: was-tun-wenn-nach-einem-update-das-kontaktformular-keine
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 349
+    frage: "Wie nutzt man User-Feedback-Tools direkt auf der Website, um qualitative Daten zu sammeln?"
+    slug: wie-nutzt-man-user-feedback-tools-direkt-auf-der
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 350
+    frage: "Warum ist die Pflege der PHP- oder Node-Version auf dem Server Teil der normalen Website-Wartung?"
+    slug: warum-ist-die-pflege-der-php-oder-node-version
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 351
+    frage: "Wie migriert man eine Website sicher von einem schlechten Hoster zu einem Premium-Anbieter?"
+    slug: wie-migriert-man-eine-website-sicher-von-einem-schlechten
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 352
+    frage: "Warum lohnen sich regelmäßige Design-Audits, um optische Inkonsistenzen (Design Debt) zu entfernen?"
+    slug: warum-lohnen-sich-regelmaessige-design-audits-um-optische-inkonsistenzen
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 353
+    frage: "Wie stellt man sicher, dass geänderte Telefonnummern oder Adressen augenblicklich überall auf der Seite aktualisiert werden?"
+    slug: wie-stellt-man-sicher-dass-geaenderte-telefonnummern-oder-adressen
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 354
+    frage: "Was ist der Return on Marketing Investment (ROMI) einer fortlaufend optimierten Landingpage?"
+    slug: was-ist-der-return-on-marketing-investment-romi-einer
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 355
+    frage: "Wie blockiert man bösartige Spam-Bots dauerhaft auf Serverebene?"
+    slug: wie-blockiert-man-boesartige-spam-bots-dauerhaft-auf-serverebene
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 356
+    frage: "Warum sollten alte Blogbeiträge umgeschrieben statt einfach gelöscht werden?"
+    slug: warum-sollten-alte-blogbeitraege-umgeschrieben-statt-einfach-geloescht-werden
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 357
+    frage: "Wie behält man den Überblick über alle aktiven Lizenzen für Schriften, Plugins und Software-Schnittstellen?"
+    slug: wie-behaelt-man-den-ueberblick-ueber-alle-aktiven-lizenzen
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 358
+    frage: "Was passiert bei einem Serverausfall des Hosters und wie sieht der Notfallplan aus?"
+    slug: was-passiert-bei-einem-serverausfall-des-hosters-und-wie
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 359
+    frage: "Wie oft sollte das Konkurrenz-Umfeld im Netz analysiert werden, um technologisch vorn zu bleiben?"
+    slug: wie-oft-sollte-das-konkurrenz-umfeld-im-netz-analysiert
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 360
+    frage: "Warum führt mangelnde interne Kommunikation im Unternehmen oft zu veralteten Inhalten auf der Website?"
+    slug: warum-fuehrt-mangelnde-interne-kommunikation-im-unternehmen-oft-zu
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 361
+    frage: "Wie optimiert man Thank-You-Pages (Dankesseiten) nach einer erfolgreichen Lead-Conversion?"
+    slug: wie-optimiert-man-thank-you-pages-dankesseiten-nach-einer
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 362
+    frage: "Was tun, wenn die Ladegeschwindigkeit der Website schlechter wird, ohne dass Code geändert wurde?"
+    slug: was-tun-wenn-die-ladegeschwindigkeit-der-website-schlechter-wird
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 363
+    frage: "Wie sorgt man für eine saubere Archivierung von rechtlich relevanten alten Website-Zuständen?"
+    slug: wie-sorgt-man-fuer-eine-saubere-archivierung-von-rechtlich
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 364
+    frage: "Warum ist das Bauchgefühl der falsche Ratgeber bei der Weiterentwicklung einer High-End-Website?"
+    slug: warum-ist-das-bauchgefuehl-der-falsche-ratgeber-bei-der
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
+  - id: 365
+    frage: "Wie sieht die perfekte Checkliste für das wöchentliche Controlling einer erfolgreichen Business-Website aus?"
+    slug: wie-sieht-die-perfekte-checkliste-fuer-das-woechentliche-controlling
+    cluster: 7
+    status: todo
+    winnability: unknown
+    is_pillar: false
