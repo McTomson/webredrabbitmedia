@@ -19,6 +19,8 @@ export interface BlogPost {
     category: string;
     tags: string[];
     featuredImage: string;
+    status: 'draft' | 'published';
+    aiAssisted?: boolean;
     sources?: Array<{ name: string; url: string }>;
     content: string;
     // Neil Patel-style enhancements
@@ -58,6 +60,8 @@ export async function getAllPosts(): Promise<BlogPostMeta[]> {
 
     return posts
         .filter((post): post is BlogPostMeta => post !== null)
+        // Drafts never appear in listings, related posts, feed, or static params / index.
+        .filter((post) => post.status !== 'draft')
         .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 }
 
@@ -91,6 +95,9 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
             category: data.category,
             tags: data.tags || [],
             featuredImage: data.featuredImage,
+            // Missing status = legacy article = treated as published (keeps the 11 live ones indexed).
+            status: data.status === 'draft' ? 'draft' : 'published',
+            aiAssisted: data.aiAssisted === true,
             sources: data.sources,
             content,
             // Neil Patel-style enhancements

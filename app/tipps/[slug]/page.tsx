@@ -18,9 +18,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         };
     }
 
+    // Drafts are reachable by direct URL (live preview) but must never be indexed.
+    const draftRobots = post.status === 'draft'
+        ? { robots: { index: false, follow: false } }
+        : {};
+
     return {
         title: `${post.title} | Red Rabbit Media`,
         description: post.excerpt,
+        ...draftRobots,
         alternates: {
             canonical: `${SITE_URL}/tipps/${slug}`,
         },

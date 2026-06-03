@@ -20,18 +20,21 @@ export async function getAllBlogPostsSitemap(): Promise<SitemapEntry[]> {
         const files = fs.readdirSync(BLOG_DIR);
         return files
             .filter((file) => file.endsWith('.mdx'))
-            .map((file) => {
+            .map((file): SitemapEntry | null => {
                 const slug = file.replace('.mdx', '');
                 const filePath = path.join(BLOG_DIR, file);
                 const fileContent = fs.readFileSync(filePath, 'utf8');
                 const { data } = matter(fileContent);
+                // Drafts must never enter the sitemap (no orphan indexed URL).
+                if (data.status === 'draft') return null;
                 return {
                     url: `${BASE_URL}/tipps/${slug}`,
                     lastModified: data.publishedAt || new Date().toISOString(),
-                    changeFrequency: 'monthly',
+                    changeFrequency: 'monthly' as const,
                     priority: 0.7,
                 };
-            });
+            })
+            .filter((entry): entry is SitemapEntry => entry !== null);
     } catch (error) {
         console.error('Error in getAllBlogPostsSitemap:', error);
         return [];
