@@ -97,7 +97,7 @@ content/blog/*.mdx                   # Output der Engine
 
 ### Task 0.3: Zugänge + Bestätigungen einholen
 - [ ] **Step 1:** YouTube Data API OAuth-Client anlegen (Quota prüfen: ~6 Uploads/Tag reichen).
-- [ ] **Step 2:** Codex-Bildgenerierung-Eignung bestätigen (gratis + automatisierbar?). **HARTES GATE (wie 0.4):** rot → Bildweg in Phase 3 anpassen BEVOR darauf gebaut wird (0€-Vorgabe ist tragend).
+- [ ] **Step 2:** Bild-Generator = **`codex` CLI `imagegen`-Skill** (Terminal, headless via Shell-Aufruf aus der Pipeline — automatisierbar BESTÄTIGT). Offenes **HARTES GATE:** Kosten klären — Testbild generieren, dann `platform.openai.com` Usage/Billing prüfen: im ChatGPT-Plus enthalten (0€ extra) ODER API-Abrechnung (kostet)? Wenn abrechnet → Fallback deterministische Marken-Vorlage (HTML→PNG, 0€) als Basis, Codex nur fürs Motiv bei Akzeptanz. Marken-Nachbearbeitung läuft immer.
 - [ ] **Step 3:** `notebooklm-py` lokal installieren + Persist-Auth einrichten; **Machbarkeits-Probe**: 1 Test-Notebook → Audio + Video (deutsch) generieren + downloaden. Datei-Integrität prüfen (nicht leer/trunkiert).
 - [ ] **Step 4:** Inputs 1-3 (365-Liste, Voice-Anker, Meinungs-Batch) vom User anfordern/ablegen.
 - [ ] **Step 5:** **Bestehende Workflows lesen + einarbeiten** (NICHT neu erfinden): `.agent/workflows/podcast-einbinden.md` (existierender Podcast-/Substack-Prozess → Phase 4) + `.agent/workflows/seo-texte-leitfaden.md` (bestehender SEO-/Schreib-Leitfaden → Phase 1 voice/conventions). Auch `MEMORY.md`/`LESSONS_LEARNED.md` (Projekt-Memory, geteilt mit Codex) berücksichtigen.
