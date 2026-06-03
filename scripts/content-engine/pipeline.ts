@@ -6,6 +6,7 @@ import { ROOT, CE, readMemory, runClaude } from './lib/roles';
 import { extractJsonBlock, extractMdxBlock } from './lib/extract';
 import { verifySources, type Source } from './lib/verifySources';
 import { validateFrontmatter } from './frontmatter';
+import { buildImageConcept, generateImage } from './image';
 
 // ──────────────────────────────────────────────────────────────────────────
 // Content-Engine orchestrator. Runs the 4-role newsroom headless (claude -p)
@@ -213,6 +214,17 @@ async function main() {
     console.log(`\nOK. Valide Draft-MDX -> scripts/content-engine/.work/${t.slug}/final.mdx`);
     console.log(`   Titel: ${fm.title}`);
     console.log(`   Quellen: ${sources.length} | Flags: ${flags.length ? flags.join(', ') : 'keine'} | Woerter: ${parsedWordCount(mdx)}`);
+
+    // Image (codex imagegen + sharp), unless skipped. Concept derived from the article text.
+    if (!args.includes('--no-image')) {
+        try {
+            const concept = buildImageConcept(fm.title, matter(mdx).content);
+            console.log(`   Bildmotiv: ${concept}`);
+            await generateImage(t.slug, concept);
+        } catch (e: any) {
+            console.log(`   WARN Bild fehlgeschlagen (Artikel bleibt gueltig): ${e.message}`);
+        }
+    }
 
     if (emit) {
         const dest = path.join(ROOT, 'content/blog', `${t.slug}.mdx`);
