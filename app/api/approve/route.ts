@@ -95,7 +95,8 @@ export async function GET(req: Request): Promise<Response> {
         }
 
         return page('Freigegeben und veroeffentlicht', `<p>Der Artikel <strong>${slug}</strong> ist jetzt online. Vercel deployt die Aenderung in ein, zwei Minuten.</p>${indexNote}<p><a href="${previewUrl}">Artikel ansehen</a></p>`);
-    } catch (e: any) {
-        return page('Fehler bei der Freigabe', `<p>${e.message}</p><p>Bitte spaeter erneut versuchen oder lokal freigeben.</p>`, false);
+    } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : String(e);
+        return page('Fehler bei der Freigabe', `<p>${msg}</p><p>Bitte spaeter erneut versuchen oder lokal freigeben.</p>`, false);
     }
 }
