@@ -96,9 +96,10 @@ function writerPrompt(t: Topic, research: any, opinion: string): string {
         '\n=== BELEGTE FAKTEN (nur diese verwenden, nichts dazu erfinden) ===\n' + facts,
         '\n=== THOMAS MEINUNG/AUFTRAG zu diesem Thema (echt, hieraus schoepfen) ===\n' + (opinion || '(keine spezifische Meinung hinterlegt, dann rein sachlich-quellen-basiert schreiben, keine Ich-Erfahrung erfinden)'),
         `\n=== AUFGABE ===\nSchreibe den ARTIKEL-BODY (Markdown, KEIN YAML-Frontmatter) zur Frage: "${t.frage}".`,
-        'Register Sie. 1000-1600 Woerter. Antwort zuerst (snippet-tauglich, 40-60 Woerter direkt nach der H1-Einleitung), dann Tiefe.',
-        'HARTE REGEL: NIEMALS einen Gedankenstrich "–" verwenden (Komma/Punkt/"..." stattdessen). Keine Dreierfiguren, kein Hochglanz.',
-        'Genau eine H1 (==Titel), danach kurze Erst-Hand-Einleitung im Hausstil, H2-Abschnitte, mind. 1 interner Link auf /kontakt oder eine passende Seite, Key-Takeaways-Block, fairer CTA am Ende.',
+        'Register Sie. ZIELLAENGE 1700 bis 2200 Woerter. Antwort zuerst (snippet-tauglich, 40-60 Woerter direkt nach der H1-Einleitung), dann echte Tiefe.',
+        'TIEFE statt Fuelltext: konkrete oesterreichische Beispiele und Mini-Szenarien, Unterfaelle, Rechenbeispiele mit Zahlen, ein "Schritt fuer Schritt was Sie konkret tun"-Teil, haeufige Irrtuemer/Fallen, und je Abschnitt eine klare Mini-Empfehlung. Mehr Substanz, NICHT mehr Floskeln.',
+        'HARTE REGEL: NIEMALS einen Gedankenstrich "–" verwenden (Komma/Punkt/"..." stattdessen). Keine Dreierfiguren, kein Hochglanz, kein Geschwurbel zum Strecken.',
+        'Genau eine H1 (==Titel), danach kurze Erst-Hand-Einleitung im Hausstil, 6 bis 8 H2-Abschnitte mit Substanz, mind. 1 interner Link auf /kontakt oder eine passende Seite, Key-Takeaways-Block, fairer CTA am Ende.',
         'Gib NUR den Markdown-Body in einem ```mdx Codeblock aus.',
     ].join('\n');
 }
@@ -146,26 +147,36 @@ async function main() {
     const today = new Date().toISOString().slice(0, 10);
     console.log(`\n=== Pipeline: #${t.id} "${t.frage}" -> ${t.slug} (byline: ${t.byline}) ===`);
 
-    // 1) Researcher (web)
-    console.log('1/5 Researcher ...');
-    const rOut = runClaude(researcherPrompt(t), { web: true, timeoutSec: 320, label: 'researcher' });
-    save(dir, 'research.raw.txt', rOut);
-    const research = extractJsonBlock(rOut) as any;
-    if (!research.enough) throw new Error('HALT: Researcher meldet enough=false (zu wenig belegte Fakten). Kein halber Artikel.');
+    const reuse = args.includes('--reuse-research');
+    let research: any;
+    let sources: Source[];
 
-    // 2) Verify source URLs (no-hallucination gate)
-    console.log(`2/5 Quellen verifizieren (${research.facts.length}) ...`);
-    const rawSources: Source[] = research.facts.map((f: any) => f.source);
-    const { kept, dropped } = await verifySources(rawSources);
-    if (dropped.length) console.log('   verworfen (unerreichbar):', dropped.map((d) => `${d.url} [${d.code}]`).join(', '));
-    // dedupe by url
-    const sources = kept.filter((s, i) => kept.findIndex((k) => k.url === s.url) === i);
-    if (sources.length < 1) throw new Error('HALT: keine verifizierbare Quelle uebrig (Guardrail 5).');
-    save(dir, 'sources.verified.json', JSON.stringify(sources, null, 2));
+    if (reuse && fs.existsSync(path.join(dir, 'sources.verified.json')) && fs.existsSync(path.join(dir, 'research.raw.txt'))) {
+        // Reuse already-verified research (no re-research, same proven sources).
+        console.log('1-2/5 Recherche WIEDERVERWENDET (bereits verifizierte Quellen) ...');
+        research = extractJsonBlock(fs.readFileSync(path.join(dir, 'research.raw.txt'), 'utf8')) as any;
+        sources = JSON.parse(fs.readFileSync(path.join(dir, 'sources.verified.json'), 'utf8'));
+        const surviving = new Set(sources.map((s) => s.url));
+        research.facts = research.facts.filter((f: any) => surviving.has(f.source.url));
+    } else {
+        // 1) Researcher (web)
+        console.log('1/5 Researcher ...');
+        const rOut = runClaude(researcherPrompt(t), { web: true, timeoutSec: 320, label: 'researcher' });
+        save(dir, 'research.raw.txt', rOut);
+        research = extractJsonBlock(rOut) as any;
+        if (!research.enough) throw new Error('HALT: Researcher meldet enough=false (zu wenig belegte Fakten). Kein halber Artikel.');
 
-    // keep only facts whose source survived, for the writer
-    const survivingUrls = new Set(sources.map((s) => s.url));
-    research.facts = research.facts.filter((f: any) => survivingUrls.has(f.source.url));
+        // 2) Verify source URLs (no-hallucination gate)
+        console.log(`2/5 Quellen verifizieren (${research.facts.length}) ...`);
+        const rawSources: Source[] = research.facts.map((f: any) => f.source);
+        const { kept, dropped } = await verifySources(rawSources);
+        if (dropped.length) console.log('   verworfen (unerreichbar):', dropped.map((d) => `${d.url} [${d.code}]`).join(', '));
+        sources = kept.filter((s, i) => kept.findIndex((k) => k.url === s.url) === i);
+        if (sources.length < 1) throw new Error('HALT: keine verifizierbare Quelle uebrig (Guardrail 5).');
+        save(dir, 'sources.verified.json', JSON.stringify(sources, null, 2));
+        const survivingUrls = new Set(sources.map((s) => s.url));
+        research.facts = research.facts.filter((f: any) => survivingUrls.has(f.source.url));
+    }
 
     // 3) Writer
     const opinion = loadOpinion(t.id);
@@ -200,7 +211,7 @@ async function main() {
             label: `finalizer (Versuch ${attempt})`,
         });
         save(dir, `final.attempt${attempt}.txt`, fOut);
-        mdx = extractMdxBlock(fOut);
+        mdx = ensureSingleDisclosure(quoteFrontmatterDates(extractMdxBlock(fOut)));
         const parsed = matter(mdx);
         fm = parsed.data;
         const v = validateFrontmatter(fm);
@@ -231,6 +242,24 @@ async function main() {
         fs.writeFileSync(dest, mdx);
         console.log(`   --emit: geschrieben nach content/blog/${t.slug}.mdx (status: draft)`);
     }
+}
+
+// YAML parses an unquoted YYYY-MM-DD as a Date object. Quote date values so gray-matter
+// keeps them as strings (matches the existing articles and the validator contract).
+function quoteFrontmatterDates(mdx: string): string {
+    return mdx.replace(/^(publishedAt|updatedAt):\s*(\d{4}-\d{2}-\d{2})\s*$/gm, '$1: "$2"');
+}
+
+// The finalizer is told to add an AI-label line, but the body sometimes already contains
+// a nicer disclosure. Keep exactly one (drop the trailing plain line if a richer one exists).
+const PLAIN_DISCLOSURE = 'Dieser Artikel wurde KI-unterstuetzt erstellt und redaktionell geprueft.';
+function ensureSingleDisclosure(mdx: string): string {
+    const count = (mdx.match(/redaktionell gepr/gi) || []).length;
+    if (count > 1) {
+        const esc = PLAIN_DISCLOSURE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return mdx.replace(new RegExp('\\n+' + esc + '\\s*$'), '\n').trimEnd() + '\n';
+    }
+    return mdx;
 }
 
 function parsedWordCount(mdx: string): number {
