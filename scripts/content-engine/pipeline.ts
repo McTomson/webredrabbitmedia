@@ -6,7 +6,7 @@ import { ROOT, CE, readMemory, runClaude } from './lib/roles';
 import { extractJsonBlock, extractMdxBlock } from './lib/extract';
 import { verifySources, type Source } from './lib/verifySources';
 import { validateFrontmatter } from './frontmatter';
-import { buildImageConcept, generateImage } from './image';
+import { buildImagePlan, generatePhoto, renderInfographic } from './image';
 
 // ──────────────────────────────────────────────────────────────────────────
 // Content-Engine orchestrator. Runs the 4-role newsroom headless (claude -p)
@@ -270,21 +270,36 @@ async function main() {
         if (attempt === 3) throw new Error('HALT: Frontmatter nach 3 Versuchen invalide:\n' + errors.join('\n'));
     }
 
+    // Multi-image system: photoreal hero (featured) + sketch infographic + 3 contextual photos.
+    if (!args.includes('--no-image')) {
+        try {
+            const headings = [...matter(mdx).content.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim());
+            const plan = buildImagePlan(fm.title, matter(mdx).content, headings);
+            const heroPath = await generatePhoto(t.slug, 'hero', plan.heroConcept, 1200, 630);
+            mdx = setHeroImage(mdx, t.slug, heroPath);
+            let nCtx = 0;
+            for (const item of plan.items) {
+                let imgPath: string;
+                let alt: string;
+                if (item.kind === 'infographic' && item.data) {
+                    imgPath = await renderInfographic(t.slug, item.data);
+                    alt = item.data.title;
+                } else if (item.kind === 'photo' && item.concept) {
+                    imgPath = await generatePhoto(t.slug, `ctx${++nCtx}`, item.concept);
+                    alt = item.concept;
+                } else continue;
+                mdx = insertImageAfterHeading(mdx, item.afterHeading, imgPath, alt);
+            }
+            console.log(`   Bilder: 1 Hero + ${plan.items.length} (Infografik + ${nCtx} Kontext)`);
+        } catch (e: any) {
+            console.log(`   WARN Bilder fehlgeschlagen (Artikel bleibt gueltig): ${e.message}`);
+        }
+    }
+
     save(dir, 'final.mdx', mdx);
     console.log(`\nOK. Valide Draft-MDX -> scripts/content-engine/.work/${t.slug}/final.mdx`);
     console.log(`   Titel: ${fm.title}`);
     console.log(`   Quellen: ${sources.length} | Flags: ${flags.length ? flags.join(', ') : 'keine'} | Woerter: ${parsedWordCount(mdx)}`);
-
-    // Image (codex imagegen + sharp), unless skipped. Concept derived from the article text.
-    if (!args.includes('--no-image')) {
-        try {
-            const concept = buildImageConcept(fm.title, matter(mdx).content);
-            console.log(`   Bildmotiv: ${concept}`);
-            await generateImage(t.slug, concept);
-        } catch (e: any) {
-            console.log(`   WARN Bild fehlgeschlagen (Artikel bleibt gueltig): ${e.message}`);
-        }
-    }
 
     if (emit) {
         const dest = path.join(ROOT, 'content/blog', `${t.slug}.mdx`);
@@ -310,6 +325,29 @@ function ensureSingleDisclosure(mdx: string): string {
         return mdx.replace(new RegExp('\\n+' + esc + '\\s*$'), '\n').trimEnd() + '\n';
     }
     return mdx;
+}
+
+// Point featuredImage (frontmatter) and the inline placeholder at the real hero file.
+function setHeroImage(mdx: string, slug: string, heroPath: string): string {
+    const placeholder = new RegExp(`/images/blog/${slug}\\.png`, 'g');
+    return mdx.replace(placeholder, heroPath);
+}
+
+// Insert an image right after the matching "## Heading" line (and its following blank line).
+function insertImageAfterHeading(mdx: string, heading: string, imgPath: string, alt: string): string {
+    const lines = mdx.split('\n');
+    const norm = (s: string) => s.replace(/\s+/g, ' ').trim().toLowerCase();
+    const target = norm(heading);
+    for (let i = 0; i < lines.length; i++) {
+        if (/^##\s+/.test(lines[i]) && norm(lines[i].replace(/^##\s+/, '')) === target) {
+            const img = `\n![${alt.replace(/[[\]]/g, '')}](${imgPath})\n`;
+            // insert after the heading line; skip an immediately following blank line
+            const at = i + 1 < lines.length && lines[i + 1].trim() === '' ? i + 2 : i + 1;
+            lines.splice(at, 0, img);
+            return lines.join('\n');
+        }
+    }
+    return mdx; // heading not found, skip silently
 }
 
 function parsedWordCount(mdx: string): number {

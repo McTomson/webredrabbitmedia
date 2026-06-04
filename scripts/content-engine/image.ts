@@ -4,52 +4,99 @@ import path from 'node:path';
 import os from 'node:os';
 import sharp from 'sharp';
 import { ROOT, runClaude } from './lib/roles';
+import { extractJsonBlock } from './lib/extract';
+import { renderInfographicPng, type SketchData } from './image/sketchInfographic';
 
-// Fixed brand art direction. Same look across every article (Task 3.1). The per-article
-// SUBJECT is derived from the text by an art-director step; this style string is constant.
-export const BRAND_STYLE =
-    'Clean modern flat vector illustration, generous white background, professional business tone, ' +
-    'Red Rabbit Media brand red accent (around #E2231A) used sparingly, subtle depth and soft shadows, ' +
-    'no text, no words, no letters, no logos, balanced 16:9 wide composition.';
+// Image system (confirmed with Thomas 2026-06): per article 1 photoreal hero + 1 hand-drawn
+// sketch infographic + 3 photoreal contextual images, each tied to a section. Photos via
+// Codex imagegen (0 EUR, ChatGPT Plus, NO legible text); infographic via SVG (crisp text).
+// Filenames are versioned to bust Vercel's immutable image cache.
 
-// Art-director: read the article, return ONE short visual subject (no text-in-image).
-export function buildImageConcept(title: string, body: string): string {
-    const prompt = [
-        'Du bist Art-Director fuer einen oesterreichischen Webagentur-Blog (Marke Red Rabbit, Akzent Rot).',
-        'Lies den Artikel und beschreibe in EINEM kurzen englischen Satz das MOTIV fuer das Beitragsbild',
-        '(konkrete Bildidee/Metapher passend zum Kerninhalt, KEINE Woerter/Buchstaben im Bild, kein Logo).',
-        'Gib NUR den einen Satz aus, ohne Anfuehrungszeichen, ohne Vorrede.',
-        `\nTITEL: ${title}\n\nARTIKEL (Auszug):\n${body.slice(0, 2500)}`,
-    ].join('\n');
-    const out = runClaude(prompt, { timeoutSec: 120, label: 'art-director' });
-    // take the last non-empty line as the concept
-    const lines = out.split('\n').map((l) => l.trim()).filter(Boolean);
-    return (lines[lines.length - 1] || `Editorial illustration about: ${title}`).replace(/^["']|["']$/g, '');
+// Shared photographic art direction so hero + context images look cohesive.
+export const BRAND_PHOTO_STYLE =
+    'Photorealistic, authentic editorial photograph. Natural daylight, warm muted documentary color palette, ' +
+    'one subtle red accent object in frame (around #E2231A). Real, relatable Austrian people and settings, ' +
+    'candid and honest, NOT a posed cheesy stock smile. Shallow depth of field. ' +
+    'No text, no words, no letters, no readable screen content anywhere. 16:9 wide.';
+
+export interface ImagePlanItem {
+    kind: 'infographic' | 'photo';
+    afterHeading: string; // exact H2 text to insert the image after
+    concept?: string; // for photo
+    data?: SketchData; // for infographic
+}
+export interface ImagePlan {
+    heroConcept: string;
+    items: ImagePlanItem[];
 }
 
-// Generate the image via Codex imagegen (built-in tool, runs on ChatGPT Plus, 0 EUR),
-// then post-process to the 1200x630 OG format and strip metadata.
-export async function generateImage(slug: string, concept: string): Promise<string> {
-    const tmp = path.join(os.tmpdir(), `ce-img-${slug}-${process.pid}.png`);
-    const fullPrompt =
-        `Use the imagegen skill to generate ONE featured blog image. Subject: ${concept}. ` +
-        `Style: ${BRAND_STYLE} After generating, copy the final PNG to ${tmp}`;
+const PLAN_SCHEMA = `{
+  "heroConcept": "<englischer Satz: authentische Foto-Szene zum Kernthema, Mensch ok, KEIN Text>",
+  "items": [
+    { "kind":"infographic", "afterHeading":"<exakte H2-Ueberschrift aus dem Artikel>", "data": {
+        "layout":"comparison", "title":"<dt. Titel>", "subtitle":"<dt.>",
+        "left":{"heading":"<dt.>","sub":"<dt.>","items":["<dt.>","..."],"verdict":"<dt.>","tone":"good"},
+        "right":{"heading":"<dt.>","sub":"<dt.>","items":["..."],"verdict":"<dt.>","tone":"bad"},
+        "footer":"<dt. Faustregel>" } },
+    { "kind":"photo", "afterHeading":"<exakte H2>", "concept":"<engl. Szene zum Absatz>" },
+    { "kind":"photo", "afterHeading":"<exakte H2>", "concept":"<engl. Szene>" },
+    { "kind":"photo", "afterHeading":"<exakte H2>", "concept":"<engl. Szene>" }
+  ]
+}`;
 
-    process.stderr.write(`  [image] Codex generiert Motiv ...\n`);
-    execFileSync('codex', ['exec', '--full-auto', '-c', 'sandbox_mode=workspace-write', fullPrompt], {
-        encoding: 'utf8',
-        timeout: 240 * 1000,
-        maxBuffer: 32 * 1024 * 1024,
-    });
-    if (!fs.existsSync(tmp)) throw new Error('Codex hat kein Bild erzeugt (tmp fehlt)');
+// Art-director: reads the article, returns the full image plan as JSON.
+export function buildImagePlan(title: string, body: string, headings: string[]): ImagePlan {
+    const prompt = [
+        'Du bist Art-Director fuer einen oesterreichischen Webagentur-Blog (Marke Red Rabbit, Akzent Rot).',
+        'Plane 5 Bilder fuer den Artikel: 1 Hero-Foto + 1 Sketch-Infografik + 3 Kontext-Fotos.',
+        'FOTOS (Hero + 3 Kontext): authentische, photorealistische Szenen, gern mit echten Menschen, KEIN Text im Bild. Jedes Kontextfoto passt thematisch zu genau einer H2-Sektion.',
+        'INFOGRAFIK: die zentrale Aussage/der Kernvergleich des Artikels als Daten. layout "comparison" (zwei Spalten) ODER "keypoints" (3-5 Kernfakten, dann statt left/right ein Feld "points":[{"big":"JA","text":"..."},{"text":"..."}]). tone good=gruen, bad=rot, neutral.',
+        'Die 4 "afterHeading"-Werte muessen EXAKT vorhandene H2-Ueberschriften sein, jede nur einmal, gut ueber den Artikel verteilt.',
+        '\nVerfuegbare H2-Ueberschriften:\n' + headings.map((h) => '- ' + h).join('\n'),
+        '\nTITEL: ' + title,
+        '\nARTIKEL:\n' + body.slice(0, 6000),
+        '\nGib AUSSCHLIESSLICH einen ```json Codeblock im Schema aus:\n' + PLAN_SCHEMA,
+    ].join('\n');
+    const out = runClaude(prompt, { timeoutSec: 150, label: 'art-director' });
+    return extractJsonBlock(out) as ImagePlan;
+}
 
-    const destDir = path.join(ROOT, 'public/images/blog');
-    fs.mkdirSync(destDir, { recursive: true });
-    const dest = path.join(destDir, `${slug}.png`);
+const version = () => Date.now().toString(36).slice(-5);
 
-    // 1200x630 cover-crop, strip EXIF/GPS (sharp drops metadata unless withMetadata()).
-    await sharp(tmp).resize(1200, 630, { fit: 'cover', position: 'attention' }).png({ quality: 90 }).toFile(dest);
+function blogDir(): string {
+    const d = path.join(ROOT, 'public/images/blog');
+    fs.mkdirSync(d, { recursive: true });
+    return d;
+}
+
+// Generate a photoreal image via Codex, crop to size, strip metadata, versioned filename.
+export async function generatePhoto(slug: string, tag: string, concept: string, w = 1200, h = 675): Promise<string> {
+    const file = `${slug}-${tag}-${version()}.png`;
+    const tmp = path.join(os.tmpdir(), `ce-${file}`);
+    const prompt = `Use the imagegen skill to generate ONE image. Subject: ${concept}. Style: ${BRAND_PHOTO_STYLE} After generating, copy the final PNG to ${tmp}`;
+    process.stderr.write(`  [image] Foto "${tag}" via Codex ...\n`);
+    execFileSync('codex', ['exec', '--full-auto', '-c', 'sandbox_mode=workspace-write', prompt], { encoding: 'utf8', timeout: 260 * 1000, maxBuffer: 32 * 1024 * 1024 });
+    if (!fs.existsSync(tmp)) throw new Error(`Codex hat kein Bild erzeugt (${tag})`);
+    await sharp(tmp).resize(w, h, { fit: 'cover', position: 'attention' }).png({ quality: 90 }).toFile(path.join(blogDir(), file));
     fs.rmSync(tmp, { force: true });
-    process.stderr.write(`  [image] -> public/images/blog/${slug}.png (1200x630)\n`);
-    return `/images/blog/${slug}.png`;
+    return `/images/blog/${file}`;
+}
+
+export async function renderInfographic(slug: string, data: SketchData): Promise<string> {
+    const file = `${slug}-infografik-${version()}.png`;
+    await renderInfographicPng(data, path.join(blogDir(), file));
+    process.stderr.write(`  [image] Sketch-Infografik gerendert\n`);
+    return `/images/blog/${file}`;
+}
+
+// Backwards-compatible single concept (used by older path / fallback).
+export function buildImageConcept(title: string, bodyText: string): string {
+    const prompt = `Beschreibe in EINEM kurzen englischen Satz eine authentische Foto-Szene fuers Beitragsbild zum Artikel "${title}" (Mensch ok, KEIN Text im Bild). Nur den Satz.\n\n${bodyText.slice(0, 1500)}`;
+    const out = runClaude(prompt, { timeoutSec: 120, label: 'art-director' });
+    const lines = out.split('\n').map((l) => l.trim()).filter(Boolean);
+    return (lines[lines.length - 1] || `Authentic Austrian small-business scene about ${title}`).replace(/^["']|["']$/g, '');
+}
+
+export async function generateImage(slug: string, concept: string): Promise<string> {
+    return generatePhoto(slug, 'hero', concept, 1200, 630);
 }
