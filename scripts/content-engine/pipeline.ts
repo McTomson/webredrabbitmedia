@@ -97,6 +97,17 @@ function save(dir: string, name: string, data: string) {
 
 // ── Role prompt builders ────────────────────────────────────────────────────
 
+// A chunk of real existing-article prose as a flow model for the writer (natural German).
+function readArticleSample(): string {
+    try {
+        const raw = fs.readFileSync(path.join(ROOT, 'content/blog/website-selbst-erstellen-vs-agentur.mdx'), 'utf8');
+        const body = matter(raw).content.replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/!\[[^\]]*\]\([^)]*\)/g, '');
+        return body.replace(/–/g, ',').trim().slice(0, 1800);
+    } catch {
+        return '(kein Vorbild verfuegbar)';
+    }
+}
+
 function researcherPrompt(t: Topic): string {
     return [
         readMemory('roles/researcher.md'),
@@ -123,11 +134,14 @@ function writerPrompt(t: Topic, research: any, opinion: string): string {
         readMemory('conventions.md'),
         '\n=== BELEGTE FAKTEN (nur diese verwenden, nichts dazu erfinden) ===\n' + facts,
         '\n=== THOMAS MEINUNG/AUFTRAG zu diesem Thema (echt, hieraus schoepfen) ===\n' + (opinion || '(keine spezifische Meinung hinterlegt, dann rein sachlich-quellen-basiert schreiben, keine Ich-Erfahrung erfinden)'),
+        '\n--- LESEFLUSS-VORBILD (so soll es klingen, natuerliches Deutsch) ---\n',
+        readArticleSample(),
         `\n=== AUFGABE ===\nSchreibe den ARTIKEL-BODY (Markdown, KEIN YAML-Frontmatter) zur Frage: "${t.frage}".`,
-        'Register Sie. ZIELLAENGE 1700 bis 2200 Woerter. Antwort zuerst (snippet-tauglich, 40-60 Woerter direkt nach der H1-Einleitung), dann echte Tiefe.',
-        'TIEFE statt Fuelltext: konkrete oesterreichische Beispiele und Mini-Szenarien, Unterfaelle, Rechenbeispiele mit Zahlen, ein "Schritt fuer Schritt was Sie konkret tun"-Teil, haeufige Irrtuemer/Fallen, und je Abschnitt eine klare Mini-Empfehlung. Mehr Substanz, NICHT mehr Floskeln.',
-        'HARTE REGEL: NIEMALS einen Gedankenstrich "–" verwenden (Komma/Punkt/"..." stattdessen). Keine Dreierfiguren, kein Hochglanz, kein Geschwurbel zum Strecken.',
-        'Genau eine H1 (==Titel), danach kurze Erst-Hand-Einleitung im Hausstil, 6 bis 8 H2-Abschnitte mit Substanz, mind. 1 interner Link auf /kontakt oder eine passende Seite, Key-Takeaways-Block, fairer CTA am Ende.',
+        'Register Sie. ZIELLAENGE 1700 bis 2200 Woerter. Direktantwort frueh (snippet-tauglich, 40-60 Woerter), dann echte Tiefe.',
+        'SCHREIBSTIL (das Wichtigste): Schreibe in VOLLSTAENDIGEN, FLUESSIGEN, natuerlichen deutschen Saetzen wie im Lesefluss-Vorbild oben. KEINE abgehackten Fragmente, keine staccato-Ein-Wort-Saetze, kein gehetzter E-Mail-Rhythmus. Es muss klingen wie ein kluger Mensch, der sorgfaeltig schreibt. Analogien einfach und sofort verstaendlich (Vorbild: "ein Haus ist nicht fertig, nur weil man im Baumarkt eine Schaufel kauft"), NICHT technisch ueberladen oder unrealistisch. Tag-Frage "oder?" hoechstens 1-2 mal im ganzen Text. Lies jeden Satz laut, klingt er un-deutsch oder gestelzt, schreib ihn um.',
+        'TIEFE statt Fuelltext: konkrete oesterreichische Beispiele und Mini-Szenarien, Unterfaelle, Rechenbeispiele mit Zahlen, ein "Schritt fuer Schritt was Sie konkret tun"-Teil, haeufige Irrtuemer/Fallen, je Abschnitt eine klare Empfehlung. Mehr Substanz, NICHT mehr Floskeln.',
+        'HARTE REGEL: NIEMALS einen Gedankenstrich "–" verwenden (Komma/Punkt stattdessen). Keine Dreierfiguren, kein Marketing-Hochglanz, kein Geschwurbel zum Strecken.',
+        'Genau eine H1 (==Titel), danach natuerliche Erst-Hand-Einleitung, 6 bis 8 H2-Abschnitte mit Substanz, mind. 1 interner Link auf /kontakt oder eine passende Seite, Key-Takeaways-Block, fairer CTA am Ende.',
         'Gib NUR den Markdown-Body in einem ```mdx Codeblock aus.',
     ].join('\n');
 }
