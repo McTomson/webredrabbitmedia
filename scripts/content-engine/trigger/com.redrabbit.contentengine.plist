@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- launchd LaunchAgent for the daily content engine.
+     Install:  cp this file to ~/Library/LaunchAgents/ and run
+               launchctl load ~/Library/LaunchAgents/com.redrabbit.contentengine.plist
+     The script is idempotent (one article/day) and self-locks, so the extra StartInterval
+     catch-up tick is safe: if the Mac was asleep at the scheduled time, the next wake fires it. -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.redrabbit.contentengine</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-lc</string>
+        <string>$HOME/dev/redrabbit/scripts/content-engine/trigger/run-daily.sh</string>
+    </array>
+
+    <!-- Primary daily slot (09:17, an off-round time so runs do not all look machine-scheduled). -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key><integer>9</integer>
+        <key>Minute</key><integer>17</integer>
+    </dict>
+
+    <!-- Catch-up: every 3h re-check; the per-day stamp makes repeats no-ops. -->
+    <key>StartInterval</key>
+    <integer>10800</integer>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/redrabbit-contentengine.out</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/redrabbit-contentengine.err</string>
+</dict>
+</plist>

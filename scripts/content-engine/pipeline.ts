@@ -33,20 +33,48 @@ const SLUG_OVERRIDE: Record<number, string> = {
     266: 'bfsg-barrierefreiheit-website-pflicht-strafen',
 };
 
+// Per-topic status overrides live in a small sidecar so queue.yaml (with its comments)
+// stays the static backlog. status: todo | drafting | review | published.
+function statusPath(): string {
+    return path.join(CE, 'topics/status.json');
+}
+function readStatus(): Record<string, string> {
+    try {
+        return JSON.parse(fs.readFileSync(statusPath(), 'utf8'));
+    } catch {
+        return {};
+    }
+}
+function setStatus(id: number, status: string): void {
+    const s = readStatus();
+    s[String(id)] = status;
+    fs.writeFileSync(statusPath(), JSON.stringify(s, null, 2) + '\n');
+}
+function effectiveStatus(t: any, overrides: Record<string, string>): string {
+    return overrides[String(t.id)] || t.status || 'todo';
+}
+
+function toTopic(t: any): Topic {
+    const byline: 'thomas' | 'dmitry' = [2, 3].includes(t.cluster) ? 'dmitry' : 'thomas';
+    return { id: t.id, frage: t.frage, slug: SLUG_OVERRIDE[t.id] || t.slug, cluster: t.cluster, byline, authorName: AUTHOR_NAME[byline] };
+}
+
 function loadTopic(key: string): Topic {
     const q = yaml.load(readMemory('topics/queue.yaml')) as any;
-    const topics = q.topics as any[];
-    const t = topics.find((x) => String(x.id) === key || x.slug === key);
+    const t = (q.topics as any[]).find((x) => String(x.id) === key || x.slug === key);
     if (!t) throw new Error(`Thema "${key}" nicht in queue.yaml gefunden`);
-    const byline: 'thomas' | 'dmitry' = [2, 3].includes(t.cluster) ? 'dmitry' : 'thomas';
-    return {
-        id: t.id,
-        frage: t.frage,
-        slug: SLUG_OVERRIDE[t.id] || t.slug,
-        cluster: t.cluster,
-        byline,
-        authorName: AUTHOR_NAME[byline],
-    };
+    return toTopic(t);
+}
+
+// Pick the next topic to write: status todo, pillar first, then by id. Demo topics first.
+function selectNextTopic(): Topic {
+    const q = yaml.load(readMemory('topics/queue.yaml')) as any;
+    const overrides = readStatus();
+    const candidates = (q.topics as any[])
+        .filter((t) => effectiveStatus(t, overrides) === 'todo' && t.status !== 'covered')
+        .sort((a, b) => Number(!!b.demo) - Number(!!a.demo) || Number(!!b.is_pillar) - Number(!!a.is_pillar) || a.id - b.id);
+    if (!candidates.length) throw new Error('HALT: kein todo-Thema in der Queue (alles abgearbeitet?).');
+    return toTopic(candidates[0]);
 }
 
 // Pull opinion-pool sections that reference this topic id (e.g. "Thema 13").
@@ -140,9 +168,10 @@ async function main() {
     const args = process.argv.slice(2);
     const key = args.find((a) => !a.startsWith('--'));
     const emit = args.includes('--emit');
-    if (!key) throw new Error('Slug oder ID angeben: tsx scripts/content-engine/pipeline.ts <slug-or-id> [--emit]');
+    const useNext = args.includes('--next');
+    if (!key && !useNext) throw new Error('Slug/ID oder --next angeben: tsx scripts/content-engine/pipeline.ts <slug-or-id|--next> [--emit]');
 
-    const t = loadTopic(key);
+    const t = useNext ? selectNextTopic() : loadTopic(key!);
     const dir = workDir(t.slug);
     const today = new Date().toISOString().slice(0, 10);
     console.log(`\n=== Pipeline: #${t.id} "${t.frage}" -> ${t.slug} (byline: ${t.byline}) ===`);
@@ -246,7 +275,8 @@ async function main() {
     if (emit) {
         const dest = path.join(ROOT, 'content/blog', `${t.slug}.mdx`);
         fs.writeFileSync(dest, mdx);
-        console.log(`   --emit: geschrieben nach content/blog/${t.slug}.mdx (status: draft)`);
+        setStatus(t.id, 'review'); // taken out of the todo pool, awaiting approval
+        console.log(`   --emit: geschrieben nach content/blog/${t.slug}.mdx (status: draft, queue: review)`);
     }
 }
 
