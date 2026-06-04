@@ -1,5 +1,16 @@
 # media-notes.md — verbindliche Regeln fuer Spur 2 (Podcast/Video), Phase 4
 
+## Konten (Thomas ist in Chrome eingeloggt, Stand 2026-06-04)
+- Substack: https://redrabbitlab.substack.com/
+- NotebookLM: https://notebooklm.google.com/
+- YouTube: https://www.youtube.com/@RedRabbitLab
+- **Zwei-Stufen-Auth-Modell:** (1) JETZT/Demo + Ersteinrichtung ueber die bestehende
+  Chrome-Session moeglich (kein Passwort noetig, solange Chrome laeuft). (2) Fuer Dauer-
+  Autonomie (Lauf ohne Thomas am Rechner): persistente Auth aus diesen Sessions ableiten
+  (NotebookLM-MCP-Cookies via setup_auth, YouTube Data API OAuth-Refresh-Token). Browser-
+  Session = jetzt, Tokens/Cookies = dauerhaft.
+
+
 ## NotebookLM (KRITISCH)
 - **Pro Artikel ein NEUES Notebook erstellen.** Niemals mehrere Artikel im selben Notebook
   mischen. Sonst vermischen sich Quellen/Infos und der Podcast/Video-Inhalt wird verfaelscht
