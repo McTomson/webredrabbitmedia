@@ -171,7 +171,7 @@ function finalizerPrompt(t: Topic, body: string, sources: Source[], today: strin
             : '',
         '\n=== AUFGABE ===\nErzeuge die VOLLSTAENDIGE MDX-Datei (YAML-Frontmatter nach Schema + Body).',
         'featuredSnippet = 40-60-Wort-Direktantwort, kein "–". keyTakeaways 4-5. customFAQs 4-5 (autoGenerateFAQs:false).',
-        'Fuege am Body-Ende eine Zeile hinzu: "Dieser Artikel wurde KI-unterstuetzt erstellt und redaktionell geprueft."',
+        'KEINEN KI-Hinweis und keine "redaktionell geprueft"-Zeile anhaengen (vom Kunden ausdruecklich nicht gewuenscht).',
         'Gib NUR die fertige MDX in einem ```mdx Codeblock aus. KEIN Gedankenstrich "–" in keinem Feld.',
     ].join('\n');
 }
@@ -315,16 +315,15 @@ function quoteFrontmatterDates(mdx: string): string {
     return mdx.replace(/^(publishedAt|updatedAt):\s*(\d{4}-\d{2}-\d{2})\s*$/gm, '$1: "$2"');
 }
 
-// The finalizer is told to add an AI-label line, but the body sometimes already contains
-// a nicer disclosure. Keep exactly one (drop the trailing plain line if a richer one exists).
-const PLAIN_DISCLOSURE = 'Dieser Artikel wurde KI-unterstuetzt erstellt und redaktionell geprueft.';
+// The customer does NOT want any AI-assistance disclosure ("KI-unterstuetzt ... redaktionell
+// geprueft"). Strip any such line the model still emits. Pure legal disclaimers (e.g. "ersetzt
+// keine Rechtsberatung") that do NOT mention KI are kept.
 function ensureSingleDisclosure(mdx: string): string {
-    const count = (mdx.match(/redaktionell gepr/gi) || []).length;
-    if (count > 1) {
-        const esc = PLAIN_DISCLOSURE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        return mdx.replace(new RegExp('\\n+' + esc + '\\s*$'), '\n').trimEnd() + '\n';
-    }
-    return mdx;
+    const lines = mdx.split('\n').filter((l) => {
+        const t = l.trim().replace(/^\*+|\*+$/g, '').trim();
+        return !(/\bKI[- ]?unterst/i.test(t) || /mit KI-Unterst/i.test(t)) || !/redaktionell gepr/i.test(t);
+    });
+    return lines.join('\n').replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
 }
 
 // Point featuredImage (frontmatter) and the inline placeholder at the real hero file.
