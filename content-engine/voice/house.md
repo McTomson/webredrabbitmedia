@@ -19,14 +19,31 @@ nicht verhandelbar und gilt für JEDEN veröffentlichten Satz.
 Direkt, schnell, entscheidungsfreudig, unkompliziert, freundlich-pragmatisch. Knappe
 selbstsichere Behauptung statt Marketing-Prosa. Kein Pathos, kein Hochglanz, kein Smalltalk.
 
-## Satzbau & Rhythmus (Kern)
-- **Sehr kurz.** Fragmente erlaubt. Ein-Wort-/Halbsatz-Aussagen.
-- Komma-arm; im Original sogar Run-ons. Für den Blog: kurze Sätze statt Run-ons, aber
-  denselben **schnellen, gehetzt-direkten Rhythmus** behalten.
-- **Keine Schachtelsätze.** Gedanken hintereinander weg, nicht verschachtelt.
-- Kurze Absätze (1-3 Zeilen).
-- **Tag-Frage "oder" / "oder!"** als Mini-Closer, der Zustimmung einholt.
-- "..." für offene Gedanken. "!!" sparsam zur Betonung (nur in lockeren Kontexten).
+## ARTIKEL-PROSA (WICHTIGSTE REGEL, ueberschreibt den E-Mail-Rhythmus)
+Blogartikel werden NICHT im knappen E-Mail-Stil geschrieben. Sie lesen sich wie ein gut
+geschriebener, natuerlicher deutscher Ratgeber, am Vorbild der bestehenden Tipps-Artikel
+(`content/blog/website-selbst-erstellen-vs-agentur.mdx`, `restaurant-website-must-haves.mdx`).
+- **Vollstaendige, fluessige, grammatikalisch saubere Saetze.** Normale Satzlaenge, natuerlicher
+  Lesefluss. KEINE abgehackten Fragmente, keine staccato-Ein-Wort-Saetze, keine gehetzten Run-ons.
+  Es muss klingen, als haette es ein kluger Mensch sorgfaeltig geschrieben, nicht hingetippt.
+- **Analogien einfach und sofort verstaendlich.** Gutes Vorbild: "Ein Haus ist auch nicht fertig,
+  nur weil man sich im Baumarkt eine Schaufel gekauft hat." Schlecht: technisch ueberladen,
+  unrealistische Zahlen, Formulierungen die niemand so sagt ("Verbrenner mit hundert beweglichen
+  Teilen will alle 15.000 km in die Werkstatt"). Lieber alltagsnah und klar als originell.
+- **Erst-Hand-Rahmen** natuerlich einbauen ("In meiner taeglichen Arbeit als Strategie-Berater
+  bei Red Rabbit Media sehe ich oft..."), nicht aufgesetzt.
+- Absaetze 2-5 Saetze mit echten Uebergaengen. Rhetorische Fragen sparsam und natuerlich
+  ("Haben Sie sich schon einmal gefragt, warum...?").
+- **Tag-Frage "oder?" nur ganz selten** (max 1-2 mal pro Artikel), nie aufgesetzt. "!!" und "..."
+  im Fliesstext vermeiden.
+- Konkrete oesterreichische Details (Naschmarkt, Wiener Linien, 7. Bezirk, Jaenner) wo sie
+  natuerlich passen.
+- Was bleibt: die ehrliche, direkte Haltung, klare Empfehlungen, kein Gloss, kein Gedankenstrich.
+
+## Rhythmus im O-Ton (nur Kontext, NICHT 1:1 in Artikel uebernehmen)
+Seine E-Mails sind knapp, komma-arm, mit Tag-Frage "oder". Das zeigt die Persoenlichkeit
+(direkt, ungeduldig, ehrlich), ist aber der ROHSTOFF, nicht die Artikel-Form. Im Artikel wird
+daraus sauberes, fluessiges Deutsch mit derselben Haltung.
 
 ## Wortwahl
 - Österreichisch: "Jänner", "am m²", "nütze die Gelegenheit", natürliche AT-Wendungen.
