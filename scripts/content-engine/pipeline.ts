@@ -178,6 +178,12 @@ async function main() {
         research.facts = research.facts.filter((f: any) => survivingUrls.has(f.source.url));
     }
 
+    // Sanitize source names: research/web titles often contain en/em-dashes, which would
+    // poison the frontmatter (Guardrail 8). URLs stay untouched, only the display name.
+    const deDash = (n: string) => n.replace(/\s*[–—]\s*/g, ' - ');
+    sources = sources.map((s) => ({ ...s, name: deDash(s.name) }));
+    research.facts = research.facts.map((f: any) => ({ ...f, source: { ...f.source, name: deDash(f.source.name) } }));
+
     // 3) Writer
     const opinion = loadOpinion(t.id);
     console.log('3/5 Writer ...');
