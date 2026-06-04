@@ -63,6 +63,37 @@ Update this file at the end of every session when a debugging lesson, setup issu
 - GSC ist verifiziert (`web.redrabbit.media`), aber Baseline ~11 Klicks/3 Monate = nahe Null →
   ehrliche Erwartung: Top-10 nur für gewinnbare Long-Tail/lokal, ~3-6 Monate, kompoundierend.
 
+## 2026-06-04 (Content-Engine Bau + Deploy)
+
+- **Vercel Bild-Cache (KRITISCH):** Dateien in `public/` werden mit `cache-control: max-age=31536000, immutable`
+  ausgeliefert (`x-vercel-cache: HIT`). Ein Bild unter DEMSELBEN Dateinamen zu ueberschreiben aendert
+  NICHTS am CDN, das alte Bild bleibt. Loesung: Bild-Dateinamen IMMER versionieren
+  (`<slug>-hero-<v>.png`). Ist in `scripts/content-engine/image.ts` (Funktion `version()`) verankert.
+- **Codex imagegen** (`codex exec --full-auto -c sandbox_mode=workspace-write "use imagegen ... copy to <path>"`)
+  laeuft headless, 0 EUR ueber ChatGPT-Plus, ABER kann KEINEN lesbaren Text (Woerter werden Kauderwelsch).
+  Nur fuer Bilder OHNE Text (Fotos/Illustrationen). Infografiken mit Text/Zahlen = als SVG bauen und via
+  `sharp(Buffer.from(svg)).png()` rendern. macOS-Hand-Fonts (Marker Felt, Chalkboard SE, Bradley Hand)
+  rendern in librsvg → handgezeichnete Sketchnote-Infografiken mit gestochenem Text moeglich.
+- **Content-Stimme:** Artikel in natuerlichem, fluessigem Deutsch mit vollstaendigen Saetzen schreiben
+  (Vorbild = bestehende Tipps-Artikel), NICHT im knappen E-Mail-Staccato des Users. Seine Mails = Quelle
+  fuer Persoenlichkeit/Ehrlichkeit, NICHT fuer den Prosa-Rhythmus. Abgehackte Fragmente + erzwungenes
+  "oder?" lesen sich un-deutsch/nach KI. Fix in `content-engine/voice/house.md` (Sektion ARTIKEL-PROSA)
+  + Writer-Prompt mit echtem Artikel als Lesefluss-Vorbild (`readArticleSample()`).
+- **`claude -p` headless** funktioniert fuer die 4-Rollen-Pipeline. Unter PARALLEL-Last (3 gleichzeitig)
+  kann der Finalizer transient fehlschlagen → 1 Retry in `runClaude`, riskante Schritte lieber sequenziell.
+- **YAML + Frontmatter:** unquotiertes `YYYY-MM-DD` wird als Date-Objekt geparst → String-Validator faellt
+  durch. Daten im MDX quoten (Pipeline normalisiert via `quoteFrontmatterDates`).
+- **Quellen-Namen** aus Web-Recherche enthalten oft en/em-dashes ("Evario — ...") → vergiften das
+  no-em-dash-Frontmatter. Pipeline saniert Quellen-Namen (Dash → Bindestrich).
+- **Vercel-Env:** Projekt `webredrabbitmedia` (Domain web.redrabbit.media) hatte GAR KEINE Env-Variablen
+  (auch kein SMTP → Kontaktformular sendet nicht). Setzen via `vercel env add <NAME> production`
+  (stdin-pipe), verifizieren via `vercel env pull`. Aktiv wird Env erst beim naechsten Deploy.
+- **Sicherheit:** den breiten `gh auth token` (Scopes repo/workflow/gist) in die Vercel-Env zu schreiben
+  wird vom Permission-Classifier blockiert (Credential-Leak). Stattdessen fein-granularer PAT
+  (nur Contents:write auf das eine Repo). SMTP-Passwort existiert nirgends abrufbar → nur vom User.
+- **Vercel Build-Queue** kann nach vielen schnellen Pushes hintereinander minutenlang in "Queued"
+  haengen bleiben (kein aktiver Build). Deploys buendeln, Queue nicht fluten.
+
 ## Session-End Checklist
 
 - Add new lessons with dates.
