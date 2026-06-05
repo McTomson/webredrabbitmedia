@@ -9,6 +9,7 @@ import HeroldComparisonTable from '@/components/HeroldComparisonTable';
 import RegionComparisonTable from '@/components/RegionComparisonTable';
 import { PodcastPlayer } from '@/components/blog/content/PodcastPlayer';
 import { SimpleAudioPlayer } from '@/components/blog/content/SimpleAudioPlayer';
+import { VideoEmbed } from '@/components/blog/content/VideoEmbed';
 
 // Featured Snippet Component
 function FeaturedSnippet({ children }: { children: React.ReactNode }) {
@@ -257,6 +258,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         RegionComparisonTable,
         PodcastPlayer,
         SimpleAudioPlayer,
+        VideoEmbed,
 
         ...components,
     };
