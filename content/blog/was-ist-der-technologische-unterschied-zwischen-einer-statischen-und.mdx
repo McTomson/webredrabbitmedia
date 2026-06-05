@@ -1,0 +1,192 @@
+---
+title: Was ist der technologische Unterschied zwischen statischer und dynamischer Website? (Österreich 2026)
+slug: was-ist-der-technologische-unterschied-zwischen-einer-statischen-und
+excerpt: >-
+  Der Unterschied zwischen einer statischen und einer dynamischen Website
+  entscheidet über Ladezeit, Kosten und Google-Ranking. Eine verständliche
+  Einordnung mit konkreten Beispielen für Unternehmer.
+featuredSnippetTitle: Was ist der technologische Unterschied zwischen statischer und dynamischer Website?
+featuredSnippet: >-
+  Eine statische Website liefert fertige Dateien unverändert vom Server aus und
+  ist dadurch sehr schnell. Eine dynamische Website nutzt zusätzlich einen
+  Anwendungsserver und eine Datenbank und erzeugt die Inhalte erst bei jeder
+  Anfrage neu. Statisch ist günstiger und schneller, dynamisch ist flexibler für
+  Shops, Logins und personalisierte Inhalte.
+author: Dmitry Pashlov
+publishedAt: '2026-06-05'
+updatedAt: '2026-06-05'
+category: Technik
+tags:
+  - Webentwicklung
+  - statische Website
+  - dynamische Website
+  - Core Web Vitals
+  - Performance
+  - Wien
+featuredImage: /images/blog/was-ist-der-technologische-unterschied-zwischen-einer-statischen-und-hero-u3upz.png
+status: draft
+aiAssisted: true
+sources:
+  - name: MDN Web Docs - What is a web server
+    url: >-
+      https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_web_server
+  - name: web.dev - Rendering on the Web (Google)
+    url: 'https://web.dev/articles/rendering-on-the-web'
+  - name: Google Search Central - Core Web Vitals & Search
+    url: 'https://developers.google.com/search/docs/appearance/core-web-vitals'
+  - name: Next.js Documentation - Caching / Partial Prerendering
+    url: 'https://nextjs.org/docs/app/getting-started/caching'
+keyTakeaways:
+  - >-
+    Statisch heißt, fertige Dateien werden unverändert ausgeliefert. Dynamisch
+    heißt, ein Anwendungsserver und eine Datenbank erzeugen die Seite erst auf
+    Anfrage.
+  - >-
+    Statische Auslieferung ist schneller, weil der TTFB konstant niedrig bleibt.
+    Server-Side-Rendering kostet pro Anfrage Zeit und kann den TTFB erhöhen.
+  - >-
+    Tempo ist ein Ranking-Faktor. Google belohnt gute Page Experience, die
+    Zielwerte liegen bei LCP unter 2,5 Sekunden, INP unter 200 Millisekunden und
+    CLS unter 0,1.
+  - >-
+    Moderne Frameworks wie Next.js mischen beides per Partial Prerendering, also
+    schnelle statische Hülle plus dynamische Teile nur dort, wo sie nötig sind.
+  - >-
+    Entscheiden Sie nach Funktion, nicht nach Mode. Reine Imageseiten gehören
+    statisch, Shops und Logins brauchen dynamische Anteile.
+autoGenerateFAQs: false
+customFAQs:
+  - question: Was ist der Unterschied zwischen einer statischen und einer dynamischen Website?
+    answer: >-
+      Eine statische Website liefert vorbereitete HTML-Dateien unverändert vom
+      Server aus. Eine dynamische Website erzeugt die Inhalte erst im Moment der
+      Anfrage über einen Anwendungsserver und eine Datenbank. Statisch ist
+      schneller und einfacher, dynamisch ist flexibler für personalisierte
+      Inhalte.
+  - question: Ist eine statische Website schneller als eine dynamische?
+    answer: >-
+      In der Regel ja. Weil bei einer statischen Seite nichts pro Anfrage neu
+      berechnet werden muss, bleibt die Time To First Byte konstant niedrig.
+      Server-Side-Rendering erzeugt das HTML on demand und kostet dadurch pro
+      Anfrage Zeit, was die Auslieferung verlangsamen kann.
+  - question: Wann brauche ich wirklich eine dynamische Website?
+    answer: >-
+      Dynamische Anteile brauchen Sie, sobald jeder Besucher etwas anderes sehen
+      oder eingeben muss. Typische Fälle sind ein Login, ein Warenkorb, ein
+      Kundenkonto, ein Buchungsportal mit Echtzeit-Verfügbarkeit oder Inhalte,
+      die sich laufend ändern. Eine reine Firmen- oder Imageseite kommt fast
+      immer ohne aus.
+  - question: Beeinflusst die Technik der Website mein Google-Ranking?
+    answer: >-
+      Ja. Google bestätigt offiziell, dass die Page Experience inklusive der
+      Core Web Vitals in die Ranking-Bewertung einfließt. Eine schnelle,
+      statisch ausgelieferte Seite trifft den LCP-Zielwert unter 2,5 Sekunden
+      fast geschenkt, während eine schlecht gebaute dynamische Seite hier
+      langsamer sein kann.
+  - question: Bedeutet statisch, dass ich die Inhalte nie wieder ändern kann?
+    answer: >-
+      Nein. Statisch beschreibt nur, wie die Seite ausgeliefert wird, nicht Ihre
+      Pflegemöglichkeit. Sie können Texte, Bilder und Preise jederzeit anpassen,
+      oft sogar bequem über ein Redaktionssystem. Geändert wird dann die
+      vorbereitete Datei, die danach erneut ausgeliefert wird.
+---
+
+# Was ist der technologische Unterschied zwischen einer statischen und einer dynamischen Website?
+
+Als technischer Leiter bei Red Rabbit Media bekomme ich diese Frage fast jede Woche gestellt, meistens in dem Moment, in dem ein Unternehmer merkt, dass "Website" nicht gleich "Website" ist. Jemand hat ein Angebot bekommen, dann ein zweites, und plötzlich klafft zwischen den beiden Preisen eine Lücke von ein paar tausend Euro. Die naheliegende Frage lautet dann: Warum eigentlich?
+
+Die Antwort liegt fast immer in der Technik darunter, also in der Frage, ob die Seite statisch oder dynamisch funktioniert. Das klingt nach einem Detail für Entwickler, entscheidet aber in der Praxis über Ladezeit, Wartungsaufwand, Hosting-Kosten und am Ende auch über Ihre Position in der Google-Suche. Schauen wir uns das in Ruhe an, ohne Fachchinesisch und mit konkreten Beispielen aus dem Wiener Geschäftsalltag.
+
+## Die kurze Antwort vorweg
+
+
+![Statisch oder dynamisch: der technische Kern](/images/blog/was-ist-der-technologische-unterschied-zwischen-einer-statischen-und-infografik-u8bqb.png)
+
+Eine statische Website liefert fertige Dateien genau so aus, wie sie auf dem Server liegen, ohne sie vorher zu verändern. Eine dynamische Website besteht zusätzlich aus einem Anwendungsserver und einer Datenbank und erzeugt die Inhalte erst im Moment der Anfrage, also frisch für jeden Besucher. Statisch ist schneller und einfacher, dynamisch ist flexibler, aber technisch deutlich aufwändiger.
+
+Damit ist der Kern schon gesagt. Alles Weitere ist die Frage, was das für Ihr konkretes Projekt bedeutet, und genau da wird es interessant.
+
+## Die Bäckerei und das Restaurant: ein einfaches Bild
+
+
+![A Viennese bakery counter in the early morning, fresh bread rolls and pastries neatly arranged on shelves ready to grab, a friendly baker handing a paper bag to a customer, warm golden light, authentic everyday scene, photorealistic, no text](/images/blog/was-ist-der-technologische-unterschied-zwischen-einer-statischen-und-ctx1-u8dke.png)
+
+Stellen Sie sich eine statische Website wie eine Bäckerei vor, in der die Semmeln schon fertig im Regal liegen. Sie kommen herein, zeigen auf das Gebäck, bekommen es sofort und gehen wieder. Niemand muss erst backen, niemand fragt nach Ihren Wünschen. Genau so funktioniert eine statische Seite. Die HTML-Dateien sind fertig vorbereitet, der Server reicht sie unverändert an den Browser weiter. Laut MDN Web Docs sendet ein statischer Webserver seine gehosteten Dateien eben "as-is" aus, also ohne Bearbeitung.
+
+Eine dynamische Website ist dagegen eher wie ein Restaurant mit offener Küche. Sie bestellen, in der Küche wird Ihr Gericht frisch zubereitet, und erst dann kommt es an den Tisch. Hinter so einem Server steckt deshalb mehr: ein statischer Server, dazu ein Anwendungsserver und eine Datenbank. Die Inhalte werden vor der Auslieferung erst verarbeitet oder direkt aus der Datenbank zusammengebaut, zum Beispiel aus einer HTML-Vorlage und den passenden Datenbankinhalten. Das Ergebnis ist flexibler, weil jeder Gast etwas anderes bekommen kann. Die Küche ist dafür aufwändiger zu betreiben als ein Regal mit fertigen Semmeln.
+
+## Was "statisch" technisch wirklich bedeutet
+
+Statisch heißt nicht langweilig und auch nicht unveränderlich im Sinne von "nie wieder anfassbar". Es bezieht sich nur darauf, wie die Seite ausgeliefert wird. Die Dateien, also HTML, CSS, Bilder und ein bisschen JavaScript für Animationen oder ein Kontaktformular, liegen fertig auf dem Server und werden direkt verschickt.
+
+Der große Vorteil daran ist die Geschwindigkeit. Weil nichts pro Anfrage neu erzeugt werden muss, ist der sogenannte TTFB, also die Time To First Byte, konstant niedrig. Das ist die Zeit, bis der Browser das erste Datenpaket vom Server bekommt. Google beschreibt in seiner Dokumentation zum Rendering im Web genau diesen Punkt: vorgerendertes statisches HTML liefert einen konstant schnellen TTFB, weil die Seite nicht erst pro Anfrage zusammengebaut werden muss.
+
+Ein typischer Fall aus der Praxis: ein Friseur im 7. Bezirk braucht eine Seite mit Leistungen, Preisen, Öffnungszeiten, ein paar Fotos und einem Button für die Online-Terminbuchung. Diese Inhalte ändern sich vielleicht zweimal im Jahr. So eine Seite muss nichts "berechnen". Sie kann komplett statisch sein, lädt blitzschnell und kostet im Hosting fast nichts. Wer hier eine schwere dynamische Lösung verkauft, verkauft am Ziel vorbei.
+
+## Was "dynamisch" leistet, und wann Sie es wirklich brauchen
+
+
+![A focused person at a kitchen table at home making an online booking on a laptop, screen showing a real-time availability calendar with selected slots, coffee cup beside the keyboard, evening light, candid and authentic, photorealistic, no readable text](/images/blog/was-ist-der-technologische-unterschied-zwischen-einer-statischen-und-ctx2-ud1ei.png)
+
+Dynamisch wird es immer dann, wenn die Seite auf den einzelnen Besucher oder auf ständig wechselnde Daten reagieren muss. Sobald ein Nutzer sich einloggt, einen Warenkorb füllt, einen Account hat oder Inhalte sieht, die sich laufend ändern, kommen Anwendungsserver und Datenbank ins Spiel.
+
+Denken Sie an einen Online-Shop für Wiener Kaffee, an ein Buchungsportal mit Echtzeit-Verfügbarkeit oder an ein Kundenkonto, in dem jeder seine eigenen Bestellungen sieht. Hier kann die Seite nicht für alle gleich vorgefertigt im Regal liegen, weil jeder Besucher etwas anderes braucht. Der Server muss die Seite frisch erzeugen. Genau das ist Server-Side-Rendering, also das Erzeugen von HTML auf Anfrage pro URL.
+
+Der Preis dafür ist Tempo. Google hält in derselben Dokumentation fest, dass Server-Side-Rendering das HTML on demand erzeugt und dadurch langsamer sein kann, weil das Generieren auf dem Server Zeit kostet und den TTFB erhöht. Das ist kein Argument gegen dynamische Seiten. Es ist nur der Grund, warum man dynamische Logik dort einsetzt, wo man sie braucht, und nicht überall aus Prinzip.
+
+## Warum diese Entscheidung Ihre Google-Position betrifft
+
+
+![A web developer at a dual-monitor workstation in a modern Vienna agency studying a website performance dashboard with speed graphs and gauges, concentrated expression, soft daylight and red accent details in the room, authentic working moment, photorealistic, no legible text](/images/blog/was-ist-der-technologische-unterschied-zwischen-einer-statischen-und-ctx3-ug4df.png)
+
+Jetzt kommt der Punkt, der viele überrascht. Die Geschwindigkeit ist kein reines Komfort-Thema, sie wirkt direkt auf Ihre Sichtbarkeit. Google bestätigt offiziell, dass die Page Experience inklusive der Core Web Vitals mit dem belohnt wird, was die zentralen Ranking-Systeme der Suche ohnehin anstreben. Ladeleistung ist also ein Faktor, der für das Ranking zählt.
+
+Die konkreten Zielwerte sind dabei kein Geheimnis. Google nennt für den LCP, also den Largest Contentful Paint, einen Zielwert unter 2,5 Sekunden. Für den INP, die Interaction to Next Paint, gilt ein Zielwert unter 200 Millisekunden, und für den CLS, also die visuelle Stabilität der Seite, ein Wert unter 0,1. Eine statische Seite trifft den ersten dieser Werte fast geschenkt, weil sie sofort ausgeliefert wird. Eine schlecht gebaute dynamische Seite kann hier ins Schwitzen kommen, wenn der Server bei jeder Anfrage erst arbeiten muss.
+
+Für Sie heißt das ganz praktisch: Wenn Ihr Geschäft stark von Google-Sichtbarkeit lebt, etwa ein lokaler Dienstleister in Wien, der über die Suche gefunden werden will, dann ist die Auslieferungsart keine Nebensache. Sie ist Teil Ihrer SEO-Strategie.
+
+## Der moderne Mittelweg: warum die strenge Trennung aufweicht
+
+In der Realität von 2026 ist die Grenze zwischen statisch und dynamisch längst nicht mehr so hart wie früher. Sie müssen sich heute oft gar nicht mehr für nur eine Seite entscheiden. Moderne Frameworks kombinieren beide Welten auf derselben Website.
+
+Ein gutes Beispiel ist Next.js mit dem sogenannten App Router, mit dem wir bei Red Rabbit Media arbeiten. Hier wird der statische oder als zwischenspeicherbar markierte Inhalt schon zur Build-Zeit in eine fertige HTML-Hülle vorgerendert und kann sofort ausgeliefert werden. Die wirklich persönlichen oder frischen Teile, also etwa der Zugriff auf Cookies, auf Header oder auf aktuelle Daten aus einer Schnittstelle, werden erst zur Anfrage-Zeit pro Nutzer erzeugt und nachgeladen. Dieses Verfahren heißt Partial Prerendering.
+
+Übersetzt in das Restaurant-Bild bedeutet das: Das Brot und die Beilagen liegen schon fertig bereit und kommen sofort, nur das Hauptgericht wird für Sie frisch gekocht. So bekommen Sie den schnellen Start einer statischen Seite und trotzdem die Flexibilität für die Teile, die wirklich individuell sein müssen. Für die meisten Geschäftsseiten ist genau das heute der sinnvollste Weg.
+
+## Häufige Irrtümer, die teuer werden
+
+In Gesprächen begegnen mir immer wieder dieselben Missverständnisse, und die kosten am Ende oft Geld.
+
+Der erste Irrtum: "Statisch heißt, ich kann nie wieder etwas ändern." Das stimmt nicht. Sie können Texte, Bilder und Preise jederzeit anpassen, oft sogar bequem über ein Redaktionssystem. Statisch beschreibt nur die Auslieferung, nicht Ihre Pflegemöglichkeit.
+
+Der zweite Irrtum: "Dynamisch ist moderner, also besser." Auch das stimmt so nicht. Dynamik ist ein Werkzeug für bestimmte Aufgaben. Wer eine reine Firmen- oder Imageseite dynamisch über eine schwere Datenbank betreibt, zahlt für Komplexität, die er nie nutzt, und handelt sich gleichzeitig eine langsamere Seite und mehr Wartung ein. Macht wenig Sinn, oder?
+
+Der dritte Irrtum: "Den Unterschied merkt der Kunde eh nicht." Doch, er merkt ihn, nur nicht bewusst. Er merkt ihn an einer Seite, die nach drei Sekunden noch lädt, und springt dann ab. Geschwindigkeit ist kein technisches Detail am Rand. Sie hängt direkt mit Ihrer Abbruchrate zusammen.
+
+## Schritt für Schritt: so finden Sie heraus, was Sie brauchen
+
+Damit Sie diese Entscheidung nicht dem Bauchgefühl überlassen müssen, hier ein einfacher Weg, den Sie selbst durchgehen können.
+
+Erstens, schreiben Sie auf, was Ihre Seite können muss. Listen Sie jede Funktion auf, also Kontaktformular, Terminbuchung, Shop, Login, Blog, Kundenbereich. Seien Sie dabei ehrlich und unterscheiden Sie zwischen "brauche ich wirklich" und "wäre nett".
+
+Zweitens, markieren Sie jede Funktion, bei der jeder Besucher etwas anderes sehen oder eingeben muss. Genau diese Punkte sind Ihre dynamischen Anforderungen. Ein Kontaktformular allein macht eine Seite übrigens noch nicht dynamisch im schweren Sinn, das lässt sich auch auf einer statischen Seite sauber lösen.
+
+Drittens, schauen Sie sich an, wie oft sich Ihre Inhalte ändern. Zweimal im Jahr ist ein klarer Fall für statisch. Mehrmals täglich mit personalisierten Daten spricht für dynamische Anteile.
+
+Viertens, stellen Sie Ihrer Agentur eine einzige, klare Frage: Welche Teile meiner Seite werden statisch ausgeliefert und welche dynamisch erzeugt, und warum? Wer Ihnen das verständlich erklären kann, hat verstanden, was Sie brauchen. Wer ausweicht, baut womöglich aus Gewohnheit zu kompliziert.
+
+![Vergleich einer statischen und einer dynamischen Website am Bild von Bäckerei und Restaurant mit offener Küche, illustriert für Unternehmen in Wien](/images/blog/was-ist-der-technologische-unterschied-zwischen-einer-statischen-und-hero-u3upz.png)
+
+## Key-Takeaways
+
+- Statisch heißt, fertige Dateien werden unverändert ausgeliefert. Dynamisch heißt, ein Anwendungsserver und eine Datenbank erzeugen die Seite erst auf Anfrage.
+- Statische Auslieferung ist schneller, weil der TTFB konstant niedrig bleibt. Server-Side-Rendering kostet pro Anfrage Zeit und kann den TTFB erhöhen.
+- Tempo ist ein Ranking-Faktor. Google belohnt gute Page Experience, die Zielwerte liegen bei LCP unter 2,5 Sekunden, INP unter 200 Millisekunden und CLS unter 0,1.
+- Moderne Frameworks wie Next.js mischen beides per Partial Prerendering, also schnelle statische Hülle plus dynamische Teile nur dort, wo sie nötig sind.
+- Entscheiden Sie nach Funktion, nicht nach Mode. Reine Imageseiten gehören statisch, Shops und Logins brauchen dynamische Anteile.
+
+## Wie es weitergeht
+
+Wenn Sie jetzt unsicher sind, in welche Kategorie Ihr Projekt fällt, ist das völlig in Ordnung. Genau diese Einordnung ist der erste Schritt jeder seriösen Planung. Sie erspart Ihnen später oft unnötige Komplexität oder verlorene Geschwindigkeit, und beides kostet am Ende Geld.
+
+Schicken Sie uns einfach kurz, was Ihre Seite leisten soll, und wir sehen uns gemeinsam an, welcher technische Weg für Ihr Vorhaben der richtige ist. Über unser [Kontaktformular](/kontakt) erreichen Sie uns direkt, und das erste Gespräch dient nur dazu, Ihre Anforderungen sauber zu klären, nicht zum Verkaufen.
