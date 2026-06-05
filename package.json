@@ -9,7 +9,9 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "engine": "tsx scripts/content-engine/pipeline.ts"
+    "engine": "tsx scripts/content-engine/pipeline.ts",
+    "media": "tsx scripts/content-engine/media/run-media.ts",
+    "media:pending": "tsx scripts/content-engine/media/pending.ts"
   },
   "dependencies": {
     "@next/third-parties": "^16.1.3",
