@@ -4,8 +4,12 @@ Headless video upload for the content engine. Files are read straight from disk,
 so this needs no browser and no file picker (the browser automation tools cannot
 push a local file into a web upload field, so the API is the only autonomous path).
 
+Account: everything runs under the CHANNEL owner `rabbit.red.media@gmail.com`
+(owns @RedRabbitLab and its GCP project `fourth-stock-468014-e5`), so there is no
+cross-account problem. YouTube Data API v3 is enabled on that project.
+
 Secrets live OUTSIDE the repo in `~/.config/redrabbit-youtube/`:
-- `client_secret.json` (desktop OAuth client, project claude-email-manager-484501)
+- `client_secret.json` (Desktop OAuth client from project fourth-stock-468014-e5)
 - `token.json` (created by youtube_auth.py, holds the refresh token) -- NEVER commit
 
 ## One-time setup (needs Thomas once; cannot be automated)
