@@ -22,7 +22,7 @@ CFG_DIR = os.path.expanduser("~/.config/redrabbit-youtube")
 CLIENT_SECRET = os.path.join(CFG_DIR, "client_secret.json")
 TOKEN_PATH = os.path.join(CFG_DIR, "token.json")
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload",
-          "https://www.googleapis.com/auth/youtube.readonly"]
+          "https://www.googleapis.com/auth/youtube"]
 PORT = int(os.environ.get("RR_OAUTH_PORT", "8765"))
 
 

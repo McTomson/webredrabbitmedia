@@ -26,7 +26,7 @@ from googleapiclient.http import MediaFileUpload
 CFG_DIR = os.path.expanduser("~/.config/redrabbit-youtube")
 TOKEN_PATH = os.path.join(CFG_DIR, "token.json")
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload",
-          "https://www.googleapis.com/auth/youtube.readonly"]
+          "https://www.googleapis.com/auth/youtube"]
 
 
 def load_creds() -> Credentials:
