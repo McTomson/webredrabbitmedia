@@ -84,6 +84,62 @@ This file is shared project memory for Codex and Claude Code. Both tools should 
   Text neu (approved Stil) + 5 Bilder; (4) Auto-Mail (SMTP-Passwort); (5) Medien Phase 4 (NotebookLM/
   Substack/YouTube, User in Chrome eingeloggt, 1 Notebook pro Artikel); (6) launchd installieren.
 
+## Content-Engine Stand (2026-06-05) — GROSSER FORTSCHRITT, Medien + Email LIVE
+
+- **Vercel-Stau ENDGUELTIG behoben (Wurzel):** Das Duplikat-Projekt `webredrabbitmedia-9000` war ans
+  GLEICHE GitHub-Repo gekoppelt -> jeder Push baute auf dem Hobby-1-Slot-Plan ZWEI Builds, ein haengender
+  `-9000`-Build blockierte den Slot 30+ Min. **`-9000` Git-Verbindung im Vercel-Dashboard getrennt.**
+  Ab jetzt: `git push origin main` deployt sauber nur das echte Projekt. (Empfehlung: `-9000` ganz loeschen.)
+- **Deploy-Weg ab jetzt:** `git push origin main` (Auto-Deploy echtes Projekt). `vercel --prod` (lokaler
+  Upload) war Workaround waehrend `-9000` noch dranhing, nicht mehr noetig.
+- **main konsolidiert:** war 5 Commits hinter feat -> `git merge -s ours origin/main` (feat-Inhalt behalten)
+  + gepusht. main == aktueller Stand (Podcast, 5 Bilder, kein KI-Hinweis) + Engine-Code. feat+main beide
+  aktuell. **Daily-Job + Freigabe-Flow brauchen main=aktuell, das ist jetzt so.**
+- **Codex-Bildmodell:** codex hat Default `gpt-5.4 -> gpt-5.5` auto-migriert (langsam, 4-8min/Bild, lief in
+  260s-Timeout). Fix in `image.ts`: `-m gpt-5.4` gepinnt + Timeout 600s (~2.5min/Bild). `image_gen` lehnt
+  `reasoning.effort minimal` AB. Fotos laufen jetzt PARALLEL (`images-only.ts` + Pipeline-Bildstufe).
+- **Multi-Bild-Pipeline BEWIESEN + LIVE:** `images-only.ts` (Bildstufe auf bestehenden Artikel anwenden).
+  Wartungsvertrag hat 5 Bilder live: Hero-Foto + Sketch-Infografik + 3 Kontextfotos, je unter der richtigen
+  H2. **User: Bild-Stil noch nicht final, muss verfeinert werden (spaeter).**
+- **Taegliche Review-Email LIVE + ECHT GETESTET:** `/api/review-notify` HTTP 200, Mail real zugestellt.
+  **SMTP-Setup: immo.red ist Google Workspace (KEINE App-Passwoerter), darum privates Gmail
+  `thomas.uhlir@gmail.com` mit App-Passwort.** Vercel-Env: SMTP_HOST=smtp.gmail.com, SMTP_PORT=587,
+  SMTP_USER+SMTP_FROM=thomas.uhlir@gmail.com, SMTP_PASSWORD=<encrypted, in Vercel>, SMTP_TO=t.uhlir@immo.red.
+  1-Klick Freigeben/Ablehnen live (`/api/approve` validiert Token, APPROVAL_SECRET gesetzt).
+- **KI-Hinweis ENTFERNT (User-Wunsch):** "Dieser Artikel wurde KI-unterstuetzt erstellt und redaktionell
+  geprueft." aus allen Artikeln + Pipeline raus (Finalizer haengt ihn nicht mehr an, `ensureSingleDisclosure`
+  strippt ihn). BFSG behielt nur den Rechtsberatungs-Hinweis.
+- **Podcast LIVE:** NotebookLM-Podcast (22:11 Min, deutsch, "Wann Website-Wartungsvertraege reine Abzocke
+  sind") aus SAUBERER Volltext-Quelle (NICHT URL-Import, der zieht Menue/Footer-Muell). m4a -> 96k mono mp3
+  (14.4MB, ffmpeg) -> `public/audio/website-wartungsvertrag-sinnvoll-podcast.mp3` -> `<SimpleAudioPlayer>`
+  nach H1. Live (HTTP 206). NotebookLM-Notebook-ID `696aae82-321b-4a09-b148-03beeee084bd` (authuser=3,
+  Konto thomas.uhlir). Eine Video-Overview wurde evtl. gestartet (im Studio "Website-Wartung... vor 1 Min").
+- **Taegliche Automatik INSTALLIERT:** `~/Library/LaunchAgents/com.redrabbit.contentengine.plist` geladen
+  (`launchctl list` zeigt com.redrabbit.contentengine). Laeuft `run-daily.sh` (09:17 + 3h Catch-up,
+  idempotent 1 Artikel/Tag, naechstes Thema #53). Pausieren: `launchctl unload <plist>`.
+
+### OFFEN fuer naechste Session (User-Vorgaben siehe HANDOFF unten)
+1. **Video** zu Ende: NotebookLM Video-Overview herunterladen -> YouTube @RedRabbitLab UNLISTED hochladen
+   mit Backlink-Beschreibung -> User prueft -> oeffentlich + auf Artikelseite einbetten.
+2. **Substack-Post**: Podcast/Artikel als Episode mit Backlink-Block posten.
+3. **BACKLINK-BLOCK** (aus Users YouTube-Vorbild, fuer BEIDE Kanaele ans Ende der Beschreibung):
+   `mehr infos unter:` + `https://web.redrabbit.media/tipps/<artikel>` + `https://web.redrabbit.media`
+   + `https://redrabbit.media`. Ziel = SEO-Backlinks auf den Artikel.
+4. **Automatik-Verlaesslichkeit:** User OK = "nur Computer an, kein Terminal offen noetig" (launchd ist ein
+   LaunchAgent, braucht kein Terminal). Naechste Session: `pmset` Selbst-Wecken 09:15 einrichten (Option A,
+   nur wenn Mac am Strom). Server (B) nur falls Mac oft ganz aus = bricht 0-Euro-Modell.
+5. **Bild-Stil verfeinern** (User nicht 100% zufrieden), dann Bilder neu.
+6. **Steuer (#12) + BFSG (#266):** Text approved-Stil + je 5 Bilder (verschoben).
+7. **HAUPT-ZIEL naechste Session (User-Wortlaut):** "dass du sowohl auf substack als auch auf youtube den
+   artikel hochladen kannst" — End-to-end Upload-Faehigkeit fuer beide Kanaele.
+
+### Infra-Fakten (fuer naechste Session)
+- Vercel-Token: `~/Library/Application Support/com.vercel.cli/auth.json`. team_rGF9lfj041ih8UY1IBcLqDHO,
+  projectId prj_qspNVCz7YdHRUfjGgnNxrSTsNoNR (webredrabbitmedia, Domain web.redrabbit.media). Hobby=1 Build.
+- NotebookLM-MCP NICHT authentifiziert (eigener headless-Browser). Stattdessen User-Chrome (authuser=3).
+- Clipboard-Falle: User kopiert auf seinem Mac -> ueberschreibt pbcopy. Vor jedem cmd+v im Browser frisch
+  pbcopy machen + per Screenshot pruefen (einmal landete sein App-Passwort im NotebookLM-Feld, geloescht).
+
 ## Session-End Checklist
 
 - Update this file with any new stable project context.

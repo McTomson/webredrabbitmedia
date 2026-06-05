@@ -94,6 +94,44 @@ Update this file at the end of every session when a debugging lesson, setup issu
 - **Vercel Build-Queue** kann nach vielen schnellen Pushes hintereinander minutenlang in "Queued"
   haengen bleiben (kein aktiver Build). Deploys buendeln, Queue nicht fluten.
 
+## 2026-06-05 (Medien + Email + Automatik live)
+
+- **Vercel Hobby = 1 paralleler Build fuers ganze Konto.** Ein Duplikat-Projekt `webredrabbitmedia-9000`
+  war ans gleiche GitHub-Repo gekoppelt -> jeder Push baute doppelt, ein haengender `-9000`-Build (30+ Min
+  "Initializing") blockierte den einzigen Slot, alle echten Deploys hingen in "Queued". **Loesung: `-9000`
+  Git-Verbindung im Vercel-Dashboard trennen** (Settings -> Git -> Disconnect). Queued-Deploys cancelt man
+  per Dashboard (3-Punkte -> Cancel Deployment) oder API `PATCH /v12/deployments/{id}/cancel`. Frischen
+  Deploy aus GitHub triggern: API `POST /v13/deployments` mit `gitSource{type:github,ref:main,repoId}`.
+- **codex auto-migriert Modell `gpt-5.4 -> gpt-5.5`** (`config.toml [notice.model_migrations]`). 5.5 reasoned
+  viel laenger -> 4-8 min/Bild, lief in 260s-Timeout. Fix: `codex exec --sandbox workspace-write -m gpt-5.4`
+  + Timeout 600s. `image_gen`-Tool lehnt `reasoning.effort minimal` AB (400). codex v0.136 liest die
+  imagegen-SKILL.md bei jedem Call (Extra-Overhead). Fotos parallel via Promise.all = Wall-Clock ~1 Bild.
+- **SMTP fuer immo.red:** Domain ist Google Workspace, dort sind App-Passwoerter oft Admin-gesperrt
+  ("Einstellung nicht verfuegbar"). Loesung: privates Gmail `thomas.uhlir@gmail.com` mit App-Passwort,
+  `smtp.gmail.com:587`. **Gmail-SMTP-From MUSS = authentifiziertes Konto** (From=gmail, To=immo.red ok).
+  App-Passwort als `encrypted` Vercel-Env, NIE ins Repo. Env wird erst beim naechsten Deploy aktiv.
+- **NotebookLM Quelle:** URL-Import zieht Menue/Footer-Muell der Seite mit ("Ueber uns, erstellen lassen,
+  (c) Red Rabbit GmbH"). Fuer sauberen Podcast/Video den VOLLEN Artikeltext via "Kopierter Text" einfuegen,
+  URL-Quelle loeschen (3-Punkte -> Quelle entfernen). "Quellenuebersicht" ist nur die Auto-Zusammenfassung,
+  NICHT der gespeicherte Volltext (User dachte sonst, Artikel sei unvollstaendig). Pro Artikel ein eigenes
+  Notebook (User-Regel, sonst vermischen sich Infos).
+- **Clipboard-Falle bei Browser-Automation:** `pbcopy` setzt die Zwischenablage, aber wenn der User
+  parallel auf seinem Mac etwas kopiert, wird sie ueberschrieben. Einmal landete so sein App-Passwort beim
+  `cmd+v` im NotebookLM-Feld. Immer DIREKT vor dem Paste frisch `pbcopy` + per Screenshot verifizieren, was
+  wirklich eingefuegt wurde, bevor man "Einfuegen"/Submit klickt.
+- **Podcast-Hosting:** NotebookLM-Audio (m4a) -> `ffmpeg -ac 1 -b:a 96k` (22min ~14MB) -> `public/audio/`
+  -> `<SimpleAudioPlayer src="/audio/<slug>-podcast.mp3" title="..." />` nach der H1. Komponente ist in
+  `mdx-components.tsx` registriert. `audio-proxy` nur fuer EXTERNE (Substack) mp3s noetig, nicht same-origin.
+- **YouTube/Substack Backlink-Muster (User):** ganz unten in die Beschreibung `mehr infos unter:` +
+  konkreter Artikel-URL + `web.redrabbit.media` + `redrabbit.media`. Das ist der SEO-Backlink-Zweck. Seine
+  bisherigen Substack-Posts haben den Backlink NOCH NICHT -> kuenftig immer rein.
+- **Branch-Konsistenz:** Daily-Job (`run-daily.sh`) + Freigabe-Flow (`/api/approve` editiert GitHub main)
+  brauchen main = aktueller Live-Stand. main war divergiert (alte Merge/Chore-Commits aus git-Deploys).
+  `git merge -s ours origin/main` behaelt feats Inhalt komplett, verbindet nur die Historie -> ff-push.
+- **launchd LaunchAgent braucht KEIN offenes Terminal** (laeuft im Hintergrund, nur der User muss eingeloggt
+  /Mac an sein). plist via `/bin/bash -lc` expandiert `$HOME`. `plutil -lint` vor `launchctl load`.
+  Mac-Selbst-Wecken fuer feste Uhrzeit: `pmset repeat wakeorpoweron ...` (nur am Strom, nicht bei Komplett-Aus).
+
 ## Session-End Checklist
 
 - Add new lessons with dates.
