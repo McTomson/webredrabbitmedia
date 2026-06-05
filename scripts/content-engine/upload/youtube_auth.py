@@ -31,11 +31,13 @@ def main() -> int:
         print(f"FEHLT: {CLIENT_SECRET}", file=sys.stderr)
         return 2
     flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET, SCOPES)
-    # open_browser=False: print the URL so we drive consent in the existing Chrome.
+    # Default: open the user's browser for the one-time consent. Set RR_OPEN_BROWSER=0
+    # to only print the URL (used when consent is driven elsewhere).
+    open_browser = os.environ.get("RR_OPEN_BROWSER", "1") == "1"
     creds = flow.run_local_server(
         host="127.0.0.1",
         port=PORT,
-        open_browser=False,
+        open_browser=open_browser,
         authorization_prompt_message="CONSENT_URL: {url}",
         success_message="Auth ok. Sie koennen dieses Fenster schliessen.",
         access_type="offline",
