@@ -94,6 +94,21 @@ export async function GET(req: Request): Promise<Response> {
             indexNote = '<p>Hinweis: IndexNow-Ping nicht moeglich (Artikel ist trotzdem freigegeben).</p>';
         }
 
+        // Step 2 of the 3-mail flow: fire Mail 2 ("Medien starten") so Thomas can kick off
+        // the podcast+video step from his phone. Best-effort, never blocks the approval.
+        try {
+            const adminToken = process.env.ADMIN_API_TOKEN;
+            if (adminToken) {
+                await fetch(`${SITE_URL}/api/media-notify`, {
+                    method: 'POST',
+                    headers: { Authorization: `Bearer ${adminToken}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ slug }),
+                });
+            }
+        } catch {
+            /* Mail 2 is best-effort; the media step can also be triggered manually */
+        }
+
         return page('Freigegeben und veroeffentlicht', `<p>Der Artikel <strong>${slug}</strong> ist jetzt online. Vercel deployt die Aenderung in ein, zwei Minuten.</p>${indexNote}<p><a href="${previewUrl}">Artikel ansehen</a></p>`);
     } catch (e: unknown) {
         const msg = e instanceof Error ? e.message : String(e);

@@ -47,6 +47,35 @@ export function buildReviewEmail(a: ReviewArticle, secret: string): { subject: s
     return { subject, html, text };
 }
 
+export interface MediaStarted {
+    slug: string;
+    title: string;
+    // signed link that kicks off (or confirms) the media step from the phone
+    triggerUrl: string;
+}
+
+// Mail 2 of the 3-mail flow. Sent right after the text is approved. Tells Thomas the
+// media step (NotebookLM podcast + video) is starting and gives him one tap to confirm
+// from the phone. No second text review, the text is already approved.
+export function buildMediaStartedEmail(m: MediaStarted): { subject: string; html: string; text: string } {
+    const article = `${SITE_URL}/tipps/${m.slug}`;
+    const subject = `Text freigegeben, Medien starten: ${m.title}`;
+    const html = `<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f6f7f8;margin:0;padding:24px;color:#1a1a1a">
+<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:14px;padding:28px;box-shadow:0 2px 14px rgba(0,0,0,.06)">
+<p style="margin:0 0 4px;font-size:13px;color:#666">Red Rabbit Content-Engine, Schritt 2 von 3</p>
+<h1 style="font-size:21px;margin:0 0 8px">${m.title}</h1>
+<p style="margin:0 0 18px;color:#444;line-height:1.5">Danke, der Text ist freigegeben und online. Jetzt erzeuge ich den Podcast und das Video (NotebookLM), bette den Podcast auf der Website ein und lade das Video auf YouTube. Tippen Sie hier, um den Medien-Schritt anzustossen oder zu bestaetigen.</p>
+<div style="margin:0 0 22px">
+<a href="${m.triggerUrl}" style="display:block;text-align:center;background:#1a7f37;color:#fff;text-decoration:none;padding:13px;border-radius:9px;margin-bottom:10px;font-weight:600">Podcast und Video jetzt erzeugen</a>
+<a href="${article}" style="display:block;text-align:center;background:#111;color:#fff;text-decoration:none;padding:13px;border-radius:9px;font-weight:600">Artikel ansehen</a>
+</div>
+<p style="font-size:12px;color:#999;margin:0">Sobald alles hochgeladen und gepusht ist, bekommen Sie eine letzte Mail mit allen Links. Mehr ist nicht zu tun.</p>
+</div></body></html>`;
+    const text = `${m.title}\n\nText freigegeben und online. Medien-Schritt (Podcast + Video) startet.\n\nAnstossen/bestaetigen: ${m.triggerUrl}\nArtikel: ${article}\n\nDie letzte Mail kommt, sobald alles hochgeladen und gepusht ist.\n`;
+    return { subject, html, text };
+}
+
 export interface PublishedLinks {
     slug: string;
     title: string;

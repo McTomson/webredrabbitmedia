@@ -5,7 +5,7 @@ import crypto from 'crypto';
 // is enforced downstream (an already-published article ignores a second approve).
 // Used by both the engine email sender and app/api/approve/route.ts (same secret).
 
-export type ApprovalAction = 'approve' | 'reject';
+export type ApprovalAction = 'approve' | 'reject' | 'media';
 
 interface Payload {
     slug: string;
