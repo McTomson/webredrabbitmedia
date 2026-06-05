@@ -4,6 +4,26 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-06 (Nacht) — voller autonomer Durchlauf + Substack + Embed-Resilienz
+
+- **Voller Content-Engine-Durchlauf bewiesen (Artikel #105):** Freigabe -> `/api/approve` setzt
+  `published` UND legt still einen Medien-Marker an -> NotebookLM Podcast+Video (Browser) ->
+  `run-media` (npm `media`): Podcast einbetten + Video PUBLIC zu YouTube + einbetten + push +
+  Schluss-Mail. Neue, getestete Werkzeuge: `scripts/content-engine/media/{run-media,mdxMedia,pending}.ts`.
+  2-Mail-Flow (Mail 2 verworfen, User-Wunsch).
+- **Substack veroeffentlichen (Browser), drei Stolpersteine:** (1) **Rubrik ist PFLICHT** -> ohne
+  Rubrik haengt "Ohne Buttons veroeffentlichen" und der Post bleibt Entwurf. (2) YouTube-Embed nur
+  per **Paste auf LEERER Zeile** (getippt/ueber-Auswahl = nur Link). (3) Erst-Publish MIT Video
+  haengt die Share-Center-Seite -> erst TEXT veroeffentlichen, dann Video per "Aktualisieren"
+  nachziehen (Update sendet keine Mail). Status nur in FRISCHEM Tab pruefen, Editor-Tab mit Embed
+  wird unresponsiv. Konto hat 0 Abos.
+- **"Kaputtes Video" = Client-Blocker, kein Server-Bug:** Thomas' Chrome blockt YouTube-Domains
+  (youtube-nocookie.com UND i.ytimg.com). Erst messen (curl-Markup, Data-API uploadStatus/embeddable,
+  oEmbed 200), dann fixen. `VideoEmbed.tsx` jetzt Lite-Embed ("use client"): Poster + Play-Button,
+  Player erst beim Klick, Poster `onError` -> hide (nie kaputtes Kaestchen), Caption = youtu.be-Link.
+- **Nicht over-engineeren:** Thomas fragt aktiv nach ("tust du overingenieren? funktioniert es?").
+  Server zuerst verifizieren, ehrlich sagen ob es funktioniert, gezielt minimal fixen.
+
 ## 2026-06-05 Abend
 
 - **launchd-PATH:** `bash -lc` liest `~/.zshrc` NICHT, also fehlte nvm (`claude`) -> Tagesjob starb

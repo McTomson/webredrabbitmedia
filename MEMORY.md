@@ -6,6 +6,28 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Content-Engine 2026-06-06 (Nacht) — VOLLER autonomer Durchlauf bewiesen (#105)
+
+- **Ende-zu-Ende-Durchlauf live + verifiziert** mit Artikel #105
+  (`wie-veraendern-ki-technologien-die-erstellung-von-modernen-websites`): Pipeline -> push ->
+  Review-Mail (Mail 1) -> User-Freigabe -> `/api/approve` setzt `published` + legt still
+  Medien-Marker `content-engine/.media-requests/<slug>.json` an -> Podcast+Video via NotebookLM
+  (Browser, t.uhlir) -> `run-media`: Podcast eingebettet + Video PUBLIC auf YouTube
+  (youtu.be/rXnZF19dwMc) + eingebettet + push -> Substack veroeffentlicht mit Video
+  (redrabbitlab.substack.com/p/wie-verandern-ki-technologien-die) -> Schluss-Mail (Mail 2) mit allen Links.
+- **Neue Werkzeuge (getestet, deployed):** `/api/approve` legt Medien-Marker an (2-Mail-Flow, Mail 2
+  verworfen); `/api/media-trigger` (signierter Marker-Link, manueller Fallback);
+  `scripts/content-engine/media/run-media.ts` (npm `media`) = deterministischer Medien-Tail nach
+  NotebookLM-Downloads; `mdxMedia.ts` (embedPodcast/embedVideo/parseYoutubeId, 8 Tests); `pending.ts`
+  (npm `media:pending`). 48 vitest + tsc + Build gruen.
+- **VideoEmbed abgehaertet:** Lite-Embed ("use client", Poster+Klick, Poster hide-on-error,
+  youtu.be-Fallback-Link). Grund: Client-Blocker (YouTube-Domains in manchem Chrome geblockt).
+- **Substack-Veroeffentlichen (Browser): Rubrik ist PFLICHT;** YouTube nur per Paste auf leerer
+  Zeile; Erst-Publish mit Video haengt -> Text publizieren, Video per Aktualisieren nachziehen.
+- **Offen:** unbeaufsichtigter recurring Medien-Trigger (braucht geplante Browser-Sitzung,
+  NotebookLM/Substack haben keine API); `sudo pmset repeat wakeorpoweron MTWRFSU 09:15:00` (User);
+  Bild-Stil verfeinern. Tagesautomatik launchd scharf (09:17 + 3h-Catch-up, Mac muss an sein).
+
 ## Content-Engine 2026-06-05 Abend (autonomer Kern + YouTube headless LIVE)
 
 - **Tagesautomatik gefixt + bewiesen:** PATH-Bug behoben (`run-daily.sh` setzt nvm-default-bin +
