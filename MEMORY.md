@@ -6,6 +6,27 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Content-Engine 2026-06-05 Abend (autonomer Kern + YouTube headless LIVE)
+
+- **Tagesautomatik gefixt + bewiesen:** PATH-Bug behoben (`run-daily.sh` setzt nvm-default-bin +
+  homebrew in PATH; launchd hatte `spawnSync claude ENOENT`). Engine erzeugte 13:36 selbst
+  Artikel #53, gepusht/deployt/Review-Mail; User per Mail freigegeben -> `/api/approve` setzte
+  `status: published` (Commit `d57b7a8`) + IndexNow. Komplett autonom.
+- **YouTube Data-API headless KOMPLETT** (Konto rabbit.red.media@gmail.com, Kanal "Red Rabbit Lab"
+  `UC6hInJDtZeD8YSOwuvV60yA`, GCP-Projekt `blissful-answer-468100-v3`, API v3 an, Desktop-OAuth,
+  Consent veroeffentlicht). Secrets in `~/.config/redrabbit-youtube/{client_secret.json,token.json}`
+  (NIE committen; Scopes youtube.upload + youtube). Skripte `scripts/content-engine/upload/`.
+  Wartungsvertrag-Video public + eingebettet: https://youtu.be/f8QS2zGI-K8 (Komponente `VideoEmbed`).
+  Kuenftig direkt `--privacy public`.
+- **Final-Email** `/api/published-notify` (`buildPublishedEmail` in `lib/reviewEmail.ts`) live.
+- **Substack** (keine API): Beitrag via Browser gebaut (Text+Backlink), User publizierte (Post
+  200749827). Kein natives Audio/Titelbild (file_upload blockt lokale Datei->Web; User zieht rein).
+- **Naechstes:** #53-Medienpaket; Approve-Flow auf Text-Stage umbauen (User will: Text freigeben ->
+  Engine macht Medien+postet+Info-Mail); pmset Selbst-Wecken; Bild-Stil. Details:
+  `NEXT_SESSION_CONTENT_ENGINE.md`.
+- **Tool-Grenzen:** file_upload nimmt keine lokalen Pfade (kein Browser-Datei-Upload). accounts.
+  google.com fuer Automatik gesperrt. User-sichtbarer Text IMMER echte Umlaute, nie ae/oe/ue.
+
 ## Current State
 
 - GitHub repo: `https://github.com/McTomson/webredrabbitmedia`

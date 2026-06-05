@@ -4,6 +4,30 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-05 Abend
+
+- **launchd-PATH:** `bash -lc` liest `~/.zshrc` NICHT, also fehlte nvm (`claude`) -> Tagesjob starb
+  an `spawnSync claude ENOENT`. Fix: nvm-default-major-bin + homebrew explizit in `run-daily.sh`.
+  Auth (`claude -p`) ist session/keychain-gebunden, nicht PATH (env -i meldet faelschlich "not logged in").
+- **YouTube nur via Data-API, nicht Browser:** Das `file_upload`-Browser-Tool akzeptiert keine
+  lokalen Dateipfade mehr ("no longer accepts host filesystem paths"). Damit ist KEIN Browser-Datei-
+  Upload moeglich (Substack-Audio/-Bild, YouTube-Web-Upload). YouTube laeuft serverseitig per API.
+- **OAuth-Cross-Account-Falle:** Kanal gehoert rabbit.red.media, GCP-Projekte teils t.uhlir/
+  thomas.uhlir@gmail. Altes Projekt `claude-email-manager-484501` war fuer ALLE unzugaenglich. Loesung:
+  ALLES unter dem Kanal-Konto rabbit.red.media (eigenes Projekt blissful-answer-468100-v3): API enablen
+  (gcloud), Desktop-OAuth-Client (Console, JSON-Download), Consent-Screen veroeffentlichen, dann
+  `youtube_auth.py`. `accounts.google.com` ist fuer Browser-Automatik gesperrt -> Consent macht User.
+- **Scopes:** `youtube.upload` darf NUR insert, NICHT `videos().update` (Sichtbarkeit/Beschreibung
+  -> 403 insufficient scopes). Fuer nachtraegliche Aenderungen `youtube` (verwalten) Scope noetig.
+  Pragmatisch: kuenftige Videos direkt mit `privacyStatus=public` hochladen. Ungelistete Videos
+  erscheinen NICHT unter /@kanal/videos, sind aber einbettbar.
+- **Backlink-Wahrheit:** YouTube-Beschreibungslinks sind nofollow (Referral-Traffic, kaum SEO-Juice).
+  Staerkster Backlink = eingebettetes Video auf eigener Artikelseite + der Artikel selbst.
+- **Substack-Publish-Klick** haengt nur auf einem EINGEFRORENEN Tab (alte Interaktionen). Auf
+  FRISCHEM Tab geht der Durchlauf inkl. Tags. Substack hat keine API; Audio/Bild brauchen Datei-Upload.
+- **Wiederkehrender Fehler:** User-sichtbaren deutschen Text (Substack, YouTube-Beschreibung) NIE in
+  ASCII (ae/oe/ue) schreiben, IMMER echte Umlaute. Zweimal beanstandet.
+
 ## 2026-06-02
 
 - Fresh GitHub checkout for local testing was created at `/private/tmp/webredrabbitmedia-9000`.

@@ -10,6 +10,10 @@
 !.yarn/releases
 !.yarn/versions
 
+# python bytecode (content-engine upload scripts)
+__pycache__/
+*.pyc
+
 # testing
 /coverage
 

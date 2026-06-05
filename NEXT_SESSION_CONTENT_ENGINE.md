@@ -1,62 +1,66 @@
-# NEXT SESSION — Content-Engine (Stand 2026-06-05)
+# NEXT SESSION — Content-Engine (Stand 2026-06-05, Abend)
 
-Lies zuerst: `MEMORY.md` (Abschnitt "Content-Engine Stand 2026-06-05"), `LESSONS_LEARNED.md`
-(2026-06-05), und `~/.claude/projects/-Users-McTomson/memory/project_redrabbit_content_engine.md`.
-Arbeitsverzeichnis: `~/dev/redrabbit`. Branch `feat/content-engine` == `main` (beide aktuell, gepusht).
+Lies zuerst: `MEMORY.md` (Abschnitt "Content-Engine 2026-06-05 Abend"), `LESSONS_LEARNED.md`
+(2026-06-05 Abend), und `~/.claude/projects/-Users-McTomson/memory/handoff_2026_06_05_content_engine_media.md`.
+Arbeitsverzeichnis `~/dev/redrabbit`. Branch `main` (gepusht, aktuell, HEAD `4cd12bc` oder neuer).
 
-## Was schon LIVE ist (nicht neu bauen)
-- Wartungsvertrag-Artikel (`/tipps/website-wartungsvertrag-sinnvoll`): 5 Bilder + 22-Min-Podcast, live.
-- Taegliche Review-Email: funktioniert echt (Gmail-SMTP `thomas.uhlir@gmail.com` -> `t.uhlir@immo.red`),
-  1-Klick Freigeben/Ablehnen scharf. `POST /api/review-notify` (Bearer ADMIN_API_TOKEN aus `.env.local`).
-- Taegliche Automatik: launchd `com.redrabbit.contentengine` installiert + geladen.
-- Vercel-Stau geloest (`-9000` Git getrennt). Deploy = `git push origin main`.
-- KI-Hinweis-Satz aus allen Artikeln + Engine entfernt (User-Wunsch, dauerhaft).
+## DER GROSSE FORTSCHRITT HEUTE: autonomer Kern + YouTube headless laufen
 
-## HAUPTZIEL naechste Session (User-Wortlaut)
-"dass du sowohl auf substack als auch auf youtube den artikel hochladen kannst" — **nur den ersten
-Artikel (Wartungsvertrag) als Test.** Also: end-to-end Upload-Faehigkeit fuer beide Kanaele beweisen.
+### 1. Tagesautomatik funktioniert wirklich (PATH-Bug gefixt)
+- Ursache der toten Laeufe: launchd-PATH ohne nvm -> `spawnSync claude ENOENT`. Gefixt in
+  `scripts/content-engine/trigger/run-daily.sh` (nvm-default-major bin + homebrew in PATH).
+- BEWIESEN: Am 13:36 hat die Engine selbst Artikel #53 erzeugt ("Was ist der technologische
+  Unterschied zwischen statischer und dynamischer Website?"), gepusht, deployt, Review-Mail
+  geschickt. User hat per Mail freigegeben -> `/api/approve` hat `status: published` per
+  GitHub-Commit gesetzt (commit `d57b7a8`) + IndexNow. **Komplett ohne Chat/mich.**
 
-### 1. Video -> YouTube @RedRabbitLab
-- NotebookLM-Notebook `696aae82-321b-4a09-b148-03beeee084bd` (User-Chrome, authuser=3) hat evtl. schon
-  eine Video-Overview (Studio, "Website-Wartung..."). Sonst neu generieren (Studio -> "Video").
-- Herunterladen (Studio-Eintrag 3-Punkte -> Herunterladen) -> landet in `~/Downloads`.
-- YouTube-Upload zunaechst **UNLISTED** (oeffentlich = explizite Freigabe-Pflicht; User prueft erst).
-- Titel-Stil wie sein Vorbild: z.B. "Website-Wartungsvertrag: sinnvoll oder Abzocke? (Oesterreich 2026)".
-- Beschreibung = kurze Artikel-Zusammenfassung + am ENDE der Backlink-Block (siehe unten).
-- Nach User-OK: oeffentlich schalten + Video auf der Artikelseite einbetten.
+### 2. YouTube Data-API Upload ist VOLLSTAENDIG eingerichtet (headless, dauerhaft)
+- Konto: **rabbit.red.media@gmail.com** (Kanal-Besitzer; Kanal "Red Rabbit Lab",
+  id `UC6hInJDtZeD8YSOwuvV60yA`).
+- GCP-Projekt: **blissful-answer-468100-v3** ("n8n workflows"), YouTube Data API v3 aktiviert.
+- OAuth Desktop-Client erstellt; Consent-Screen Extern + veroeffentlicht.
+- Secrets AUSSERHALB Repo: `~/.config/redrabbit-youtube/client_secret.json` +
+  `token.json` (Refresh-Token, Scopes `youtube.upload` + `youtube` = verwalten). NIE committen.
+- Skripte: `scripts/content-engine/upload/{youtube_auth.py,youtube_upload.py,youtube_setup.sh,README.md}`.
+- BEWIESEN: Wartungsvertrag-Video hochgeladen + auf **public** geschaltet + Beschreibung
+  (Umlaute) gefixt: https://youtu.be/f8QS2zGI-K8 . Eingebettet im Artikel via neuer
+  `VideoEmbed`-Komponente (mdx-components registriert).
+- **Upload-Befehl (headless, repeatable):**
+  `python3 scripts/content-engine/upload/youtube_upload.py --file <mp4> --title "..." --description-file <txt> --privacy public --category 27 --tags "..."`
+- WICHTIG kuenftig: direkt mit `--privacy public` hochladen (kein Nachschalten noetig).
 
-### 2. Podcast/Artikel -> Substack @RedRabbitLab (redrabbitlab.substack.com)
-- Neue Episode/Post wie seine bestehenden (voller Artikel + Audio + FAQ), ZUSAETZLICH der Backlink-Satz
-  + Block. (Seine bisherigen Substack-Posts haben den Backlink noch nicht.)
+### 3. Final-Email-Feature live
+- `/api/published-notify` (Bearer ADMIN_API_TOKEN) -> Mail mit allen Links (Artikel+Podcast,
+  YouTube, Substack). Gebaut, getestet (40/40 vitest), deployt, fuer Wartungsvertrag gesendet.
+  Template `buildPublishedEmail` in `lib/reviewEmail.ts`.
 
-### 3. BACKLINK-BLOCK (ans Ende JEDER Beschreibung, SEO-Ziel) — exakt dieses Muster vom User:
-```
-mehr infos unter:
-https://web.redrabbit.media/tipps/website-wartungsvertrag-sinnvoll
-https://web.redrabbit.media
-https://redrabbit.media
-```
+## NEUER ABLAUF, den der User WILL (umbauen)
+Freigabe beim **Text** (Hook + Artikel), NICHT erst nach den Medien. Danach erzeugt die Engine
+selbst Bilder/Podcast/Video, veroeffentlicht (Website + Substack + YouTube), pusht/deployt, und
+schickt am Ende nur die **Info-Mail mit Link** (keine zweite Freigabe). Aktuell erzeugt die
+Pipeline Medien VOR der Review-Mail, und `/api/approve` setzt nur `status: published`. Das muss
+umgebaut werden: Review-Mail genehmigt den Text -> dann Medien-Pipeline + Multi-Channel-Post.
 
-## Weitere offene Punkte (mit User abstimmen)
-- **Automatik-Selbstwecken (Option A):** `pmset repeat wakeorpoweron MTWRFSU 09:15:00` einrichten, damit
-  der Mac sich weckt und der 09:17-Job laeuft. User-OK: "nur Computer an, kein Terminal offen" — das passt,
-  launchd braucht kein Terminal. Server-Variante (B) nur falls Mac oft KOMPLETT aus (bricht 0-Euro-Modell).
-- **Bild-Stil verfeinern:** User ist mit den aktuellen Bildern noch nicht 100% zufrieden. Vor weiteren
-  Auto-Artikeln Stil-Richtung klaeren, dann regenerieren (`images-only.ts <slug>`).
-- **Steuer (#12) + BFSG (#266):** Text approved-Stil + je 5 Bilder (verschoben).
-- **Test-Lauf Automatik:** optional `run-daily.sh` ueberwacht laufen lassen (erzeugt #53), um die Kette
-  end-to-end zu beweisen. ACHTUNG: erzeugt echten Entwurf + Mail + Push.
+## OFFEN fuer naechste Session
+1. **#53-Medienpaket** (User will es): Podcast + Video (NotebookLM, eigenes Notebook), Podcast
+   einbetten, Video zu YouTube (direkt public), Substack-Beitrag, Final-Mail. (#53 ist schon als
+   Website-Artikel live.)
+2. **Substack-Bild + -Audio**: file_upload-Tool blockt lokale Datei -> Web-Upload. Bild/Audio
+   muss der User per Drag reinziehen, ODER neuer Weg. Hero liegt unter
+   `public/images/blog/<slug>-hero.png`, Podcast unter `public/audio/<slug>-podcast.mp3`.
+3. **pmset Selbst-Wecken**: `sudo pmset repeat wakeorpoweron MTWRFSU 09:15:00` (User, sudo).
+4. **Approve-Flow auf Text-Stage umbauen** (siehe oben) + Substack/YouTube ins Auto-Posting.
+5. **Bild-Stil** der Artikel-Bilder verfeinern (User unzufrieden), dann `images-only.ts`.
+6. **Steuer #12 + BFSG #266** (verschoben).
 
-## Werkzeuge / Befehle
-- Bilder auf bestehenden Artikel: `node_modules/.bin/tsx scripts/content-engine/images-only.ts <slug>`
-- Voller Artikel: `node_modules/.bin/tsx scripts/content-engine/pipeline.ts <id|--next> --emit [--reuse-research] [--no-image]`
-- Email-Vorschau rendern: `... render-email-preview.ts <slug> <out.html>`
-- Review-Mail senden: `curl -X POST .../api/review-notify -H "Authorization: Bearer <ADMIN_API_TOKEN>" -d '{"slug":"..."}'`
-- codex-Bild: pinnt `-m gpt-5.4`, Timeout 600s (in `image.ts`).
-- Deploy: `git push origin main` (Auto-Deploy echtes Projekt; `-9000` ist getrennt).
-- Automatik aus: `launchctl unload ~/Library/LaunchAgents/com.redrabbit.contentengine.plist`
+## HARTE TOOL-GRENZEN (nicht erneut dagegenlaufen)
+- `file_upload` akzeptiert KEINE lokalen Pfade mehr -> kein Browser-Datei-Upload (Substack
+  Audio/Bild, YouTube-Web-Upload). DARUM YouTube nur via Data-API.
+- `accounts.google.com` ist fuer Browser-Automatik gesperrt -> Google-Consent muss der User tun.
+- Substack-Publish-Klick: haengt auf einem EINGEFRORENEN Tab (Diagnose). Auf FRISCHEM Tab geht
+  der Klick-Durchlauf inkl. Tags. Substack hat KEINE API.
 
-## Harte Regeln
-0-Euro ueber die Abos. KEIN Gedankenstrich "–". KEIN KI-Hinweis in Artikeln. Bild-Dateinamen versionieren.
-Vor Browser-`cmd+v` frisch `pbcopy` + per Screenshot pruefen. Oeffentlich posten/hochladen = erst Freigabe.
-Niemals raten, immer testen/verifizieren.
+## HARTE REGELN
+0-Euro ueber Abos. KEIN Gedankenstrich. KEIN KI-Hinweis. **User-sichtbarer Text (Substack,
+YouTube-Beschreibung) IMMER mit echten Umlauten ä/ö/ü/ß, NIE ae/oe/ue** (zweimal falsch gemacht).
+Oeffentlich posten/hochladen = im Zweifel kurz bestaetigen. Niemals raten, immer testen.
