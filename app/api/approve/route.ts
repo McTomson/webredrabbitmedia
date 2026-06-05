@@ -37,11 +37,13 @@ async function ghGet(repo: string, path: string, token: string): Promise<GhFile 
     return { content: Buffer.from(j.content, 'base64').toString('utf8'), sha: j.sha };
 }
 
-async function ghPut(repo: string, path: string, token: string, content: string, sha: string, message: string): Promise<void> {
+async function ghPut(repo: string, path: string, token: string, content: string, sha: string | undefined, message: string): Promise<void> {
+    const payload: Record<string, unknown> = { message, content: Buffer.from(content, 'utf8').toString('base64'), branch: 'main' };
+    if (sha) payload.sha = sha; // omit for new files (e.g. first media marker); required for updates
     const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'User-Agent': 'redrabbit-approve' },
-        body: JSON.stringify({ message, content: Buffer.from(content, 'utf8').toString('base64'), sha, branch: 'main' }),
+        body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error(`GitHub PUT ${res.status}: ${await res.text()}`);
 }
@@ -94,19 +96,17 @@ export async function GET(req: Request): Promise<Response> {
             indexNote = '<p>Hinweis: IndexNow-Ping nicht moeglich (Artikel ist trotzdem freigegeben).</p>';
         }
 
-        // Step 2 of the 3-mail flow: fire Mail 2 ("Medien starten") so Thomas can kick off
-        // the podcast+video step from his phone. Best-effort, never blocks the approval.
+        // Silently enqueue the media step (podcast + video + posting). No second email:
+        // the approval itself is the trigger. Vercel cannot drive the Mac's browser, so the
+        // only channel to the local media session is the repo: drop a request marker that the
+        // media run (Claude session / scheduled task) picks up, then it sends the final mail.
         try {
-            const adminToken = process.env.ADMIN_API_TOKEN;
-            if (adminToken) {
-                await fetch(`${SITE_URL}/api/media-notify`, {
-                    method: 'POST',
-                    headers: { Authorization: `Bearer ${adminToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ slug }),
-                });
-            }
+            const markerPath = `content-engine/.media-requests/${slug}.json`;
+            const marker = JSON.stringify({ slug, requestedAt: today, status: 'requested' }, null, 2) + '\n';
+            const existing = await ghGet(repo, markerPath, ghToken);
+            await ghPut(repo, markerPath, ghToken, marker, existing?.sha, `chore(media): enqueue media for ${slug}`);
         } catch {
-            /* Mail 2 is best-effort; the media step can also be triggered manually */
+            /* best-effort; media can also be enqueued manually via /api/media-trigger */
         }
 
         return page('Freigegeben und veroeffentlicht', `<p>Der Artikel <strong>${slug}</strong> ist jetzt online. Vercel deployt die Aenderung in ein, zwei Minuten.</p>${indexNote}<p><a href="${previewUrl}">Artikel ansehen</a></p>`);
