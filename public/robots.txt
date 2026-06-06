@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Block Next.js build artifacts — fonts, JS chunks, CSS files are never indexable content
+Disallow: /_next/static/
+
+Sitemap: https://web.redrabbit.media/sitemap.xml

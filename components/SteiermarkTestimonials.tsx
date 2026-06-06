@@ -7,6 +7,15 @@ import { motion } from 'framer-motion';
 
 const testimonials = [
     {
+        name: "Michaela Ruderes",
+        role: "Inhaberin, Global Insights",
+        location: "Graz",
+        rating: 5,
+        text: "Professionelle Umsetzung, die meine Arbeit als internationale Beraterin perfekt widerspiegelt. Meine Klientinnen sprechen mich regelmäßig auf die Website an. Genau das wollte ich.",
+        initial: "M",
+        url: "https://www.ruderes-insights.at"
+    },
+    {
         name: "Andreas H.",
         role: "Weinbau & Buschenschank",
         location: "Südsteiermark",
@@ -21,14 +30,6 @@ const testimonials = [
         rating: 5,
         text: "Als Tech-Firma war uns wichtig, dass der Code sauber ist und die Performance stimmt. Hier weiß man, was man tut. Next.js war die richtige Wahl. Top Umsetzung!",
         initial: "T"
-    },
-    {
-        name: "Gasthof zur Post",
-        role: "Inhaber",
-        location: "Murtal",
-        rating: 5,
-        text: "Endlich eine unkomplizierte Zusammenarbeit. Einer kümmert sich um alles, ich muss mich nicht mit Technik ärgern. Die neue Seite bringt uns viele Reservierungen.",
-        initial: "G"
     },
     {
         name: "Lisa M.",
@@ -124,6 +125,16 @@ export default function SteiermarkTestimonials() {
                                             <p className="text-sm text-gray-400 mt-1 uppercase tracking-widest">
                                                 {testimonial.role} • {testimonial.location}
                                             </p>
+                                            {'url' in testimonial && testimonial.url && (
+                                                <a
+                                                    href={testimonial.url as string}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-xs text-red-500 hover:underline mt-1 block"
+                                                >
+                                                    {(testimonial.url as string).replace('https://www.', '')}
+                                                </a>
+                                            )}
                                         </div>
                                     </motion.div>
                                 </div>

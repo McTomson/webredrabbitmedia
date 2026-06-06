@@ -404,6 +404,34 @@ const Portfolio = ({ headline, subline, region, citySlug, cityName }: PortfolioP
                 "Schnelle Performance"
             ],
             scores: { performance: 94, accessibility: 91, bestPractices: 96, seo: 93, llm: 95 }
+        },
+        {
+            id: 10,
+            name: "Global Insights – Michaela Ruderes",
+            url: "https://www.ruderes-insights.at",
+            screenshot: "/images/ruderes-insights/ruderes-insights-red-rabbit-media.png",
+            category: "Coaching & Beratung",
+            description: "Professionelle Website für internationale Mobilitäts- und Interkultur-Beraterin mit 17+ Jahren Erfahrung und Standort Graz",
+            features: [
+                "Mehrsprachig (DE/EN)",
+                "Klare Service-Struktur",
+                "Performance-optimiert"
+            ],
+            scores: { performance: 93, accessibility: 91, bestPractices: 95, seo: 92, llm: 94 }
+        },
+        {
+            id: 11,
+            name: "Tino Jugler – Fliesenlegermeister",
+            url: "https://www.fliesen-handwerker.net",
+            screenshot: "/images/fliesen-handwerker/fliesen-handwerker-red-rabbit-media.png",
+            category: "Handwerk",
+            description: "Klare Handwerker-Website für Fliesenlegermeister in Niederösterreich – schnell auffindbar, direkt anfragbar",
+            features: [
+                "Mobile-First für Handwerk",
+                "Lokale SEO Niederösterreich",
+                "Kontakt-optimiert"
+            ],
+            scores: { performance: 94, accessibility: 90, bestPractices: 95, seo: 93, llm: 93 }
         }
     ];
 

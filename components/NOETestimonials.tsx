@@ -7,6 +7,15 @@ import { motion } from 'framer-motion';
 
 const testimonials = [
     {
+        name: "Tino Jugler",
+        company: "Fliesenlegermeister Jugler",
+        location: "Mistelbach",
+        rating: 5,
+        text: "Meine Kunden finden mich jetzt sofort wenn sie online nach einem Fliesenleger in der Region suchen. Unkompliziert, schnell und genau das was ich gebraucht habe.",
+        service: "Handwerk",
+        url: "https://www.fliesen-handwerker.net"
+    },
+    {
         name: "Thomas Gruber",
         company: "Gruber Installationen",
         location: "Tulln",
@@ -29,14 +38,6 @@ const testimonials = [
         rating: 5,
         text: "Professionell, schnell und fair. Genau so soll Zusammenarbeit sein. Die Patientenanfragen haben deutlich zugenommen.",
         service: "Arztpraxis"
-    },
-    {
-        name: "Sabine Müller",
-        company: "Friseur Müller",
-        location: "Hollabrunn",
-        rating: 4,
-        text: "Sehr zufrieden mit dem Ergebnis. Die Webseite sieht toll aus. Nur die Lieferzeit war etwas länger als erwartet.",
-        service: "Dienstleistung"
     },
     {
         name: "Johann Bauer",
@@ -136,6 +137,16 @@ export default function NOETestimonials() {
                                             <p className="text-xs text-gray-400 mt-2 uppercase tracking-[0.2em] font-light">
                                                 {testimonial.company} • {testimonial.location}
                                             </p>
+                                            {'url' in testimonial && testimonial.url && (
+                                                <a
+                                                    href={testimonial.url as string}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-xs text-red-500 hover:underline mt-1 block"
+                                                >
+                                                    {(testimonial.url as string).replace('https://www.', '')}
+                                                </a>
+                                            )}
                                         </div>
                                     </motion.div>
                                 </div>
