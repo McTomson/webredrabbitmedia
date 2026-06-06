@@ -23,6 +23,12 @@ import { embedPodcast, embedVideo, parseYoutubeId } from './mdxMedia';
 
 const ROOT = process.cwd();
 
+// The YouTube uploader needs google-auth libs. They live in a dedicated venv so a
+// Homebrew `python3` major bump (which silently drops the site-packages) cannot break
+// the daily run. Fall back to bare `python3` if the venv is missing.
+const VENV_PY = path.join(process.env.HOME || '', '.config/redrabbit-youtube/venv/bin/python');
+const PYTHON = fs.existsSync(VENV_PY) ? VENV_PY : 'python3';
+
 function arg(name: string): string | undefined {
     const i = process.argv.indexOf(`--${name}`);
     return i !== -1 ? process.argv[i + 1] : undefined;
@@ -48,7 +54,7 @@ function loadEnvLocal(): Record<string, string> {
 
 function uploadToYoutube(videoFile: string, title: string, descFile: string, tags: string): string {
     const out = execFileSync(
-        'python3',
+        PYTHON,
         [
             path.join(ROOT, 'scripts/content-engine/upload/youtube_upload.py'),
             '--file', videoFile,
