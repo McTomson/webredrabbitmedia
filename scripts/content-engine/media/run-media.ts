@@ -77,11 +77,27 @@ function main() {
 
     const mdxPath = path.join(ROOT, 'content/blog', `${slug}.mdx`);
     if (!fs.existsSync(mdxPath)) throw new Error(`Artikel nicht gefunden: ${mdxPath}`);
-    let mdx = fs.readFileSync(mdxPath, 'utf8');
-    const fm = matter(mdx).data;
-    const title: string = fm.title;
+    const title: string = matter(fs.readFileSync(mdxPath, 'utf8')).data.title;
     const podcastTitle = arg('podcast-title') || `Podcast: ${title}`;
     const videoTitle = arg('video-title') || `Video: ${title}`;
+
+    // 0) Images: generated ONLY now, after the text was approved (never in the writing pipeline).
+    //    Hero + infographic + context photos via images-only (pure CLI, no browser needed). Done
+    //    first so an article never gets expensive images before the user has signed off on its text.
+    if (!flag('no-images')) {
+        log('0/6 Bilder werden erzeugt (Hero + Infografik + Kontextfotos) ...');
+        execFileSync('npx', ['tsx', path.join(ROOT, 'scripts/content-engine/images-only.ts'), slug, '--hero'], {
+            cwd: ROOT,
+            stdio: 'inherit',
+            timeout: 1_200_000,
+        });
+        log('0/6 Bilder erzeugt + eingebettet');
+    } else {
+        log('0/6 Bilder uebersprungen (--no-images)');
+    }
+
+    // Read AFTER images-only rewrote the file on disk, so podcast/video embeds build on top.
+    let mdx = fs.readFileSync(mdxPath, 'utf8');
 
     // 1) Podcast: copy mp3 + embed player
     if (podcast) {
@@ -118,9 +134,9 @@ function main() {
 
     // 4) commit + push
     if (!flag('no-push')) {
-        execFileSync('git', ['add', mdxPath, 'public/audio'], { cwd: ROOT, stdio: 'inherit' });
+        execFileSync('git', ['add', mdxPath, 'public/audio', 'public/images/blog'], { cwd: ROOT, stdio: 'inherit' });
         try {
-            execFileSync('git', ['commit', '-q', '-m', `feat(blog): add podcast + video to ${slug}`], { cwd: ROOT, stdio: 'inherit' });
+            execFileSync('git', ['commit', '-q', '-m', `feat(blog): add images + podcast + video to ${slug}`], { cwd: ROOT, stdio: 'inherit' });
             execFileSync('git', ['push', 'origin', 'main'], { cwd: ROOT, stdio: 'inherit' });
             log('4/6 committed + gepusht (Vercel deployt)');
         } catch {

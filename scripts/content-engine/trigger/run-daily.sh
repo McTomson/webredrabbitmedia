@@ -51,7 +51,10 @@ git checkout main >/dev/null 2>&1 || { alert "git checkout main fehlgeschlagen";
 git pull --ff-only origin main >/dev/null 2>&1 || echo "WARN: git pull nicht ff"
 
 # Generate next draft (quality-gated). On halt, exit cleanly without shipping.
-if ! npx tsx scripts/content-engine/pipeline.ts --next --emit; then
+# --no-image: ship TEXT ONLY for review. Images (hero + infographic + context photos) are now
+# generated later, in the media step (run-media.ts) AFTER Thomas approves the text, together with
+# podcast + video. No point spending expensive image generation on text he might reject.
+if ! npx tsx scripts/content-engine/pipeline.ts --next --emit --no-image; then
   echo "Pipeline hat gehalten oder Fehler. Nichts publiziert."
   exit 0
 fi

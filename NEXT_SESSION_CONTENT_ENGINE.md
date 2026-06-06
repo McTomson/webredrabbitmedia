@@ -7,15 +7,19 @@ Arbeitsverzeichnis `~/dev/redrabbit`, Branch `main` (gepusht).
 ## DER FESTE ABLAUF (so ist er entschieden, nicht neu hinterfragen)
 
 Taeglich automatisch:
-1. Naechste der 365 Fragen nehmen (Queue), Artikel schreiben (4-Rollen-Pipeline, mit Bildern).
+1. Naechste der 365 Fragen nehmen (Queue), Artikel schreiben (4-Rollen-Pipeline, **NUR TEXT, keine
+   Bilder** — `pipeline.ts --no-image` in run-daily.sh). Bilder kommen bewusst erst nach Freigabe
+   (Schritt 4), nicht hier: keine teure Bild-Generierung fuer Text, den der User evtl. ablehnt.
 2. **Mail 1 an Thomas: nur der Text.** Er liest, klickt "Genehmigen".
 3. Freigabe (`/api/approve`) setzt `status: published` UND legt still einen Medien-Marker
    `content-engine/.media-requests/<slug>.json` an (KEINE zweite Mail, das war frueher Mail 2,
    vom User ausdruecklich gestrichen, er will die Auto-Loesung).
-4. Eine Medien-Sitzung (Browser noetig) erkennt den Marker und macht: NotebookLM neues Notebook,
-   Artikel-URL als Quelle, Podcast (Audio) + Video (Erklaervideo, Klassisch, Deutsch) erzeugen,
-   herunterladen, Podcast auf die Website einbetten, Video direkt PUBLIC auf YouTube, Video in den
-   Artikel einbetten, Substack-Beitrag mit eingebettetem YouTube-Video + Backlink, alles pushen.
+4. Eine Medien-Sitzung erkennt den Marker und macht via `run-media.ts` (npm `media`): ZUERST
+   **Bilder** (Hero + Infografik + Kontextfotos via `images-only.ts --hero`, reines CLI, kein
+   Browser), dann (Browser noetig) NotebookLM neues Notebook, Artikel-URL als Quelle, Podcast
+   (Audio) + Video (Erklaervideo, Klassisch, Deutsch) erzeugen, herunterladen, Podcast einbetten,
+   Video PUBLIC auf YouTube + in Artikel einbetten, Substack-Beitrag mit YouTube-Video + Backlink,
+   alles pushen.
 5. **Mail 2 (Schluss) an Thomas: fertig + alle Links** (`/api/published-notify`).
 
 ## WAS HEUTE GEBAUT + BEWIESEN WURDE (05.06 Spaet-Abend)
