@@ -3,21 +3,53 @@
 import React, { useState } from 'react';
 
 interface VideoEmbedProps {
-    // YouTube video id, e.g. "f8QS2zGI-K8"
-    id: string;
+    // YouTube video id, e.g. "f8QS2zGI-K8" — still used for the "watch on YouTube" link
+    id?: string;
+    // Self-hosted MP4 URL (e.g. /videos/slug-video.mp4). When set, HTML5 <video> is used
+    // instead of the YouTube iframe — never blocked by content filters.
+    src?: string;
+    // Poster image URL for the HTML5 player. Should also be self-hosted.
+    poster?: string;
     title?: string;
 }
 
-// Robust, privacy-friendly YouTube embed (lite pattern). Shows the YouTube poster with a play
-// button and only loads the youtube-nocookie iframe on click (fast, no cookies until opt-in).
-// Resilient against content blockers: if the poster image cannot load (e.g. a browser blocks
-// YouTube domains), it is hidden so no broken-image placeholder ever shows, leaving a clean
-// branded box. The caption is a direct "watch on YouTube" link as a fallback for blocked iframes.
-export function VideoEmbed({ id, title = 'Video' }: VideoEmbedProps) {
+export function VideoEmbed({ id, src, poster, title = 'Video' }: VideoEmbedProps) {
     const [play, setPlay] = useState(false);
-    const poster = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-    const fallbackPoster = `https://i.ytimg.com/vi/${id}/0.jpg`;
-    const watchUrl = `https://youtu.be/${id}`;
+
+    // Self-hosted path: HTML5 <video> — never blocked, always plays
+    if (src) {
+        return (
+            <figure className="w-full my-8">
+                <div
+                    className="relative w-full overflow-hidden rounded-xl border border-zinc-800 shadow-lg bg-zinc-900"
+                    style={{ aspectRatio: '16 / 9' }}
+                >
+                    <video
+                        className="absolute inset-0 h-full w-full"
+                        controls
+                        preload="metadata"
+                        poster={poster}
+                    >
+                        <source src={src} type="video/mp4" />
+                    </video>
+                </div>
+                <figcaption className="mt-2 text-sm text-gray-500 text-center">
+                    {id ? (
+                        <a href={`https://youtu.be/${id}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                            {title}
+                        </a>
+                    ) : (
+                        title
+                    )}
+                </figcaption>
+            </figure>
+        );
+    }
+
+    // YouTube fallback path (used when no self-hosted src is available)
+    if (!id) return null;
+    const ytPoster = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+    const ytFallbackPoster = `https://i.ytimg.com/vi/${id}/0.jpg`;
 
     return (
         <figure className="w-full my-8">
@@ -43,17 +75,15 @@ export function VideoEmbed({ id, title = 'Video' }: VideoEmbedProps) {
                     >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                            src={poster}
+                            src={ytPoster}
                             alt=""
                             loading="lazy"
                             className="absolute inset-0 h-full w-full object-cover"
                             onError={(e) => {
-                                // Try a lower-res thumbnail once, then hide entirely so a blocked
-                                // YouTube CDN never leaves a broken-image placeholder behind.
                                 const img = e.currentTarget;
                                 if (img.dataset.fallback !== '1') {
                                     img.dataset.fallback = '1';
-                                    img.src = fallbackPoster;
+                                    img.src = ytFallbackPoster;
                                 } else {
                                     img.style.display = 'none';
                                 }
@@ -70,7 +100,7 @@ export function VideoEmbed({ id, title = 'Video' }: VideoEmbedProps) {
                 )}
             </div>
             <figcaption className="mt-2 text-sm text-gray-500 text-center">
-                <a href={watchUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                <a href={`https://youtu.be/${id}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
                     {title}
                 </a>
             </figcaption>
