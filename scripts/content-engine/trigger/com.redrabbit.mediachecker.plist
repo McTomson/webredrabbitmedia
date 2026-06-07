@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- launchd LaunchAgent: prueft alle 30 Minuten ob ein genehmigter Artikel
+     auf seinen Media-Schritt wartet. Triggert maximal einmal pro Tag.
+     Install:
+       cp scripts/content-engine/trigger/com.redrabbit.mediachecker.plist ~/Library/LaunchAgents/
+       launchctl load ~/Library/LaunchAgents/com.redrabbit.mediachecker.plist -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.redrabbit.mediachecker</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-lc</string>
+        <string>$HOME/dev/redrabbit/scripts/content-engine/trigger/run-media-check.sh</string>
+    </array>
+
+    <!-- Alle 30 Minuten (1800 Sekunden). -->
+    <key>StartInterval</key>
+    <integer>1800</integer>
+
+    <!-- Nicht sofort beim Laden starten — erst nach dem ersten Intervall. -->
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/redrabbit-mediachecker.out</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/redrabbit-mediachecker.err</string>
+</dict>
+</plist>

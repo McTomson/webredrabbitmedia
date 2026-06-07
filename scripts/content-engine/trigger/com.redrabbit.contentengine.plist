@@ -16,11 +16,11 @@
         <string>$HOME/dev/redrabbit/scripts/content-engine/trigger/run-daily.sh</string>
     </array>
 
-    <!-- Primary daily slot (09:17, an off-round time so runs do not all look machine-scheduled). -->
+    <!-- Primary daily slot: 07:53, so the article + review mail arrive around 08:10-08:15. -->
     <key>StartCalendarInterval</key>
     <dict>
-        <key>Hour</key><integer>9</integer>
-        <key>Minute</key><integer>17</integer>
+        <key>Hour</key><integer>7</integer>
+        <key>Minute</key><integer>53</integer>
     </dict>
 
     <!-- Catch-up: every 3h re-check; the per-day stamp makes repeats no-ops. -->
