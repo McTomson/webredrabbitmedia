@@ -32,15 +32,30 @@ if [ -f "$STAMP" ]; then
     exit 0
 fi
 
-# Pending-Marker pruefen.
-PENDING="$(npx tsx scripts/content-engine/media/pending.ts 2>/dev/null | grep 'OFFEN' | head -1)"
-if [ -z "$PENDING" ]; then
-    echo "Kein offener Media-Request. Warte weiter."
+# Nur den Marker von HEUTE pruefen (requestedAt == heute).
+# Alte offene Marker von anderen Tagen werden bewusst ignoriert.
+TODAY="$(date +%F)"
+MEDIA_DIR="content-engine/.media-requests"
+SLUG=""
+
+if [ -d "$MEDIA_DIR" ]; then
+    for marker in "$MEDIA_DIR"/*.json; do
+        [ -f "$marker" ] || continue
+        requested="$(grep -o '"requestedAt":"[^"]*"' "$marker" | cut -d'"' -f4)"
+        status="$(grep -o '"status":"[^"]*"' "$marker" | cut -d'"' -f4)"
+        if [ "$requested" = "$TODAY" ] && [ "$status" = "requested" ]; then
+            SLUG="$(basename "$marker" .json)"
+            break
+        fi
+    done
+fi
+
+if [ -z "$SLUG" ]; then
+    echo "Kein offener Media-Request fuer heute ($TODAY). Warte weiter."
     exit 0
 fi
 
-SLUG="$(echo "$PENDING" | awk '{print $2}')"
-echo "Offener Media-Request gefunden: $SLUG"
+echo "Offener Media-Request fuer heute gefunden: $SLUG"
 
 # Stempel setzen — nicht doppelt triggern.
 touch "$STAMP"
