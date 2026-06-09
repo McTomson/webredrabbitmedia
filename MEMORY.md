@@ -6,6 +6,24 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-09 — Pipeline-Resilienz + Tooling (Graphify/Obsidian)
+
+- **Content-Engine haengte tagelang (Artikel #262, #313):** Ursache war `runClaude`-Retry ohne Delay bei
+  ETIMEDOUT. **GEFIXT** (`scripts/content-engine/lib/roles.ts`): 4 Versuche, exponentielles Backoff
+  15s/30s/60s, `Atomics.wait`-Sleep. Tests 48/48 gruen. Details in LESSONS_LEARNED.md.
+- **#262 (DSGVO) = `skip`** in `content-engine/topics/status.json` (Researcher von Safety-Filter blockiert).
+- **#313 fertig:** "Warum ist eine Website mit dem Tag des Live-Gangs nicht fertig? [Oesterreich 2026]"
+  (1865 Woerter, 4 Quellen, status `review`, als Draft live, Review-Mail raus an t.uhlir@immo.red).
+  OFFEN: User-Freigabe -> dann Medien (Browser noetig).
+- **Daily-Slot jetzt 07:53** (frueher 09:17) -> Review-Mail ~08:10. Neuer launchd-Job
+  `com.redrabbit.mediachecker` (alle 30 Min): erkennt freigegebene Artikel ohne Medien, generiert Bilder
+  headless, schickt macOS-Notification fuer Browser-Schritt. Triggert max 1x/Tag, nur fuer HEUTIGEN Marker.
+- **Graphify installiert** (Code-Wissens-Graph, 100% lokal, 0 API): `graphify-out/graph.json` (492 Nodes).
+  Auto-Update via `.git/hooks/post-commit` (code-only). Abfrage: `graphify query/path/explain`. NIE
+  `--backend claude`/`label` (= API-Kosten). Skill global in `~/.claude/skills/graphify/`.
+- **Obsidian-Tooling:** Obsidian v1.12.7, `~/claude-obsidian` (Vault-Repo geklont), kepano/obsidian-skills
+  (5 Skills) projekt-lokal in `.agents/` (gitignored), `skills-lock.json` committed.
+
 ## Content-Engine 2026-06-06 (Nacht) — VOLLER autonomer Durchlauf bewiesen (#105)
 
 - **Ende-zu-Ende-Durchlauf live + verifiziert** mit Artikel #105

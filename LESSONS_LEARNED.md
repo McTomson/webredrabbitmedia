@@ -176,6 +176,28 @@ Update this file at the end of every session when a debugging lesson, setup issu
   /Mac an sein). plist via `/bin/bash -lc` expandiert `$HOME`. `plutil -lint` vor `launchctl load`.
   Mac-Selbst-Wecken fuer feste Uhrzeit: `pmset repeat wakeorpoweron ...` (nur am Strom, nicht bei Komplett-Aus).
 
+## 2026-06-09 — Content-Engine Resilienz, Graphify/Obsidian Tooling
+
+- **runClaude ETIMEDOUT-Haenger geloest (`scripts/content-engine/lib/roles.ts`):** Der headless
+  `claude -p`-Call faellt unter Service-Ueberlast transient mit ETIMEDOUT aus. Die alte 2-Versuch-
+  Schleife retryte SOFORT (kein Delay) -> traf denselben ueberlasteten Service -> gab in Sekunden auf
+  -> blockierte die Tages-Pipeline (Artikel #262, #313 haengten tagelang). **Fix: 4 Versuche mit
+  exponentiellem Backoff (15s/30s/60s) via dependency-freiem `Atomics.wait`-Sleep auf SharedArrayBuffer.**
+  Live bewiesen: #313-Editor scheiterte Versuch 1, wartete 15s, Versuch 2 erfolgreich. Tests 48/48 gruen.
+- **Festhaengender Artikel manuell nachziehen:** Wenn ein launchd-Lauf scheitert (ETIMEDOUT/Safety),
+  Artikel direkt generieren mit `npx tsx scripts/content-engine/pipeline.ts --next --emit --no-image`,
+  dann Deploy abwarten (`curl /tipps/<slug>` bis 200), dann Review-Mail manuell ausloesen:
+  `set -a && . ./.env.local && set +a; curl -X POST $SITE_URL/api/review-notify -H "Authorization: Bearer $ADMIN_API_TOKEN" -d '{"slug":"..."}'`.
+- **Researcher blockiert bei Rechtsthemen (Safety-Filter):** Thema #262 (DSGVO "abmahnsicher") liess den
+  Researcher bei jedem Versuch scheitern -> Endlosschleife auf dem Thema. **Loesung: in
+  `content-engine/topics/status.json` das Thema auf `"skip"` setzen**, dann zieht `--next` das naechste.
+- **Graphify NUR code-only laufen lassen (0 API-Kosten):** `graphify . --backend claude` ODER `graphify label`
+  rufen die Anthropic API = Extra-Kosten. Stattdessen `graphify update . --no-cluster --force` (reine lokale
+  AST-Extraktion, kein LLM). `.graphifyignore` excludet `content/`, `public/`, `*.md`, Bilder. Post-commit-Hook
+  `.git/hooks/post-commit` aktualisiert den Graph automatisch (code-only, gratis). Graph: `graphify-out/graph.json`.
+- **`npx skills add` installiert PROJEKT-lokal nach `.agents/skills/`:** Nicht global. `.agents/` ist
+  gitignored, `skills-lock.json` wird committed (wie package-lock.json) -> Restore via `npx skills install`.
+
 ## Session-End Checklist
 
 - Add new lessons with dates.
