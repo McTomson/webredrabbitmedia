@@ -62,7 +62,7 @@ touch "$STAMP"
 
 # Bilder headless generieren (kein Browser noetig).
 echo "Generiere Bilder fuer $SLUG ..."
-if npx tsx scripts/content-engine/pipeline.ts --images-only --slug "$SLUG" 2>&1; then
+if npx tsx scripts/content-engine/images-only.ts "$SLUG" --hero 2>&1; then
     echo "Bilder fertig."
 else
     echo "WARN: Bilder fehlgeschlagen (weiter mit Notification)."

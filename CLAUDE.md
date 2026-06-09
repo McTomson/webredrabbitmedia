@@ -63,7 +63,8 @@ If `@next/third-parties/google` is missing, run `npm install` so `node_modules` 
 
 ## Code Intelligence: Graphify
 
-The repo ships a pre-built knowledge graph at `graphify-out/graph.json` (492 nodes, 575 edges).
+The repo ships a pre-built knowledge graph at `graphify-out/graph.json`.
+The graph auto-updates after every commit via `.git/hooks/post-commit` (no API, no cost).
 
 **Use it before every code task:**
 
@@ -78,19 +79,13 @@ graphify path "VideoEmbed" "RegionalLandingPage" --graph graphify-out/graph.json
 graphify explain "SteiermarkTestimonials" --graph graphify-out/graph.json
 ```
 
-**Update the graph after significant code changes (no API cost):**
+**Manually update the graph when needed (no API cost, no LLM):**
 
 ```bash
-mkdir -p /tmp/rr-source
-ln -sf ~/dev/redrabbit/components /tmp/rr-source/components
-ln -sf ~/dev/redrabbit/app /tmp/rr-source/app
-ln -sf ~/dev/redrabbit/lib /tmp/rr-source/lib
-printf "*.png\n*.jpg\n*.svg\n*.ico\n*.webp" > /tmp/rr-source/.graphifyignore
-graphify /tmp/rr-source --no-label
-cp /tmp/rr-source/graphify-out/graph.json ~/dev/redrabbit/graphify-out/
+cd ~/dev/redrabbit && graphify update . --no-cluster --force
 ```
 
-**Never run `graphify . --backend claude`** — that uses the Anthropic API (extra cost). Code-only analysis is always free.
+**NEVER run `graphify . --backend claude` or `graphify label`** — those call the Anthropic API and incur extra cost. Always use `graphify update` or `graphify query/path/explain` which are 100% local.
 
 ## Existing Project Docs
 
