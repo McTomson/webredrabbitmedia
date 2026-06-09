@@ -6,6 +6,19 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-10 — Beide Artikel: Video selbst-gehostet + je 3 Inline-Bilder (live verifiziert)
+
+Behoben (User meldete: fehlende Bilder + Video als Broken Link auf #313 + Kosten):
+- **Video selbst-gehostet** statt YouTube-Embed (war live 404 + bei content-gefiltertem Browser geblockt).
+  MP4 + Poster jetzt unter `public/videos/`, `VideoEmbed` auf `src`+`poster` (Commit `05cf3f9`).
+- **Je 3 cinematic Inline-Bilder** pro Artikel ergaenzt (vorher nur Hero), Stil = Hero (warm-cine,
+  Protagonist/in Oberkoerper als roter Faden), platziert nach passenden `##` Sektionen, deutsche
+  Alt-Texte. Gratis via Gemini (Nano Banana / Pro), Codex-Credits leer bis 11.06. (Commit `a3c7869`).
+- **Live visuell verifiziert** (per JS-scrollIntoView, da Lenis-Smooth-Scroll synthetische Scrolls
+  ignoriert): Inline-Bilder rendern, Video spielt als HTML5-Player mit Poster, kein YouTube-iframe mehr.
+  Alle Assets HTTP 200, code-reviewer ohne Findings. Details/Fallen siehe LESSONS_LEARNED 2026-06-10.
+- OFFEN bleibt weiterhin nur: **Substack-Posts** fuer beide Artikel (siehe Abschnitt 2026-06-09).
+
 ## Stand 2026-06-09 (spaet) — Zwei Artikel komplett vertont/bebildert, nur Substack offen
 
 - **Zwei Artikel KOMPLETT live + verifiziert** (Hero-Bild + Podcast DE + YouTube PUBLIC, eingebettet):

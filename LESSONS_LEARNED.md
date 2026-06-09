@@ -4,6 +4,41 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-10 — Video-Selfhost-Bug, Multi-Bild-Luecke, Gemini-Download-Falle, Lenis-Scroll
+
+- **Video-Broken-Link doppelt verursacht (wichtigster Fund):** `run-media` bettet Videos als
+  `<VideoEmbed id="<YouTubeId>" />` ein. Die `VideoEmbed`-Komponente bevorzugt aber selbst-gehostetes
+  `src`+`poster` (HTML5 `<video>`), weil YouTube-Embeds in content-gefilterten Browsern (uBlock/Brave/
+  Pi-hole) geblockt werden. Nur-`id` faellt auf den YouTube-Pfad zurueck -> bei Thomas Broken Link.
+  ZUSAETZLICH lagen die MP4s nur in `scripts/content-engine/.work/` und waren nie deployed (live 404).
+  **FIX:** MP4 nach `public/videos/<slug>-video.mp4`, Poster-Frame `ffmpeg -ss 3 -i x.mp4 -frames:v 1
+  -vf scale=1280:-2 <slug>-poster.jpg` nach `public/videos/`, Embed auf
+  `<VideoEmbed src="/videos/..-video.mp4" poster="/videos/..-poster.jpg" id="<yt>" title=".." />`
+  (id bleibt nur fuer den Caption-Link). Genau wie die 3 bereits funktionierenden Videos.
+  **Lehre: `run-media` muss kuenftig direkt selbst-hosten (src/poster) statt nur YouTube-id.**
+- **Multi-Bild-Luecke:** `run-media`/Pipeline erzeugte fuer #313 + Kosten nur das Hero-Bild (1x, inline
+  wiederverwendet). Alle anderen Artikel haben 4-6 Bilder. Pruefen mit
+  `for f in content/blog/*.mdx; do echo "$(grep -cE '^!\[' $f)  $f"; done | sort -n`. Pro Artikel 3
+  zusaetzliche Inline-Bilder nach passenden `## ` Sektionen platzieren (Schema `<slug>-ctxN-<hash>.png`).
+- **Gemini-Download-Falle (kostete Zeit):** Das `...`-Menue -> "Bild herunterladen" laedt das FALSCHE
+  Bild (das erste/featured der Konversation), nicht das gehoverte. NUR das per-Bild-Hover-Download-Icon
+  oben rechts am jeweiligen Bild verwenden ("Wird in Originalgroesse heruntergeladen..."). Und NICHT per
+  "neueste Datei" zuordnen (race + Chrome haengt " (1)" an gleiche Basenamen) -> per **md5** verifizieren,
+  dass jede ctx-Datei eindeutig ist. Gemini benennt Downloads deterministisch je Bildinhalt.
+- **Gemini Charakter-Konsistenz:** Folge-Prompts im SELBEN Chat behandelt Gemini als Edits und behaelt
+  dieselbe Person -> ideal fuer einen roten Faden ueber einen Artikel (gleiche/r Protagonist/in). Fuer
+  eine NEUE Person frischen Chat (`gemini.google.com/app`) starten. Stil-Preset: "cinematic editorial
+  photograph, 16:9, warm teal-and-amber grade, soft window light, shallow DoF, premium agency look,
+  authentic Austrian office, upper body only, no text/logos/watermarks". Modell "Pro" = Nano Banana.
+- **redrabbit nutzt Smooth-Scroll (Lenis o.ae.):** synthetische Wheel-/Page_Down-Events scrollen die
+  Live-Seiten im Automations-Browser NICHT (Seite bleibt oben haengen, wirkt "eingefroren"). **Stattdessen
+  `javascript_tool` mit `el.scrollIntoView({behavior:'instant',block:'center'})`** + danach Screenshot.
+  Achtung: JS-Rueckgaben mit URLs/Query-Strings werden vom Tool als "Cookie/query string data" geblockt
+  -> nur sanitierte Werte zurueckgeben (Counts, Dimensionen), keine `src`-URLs.
+- **Listing-Card (`BlogTimelineCard`)** nutzt framer-motion `initial opacity:0` + `whileInView`. Im
+  Automations-/JS-eingeschraenkten Kontext feuert der IntersectionObserver evtl. nicht -> Karte bleibt
+  unsichtbar. Artikel-Inline-Bilder (mdx `img`) sind NICHT gegated und rendern immer.
+
 ## 2026-06-09 (spaet) — NotebookLM-Video-Vergiftung, Gemini-Bilder, Substack-Button
 
 - **NotebookLM-Video "Vergiftung" (wichtigster Fund):** Eine fehlgeschlagene Video-Generierung bleibt
