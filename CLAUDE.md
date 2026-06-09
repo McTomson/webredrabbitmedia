@@ -61,6 +61,37 @@ npm run dev -- --port 9000
 
 If `@next/third-parties/google` is missing, run `npm install` so `node_modules` matches `package-lock.json`.
 
+## Code Intelligence: Graphify
+
+The repo ships a pre-built knowledge graph at `graphify-out/graph.json` (492 nodes, 575 edges).
+
+**Use it before every code task:**
+
+```bash
+# Find a component or function
+graphify query "SimpleAudioPlayer" --graph graphify-out/graph.json
+
+# Understand dependencies between two files
+graphify path "VideoEmbed" "RegionalLandingPage" --graph graphify-out/graph.json
+
+# Explain a node in plain language
+graphify explain "SteiermarkTestimonials" --graph graphify-out/graph.json
+```
+
+**Update the graph after significant code changes (no API cost):**
+
+```bash
+mkdir -p /tmp/rr-source
+ln -sf ~/dev/redrabbit/components /tmp/rr-source/components
+ln -sf ~/dev/redrabbit/app /tmp/rr-source/app
+ln -sf ~/dev/redrabbit/lib /tmp/rr-source/lib
+printf "*.png\n*.jpg\n*.svg\n*.ico\n*.webp" > /tmp/rr-source/.graphifyignore
+graphify /tmp/rr-source --no-label
+cp /tmp/rr-source/graphify-out/graph.json ~/dev/redrabbit/graphify-out/
+```
+
+**Never run `graphify . --backend claude`** — that uses the Anthropic API (extra cost). Code-only analysis is always free.
+
 ## Existing Project Docs
 
 - `README.md` - starter project README.
