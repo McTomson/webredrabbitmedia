@@ -4,6 +4,35 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-09 (spaet) — NotebookLM-Video-Vergiftung, Gemini-Bilder, Substack-Button
+
+- **NotebookLM-Video "Vergiftung" (wichtigster Fund):** Eine fehlgeschlagene Video-Generierung bleibt
+  im Notebook HAENGEN. Jede "Wiederholen"-Aktion scheitert danach SOFORT erneut (RPC `Rytqqe`/`gArtLc`
+  liefern HTTP 200, aber der Payload meldet Fehlschlag); auch Karte-Loeschen und Seiten-Reload helfen
+  nicht. Es ist NICHT konto-weit (Podcast im selben Notebook lief; Login also ok) und NICHT die Quelle
+  (gleiche URL ging im frischen Notebook). **FIX: neues Notebook anlegen, Quelle neu adden, Video dort
+  erzeugen -> laeuft sofort.** Diagnose-Reihenfolge: Podcast geht? -> Auth ok. RPC 200 aber Fehler? ->
+  Backend-/Notebook-Problem, nicht Client.
+- **Cross-Notebook-Parallelitaet:** Zwei Videos gleichzeitig ueber ZWEI Notebooks laufen problemlos;
+  Audio + Video GLEICHZEITIG im SELBEN Notebook -> das zweite scheitert (pro Notebook seriell). Fuer
+  Tempo: pro Artikel je ein Notebook fuer Video, ein weiteres fuer Audio -> parallel.
+- **Bilder gratis via Gemini-Browser (Nano Banana 2):** `images-only.ts` ruft OpenAI Codex; dessen
+  Credits waren erschoepft ("You've hit your usage limit ... try again at Jun 11th 2026 11:00").
+  Ersatz: gemini.google.com (eingeloggtes Google-Konto) -> Bild-Prompt -> "Bild in Originalgroesse
+  herunterladen" -> `~/Downloads/Gemini_Generated_Image_*.png` -> nach `public/images/blog/<slug>.png`
+  (kommt 1376x768). Artikel-MDX referenziert das Bild bereits (featuredImage + Body), also reicht die
+  Datei. Body-Alt-Text danach an das echte Motiv anpassen (Pipeline schrieb "Infografik/Zeitstrahl").
+  **Bildstil-Standard:** cinematic Foto + handschriftlicher Hook, Person nur Oberkoerper/aktiv;
+  KEINE Clipart, kein Vollrot, kein helles Stockfoto (Referenz: User-Notebook "2026 Thumbnail Trends":
+  Negative Space als Pattern Interrupt, max 2 Farben, ruhig+professionell).
+- **Browser-Eingabe-Robustheit:** Bei Gemini/Substack verrutschen Koordinaten beim Fenster-Resize ->
+  Eingabefelder/Buttons per `find` (ref) ansteuern. Umlaut-Text zuverlaessig per `pbcopy` + cmd+v.
+- **Substack "Weiter" advanciert nicht:** Das sichtbare "Weiter" ist oft nur ein Label-Element
+  (`find` ref_16, klickt nicht). Der ECHTE Button ist ein separates Element (`ref_52` "Next").
+  In dieser Session advancierte auch das nicht -> in frischer Session erneut (Extension-Friktion).
+  Substack-Regeln unveraendert: Rubrik PFLICHT; YouTube-Embed per Paste auf leerer Zeile; Erst-Publish
+  mit Video haengt -> erst Text, dann Video per "Aktualisieren".
+
 ## 2026-06-06 (Nacht) — voller autonomer Durchlauf + Substack + Embed-Resilienz
 
 - **Voller Content-Engine-Durchlauf bewiesen (Artikel #105):** Freigabe -> `/api/approve` setzt

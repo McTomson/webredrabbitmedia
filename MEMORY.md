@@ -6,6 +6,20 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-09 (spaet) — Zwei Artikel komplett vertont/bebildert, nur Substack offen
+
+- **Zwei Artikel KOMPLETT live + verifiziert** (Hero-Bild + Podcast DE + YouTube PUBLIC, eingebettet):
+  - `warum-ist-eine-website-mit-dem-tag-des-live` (#313): YouTube `youtu.be/txty09JwV4E`, Hook-Bild "online. und jetzt?".
+  - `wie-setzen-sich-die-kosten-fuer-eine-website-zusammen`: YouTube `youtu.be/wbSf4vf8B4E`, Hook-Bild "was kostet das wirklich?".
+  - Schluss-Mails fuer beide raus (api/published-notify, an t.uhlir@immo.red). Marker entfernt.
+- **NUR OFFEN: Substack-Posts.** #313-Entwurf fertig+gespeichert (`redrabbitlab.substack.com/publish/post/201359416`,
+  Rubrik gesetzt, Titel/Untertitel/Body+Backlink), aber "Weiter"-Button advancierte nicht ueber die
+  Browser-Extension (der echte Button ist `ref_52` "Next", nicht das Label `ref_16`). Kosten-Post noch
+  nicht begonnen. Details + Plan: Auto-Memory `handoff_2026_06_09_zwei_artikel_medien_substack_offen`.
+- **Neuer Bildstil = Standard:** cinematic Foto + handschriftlicher Hook (Person nur Oberkoerper, aktiv,
+  themenpassend); KEINE Clipart-Icons, kein Vollrot, keine hellen Stockfotos. Erzeugt **gratis via
+  Gemini-Browser (Nano Banana 2)**, weil **Codex-Bild-Credits leer bis 11.06.2026 11:00**.
+
 ## Stand 2026-06-09 — Pipeline-Resilienz + Tooling (Graphify/Obsidian)
 
 - **Content-Engine haengte tagelang (Artikel #262, #313):** Ursache war `runClaude`-Retry ohne Delay bei
