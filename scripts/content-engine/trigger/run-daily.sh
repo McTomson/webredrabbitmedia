@@ -50,6 +50,21 @@ alert() {
 git checkout main >/dev/null 2>&1 || { alert "git checkout main fehlgeschlagen"; exit 1; }
 git pull --ff-only origin main >/dev/null 2>&1 || echo "WARN: git pull nicht ff"
 
+# Safety net for internal cluster linking. The primary path adds links per-publish inside
+# run-media.ts, but an article published outside the approve->media flow (e.g. a direct status
+# edit) would otherwise go live without cluster links. This relink is deterministic + idempotent
+# (no LLM, no cost) and only commits when something actually changed. Drafts are never linked.
+if npx tsx scripts/content-engine/knowledge/backfill_cluster_links.ts; then
+  if [ -n "$(git status --porcelain content/blog)" ]; then
+    git add content/blog/*.mdx
+    if git commit -q -m "fix(blog): refresh internal cluster links (daily safety net)"; then
+      git push origin main && echo "Cluster-Links aktualisiert + gepusht"
+    fi
+  else
+    echo "Cluster-Links bereits aktuell"
+  fi
+fi
+
 # Generate next draft (quality-gated). On halt, exit cleanly without shipping.
 # --no-image: ship TEXT ONLY for review. Images (hero + infographic + context photos) are now
 # generated later, in the media step (run-media.ts) AFTER Thomas approves the text, together with

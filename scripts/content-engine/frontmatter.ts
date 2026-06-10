@@ -34,6 +34,8 @@ const schema = z
         updatedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'updatedAt muss YYYY-MM-DD sein'),
         category: z.string().min(1),
         cluster: z.number().int().min(1).max(7).optional(),
+        // Timeless/conceptual article: opts out of the year-in-title freshness check (onpage audit).
+        evergreen: z.boolean().optional(),
         tags: z.array(z.string().min(1)).min(1, 'mind. 1 tag'),
         featuredImage: z.string().regex(/^\/images\/blog\/.+\.(png|jpg|jpeg|webp)$/, 'featuredImage muss /images/blog/<name>.<ext> sein'),
         status: z.enum(['draft', 'published']),

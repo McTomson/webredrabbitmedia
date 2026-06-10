@@ -48,6 +48,7 @@ interface Frontmatter {
     title?: string;
     cluster?: number;
     status?: string;
+    evergreen?: boolean;
     featuredSnippet?: string;
     customFAQs?: unknown[];
     sources?: unknown[];
@@ -65,6 +66,9 @@ const CHECKS: Array<{ key: string; label: string; fails: (fm: Frontmatter, body:
         return !Array.isArray(fm.customFAQs) || fm.customFAQs.length < 4;
     } },
     { key: 'year_in_title', label: 'Aktuelles Jahr nicht im Titel (Frische-Signal)', fails: (fm, _b, year) => {
+        // Timeless/conceptual articles opt out via `evergreen: true` — a year would read as spam,
+        // not freshness. The lever only applies to time-sensitive topics (prices, trends, listicles).
+        if (fm.evergreen === true) return false;
         return !new RegExp(`\\b${year}\\b`).test((fm.title || '').toString());
     } },
     { key: 'internal_links', label: 'Weniger als 2 interne Links (Cluster-Verlinkung)', fails: (_fm, body) => {
