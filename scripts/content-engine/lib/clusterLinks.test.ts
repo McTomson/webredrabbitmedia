@@ -6,6 +6,7 @@ import {
     cleanAnchor,
     scoreRelated,
     buildBlock,
+    escapeMdxText,
     injectBlock,
     relinkAll,
     loadPosts,
@@ -37,6 +38,17 @@ describe('cleanAnchor', () => {
     });
     it('leaves a clean title untouched and collapses whitespace', () => {
         expect(cleanAnchor('Wie  lange   dauert es')).toBe('Wie lange dauert es');
+    });
+});
+
+describe('escapeMdxText', () => {
+    it('backslash-escapes MDX-structural characters', () => {
+        expect(escapeMdxText('a{b}c')).toBe('a\\{b\\}c');
+        expect(escapeMdxText('<x>')).toBe('\\<x\\>');
+        expect(escapeMdxText('](evil)')).toBe('\\](evil)'); // ] escaped so the link cannot be closed early
+    });
+    it('leaves ordinary German title text unchanged', () => {
+        expect(escapeMdxText('Was kostet eine Website 2026?')).toBe('Was kostet eine Website 2026?');
     });
 });
 
@@ -82,28 +94,43 @@ describe('buildBlock', () => {
         expect(block).toContain('[Titel C](/tipps/c)');
         expect(block).not.toContain('/blog/');
     });
+
+    it('escapes MDX-structural characters in a title so it cannot break out of the link', () => {
+        const block = buildBlock([post({ slug: 'b', title: 'Preis {x} und <Tag> [ok]' })]);
+        // The dangerous chars are backslash-escaped; no raw {, <, or stray ] survives in the anchor.
+        expect(block).toContain('\\{x\\}');
+        expect(block).toContain('\\<Tag\\>');
+        expect(block).not.toMatch(/\[[^\]]*\{x\}/); // no un-escaped { inside the link text
+    });
+
+    it('skips a target whose slug carries an unsafe charset (no broken URL)', () => {
+        const block = buildBlock([post({ slug: 'bad slug/../x', title: 'Bad' }), post({ slug: 'good', title: 'Good' })]);
+        expect(block).toContain('/tipps/good');
+        expect(block).not.toContain('bad slug');
+    });
 });
 
 describe('injectBlock idempotency + placement', () => {
     const block1 = buildBlock([post({ slug: 'b', title: 'B' })]);
     const block2 = buildBlock([post({ slug: 'c', title: 'C' })]);
 
-    it('inserts before the author footer', () => {
-        const body = 'Intro text.\n\n## Fazit\nText.\n\n[CTA](/kontakt)\n\n---\n**Thomas Uhlir MBA**\n*Geschäftsführer*\n';
+    it('appends at the end of the body, preserving all prior content', () => {
+        const body = 'Intro text.\n\n## Fazit\nText.\n\n[CTA](/kontakt)\n\n**Thomas Uhlir MBA**\n*Geschäftsführer*';
         const out = injectBlock(body, block1);
-        expect(out.indexOf(LINK_START)).toBeLessThan(out.indexOf('**Thomas Uhlir'));
+        expect(out.indexOf('**Thomas Uhlir')).toBeLessThan(out.indexOf(LINK_START)); // block is last
         expect(out).toContain('[CTA](/kontakt)');
+        expect(out.trimEnd().endsWith(LINK_END)).toBe(true);
     });
 
     it('is idempotent: re-injecting the same block yields identical output', () => {
-        const body = 'Intro.\n\n---\n**Thomas Uhlir MBA**\n';
+        const body = 'Intro.\n\n**Thomas Uhlir MBA**\n';
         const once = injectBlock(body, block1);
         const twice = injectBlock(once, block1);
         expect(twice).toBe(once);
     });
 
     it('replaces an existing block with new targets (no duplicate markers)', () => {
-        const body = 'Intro.\n\n---\n**Thomas Uhlir MBA**\n';
+        const body = 'Intro.\n\n**Thomas Uhlir MBA**\n';
         const out = injectBlock(injectBlock(body, block1), block2);
         expect(out.match(new RegExp(LINK_START.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&'), 'g'))?.length).toBe(1);
         expect(out).toContain('/tipps/c');

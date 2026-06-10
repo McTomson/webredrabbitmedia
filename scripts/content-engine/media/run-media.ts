@@ -159,19 +159,24 @@ function main() {
     // cluster-mates and they link back (topical authority). forceInclude makes the just-going-live
     // slug a valid link target even if its on-disk status still reads draft for a moment. Idempotent;
     // the same logic runs as the standalone `npm run cluster:relink` backfill.
+    let clusterTouched = 0;
     try {
-        const touched = relinkAll(path.join(ROOT, 'content/blog'), { forceInclude: [slug] }).filter((r) => r.changed);
-        log(`3.5/6 Cluster-Verlinkung aktualisiert (${touched.length} Artikel angepasst)`);
+        clusterTouched = relinkAll(path.join(ROOT, 'content/blog'), { forceInclude: [slug] }).filter((r) => r.changed).length;
+        log(`3.5/6 Cluster-Verlinkung aktualisiert (${clusterTouched} Artikel angepasst)`);
     } catch (e: any) {
+        // Surface, don't bury: the commit below would otherwise look complete despite a partial relink.
+        process.stderr.write(`WARN cluster relink failed for ${slug}: ${e.stack || e.message}\n`);
         log(`3.5/6 Cluster-Verlinkung uebersprungen: ${e.message}`);
     }
 
     // 4) commit + push
     if (!flag('no-push')) {
-        // Stage the whole blog dir so cluster-mate edits from 3.5 are committed alongside this article.
-        execFileSync('git', ['add', path.join(ROOT, 'content/blog'), 'public/audio', 'public/images/blog', 'public/videos'], { cwd: ROOT, stdio: 'inherit' });
+        // Stage only published .mdx (cluster-mate edits from 3.5) — NOT the whole dir, so a stray
+        // non-mdx file under content/blog can never be swept into this unattended push to main.
+        execFileSync('git', ['add', 'content/blog/*.mdx', 'public/audio', 'public/images/blog', 'public/videos'], { cwd: ROOT, stdio: 'inherit' });
         try {
-            execFileSync('git', ['commit', '-q', '-m', `feat(blog): add images + podcast + video to ${slug}`], { cwd: ROOT, stdio: 'inherit' });
+            const msg = `feat(blog): add media to ${slug}` + (clusterTouched ? ` (+${clusterTouched} cluster links)` : '');
+            execFileSync('git', ['commit', '-q', '-m', msg], { cwd: ROOT, stdio: 'inherit' });
             execFileSync('git', ['push', 'origin', 'main'], { cwd: ROOT, stdio: 'inherit' });
             log('4/6 committed + gepusht (Vercel deployt)');
         } catch {
