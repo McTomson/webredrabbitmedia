@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- launchd LaunchAgent for the weekly task reminder.
+     Install:  cp this file to ~/Library/LaunchAgents/ and run
+               launchctl load ~/Library/LaunchAgents/com.redrabbit.reminder.plist
+     Sends one "offene Anstoesse" email per week (Monday 08:30). The catch-up interval
+     re-checks if the Mac was asleep; sending again is harmless. -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.redrabbit.reminder</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-lc</string>
+        <string>$HOME/dev/redrabbit/scripts/content-engine/trigger/run-remind.sh</string>
+    </array>
+
+    <!-- Weekly: Monday (Weekday 1) at 08:30. -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Weekday</key><integer>1</integer>
+        <key>Hour</key><integer>8</integer>
+        <key>Minute</key><integer>30</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/redrabbit-reminder.out</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/redrabbit-reminder.err</string>
+</dict>
+</plist>

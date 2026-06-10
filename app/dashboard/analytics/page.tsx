@@ -20,6 +20,12 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
 
     const d = res.data;
     const maxChannel = Math.max(1, ...d.channels.map((c) => c.sessions));
+    const EVENT_LABELS: Record<string, string> = {
+        contact_form_open: 'Kontakt geöffnet (Interesse)',
+        scroll_depth: 'Scrolltiefe erreicht',
+        outbound_click: 'Externer Link geklickt',
+        generate_lead: 'Anfrage gesendet',
+    };
 
     return (
         <div className="space-y-8">
@@ -70,6 +76,57 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
                     </div>
                 )}
             </SectionCard>
+
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                <SectionCard title="Verhalten" hint="was Besucher tun">
+                    {d.events.length === 0 ? (
+                        <EmptyState message="Noch keine Verhaltens-Events im Zeitraum. Scrolltiefe, externe Klicks und Kontakt-Öffnungen erscheinen hier, sobald Besucher auf den Seiten aktiv werden (GA4 verarbeitet Events mit etwas Verzögerung)." />
+                    ) : (
+                        <ul className="space-y-3">
+                            {d.events.map((ev) => (
+                                <li key={ev.name} className="flex items-baseline justify-between gap-2 text-sm">
+                                    <span className="font-medium text-slate-800">{EVENT_LABELS[ev.name] || ev.name}</span>
+                                    <span className="tabular-nums text-slate-500">{int(ev.count)}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </SectionCard>
+
+                <SectionCard title="Kontakt-Interesse pro Seite" hint="contact_form_open je Seite">
+                    {d.contactIntentByPage.length === 0 ? (
+                        <EmptyState message="Noch keine Kontakt-Öffnungen im Zeitraum. Sobald jemand auf einer Seite das Kontaktformular öffnet, erscheint die Seite hier — auch ohne abgeschickte Anfrage." />
+                    ) : (
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                                <thead>
+                                    <tr className="border-b border-black/[0.06]">
+                                        <Th>Seite</Th>
+                                        <Th numeric>Öffnungen</Th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {d.contactIntentByPage.map((r) => {
+                                        const safeHref = r.path.startsWith('/') ? r.path : undefined;
+                                        return (
+                                            <tr key={r.path} className="border-b border-black/[0.04] hover:bg-black/[0.02]">
+                                                <Td strong>
+                                                    {safeHref ? (
+                                                        <a href={safeHref} target="_blank" rel="noreferrer" className="hover:text-red-600">{r.path}</a>
+                                                    ) : (
+                                                        r.path
+                                                    )}
+                                                </Td>
+                                                <Td numeric>{int(r.count)}</Td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </SectionCard>
+            </div>
 
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <SectionCard title="Top-Seiten" hint="nach Aufrufen">

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { X, Send, Building, User, Mail, Phone, MessageSquare, Globe, CheckCircle, Clock, CreditCard, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { sendGAEvent } from '@next/third-parties/google';
 import Image from 'next/image';
 
 interface ContactFormProps {
@@ -148,6 +149,17 @@ const ContactForm = ({ isOpen, onClose }: ContactFormProps) => {
             setIsSubmitting(false);
             setShowSuccess(true);
             setLastSubmission(now);
+
+            // Conversion event: this modal is the site-wide form (Hero/Pricing/Contact/Blog),
+            // so page_path attributes the lead to whichever page it was sent from (e.g. an article).
+            try {
+                sendGAEvent('event', 'generate_lead', {
+                    form_location: 'modal',
+                    page_path: typeof window !== 'undefined' ? window.location.pathname : undefined,
+                });
+            } catch {
+                /* analytics must never break the form */
+            }
 
             // Reset form
             setFormData({

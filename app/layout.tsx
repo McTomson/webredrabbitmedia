@@ -201,6 +201,7 @@ const jsonLd = {
 import { ContactFormProvider } from "@/components/ContactFormProvider";
 import ContactFormWrapper from "@/components/ContactFormWrapper";
 import AOSInit from "@/components/AOSInit";
+import AnalyticsListener from "@/components/AnalyticsListener";
 
 export default function RootLayout({
   children,
@@ -229,6 +230,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased bg-[#fafafa] text-[#141414] overflow-x-hidden`} suppressHydrationWarning>
         <ContactFormProvider>
           <AOSInit />
+          <AnalyticsListener />
           <Header />
           <main>{children}</main>
           <Footer />

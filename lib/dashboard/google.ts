@@ -300,7 +300,12 @@ export interface AnalyticsData {
     channels: Ga4Pair[];
     leads: number; // total generate_lead events (form submits) in range
     leadsByPage: Array<{ path: string; count: number }>; // "Anfragen pro Artikel"
+    events: Array<{ name: string; count: number }>; // behavioural events (scroll_depth, outbound_click, contact_form_open)
+    contactIntentByPage: Array<{ path: string; count: number }>; // contact_form_open per page (CTA intent, pre-submit)
 }
+
+// The custom behavioural events fired client-side (AnalyticsListener + ContactFormProvider).
+const BEHAVIOUR_EVENTS = ['contact_form_open', 'scroll_depth', 'outbound_click'];
 
 export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>> {
     const auth = authClient();
@@ -313,7 +318,9 @@ export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>
         const property = `properties/${GA4}`;
 
         const leadFilter = { filter: { fieldName: 'eventName', stringFilter: { value: 'generate_lead' } } };
-        const [summary, pages, channels, leads] = await Promise.all([
+        const behaviourFilter = { filter: { fieldName: 'eventName', inListFilter: { values: BEHAVIOUR_EVENTS } } };
+        const intentFilter = { filter: { fieldName: 'eventName', stringFilter: { value: 'contact_form_open' } } };
+        const [summary, pages, channels, leads, events, intent] = await Promise.all([
             ga.properties.runReport({
                 property,
                 requestBody: {
@@ -352,6 +359,28 @@ export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>
                     limit: '25',
                 },
             }),
+            ga.properties.runReport({
+                property,
+                requestBody: {
+                    dateRanges: [{ startDate: range, endDate: 'yesterday' }],
+                    dimensions: [{ name: 'eventName' }],
+                    metrics: [{ name: 'eventCount' }],
+                    dimensionFilter: behaviourFilter,
+                    orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+                    limit: '10',
+                },
+            }),
+            ga.properties.runReport({
+                property,
+                requestBody: {
+                    dateRanges: [{ startDate: range, endDate: 'yesterday' }],
+                    dimensions: [{ name: 'pagePath' }],
+                    metrics: [{ name: 'eventCount' }],
+                    dimensionFilter: intentFilter,
+                    orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+                    limit: '25',
+                },
+            }),
         ]);
 
         const m = summary.data.rows?.[0]?.metricValues || [];
@@ -375,6 +404,15 @@ export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>
         }));
         const leadsTotal = leadsByPage.reduce((s, l) => s + l.count, 0);
 
+        const eventRows = (events.data.rows || []).map((r) => ({
+            name: r.dimensionValues?.[0]?.value ?? '(unbekannt)',
+            count: Number(r.metricValues?.[0]?.value ?? 0),
+        }));
+        const contactIntentByPage = (intent.data.rows || []).map((r) => ({
+            path: r.dimensionValues?.[0]?.value ?? '(unbekannt)',
+            count: Number(r.metricValues?.[0]?.value ?? 0),
+        }));
+
         return {
             state: 'ok',
             data: {
@@ -391,6 +429,8 @@ export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>
                 channels: channelRows,
                 leads: leadsTotal,
                 leadsByPage,
+                events: eventRows,
+                contactIntentByPage,
             },
         };
     } catch (e: unknown) {

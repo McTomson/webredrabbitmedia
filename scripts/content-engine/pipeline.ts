@@ -190,6 +190,8 @@ function finalizerPrompt(t: Topic, body: string, sources: Source[], today: strin
         readMemory('roles/finalizer.md'),
         '\n--- conventions.md (Frontmatter-Schema, EXAKT einhalten) ---\n',
         readMemory('conventions.md'),
+        '\n--- knowledge/playbook.md §2 GEO/On-Page (anwenden: Antwort-Block, FAQ, Jahr im Titel, Quell-Links) ---\n',
+        readMemory('knowledge/playbook.md'),
         '\n=== BEREINIGTER BODY ===\n' + body,
         '\n=== VERIFIZIERTE QUELLEN (genau diese als sources, URLs nicht aendern) ===\n' + JSON.stringify(sources, null, 2),
         `\n=== FIXE WERTE ===\nslug: ${t.slug}\nauthor: ${t.authorName}\npublishedAt/updatedAt: ${today}\nstatus: draft\naiAssisted: true\nfeaturedImage: /images/blog/${t.slug}.png\ncategory: "${category}"\ncluster: ${t.cluster}`,

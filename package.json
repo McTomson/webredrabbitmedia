@@ -14,6 +14,7 @@
     "vault:backfill": "tsx scripts/content-engine/knowledge/backfill_vault.ts",
     "notebooklm:plan": "tsx scripts/content-engine/knowledge/notebooklm_plan.ts",
     "notebooklm:record": "tsx scripts/content-engine/knowledge/notebooklm_record.ts",
+    "remind": "tsx scripts/content-engine/dashboard/remind_tasks.ts",
     "media": "tsx scripts/content-engine/media/run-media.ts",
     "media:pending": "tsx scripts/content-engine/media/pending.ts"
   },

@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Search, BarChart3, BrainCircuit } from 'lucide-react';
+import { LayoutDashboard, Search, BarChart3, BrainCircuit, Sparkles } from 'lucide-react';
 
 const NAV = [
     { href: '/dashboard', label: 'Überblick', icon: LayoutDashboard },
     { href: '/dashboard/search', label: 'Search Console', icon: Search },
     { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
     { href: '/dashboard/wissen', label: 'Wissen & Moat', icon: BrainCircuit },
+    { href: '/dashboard/verbesserungen', label: 'Verbesserungen', icon: Sparkles },
 ];
 
 // macOS-style sidebar nav on desktop; horizontal scroll row on mobile.
