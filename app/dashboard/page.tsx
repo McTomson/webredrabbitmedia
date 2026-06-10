@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { getOverview } from '@/lib/dashboard/overview';
 
 // Local-only internal dashboard (Phase 1, overview tier — no external creds).
@@ -21,6 +22,11 @@ function Kpi({ label, value, sub }: { label: string; value: string | number; sub
 }
 
 export default async function DashboardPage() {
+    // Internal, local-only tool. On production (Vercel) it is hidden unless DASHBOARD_ENABLED is set,
+    // so it never gets exposed publicly (it will later carry GSC/GA4 data). Locally (dev) it always shows.
+    if (process.env.NODE_ENV === 'production' && !process.env.DASHBOARD_ENABLED) {
+        notFound();
+    }
     const d = await getOverview();
     const sc = d.statusCounts;
     const published = (sc.published || 0) + (sc.covered || 0);
