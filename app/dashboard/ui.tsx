@@ -1,7 +1,34 @@
+import Link from 'next/link';
 import { AlertTriangle, Settings2, Inbox } from 'lucide-react';
 
 // Shared light-mode building blocks for the dashboard tabs. Data-dense style:
 // modest padding, clear hierarchy, tabular figures for numeric columns.
+
+// Single source of truth for the time-range options — used both for the switch UI
+// and for validating the ?days= query param on each tab (keeps the allowlist in one place).
+export const DASH_RANGES = [7, 28, 90] as const;
+
+export function parseRange(value: string | undefined, fallback = 28): number {
+    const n = Number(value);
+    return (DASH_RANGES as readonly number[]).includes(n) ? n : fallback;
+}
+
+export function RangeSwitch({ basePath, active }: { basePath: string; active: number }) {
+    return (
+        <div className="inline-flex rounded-lg border border-slate-200 bg-white p-0.5 text-sm">
+            {DASH_RANGES.map((d) => (
+                <Link
+                    key={d}
+                    href={`${basePath}?days=${d}`}
+                    aria-current={d === active ? 'true' : undefined}
+                    className={`rounded-md px-3 py-1 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 ${d === active ? 'bg-red-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+                >
+                    {d} Tage
+                </Link>
+            ))}
+        </div>
+    );
+}
 
 export function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
     return <div className={`rounded-xl border border-slate-200 bg-white shadow-sm ${className}`}>{children}</div>;

@@ -1,38 +1,18 @@
-import Link from 'next/link';
 import { getAnalyticsData } from '@/lib/dashboard/google';
 import { int, pct, duration } from '@/lib/dashboard/format';
-import { Kpi, SectionCard, StateNotice, EmptyState, Th, Td } from '../ui';
+import { Kpi, SectionCard, StateNotice, EmptyState, Th, Td, RangeSwitch, parseRange } from '../ui';
 
 export const dynamic = 'force-dynamic';
 
-const RANGES = [7, 28, 90];
-
-function RangeSwitch({ active }: { active: number }) {
-    return (
-        <div className="inline-flex rounded-lg border border-slate-200 bg-white p-0.5 text-sm">
-            {RANGES.map((d) => (
-                <Link
-                    key={d}
-                    href={`/dashboard/analytics?days=${d}`}
-                    aria-current={d === active ? 'true' : undefined}
-                    className={`rounded-md px-3 py-1 font-medium transition-colors ${d === active ? 'bg-red-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
-                >
-                    {d} Tage
-                </Link>
-            ))}
-        </div>
-    );
-}
-
 export default async function AnalyticsPage({ searchParams }: { searchParams: Promise<{ days?: string }> }) {
     const sp = await searchParams;
-    const days = RANGES.includes(Number(sp.days)) ? Number(sp.days) : 28;
+    const days = parseRange(sp.days);
     const res = await getAnalyticsData(days);
 
     if (res.state !== 'ok') {
         return (
             <div className="space-y-4">
-                <RangeSwitch active={days} />
+                <RangeSwitch basePath="/dashboard/analytics" active={days} />
                 <StateNotice kind={res.state} message={res.message} />
             </div>
         );
@@ -45,7 +25,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
         <div className="space-y-8">
             <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-sm text-slate-500">GA4-Property {d.propertyId} · letzte {days} Tage</p>
-                <RangeSwitch active={days} />
+                <RangeSwitch basePath="/dashboard/analytics" active={days} />
             </div>
 
             <section className="grid grid-cols-2 gap-4 md:grid-cols-5">
@@ -71,15 +51,23 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {d.topPages.map((r) => (
+                                    {d.topPages.map((r) => {
+                                        // GA4 pagePath should be a site-relative path; only link when it is one.
+                                        const safeHref = r.path.startsWith('/') ? r.path : undefined;
+                                        return (
                                         <tr key={r.path} className="border-b border-slate-100 hover:bg-slate-50">
                                             <Td strong>
-                                                <a href={r.path} target="_blank" rel="noreferrer" className="hover:text-red-600">{r.path}</a>
+                                                {safeHref ? (
+                                                    <a href={safeHref} target="_blank" rel="noreferrer" className="hover:text-red-600">{r.path}</a>
+                                                ) : (
+                                                    r.path
+                                                )}
                                             </Td>
                                             <Td numeric>{int(r.views)}</Td>
                                             <Td numeric>{int(r.users)}</Td>
                                         </tr>
-                                    ))}
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         </div>

@@ -43,15 +43,28 @@ function ymd(d: Date): string {
     return d.toISOString().slice(0, 10);
 }
 
-// GSC data lags ~2 days; ending the window a day back avoids a misleadingly empty tail.
+// GSC data lags ~2 days; the window ends yesterday and spans exactly `days` inclusive days
+// (start = days ago, end = yesterday → e.g. days=28 yields 28 calendar days). GA4 uses the
+// matching `${days}daysAgo`..yesterday so both sources show the same closed period.
 function gscRange(days: number): { startDate: string; endDate: string } {
     const end = new Date(Date.now() - 1 * 86400000);
-    const start = new Date(Date.now() - (days + 1) * 86400000);
+    const start = new Date(Date.now() - days * 86400000);
     return { startDate: ymd(start), endDate: ymd(end) };
 }
 
 function round1(n: number): number {
     return Math.round(n * 10) / 10;
+}
+
+// Never surface raw token/secret material in a UI error box (the dashboard is local,
+// but a screenshot/bug report could otherwise leak credentials). Map known auth failures
+// to a friendly hint and redact token-like query params from anything else.
+function safeErrorMessage(e: unknown): string {
+    const raw = e instanceof Error ? e.message : String(e);
+    if (/invalid_grant|unauthorized|\b401\b/i.test(raw)) {
+        return 'OAuth-Token abgelaufen oder widerrufen — bitte scripts/content-engine/dashboard/google_auth.ts erneut ausführen.';
+    }
+    return raw.replace(/(access_token|refresh_token|client_secret|id_token)=[^&\s]+/gi, '$1=***');
 }
 
 // ── Search Console ─────────────────────────────────────────────────────────
@@ -135,8 +148,7 @@ export async function getSearchConsoleData(days = 28): Promise<Loaded<SearchCons
             },
         };
     } catch (e: unknown) {
-        const msg = e instanceof Error ? e.message : String(e);
-        return { state: 'error', message: msg };
+        return { state: 'error', message: safeErrorMessage(e) };
     }
 }
 
@@ -170,14 +182,14 @@ export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>
             ga.properties.runReport({
                 property,
                 requestBody: {
-                    dateRanges: [{ startDate: range, endDate: 'today' }],
+                    dateRanges: [{ startDate: range, endDate: 'yesterday' }],
                     metrics: [{ name: 'activeUsers' }, { name: 'sessions' }, { name: 'screenPageViews' }, { name: 'engagementRate' }, { name: 'averageSessionDuration' }],
                 },
             }),
             ga.properties.runReport({
                 property,
                 requestBody: {
-                    dateRanges: [{ startDate: range, endDate: 'today' }],
+                    dateRanges: [{ startDate: range, endDate: 'yesterday' }],
                     dimensions: [{ name: 'pagePath' }],
                     metrics: [{ name: 'screenPageViews' }, { name: 'activeUsers' }],
                     orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
@@ -187,7 +199,7 @@ export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>
             ga.properties.runReport({
                 property,
                 requestBody: {
-                    dateRanges: [{ startDate: range, endDate: 'today' }],
+                    dateRanges: [{ startDate: range, endDate: 'yesterday' }],
                     dimensions: [{ name: 'sessionDefaultChannelGroup' }],
                     metrics: [{ name: 'sessions' }, { name: 'activeUsers' }],
                     orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
@@ -228,7 +240,6 @@ export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>
             },
         };
     } catch (e: unknown) {
-        const msg = e instanceof Error ? e.message : String(e);
-        return { state: 'error', message: msg };
+        return { state: 'error', message: safeErrorMessage(e) };
     }
 }
