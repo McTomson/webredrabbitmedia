@@ -28,13 +28,48 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
                 <RangeSwitch basePath="/dashboard/analytics" active={days} />
             </div>
 
-            <section className="grid grid-cols-2 gap-4 md:grid-cols-5">
-                <Kpi label="Aktive Nutzer" value={int(d.totals.activeUsers)} accent />
+            <section className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+                <Kpi label="Anfragen" value={int(d.leads)} sub="generate_lead" accent />
+                <Kpi label="Aktive Nutzer" value={int(d.totals.activeUsers)} />
                 <Kpi label="Sitzungen" value={int(d.totals.sessions)} />
                 <Kpi label="Seitenaufrufe" value={int(d.totals.pageViews)} />
                 <Kpi label="Engagement" value={pct(d.totals.engagementRate)} sub="Engagement-Rate" />
                 <Kpi label="Ø Sitzung" value={duration(d.totals.avgSessionSec)} sub="Dauer" />
             </section>
+
+            <SectionCard title="Anfragen pro Seite" hint="generate_lead je Seite">
+                {d.leadsByPage.length === 0 ? (
+                    <EmptyState message="Noch keine Anfragen im Zeitraum. Sobald ein Kontaktformular abgeschickt wird, erscheinen die Anfragen hier — je Artikel." />
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead>
+                                <tr className="border-b border-black/[0.06]">
+                                    <Th>Seite</Th>
+                                    <Th numeric>Anfragen</Th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {d.leadsByPage.map((r) => {
+                                    const safeHref = r.path.startsWith('/') ? r.path : undefined;
+                                    return (
+                                        <tr key={r.path} className="border-b border-black/[0.04] hover:bg-black/[0.02]">
+                                            <Td strong>
+                                                {safeHref ? (
+                                                    <a href={safeHref} target="_blank" rel="noreferrer" className="hover:text-red-600">{r.path}</a>
+                                                ) : (
+                                                    r.path
+                                                )}
+                                            </Td>
+                                            <Td numeric>{int(r.count)}</Td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </SectionCard>
 
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <SectionCard title="Top-Seiten" hint="nach Aufrufen">

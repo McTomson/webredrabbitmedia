@@ -298,6 +298,8 @@ export interface AnalyticsData {
     totals: { activeUsers: number; sessions: number; pageViews: number; engagementRate: number; avgSessionSec: number };
     topPages: Array<{ path: string; views: number; users: number }>;
     channels: Ga4Pair[];
+    leads: number; // total generate_lead events (form submits) in range
+    leadsByPage: Array<{ path: string; count: number }>; // "Anfragen pro Artikel"
 }
 
 export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>> {
@@ -310,7 +312,8 @@ export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>
         const ga = google.analyticsdata({ version: 'v1beta', auth });
         const property = `properties/${GA4}`;
 
-        const [summary, pages, channels] = await Promise.all([
+        const leadFilter = { filter: { fieldName: 'eventName', stringFilter: { value: 'generate_lead' } } };
+        const [summary, pages, channels, leads] = await Promise.all([
             ga.properties.runReport({
                 property,
                 requestBody: {
@@ -338,6 +341,17 @@ export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>
                     limit: '12',
                 },
             }),
+            ga.properties.runReport({
+                property,
+                requestBody: {
+                    dateRanges: [{ startDate: range, endDate: 'yesterday' }],
+                    dimensions: [{ name: 'pagePath' }],
+                    metrics: [{ name: 'eventCount' }],
+                    dimensionFilter: leadFilter,
+                    orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+                    limit: '25',
+                },
+            }),
         ]);
 
         const m = summary.data.rows?.[0]?.metricValues || [];
@@ -355,6 +369,12 @@ export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>
             users: Number(r.metricValues?.[1]?.value ?? 0),
         }));
 
+        const leadsByPage = (leads.data.rows || []).map((r) => ({
+            path: r.dimensionValues?.[0]?.value ?? '(unbekannt)',
+            count: Number(r.metricValues?.[0]?.value ?? 0),
+        }));
+        const leadsTotal = leadsByPage.reduce((s, l) => s + l.count, 0);
+
         return {
             state: 'ok',
             data: {
@@ -369,6 +389,8 @@ export async function getAnalyticsData(days = 28): Promise<Loaded<AnalyticsData>
                 },
                 topPages,
                 channels: channelRows,
+                leads: leadsTotal,
+                leadsByPage,
             },
         };
     } catch (e: unknown) {
