@@ -152,6 +152,62 @@ export async function getSearchConsoleData(days = 28): Promise<Loaded<SearchCons
     }
 }
 
+// ── Visibility trend (current period vs the period directly before it) ───────
+// Powers the dead-man / penalty alarm: a sharp drop in impressions week-over-week
+// is the earliest sign of a Google penalty, deindexing, or a broken pipeline.
+
+export interface TrendMetric {
+    current: number;
+    previous: number;
+    deltaPct: number; // (current - previous) / previous * 100; 0 if both were 0
+}
+
+export interface VisibilityTrend {
+    rangeDays: number;
+    clicks: TrendMetric;
+    impressions: TrendMetric;
+}
+
+function deltaPct(current: number, previous: number): number {
+    if (previous > 0) return round1(((current - previous) / previous) * 100);
+    return current > 0 ? 100 : 0;
+}
+
+export async function getVisibilityTrend(days = 7): Promise<Loaded<VisibilityTrend>> {
+    const auth = authClient();
+    if (!auth) {
+        return { state: 'unconfigured', message: `Keine Google-Zugangsdaten unter ${CFG} gefunden.` };
+    }
+    // current: [now-days .. now-1]; previous: [now-2*days .. now-days-1] (same length, directly before).
+    const curEnd = ymd(new Date(Date.now() - 1 * 86400000));
+    const curStart = ymd(new Date(Date.now() - days * 86400000));
+    const prevEnd = ymd(new Date(Date.now() - (days + 1) * 86400000));
+    const prevStart = ymd(new Date(Date.now() - 2 * days * 86400000));
+    try {
+        const sc = google.webmasters({ version: 'v3', auth });
+        const [cur, prev] = await Promise.all([
+            sc.searchanalytics.query({ siteUrl: SITE, requestBody: { startDate: curStart, endDate: curEnd, dimensions: [], rowLimit: 1 } }),
+            sc.searchanalytics.query({ siteUrl: SITE, requestBody: { startDate: prevStart, endDate: prevEnd, dimensions: [], rowLimit: 1 } }),
+        ]);
+        const c = cur.data.rows?.[0] || {};
+        const p = prev.data.rows?.[0] || {};
+        const cClicks = c.clicks ?? 0;
+        const pClicks = p.clicks ?? 0;
+        const cImpr = c.impressions ?? 0;
+        const pImpr = p.impressions ?? 0;
+        return {
+            state: 'ok',
+            data: {
+                rangeDays: days,
+                clicks: { current: cClicks, previous: pClicks, deltaPct: deltaPct(cClicks, pClicks) },
+                impressions: { current: cImpr, previous: pImpr, deltaPct: deltaPct(cImpr, pImpr) },
+            },
+        };
+    } catch (e: unknown) {
+        return { state: 'error', message: safeErrorMessage(e) };
+    }
+}
+
 // ── Google Analytics 4 ───────────────────────────────────────────────────────
 
 export interface Ga4Pair {

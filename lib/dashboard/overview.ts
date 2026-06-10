@@ -30,6 +30,7 @@ export interface OverviewData {
     statusCounts: Record<string, number>;
     perCluster: Array<{ cluster: number; name: string; total: number; published: number; review: number; todo: number; liveArticles: number }>;
     liveArticles: number;
+    newestPublishedAt: string | null; // ISO date of the most recent published article (dead-man signal)
     pendingMedia: Array<{ slug: string; requestedAt: string; hasPodcast: boolean; hasVideo: boolean }>;
     lastDailyRun: { file: string; ok: boolean; tail: string } | null;
     lastMediaCheck: { file: string; tail: string } | null;
@@ -133,6 +134,7 @@ export async function getOverview(): Promise<OverviewData> {
         statusCounts,
         perCluster,
         liveArticles: posts.length,
+        newestPublishedAt: posts[0]?.publishedAt ?? null, // posts are sorted publishedAt desc
         pendingMedia,
         lastDailyRun: dailyLog ? { file: path.basename(dailyLog), ok: /fertig/.test(dailyTail) || /Heute schon gelaufen/.test(dailyTail), tail: dailyTail } : null,
         lastMediaCheck: mediaLog ? { file: path.basename(mediaLog), tail: tailFile(mediaLog) } : null,

@@ -6,6 +6,13 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-10 (Teil 4) — Dashboard GSC+GA4-Tabs LIVE (deployed), Phase-0-Deploy verifiziert
+
+- **Phase-0-Deploy war erfolgreich + ist live** (vorige Session war fälschlich unsicher): Quellen-Sektion + JSON-LD citation rendern auf allen Pipeline-Artikeln (live geprüft an `wie-setzen-sich-die-kosten...`). Die "Deploy hängt"-Sorge kam nur vom Test des Slugs `was-kostet-eine-website`, der eine hartkodierte Eigenroute `app/tipps/was-kostet-eine-website/page.tsx` hat (nutzt ArticleSources NICHT). Siehe LESSONS_LEARNED Teil 4.
+- **Dashboard GSC+GA4-Tabs gebaut + deployed** (main `cd3ca56`): geteiltes `app/dashboard/layout.tsx` (Tab-Nav Überblick/Search Console/Analytics + Prod-Guard für alle Unterrouten), `lib/dashboard/google.ts` (GSC+GA4 via OAuth-Token, typisierte unconfigured/error-Degradierung, safeErrorMessage redigiert Token), `lib/dashboard/format.ts` (de-AT), `app/dashboard/ui.tsx` (geteilte Light-Mode-Bausteine + RangeSwitch/DASH_RANGES/parseRange), `search/page.tsx` (KPIs, **Striking-Distance Pos 8–20**, Top-Queries/Seiten, 7/28/90-Tage), `analytics/page.tsx` (KPIs, Top-Seiten, Kanäle). Light Mode, Marke Rot, tabular-nums. In Prod via notFound versteckt; lokal `npm run dev -- --port 9000` → /dashboard.
+- **Verifiziert:** Build grün, 48/48 Tests, alle 3 Tabs HTTP 200 mit echten Daten (GSC ~4.800 Impr./Pos ~45 + gefüllte Striking-Distance; GA4 29 Nutzer/68 Sitzungen/51,5% Engagement). review-it (3 Agenten) GO, Härtungen angewandt: `docs/reviews/dashboard-gsc-ga4-2026-06-10.md`. **Browser-Visualtest auf localhost wurde vom Chrome-Permission-Dialog 2x abgelehnt — offen, falls User localhost freigibt.**
+- **NÄCHSTE SCHRITTE (Plan-Reihenfolge):** Penalty/Totmann-Alarm (Klick/Impr-Einbruch erkennen) → Kill-Switch → Conversion-Events. Dann Phase 2 (/interview-me + Vault), Phase 3 Pilot-Cluster Kosten beweisen.
+
 ## Stand 2026-06-10 (Teil 3) — Content-Engine v2: Phase 0 deployed, Phase 1 Mess-Fundament steht
 
 - **Verbindlicher Plan:** `docs/superpowers/plans/2026-06-09-content-engine-v2-REVISED.md` (Abschn. 0-16). Schnelleinstieg: `NEXT_SESSION_CONTENT_ENGINE_V2.md`.

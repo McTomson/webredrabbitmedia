@@ -4,6 +4,14 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-10 (Teil 4) — Dashboard GSC/GA4-Tabs, Deploy-Verifikations-Falle
+
+- **Hartkodierte Route schlägt `[slug]`.** `app/tipps/was-kostet-eine-website/page.tsx` ist eine statische Eigenseite und überschreibt in Next.js die dynamische `[slug]`-Route. Sie nutzt BlogPostClient/ArticleSources NICHT. Die vorige Session hat ausgerechnet diesen Slug zur Deploy-Verifikation gewählt → fälschlich "Deploy hängt" geschlossen. **Lehre: Zum Verifizieren eines Pipeline-Features einen echten Pipeline-Artikel testen (z.B. `wie-setzen-sich-die-kosten...`), nicht eine Money-Page mit Eigenroute.** Vercel-Deploy war die ganze Zeit erfolgreich + live. (Hartkodierte /tipps-Routen: nur `was-kostet-eine-website`.)
+- **`x-vercel-cache: HIT` mit wachsendem `age` ist KEIN Beweis für hängenden Deploy.** Erst im Vercel-Dashboard prüfen (Deployment = Ready?) und an einem korrekten Pfad gegentesten, bevor man "Deploy-Problem" annimmt.
+- **GA4 runReport `limit` muss STRING sein** (`limit: '25'`), nicht number — `next build` (Type-Check) fängt das, `npm run dev` nicht (Dev macht keinen vollen Type-Check). Immer `next build` vor Deploy.
+- **GSC- und GA4-Zeitfenster bewusst angleichen:** GSC `searchanalytics` start/end sind inklusiv → für `N` Tage endend gestern: start=`now-N`, end=`now-1` (nicht `now-(N+1)`, das gibt N+1 Tage). GA4 dann `${N}daysAgo`..`yesterday` (nicht `today`, sonst 1 Tag mehr + unvollständiger heutiger Tag).
+- **Fehlermeldungen von googleapis NIE roh ins UI** — können Token/Secret-Fragmente enthalten. `safeErrorMessage()` mappt invalid_grant/401 auf Hinweis und redigiert token-artige Query-Params.
+
 ## 2026-06-10 (Teil 3) — GSC/GA4-Anbindung, Cluster-Taxonomie, Prompt-Caching-Mythos
 
 - **Personal-Gmail kann KEINE Service-Accounts als GSC-Nutzer adden** ("E-Mail gehört nicht zu Google-Konto"); GA4 zickt ebenso. Domain-wide delegation nur bei Workspace. **Lösung: OAuth mit Besitzer-Konto** (refresh_token, wie YouTube-Muster). Service-Account-Weg fuer GSC/GA4 bei privatem Konto verwerfen.
