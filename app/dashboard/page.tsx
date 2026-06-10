@@ -1,8 +1,10 @@
 import { getOverview } from '@/lib/dashboard/overview';
-import { Card, Kpi, SectionCard, Th, Td } from './ui';
+import { getVisibilityTrend } from '@/lib/dashboard/google';
+import { buildHealthSignals } from '@/lib/dashboard/health';
+import { Card, Kpi, SectionCard, Th, Td, HealthCard } from './ui';
 
 // Überblick-Tab. Reads the local single source of truth (queue.yaml + status.json +
-// content/blog + .work logs). The prod guard and page shell live in layout.tsx.
+// content/blog + .work logs) plus a GSC week-over-week trend for the alarm card.
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardOverviewPage() {
@@ -10,8 +12,23 @@ export default async function DashboardOverviewPage() {
     const sc = d.statusCounts;
     const published = (sc.published || 0) + (sc.covered || 0);
 
+    // Health/alarm: combine local pipeline state with the GSC visibility trend.
+    const trendRes = await getVisibilityTrend(7);
+    const newestArticleAgeDays = d.newestPublishedAt
+        ? Math.max(0, Math.floor((Date.now() - Date.parse(d.newestPublishedAt)) / 86400000))
+        : null;
+    const healthSignals = buildHealthSignals({
+        trend: trendRes.state === 'ok' ? trendRes.data : null,
+        newestArticleAgeDays,
+        lastDailyRunOk: d.lastDailyRun ? d.lastDailyRun.ok : null,
+        liveArticles: d.liveArticles,
+    });
+
     return (
         <div className="space-y-8">
+            {/* Health / alarm (dead-man + penalty) */}
+            <HealthCard signals={healthSignals} />
+
             {/* KPIs */}
             <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
                 <Kpi label="Themen gesamt" value={d.queueTotal} sub="queue.yaml" />
