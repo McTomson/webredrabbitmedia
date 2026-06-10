@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Phone, ArrowRight, Menu, X } from "lucide-react";
 
 interface HeaderProps {
@@ -10,6 +11,7 @@ interface HeaderProps {
 }
 
 export default function Header({ onFormOpen }: HeaderProps) {
+    const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -24,6 +26,9 @@ export default function Header({ onFormOpen }: HeaderProps) {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, [scrolled]);
+
+    // The internal dashboard is a standalone tool — no marketing chrome.
+    if (pathname?.startsWith('/dashboard')) return null;
 
     const navLinks = [
         { name: 'Über uns', href: '/#about' },

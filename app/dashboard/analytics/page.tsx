@@ -44,7 +44,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
-                                    <tr className="border-b border-slate-200">
+                                    <tr className="border-b border-black/[0.06]">
                                         <Th>Pfad</Th>
                                         <Th numeric>Aufrufe</Th>
                                         <Th numeric>Nutzer</Th>
@@ -55,7 +55,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
                                         // GA4 pagePath should be a site-relative path; only link when it is one.
                                         const safeHref = r.path.startsWith('/') ? r.path : undefined;
                                         return (
-                                        <tr key={r.path} className="border-b border-slate-100 hover:bg-slate-50">
+                                        <tr key={r.path} className="border-b border-black/[0.04] hover:bg-black/[0.02]">
                                             <Td strong>
                                                 {safeHref ? (
                                                     <a href={safeHref} target="_blank" rel="noreferrer" className="hover:text-red-600">{r.path}</a>

@@ -45,7 +45,7 @@ export default async function DashboardOverviewPage() {
                         <h2 className="font-bold text-slate-900">Letzter Tageslauf</h2>
                         <span className="text-xs text-slate-400">{d.lastDailyRun?.file || 'kein Log (nur lokal)'}</span>
                     </div>
-                    <pre className="max-h-44 overflow-auto rounded bg-slate-50 p-3 text-xs leading-relaxed text-slate-600">{d.lastDailyRun?.tail || 'Kein lokales Tageslauf-Log gefunden.'}</pre>
+                    <pre className="max-h-44 overflow-auto rounded bg-black/[0.03] p-3 text-xs leading-relaxed text-slate-600">{d.lastDailyRun?.tail || 'Kein lokales Tageslauf-Log gefunden.'}</pre>
                 </Card>
                 <Card className="p-5">
                     <div className="mb-2 flex items-center gap-2">
@@ -76,7 +76,7 @@ export default async function DashboardOverviewPage() {
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
-                            <tr className="border-b border-slate-200">
+                            <tr className="border-b border-black/[0.06]">
                                 <Th>Cluster</Th>
                                 <Th numeric>Themen</Th>
                                 <Th numeric>Live-Artikel</Th>
@@ -86,7 +86,7 @@ export default async function DashboardOverviewPage() {
                         </thead>
                         <tbody>
                             {d.perCluster.map((c) => (
-                                <tr key={c.cluster} className="border-b border-slate-100">
+                                <tr key={c.cluster} className="border-b border-black/[0.04]">
                                     <Td strong>{c.cluster}. {c.name}</Td>
                                     <Td numeric>{c.total}</Td>
                                     <Td numeric>{c.liveArticles}</Td>

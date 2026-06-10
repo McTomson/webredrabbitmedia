@@ -58,7 +58,7 @@ export default async function SearchConsolePage({ searchParams }: { searchParams
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
-                                <tr className="border-b border-slate-200">
+                                <tr className="border-b border-black/[0.06]">
                                     <Th>Suchbegriff</Th>
                                     <Th numeric>Position</Th>
                                     <Th numeric>Impressionen</Th>
@@ -68,7 +68,7 @@ export default async function SearchConsolePage({ searchParams }: { searchParams
                             </thead>
                             <tbody>
                                 {d.strikingDistance.map((r) => (
-                                    <tr key={r.key} className="border-b border-slate-100 hover:bg-slate-50">
+                                    <tr key={r.key} className="border-b border-black/[0.04] hover:bg-black/[0.02]">
                                         <Td strong>{r.key}</Td>
                                         <td className="py-2 pr-4 text-right"><PositionBadge position={r.position} /></td>
                                         <Td numeric>{int(r.impressions)}</Td>
@@ -90,7 +90,7 @@ export default async function SearchConsolePage({ searchParams }: { searchParams
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
-                                    <tr className="border-b border-slate-200">
+                                    <tr className="border-b border-black/[0.06]">
                                         <Th>Suchbegriff</Th>
                                         <Th numeric>Klicks</Th>
                                         <Th numeric>Impr.</Th>
@@ -99,7 +99,7 @@ export default async function SearchConsolePage({ searchParams }: { searchParams
                                 </thead>
                                 <tbody>
                                     {d.topQueries.map((r) => (
-                                        <tr key={r.key} className="border-b border-slate-100 hover:bg-slate-50">
+                                        <tr key={r.key} className="border-b border-black/[0.04] hover:bg-black/[0.02]">
                                             <Td strong>{r.key}</Td>
                                             <Td numeric>{int(r.clicks)}</Td>
                                             <Td numeric>{int(r.impressions)}</Td>
@@ -119,7 +119,7 @@ export default async function SearchConsolePage({ searchParams }: { searchParams
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
-                                    <tr className="border-b border-slate-200">
+                                    <tr className="border-b border-black/[0.06]">
                                         <Th>Seite</Th>
                                         <Th numeric>Klicks</Th>
                                         <Th numeric>Impr.</Th>
@@ -131,7 +131,7 @@ export default async function SearchConsolePage({ searchParams }: { searchParams
                                         const pathOnly = r.key.replace(/^https?:\/\/[^/]+/, '') || '/';
                                         const safeHref = /^https?:\/\//i.test(r.key) ? r.key : undefined;
                                         return (
-                                            <tr key={r.key} className="border-b border-slate-100 hover:bg-slate-50">
+                                            <tr key={r.key} className="border-b border-black/[0.04] hover:bg-black/[0.02]">
                                                 <Td strong>
                                                     {safeHref ? (
                                                         <a href={safeHref} target="_blank" rel="noreferrer" className="hover:text-red-600">{pathOnly}</a>
