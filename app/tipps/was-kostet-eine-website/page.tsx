@@ -99,6 +99,29 @@ export default function BlogPost() {
 
                 </div>
 
+                {/* Internal cluster links (topical authority). This bespoke page renders instead of
+                    the MDX, so the automatic cluster-link backfill cannot reach it — these are curated
+                    by hand to keep the flagship article passing link equity to its cluster-mates. */}
+                <div className="mt-16 pt-8 border-t border-gray-200">
+                    <h2 className="text-2xl font-light text-black mb-6">Das könnte Sie auch interessieren</h2>
+                    <div className="grid gap-3">
+                        {[
+                            { href: '/tipps/website-kosten-oesterreich-2026', title: 'Wie viel kostet es, eine Website erstellen zu lassen?' },
+                            { href: '/tipps/website-10-seiten-kosten', title: 'Was kostet eine Website mit 10 Seiten?' },
+                            { href: '/tipps/herold-webseite-vs-agentur-vergleich', title: 'Herold Webseite vs. spezialisierte Agentur im Vergleich' },
+                        ].map((a) => (
+                            <Link
+                                key={a.href}
+                                href={a.href}
+                                className="group flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-200 hover:border-red-300 hover:bg-red-50/60 transition-colors"
+                            >
+                                <span className="text-gray-800 group-hover:text-red-700">{a.title}</span>
+                                <ArrowRight className="w-4 h-4 flex-shrink-0 text-red-500 transition-transform group-hover:translate-x-1" />
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Author Box (E-E-A-T) */}
                 <div className="mt-16 pt-8 border-t border-gray-200 flex items-start gap-6">
                     <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">

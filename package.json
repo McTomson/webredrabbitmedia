@@ -12,6 +12,7 @@
     "engine": "tsx scripts/content-engine/pipeline.ts",
     "engine:indexation": "tsx scripts/content-engine/dashboard/check_indexation.ts",
     "vault:backfill": "tsx scripts/content-engine/knowledge/backfill_vault.ts",
+    "cluster:relink": "tsx scripts/content-engine/knowledge/backfill_cluster_links.ts",
     "notebooklm:plan": "tsx scripts/content-engine/knowledge/notebooklm_plan.ts",
     "notebooklm:record": "tsx scripts/content-engine/knowledge/notebooklm_record.ts",
     "remind": "tsx scripts/content-engine/dashboard/remind_tasks.ts",

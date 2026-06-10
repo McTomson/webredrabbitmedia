@@ -9,6 +9,18 @@ import matter from 'gray-matter';
 
 const ROOT = process.cwd();
 const BLOG_DIR = path.join(ROOT, 'content/blog');
+const TIPPS_DIR = path.join(ROOT, 'app/tipps');
+
+// Slugs with a bespoke hardcoded route (app/tipps/{slug}/page.tsx) that overrides the MDX [slug] route.
+function hardcodedTippsSlugs(): Set<string> {
+    const out = new Set<string>();
+    if (!fs.existsSync(TIPPS_DIR)) return out;
+    for (const entry of fs.readdirSync(TIPPS_DIR, { withFileTypes: true })) {
+        if (!entry.isDirectory() || entry.name === '[slug]') continue;
+        if (fs.existsSync(path.join(TIPPS_DIR, entry.name, 'page.tsx'))) out.add(entry.name);
+    }
+    return out;
+}
 
 export interface AuditIssue {
     key: string;
@@ -35,6 +47,7 @@ interface Frontmatter {
     slug?: string;
     title?: string;
     cluster?: number;
+    status?: string;
     featuredSnippet?: string;
     customFAQs?: unknown[];
     sources?: unknown[];
@@ -72,12 +85,19 @@ export function getOnPageAudit(): OnPageData {
 
     const articles: ArticleAudit[] = [];
     const freq: Record<string, { label: string; count: number }> = {};
+    const hardcoded = hardcodedTippsSlugs();
 
     for (const file of fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith('.mdx'))) {
         const parsed = matter(fs.readFileSync(path.join(BLOG_DIR, file), 'utf8'));
         const fm = parsed.data as Frontmatter;
+        // Drafts are not served, so they can't rank — auditing them as "needs work" is noise.
+        // Mirror lib/blog/posts.ts: missing status = legacy = published.
+        if (fm.status === 'draft') continue;
         const body = parsed.content;
         const slug = (fm.slug || file.replace('.mdx', '')).toString();
+        // A bespoke route (app/tipps/{slug}/page.tsx) renders instead of this MDX, so grading the
+        // MDX would report the wrong page. The hardcoded page needs its own manual on-page work.
+        if (hardcoded.has(slug)) continue;
         const issues: AuditIssue[] = [];
         for (const c of CHECKS) {
             if (c.fails(fm, body, year)) {

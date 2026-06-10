@@ -3,6 +3,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import matter from 'gray-matter';
 import { embedPodcast, embedVideo, parseYoutubeId } from './mdxMedia';
+import { relinkAll } from '../lib/clusterLinks';
 
 // ──────────────────────────────────────────────────────────────────────────
 // Media orchestrator: the deterministic tail of Spur 2, run AFTER the browser steps
@@ -154,9 +155,21 @@ function main() {
 
     fs.writeFileSync(mdxPath, mdx);
 
+    // 3.5) Bidirectional cluster linking: the freshly-live article links to its most-related
+    // cluster-mates and they link back (topical authority). forceInclude makes the just-going-live
+    // slug a valid link target even if its on-disk status still reads draft for a moment. Idempotent;
+    // the same logic runs as the standalone `npm run cluster:relink` backfill.
+    try {
+        const touched = relinkAll(path.join(ROOT, 'content/blog'), { forceInclude: [slug] }).filter((r) => r.changed);
+        log(`3.5/6 Cluster-Verlinkung aktualisiert (${touched.length} Artikel angepasst)`);
+    } catch (e: any) {
+        log(`3.5/6 Cluster-Verlinkung uebersprungen: ${e.message}`);
+    }
+
     // 4) commit + push
     if (!flag('no-push')) {
-        execFileSync('git', ['add', mdxPath, 'public/audio', 'public/images/blog', 'public/videos'], { cwd: ROOT, stdio: 'inherit' });
+        // Stage the whole blog dir so cluster-mate edits from 3.5 are committed alongside this article.
+        execFileSync('git', ['add', path.join(ROOT, 'content/blog'), 'public/audio', 'public/images/blog', 'public/videos'], { cwd: ROOT, stdio: 'inherit' });
         try {
             execFileSync('git', ['commit', '-q', '-m', `feat(blog): add images + podcast + video to ${slug}`], { cwd: ROOT, stdio: 'inherit' });
             execFileSync('git', ['push', 'origin', 'main'], { cwd: ROOT, stdio: 'inherit' });
