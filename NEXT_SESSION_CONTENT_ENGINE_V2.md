@@ -1,8 +1,18 @@
-# NEXT SESSION — Content-Engine v2 (Übergabe, Stand 2026-06-10)
+# NEXT SESSION — Content-Engine v2 (Übergabe, Stand 2026-06-10 Abend)
 
 ZUERST LESEN. Nahtlos weitermachen, NICHT vom Kurs abweichen. Der verbindliche Plan ist
 `docs/superpowers/plans/2026-06-09-content-engine-v2-REVISED.md` (Abschnitte 0 bis 16). Diese
 Datei ist nur der Schnelleinstieg.
+
+---
+
+## PROMPT FÜR NÄCHSTE SESSION (copy-paste an Claude)
+
+> Arbeite am Projekt `~/dev/redrabbit` (Red Rabbit Media, Next.js 15 Content-Engine). Lies ZUERST `NEXT_SESSION_CONTENT_ENGINE_V2.md`, `MEMORY.md`, `LESSONS_LEARNED.md` und den verbindlichen Plan `docs/superpowers/plans/2026-06-09-content-engine-v2-REVISED.md`. Phase 0 (Output/Cluster) und das komplette **Phase-1-Mess-Fundament** (GSC/GA4-Dashboard mit Striking-Distance, Verlaufs-Sparklines, Gesundheits-/Penalty-/Totmann-Alarm, Indexierungs-Kill-Switch, Conversion-Events) sind gebaut, getestet, deployed und browser-verifiziert. Dashboard läuft lokal: `npm run dev -- --port 9000` → `localhost:9000/dashboard` (in Prod via notFound versteckt). Jetzt **Phase 2 (Moat): `/interview-me` + Vault** umsetzen — Thomas' echte Meinungen einfangen und als web-verifizierte, mit TTL aktuell gehaltene Wissensschicht ablegen, additiv zur Web-Recherche. Pilot-Cluster = Kosten (1). **Wichtige Direktive (Thomas): das System soll mit Wissen WACHSEN — also NotebookLM pro Cluster mit jedem veröffentlichten Artikel + Quellen anreichern** (mcp__notebooklm__add_source), damit Podcast/Video/Q&A auf wachsender eigener Basis fußen. Arbeite autonom, nutze parallele Agenten + Skills (frontend-design, ui-ux-pro-max bei UI; review-it nach jedem Block), teste IMMER (Build + `npm test`) UND kontrolliere IMMER im Browser (frischer Tab für localhost!), kein Raten — verifizieren. Erst committen/pushen/deployen wenn grün. Light Mode, Apple-Design, keine Emojis, Konversation auf Deutsch. Bei Fertigstellung benachrichtigen + erklären, wie die Wissensbasis wächst.
+
+Arbeitsregeln, die sich bewährt haben (siehe LESSONS_LEARNED Teil 4): nur EIN Dev-Server auf 9000 (alte mit `pkill -f "dev/redrabbit/node_modules/.bin/next"` killen); `next build` NUR ohne laufenden Dev-Server (sonst .next-Konflikt → falscher EXIT 1); localhost im Browser nur über FRISCHEN Tab; Dev-Route vor dem Lesen per curl vorwärmen (erste Kompilierung ~40-60s).
+
+---
 
 ## Wo wir stehen
 
