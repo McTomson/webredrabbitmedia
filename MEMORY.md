@@ -6,6 +6,23 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-10 (Teil 2) — Substack live, Steuer/BFSG/Unterhalt bebildert, Pipeline-Fixes
+
+- **Substack: beide Posts live mit Video** (#313 + Kosten), Rubrik "Red Rabbit Websiten infos".
+- **Researcher-Timeout gefixt** (`pipeline.ts`, 320->600s u.a.) -> Tageslauf stirbt nicht mehr an
+  langsamer Web-Recherche. Heutiger Artikel "wie-viel-kostet-eine-website-im-unterhalt" lief durch,
+  Review-Mail kam, vom User freigegeben+published.
+- **run-media zukunftssicher**: Video wird jetzt selbst-gehostet (kein YouTube-Broken-Link mehr bei
+  kuenftigen Artikeln). `mdxMedia.embedVideo` + `run-media.ts` (MP4+ffmpeg-Poster nach public/videos).
+- **Bilder ergaenzt (gratis via Gemini, cinematic+Hook):** Steuer (#12) + BFSG (#266) je 3 Inline-Bilder;
+  wie-viel-kostet-im-unterhalt: Hero (war kaputt/400) + 3 Inline-Bilder. **Alle 5 aktuellen Artikel
+  haben jetzt Hero + 3 Inline-Bilder, live verifiziert (Optimizer 200).**
+- **OFFEN:** (1) `sudo pmset repeat wakeorpoweron MTWRFSU 07:50:00` (nur User; aktuell KEIN Wake-Plan
+  gesetzt -> 07:53-Slot wartet bei Schlaf auf 3h-Catch-up). (2) wie-viel-kostet-im-unterhalt hat noch
+  KEINEN Podcast/Video (Medien-Schritt via `npm run media`, NotebookLM-Browser; Codex-Bilder ab 11.06.).
+  (3) Steuer/BFSG sind weiterhin `status: draft` (nur Text+Bilder, keine Freigabe/Medien).
+- Lehren: siehe LESSONS_LEARNED 2026-06-10 Teil 2.
+
 ## Stand 2026-06-10 — Beide Artikel: Video selbst-gehostet + je 3 Inline-Bilder (live verifiziert)
 
 Behoben (User meldete: fehlende Bilder + Video als Broken Link auf #313 + Kosten):

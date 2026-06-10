@@ -4,6 +4,38 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-10 (Teil 2) — Researcher-Timeout, run-media Selfhost-Fix, Hero-Luecke, Gemini-Fallen
+
+- **Tages-Pipeline starb am Researcher-Timeout (`spawnSync claude ETIMEDOUT`):** Web-Recherche
+  (`claude -p` mit WebSearch/WebFetch) braucht oft >320s; alle 4 Retries laufen in denselben
+  Timeout (Retries helfen gegen ein Dauerproblem NICHT). **FIX:** Rollen-Timeouts erhoeht in
+  `pipeline.ts` (Researcher 320->600, Writer 320->480, Editor/Finalizer 240->360). Trivialer
+  `claude -p` Test (26s OK) beweist: Auth/Guthaben ok, nur Dauer. Diagnose-Reihenfolge: erst
+  `claude -p "OK"` testen (Auth), dann Timeout pruefen.
+- **run-media Video-Selfhost gefixt (Wurzel):** `mdxMedia.ts` `embedVideo` kann jetzt optional
+  `src`/`poster` (selbst-gehostet) statt nur YouTube-id; `run-media.ts` kopiert die MP4 nach
+  `public/videos/<slug>-video.mp4`, zieht per ffmpeg einen Poster-Frame und committet `public/videos`.
+  Damit kommt der Broken-Link-Bug bei kuenftigen Artikeln nicht wieder. Mit Unit-Test verifiziert.
+- **Hero-Luecke bei freigegebenen Artikeln:** Die Tages-Pipeline shippt NUR Text (`--no-image`);
+  `featuredImage` zeigt im Frontmatter auf eine Datei, die erst der spaetere Medien-Schritt (Codex)
+  erzeugt. Solange der nicht lief (Codex-Credits leer), hat der LIVE-Artikel ein **kaputtes Hero**
+  (Optimizer 400) und eine kaputte Listing-Card. Pruefen:
+  `curl -s -o /dev/null -w '%{http_code}' ".../_next/image?url=%2Fimages%2Fblog%2F<slug>.png&w=1200&q=75"`.
+  Bei 400/404 Hero via Gemini im cinematic+Hook-Stil nacherzeugen (Hook mit Umlaut geht, z.B.
+  "jahr fuer jahr?").
+- **Gemini-Bildgenerierung, drei konkrete Fallen:**
+  1. **Klick auf den Bildkoerper oeffnet den Markup-Editor** (Skizze/Text), NICHT Download. Nur das
+     kleine Overlay-Download-Icon oben rechts am Bild nutzen (oder im Editor das Download-Icon oben).
+  2. **Mehrzeilige Prompts:** Return fuegt eine neue Zeile ein statt zu senden -> den blauen
+     Senden-Pfeil klicken.
+  3. **Frische Konversation:** nach `navigate gemini.google.com/app` ist die Seite ~5s nicht bereit,
+     der erste type geht verloren -> Prompt erneut tippen. Modell faellt manchmal auf "Flash" zurueck
+     (erzeugt trotzdem brauchbare Bilder), gelegentlich Fehler "(1099)" -> einfach erneut senden.
+  Download immer per **md5-Eindeutigkeit** verifizieren (race: "neueste Datei" kann das vorige Bild sein).
+- **Media-Checker haengt NICHT:** `run-media-check.sh` macht Bilder headless (Codex, faengt Fehler ab)
+  + macOS-Notification fuer die Browser-Schritte + Tagesstempel. Podcast/Video brauchen weiter eine
+  Browser-Session (`npm run media`).
+
 ## 2026-06-10 — Video-Selfhost-Bug, Multi-Bild-Luecke, Gemini-Download-Falle, Lenis-Scroll
 
 - **Video-Broken-Link doppelt verursacht (wichtigster Fund):** `run-media` bettet Videos als
