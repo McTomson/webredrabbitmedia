@@ -36,4 +36,13 @@ describe('buildReviewEmail', () => {
         expect(mail.html).toContain('price_claim');
         expect(mail.text).toMatch(/Risiko: high/);
     });
+
+    it('shows an interview reminder only when opinion_missing is flagged', () => {
+        expect(mail.html).not.toContain('/interview-me');
+        const withGap = buildReviewEmail({ ...article, flags: ['opinion_missing'] }, 'secret');
+        expect(withGap.html).toContain('/interview-me');
+        expect(withGap.html).toContain('Meinung fehlt');
+        expect(withGap.text).toMatch(/Meinung fehlt/);
+        expect(/[–—]/.test(withGap.html)).toBe(false); // Guardrail 8 still holds
+    });
 });

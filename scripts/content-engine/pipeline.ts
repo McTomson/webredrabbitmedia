@@ -8,6 +8,7 @@ import { extractJsonBlock, extractMdxBlock } from './lib/extract';
 import { verifySources, type Source } from './lib/verifySources';
 import { validateFrontmatter } from './frontmatter';
 import { buildImagePlan, generatePhoto, renderInfographic } from './image';
+import { loadVault, searchVault, formatVaultContext, appendFacts, type NewFactInput } from './lib/vault';
 
 // ──────────────────────────────────────────────────────────────────────────
 // Content-Engine orchestrator. Runs the 4-role newsroom headless (claude -p)
@@ -78,11 +79,14 @@ function selectNextTopic(): Topic {
     return toTopic(candidates[0]);
 }
 
-// Pull opinion-pool sections that reference this topic id (e.g. "Thema 13").
-function loadOpinion(topicId: number): string {
+// Pull opinion-pool sections relevant to this topic: by topic id (e.g. "Thema 13") or by
+// cluster (e.g. "Cluster 1"), so bundled per-cluster interview sessions also feed the writer.
+function loadOpinion(t: Topic): string {
     const pool = readMemory('opinions/pool.md');
     const sections = pool.split(/\n## /).map((s, i) => (i === 0 ? s : '## ' + s));
-    const hit = sections.filter((s) => new RegExp(`Thema ${topicId}\\b`).test(s));
+    const byId = new RegExp(`Thema ${t.id}\\b`);
+    const byCluster = new RegExp(`Cluster\\s*[^)]*\\b${t.cluster}\\b`);
+    const hit = sections.filter((s) => byId.test(s) || byCluster.test(s));
     return hit.join('\n\n').trim();
 }
 
@@ -109,12 +113,22 @@ function readArticleSample(): string {
     }
 }
 
-function researcherPrompt(t: Topic): string {
+// Query the local knowledge vault first (§3): hand the researcher our own verified facts so
+// it cites those and only searches the web for the gaps. Empty string when the vault has no
+// hit, so the prompt is unchanged in that case (purely additive, never blocks).
+function vaultContextFor(t: Topic, today: string): string {
+    const ctx = formatVaultContext(searchVault(loadVault(), t.frage, t.cluster, today));
+    return ctx ? '\n--- WISSENS-VAULT (zuerst pruefen, dann Web fuer Luecken) ---\n' + ctx : '';
+}
+
+function researcherPrompt(t: Topic, vaultCtx: string): string {
     return [
         readMemory('roles/researcher.md'),
         '\n--- knowledge/sources.md ---\n',
         readMemory('knowledge/sources.md'),
+        vaultCtx,
         '\n--- guardrails.md (Kurz) ---\nKeine erfundenen Quellen. Jede URL muss real und erreichbar sein. AT-Bezug bevorzugen.',
+        'Vault-Treffer (oben) sind bereits verifiziert: bevorzugt als Beleg verwenden, NUR Luecken neu im Web recherchieren. Als VERALTET markierte Vault-Fakten vor Verwendung im Web neu bestaetigen.',
         `\n\n=== AUFGABE ===\nThema (Frage): "${t.frage}"\nCluster: ${t.cluster}. Markt: Oesterreich (AT), DACH.`,
         'Recherchiere 3-6 belegte, artikel-tragende Fakten mit ECHTEN, ueberpruefbaren Quellen (offizielle/seriose URLs bevorzugt).',
         'Gib AUSSCHLIESSLICH am Ende einen ```json Codeblock aus mit Schema:',
@@ -227,9 +241,11 @@ async function main() {
         const surviving = new Set(sources.map((s) => s.url));
         research.facts = research.facts.filter((f: any) => surviving.has(f.source.url));
     } else {
-        // 1) Researcher (web)
+        // 1) Researcher (web) — vault-first: own verified facts injected, web fills gaps
         console.log('1/5 Researcher ...');
-        const rOut = runClaude(researcherPrompt(t), { web: true, timeoutSec: 600, label: 'researcher' });
+        const vaultCtx = vaultContextFor(t, today);
+        if (vaultCtx) console.log('   Vault-Treffer injiziert (zuerst pruefen, dann Web).');
+        const rOut = runClaude(researcherPrompt(t, vaultCtx), { web: true, timeoutSec: 600, label: 'researcher' });
         save(dir, 'research.raw.txt', rOut);
         research = extractJsonBlock(rOut) as any;
         if (!research.enough) throw new Error('HALT: Researcher meldet enough=false (zu wenig belegte Fakten). Kein halber Artikel.');
@@ -253,7 +269,7 @@ async function main() {
     research.facts = research.facts.map((f: any) => ({ ...f, source: { ...f.source, name: deDash(f.source.name) } }));
 
     // 3) Writer
-    const opinion = loadOpinion(t.id);
+    const opinion = loadOpinion(t);
     console.log('3/5 Writer ...');
     const wOut = runClaude(writerPrompt(t, research, opinion), { timeoutSec: 480, label: 'writer' });
     save(dir, 'draft.raw.txt', wOut);
@@ -331,6 +347,29 @@ async function main() {
         fs.writeFileSync(dest, mdx);
         setStatus(t.id, 'review'); // taken out of the todo pool, awaiting approval
         console.log(`   --emit: geschrieben nach content/blog/${t.slug}.mdx (status: draft, queue: review)`);
+
+        // Backflow (§3): this article's verified facts become reusable vault knowledge.
+        // The article's reviewed answer (featuredSnippet) is added separately on publish via
+        // backfill_vault.ts; here we record the underlying research facts with their own sources.
+        try {
+            const kw = t.frage
+                .toLowerCase()
+                .replace(/[^a-zäöüß0-9 ]/g, ' ')
+                .split(/\s+/)
+                .filter((w) => w.length >= 4)
+                .slice(0, 8);
+            const newFacts: NewFactInput[] = research.facts.map((f: any) => ({
+                cluster: t.cluster,
+                keywords: kw,
+                aussage: String(f.claim).replace(/\s+/g, ' ').trim(),
+                quelle: f.source.url,
+                quelleName: f.source.name,
+            }));
+            const { added, skipped } = appendFacts(newFacts, today, { idPrefix: `t${t.id}` });
+            console.log(`   Vault-Rueckfluss: ${added} neue Fakten, ${skipped} schon vorhanden.`);
+        } catch (e: any) {
+            console.log(`   WARN Vault-Rueckfluss uebersprungen (Artikel bleibt gueltig): ${e.message}`);
+        }
     }
 }
 

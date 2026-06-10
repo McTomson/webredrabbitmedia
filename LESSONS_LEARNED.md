@@ -4,6 +4,16 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-10 (Teil 5) — Phase 2 Moat: Vault, /interview-me, Wissen-Tab, Desktop-Launcher
+
+- **Vault ist Repo-versioniert, nicht Runtime-State.** `content-engine/knowledge/vault.md` ist Wissens-SoT (§15) und wird committet, im Gegensatz zu `.kill-switch.json`/`.indexation.json` (gitignored). Nicht aus Versehen ignorieren.
+- **Vitest loest den tsconfig-Alias `@/` NICHT von selbst auf.** Symptom: "Failed to load url @/scripts/...". Fix: in `vitest.config.ts` `resolve.alias { '@': path.resolve(__dirname, '.') }` setzen (spiegelt tsconfig `@/* -> ./*`). tsc + Next bauen es ohne, Vitest nicht.
+- **`parseVault`/`parseOpinionClusters` verwerfen das erste Split-Segment** (Datei-Header vor dem ersten `## `). Test-Inputs brauchen einen fuehrenden Header (`# h\n\n## ...`), sonst landet der einzige Eintrag im verworfenen Segment.
+- **Node-Skripte koennen MCP nicht aufrufen.** NotebookLM-Anreicherung ist deshalb zweigeteilt: ein Plan-Skript (`notebooklm:plan`) berechnet die offenen Quell-URLs pro Cluster + schreibt das Manifest, der Agent fuehrt `add_notebook`/`add_source` ueber die MCP-Tools aus, `notebooklm:record` zieht das Manifest nach. Headless-Vollautomatik erst Phase 4 (video-faehiger MCP).
+- **NotebookLM-MCP war `authenticated:false`.** `get_health` zuerst pruefen. Erst-Login (`setup_auth`) oeffnet einen Browser-Tab = einmalige Nutzer-Aktion; ein Agent kann/darf das Login nicht selbst machen. Live-Pilot wartet darauf.
+- **Desktop-Launcher braucht expliziten nvm-PATH.** Ein aus dem Finder gestartetes `.command` erbt die nvm-Shell nicht; `export PATH="/Users/McTomson/.nvm/versions/node/v20.20.0/bin:$PATH"` voranstellen, sonst "node not found". Launcher: `scripts/dashboard-launcher.command` (Kopie auf dem Desktop), oeffnet `localhost:9000/dashboard` und startet den Dev-Server falls noetig.
+- **Verwechslung Startseite vs. Dashboard:** `localhost:9000` ist die Marketing-Startseite, das Dashboard liegt auf `/dashboard`. Das Icon zeigt direkt dorthin.
+
 ## 2026-06-10 (Teil 4) — Dashboard GSC/GA4-Tabs, Deploy-Verifikations-Falle
 
 - **Hartkodierte Route schlägt `[slug]`.** `app/tipps/was-kostet-eine-website/page.tsx` ist eine statische Eigenseite und überschreibt in Next.js die dynamische `[slug]`-Route. Sie nutzt BlogPostClient/ArticleSources NICHT. Die vorige Session hat ausgerechnet diesen Slug zur Deploy-Verifikation gewählt → fälschlich "Deploy hängt" geschlossen. **Lehre: Zum Verifizieren eines Pipeline-Features einen echten Pipeline-Artikel testen (z.B. `wie-setzen-sich-die-kosten...`), nicht eine Money-Page mit Eigenroute.** Vercel-Deploy war die ganze Zeit erfolgreich + live. (Hartkodierte /tipps-Routen: nur `was-kostet-eine-website`.)

@@ -21,6 +21,15 @@ export function buildReviewEmail(a: ReviewArticle, secret: string): { subject: s
     const reject = `${SITE_URL}/api/approve?token=${signToken(a.slug, 'reject', secret)}`;
     const flagsLine = a.flags.length ? a.flags.join(', ') : 'keine';
     const sourcesList = a.sources.map((s) => `<li><a href="${s.url}">${s.name}</a></li>`).join('');
+    // Just-in-time interview reminder (§12): when the editor flagged a missing first-hand
+    // opinion, the article was written purely source-based. Surface it as an actionable nudge.
+    const opinionMissing = a.flags.includes('opinion_missing');
+    const opinionHintHtml = opinionMissing
+        ? `<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:9px;padding:12px 14px;margin:0 0 18px;font-size:13px;color:#7c2d12;line-height:1.5"><strong>Deine Meinung fehlt zu diesem Thema.</strong> Der Artikel ist rein quellenbasiert geschrieben (keine erfundene Ich-Erfahrung). Antworte kurz mit deiner Sicht oder starte ein 2-Minuten-Interview (<code>/interview-me</code>), dann wird er persoenlicher und policy-sicher.</div>`
+        : '';
+    const opinionHintText = opinionMissing
+        ? `\nHINWEIS: Deine Meinung fehlt zu diesem Thema. Antworte kurz mit deiner Sicht oder /interview-me fuer ein 2-Minuten-Interview.\n`
+        : '';
 
     const subject = `Neuer Tipps-Artikel zur Freigabe: ${a.title}`;
     const html = `<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
@@ -34,6 +43,7 @@ export function buildReviewEmail(a: ReviewArticle, secret: string): { subject: s
 <tr><td style="padding:2px 12px 2px 0">Quellen</td><td>${a.sources.length} (verifiziert)</td></tr>
 <tr><td style="padding:2px 12px 2px 0">Risiko</td><td>${a.risk === 'high' ? 'hoch, bitte Zahlen/Rechtliches gegenlesen' : 'niedrig'}</td></tr>
 <tr><td style="padding:2px 12px 2px 0">Flags</td><td>${flagsLine}</td></tr></table>
+${opinionHintHtml}
 <div style="margin:0 0 22px">
 <a href="${preview}" style="display:block;text-align:center;background:#111;color:#fff;text-decoration:none;padding:13px;border-radius:9px;margin-bottom:10px;font-weight:600">Artikel live ansehen</a>
 <a href="${approve}" style="display:block;text-align:center;background:#1a7f37;color:#fff;text-decoration:none;padding:13px;border-radius:9px;margin-bottom:10px;font-weight:600">Freigeben und veroeffentlichen</a>
@@ -43,7 +53,7 @@ export function buildReviewEmail(a: ReviewArticle, secret: string): { subject: s
 <ul style="font-size:13px;color:#555;line-height:1.5;margin:0 0 16px;padding-left:18px">${sourcesList}</ul>
 <p style="font-size:12px;color:#999;margin:0">Antworten Sie auf diese Mail mit Aenderungswuenschen, ich arbeite sie ein. Der Artikel ist bis zur Freigabe nicht bei Google sichtbar.</p>
 </div></body></html>`;
-    const text = `${a.title}\n\n${a.excerpt}\n\nAutor: ${a.author} | ${a.wordCount} Woerter | ${a.sources.length} Quellen | Risiko: ${a.risk}\nFlags: ${flagsLine}\n\nAnsehen: ${preview}\nFreigeben: ${approve}\nAblehnen: ${reject}\n`;
+    const text = `${a.title}\n\n${a.excerpt}\n\nAutor: ${a.author} | ${a.wordCount} Woerter | ${a.sources.length} Quellen | Risiko: ${a.risk}\nFlags: ${flagsLine}\n${opinionHintText}\nAnsehen: ${preview}\nFreigeben: ${approve}\nAblehnen: ${reject}\n`;
     return { subject, html, text };
 }
 
