@@ -208,6 +208,33 @@ export async function getVisibilityTrend(days = 7): Promise<Loaded<VisibilityTre
     }
 }
 
+// ── Daily time series (for the trend sparklines) ────────────────────────────
+
+export interface TimeseriesPoint {
+    date: string; // YYYY-MM-DD
+    clicks: number;
+    impressions: number;
+}
+
+export async function getSearchConsoleTimeseries(days = 28): Promise<Loaded<TimeseriesPoint[]>> {
+    const auth = authClient();
+    if (!auth) {
+        return { state: 'unconfigured', message: `Keine Google-Zugangsdaten unter ${CFG} gefunden.` };
+    }
+    const { startDate, endDate } = gscRange(days);
+    try {
+        const sc = google.webmasters({ version: 'v3', auth });
+        const res = await sc.searchanalytics.query({ siteUrl: SITE, requestBody: { startDate, endDate, dimensions: ['date'], rowLimit: 500 } });
+        const points = (res.data.rows || [])
+            .map((r) => ({ date: r.keys?.[0] ?? '', clicks: r.clicks ?? 0, impressions: r.impressions ?? 0 }))
+            .filter((p) => p.date)
+            .sort((a, b) => a.date.localeCompare(b.date));
+        return { state: 'ok', data: points };
+    } catch (e: unknown) {
+        return { state: 'error', message: safeErrorMessage(e) };
+    }
+}
+
 // ── Indexation (GSC URL Inspection) — powers the kill-switch ─────────────────
 
 export interface UrlIndexState {

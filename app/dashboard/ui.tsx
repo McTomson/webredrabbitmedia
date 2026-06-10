@@ -100,6 +100,27 @@ export function Td({ children, numeric = false, strong = false }: { children: Re
     );
 }
 
+// Dependency-free SVG sparkline (area + line). Stretches to its container width;
+// non-scaling stroke keeps the line crisp. colorClass drives both line and fill via currentColor.
+export function Sparkline({ data, colorClass = 'text-red-500' }: { data: number[]; colorClass?: string }) {
+    if (!data || data.length < 2) return <div className="h-9" />;
+    const w = 100, h = 36, pad = 2;
+    const max = Math.max(...data), min = Math.min(...data), range = max - min || 1;
+    const pts = data.map((v, i) => {
+        const x = pad + (i / (data.length - 1)) * (w - 2 * pad);
+        const y = pad + (1 - (v - min) / range) * (h - 2 * pad);
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+    });
+    const line = pts.join(' ');
+    const area = `${pad.toFixed(1)},${(h - pad).toFixed(1)} ${line} ${(w - pad).toFixed(1)},${(h - pad).toFixed(1)}`;
+    return (
+        <svg viewBox={`0 0 ${w} ${h}`} className={`h-9 w-full ${colorClass}`} preserveAspectRatio="none" aria-hidden="true">
+            <polygon points={area} fill="currentColor" opacity={0.1} />
+            <polyline points={line} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+        </svg>
+    );
+}
+
 // Health / alarm card. Level drives icon + colour; colour is always paired with an icon + text.
 const LEVEL_STYLE: Record<HealthLevel, { Icon: typeof CheckCircle2; chip: string; dot: string; label: string }> = {
     ok: { Icon: CheckCircle2, chip: 'bg-green-50 text-green-600', dot: 'bg-green-500', label: 'Alles im grünen Bereich' },
