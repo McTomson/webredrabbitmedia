@@ -82,7 +82,11 @@ async function main() {
     await Promise.all(
         photos.map(async (item, idx) => {
             const imgPath = await generatePhoto(slug, `ctx${idx + 1}`, item.concept!);
-            resolved.set(item, { imgPath, alt: item.concept! });
+            // Alt text must be German + descriptive for SEO/a11y. Prefer the planned German `alt`,
+            // then the (German) H2 heading; only as a last resort the English concept (better than
+            // an empty alt, which would be an a11y/SEO miss). Never silently empty.
+            const alt = item.alt?.trim() || item.afterHeading?.trim() || item.concept || 'Illustration zum Abschnitt';
+            resolved.set(item, { imgPath, alt });
         }),
     );
     const nCtx = photos.length;

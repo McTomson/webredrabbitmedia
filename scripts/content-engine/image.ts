@@ -22,7 +22,8 @@ export const BRAND_PHOTO_STYLE =
 export interface ImagePlanItem {
     kind: 'infographic' | 'photo';
     afterHeading: string; // exact H2 text to insert the image after
-    concept?: string; // for photo
+    concept?: string; // for photo: ENGLISH scene prompt for the image generator
+    alt?: string; // for photo: GERMAN descriptive alt text (SEO + a11y), NOT the English concept
     data?: SketchData; // for infographic
 }
 export interface ImagePlan {
@@ -38,9 +39,9 @@ const PLAN_SCHEMA = `{
         "left":{"heading":"<dt.>","sub":"<dt.>","items":["<dt.>","..."],"verdict":"<dt.>","tone":"good"},
         "right":{"heading":"<dt.>","sub":"<dt.>","items":["..."],"verdict":"<dt.>","tone":"bad"},
         "footer":"<dt. Faustregel>" } },
-    { "kind":"photo", "afterHeading":"<exakte H2>", "concept":"<engl. Szene zum Absatz>" },
-    { "kind":"photo", "afterHeading":"<exakte H2>", "concept":"<engl. Szene>" },
-    { "kind":"photo", "afterHeading":"<exakte H2>", "concept":"<engl. Szene>" }
+    { "kind":"photo", "afterHeading":"<exakte H2>", "concept":"<engl. Szene zum Absatz>", "alt":"<dt. beschreibender Alt-Text: was zeigt das Bild, mit Thema-Keyword, KEIN engl. Prompt>" },
+    { "kind":"photo", "afterHeading":"<exakte H2>", "concept":"<engl. Szene>", "alt":"<dt. Alt-Text mit Keyword>" },
+    { "kind":"photo", "afterHeading":"<exakte H2>", "concept":"<engl. Szene>", "alt":"<dt. Alt-Text mit Keyword>" }
   ]
 }`;
 
@@ -50,6 +51,7 @@ export function buildImagePlan(title: string, body: string, headings: string[]):
         'Du bist Art-Director fuer einen oesterreichischen Webagentur-Blog (Marke Red Rabbit, Akzent Rot).',
         'Plane 5 Bilder fuer den Artikel: 1 Hero-Foto + 1 Sketch-Infografik + 3 Kontext-Fotos.',
         'FOTOS (Hero + 3 Kontext): authentische, photorealistische Szenen, gern mit echten Menschen, KEIN Text im Bild. Jedes Kontextfoto passt thematisch zu genau einer H2-Sektion.',
+        'ALT-TEXT: jedes Kontextfoto braucht zusaetzlich "alt" = ein deutscher, beschreibender Alt-Text fuer SEO und Barrierefreiheit (was ist konkret zu sehen, mit einem Thema-Keyword), NICHT der englische Generierungs-Prompt.',
         'INFOGRAFIK: die zentrale Aussage/der Kernvergleich des Artikels als Daten. layout "comparison" (zwei Spalten) ODER "keypoints" (3-5 Kernfakten, dann statt left/right ein Feld "points":[{"big":"JA","text":"..."},{"text":"..."}]). tone good=gruen, bad=rot, neutral.',
         'Die 4 "afterHeading"-Werte muessen EXAKT vorhandene H2-Ueberschriften sein, jede nur einmal, gut ueber den Artikel verteilt.',
         '\nVerfuegbare H2-Ueberschriften:\n' + headings.map((h) => '- ' + h).join('\n'),

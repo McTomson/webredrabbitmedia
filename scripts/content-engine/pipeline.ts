@@ -158,14 +158,26 @@ function editorPrompt(draftBody: string): string {
     ].join('\n');
 }
 
+// Kanonische Cluster -> category-Labels. Quelle der Wahrheit: content-engine/topics/queue.yaml `clusters:`.
+const CLUSTER_CATEGORY: Record<number, string> = {
+    1: 'Strategie & Kosten',
+    2: 'Technik & Performance',
+    3: 'KI & Automatisierung',
+    4: 'SEO & GEO',
+    5: 'Design & UX',
+    6: 'Recht & Sicherheit',
+    7: 'Wartung & Analyse',
+};
+
 function finalizerPrompt(t: Topic, body: string, sources: Source[], today: string, repairErrors?: string[]): string {
+    const category = CLUSTER_CATEGORY[t.cluster] || 'Strategie & Kosten';
     return [
         readMemory('roles/finalizer.md'),
         '\n--- conventions.md (Frontmatter-Schema, EXAKT einhalten) ---\n',
         readMemory('conventions.md'),
         '\n=== BEREINIGTER BODY ===\n' + body,
         '\n=== VERIFIZIERTE QUELLEN (genau diese als sources, URLs nicht aendern) ===\n' + JSON.stringify(sources, null, 2),
-        `\n=== FIXE WERTE ===\nslug: ${t.slug}\nauthor: ${t.authorName}\npublishedAt/updatedAt: ${today}\nstatus: draft\naiAssisted: true\nfeaturedImage: /images/blog/${t.slug}.png\ncategory: passend zum Cluster ${t.cluster}`,
+        `\n=== FIXE WERTE ===\nslug: ${t.slug}\nauthor: ${t.authorName}\npublishedAt/updatedAt: ${today}\nstatus: draft\naiAssisted: true\nfeaturedImage: /images/blog/${t.slug}.png\ncategory: "${category}"\ncluster: ${t.cluster}`,
         repairErrors && repairErrors.length
             ? '\n=== KORREKTUR NOETIG (vorheriger Output war invalide) ===\n' + repairErrors.join('\n') + '\nBehebe GENAU diese Fehler. Achte besonders auf: kein "–" irgendwo, valides Schema, customFAQs gesetzt.'
             : '',

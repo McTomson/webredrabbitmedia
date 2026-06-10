@@ -5,6 +5,7 @@ export interface GateInput {
     frontmatter: {
         title?: string;
         category?: string;
+        cluster?: number;
         sources?: Array<{ name: string; url: string }>;
         keyTakeaways?: string[];
         [k: string]: unknown;
@@ -22,7 +23,10 @@ export interface GateResult {
 
 const MIN_WORDS = 500;
 const HIGH_RISK_FLAGS = ['price_claim', 'legal_claim', 'low_confidence', 'opinion_invented', 'opinion_missing'];
-const HIGH_RISK_CATEGORIES = ['Recht', 'Steuer', 'Sicherheit', 'Compliance'];
+// Cluster 6 ("Recht & Sicherheit") ist die sensible Kategorie (robust gegen Label-Umbenennung).
+// Die Wort-Liste ist Fallback fuer Legacy-Artikel ohne cluster-Feld bzw. Steuer-/Datenschutz-Bezug
+// im category-Text. Steuer-/Rechts-CLAIMS in ANDEREN Clustern fangen die HIGH_RISK_FLAGS ab.
+const HIGH_RISK_CATEGORY_WORDS = ['Recht', 'Steuer', 'Sicherheit', 'Compliance', 'Datenschutz'];
 
 function wordCount(s: string): number {
     return s.split(/\s+/).filter(Boolean).length;
@@ -47,7 +51,8 @@ export function runGate(input: GateInput): GateResult {
     const riskReasons: string[] = [];
     const flagHit = input.flags.filter((f) => HIGH_RISK_FLAGS.includes(f));
     if (flagHit.length) riskReasons.push(`Flags: ${flagHit.join(', ')}`);
-    if (HIGH_RISK_CATEGORIES.some((c) => (fm.category || '').includes(c))) riskReasons.push(`Sensible Kategorie: ${fm.category}`);
+    const cat = fm.category || '';
+    if (fm.cluster === 6 || HIGH_RISK_CATEGORY_WORDS.some((c) => cat.includes(c))) riskReasons.push(`Sensible Kategorie/Cluster: ${cat || fm.cluster}`);
     if (riskReasons.length) risk = 'high';
 
     return {

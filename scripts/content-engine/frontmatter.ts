@@ -14,7 +14,8 @@ const faqSchema = z.object({
 
 const sourceSchema = z.object({
     name: z.string().min(1),
-    url: z.string().url(),
+    // Nur http(s): z.url() liesse sonst auch javascript:/data:-URLs durch (Render landet in <a href>).
+    url: z.string().url().refine((u) => /^https?:\/\//i.test(u), 'Quelle-URL muss mit http(s):// beginnen'),
 });
 
 const schema = z
@@ -32,6 +33,7 @@ const schema = z
         publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'publishedAt muss YYYY-MM-DD sein'),
         updatedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'updatedAt muss YYYY-MM-DD sein'),
         category: z.string().min(1),
+        cluster: z.number().int().min(1).max(7).optional(),
         tags: z.array(z.string().min(1)).min(1, 'mind. 1 tag'),
         featuredImage: z.string().regex(/^\/images\/blog\/.+\.(png|jpg|jpeg|webp)$/, 'featuredImage muss /images/blog/<name>.<ext> sein'),
         status: z.enum(['draft', 'published']),
