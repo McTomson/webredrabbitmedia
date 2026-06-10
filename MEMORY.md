@@ -6,6 +6,14 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-11 (Teil 7) — Phase 3 #1-Hebel: interne Cluster-Verlinkung LIVE (main `0e3717e`)
+
+- **Bidirektionale interne Cluster-Verlinkung gebaut + deployed.** `scripts/content-engine/lib/clusterLinks.ts` (deterministisch, spiegelt `getRelatedPosts`-Scoring Kategorie+3/Cluster+2/Tag+1, nur publizierte Artikel, chirurgische Marker-basierte Block-Injektion `{/* cluster-links:start/end */}`, single-run-idempotent, Frontmatter byte-genau, Anker MDX-escaped, Slug-Guard, Block ans Body-Ende). Block-Titel "Das könnte Sie auch interessieren" mit `/tipps/{slug}`-Links.
+- **`npm run cluster:relink`** (Backfill, idempotent) hat 17 publizierte Artikel verlinkt. **run-media-Hook**: neue Artikel + Cluster-Nachbarn werden beim Publish im selben Commit verlinkt (`git add content/blog/*.mdx`).
+- **Ergebnis verifiziert:** On-Page-internal_links-Befund von 19 auf **0** Artikel, Dashboard-Ø-Score **96**, alle 15 Link-Ziele 200 (keine 404), im Browser an MDX-Artikeln + hartcodierter Seite + Dashboard bestätigt. review-it (3 Agenten): 3 MAJOR (MDX-Injection, tote+fragile Footer-Regex) + Minors alle gefixt; Decision-Log `docs/reviews/cluster-links-2026-06-11.md`.
+- **3 Blindspots gelöst:** (1) `was-kostet-eine-website` = hartcodierte Route `app/tipps/{slug}/page.tsx` (MDX-Body tot) → manuell verlinkt + aus Backfill/Audit ausgeschlossen [[siehe LESSONS Teil 7]]; (2) On-Page-Audit überspringt jetzt Drafts + hartcodierte Slugs; (3) Idempotenz/Whitespace gefixt.
+- **OFFENE Phase-3-Reste (nächster Schritt):** On-Page-Audit zeigt nur noch `year_in_title:3` (3 Artikel ohne aktuelles Jahr im Titel) + `key_takeaways:1`. Dann Kosten-Cluster depth-first (Pillar+Spokes), Distribution, Ranking-Beweis = GATE zur Breite. NEXT_SESSION_CONTENT_ENGINE_V2.md hat die volle Liste.
+
 ## Stand 2026-06-11 (Teil 6) — Tracking, Playbook/Audit, Erinnerung, NotebookLM-Pilot (main `18c3af3`)
 
 ZUERST `NEXT_SESSION_CONTENT_ENGINE_V2.md` lesen — enthält den copy-paste-Prompt + die detaillierte To-do-Liste.

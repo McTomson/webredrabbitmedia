@@ -4,6 +4,14 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-11 (Teil 7) — Interne Cluster-Verlinkung (Phase 3 #1-Hebel)
+
+- **Hartcodierte Route schlägt MDX-[slug].** `app/tipps/{slug}/page.tsx` (bespoke React) hat Vorrang vor der dynamischen `[slug]`-MDX-Route. Der Flaggschiff-Artikel `was-kostet-eine-website` ist so eine Seite — sein `content/blog/was-kostet-eine-website.mdx`-Body wird NIE gerendert (nur die Frontmatter speist Listings/Related/RSS). Folge: jedes Content-Tooling muss solche Slugs als QUELLE ausschließen (kein toter Block schreiben, nicht als MDX auditieren), sie bleiben aber gültige LINK-ZIELE. Erkennung: `app/tipps/*/page.tsx` scannen. Diese Seiten brauchen interne Verlinkung/On-Page von Hand.
+- **Gerenderter Inhalt != Datei auf Platte? ZUERST hartcodierte Route prüfen, dann Cache.** Symptom: der Dev-Server liefert Strings, die nicht in der MDX stehen. Ursache war NICHT `.next`-Cache, sondern die hartcodierte Route. Reihenfolge der Diagnose: (1) gibt es `app/.../{slug}/page.tsx`? (2) erst dann `rm -rf .next` + frischer Dev. (Die Stale-`.next`-Falle nach `next build` existiert zusätzlich — vor Browser-Verifikation immer `.next` löschen.)
+- **`main` wird von Automatik gepusht — IMMER `git fetch` vor `git push`.** Ein lokaler Commit landete in dieser Session ohne expliziten Push auf origin/main (Hook/geplanter run-media-Lauf pusht main). Lehre: nicht `--amend`/force-push auf bereits-gepushte Commits; Korrekturen als NEUEN Commit obendrauf (reset --hard origin/main + Fix-Patch + neuer Commit), um divergierende Historie sauber aufzulösen.
+- **Idempotenz muss Single-Run UND diff-sauber sein.** Ein globales `\n{3,}->\n\n` normalisierte unbeteiligten Body-Whitespace (Diff-Rauschen) und der Append-Zweig stabilisierte erst im 2. Lauf. Fix: nur die Naht um den Block anfassen, sonst nichts; den Block immer ans Body-Ende anhängen statt fragiler Footer-Regex (die im echten Korpus ohnehin nie matchte und mit `[\s\S]*$` Inhalt verschieben konnte).
+- **LLM-Titel sind ungetrauter Input für MDX.** Anker-Text aus Artikel-Titeln, der in einen mit next-mdx-remote kompilierten Body eingebettet wird, MDX-escapen (`\ \` * _ [ ] < > { } |`): ein Titel mit `{`/`<` würde sonst serverseitig evaluiert oder bricht den Render/Build aller Cluster-Nachbarn (auto-gepusht). Slugs zusätzlich auf `^[a-z0-9-]+$` prüfen.
+
 ## 2026-06-11 (Teil 6) — Tracking, Playbook/Audit, Erinnerung, NotebookLM-Pilot
 
 - **`next build` lintet — KEIN `any` in lib/.** tsc allein war grün, `next build` brach mit `@typescript-eslint/no-explicit-any` (in `lib/dashboard/onpage.ts`). Frontmatter aus gray-matter als schmales Interface typisieren, nicht `as any`. Immer `next build` als finalen Gate fahren, nicht nur `tsc`.
