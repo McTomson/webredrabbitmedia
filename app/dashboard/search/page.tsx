@@ -1,7 +1,7 @@
 import { TrendingUp } from 'lucide-react';
-import { getSearchConsoleData } from '@/lib/dashboard/google';
+import { getSearchConsoleData, getSearchConsoleTimeseries } from '@/lib/dashboard/google';
 import { int, pct, pos } from '@/lib/dashboard/format';
-import { Kpi, SectionCard, StateNotice, EmptyState, Th, Td, RangeSwitch, parseRange } from '../ui';
+import { Kpi, SectionCard, StateNotice, EmptyState, Th, Td, RangeSwitch, parseRange, Sparkline } from '../ui';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +30,8 @@ export default async function SearchConsolePage({ searchParams }: { searchParams
     }
 
     const d = res.data;
+    const tsRes = await getSearchConsoleTimeseries(days);
+    const ts = tsRes.state === 'ok' ? tsRes.data : [];
     return (
         <div className="space-y-8">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -45,6 +47,28 @@ export default async function SearchConsolePage({ searchParams }: { searchParams
                 <Kpi label="Ø CTR" value={pct(d.totals.ctr)} sub="Klicks / Impressionen" />
                 <Kpi label="Ø Position" value={pos(d.totals.position)} sub="impr.-gew. (Top 250)" />
             </section>
+
+            {/* Trend over time */}
+            {ts.length >= 2 && (
+                <SectionCard title="Verlauf" hint={`letzte ${days} Tage`}>
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <div>
+                            <div className="mb-2 flex items-baseline justify-between">
+                                <span className="text-sm font-medium text-slate-600">Klicks</span>
+                                <span className="text-sm tabular-nums text-slate-400">∑ {int(d.totals.clicks)}</span>
+                            </div>
+                            <Sparkline data={ts.map((p) => p.clicks)} colorClass="text-red-500" />
+                        </div>
+                        <div>
+                            <div className="mb-2 flex items-baseline justify-between">
+                                <span className="text-sm font-medium text-slate-600">Impressionen</span>
+                                <span className="text-sm tabular-nums text-slate-400">∑ {int(d.totals.impressions)}</span>
+                            </div>
+                            <Sparkline data={ts.map((p) => p.impressions)} colorClass="text-slate-400" />
+                        </div>
+                    </div>
+                </SectionCard>
+            )}
 
             {/* Striking distance — the #1 daily lever */}
             <SectionCard title="Striking Distance (Position 8–20)" hint="kleiner Schub = echter Traffic">
