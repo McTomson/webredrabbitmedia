@@ -4,6 +4,15 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-10 (Teil 3) — GSC/GA4-Anbindung, Cluster-Taxonomie, Prompt-Caching-Mythos
+
+- **Personal-Gmail kann KEINE Service-Accounts als GSC-Nutzer adden** ("E-Mail gehört nicht zu Google-Konto"); GA4 zickt ebenso. Domain-wide delegation nur bei Workspace. **Lösung: OAuth mit Besitzer-Konto** (refresh_token, wie YouTube-Muster). Service-Account-Weg fuer GSC/GA4 bei privatem Konto verwerfen.
+- **OAuth-Client-Secret-Download in GCP ist "nicht mehr möglich"** fuer bestehende Clients; bei NEU-Erstellung bietet der Dialog "JSON herunterladen", aber der Button löst per Browser-Automatisierung oft KEINEN Download aus. Workaround: vorhandenes Desktop-Client-JSON wiederverwenden (lag in ~/Downloads) ODER Secret aus Detailseite. Creds immer ausserhalb Repo + .env.local (gitignored), nie committen.
+- **GA4: es gab mehrere "web.redrabbit.media"-Properties**, die meisten LEER. Die mit echten Daten (Property 519842891, account 380548873) ist die richtige. Property-ID steht in der Analytics-URL (`p<ID>`). Immer per echten Daten verifizieren, nicht die erstbeste nehmen.
+- **Prompt-Caching bei `claude -p` bringt NICHTS über getrennte Prozesse** (jeder Rollen-Call = eigener HTTP-Request, kein gemeinsamer Cache; keine CLI-Flags). Nur per Agent-SDK-Port (Conversation-Reuse). Bei 1 Artikel/Tag nicht wert → Status quo, erst messen.
+- **`category` war Freitext-Chaos** ("Wartung" vs "Technik & Performance" etc.). Eingeführt: kontrolliertes `cluster`-Feld (1-7, Quelle queue.yaml `clusters:`) + Normalisierung. category-String-Risk-Routing (gate.ts `includes`) bleibt für "Recht & Sicherheit" gültig, aber tote Wörter "Steuer"/"Compliance" → cluster===6 als robuster Trigger ergänzt.
+- **Internes Dashboard (`app/dashboard`) in Produktion via `notFound()` versteckt** ausser `DASHBOARD_ENABLED` gesetzt — lokales Werkzeug nie öffentlich (trägt bald GSC/GA4-Daten).
+
 ## 2026-06-10 (Teil 2) — Researcher-Timeout, run-media Selfhost-Fix, Hero-Luecke, Gemini-Fallen
 
 - **Tages-Pipeline starb am Researcher-Timeout (`spawnSync claude ETIMEDOUT`):** Web-Recherche
