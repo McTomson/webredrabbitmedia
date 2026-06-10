@@ -4,6 +4,7 @@ import { useState } from "react";
 import * as z from "zod";
 import { Loader2, Send } from "lucide-react";
 import Link from "next/link";
+import { sendGAEvent } from "@next/third-parties/google";
 
 // Schema definition (same as before)
 const formSchema = z.object({
@@ -84,6 +85,16 @@ export default function ContactFormHighEnd() {
             }
 
             setIsSuccess(true);
+            // GA4 conversion: a lead. GA4 attaches the current page automatically,
+            // so the dashboard can read "Anfragen pro Artikel" from this event.
+            try {
+                sendGAEvent('event', 'generate_lead', {
+                    service: formData.service,
+                    page_path: typeof window !== 'undefined' ? window.location.pathname : undefined,
+                });
+            } catch {
+                /* analytics must never break the form */
+            }
             setFormData({
                 name: "",
                 email: "",
