@@ -34,8 +34,11 @@ ERLEDIGT 2026-06-10 (Teil 4, main `52bdfa7`, deployed + verifiziert):
 
 - [x] **4. Kill-Switch** — `scripts/content-engine/dashboard/check_indexation.ts` misst Indexierung via GSC-URL-Inspection-API (Property MIT Schrägstrich!), schreibt `content-engine/.indexation.json` + `.kill-switch.json` (beide gitignored). Unter Schwelle (RR_INDEXATION_MIN=0.6, min. 5 Artikel) → Flag aktiv. `pipeline.ts` prüft `readKillSwitch()` VOR `--emit` und bricht sauber ab. Dashboard-Gesundheitskarte zeigt Kill-Switch- + Indexierungs-Signal. `lib/dashboard/health.ts` + 19 Unit-Tests. Aktuell: 14/18 indexiert (78%), Switch inaktiv. **NOCH NICHT verdrahtet: check_indexation.ts in den täglichen launchd-Lauf einhängen (vor `npm run engine`).**
 
-OFFEN:
-5. **Conversion-Events** in GA4/GTM (Kontakt-/Erstgespräch-Klicks) = "Anfragen pro Artikel". Braucht User-Entscheidung GA4-Event vs GTM.
+- [x] **5. Conversion-Events** — GA4 `generate_lead` feuert in `ContactFormHighEnd.tsx` bei erfolgreichem Submit (mit page_path → "Anfragen pro Artikel"). Dashboard GA4-Tab: "Anfragen"-KPI + "Anfragen pro Seite"-Karte (`getAnalyticsData` 4. Report, eventName=generate_lead). Aktuell 0 (Event neu, Daten kommen mit echten Submits + GA4-Lag). Optional in GA4 als Conversion markieren (GA4-UI).
+
+PHASE-1-MESS-FUNDAMENT KOMPLETT. OFFEN/optional:
+- check_indexation in den launchd-Tageslauf vor `npm run engine` einhängen (Kill-Switch automatisch aktuell halten).
+- Tremor-Charts statt der Inline-Sparklines, falls reichere Visualisierung gewünscht.
 6. Dann PHASE 2 (Moat): `/interview-me`-Skill → opinions/pool.md (Erinnerung via `opinion_missing`-Gate); Vault + Frische-TTL + additives Retrieval. **Pilot-Cluster = Kosten (1).**
 7. Dann PHASE 3: EIN Cluster komplett (Kosten) in die Tiefe + interne Cluster-Verlinkung + GEO-Block + Distribution (Reddit, Source-of-Sources, LinkedIn, Newsletter), messen, BEWEIS abwarten, ERST DANN breit skalieren (Phase 5).
 
