@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { CLUSTER_NAMES } from '../lib/clusters';
 
 // Plans the per-cluster NotebookLM enrichment (Phase 2 directive: the system grows with
 // knowledge). For each cluster it collects the source URLs to feed the cluster notebook:
@@ -15,16 +16,6 @@ const ROOT = process.cwd();
 const BLOG_DIR = path.join(ROOT, 'content/blog');
 const MANIFEST = path.join(ROOT, 'content-engine/knowledge/notebooklm-manifest.json');
 const BASE_URL = 'https://web.redrabbit.media';
-
-const CLUSTER_NAMES: Record<number, string> = {
-    1: 'Strategie & Kosten',
-    2: 'Technik & Performance',
-    3: 'KI & Automatisierung',
-    4: 'SEO & GEO',
-    5: 'Design & UX',
-    6: 'Recht & Sicherheit',
-    7: 'Wartung & Analyse',
-};
 
 interface ClusterEntry {
     name: string;
@@ -47,7 +38,6 @@ function loadManifest(): Manifest {
 }
 
 function main() {
-    const today = new Date().toISOString().slice(0, 10);
     const onlyCluster = process.argv.find((a) => /^\d$/.test(a));
     const manifest = loadManifest();
 

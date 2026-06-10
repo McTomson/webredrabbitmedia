@@ -180,7 +180,10 @@ export function appendFacts(
     let skipped = 0;
     let seq = existing.length;
     for (const nf of newFacts) {
-        if (!nf.aussage || !nf.quelle) {
+        // A fact needs a statement and an http(s) source. Rejecting non-http(s) schemes at
+        // write-time keeps javascript:/data: URLs out of the vault, which later flows into
+        // both researcher prompts and the dashboard as a clickable href.
+        if (!nf.aussage || !nf.quelle || !/^https?:\/\//i.test(nf.quelle)) {
             skipped++;
             continue;
         }
@@ -205,9 +208,11 @@ export function appendFacts(
     if (!toAdd.length) return { added: 0, skipped };
 
     fs.mkdirSync(path.dirname(file), { recursive: true });
-    const header = fs.existsSync(file) ? '' : VAULT_HEADER + '\n\n';
     const body = toAdd.map(serializeFact).join('\n\n');
-    fs.appendFileSync(file, (header || (fs.readFileSync(file, 'utf8').endsWith('\n') ? '\n' : '\n\n')) + body + '\n');
+    // New file → write the header first. Existing file → a leading blank line separates the
+    // new block (every block already ends with "\n", so one "\n" yields the blank line).
+    const prefix = fs.existsSync(file) ? '\n' : VAULT_HEADER + '\n\n';
+    fs.appendFileSync(file, prefix + body + '\n');
     return { added: toAdd.length, skipped };
 }
 

@@ -41,4 +41,9 @@ describe('parseOpinionClusters', () => {
         const r = parseOpinionClusters('# header\n\n## x (Cluster 9)\nused: false\nfoo');
         expect(r[0]).toEqual([]);
     });
+
+    it('does not split a two-digit value into single clusters', () => {
+        const r = parseOpinionClusters('# header\n\n## x (Cluster 12)\nused: false\nfoo');
+        expect(r[0]).toEqual([]); // not [1, 2]
+    });
 });

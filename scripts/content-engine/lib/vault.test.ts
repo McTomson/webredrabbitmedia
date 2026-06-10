@@ -148,4 +148,25 @@ describe('appendFacts', () => {
             fs.rmSync(tmp, { force: true });
         }
     });
+
+    it('rejects facts whose source is not an http(s) URL', () => {
+        const tmp = path.join(os.tmpdir(), `vault-scheme-${process.pid}.md`);
+        try {
+            fs.rmSync(tmp, { force: true });
+            const r = appendFacts(
+                [
+                    { cluster: 1, keywords: [], aussage: 'Boese.', quelle: 'javascript:alert(1)', quelleName: 'x' },
+                    { cluster: 1, keywords: [], aussage: 'Gut.', quelle: 'https://ok.at', quelleName: 'ok' },
+                ],
+                '2026-06-10',
+                { file: tmp }
+            );
+            expect(r.added).toBe(1);
+            expect(r.skipped).toBe(1);
+            const all = parseVault(fs.readFileSync(tmp, 'utf8'));
+            expect(all.every((f) => /^https?:\/\//.test(f.quelle))).toBe(true);
+        } finally {
+            fs.rmSync(tmp, { force: true });
+        }
+    });
 });

@@ -5,6 +5,13 @@ import { MessageSquareQuote, RefreshCw, CheckCircle2, BookOpen } from 'lucide-re
 
 export const dynamic = 'force-dynamic';
 
+// Only ever hand http(s) URLs to an href. Vault sources ultimately originate from web
+// research (LLM-chosen), so guard the render path too even though appendFacts already
+// rejects non-http(s) at write-time. Returns undefined → render plain text instead.
+function safeHref(u?: string): string | undefined {
+    return u && /^https?:\/\//i.test(u) ? u : undefined;
+}
+
 // The Moat tab: how much own knowledge the engine has captured, and — most important for the
 // user — what it still needs FROM him (interview gaps, facts due for re-check). Reads the vault,
 // the opinion pool and the NotebookLM manifest. No external creds; pure local SoT.
@@ -135,8 +142,8 @@ export default async function WissenPage() {
                                     {k.notebooklm.rows.map((r) => (
                                         <tr key={r.cluster} className="border-b border-black/[0.04] hover:bg-black/[0.02]">
                                             <Td strong>
-                                                {r.notebookUrl ? (
-                                                    <a href={r.notebookUrl} target="_blank" rel="noreferrer" className="hover:text-red-600">{r.cluster} · {r.name}</a>
+                                                {safeHref(r.notebookUrl) ? (
+                                                    <a href={safeHref(r.notebookUrl)} target="_blank" rel="noreferrer" className="hover:text-red-600">{r.cluster} · {r.name}</a>
                                                 ) : (
                                                     <span>{r.cluster} · {r.name}</span>
                                                 )}
@@ -160,7 +167,10 @@ export default async function WissenPage() {
                                 <li key={i} className="text-sm">
                                     <div className="leading-relaxed text-slate-700">{f.aussage.slice(0, 140)}{f.aussage.length > 140 ? '…' : ''}</div>
                                     <div className="mt-0.5 text-[12px] text-slate-400">
-                                        Cluster {f.cluster} · fällig seit {f.recheckNach} · <a href={f.quelle} target="_blank" rel="noreferrer" className="hover:text-red-600">Quelle</a>
+                                        Cluster {f.cluster} · fällig seit {f.recheckNach}
+                                        {safeHref(f.quelle) && (
+                                            <> · <a href={safeHref(f.quelle)} target="_blank" rel="noreferrer" className="hover:text-red-600">Quelle</a></>
+                                        )}
                                     </div>
                                 </li>
                             ))}

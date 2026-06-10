@@ -74,7 +74,9 @@ export function parseOpinionClusters(md: string): number[][] {
     for (const b of blocks) {
         const header = b.split('\n')[0];
         const m = header.match(/Cluster\s*([0-9/, ]+)/i);
-        const nums = m ? (m[1].match(/[1-7]/g) || []).map(Number) : [];
+        // Match only standalone single-digit clusters (1-7), so a two-digit value like
+        // "Cluster 12" does not spuriously credit clusters 1 and 2.
+        const nums = m ? (m[1].match(/\b([1-7])\b/g) || []).map(Number) : [];
         out.push([...new Set(nums)]);
     }
     return out;
