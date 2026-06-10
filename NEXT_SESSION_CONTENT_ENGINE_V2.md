@@ -1,72 +1,73 @@
-# NEXT SESSION — Content-Engine v2 (Übergabe, Stand 2026-06-10 Abend)
+# NEXT SESSION — Content-Engine v2 (Übergabe, Stand 2026-06-11)
 
-ZUERST LESEN. Nahtlos weitermachen, NICHT vom Kurs abweichen. Der verbindliche Plan ist
-`docs/superpowers/plans/2026-06-09-content-engine-v2-REVISED.md` (Abschnitte 0 bis 16). Diese
-Datei ist nur der Schnelleinstieg.
+ZUERST LESEN. Nahtlos weitermachen. Verbindlicher Plan: `docs/superpowers/plans/2026-06-09-content-engine-v2-REVISED.md`
+(§0-§16). Diese Datei ist der Schnelleinstieg + die detaillierte To-do-Liste.
 
 ---
 
 ## PROMPT FÜR NÄCHSTE SESSION (copy-paste an Claude)
 
-> Arbeite am Projekt `~/dev/redrabbit` (Red Rabbit Media, Next.js 15 Content-Engine). Lies ZUERST `NEXT_SESSION_CONTENT_ENGINE_V2.md`, `MEMORY.md`, `LESSONS_LEARNED.md` und den verbindlichen Plan `docs/superpowers/plans/2026-06-09-content-engine-v2-REVISED.md`. Phase 0, das **Phase-1-Mess-Fundament** und jetzt das **Phase-2-Moat-Fundament** sind gebaut, getestet, deployed: Wissens-Vault (`scripts/content-engine/lib/vault.ts` + `content-engine/knowledge/vault.md`, 21 Fakten aus publizierten Artikeln geseedet) mit Frische-TTL + additivem Retrieval im Researcher + Rückfluss bei `--emit`; `/interview-me`-Skill (`~/.claude/skills/interview-me/`) + `opinion_missing`-Erinnerung in der Review-Mail + Pool-Retrieval auf Cluster-Ebene; Dashboard-Tab **Wissen & Moat** (`/dashboard/wissen`: Vault, Meinungs-Coverage pro Cluster, Interview-Backlog, Recheck-fällig, NotebookLM-Status); NotebookLM-Plan/Record-Skripte (`npm run notebooklm:plan` / `:record`). OFFEN in Phase 2: **NotebookLM-Pilot Kosten-Cluster live anreichern** — braucht EINMALIGEN NotebookLM-Login (`mcp__notebooklm__setup_auth`, öffnet Browser, Thomas meldet sich mit t.uhlir an), dann pro Cluster Notebook registrieren + offene Quellen via `add_source` einspeisen + `notebooklm:record` nachziehen. Danach **Phase 3 (Pilot Kosten-Cluster depth-first)**: Pillar + fehlende Spokes, bidirektionale interne Cluster-Links, GEO sichtbar (Antwort-Block, "2026" im Titel), Qualität via foglift-scan/Lychee/axe-core; eine gebündelte `/interview-me`-Sitzung für Cluster 1 (Kosten), um den Pool zu füllen; dann Distribution + auf Ranking-Beweis warten (GATE zur Breite). Arbeite autonom, nutze parallele Agenten + Skills (frontend-design, ui-ux-pro-max bei UI; review-it nach jedem Block), teste IMMER (Build + `npm test`) UND kontrolliere IMMER im Browser (frischer Tab für localhost!), kein Raten — verifizieren. Erst committen/pushen/deployen wenn grün. Light Mode, Apple-Design, keine Emojis, Konversation auf Deutsch. Bei Fertigstellung benachrichtigen + erklären, wie die Wissensbasis wächst.
+> Arbeite am Projekt `~/dev/redrabbit` (Red Rabbit Media, Next.js 15 Content-Engine). Lies ZUERST `NEXT_SESSION_CONTENT_ENGINE_V2.md`, `MEMORY.md`, `LESSONS_LEARNED.md` und den verbindlichen Plan `docs/superpowers/plans/2026-06-09-content-engine-v2-REVISED.md`. **Phase 0, 1 und 2 (Moat-Fundament) sind fertig, getestet, deployed.** Konkret live: GSC/GA4-Dashboard mit 5 Tabs (Überblick, Search Console, Analytics, **Wissen & Moat**, **Verbesserungen**); Wissens-Vault (`scripts/content-engine/lib/vault.ts` + `content-engine/knowledge/vault.md`, additives Retrieval im Researcher + Rückfluss bei Publish); `/interview-me`-Skill + `opinion_missing`-Erinnerung in der Review-Mail; Methodik-Playbook (`content-engine/knowledge/playbook.md`, wird vom Finalizer gelesen) + deterministischer On-Page-Audit (`lib/dashboard/onpage.ts`); volles Conversion-/Verhaltens-Tracking (generate_lead auf ALLEN Formularen, contact_form_open, scroll_depth, outbound_click via `components/AnalyticsListener.tsx`); wöchentliche Erinnerungs-Mail (launchd `com.redrabbit.reminder`, Mo 08:30); NotebookLM-Kosten-Pilot live (Notebook mit 12 Artikeln, im Dashboard sichtbar). Dashboard lokal: Desktop-Icon "Red Rabbit Dashboard" ODER `npm run dev -- --port 9000` → `localhost:9000/dashboard` (in Prod via notFound versteckt). **NÄCHSTER SCHRITT (empfohlen, höchster Hebel): Phase 3 — bidirektionale interne Cluster-Verlinkung** (mein On-Page-Audit zeigt: 19/21 Artikel haben <2 interne Links = der #1-Ranking-Hebel, deterministisch baubar ohne User-Input). Danach restliche Phase 3 (Kosten-Cluster depth-first + Distribution + Ranking-Beweis als GATE zur Breite). Details + vollständige To-do-Liste stehen unten in dieser Datei. Arbeite autonom, nutze parallele Agenten + Skills (frontend-design, ui-ux-pro-max bei UI; review-it nach jedem Block), teste IMMER (Build + `npm test`) UND kontrolliere IMMER im Browser (frischer Tab für localhost!), kein Raten — verifizieren. Erst committen/pushen/deployen wenn grün. Light Mode, Apple-Design, keine Emojis, Konversation auf Deutsch, echte Umlaute im User-Content. Bei Fertigstellung benachrichtigen + erklären, wie die Wissensbasis wächst.
 
-> Desktop-Icon "Red Rabbit Dashboard" (auf dem Desktop + `scripts/dashboard-launcher.command`) öffnet direkt `localhost:9000/dashboard` und startet den Dev-Server falls nötig.
-
-Arbeitsregeln, die sich bewährt haben (siehe LESSONS_LEARNED Teil 4): nur EIN Dev-Server auf 9000 (alte mit `pkill -f "dev/redrabbit/node_modules/.bin/next"` killen); `next build` NUR ohne laufenden Dev-Server (sonst .next-Konflikt → falscher EXIT 1); localhost im Browser nur über FRISCHEN Tab; Dev-Route vor dem Lesen per curl vorwärmen (erste Kompilierung ~40-60s).
+> Bewährte Arbeitsregeln: nur EIN Dev-Server auf 9000 (`pkill -f "dev/redrabbit/node_modules/.bin/next"`); `next build` NUR ohne laufenden Dev-Server + nach `rm -rf .next` (sonst .next-Konflikt → EXIT 1); `next build` lintet → KEIN `any` in lib/ (tsc allein fängt das nicht); localhost im Browser nur über FRISCHEN Tab; Dashboard-Tabs sind im Dev erst nach Erst-Kompilierung schnell (Launcher wärmt vor).
 
 ---
 
-## Wo wir stehen
+## DETAILLIERTE TO-DO-LISTE (nach Priorität)
 
-Branch `feat/content-engine-v2-phase0` (auf main gemergt + deployed am 2026-06-10).
+### A) Phase 3 — DER EINE bewiesene Cluster (Kosten), depth-first — DAS ist die Hauptarbeit
+1. **Bidirektionale interne Cluster-Verlinkung (HÖCHSTER HEBEL, zuerst).** On-Page-Audit zeigt 19/21 Artikel mit <2 internen Links. Bauen: beim Publish verlinkt der neue Artikel passende ältere Artikel im selben Cluster UND die älteren bekommen automatisch einen Rück-Link auf den neuen. Cluster-bewusst (nicht nur /kontakt). Deterministisch, kein User-Input nötig. Bestehende Bestands-Artikel nachverlinken (einmaliger Lauf). Danach On-Page-Score im Dashboard prüfen (sollte steigen).
+2. **GEO-Lücken schließen:** 3 Artikel ohne Jahr "2026" im Titel (siehe Verbesserungen-Tab); Antwort-Block sichtbar; FAQ vollständig.
+3. **Pillar + fehlende Spokes** im Kosten-Cluster (queue.yaml cluster:1). Winnability-First (Striking-Distance im Search-Tab nutzen).
+4. **Qualitäts-Tools** (im Plan §15 beschlossen): foglift-scan (GEO/AEO-CLI), Lychee (Broken-Link), axe-core/pa11y (Barrierefreiheit), schema-dts. In den Verbesserungen-Tab/Audit integrieren.
+5. **Distribution Pilot** (braucht teils User): LinkedIn/Medium-Syndication (canonical), Reddit-Seeding (echt, kein Spam), Source-of-Sources-Monitoring, Newsletter-Signup, Infografik → Bildersuche/Pinterest.
+6. **Messen + auf Beweis warten = GATE zur Breite:** Indexierung, Striking-Distance, Klicks, Conversion. ERST nach Ranking-/Anfrage-Beweis Phase 5.
 
-PHASE 0 fertig + verifiziert (tsc, 48 Tests, `next build`, review-it 3 Agenten = GO):
-- Deutsche Alt-Texte statt englischer Prompts (image.ts, images-only.ts), mit Fallback-Kette.
-- Quellen sichtbar am Artikelende (components/blog/content/ArticleSources.tsx) + JSON-LD citation.
-- Ausgehende Quell-Links Pflicht im Finalizer (roles/finalizer.md).
-- `cluster`-Feld (1 bis 7, Quelle queue.yaml) + category auf kanonische Labels normalisiert (21 Artikel).
-  pipeline.ts setzt category+cluster sauber. getRelatedPosts: +2 bei gleichem Cluster, page.tsx daran angebunden.
-- Risk-Routing robuster (gate.ts + review-notify: cluster 6 + Wort-Fallback). http(s)-Schutz für Quellen-URLs.
-- Verworfen verifiziert: Prompt-Caching (claude -p cached nicht über getrennte Prozesse; nur per SDK-Port = destabilisierend; erst messen).
-- Review-Log: `docs/reviews/phase0-content-engine-v2-2026-06-10.md`.
+### B) Phase 2 — Reste (Moat füllen)
+7. **Meinungs-Pool füllen (BRAUCHT THOMAS):** gebündelte `/interview-me`-Sitzung pro Cluster, zuerst Kosten (1). Dashboard "Wissen & Moat" zeigt die Lücken (4 Cluster ohne Meinung). Wochen-Mail erinnert automatisch.
+8. **NotebookLM: restliche Cluster-Notebooks + Methodik-Notebook** anlegen (Methode siehe Lessons/Memory: UI-Bulk-Paste, NICHT headless-MCP). Pro Cluster `npm run notebooklm:plan` → URLs → in NotebookLM-UI einfügen → `npm run notebooklm:record`. Methodik-Notebook = SEO/Schreibstil-Rohquellen, daraus ins `playbook.md` destillieren.
+9. **NotebookLM-Synthesen in den Vault destillieren:** geerdete Antworten aus den Cluster-Notebooks als Vault-Fakten ablegen (Quelle = Pillar-Artikel/Notebook).
 
-PHASE 1 begonnen, Mess-Fundament STEHT + verifiziert:
-- Lokales Dashboard `app/dashboard/page.tsx` + `lib/dashboard/overview.ts` (Überblick-Tab: Queue 365, Live-Artikel, Review, Cluster-Tabelle, Medien-Queue, letzter-Lauf). noindex, force-dynamic, in Produktion versteckt (notFound ausser DASHBOARD_ENABLED gesetzt). Lokal: `npm run dev -- --port 9000` → localhost:9000/dashboard.
-- GSC + GA4 ANBINDUNG FUNKTIONIERT (end-to-end mit echten Daten geprüft). Personal-Gmail kann keine Service-Accounts als GSC-Nutzer adden → OAuth mit Besitzer-Konto thomas.uhlir@gmail.com (Muster wie YouTube).
-  - Skripte: `scripts/content-engine/dashboard/google_auth.ts` (OAuth-Login, RR_NO_OPEN=1 für Automatisierung) + `verify_google.ts` (E2E-Check).
-  - Creds AUSSERHALB Repo: `~/.config/redrabbit-dashboard/oauth_client.json` + `token.json` (refresh_token, scopes analytics.readonly + webmasters.readonly). `.env.local` (gitignored): DASHBOARD_OAUTH_CLIENT, DASHBOARD_TOKEN, GSC_SITE_URL=https://web.redrabbit.media, GA4_PROPERTY_ID=519842891.
-  - GA4: mehrere Properties existieren, die LIVE ist **519842891** (account 380548873; andere leer). NICHT verwechseln.
+### C) Kleinere offene Punkte
+10. `check_indexation` in den launchd-Tageslauf einhängen (vor `npm run engine`), damit der Kill-Switch automatisch aktuell bleibt.
+11. **Slug-Hygiene:** ~37 abgeschnittene Slugs in queue.yaml + ~4 published → kurze keyword-Slugs, bestehende NUR mit 301-Redirect (next.config.ts redirects()).
+12. **Entität/Distribution:** Bing-Webmaster-Sitemap einreichen, `llms.txt` ergänzen, Wikidata-Eintrag + `sameAs` (LinkedIn/Crunchbase) im Person/Org-Schema.
+13. **GA4 manuell:** `generate_lead` als Schlüsselereignis markieren (GA4 → Verwalten → Ereignisse), damit es als Conversion zählt.
 
-## NÄCHSTE SCHRITTE (in dieser Reihenfolge, nicht abweichen)
+### D) Aufgeschoben (gemerkt, später)
+14. **Content-Gap-Check gegen Konkurrenz** (Thomas: "später, nur zur Info"): Striking-Distance-Query → top-rankende Seiten holen → Lücken-Analyse → unseren Artikel ergänzen. Phase 3+.
+15. **Phase 4 — Medien headless:** video-fähiger NotebookLM-MCP, Media-Checker headless, Substack Auto-Draft. ACHTUNG: der headless notebooklm-MCP `add_source`/`ask_question` ist aktuell unzuverlässig (siehe Lessons).
 
-ERLEDIGT 2026-06-10 (Teil 4, main `52bdfa7`, deployed + verifiziert):
-- [x] **1. GSC-Tab + GA4-Tab** — `lib/dashboard/google.ts` (getSearchConsoleData, getAnalyticsData, getVisibilityTrend), `app/dashboard/{layout,ui,DashboardTabs}.tsx` + `search/`, `analytics/`. Light Mode, review-it GO (`docs/reviews/dashboard-gsc-ga4-2026-06-10.md`).
-- [x] **2. Striking-Distance-Liste** (Pos 8–20, Impr>=5) im Search-Tab.
-- [x] **3. Penalty-/Anomalie + Totmann-Alarm** — `lib/dashboard/health.ts` (rein, 14 Unit-Tests): Pipeline-Dead-Man (Artikel-Alter), Tageslauf-Fehler, GSC-Woche/Woche-Impressionseinbruch, Indexierungs-Lücke. Gesundheits-Karte im Überblick.
+---
 
-- [x] **4. Kill-Switch** — `scripts/content-engine/dashboard/check_indexation.ts` misst Indexierung via GSC-URL-Inspection-API (Property MIT Schrägstrich!), schreibt `content-engine/.indexation.json` + `.kill-switch.json` (beide gitignored). Unter Schwelle (RR_INDEXATION_MIN=0.6, min. 5 Artikel) → Flag aktiv. `pipeline.ts` prüft `readKillSwitch()` VOR `--emit` und bricht sauber ab. Dashboard-Gesundheitskarte zeigt Kill-Switch- + Indexierungs-Signal. `lib/dashboard/health.ts` + 19 Unit-Tests. Aktuell: 14/18 indexiert (78%), Switch inaktiv. **NOCH NICHT verdrahtet: check_indexation.ts in den täglichen launchd-Lauf einhängen (vor `npm run engine`).**
+## WO WIR STEHEN (fertig + verifiziert)
 
-- [x] **5. Conversion-Events** — GA4 `generate_lead` feuert in `ContactFormHighEnd.tsx` bei erfolgreichem Submit (mit page_path → "Anfragen pro Artikel"). Dashboard GA4-Tab: "Anfragen"-KPI + "Anfragen pro Seite"-Karte (`getAnalyticsData` 4. Report, eventName=generate_lead). Aktuell 0 (Event neu, Daten kommen mit echten Submits + GA4-Lag). Optional in GA4 als Conversion markieren (GA4-UI).
+Letzter Commit `18c3af3` (+ Launcher-Update). 89 Tests grün, tsc grün, `next build` grün, alle Dashboard-Tabs browser-verifiziert.
 
-PHASE-1-MESS-FUNDAMENT KOMPLETT. OFFEN/optional:
-- check_indexation in den launchd-Tageslauf vor `npm run engine` einhängen (Kill-Switch automatisch aktuell halten).
-- Tremor-Charts statt der Inline-Sparklines, falls reichere Visualisierung gewünscht.
-6. Dann PHASE 2 (Moat): `/interview-me`-Skill → opinions/pool.md (Erinnerung via `opinion_missing`-Gate); Vault + Frische-TTL + additives Retrieval. **Pilot-Cluster = Kosten (1).**
-7. Dann PHASE 3: EIN Cluster komplett (Kosten) in die Tiefe + interne Cluster-Verlinkung + GEO-Block + Distribution (Reddit, Source-of-Sources, LinkedIn, Newsletter), messen, BEWEIS abwarten, ERST DANN breit skalieren (Phase 5).
+**Phase 0** (fertig): DE-Alt-Texte, Quellen-Render + JSON-LD, ausgehende Quell-Links, cluster-Feld + category. Offen: Slug-Hygiene.
 
-## Verbindliche Entscheidungen (NICHT neu aufrollen)
-- 1 Artikel/Tag bleibt. Ziel: GEO UND SERP. Moat = web-verifizierter Vault, additiv (Web-Recherche bleibt).
-- Ranking-Band: weiss/hellgrau/etwas-grau, KEIN dunkelgrau/schwarz. KEIN Presse-Outreach (aber Source-of-Sources = Journalisten fragen, ist ok).
-- Medien: Podcast + Infografik + Video für jeden Artikel; headless via video-fähigem NotebookLM-MCP geplant; Substack als Draft + Link (kein Auto-Publish); Podcast immer selbst gehostet.
-- Bilder künftig primär über Browser (Gemini), Codex als Fallback; Thomas will Bilder nachbessern können (images-only.ts-Basis).
-- Werkzeuge beschlossen: mcp-gsc, bestehendes Next.js-GSC-Dashboard als Basis, foglift-scan, Lychee, schema-dts, axe-core/pa11y. ABGELEHNT: n8n, Plausible/Matomo.
-- Lead-Mechanik: kein harter In-Artikel-CTA, bestehender dezenter End-CTA reicht.
+**Phase 1** (fertig + deployed): GSC/GA4-Dashboard (Überblick/Search/Analytics), Striking-Distance, Verlaufs-Sparklines, Gesundheits-/Penalty-/Totmann-Alarm, Indexierungs-Kill-Switch, Conversion-Events. OAuth-Creds außerhalb Repo (`~/.config/redrabbit-dashboard/`), `.env.local` (GSC_SITE_URL, GA4_PROPERTY_ID=519842891). Offen: check_indexation in launchd.
 
-## KRITISCH / RISIKEN (im Plan dokumentiert)
-- **Fabriziertes Bewertungs-Schema (315 Reviews/4,9) bleibt auf Userwunsch GEGEN meine ausdrückliche Empfehlung** (Manual-Action- + UWG-Risiko). Mein Einwand steht in Plan §1. Nicht stillschweigend ausbauen, keine zusätzlichen Fake-Reviews erzeugen.
-- Pre-Mortem (Plan §14): wahrscheinlichster Tod = Stille (keine Distribution) und leiser Betriebs-Tod (kein Totmann-Alarm). Deshalb erst EIN Cluster beweisen, dann skalieren.
+**Phase 2** (fertig + diese Session erweitert):
+- **Vault:** `scripts/content-engine/lib/vault.ts` (parse/search/isStale/format/appendFacts, Frische-TTL +180d), `content-engine/knowledge/vault.md` (21 Fakten geseedet, REPO-versioniert). Researcher fragt zuerst den Vault, Rückfluss bei `--emit`. `npm run vault:backfill`.
+- **/interview-me:** Skill `~/.claude/skills/interview-me/SKILL.md`, schreibt nach `content-engine/opinions/pool.md`. `opinion_missing` → Hinweis in Review-Mail. `loadOpinion` matcht Thema-ID ODER Cluster.
+- **Methodik-Playbook:** `content-engine/knowledge/playbook.md` (SoT für Handwerk, vom Finalizer gelesen). On-Page-Audit `lib/dashboard/onpage.ts`.
+- **Dashboard-Tabs:** "Wissen & Moat" (`/dashboard/wissen` — Vault, Meinungs-Coverage, Interview-Backlog, NotebookLM-Status) + "Verbesserungen" (`/dashboard/verbesserungen` — On-Page-Audit schwächste-zuerst, häufigste Lücken, Methodik-Hebel-Verifizierungs-Status).
+- **Tracking:** `generate_lead` auf ALLEN Formularen (ContactForm-Modal + HighEnd), `contact_form_open` (CTA-Intent), `scroll_depth`, `outbound_click` (global via `components/AnalyticsListener.tsx`). Analytics-Tab: "Verhalten" + "Kontakt-Interesse pro Seite". GA4 G-09FNC6THTD, GTM-MQXGT8FL (global, alle Seiten).
+- **Erinnerung:** `npm run remind` + launchd `com.redrabbit.reminder` (Mo 08:30, GELADEN) → Mail mit Interview-Lücken + "Methodik destillieren" + größte On-Page-Lücke.
+- **NotebookLM-Kosten-Pilot:** Konto t.uhlir@immo.red, Notebook `3eccf288-a944-4d2d-95e4-dcc71358e5ef` "Red Rabbit – Kosten" mit 12 Cluster-1-Artikeln, geerdete Antwort verifiziert, im Manifest (`content-engine/knowledge/notebooklm-manifest.json`) + Dashboard.
 
-## OFFEN / gemeldet
-- Slug-Hygiene: 37 abgeschnittene Slugs in queue.yaml + ~4 published. Braucht 301-Redirects (next.config.ts redirects() Pattern existiert) + vorsichtige Renames. Separater, ruhiger Schritt.
-- YouTube zeigt ein Warndreieck (Status unklar, evtl. abgelaufenes Upload-Token oder Kanal-Hinweis) — noch prüfen.
-- Überflüssiger OAuth-Client "redrabbit-dashboard" (156408625286-psdusvbajs...) in GCP angelegt, ungenutzt, kann gelöscht werden (wir nutzen den bestehenden Desktop-Client).
+## BRAUCHT THOMAS (User-Inputs, Wochen-Mail erinnert)
+- `/interview-me`-Sitzungen (Meinungs-Pool füllen) — Policy-Schutz + Moat.
+- NotebookLM: neue Gold-Quellen sammeln + Cluster-Notebooks befüllen (UI), dann "destillieren" sagen.
+- Distribution-Freigaben (Reddit/Source-of-Sources/LinkedIn), Substack-Klick.
+- NotebookLM-Konto: muss t.uhlir@immo.red sein (MCP `get_health` prüfen, sonst `re_auth`).
+
+## WICHTIGE BEFEHLE / DATEIEN
+- `npm test` · `npx tsc --noEmit` · `npx next build` (Dev-Server vorher killen + `rm -rf .next`)
+- `npm run engine -- <id|--next> [--emit]` · `npm run vault:backfill` · `npm run notebooklm:plan` · `npm run notebooklm:record <c> <url> <srcs...>` · `npm run remind -- --dry-run`
+- Dashboard: Desktop-Icon "Red Rabbit Dashboard" oder `scripts/dashboard-launcher.command`
+- Graphify: `graphify query "X" --graph graphify-out/graph.json` (NIE `--backend claude`)
+
+## VERBINDLICHE ENTSCHEIDUNGEN (nicht neu aufrollen)
+1 Artikel/Tag; Ziel GEO+SERP; Moat = web-verifizierter Vault, additiv. Fabriziertes 315-Review-Schema bleibt auf Userwunsch (mein Einwand dokumentiert, KEINE zusätzlichen Fake-Reviews). Band weiss bis hellgrau, kein Presse-Outreach (Source-of-Sources ok). EIN Cluster beweisen VOR Breite (Disziplin statt Tempo). NotebookLM-Struktur: pro Cluster ein Notebook + separates Methodik-Notebook. Methodik-Hebel erst Hypothese, dann an UNSEREN GSC-Daten verifizieren.

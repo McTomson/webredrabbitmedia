@@ -4,6 +4,15 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-11 (Teil 6) — Tracking, Playbook/Audit, Erinnerung, NotebookLM-Pilot
+
+- **`next build` lintet — KEIN `any` in lib/.** tsc allein war grün, `next build` brach mit `@typescript-eslint/no-explicit-any` (in `lib/dashboard/onpage.ts`). Frontmatter aus gray-matter als schmales Interface typisieren, nicht `as any`. Immer `next build` als finalen Gate fahren, nicht nur `tsc`.
+- **Tracking-Lücke: nur EIN Formular war instrumentiert.** `generate_lead` feuerte nur in `ContactFormHighEnd` (/kontakt), nicht im site-weiten `ContactForm`-Modal (Hero/Pricing/Blog) → eine echte Anfrage wurde nie erfasst. Lehre: bei Conversion-Events ALLE Eintrittspunkte prüfen. Jetzt: Modal feuert generate_lead, `ContactFormProvider.openForm` feuert contact_form_open, `AnalyticsListener` (global im Layout) feuert scroll_depth + outbound_click. Vergangene Submits erscheinen NICHT rückwirkend; GA4 hat Verarbeitungs-Latenz.
+- **Dev-Modus-Tab-Lag ist kein Bug.** "Tabs reagieren nicht" = Next kompiliert jede Route beim ERSTEN Aufruf neu (~3-6s, Analytics länger wg. Live-GA4). Fix: Launcher (`dashboard-launcher.command`) wärmt nach Start alle Tabs per curl vor.
+- **NotebookLM: headless-MCP unzuverlässig, UI-Bulk-Paste funktioniert.** `mcp__notebooklm__add_source`/`ask_question` scheitern reproduzierbar mit "Could not find NotebookLM chat input" (Phase-4-Fragilität). Was geht: Notebook in der UI anlegen, "Quelle hinzufügen → Websites → alle URLs auf einmal (leerzeichen-getrennt) → Einfügen" (Import asynchron ~10-20s), Fragen im In-App-Chat (geerdet + zitiert), dann `npm run notebooklm:record`. `add_notebook` (Registrierung per URL) geht. MCP-Konto muss t.uhlir@immo.red sein (`get_health`, sonst `re_auth`).
+- **DNS-Aussetzer ≠ Code-Bug.** `getaddrinfo ENOTFOUND oauth2.googleapis.com` (Dashboard-Google-Fehler + NotebookLM-Login) war ein transienter Router-DNS-Aussetzer; Minuten später lief alles. Bei Google-API-Fehlern zuerst DNS/Konnektivität prüfen (`nslookup`, `curl`).
+- **Manifest + Vault sind REPO-versioniert** (Wissens-SoT), nicht gitignored: `content-engine/knowledge/vault.md` + `notebooklm-manifest.json`.
+
 ## 2026-06-10 (Teil 5) — Phase 2 Moat: Vault, /interview-me, Wissen-Tab, Desktop-Launcher
 
 - **Vault ist Repo-versioniert, nicht Runtime-State.** `content-engine/knowledge/vault.md` ist Wissens-SoT (§15) und wird committet, im Gegensatz zu `.kill-switch.json`/`.indexation.json` (gitignored). Nicht aus Versehen ignorieren.

@@ -19,8 +19,15 @@ if ! curl -s -o /dev/null "$URL" 2>/dev/null; then
   done
 fi
 
-curl -s -o /dev/null "$URL" 2>/dev/null   # warm the route so the browser shows it instantly
+# Pre-warm ALL dashboard routes. In dev mode Next compiles each route on first hit
+# (a few seconds), which makes the first click on a tab feel unresponsive. Warming them
+# now makes every tab switch instant.
+echo "Waerme Tabs vor (einmalig)..."
+for r in dashboard dashboard/search dashboard/analytics dashboard/wissen; do
+  curl -s -o /dev/null "http://localhost:9000/$r" 2>/dev/null
+done
 open "$URL"
 echo ""
 echo "Dashboard geoeffnet: $URL"
+echo "Alle Tabs sind vorgewaermt und reagieren sofort."
 echo "Dieses Fenster kann jetzt geschlossen werden (der Server laeuft im Hintergrund weiter)."

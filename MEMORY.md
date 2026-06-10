@@ -6,6 +6,18 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-11 (Teil 6) — Tracking, Playbook/Audit, Erinnerung, NotebookLM-Pilot (main `18c3af3`)
+
+ZUERST `NEXT_SESSION_CONTENT_ENGINE_V2.md` lesen — enthält den copy-paste-Prompt + die detaillierte To-do-Liste.
+
+- **Tracking komplett (deployed):** `generate_lead` feuert jetzt auf ALLEN Formularen (vorher nur /kontakt → eine echte Anfrage war unerfasst). Neu: `contact_form_open` (CTA-Intent, `ContactFormProvider`), `scroll_depth` + `outbound_click` (global via `components/AnalyticsListener.tsx` im Layout). Analytics-Tab: Karten "Verhalten" + "Kontakt-Interesse pro Seite" (`lib/dashboard/google.ts`). GA4 hat Latenz; vergangene Submits erscheinen nicht rückwirkend. **OFFEN (manuell): `generate_lead` in GA4 als Schlüsselereignis markieren.**
+- **Methodik-Schicht:** `content-engine/knowledge/playbook.md` (angewandte SEO/GEO/Stil-Regeln, SoT, vom Finalizer gelesen) + On-Page-Audit `lib/dashboard/onpage.ts`. Neuer Dashboard-Tab **"Verbesserungen"** (`/dashboard/verbesserungen`): schwächste-Artikel-zuerst, häufigste Lücken, Methodik-Hebel mit Verifizierungs-Status (allgemein vs. an-unseren-Daten — letzteres braucht Traffic). **Größter Befund: 19/21 Artikel haben <2 interne Links = #1-Hebel → nächster Schritt bidirektionale Cluster-Verlinkung.**
+- **Wochen-Erinnerung (gegen Pre-Mortem #5):** `npm run remind` + launchd `com.redrabbit.reminder` (Mo 08:30, GELADEN) → Mail mit Interview-Lücken + "Methodik destillieren" + größter On-Page-Lücke.
+- **NotebookLM-Kosten-Pilot LIVE:** Konto t.uhlir@immo.red (MCP via `re_auth` umgestellt). Notebook `3eccf288-a944-4d2d-95e4-dcc71358e5ef` "Red Rabbit – Kosten" mit 12 Cluster-1-Artikeln befüllt, geerdete zitierte Antwort verifiziert (KMU 1.500-6.000€, Starter ab 790€, Stundensatz 80-150€), im Manifest + Dashboard. **METHODE (wichtig): headless-MCP add_source/ask_question scheitert ("chat input not found"), stattdessen UI-Bulk-Paste (Websites → alle URLs auf einmal → Einfügen, Import async) + In-App-Chat + `npm run notebooklm:record`.**
+- **Dashboard hat jetzt 5 Tabs:** Überblick, Search Console, Analytics, Wissen & Moat, Verbesserungen. Dev-Tab-Lag = Erst-Kompilierung, Launcher wärmt vor.
+- **Desktop-Icon "Red Rabbit Dashboard"** (`scripts/dashboard-launcher.command` + Desktop): öffnet `/dashboard`, startet Server + wärmt alle Tabs vor.
+- **NÄCHSTER SCHRITT (empfohlen): Phase 3 — bidirektionale interne Cluster-Verlinkung** (höchster Hebel, deterministisch, kein User-Input). Dann Kosten-Cluster depth-first + Distribution + Ranking-Beweis (GATE zur Breite). Vollständige Liste in NEXT_SESSION.
+
 ## Stand 2026-06-10 (Teil 5) — Phase 2 Moat-Fundament LIVE (deployed, main `e825e3a`)
 
 - **Wissens-Vault (§3, additiv):** `scripts/content-engine/lib/vault.ts` (parse/search/isStale/format/appendFacts) + `content-engine/knowledge/vault.md` (REPO-versioniert = Wissens-SoT, NICHT gitignored). 21 Fakten aus publizierten Artikeln geseedet (`npm run vault:backfill`). Frische-TTL (`recheck_nach`, default +180 Tage): veraltete Fakten sind nicht zitierbar bis neu bestätigt. **Pipeline additiv verdrahtet:** `researcherPrompt` bekommt Vault-Treffer (zuerst Vault, dann Web für Lücken); `--emit` schreibt verifizierte `research.facts` zurück in den Vault (dedup, try/catch-umhüllt → bricht Publish nie ab). 14 Vault-Unit-Tests.
