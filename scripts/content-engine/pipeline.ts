@@ -204,7 +204,7 @@ async function main() {
     } else {
         // 1) Researcher (web)
         console.log('1/5 Researcher ...');
-        const rOut = runClaude(researcherPrompt(t), { web: true, timeoutSec: 320, label: 'researcher' });
+        const rOut = runClaude(researcherPrompt(t), { web: true, timeoutSec: 600, label: 'researcher' });
         save(dir, 'research.raw.txt', rOut);
         research = extractJsonBlock(rOut) as any;
         if (!research.enough) throw new Error('HALT: Researcher meldet enough=false (zu wenig belegte Fakten). Kein halber Artikel.');
@@ -230,14 +230,14 @@ async function main() {
     // 3) Writer
     const opinion = loadOpinion(t.id);
     console.log('3/5 Writer ...');
-    const wOut = runClaude(writerPrompt(t, research, opinion), { timeoutSec: 320, label: 'writer' });
+    const wOut = runClaude(writerPrompt(t, research, opinion), { timeoutSec: 480, label: 'writer' });
     save(dir, 'draft.raw.txt', wOut);
     const draftBody = extractMdxBlock(wOut);
     save(dir, 'draft.body.md', draftBody);
 
     // 4) Editor
     console.log('4/5 Editor ...');
-    const eOut = runClaude(editorPrompt(draftBody), { timeoutSec: 240, label: 'editor' });
+    const eOut = runClaude(editorPrompt(draftBody), { timeoutSec: 360, label: 'editor' });
     save(dir, 'edited.raw.txt', eOut);
     const editedBody = extractMdxBlock(eOut);
     let flags: string[] = [];
@@ -256,7 +256,7 @@ async function main() {
     let errors: string[] = [];
     for (let attempt = 1; attempt <= 3; attempt++) {
         const fOut = runClaude(finalizerPrompt(t, editedBody, sources, today, attempt > 1 ? errors : undefined), {
-            timeoutSec: 240,
+            timeoutSec: 360,
             label: `finalizer (Versuch ${attempt})`,
         });
         save(dir, `final.attempt${attempt}.txt`, fOut);
