@@ -2,13 +2,18 @@
 
 import { MapPin, Phone, Mail, QrCode, X, UserPlus } from 'lucide-react';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { AOSWrapper } from './AnimatedSection';
 
 const Footer = () => {
+    const pathname = usePathname();
     const [showQRCode, setShowQRCode] = useState(false);
     const currentYear = new Date().getFullYear();
+
+    // The internal dashboard is a standalone tool — no marketing chrome.
+    if (pathname?.startsWith('/dashboard')) return null;
 
     const handleSaveContact = () => {
         // Create a link element to download the VCF file
