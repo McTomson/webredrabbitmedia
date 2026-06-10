@@ -27,11 +27,14 @@ PHASE 1 begonnen, Mess-Fundament STEHT + verifiziert:
 
 ## NÄCHSTE SCHRITTE (in dieser Reihenfolge, nicht abweichen)
 
-1. **GSC-Tab + GA4-Tab ins Dashboard** auf der vorhandenen Anbindung (googleapis + token). Logik aus `verify_google.ts` in eine `lib/dashboard/google.ts` heben (loadAuth, getSearchAnalytics, getGa4Summary), Tabs rendern. Read-only.
-2. **Striking-Distance-Liste** (GSC Position 8 bis 20, Impressionen, wenig Klicks) als Tagesslot-Input.
-3. **Penalty-/Anomalie-Detektor** (GSC manual-actions + Traffic-Absturz/Deindex) + **Totmann-Alarm** (kein Artikel in 24h). 
-4. **Kill-Switch** (Indexierungsrate < Schwelle → Produktion pausiert).
-5. **Conversion-Events** in GA4/GTM (Kontakt-/Erstgespräch-Klicks) = "Anfragen pro Artikel".
+ERLEDIGT 2026-06-10 (Teil 4, main `52bdfa7`, deployed + verifiziert):
+- [x] **1. GSC-Tab + GA4-Tab** — `lib/dashboard/google.ts` (getSearchConsoleData, getAnalyticsData, getVisibilityTrend), `app/dashboard/{layout,ui,DashboardTabs}.tsx` + `search/`, `analytics/`. Light Mode, review-it GO (`docs/reviews/dashboard-gsc-ga4-2026-06-10.md`).
+- [x] **2. Striking-Distance-Liste** (Pos 8–20, Impr>=5) im Search-Tab.
+- [x] **3. Penalty-/Anomalie + Totmann-Alarm** — `lib/dashboard/health.ts` (rein, 14 Unit-Tests): Pipeline-Dead-Man (Artikel-Alter), Tageslauf-Fehler, GSC-Woche/Woche-Impressionseinbruch, Indexierungs-Lücke. Gesundheits-Karte im Überblick.
+
+OFFEN:
+4. **Kill-Switch** (Indexierungsrate < Schwelle → Produktion pausiert). Braucht: Indexierungs-Signal (GSC URL-Inspection-API ODER Sitemap vs indexed) + Schalter, der den Tageslauf stoppt (z.B. Flag-Datei, die der launchd-Job prüft).
+5. **Conversion-Events** in GA4/GTM (Kontakt-/Erstgespräch-Klicks) = "Anfragen pro Artikel". Braucht User-Entscheidung GA4-Event vs GTM.
 6. Dann PHASE 2 (Moat): `/interview-me`-Skill → opinions/pool.md (Erinnerung via `opinion_missing`-Gate); Vault + Frische-TTL + additives Retrieval. **Pilot-Cluster = Kosten (1).**
 7. Dann PHASE 3: EIN Cluster komplett (Kosten) in die Tiefe + interne Cluster-Verlinkung + GEO-Block + Distribution (Reddit, Source-of-Sources, LinkedIn, Newsletter), messen, BEWEIS abwarten, ERST DANN breit skalieren (Phase 5).
 
