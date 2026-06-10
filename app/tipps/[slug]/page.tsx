@@ -1,4 +1,4 @@
-import { getPostBySlug, getAllPosts, compileBlogPost, extractHeadings } from '@/lib/blog/posts';
+import { getPostBySlug, getAllPosts, getRelatedPosts, compileBlogPost, extractHeadings } from '@/lib/blog/posts';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { BlogPostClient } from './BlogPostClient';
@@ -63,11 +63,8 @@ export default async function BlogPostPage({ params }: Props) {
         notFound();
     }
 
-    const posts = await getAllPosts();
-    const relatedPosts = posts
-        .filter((p) => p.slug !== slug && p.category === post.category)
-        .slice(0, 2)
-        .map(p => ({ slug: p.slug, title: p.title }));
+    // Cluster-aware: same category +3, same cluster +2, matching tags +1 (see getRelatedPosts).
+    const relatedPosts = (await getRelatedPosts(slug, 2)).map((p) => ({ slug: p.slug, title: p.title }));
 
     const compiledContent = await compileBlogPost(post.content);
     const readingTime = Math.ceil(post.content.split(/\s+/).length / 200);
@@ -117,7 +114,14 @@ export default async function BlogPostPage({ params }: Props) {
         "speakable": {
             "@type": "SpeakableSpecification",
             "cssSelector": [".prose h2", ".prose p"]
-        }
+        },
+        ...(post.sources && post.sources.length > 0 ? {
+            "citation": post.sources.map((s) => ({
+                "@type": "CreativeWork",
+                "name": s.name,
+                "url": s.url
+            }))
+        } : {})
     };
 
     const faqSchema = post.faqs && post.faqs.length > 0 ? {

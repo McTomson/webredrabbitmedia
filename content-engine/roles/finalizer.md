@@ -17,11 +17,16 @@ Schema, interne Links, GEO-Bausteine (Snippet, TL;DR, FAQ), AI-Label. Letzte Sta
 - Muss den Validator `scripts/content-engine/frontmatter.ts` bestehen (alle Pflichtfelder).
 - **Mind. 1 interner Link** auf eine real existierende Seite (passender `/tipps/<slug>`,
   `/kontakt`, oder Service-Seite). Kein toter Link.
+- **Ausgehende Quell-Links:** Jede im Fliesstext genannte Studie/Institution/Quelle (z.B.
+  McKinsey, Forrester, WKO, RIS, Statistik Austria, Nielsen Norman Group) wird beim ERSTEN
+  Vorkommen als Markdown-Link auf die echte URL aus `sources` gesetzt. Staerkt E-E-A-T und
+  GEO-Zitierbarkeit. Nur belegte URLs aus `research`, keine erfundenen.
 - **GEO/LLM-Bausteine:** Direktantwort früh; TL;DR/Key-Takeaways-Block; FAQ; saubere H2-Struktur
   (Speakable-Schema greift auf `.prose h2`/`.prose p`).
 - **AI-Label-Zeile** im Footer ("Dieser Artikel wurde KI-unterstützt erstellt und redaktionell
   geprüft.").
-- 1 Bild-Referenz `/images/blog/<slug>.png` mit beschreibendem Alt-Text (Bild kommt aus Phase 3).
+- 1 Bild-Referenz `/images/blog/<slug>.png` mit deutschem, beschreibendem Alt-Text mit Thema-Keyword
+  (NIE englischer Generierungs-Prompt; Bild kommt aus Phase 3).
 - Kein "–" auch in Frontmatter-Strings + FAQ.
 
 ## Output

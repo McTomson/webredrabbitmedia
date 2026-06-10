@@ -17,6 +17,7 @@ export interface BlogPost {
     publishedAt: string;
     updatedAt: string;
     category: string;
+    cluster?: number; // 1-7. Quelle der Wahrheit: content-engine/topics/queue.yaml (clusters:). Steuert Cluster-Verlinkung.
     tags: string[];
     featuredImage: string;
     status: 'draft' | 'published';
@@ -93,6 +94,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
             publishedAt: data.publishedAt,
             updatedAt: data.updatedAt,
             category: data.category,
+            cluster: typeof data.cluster === 'number' ? data.cluster : undefined,
             tags: data.tags || [],
             featuredImage: data.featuredImage,
             // Missing status = legacy article = treated as published (keeps the 11 live ones indexed).
@@ -149,6 +151,9 @@ export async function getRelatedPosts(currentSlug: string, limit = 3): Promise<B
 
             // Same category = +3 points
             if (post.category === currentPost.category) score += 3;
+
+            // Same cluster = +2 points (topical authority: keep cluster-mates linked)
+            if (post.cluster && currentPost.cluster && post.cluster === currentPost.cluster) score += 2;
 
             // Matching tags = +1 point each
             const matchingTags = post.tags.filter((tag) => currentPost.tags.includes(tag));

@@ -6,6 +6,14 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-10 (Teil 3) — Content-Engine v2: Phase 0 deployed, Phase 1 Mess-Fundament steht
+
+- **Verbindlicher Plan:** `docs/superpowers/plans/2026-06-09-content-engine-v2-REVISED.md` (Abschn. 0-16). Schnelleinstieg: `NEXT_SESSION_CONTENT_ENGINE_V2.md`.
+- **Phase 0 (deployed):** DE-Alt-Texte, sichtbare Quellen (ArticleSources + JSON-LD citation), ausgehende Quell-Links (finalizer), `cluster`-Feld 1-7 (Quelle queue.yaml) + category-Normalisierung (21 Artikel), getRelatedPosts +2-Cluster + page.tsx daran, gate/review-notify Risk = cluster 6 + Wort-Fallback, http(s)-Schutz Quellen-URLs. Review: `docs/reviews/phase0-content-engine-v2-2026-06-10.md`. Prompt-Caching verworfen (claude -p cached nicht über getrennte Prozesse).
+- **Phase 1 (begonnen):** Dashboard `app/dashboard` + `lib/dashboard/overview.ts` (Überblick, noindex, in Prod via notFound versteckt ausser DASHBOARD_ENABLED). **GSC+GA4 OAuth-Anbindung funktioniert E2E** (Besitzer-Konto thomas.uhlir@gmail.com, weil Personal-Gmail keine Service-Accounts als GSC-Nutzer erlaubt). Creds in `~/.config/redrabbit-dashboard/` (oauth_client.json, token.json) + `.env.local` (GA4_PROPERTY_ID=519842891 = die LIVE-Property von mehreren). Skripte: `scripts/content-engine/dashboard/google_auth.ts`, `verify_google.ts`.
+- **NÄCHSTE SCHRITTE:** GSC- + GA4-Tabs bauen → Striking-Distance → Penalty/Totmann-Alarm → Kill-Switch → Conversion-Events. Dann Phase 2 (/interview-me + Vault), Phase 3 Pilot-Cluster Kosten beweisen, erst dann breit.
+- **KRITISCH:** Fabriziertes AggregateRating (315 Reviews) bleibt auf Userwunsch GEGEN dokumentierte Empfehlung (Plan §1). OFFEN: Slug-Hygiene (37 truncated + 301), YouTube-Warndreieck prüfen.
+
 ## Stand 2026-06-10 (Teil 2) — Substack live, Steuer/BFSG/Unterhalt bebildert, Pipeline-Fixes
 
 - **Substack: beide Posts live mit Video** (#313 + Kosten), Rubrik "Red Rabbit Websiten infos".

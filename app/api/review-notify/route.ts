@@ -12,7 +12,8 @@ export const runtime = 'nodejs';
 // (so the local pipeline needs no mail credentials). Body: { slug, flags?, risk? }.
 // The article content is read from the deployed repo (content/blog/<slug>.mdx).
 
-const HIGH_RISK_CATEGORIES = ['Recht', 'Steuer', 'Sicherheit', 'Compliance'];
+// Cluster 6 ("Recht & Sicherheit") = sensibel (robust gegen Label-Umbenennung); Wort-Liste = Fallback.
+const HIGH_RISK_CATEGORY_WORDS = ['Recht', 'Steuer', 'Sicherheit', 'Compliance', 'Datenschutz'];
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     const denied = requireAdminToken(req);
@@ -35,7 +36,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const m = matter(fs.readFileSync(mdxPath, 'utf8'));
     const category = String(m.data.category || '');
-    const risk: 'low' | 'high' = body.risk || (HIGH_RISK_CATEGORIES.some((c) => category.includes(c)) ? 'high' : 'low');
+    const isSensitive = m.data.cluster === 6 || HIGH_RISK_CATEGORY_WORDS.some((c) => category.includes(c));
+    const risk: 'low' | 'high' = body.risk || (isSensitive ? 'high' : 'low');
 
     const article: ReviewArticle = {
         slug,
