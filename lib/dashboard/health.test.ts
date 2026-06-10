@@ -51,11 +51,35 @@ describe('buildHealthSignals — visibility / penalty', () => {
     it('ok when stable or growing', () => {
         expect(find({ ...base, trend: trend(120, 100) }, 'visibility')?.level).toBe('ok');
     });
-    it('warns on indexation gap: live articles but zero impressions', () => {
-        expect(find({ ...base, trend: trend(0, 100), liveArticles: 20 }, 'indexation')?.level).toBe('warn');
+    it('warns on impressions gap: live articles but zero impressions', () => {
+        expect(find({ ...base, trend: trend(0, 100), liveArticles: 20 }, 'impressions-gap')?.level).toBe('warn');
     });
-    it('no indexation signal when there are no live articles', () => {
-        expect(find({ ...base, trend: trend(0, 100), liveArticles: 0 }, 'indexation')).toBeUndefined();
+    it('no impressions-gap signal when there are no live articles', () => {
+        expect(find({ ...base, trend: trend(0, 100), liveArticles: 0 }, 'impressions-gap')).toBeUndefined();
+    });
+});
+
+describe('buildHealthSignals — kill-switch', () => {
+    it('alerts loudly when the kill-switch is active', () => {
+        const s = find({ ...base, killSwitch: { active: true, reason: 'Indexierung 40%' } }, 'killswitch');
+        expect(s?.level).toBe('alert');
+        expect(s?.detail).toContain('Indexierung 40%');
+    });
+    it('no kill-switch signal when inactive or absent', () => {
+        expect(find({ ...base, killSwitch: { active: false } }, 'killswitch')).toBeUndefined();
+        expect(find(base, 'killswitch')).toBeUndefined();
+    });
+});
+
+describe('buildHealthSignals — indexation coverage', () => {
+    it('ok at or above 60%', () => {
+        expect(find({ ...base, indexation: { rate: 0.8, indexed: 16, total: 20 } }, 'indexation')?.level).toBe('ok');
+    });
+    it('warns below 60%', () => {
+        expect(find({ ...base, indexation: { rate: 0.4, indexed: 8, total: 20 } }, 'indexation')?.level).toBe('warn');
+    });
+    it('omits when no indexation data', () => {
+        expect(find(base, 'indexation')).toBeUndefined();
     });
 });
 

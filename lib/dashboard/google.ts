@@ -208,6 +208,55 @@ export async function getVisibilityTrend(days = 7): Promise<Loaded<VisibilityTre
     }
 }
 
+// ── Indexation (GSC URL Inspection) — powers the kill-switch ─────────────────
+
+export interface UrlIndexState {
+    url: string;
+    indexed: boolean;
+    state: string; // GSC coverageState text, or the failure reason
+}
+
+export interface IndexationStatus {
+    total: number;
+    indexed: number;
+    rate: number; // 0..1
+    perUrl: UrlIndexState[];
+}
+
+// Inspect each URL via the Search Console URL Inspection API (needs webmasters.readonly,
+// which the stored token already has). Sequential + best-effort: a single failing URL
+// counts as not-indexed rather than aborting the whole run. Quota is 2000/day — fine for
+// a small article set. Slow (~1s/URL) → meant for a scheduled script, not live render.
+export async function getIndexationStatus(urls: string[]): Promise<Loaded<IndexationStatus>> {
+    const auth = authClient();
+    if (!auth) {
+        return { state: 'unconfigured', message: `Keine Google-Zugangsdaten unter ${CFG} gefunden.` };
+    }
+    // URL Inspection requires the EXACT verified property string. GSC URL-prefix
+    // properties carry a trailing slash (the Search Analytics API is more lenient).
+    const property = SITE.endsWith('/') ? SITE : `${SITE}/`;
+    try {
+        const sc = google.searchconsole({ version: 'v1', auth });
+        const perUrl: UrlIndexState[] = [];
+        for (const url of urls) {
+            try {
+                const res = await sc.urlInspection.index.inspect({ requestBody: { inspectionUrl: url, siteUrl: property } });
+                const r = res.data.inspectionResult?.indexStatusResult;
+                const coverage = r?.coverageState || 'unbekannt';
+                const indexed = r?.verdict === 'PASS' || /indexed/i.test(coverage);
+                perUrl.push({ url, indexed, state: coverage });
+            } catch (e: unknown) {
+                perUrl.push({ url, indexed: false, state: e instanceof Error ? e.message.slice(0, 80) : 'Fehler' });
+            }
+        }
+        const indexed = perUrl.filter((u) => u.indexed).length;
+        const total = perUrl.length;
+        return { state: 'ok', data: { total, indexed, rate: total > 0 ? indexed / total : 0, perUrl } };
+    } catch (e: unknown) {
+        return { state: 'error', message: safeErrorMessage(e) };
+    }
+}
+
 // ── Google Analytics 4 ───────────────────────────────────────────────────────
 
 export interface Ga4Pair {

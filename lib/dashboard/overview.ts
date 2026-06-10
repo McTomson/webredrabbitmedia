@@ -34,6 +34,16 @@ export interface OverviewData {
     pendingMedia: Array<{ slug: string; requestedAt: string; hasPodcast: boolean; hasVideo: boolean }>;
     lastDailyRun: { file: string; ok: boolean; tail: string } | null;
     lastMediaCheck: { file: string; tail: string } | null;
+    killSwitch: { active: boolean; reason?: string } | null; // content-engine/.kill-switch.json
+    indexation: { rate: number; indexed: number; total: number; checkedAt: string } | null; // content-engine/.indexation.json
+}
+
+function readJson<T>(file: string): T | null {
+    try {
+        return JSON.parse(fs.readFileSync(file, 'utf8')) as T;
+    } catch {
+        return null;
+    }
 }
 
 function readQueueTopics(): QueueTopic[] {
@@ -138,5 +148,7 @@ export async function getOverview(): Promise<OverviewData> {
         pendingMedia,
         lastDailyRun: dailyLog ? { file: path.basename(dailyLog), ok: /fertig/.test(dailyTail) || /Heute schon gelaufen/.test(dailyTail), tail: dailyTail } : null,
         lastMediaCheck: mediaLog ? { file: path.basename(mediaLog), tail: tailFile(mediaLog) } : null,
+        killSwitch: readJson<{ active: boolean; reason?: string }>(path.join(CE, '.kill-switch.json')),
+        indexation: readJson<{ rate: number; indexed: number; total: number; checkedAt: string }>(path.join(CE, '.indexation.json')),
     };
 }

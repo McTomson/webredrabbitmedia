@@ -20,10 +20,14 @@ export interface HealthInput {
     newestArticleAgeDays: number | null; // days since the most recent published article
     lastDailyRunOk: boolean | null; // null = no local log available (unknown)
     liveArticles: number;
+    killSwitch?: { active: boolean; reason?: string } | null; // content-engine/.kill-switch.json
+    indexation?: { rate: number; indexed: number; total: number } | null; // GSC coverage
 }
 
 // Below this many previous-period impressions the trend is statistical noise — don't alarm.
 const MIN_IMPRESSIONS_FOR_TREND = 50;
+// Indexation rate below this raises a warning (and trips the kill-switch in the check script).
+const INDEXATION_MIN = 0.6;
 
 const LEVEL_RANK: Record<HealthLevel, number> = { ok: 0, info: 1, warn: 2, alert: 3 };
 
@@ -33,6 +37,11 @@ export function worstLevel(signals: HealthSignal[]): HealthLevel {
 
 export function buildHealthSignals(input: HealthInput): HealthSignal[] {
     const signals: HealthSignal[] = [];
+
+    // 0. Kill-switch — loudest signal: the daily engine is paused.
+    if (input.killSwitch?.active) {
+        signals.push({ id: 'killswitch', level: 'alert', title: 'Kill-Switch aktiv', detail: `${input.killSwitch.reason || 'Indexierung unter Schwelle'} — Produktion pausiert. Beheben, dann content-engine/.kill-switch.json entfernen.` });
+    }
 
     // 1. Pipeline dead-man (engine should publish ~1 article/day).
     if (input.newestArticleAgeDays != null) {
@@ -68,9 +77,20 @@ export function buildHealthSignals(input: HealthInput): HealthSignal[] {
             signals.push({ id: 'visibility', level: 'ok', title: 'Sichtbarkeit stabil', detail: `Impressionen ${sign}${impr.deltaPct}% ggü. den ${n} Tagen davor.` });
         }
 
-        // 4. Indexation: live articles but no impressions at all in the current period.
+        // 4. Live articles but no impressions at all in the current period.
         if (input.liveArticles > 0 && impr.current === 0) {
-            signals.push({ id: 'indexation', level: 'warn', title: 'Keine Impressionen', detail: 'Live-Artikel vorhanden, aber 0 Impressionen — Indexierung in der Search Console prüfen.' });
+            signals.push({ id: 'impressions-gap', level: 'warn', title: 'Keine Impressionen', detail: 'Live-Artikel vorhanden, aber 0 Impressionen — Indexierung in der Search Console prüfen.' });
+        }
+    }
+
+    // 5. Indexation coverage (from the GSC URL-Inspection check).
+    if (input.indexation && input.indexation.total > 0) {
+        const { rate, indexed, total } = input.indexation;
+        const pct = Math.round(rate * 100);
+        if (rate < INDEXATION_MIN) {
+            signals.push({ id: 'indexation', level: 'warn', title: 'Indexierung niedrig', detail: `Nur ${indexed}/${total} Artikel indexiert (${pct}%).` });
+        } else {
+            signals.push({ id: 'indexation', level: 'ok', title: 'Indexierung ok', detail: `${indexed}/${total} Artikel indexiert (${pct}%).` });
         }
     }
 

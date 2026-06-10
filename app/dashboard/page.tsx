@@ -22,6 +22,8 @@ export default async function DashboardOverviewPage() {
         newestArticleAgeDays,
         lastDailyRunOk: d.lastDailyRun ? d.lastDailyRun.ok : null,
         liveArticles: d.liveArticles,
+        killSwitch: d.killSwitch,
+        indexation: d.indexation,
     });
 
     return (
