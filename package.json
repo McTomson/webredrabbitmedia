@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "engine": "tsx scripts/content-engine/pipeline.ts",
+    "engine:indexation": "tsx scripts/content-engine/dashboard/check_indexation.ts",
     "media": "tsx scripts/content-engine/media/run-media.ts",
     "media:pending": "tsx scripts/content-engine/media/pending.ts"
   },

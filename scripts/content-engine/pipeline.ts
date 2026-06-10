@@ -3,6 +3,7 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import yaml from 'js-yaml';
 import { ROOT, CE, readMemory, runClaude } from './lib/roles';
+import { readKillSwitch } from './lib/killSwitch';
 import { extractJsonBlock, extractMdxBlock } from './lib/extract';
 import { verifySources, type Source } from './lib/verifySources';
 import { validateFrontmatter } from './frontmatter';
@@ -196,6 +197,18 @@ async function main() {
     const emit = args.includes('--emit');
     const useNext = args.includes('--next');
     if (!key && !useNext) throw new Error('Slug/ID oder --next angeben: tsx scripts/content-engine/pipeline.ts <slug-or-id|--next> [--emit]');
+
+    // Kill-switch: when indexation dropped below threshold, do NOT publish onto a
+    // possibly-penalised site. Only blocks --emit (dry runs stay allowed for testing).
+    // Clear via `rm content-engine/.kill-switch.json` once the issue is resolved.
+    if (emit) {
+        const ks = readKillSwitch();
+        if (ks.active) {
+            console.log(`\nKILL-SWITCH AKTIV — Produktion pausiert: ${ks.reason || 'Indexierung unter Schwelle'}.`);
+            console.log('   Tageslauf bricht ohne Veroeffentlichung ab. Nach Behebung: rm content-engine/.kill-switch.json');
+            process.exit(0);
+        }
+    }
 
     const t = useNext ? selectNextTopic() : loadTopic(key!);
     const dir = workDir(t.slug);

@@ -44,5 +44,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 scripts/content-engine/.work/
+content-engine/.kill-switch.json
+content-engine/.indexation.json
 graphify-out/
 .agents/
