@@ -26,9 +26,21 @@ export function embedPodcast(mdx: string, slug: string, title: string): string {
     return insertAfterH1(mdx, tag);
 }
 
-export function embedVideo(mdx: string, youtubeId: string, title: string): string {
+// Embed the video. When opts.src is given we self-host: the article uses the HTML5 <video>
+// (src + poster) which is never blocked by content filters (uBlock/Brave/Pi-hole); the id is
+// kept only for the "watch on YouTube" caption link. Without opts.src it falls back to the
+// YouTube-only embed (legacy). Self-hosting is the default for the media pipeline because the
+// YouTube-only embed shows a broken link in filtered browsers.
+export function embedVideo(
+    mdx: string,
+    youtubeId: string,
+    title: string,
+    opts: { src?: string; poster?: string } = {},
+): string {
     if (new RegExp(`<VideoEmbed[^>]*id=["']${youtubeId}["']`).test(mdx)) return mdx; // already embedded
-    const tag = `<VideoEmbed id="${youtubeId}" title="${title.replace(/"/g, "'")}" />`;
+    const srcAttr = opts.src ? ` src="${opts.src}"` : '';
+    const posterAttr = opts.poster ? ` poster="${opts.poster}"` : '';
+    const tag = `<VideoEmbed${srcAttr}${posterAttr} id="${youtubeId}" title="${title.replace(/"/g, "'")}" />`;
     const lines = mdx.split('\n');
     // Prefer to place the video right after the podcast player if present, else after the H1.
     const audioIdx = lines.findIndex((l) => l.includes('<SimpleAudioPlayer'));

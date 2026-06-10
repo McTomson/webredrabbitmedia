@@ -130,8 +130,24 @@ function main() {
         log('2/6 Video wird auf YouTube hochgeladen (public) ...');
         const id = uploadToYoutube(video, videoTitle, descFile, 'Webdesign,Website,Oesterreich,Red Rabbit Media');
         youtubeUrl = `https://youtu.be/${id}`;
-        mdx = embedVideo(mdx, id, videoTitle);
-        log(`3/6 Video eingebettet (${youtubeUrl})`);
+
+        // Self-host the MP4 so the article plays it via HTML5 <video> (never blocked by
+        // content filters like uBlock/Brave/Pi-hole, unlike a YouTube iframe). The id is kept
+        // only for the "watch on YouTube" caption link. Copy the file + extract a poster frame.
+        const videosDir = path.join(ROOT, 'public/videos');
+        fs.mkdirSync(videosDir, { recursive: true });
+        const videoDest = path.join(videosDir, `${slug}-video.mp4`);
+        const posterDest = path.join(videosDir, `${slug}-poster.jpg`);
+        fs.copyFileSync(video, videoDest);
+        try {
+            execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-ss', '3', '-i', videoDest, '-frames:v', '1', '-vf', 'scale=1280:-2', posterDest], { stdio: 'inherit' });
+        } catch {
+            // ffmpeg missing or frame extraction failed: fall back to the hero image as poster.
+            log('   Poster-Frame fehlgeschlagen, nutze Hero-Bild als Poster');
+        }
+        const posterRef = fs.existsSync(posterDest) ? `/videos/${slug}-poster.jpg` : `/images/blog/${slug}.png`;
+        mdx = embedVideo(mdx, id, videoTitle, { src: `/videos/${slug}-video.mp4`, poster: posterRef });
+        log(`3/6 Video selbst-gehostet + eingebettet (public/videos/${slug}-video.mp4, YouTube ${youtubeUrl})`);
     } else {
         log('2-3/6 Video uebersprungen (kein --video)');
     }
@@ -140,7 +156,7 @@ function main() {
 
     // 4) commit + push
     if (!flag('no-push')) {
-        execFileSync('git', ['add', mdxPath, 'public/audio', 'public/images/blog'], { cwd: ROOT, stdio: 'inherit' });
+        execFileSync('git', ['add', mdxPath, 'public/audio', 'public/images/blog', 'public/videos'], { cwd: ROOT, stdio: 'inherit' });
         try {
             execFileSync('git', ['commit', '-q', '-m', `feat(blog): add images + podcast + video to ${slug}`], { cwd: ROOT, stdio: 'inherit' });
             execFileSync('git', ['push', 'origin', 'main'], { cwd: ROOT, stdio: 'inherit' });
