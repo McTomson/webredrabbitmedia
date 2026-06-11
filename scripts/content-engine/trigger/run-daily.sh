@@ -85,7 +85,9 @@ SLUG="$(git status --porcelain content/blog | grep -E '\.mdx$' | head -1 | sed -
 if [ -z "$SLUG" ]; then echo "Kein neuer Artikel erkannt."; exit 0; fi
 echo "Neuer Artikel: $SLUG"
 
-git add content/blog public/images/blog content-engine/topics/status.json
+# Include vault.md: the pipeline's --emit backflow appends verified facts there; without staging
+# it the knowledge SoT drifts uncommitted in the working tree (caused a dirty-tree surprise 11.06).
+git add content/blog public/images/blog content-engine/topics/status.json content-engine/knowledge/vault.md
 git commit -q -m "feat(blog): add draft $SLUG (daily engine run)" || { echo "Nichts zu committen"; exit 0; }
 git push origin main || { alert "git push fehlgeschlagen"; exit 1; }
 
