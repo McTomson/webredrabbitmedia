@@ -6,6 +6,15 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-11 (Teil 9 / Session-Ende 2) — Phase 3 fertig, Phase 4 headless bewiesen (main `fa4d639`)
+
+ZUERST `NEXT_SESSION_CONTENT_ENGINE_V2.md` lesen (copy-paste-Prompt) + `docs/runbooks/notebooklm-headless.md`.
+
+- **Phase 3 KOMPLETT abgeschlossen + deployed:** Alle On-Page-Audit-Befunde geschlossen (Ø-Score **100**): internal_links 19→0 (bidirektionale Cluster-Verlinkung, siehe Teil 7/8); year_in_title via "2026" in 2 Titeln (5-Seiten, 10-Fehler) + `evergreen:true`-Opt-out (Grafikdesign-vs-UX) im Audit (`onpage.ts` + `frontmatter.ts`); key_takeaways-Block ergänzt (10-Seiten). Auto-Verlinkung verifiziert: der Live-Tageslauf propagierte meine Titel-Änderung selbst in alle Anker.
+- **Phase 4 (Medien headless) — Mechanik BEWIESEN, noch nicht produktiv verdrahtet:** Der bestehende `notebooklm-mcp@2.0.0` erzeugt+lädt Podcasts end-to-end headless (`generate_audio`→`get_audio_status`(ready)→`download_audio` → echte 40-MB-.m4a), ABER NUR als **t.uhlir@immo.red (BEZAHLT)** eingeloggt. **Alle früheren "chat input/more-menu not found"-Fehler = falsches Konto (MCP hing am Gratis-/LinkedIn-Konto), NICHT veraltete Selektoren/kaputtes Werkzeug.** YouTube-Spam-Schutz `containsSyntheticMedia` live (`youtube_upload.py`, default true). Runbook `docs/runbooks/notebooklm-headless.md` (Symptom→Ursache, Patch-Prozedur, Browser-Klick-Fallback). MCP wrappt nur Audio; NotebookLM kann Video inzwischen NATIV ("Videoübersicht"), aber nicht über diesen MCP.
+- **OFFEN für Phase-4-Produktiv:** Cluster-Notebooks müssen unter t.uhlir@immo.red liegen. Kosten-Pilot `3eccf288` ist eine WAISE auf thomas.uhlir@gmail.com (Versehen) → neu anlegen. Dann headless-Podcast in run-media verdrahten. Siehe [[reference_notebooklm_account_redrabbit]] (korrigiert).
+- **Operatives:** launchd-RACE real (run-daily 02:00 + mediachecker alle 30 Min committen/pushen ins selbe Repo) → IMMER `git fetch` vor Push, bei Divergenz `git pull --rebase`. `run-daily.sh` committet jetzt auch `vault.md` (Backflow lief sonst uncommittet). Offene Medien-Marker: warum-sind-manche-webdesign-agenturen (freigegeben, wartet auf Medien-Lauf), wie-viel-kostet-...-unterhalt.
+
 ## Stand 2026-06-11 (Teil 7) — Phase 3 #1-Hebel: interne Cluster-Verlinkung LIVE (main `0e3717e`)
 
 - **Bidirektionale interne Cluster-Verlinkung gebaut + deployed.** `scripts/content-engine/lib/clusterLinks.ts` (deterministisch, spiegelt `getRelatedPosts`-Scoring Kategorie+3/Cluster+2/Tag+1, nur publizierte Artikel, chirurgische Marker-basierte Block-Injektion `{/* cluster-links:start/end */}`, single-run-idempotent, Frontmatter byte-genau, Anker MDX-escaped, Slug-Guard, Block ans Body-Ende). Block-Titel "Das könnte Sie auch interessieren" mit `/tipps/{slug}`-Links.
