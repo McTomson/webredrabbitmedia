@@ -6,6 +6,15 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-11 (Teil 10) — Qualitäts-Scan (Punkt 4) fertig + review-it GO (main `e5f1d4a`)
+
+ZUERST `NEXT_SESSION_CONTENT_ENGINE_V2.md` + `docs/runbooks/quality-scan.md`.
+
+- **Punkt 4 (To-do-Liste A4 / Plan §15) KOMPLETT:** vier resiliente Qualitäts-Scanner (links/schema/geo/a11y), additiv, graziös degradierend → gitignored SoT `content-engine/.quality-report.json` → read-only Sektion "Qualitäts-Scan" im Verbesserungen-Tab. `npm run quality:scan [-- --quick|--geo|--a11y|--only=|--limit=|--base=]`. lychee installiert (brew, akzeptiert 403/429=Bot-Sperre), foglift-scan=devDep (gratis, kein Key, rate-limited ~8 URLs/Lauf→degradiert, liefert "Multiple H1/Title too long"-Befunde), pa11y opt-in (`npm i -D pa11y`, Chromium=Ballast). 143 Tests grün, Build grün, Browser verifiziert.
+- **WICHTIGE LEHRE: schema-dts (Plan-Wunsch) VERWORFEN** — `WithContext<BlogPosting>`-Typisierung OOM-crasht den `next build`-Type-Check (2GB-Heap, SIGABRT nach "Compiled successfully"). Schema-Sicherheit jetzt via Runtime-Scanner gegen die deployte Seite. Auch: `next build | tail` verschluckt den Exit-Code (pipefail nötig). Details [[handoff_2026_06_11_redrabbit_phase2_komplett]] + LESSONS_LEARNED Teil 9.
+- review-it (3 Agenten): GO, kein CRITICAL/MAJOR-Blocker; alle Befunde gefixt (`e5f1d4a`): O(n²)-Read, scanSchema-Timer-Leak, a11y-Teildaten-Ehrlichkeit, Aggregation→lib, --base/Slug-Härtung. Log `docs/reviews/quality-scan-2026-06-11.md`.
+- NÄCHSTER Punkt: To-do #5 Distribution (braucht User-Freigaben) ODER #3 Pillar+Spokes. Phase 4 (headless Medien produktiv) bleibt offen (Notebooks unter t.uhlir@immo.red, siehe unten).
+
 ## Stand 2026-06-11 (Teil 9 / Session-Ende 2) — Phase 3 fertig, Phase 4 headless bewiesen (main `fa4d639`)
 
 ZUERST `NEXT_SESSION_CONTENT_ENGINE_V2.md` lesen (copy-paste-Prompt) + `docs/runbooks/notebooklm-headless.md`.
