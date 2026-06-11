@@ -41,10 +41,9 @@ export const metadata: Metadata = {
     images: ['https://web.redrabbit.media/images/twitter-card.jpg'],
   },
 
-  // Canonical URL
-  alternates: {
-    canonical: 'https://web.redrabbit.media',
-  },
+  // NOTE: Kein globales canonical! Jede Seite setzt ihr eigenes (self-referencing)
+  // in der eigenen Metadata. Ein globales canonical auf die Homepage hatte zur Folge,
+  // dass Google alle Unterseiten als Homepage-Duplikate behandelte (deindexiert).
 
   // Robots
   robots: {
@@ -186,14 +185,12 @@ const jsonLd = {
         "seller": {
           "@id": "https://web.redrabbit.media/#organization"
         }
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "315",
-        "bestRating": "5",
-        "worstRating": "1"
       }
+      // aggregateRating ENTFERNT: Ein Rating ohne echte, verifizierbare Reviews
+      // (z. B. Google Business Profile) verstößt gegen Googles Structured-Data-
+      // Richtlinien. Das globale Schema sorgte zudem für Bewertungs-Sterne auf
+      // Impressum/AGB/Datenschutz in den SERPs (Review-Spam-Signal).
+      // Wieder einbauen, sobald echte Reviews existieren — dann NUR auf /preise.
     }
   ]
 };

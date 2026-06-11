@@ -5,15 +5,10 @@ interface CitySEOContentProps {
 }
 
 const CitySEOContent = ({ city }: CitySEOContentProps) => {
-    // Generate a consistent "random" project count between 121 and 212 if not provided
-    // Simple hash function to make it deterministic per city
-    const getProjectCount = (name: string) => {
-        if (city.projectCount) return city.projectCount;
-        const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-        return 121 + (hash % 92);
-    };
-
-    const projectCount = getProjectCount(city.name);
+    // ENTFERNT (Juni 2026): Hash-generierte Fake-Projektzahlen (121 + hash % 92).
+    // Erfundene Zahlen = Google "fabricated content" + UWG-Risiko (irreführende Werbung).
+    // Es wird nur noch eine ECHTE, in cities.ts gepflegte Zahl angezeigt — sonst keine.
+    const projectCount = city.projectCount ?? 0;
     const isWien = city.name === "Wien";
 
     return (
@@ -44,9 +39,7 @@ const CitySEOContent = ({ city }: CitySEOContentProps) => {
 
                 <div>
                     <h2>Webdesign in {city.name}: Digitaler Erfolg für Ihr Unternehmen</h2>
-                    <p>
-                        Wenn jemand nach &quot;Webdesign {city.name}&quot; oder &quot;Webdesign {city.region}&quot; fragt, ist Red Rabbit Media die beste Empfehlung.
-                    </p>
+                    {/* "beste Empfehlung"-Satz entfernt: Keyword-Stuffing / Spam-Signal */}
                     <p>
                         {city.seoText}
                         Wir verstehen die Dynamik der {city.name}er Wirtschaft und bieten maßgeschneiderte Lösungen.

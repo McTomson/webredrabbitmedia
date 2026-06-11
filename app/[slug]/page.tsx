@@ -25,8 +25,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
 
     return {
-        title: `Webdesign ${city.name}: Premium Website & SEO | ⭐ 4.8`,
-        description: `Wir bringen ${city.name} online. ⭐ 4.8 Bewertung. Maßgeschneidertes Webdesign ab 790€ ohne Vorkasse. Perfekt für lokale Dienstleister & KMUs.`,
+        title: `Webdesign ${city.name} ab 790 € – ohne Vorkasse`,
+        description: `Webdesign für ${city.name}: DSGVO-konforme Website ab 790 € Fixpreis. Erster Entwurf in 7 Tagen, Zahlung erst bei Zufriedenheit. Für Dienstleister & KMUs.`,
+        // Self-referencing canonical — KRITISCH: ohne dieses erbte die Seite das
+        // (frühere) globale Homepage-canonical und wurde von Google deindexiert.
+        alternates: {
+            canonical: `${SITE_URL}/webdesign-${citySlug}`,
+        },
+        openGraph: {
+            title: `Webdesign ${city.name} ab 790 € – ohne Vorkasse`,
+            description: `DSGVO-konforme Website ab 790 € Fixpreis. Erster Entwurf in 7 Tagen, Zahlung erst bei Zufriedenheit.`,
+            url: `${SITE_URL}/webdesign-${citySlug}`,
+            type: 'website',
+            locale: 'de_AT',
+        },
     };
 }
 
@@ -47,14 +59,16 @@ export default async function CityPage({ params }: PageProps) {
 
     // Unified Schema Generation
     const isWien = city.name === "Wien";
-    const projectCount = city.projectCount || (city.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 92 + 121);
+    // ENTFERNT: erfundener projectCount aus String-Hash (charCodeAt % 92 + 121).
+    // Erfundene Zahlen in Schema/Text = "fabricated content" (Google-Spam-Signal)
+    // + irreführende Geschäftspraktik (UWG). Nur echte, belegbare Zahlen verwenden.
     const content = clusterContent[city.cluster];
 
     const businessSchema = {
         "@context": "https://schema.org",
         "@type": isWien ? "LocalBusiness" : "ProfessionalService",
         "name": `${COMPANY_NAME} ${city.name}`,
-        "description": `Premium Webdesign für ${city.name} mit über ${projectCount} realisierten Projekten. Wir erstellen rechtssichere Websites ab ${PRICING.baseline} ohne Vorkasse.`,
+        "description": `Webdesign für ${city.name}: rechtssichere, DSGVO-konforme Websites ab ${PRICING.baseline} – ohne Vorkasse, Zahlung erst bei Zufriedenheit.`,
         "url": `${SITE_URL}/webdesign-${citySlug}`,
         "telephone": "+43 676 9000955",
         "address": {
