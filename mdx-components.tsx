@@ -89,12 +89,21 @@ function FeaturedList({ title, items }: { title: string; items: string[] }) {
 // Custom MDX Components
 export function useMDXComponents(components: MDXComponents): MDXComponents {
     return {
-        // Headings with auto-generated IDs
-        h1: ({ children, ...props }) => (
-            <h1 className="text-4xl font-bold mt-8 mb-4 text-gray-900" {...props}>
-                {children}
-            </h1>
-        ),
+        // Headings with auto-generated IDs.
+        // A markdown `#` in an article body is rendered as <h2>, NOT <h1>: the page already has its
+        // single <h1> (the title hero in BlogPostClient). Emitting a body <h1> created a second page
+        // H1 (SEO defect). The leading title `#` is stripped in posts.ts; this mapping guarantees that
+        // any remaining/future `#` can never become an extra H1. Keep the larger text size for hierarchy.
+        h1: ({ children, ...props }) => {
+            const id = typeof children === 'string'
+                ? children.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+                : '';
+            return (
+                <h2 id={id} className="text-4xl font-bold mt-8 mb-4 text-gray-900 scroll-mt-20" {...props}>
+                    {children}
+                </h2>
+            );
+        },
         h2: ({ children, ...props }) => {
             const id = typeof children === 'string'
                 ? children.toLowerCase().replace(/[^a-z0-9]+/g, '-')
