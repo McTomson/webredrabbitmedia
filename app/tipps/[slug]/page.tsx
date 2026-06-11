@@ -1,4 +1,4 @@
-import { getPostBySlug, getAllPosts, getRelatedPosts, compileBlogPost, extractHeadings } from '@/lib/blog/posts';
+import { getPostBySlug, getAllPosts, getRelatedPosts, compileBlogPost, extractHeadings, clampDescription } from '@/lib/blog/posts';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { BlogPostClient } from './BlogPostClient';
@@ -23,16 +23,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? { robots: { index: false, follow: false } }
         : {};
 
+    // SERPs truncate descriptions beyond ~160 chars; cap the meta tags (excerpt stays full for cards).
+    const metaDescription = clampDescription(post.excerpt);
+
     return {
         title: `${post.title} | Red Rabbit Media`,
-        description: post.excerpt,
+        description: metaDescription,
         ...draftRobots,
         alternates: {
             canonical: `${SITE_URL}/tipps/${slug}`,
         },
         openGraph: {
             title: post.title,
-            description: post.excerpt,
+            description: metaDescription,
             url: `${SITE_URL}/tipps/${slug}`,
             images: [post.featuredImage],
             type: 'article',
@@ -42,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         twitter: {
             card: 'summary_large_image',
             title: post.title,
-            description: post.excerpt,
+            description: metaDescription,
             images: [post.featuredImage],
         },
     };

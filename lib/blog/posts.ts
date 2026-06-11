@@ -80,6 +80,19 @@ export function stripLeadingTitleH1(content: string): string {
     return content;
 }
 
+// Cap a meta description at ~155 chars on a word boundary (SERPs truncate beyond ~160). Applied to
+// the <meta>/og/twitter description only — the full excerpt is kept for listing cards. Many excerpts
+// run 180-266 chars (foglift "meta description too long"), so this trims display without losing them.
+export function clampDescription(text: string, max = 155): string {
+    const t = (text || '').trim();
+    if (t.length <= max) return t;
+    const cut = t.slice(0, max - 1);
+    const lastSpace = cut.lastIndexOf(' ');
+    // Backtrack to the last word boundary, but only if it does not gut the text (< 60% of the budget);
+    // otherwise keep the hard cut. Avoids a mid-word truncation on normal prose.
+    return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[.,;:\s]+$/, '') + '…';
+}
+
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     try {
         const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
