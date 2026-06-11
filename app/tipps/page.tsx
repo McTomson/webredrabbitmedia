@@ -34,13 +34,9 @@ export default async function BlogPage() {
             'name': 'Thomas Uhlir MBA',
             'jobTitle': 'Webdesign & SEO Experte',
             'url': 'https://web.redrabbit.media/tipps', // Corrected canonical URL
-            'aggregateRating': {
-                '@type': 'AggregateRating',
-                'ratingValue': '4.8',
-                'reviewCount': '315',
-                'bestRating': '5',
-                'worstRating': '1'
-            }
+            // aggregateRating entfernt (Juni 2026): erfundene Bewertungszahl ohne echte Reviews
+            // = Verstoss gegen Google Structured-Data-Richtlinien. Erst wieder einbauen,
+            // wenn echte Bewertungen (z.B. Google Business Profile) existieren.
         }
     };
 

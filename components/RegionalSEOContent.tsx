@@ -106,13 +106,9 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
                 }))
             }
         },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "reviewCount": String(content.projectCount || "150"),
-            "bestRating": "5",
-            "worstRating": "1"
-        }
+        // aggregateRating entfernt (Juni 2026): erfundene Bewertungszahl ohne echte Reviews
+        // = Verstoss gegen Google Structured-Data-Richtlinien. Erst wieder einbauen,
+        // wenn echte Bewertungen (z.B. Google Business Profile) existieren.
     };
 
     return (

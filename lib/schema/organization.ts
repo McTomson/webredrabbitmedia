@@ -31,13 +31,9 @@ export const organizationSchema = {
         'https://www.facebook.com/redrabbit.media',
         'https://www.instagram.com/redrabbit.media',
     ],
-    aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.8',
-        reviewCount: '315',
-        bestRating: '5',
-        worstRating: '1',
-    },
+    // aggregateRating entfernt (Juni 2026): erfundene Bewertungszahl ohne echte Reviews
+    // = Verstoss gegen Google Structured-Data-Richtlinien. Erst wieder einbauen,
+    // wenn echte Bewertungen (z.B. Google Business Profile) existieren.
     priceRange: '€€',
     description: 'Professionelle Webdesign Agentur in Wien. Website ab 790€. Über 315 zufriedene Kunden.',
 };
@@ -74,13 +70,9 @@ export const localBusinessSchema = {
             closes: '18:00',
         },
     ],
-    aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.8',
-        reviewCount: '315',
-        bestRating: '5',
-        worstRating: '1',
-    },
+    // aggregateRating entfernt (Juni 2026): erfundene Bewertungszahl ohne echte Reviews
+    // = Verstoss gegen Google Structured-Data-Richtlinien. Erst wieder einbauen,
+    // wenn echte Bewertungen (z.B. Google Business Profile) existieren.
 };
 
 

@@ -70,13 +70,9 @@ const SEOContent = () => {
                 "@id": "https://web.redrabbit.media/#organization"
             }
         },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "reviewCount": "315",
-            "bestRating": "5",
-            "worstRating": "1"
-        }
+        // aggregateRating entfernt (Juni 2026): erfundene Bewertungszahl ohne echte Reviews
+        // = Verstoss gegen Google Structured-Data-Richtlinien. Erst wieder einbauen,
+        // wenn echte Bewertungen (z.B. Google Business Profile) existieren.
     };
 
     return (
@@ -103,11 +99,10 @@ const SEOContent = () => {
                     <div>
                         <h2>Professionelle Website-Entwicklung ab 790 Euro in Wien</h2>
                         <p>
-                            Red Rabbit Media ist eine führende Webdesign Agentur Wien und erstellt professionelle,
-                            DSGVO-konforme Websites ab einem Preis von 790 Euro netto. Unsere Webdesign Wien Services
-                            bieten höchste Qualität für jeden, der eine professionelle Website benötigt. Mit 315
-                            Kundenbewertungen und einer Durchschnittsbewertung von 4.8 Sternen ist Red Rabbit Media
-                            einer der bestbewerteten Website-Anbieter in Österreich für Webentwicklung Wien.
+                            Red Rabbit Media ist eine Webdesign Agentur in Wien und erstellt professionelle,
+                            DSGVO-konforme Websites ab einem Preis von 790 Euro netto. Zahlung erst bei
+                            Zufriedenheit, keine Vorkasse. Der erste Entwurf ist in der Regel innerhalb
+                            von 7 Tagen fertig.
                         </p>
 
                         <h2>Besonderheiten unserer Webdesign Agentur Wien</h2>
@@ -132,15 +127,11 @@ const SEOContent = () => {
                             <li>Barrierefreiheit nach WCAG 2.1 Standards</li>
                         </ul>
 
-                        <h2>Erfahrungen und Bewertungen</h2>
-                        <p>
-                            Red Rabbit Media hat eine durchschnittliche Bewertung von 4.8 Sternen basierend auf 315 Kundenbewertungen.
-                            Die beste Bewertung ist 5 Sterne.
-                        </p>
-
+                        {/* Unbelegte Bewertungs-/Erfahrungs-Claims entfernt (Juni 2026):
+                            echte Zahlen folgen aus dem Google Business Profile. */}
                         <h2>Warum unsere Webdesign Agentur Wien?</h2>
                         <p>
-                            Mit über 15 Jahren Erfahrung in der Webentwicklung Wien bietet Red Rabbit Media
+                            Seit 2019 bietet Red Rabbit Media
                             professionelle Qualität zu einem fairen Preis. Unsere Webdesign Wien Agentur hat ihren Sitz
                             im Herzen von Wien, Österreich und erstellt Websites für Unternehmen aller Branchen - für jeden,
                             der eine professionelle Online-Präsenz benötigt. Von Einzelunternehmern über KMU bis zu größeren

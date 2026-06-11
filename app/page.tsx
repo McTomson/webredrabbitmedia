@@ -1,4 +1,11 @@
 import dynamic from 'next/dynamic';
+import type { Metadata } from 'next';
+
+// Self-referencing canonical für die Startseite (das frühere globale canonical
+// in layout.tsx wurde entfernt, weil es alle Unterseiten deindexierte).
+export const metadata: Metadata = {
+  alternates: { canonical: 'https://web.redrabbit.media' },
+};
 
 import Hero from "@/components/Hero";
 import SEOContent from "@/components/SEOContent";

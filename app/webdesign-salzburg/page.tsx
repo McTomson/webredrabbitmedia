@@ -61,11 +61,9 @@ export default function SalzburgPage() {
             "@type": "State",
             "name": "Salzburg"
         },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "134"
-        }
+        // aggregateRating entfernt (Juni 2026): erfundene Bewertungszahl ohne echte Reviews
+        // = Verstoss gegen Google Structured-Data-Richtlinien. Erst wieder einbauen,
+        // wenn echte Bewertungen (z.B. Google Business Profile) existieren.
     };
 
     return (

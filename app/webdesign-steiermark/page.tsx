@@ -64,11 +64,9 @@ export default function SteiermarkPage() {
       "@type": "State",
       "name": "Steiermark"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "179"
-    }
+    // aggregateRating entfernt (Juni 2026): erfundene Bewertungszahl ohne echte Reviews
+    // = Verstoss gegen Google Structured-Data-Richtlinien. Erst wieder einbauen,
+    // wenn echte Bewertungen (z.B. Google Business Profile) existieren.
   };
 
   return (
