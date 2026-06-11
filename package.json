@@ -17,7 +17,8 @@
     "notebooklm:record": "tsx scripts/content-engine/knowledge/notebooklm_record.ts",
     "remind": "tsx scripts/content-engine/dashboard/remind_tasks.ts",
     "media": "tsx scripts/content-engine/media/run-media.ts",
-    "media:pending": "tsx scripts/content-engine/media/pending.ts"
+    "media:pending": "tsx scripts/content-engine/media/pending.ts",
+    "quality:scan": "tsx scripts/content-engine/quality/scan.ts"
   },
   "dependencies": {
     "@next/third-parties": "^16.1.3",
@@ -49,6 +50,7 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "^15.1.3",
+    "foglift-scan": "^1.0.2",
     "js-yaml": "^4.2.0",
     "tailwindcss": "^4",
     "tsx": "^4.22.4",

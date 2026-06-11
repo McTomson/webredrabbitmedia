@@ -1,10 +1,21 @@
 import { getOnPageAudit } from '@/lib/dashboard/onpage';
+import { getQualityReport } from '@/lib/dashboard/quality';
 import { CLUSTER_NAMES } from '@/lib/dashboard/overview';
 import { int } from '@/lib/dashboard/format';
 import { Kpi, SectionCard, EmptyState, Th, Td, Card } from '../ui';
 import { TrendingUp, CheckCircle2, FlaskConical } from 'lucide-react';
+import type { ScannerKey, ScannerStatus } from '@/scripts/content-engine/quality/types';
 
 export const dynamic = 'force-dynamic';
+
+// Per-scanner status chip. Colour is always paired with a word (never colour-only).
+const SCANNER_LABEL: Record<ScannerKey, string> = { links: 'Links', schema: 'Schema', geo: 'GEO', a11y: 'A11y' };
+const STATUS_CHIP: Record<ScannerStatus, { text: string; cls: string }> = {
+    ok: { text: 'geprüft', cls: 'bg-green-50 text-green-600' },
+    skipped: { text: 'übersprungen', cls: 'bg-black/[0.04] text-slate-400' },
+    unavailable: { text: 'Tool fehlt', cls: 'bg-amber-50 text-amber-600' },
+    error: { text: 'Fehler', cls: 'bg-red-50 text-red-600' },
+};
 
 // "Verbesserungen": the actionable improvement surface. Two halves:
 //  (1) deterministic on-page audit — what every published article is missing vs the playbook.
@@ -25,6 +36,34 @@ const LEVERS: Array<{ title: string; status: 'general' | 'ours'; note: string }>
 export default function VerbesserungenPage() {
     const a = getOnPageAudit();
     const top = a.articles.slice(0, 12);
+
+    // Quality-scan (links/schema/geo/a11y) — read-only over the last `npm run quality:scan` result.
+    const q = getQualityReport();
+    const rep = q.report;
+    // Articles that actually have a finding (worst signals first), capped for the table.
+    const flagged = rep
+        ? rep.articles
+              .map((art) => ({
+                  art,
+                  broken: art.links.internalBroken.length + art.links.externalBroken.length,
+                  schemaBad: art.schema.status === 'ok' && !art.schema.valid,
+                  geo: art.geo.status === 'ok' ? art.geo.score : null,
+              }))
+              .filter((r) => r.broken > 0 || r.schemaBad || (r.geo !== null && r.geo < 90))
+              .sort((x, y) => y.broken - x.broken || (x.geo ?? 100) - (y.geo ?? 100))
+              .slice(0, 12)
+        : [];
+    // Aggregate foglift top issues across all scanned articles (most actionable first).
+    const geoIssueFreq = rep
+        ? Object.entries(
+              rep.articles.flatMap((art) => art.geo.issues.map((i) => i.title)).reduce<Record<string, number>>((m, t) => {
+                  m[t] = (m[t] || 0) + 1;
+                  return m;
+              }, {}),
+          )
+              .map(([title, count]) => ({ title, count }))
+              .sort((x, y) => y.count - x.count)
+        : [];
 
     return (
         <div className="space-y-8">
@@ -96,6 +135,82 @@ export default function VerbesserungenPage() {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+                )}
+            </SectionCard>
+
+            <SectionCard
+                title="Qualitäts-Scan"
+                hint={rep ? `zuletzt ${q.ageHours === 0 ? 'gerade eben' : `vor ${q.ageHours} h`}${q.stale ? ' · veraltet' : ''}` : 'noch nicht gelaufen'}
+            >
+                {!rep ? (
+                    <EmptyState message="Noch kein Scan. Mit „npm run quality:scan“ (Links + Schema) bzw. „-- --geo“ (GEO-Score) ausführen." />
+                ) : (
+                    <div className="space-y-5">
+                        <div className="flex flex-wrap gap-2">
+                            {(Object.keys(SCANNER_LABEL) as ScannerKey[]).map((k) => {
+                                const c = STATUS_CHIP[rep.scanners[k]];
+                                return (
+                                    <span key={k} className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-medium ${c.cls}`}>
+                                        {SCANNER_LABEL[k]}: {c.text}
+                                    </span>
+                                );
+                            })}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                            <Kpi label="Kaputte interne Links" value={int(rep.summary.internalBrokenTotal)} sub="Cluster-Verlinkung" accent={rep.summary.internalBrokenTotal > 0} />
+                            <Kpi label="Kaputte externe Links" value={int(rep.summary.externalBrokenTotal)} sub="lychee" accent={rep.summary.externalBrokenTotal > 0} />
+                            <Kpi label="Schema-Fehler" value={int(rep.summary.schemaInvalid)} sub="JSON-LD" accent={rep.summary.schemaInvalid > 0} />
+                            <Kpi label="Ø GEO-Score" value={rep.summary.avgGeo ?? '—'} sub="foglift" accent={rep.summary.avgGeo !== null && rep.summary.avgGeo < 80} />
+                        </div>
+
+                        {flagged.length > 0 && (
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-sm">
+                                    <thead>
+                                        <tr className="border-b border-black/[0.06]">
+                                            <Th>Artikel</Th>
+                                            <Th numeric>Interne</Th>
+                                            <Th numeric>Externe</Th>
+                                            <Th>Schema</Th>
+                                            <Th numeric>GEO</Th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {flagged.map(({ art, schemaBad, geo }) => (
+                                            <tr key={art.slug} className="border-b border-black/[0.04] hover:bg-black/[0.02]">
+                                                <Td strong>
+                                                    <a href={art.url} target="_blank" rel="noreferrer" className="hover:text-red-600">{art.slug.length > 48 ? art.slug.slice(0, 48) + '…' : art.slug}</a>
+                                                </Td>
+                                                <Td numeric strong={art.links.internalBroken.length > 0}>{art.links.internalBroken.length}</Td>
+                                                <Td numeric strong={art.links.externalBroken.length > 0}>{art.links.externalBroken.length}</Td>
+                                                <Td>{art.schema.status !== 'ok' ? '—' : schemaBad ? <span className="text-red-600">{art.schema.errors.length} Fehler</span> : <span className="text-green-600">valid</span>}</Td>
+                                                <Td numeric>{geo ?? '—'}</Td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+
+                        {flagged.length === 0 && (
+                            <p className="text-sm text-green-600">Keine kaputten Links, keine Schema-Fehler, keine schwachen GEO-Scores in den geprüften Artikeln.</p>
+                        )}
+
+                        {geoIssueFreq.length > 0 && (
+                            <div>
+                                <h3 className="mb-2 text-[13px] font-semibold text-slate-700">Häufigste GEO-Befunde (foglift)</h3>
+                                <ul className="space-y-1.5">
+                                    {geoIssueFreq.slice(0, 6).map((g) => (
+                                        <li key={g.title} className="flex items-baseline justify-between gap-3 text-[13px]">
+                                            <span className="text-slate-600">{g.title}</span>
+                                            <span className="tabular-nums text-slate-400">{int(g.count)} Artikel</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
                 )}
             </SectionCard>

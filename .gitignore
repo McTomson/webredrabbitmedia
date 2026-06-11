@@ -46,5 +46,6 @@ next-env.d.ts
 scripts/content-engine/.work/
 content-engine/.kill-switch.json
 content-engine/.indexation.json
+content-engine/.quality-report.json
 graphify-out/
 .agents/
