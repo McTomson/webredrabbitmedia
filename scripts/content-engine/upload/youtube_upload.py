@@ -6,10 +6,17 @@ created by youtube_auth.py. Reads the file straight from disk, so it needs no
 browser and no file picker. Defaults to UNLISTED so Thomas reviews before any
 video goes public.
 
+Every engine video is AI-generated (NotebookLM), so it is disclosed as altered/
+synthetic content via status.containsSyntheticMedia (YouTube Data API v3 field,
+added 2024-10-30). This is the honest, policy-compliant disclosure and protects
+the channel from synthetic-media spam/policy strikes. Defaults to true; override
+with --synthetic-content false for a genuinely non-AI clip.
+
 Usage:
     python3 youtube_upload.py --file /path/video.mp4 \
         --title "..." --description-file /path/desc.txt \
-        [--privacy unlisted|public|private] [--tags a,b,c] [--category 27]
+        [--privacy unlisted|public|private] [--tags a,b,c] [--category 27] \
+        [--synthetic-content true|false]
 
 Prints one line: VIDEO_URL: https://youtu.be/<id>
 """
@@ -45,6 +52,29 @@ def load_creds() -> Credentials:
     return creds
 
 
+def build_body(title: str, description: str, tags: str, category: str,
+               privacy: str, synthetic: bool) -> dict:
+    """Assemble the videos.insert request body. Pure (no I/O) so it is unit-testable
+    without touching the API or the network."""
+    return {
+        "snippet": {
+            "title": title[:100],
+            "description": description,
+            "tags": [t.strip() for t in tags.split(",") if t.strip()],
+            "categoryId": category,
+            "defaultLanguage": "de",
+            "defaultAudioLanguage": "de",
+        },
+        "status": {
+            "privacyStatus": privacy,
+            "selfDeclaredMadeForKids": False,
+            # Honest disclosure: engine videos are AI-generated (NotebookLM). Required by
+            # YouTube's synthetic-media policy; omitting it risks a spam/policy strike.
+            "containsSyntheticMedia": synthetic,
+        },
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--file", required=True)
@@ -54,6 +84,7 @@ def main() -> int:
     ap.add_argument("--privacy", default="unlisted", choices=["unlisted", "public", "private"])
     ap.add_argument("--tags", default="")
     ap.add_argument("--category", default="27")  # 27 = Education
+    ap.add_argument("--synthetic-content", default="true", choices=["true", "false"])
     args = ap.parse_args()
 
     if not os.path.exists(args.file):
@@ -65,20 +96,8 @@ def main() -> int:
             description = fh.read()
 
     youtube = build("youtube", "v3", credentials=load_creds())
-    body = {
-        "snippet": {
-            "title": args.title[:100],
-            "description": description,
-            "tags": [t.strip() for t in args.tags.split(",") if t.strip()],
-            "categoryId": args.category,
-            "defaultLanguage": "de",
-            "defaultAudioLanguage": "de",
-        },
-        "status": {
-            "privacyStatus": args.privacy,
-            "selfDeclaredMadeForKids": False,
-        },
-    }
+    body = build_body(args.title, description, args.tags, args.category,
+                      args.privacy, args.synthetic_content == "true")
     media = MediaFileUpload(args.file, chunksize=-1, resumable=True)
     req = youtube.videos().insert(part="snippet,status", body=body, media_body=media)
 
