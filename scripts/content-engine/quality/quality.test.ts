@@ -31,6 +31,10 @@ describe('links: checkInternalTipps', () => {
     it('ignores non-/tipps internal paths (no false positives)', () => {
         expect(checkInternalTipps(['/kontakt', '/leistungen'], valid)).toEqual([]);
     });
+    it('resolves the slug through anchors and query strings', () => {
+        expect(checkInternalTipps(['/tipps/foo#abschnitt', '/tipps/bar?utm=x'], valid)).toEqual([]);
+        expect(checkInternalTipps(['/tipps/missing#x'], valid)).toEqual([{ url: '/tipps/missing#x', status: 'unknown slug' }]);
+    });
 });
 
 describe('links: parseLycheeJson', () => {
@@ -122,7 +126,6 @@ describe('geo: parseFoglift', () => {
         const p = parseFoglift(real)!;
         expect(p.overall).toBe(92);
         expect(p.geo).toBe(100);
-        expect(p.subScores).toMatchObject({ seo: 87, aeo: 73, accessibility: 97 });
         expect(p.issues).toEqual([{ category: 'SEO', title: 'Title tag too long', severity: 'warning' }]);
     });
     it('returns null on malformed', () => {
@@ -159,7 +162,7 @@ describe('types: summarize + rollUpScannerStatus', () => {
             url: 'u',
             links: { status: 'ok', internalBroken: [], externalBroken: [], totalInternal: 0, totalExternal: 0 },
             schema: { status: 'ok', types: [], errors: [], valid: true },
-            geo: { status: 'skipped', score: null, geoScore: null, subScores: null, issues: [] },
+            geo: { status: 'skipped', score: null, geoScore: null, issues: [] },
             a11y: { status: 'skipped', violations: null, sample: [] },
             ...over,
         };
@@ -169,11 +172,11 @@ describe('types: summarize + rollUpScannerStatus', () => {
             art({
                 links: { status: 'ok', internalBroken: [{ url: '/tipps/x', status: 'unknown slug' }], externalBroken: [{ url: 'h', status: '404' }], totalInternal: 1, totalExternal: 1 },
                 schema: { status: 'ok', types: ['BlogPosting'], errors: ['e'], valid: false },
-                geo: { status: 'ok', score: 90, geoScore: 100, subScores: null, issues: [] },
+                geo: { status: 'ok', score: 90, geoScore: 100, issues: [] },
                 a11y: { status: 'ok', violations: 3, sample: [] },
             }),
             art({
-                geo: { status: 'ok', score: 80, geoScore: 90, subScores: null, issues: [] },
+                geo: { status: 'ok', score: 80, geoScore: 90, issues: [] },
                 a11y: { status: 'ok', violations: 2, sample: [] },
             }),
         ];
@@ -190,8 +193,16 @@ describe('types: summarize + rollUpScannerStatus', () => {
         expect(s.avgGeo).toBeNull();
         expect(s.a11yViolationsTotal).toBeNull();
     });
+    it('a11yViolationsTotal is null when a11y coverage was partial (honesty)', () => {
+        const s = summarize([
+            art({ a11y: { status: 'ok', violations: 3, sample: [] } }),
+            art({ a11y: { status: 'unavailable', violations: null, sample: [] } }),
+        ]);
+        // one article failed to scan → the total would undercount → report null, not a wrong number
+        expect(s.a11yViolationsTotal).toBeNull();
+    });
     it('rolls up scanner status: ok wins, else all-skipped', () => {
-        const okArt = art({ geo: { status: 'ok', score: 1, geoScore: 1, subScores: null, issues: [] } });
+        const okArt = art({ geo: { status: 'ok', score: 1, geoScore: 1, issues: [] } });
         const skipArt = art({});
         expect(rollUpScannerStatus([okArt, skipArt], (a) => a.geo.status)).toBe('ok');
         expect(rollUpScannerStatus([skipArt], (a) => a.geo.status)).toBe('skipped');

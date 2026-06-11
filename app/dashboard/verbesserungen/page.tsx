@@ -1,5 +1,5 @@
 import { getOnPageAudit } from '@/lib/dashboard/onpage';
-import { getQualityReport } from '@/lib/dashboard/quality';
+import { getQualityReport, WEAK_GEO } from '@/lib/dashboard/quality';
 import { CLUSTER_NAMES } from '@/lib/dashboard/overview';
 import { int } from '@/lib/dashboard/format';
 import { Kpi, SectionCard, EmptyState, Th, Td, Card } from '../ui';
@@ -38,32 +38,11 @@ export default function VerbesserungenPage() {
     const top = a.articles.slice(0, 12);
 
     // Quality-scan (links/schema/geo/a11y) — read-only over the last `npm run quality:scan` result.
+    // Aggregation (flagged articles, top GEO issues) is computed in the lib (testable); the page maps.
     const q = getQualityReport();
     const rep = q.report;
-    // Articles that actually have a finding (worst signals first), capped for the table.
-    const flagged = rep
-        ? rep.articles
-              .map((art) => ({
-                  art,
-                  broken: art.links.internalBroken.length + art.links.externalBroken.length,
-                  schemaBad: art.schema.status === 'ok' && !art.schema.valid,
-                  geo: art.geo.status === 'ok' ? art.geo.score : null,
-              }))
-              .filter((r) => r.broken > 0 || r.schemaBad || (r.geo !== null && r.geo < 90))
-              .sort((x, y) => y.broken - x.broken || (x.geo ?? 100) - (y.geo ?? 100))
-              .slice(0, 12)
-        : [];
-    // Aggregate foglift top issues across all scanned articles (most actionable first).
-    const geoIssueFreq = rep
-        ? Object.entries(
-              rep.articles.flatMap((art) => art.geo.issues.map((i) => i.title)).reduce<Record<string, number>>((m, t) => {
-                  m[t] = (m[t] || 0) + 1;
-                  return m;
-              }, {}),
-          )
-              .map(([title, count]) => ({ title, count }))
-              .sort((x, y) => y.count - x.count)
-        : [];
+    const flagged = q.flagged;
+    const geoIssueFreq = q.geoIssues;
 
     return (
         <div className="space-y-8">
@@ -162,7 +141,7 @@ export default function VerbesserungenPage() {
                             <Kpi label="Kaputte interne Links" value={int(rep.summary.internalBrokenTotal)} sub="Cluster-Verlinkung" accent={rep.summary.internalBrokenTotal > 0} />
                             <Kpi label="Kaputte externe Links" value={int(rep.summary.externalBrokenTotal)} sub="lychee" accent={rep.summary.externalBrokenTotal > 0} />
                             <Kpi label="Schema-Fehler" value={int(rep.summary.schemaInvalid)} sub="JSON-LD" accent={rep.summary.schemaInvalid > 0} />
-                            <Kpi label="Ø GEO-Score" value={rep.summary.avgGeo ?? '—'} sub="foglift" accent={rep.summary.avgGeo !== null && rep.summary.avgGeo < 80} />
+                            <Kpi label="Ø foglift-Score" value={rep.summary.avgGeo ?? '—'} sub="Gesamt (foglift)" accent={rep.summary.avgGeo !== null && rep.summary.avgGeo < WEAK_GEO} />
                         </div>
 
                         {flagged.length > 0 && (
@@ -178,15 +157,15 @@ export default function VerbesserungenPage() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {flagged.map(({ art, schemaBad, geo }) => (
-                                            <tr key={art.slug} className="border-b border-black/[0.04] hover:bg-black/[0.02]">
+                                        {flagged.map(({ article, schemaBad }) => (
+                                            <tr key={article.slug} className="border-b border-black/[0.04] hover:bg-black/[0.02]">
                                                 <Td strong>
-                                                    <a href={art.url} target="_blank" rel="noreferrer" className="hover:text-red-600">{art.slug.length > 48 ? art.slug.slice(0, 48) + '…' : art.slug}</a>
+                                                    <a href={article.url} target="_blank" rel="noreferrer" className="hover:text-red-600">{article.slug.length > 48 ? article.slug.slice(0, 48) + '…' : article.slug}</a>
                                                 </Td>
-                                                <Td numeric strong={art.links.internalBroken.length > 0}>{art.links.internalBroken.length}</Td>
-                                                <Td numeric strong={art.links.externalBroken.length > 0}>{art.links.externalBroken.length}</Td>
-                                                <Td>{art.schema.status !== 'ok' ? '—' : schemaBad ? <span className="text-red-600">{art.schema.errors.length} Fehler</span> : <span className="text-green-600">valid</span>}</Td>
-                                                <Td numeric>{geo ?? '—'}</Td>
+                                                <Td numeric strong={article.links.internalBroken.length > 0}>{article.links.internalBroken.length}</Td>
+                                                <Td numeric strong={article.links.externalBroken.length > 0}>{article.links.externalBroken.length}</Td>
+                                                <Td>{article.schema.status !== 'ok' ? '—' : schemaBad ? <span className="text-red-600">{article.schema.errors.length} Fehler</span> : <span className="text-green-600">valid</span>}</Td>
+                                                <Td numeric>{article.geo.geoScore ?? '—'}</Td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -203,7 +182,7 @@ export default function VerbesserungenPage() {
                                 <h3 className="mb-2 text-[13px] font-semibold text-slate-700">Häufigste GEO-Befunde (foglift)</h3>
                                 <ul className="space-y-1.5">
                                     {geoIssueFreq.slice(0, 6).map((g) => (
-                                        <li key={g.title} className="flex items-baseline justify-between gap-3 text-[13px]">
+                                        <li key={`${g.title}-${g.count}`} className="flex items-baseline justify-between gap-3 text-[13px]">
                                             <span className="text-slate-600">{g.title}</span>
                                             <span className="tabular-nums text-slate-400">{int(g.count)} Artikel</span>
                                         </li>

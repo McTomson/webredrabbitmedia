@@ -46,9 +46,12 @@ function parseFlags(argv: string[]): Flags {
     return f;
 }
 
+const SLUG_RE = /^[a-z0-9-]+$/;
+
 // Published, non-draft, non-hardcoded MDX articles — exactly the set the on-page audit grades.
 // Hardcoded app/tipps/{slug}/page.tsx routes are excluded (their MDX body is never rendered).
-function articleSlugs(): string[] {
+// Reads + parses the blog dir ONCE and returns {slug, body} so the scan loop is O(n), not O(n²).
+function articles(): Array<{ slug: string; body: string }> {
     if (!fs.existsSync(BLOG_DIR)) return [];
     const hardcoded = new Set<string>();
     if (fs.existsSync(TIPPS_DIR)) {
@@ -56,55 +59,65 @@ function articleSlugs(): string[] {
             if (e.isDirectory() && e.name !== '[slug]' && fs.existsSync(path.join(TIPPS_DIR, e.name, 'page.tsx'))) hardcoded.add(e.name);
         }
     }
-    const out: string[] = [];
+    const out: Array<{ slug: string; body: string }> = [];
     for (const file of fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith('.mdx'))) {
         const parsed = matter(fs.readFileSync(path.join(BLOG_DIR, file), 'utf8'));
         const fm = parsed.data as { slug?: string; status?: string };
         if (fm.status === 'draft') continue;
         const slug = (fm.slug || file.replace('.mdx', '')).toString();
         if (hardcoded.has(slug)) continue;
-        out.push(slug);
+        // The slug becomes part of a URL handed to fetch/foglift (third-party egress). Constrain it
+        // to the safe slug charset; a malformed slug is skipped with a warning rather than scanned.
+        if (!SLUG_RE.test(slug)) {
+            console.warn(`  WARN: Slug "${slug}" verletzt ^[a-z0-9-]+$ — übersprungen.`);
+            continue;
+        }
+        out.push({ slug, body: parsed.content });
     }
-    return out.sort();
-}
-
-function bodyFor(slug: string): string {
-    // Find the mdx file whose slug (frontmatter or filename) matches.
-    for (const file of fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith('.mdx'))) {
-        const parsed = matter(fs.readFileSync(path.join(BLOG_DIR, file), 'utf8'));
-        const fm = parsed.data as { slug?: string };
-        if ((fm.slug || file.replace('.mdx', '')).toString() === slug) return parsed.content;
-    }
-    return '';
+    return out.sort((a, b) => a.slug.localeCompare(b.slug));
 }
 
 async function main() {
     const flags = parseFlags(process.argv.slice(2));
     const live = !flags.quick;
+    // Guard the base URL: it flows into fetch() and is sent to the third-party foglift.io service.
+    // Refuse non-http(s) schemes and warn on private/loopback hosts (defense against pointing the
+    // scan — and its egress — at an internal endpoint).
+    try {
+        const u = new URL(flags.base);
+        if (u.protocol !== 'http:' && u.protocol !== 'https:') throw new Error('nur http(s) erlaubt');
+        if (/^(localhost|127\.|10\.|192\.168\.|169\.254\.|0\.0\.0\.0)/.test(u.hostname) || /^172\.(1[6-9]|2\d|3[01])\./.test(u.hostname)) {
+            console.warn(`WARN: --base zeigt auf einen privaten/lokalen Host (${u.hostname}). Externe Scanner (foglift) erhalten diese URL.`);
+        }
+    } catch {
+        console.error(`--base ist keine gültige http(s)-URL: ${flags.base}`);
+        process.exit(1);
+    }
     const validSlugs = loadValidSlugs(BLOG_DIR, TIPPS_DIR);
-    let slugs = articleSlugs();
-    if (flags.only) slugs = slugs.filter((s) => s === flags.only);
-    if (flags.limit) slugs = slugs.slice(0, flags.limit);
+    let arts = articles();
+    if (flags.only) arts = arts.filter((a) => a.slug === flags.only);
+    if (flags.limit) arts = arts.slice(0, flags.limit);
 
-    console.log(`Quality-Scan: ${slugs.length} Artikel, base=${flags.base}, live=${live}, geo=${flags.geo}, a11y=${flags.a11y}`);
+    console.log(`Quality-Scan: ${arts.length} Artikel, base=${flags.base}, live=${live}, geo=${flags.geo}, a11y=${flags.a11y}`);
+    if (flags.geo) console.log('  Hinweis: --geo sendet jede Artikel-URL an den externen Dienst foglift.io.');
     const started = Date.now();
-    const articles: ArticleQuality[] = [];
+    const results: ArticleQuality[] = [];
 
-    for (const slug of slugs) {
+    for (const { slug, body } of arts) {
         const url = `${flags.base}/tipps/${slug}`;
-        const links = scanLinks(bodyFor(slug), validSlugs, live);
+        const links = scanLinks(body, validSlugs, live);
         const schema = live
             ? await scanSchema(url)
             : ({ status: 'skipped' as ScannerStatus, note: 'offline-Modus', types: [], errors: [], valid: false });
         const geo = flags.geo
             ? scanGeo(url)
-            : ({ status: 'skipped' as ScannerStatus, score: null, geoScore: null, subScores: null, issues: [] });
+            : ({ status: 'skipped' as ScannerStatus, score: null, geoScore: null, issues: [] });
         const a11y = flags.a11y
             ? scanA11y(url)
             : ({ status: 'skipped' as ScannerStatus, violations: null, sample: [] });
-        articles.push({ slug, url, links, schema, geo, a11y });
+        results.push({ slug, url, links, schema, geo, a11y });
         const ib = links.internalBroken.length, eb = links.externalBroken.length;
-        console.log(`  ${slug}: links(int ${ib}/ext ${eb}) schema(${schema.status}${schema.valid ? ' valid' : ''}) geo(${geo.status}${geo.score ?? ''}) a11y(${a11y.status})`);
+        console.log(`  ${slug}: links(int ${ib}/ext ${eb}) schema(${schema.status}${schema.valid ? ' valid' : ''}) geo(${geo.status} ${geo.score ?? ''}) a11y(${a11y.status})`);
     }
 
     const report: QualityReport = {
@@ -112,13 +125,13 @@ async function main() {
         baseUrl: flags.base,
         durationMs: Date.now() - started,
         scanners: {
-            links: rollUpScannerStatus(articles, (a) => a.links.status),
-            schema: rollUpScannerStatus(articles, (a) => a.schema.status),
-            geo: rollUpScannerStatus(articles, (a) => a.geo.status),
-            a11y: rollUpScannerStatus(articles, (a) => a.a11y.status),
+            links: rollUpScannerStatus(results, (a) => a.links.status),
+            schema: rollUpScannerStatus(results, (a) => a.schema.status),
+            geo: rollUpScannerStatus(results, (a) => a.geo.status),
+            a11y: rollUpScannerStatus(results, (a) => a.a11y.status),
         },
-        articles,
-        summary: summarize(articles),
+        articles: results,
+        summary: summarize(results),
     };
 
     fs.mkdirSync(CE, { recursive: true });

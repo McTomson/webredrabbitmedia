@@ -9,8 +9,10 @@ import type { ArticleLinks, BrokenLink } from '../types';
 //     directly de-risks the deterministic cluster auto-linker (Pre-Mortem: broken auto-links).
 //  2. external http(s) link liveness via the `lychee` binary (graceful degrade if absent/offline).
 
-// All markdown links in a body, excluding image embeds (/images/...). Mirrors the onpage.ts intent
-// but captures both internal (/...) and external (http...) targets.
+// All inline markdown links in a body, excluding image embeds (/images/...). Mirrors the onpage.ts
+// intent but captures both internal (/...) and external (http...) targets. Note: only inline
+// [text](url) syntax is matched, not reference-style [text][ref] + [ref]: url — the generator never
+// emits reference-style links, but a checker comment makes the limitation explicit.
 export function extractLinks(body: string): { internal: string[]; external: string[] } {
     const internal: string[] = [];
     const external: string[] = [];
@@ -28,8 +30,10 @@ export function extractLinks(body: string): { internal: string[]; external: stri
 export function checkInternalTipps(internal: string[], validSlugs: Set<string>): BrokenLink[] {
     const broken: BrokenLink[] = [];
     for (const href of internal) {
-        const m = href.match(/^\/tipps\/([a-z0-9-]+)\/?$/);
-        if (!m) continue; // not a /tipps/{slug} link — skip (could be a valid static route)
+        // Match /tipps/{slug} with an optional trailing slash, anchor (#…) or query (?…) — a deep
+        // link to a heading must still resolve its slug. Non-/tipps internal paths are skipped.
+        const m = href.match(/^\/tipps\/([a-z0-9-]+)(?:[/#?].*)?$/);
+        if (!m) continue;
         if (!validSlugs.has(m[1])) broken.push({ url: href, status: 'unknown slug' });
     }
     return broken;

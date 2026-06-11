@@ -43,8 +43,7 @@ export interface ArticleGeo {
     status: ScannerStatus;
     note?: string;
     score: number | null; // foglift overall 0-100, null if not run
-    geoScore: number | null; // foglift GEO sub-score (closest to our goal)
-    subScores: Record<string, number> | null; // seo/geo/aeo/performance/security/accessibility
+    geoScore: number | null; // foglift GEO sub-score (the number this subsystem is named for; surfaced)
     issues: GeoIssue[]; // foglift topIssues (actionable)
 }
 
@@ -88,14 +87,18 @@ export function summarize(articles: ArticleQuality[]): QualitySummary {
         .map((a) => a.geo)
         .filter((g) => g.status === 'ok' && typeof g.score === 'number')
         .map((g) => g.score as number);
+    // Honesty: only report an a11y total if EVERY scanned article produced a result. If the flag
+    // was on but some articles degraded to unavailable/error, the sum would silently undercount —
+    // report null instead so the dashboard shows "no trustworthy total" rather than a wrong number.
     const a11yRan = articles.some((a) => a.a11y.status === 'ok');
+    const a11yPartial = a11yRan && articles.some((a) => a.a11y.status === 'unavailable' || a.a11y.status === 'error');
     return {
         articles: articles.length,
         internalBrokenTotal: articles.reduce((s, a) => s + a.links.internalBroken.length, 0),
         externalBrokenTotal: articles.reduce((s, a) => s + a.links.externalBroken.length, 0),
         schemaInvalid: articles.filter((a) => a.schema.status === 'ok' && !a.schema.valid).length,
         avgGeo: geoScores.length ? Math.round(geoScores.reduce((s, n) => s + n, 0) / geoScores.length) : null,
-        a11yViolationsTotal: a11yRan
+        a11yViolationsTotal: a11yRan && !a11yPartial
             ? articles.reduce((s, a) => s + (a.a11y.violations || 0), 0)
             : null,
     };

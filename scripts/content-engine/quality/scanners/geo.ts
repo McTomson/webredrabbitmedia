@@ -16,12 +16,12 @@ function fogliftBin(): string {
 interface FogliftParsed {
     overall: number | null;
     geo: number | null;
-    subScores: Record<string, number> | null;
     issues: GeoIssue[];
 }
 
 // Parse foglift's JSON. Known shape: { scores: { overall, seo, geo, aeo, ... }, topIssues: [...] }.
-// Defensive about missing fields. Pure — unit-tested.
+// We surface the overall score (aggregate) + the GEO sub-score + the actionable topIssues; the other
+// sub-scores aren't consumed, so they aren't carried. Defensive about missing fields. Pure — unit-tested.
 export function parseFoglift(raw: string): FogliftParsed | null {
     let data: unknown;
     try {
@@ -33,17 +33,9 @@ export function parseFoglift(raw: string): FogliftParsed | null {
     const obj = data as Record<string, unknown>;
     const scores = obj.scores && typeof obj.scores === 'object' ? (obj.scores as Record<string, unknown>) : null;
 
-    let subScores: Record<string, number> | null = null;
-    let overall: number | null = null;
-    let geo: number | null = null;
-    if (scores) {
-        subScores = {};
-        for (const [k, v] of Object.entries(scores)) {
-            if (typeof v === 'number' && v >= 0 && v <= 100) subScores[k] = Math.round(v);
-        }
-        overall = typeof subScores.overall === 'number' ? subScores.overall : null;
-        geo = typeof subScores.geo === 'number' ? subScores.geo : null;
-    }
+    const num = (v: unknown): number | null => (typeof v === 'number' && v >= 0 && v <= 100 ? Math.round(v) : null);
+    let overall: number | null = scores ? num(scores.overall) : null;
+    const geo: number | null = scores ? num(scores.geo) : null;
     // Fallback: a bare numeric score field somewhere.
     if (overall === null && typeof obj.score === 'number') overall = Math.round(obj.score as number);
 
@@ -58,12 +50,12 @@ export function parseFoglift(raw: string): FogliftParsed | null {
             });
         }
     }
-    if (overall === null && geo === null && !subScores && issues.length === 0) return null;
-    return { overall, geo, subScores, issues };
+    if (overall === null && geo === null && issues.length === 0) return null;
+    return { overall, geo, issues };
 }
 
 export function scanGeo(url: string): ArticleGeo {
-    const empty = { score: null, geoScore: null, subScores: null, issues: [] as GeoIssue[] };
+    const empty = { score: null, geoScore: null, issues: [] as GeoIssue[] };
     const res = spawnSync(fogliftBin(), ['scan', url, '--json'], {
         encoding: 'utf8',
         timeout: 90_000,
@@ -84,7 +76,6 @@ export function scanGeo(url: string): ArticleGeo {
         status: 'ok',
         score: parsed.overall,
         geoScore: parsed.geo,
-        subScores: parsed.subScores,
         issues: parsed.issues,
     };
 }
