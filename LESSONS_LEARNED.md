@@ -4,6 +4,14 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-11 (Teil 10) — SEO-Batch aus Quality-Scan-Funden
+
+- **Doppelte H1 war systemisch + die conventions.md verursachte sie.** Jede MDX-Artikelseite hatte 2 H1 (Titel-Hero + Body-`# Titel`). Fix zweistufig: Render (`stripLeadingTitleH1` in posts.ts + `mdx-components` `#`→`<h2>`) UND Generator (`conventions.md` verbot Body-H1). Lehre: wenn ein Fehler in JEDEM generierten Artikel steckt, immer auch die Generator-Vorgabe (conventions.md/Prompt) prüfen, nicht nur die Artikel patchen — sonst regrediert es beim nächsten Tageslauf.
+- **conventions.md `title`-Regel empfahl aktiv lange Klammer-Titel** (`[... Österreich 2026]`) → 20 Titel liefen 64-110 Zeichen (SERP-Truncation). Regel auf ≤60/keyword-first/keine Marketing-Klammern geändert. Titel-Änderung ist sicher (kein 301 nötig, Slug bleibt); Anker aktualisiert `cluster:relink` automatisch (idempotent).
+- **Meta-Description-Cap gehört in die Metadata-Schicht, nicht in den Content.** `clampDescription()` kappt nur das `<meta>`/og/twitter (excerpt + Listing-Cards bleiben voll) — kein Content-Edit über 7+ Dateien.
+- **Skip-Nav-Fokus im Automations-Browser:** nach `navigate` liegt der Fokus evtl. auf der Browser-Leiste, Tab fokussiert dann nicht das erste Seiten-Element. Skip-Link-Sichtbarkeit zuverlässig per `javascript_tool` prüfen (`.focus()` + `getBoundingClientRect` 1x1→sichtbar), nicht per Tab+Screenshot.
+- **`/llms.txt` als Route-Handler** (`app/llms.txt/route.ts`, runtime nodejs, revalidate 1h) aus `getAllPosts()` — auto-aktuell, kein manueller Pflegeaufwand.
+
 ## 2026-06-11 (Teil 9) — Qualitäts-Scan (Punkt 4): vier Scanner + Dashboard
 
 - **schema-dts OOM-crasht `next build` (wichtigster Fund).** `import type { WithContext, BlogPosting } from 'schema-dts'` und Annotation der Live-JSON-LD in `app/tipps/[slug]/page.tsx` expandiert zu einem riesigen Schema.org-Union-Typ. `tsc --noEmit` überlebte knapp (exit 0), aber der `next build`-Type-Check-Worker lief in den 2GB-Heap-Limit → `FATAL ERROR: JavaScript heap out of memory` / SIGABRT NACH "Compiled successfully". **Lehre: schema-dts-Inline-Typisierung NICHT verwenden (destabilisiert Build/Deploy, §15-Ballast). Schema-Sicherheit stattdessen zur Laufzeit** (`scripts/content-engine/quality/scanners/schema.ts` validiert die deployte Seite). Diagnose-Reihenfolge bei Build-SIGABRT: head des Logs lesen — "Last few GCs"/"heap out of memory" = OOM, nicht Code-Fehler; Phase "Linting and checking validity of types" = Type-Check-Worker.

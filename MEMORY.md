@@ -6,6 +6,21 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-11 (Teil 11) — SEO-Batch: Titel, H1, Meta, llms.txt, Pillar, a11y (main `cfcc6fe`)
+
+Diese Session (Fortsetzung Teil 10) hat den Quality-Scan genutzt, um echte Funde abzuarbeiten:
+
+- **Genau 1 H1 pro Artikel** (`6cb8194`, live verifiziert): MDX-Bodies hatten eine doppelte `# Titel`-H1. `stripLeadingTitleH1()` in `lib/blog/posts.ts` entfernt sie zentral; `mdx-components` rendert `#` jetzt als `<h2>`. conventions.md verbietet Body-H1 (Regression-Schutz).
+- **20 zu lange Titel gekürzt** (`d75cf9a`): alle ≤60 Zeichen, Keyword vorn, „2026" + „Österreich" (wo lokal) behalten, Marketing-Klammern raus, Kosten-Titel differenziert. Anker via `cluster:relink` aktualisiert. conventions.md `title`-Regel = ≤60/keyword-first/keine Klammern (Regression-Schutz).
+- **Meta-Descriptions auf ~155 gekappt** (`901e657`): `clampDescription()` in posts.ts (Wort-Grenze), nur Meta-Tags (excerpt/Cards bleiben voll). Live 266→156.
+- **`/llms.txt`** (`901e657`): `app/llms.txt/route.ts`, llmstxt.org-Map (publizierte Artikel + Bundesländer + Kontakt), auto-aktuell (revalidate 1h).
+- **Pillar Hub→Spoke** (`d75cf9a`): Money-Page `was-kostet-eine-website` verlinkt jetzt 11 statt 3 Spokes (bespoke Seite, Links manuell) + 2 Gedankenstriche „–" im Prosatext gefixt.
+- **Indexierungs-Kill-Switch im Tageslauf** (`c647607`, #10): `run-daily.sh` ruft `check_indexation` vor der Pipeline (nicht-blockierend).
+- **Skip-Navigation** (`cfcc6fe`, WCAG 2.4.1): „Zum Inhalt springen" im Root-Layout, sr-only bis Fokus, Ziel `main#main-content`. JS-verifiziert.
+- **Distribution (#5) VORBEREITET, NICHT gepostet:** `docs/distribution-plan.md` (canonical-sicherer Medium-Import, LinkedIn-Entwurf, echter Reddit-Ansatz). Öffentliches Posten braucht User-Freigabe + Login.
+- **Kosten-Cluster:** Spoke↔Spoke-Verlinkung komplett (Auto-Linker); fehlende Kosten-Spokes sind bereits als `todo` in queue.yaml → Tageslauf produziert sie. Kein Massen-Generieren.
+- Stand: 153 Tests grün, Build grün, alle live-verifiziert (1 H1 in Prod, Kurztitel, llms.txt, Skip-Link). **Fabriziertes 4.8/315-Schema unangetastet (Userwunsch).**
+
 ## Stand 2026-06-11 (Teil 10) — Qualitäts-Scan (Punkt 4) fertig + review-it GO (main `e5f1d4a`)
 
 ZUERST `NEXT_SESSION_CONTENT_ENGINE_V2.md` + `docs/runbooks/quality-scan.md`.
