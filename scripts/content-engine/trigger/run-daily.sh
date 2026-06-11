@@ -55,10 +55,16 @@ git pull --ff-only origin main >/dev/null 2>&1 || echo "WARN: git pull nicht ff"
 # edit) would otherwise go live without cluster links. This relink is deterministic + idempotent
 # (no LLM, no cost) and only commits when something actually changed. Drafts are never linked.
 if npx tsx scripts/content-engine/knowledge/backfill_cluster_links.ts; then
-  if [ -n "$(git status --porcelain content/blog)" ]; then
-    git add content/blog/*.mdx
+  # Scope to .mdx via git pathspec (quoted, git expands the glob, not the shell): relinkAll only
+  # ever rewrites *.mdx, so this commits exactly the link changes and never sweeps a stray non-mdx
+  # file or a pre-existing manual edit into the unattended commit.
+  if [ -n "$(git status --porcelain -- 'content/blog/*.mdx')" ]; then
+    git add -- 'content/blog/*.mdx'
     if git commit -q -m "fix(blog): refresh internal cluster links (daily safety net)"; then
-      git push origin main && echo "Cluster-Links aktualisiert + gepusht"
+      # Fail loud: a swallowed safety-net push would otherwise cascade into the pipeline's own
+      # push failing (local ahead of a diverged remote) with a misleading generic alert.
+      git push origin main || { alert "Safety-net cluster-link push fehlgeschlagen"; exit 1; }
+      echo "Cluster-Links aktualisiert + gepusht"
     fi
   else
     echo "Cluster-Links bereits aktuell"
