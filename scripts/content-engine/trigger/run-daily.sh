@@ -71,6 +71,11 @@ if npx tsx scripts/content-engine/knowledge/backfill_cluster_links.ts; then
   fi
 fi
 
+# Refresh the indexation kill-switch BEFORE generating, so the pipeline's pre-emit kill-switch read
+# reflects today's coverage. Non-blocking: if GSC creds are absent or the check errors, the existing
+# flag is left untouched (fail-safe — a missing/stale flag counts as inactive) and we still publish.
+npx tsx scripts/content-engine/dashboard/check_indexation.ts || echo "WARN: Indexierungs-Check fehlgeschlagen, Kill-Switch unverändert (fail-safe)."
+
 # Generate next draft (quality-gated). On halt, exit cleanly without shipping.
 # --no-image: ship TEXT ONLY for review. Images (hero + infographic + context photos) are now
 # generated later, in the media step (run-media.ts) AFTER Thomas approves the text, together with

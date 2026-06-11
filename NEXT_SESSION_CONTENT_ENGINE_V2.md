@@ -29,7 +29,7 @@ ZUERST LESEN. Nahtlos weitermachen. Verbindlicher Plan: `docs/superpowers/plans/
 9. **NotebookLM-Synthesen in den Vault destillieren:** geerdete Antworten aus den Cluster-Notebooks als Vault-Fakten ablegen (Quelle = Pillar-Artikel/Notebook).
 
 ### C) Kleinere offene Punkte
-10. `check_indexation` in den launchd-Tageslauf einhängen (vor `npm run engine`), damit der Kill-Switch automatisch aktuell bleibt.
+10. ~~`check_indexation` in den launchd-Tageslauf einhängen~~ ERLEDIGT 11.06: `run-daily.sh` ruft vor der Pipeline `check_indexation.ts` (nicht-blockierend, fail-safe) → Kill-Switch bleibt automatisch frisch.
 11. **Slug-Hygiene:** ~37 abgeschnittene Slugs in queue.yaml + ~4 published → kurze keyword-Slugs, bestehende NUR mit 301-Redirect (next.config.ts redirects()).
 12. **Entität/Distribution:** Bing-Webmaster-Sitemap einreichen, `llms.txt` ergänzen, Wikidata-Eintrag + `sameAs` (LinkedIn/Crunchbase) im Person/Org-Schema.
 13. **GA4 manuell:** `generate_lead` als Schlüsselereignis markieren (GA4 → Verwalten → Ereignisse), damit es als Conversion zählt.
