@@ -225,11 +225,19 @@ export default function RootLayout({
         <Script id="json-ld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className={`${inter.variable} font-sans antialiased bg-[#fafafa] text-[#141414] overflow-x-hidden`} suppressHydrationWarning>
+        {/* Skip link (WCAG 2.4.1): first focusable element, hidden until focused, jumps past the
+            nav straight to the main content. Foglift "No skip navigation link" finding. */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[1000] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-[#141414] focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+        >
+          Zum Inhalt springen
+        </a>
         <ContactFormProvider>
           <AOSInit />
           <AnalyticsListener />
           <Header />
-          <main>{children}</main>
+          <main id="main-content" tabIndex={-1} className="scroll-mt-20 focus:outline-none">{children}</main>
           <Footer />
           <ContactFormWrapper />
         </ContactFormProvider>
