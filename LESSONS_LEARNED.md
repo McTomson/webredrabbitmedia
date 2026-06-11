@@ -4,6 +4,12 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-11 (Teil 8) — Phase-3-Abschluss + launchd-Race
+
+- **launchd-Tageslauf arbeitet im SELBEN Arbeits-Repo wie eine interaktive Session.** Während ich editierte, feuerte `com.redrabbit.contentengine` (run-daily.sh, 02:00): es lief das neue `cluster:relink`-Safety-Net, committete + pushte selbständig, generierte dann den Tages-Draft und pushte erneut. Das ging diesmal gut (geteiltes Repo → der Lauf committete auf meinen frischen Commit auf, Push war ff), KÖNNTE aber übel enden: hätte ich uncommittete .mdx-Edits gehabt, hätte `git add content/blog` des Laufs sie mitgenommen. LEHRE: bei interaktiver Arbeit am Repo daran denken, dass der Daily-/Media-launchd jederzeit committen/pushen kann. Arbeitsbaum bei Pausen sauber halten; nicht mitten in einem laufenden run-daily git-Surgery machen (erst Prozess-Ende abwarten: `ps -p <pid>`). Das `cluster:relink`-Safety-Net ist .mdx-scoped (git-Pathspec) genau deswegen.
+- **Titel-Änderung propagiert automatisch in Anker-Texte.** Wird der `title` eines Artikels geändert, aktualisiert der nächste `cluster:relink`-Lauf den Anker-Text in ALLEN Blöcken, die ihn verlinken (Anker = bereinigter Titel). Beim Tageslauf passiert das von selbst; idempotent. Verifiziert (765b0ba aktualisierte 4 Blöcke auf "...5 Seiten 2026?").
+- **year_in_title-Hebel ehrlich, nicht erzwungen.** Preis-/Trend-/Listicle-Artikel: Jahr in den Titel (echte Frische). Zeitlose Konzept-Artikel: `evergreen: true` im Frontmatter → On-Page-Audit überspringt den Jahr-Check (ein erzwungenes Jahr läse sich als Spam). Kein Gaming der Metrik, sondern korrekte Klassifikation.
+
 ## 2026-06-11 (Teil 7) — Interne Cluster-Verlinkung (Phase 3 #1-Hebel)
 
 - **Hartcodierte Route schlägt MDX-[slug].** `app/tipps/{slug}/page.tsx` (bespoke React) hat Vorrang vor der dynamischen `[slug]`-MDX-Route. Der Flaggschiff-Artikel `was-kostet-eine-website` ist so eine Seite — sein `content/blog/was-kostet-eine-website.mdx`-Body wird NIE gerendert (nur die Frontmatter speist Listings/Related/RSS). Folge: jedes Content-Tooling muss solche Slugs als QUELLE ausschließen (kein toter Block schreiben, nicht als MDX auditieren), sie bleiben aber gültige LINK-ZIELE. Erkennung: `app/tipps/*/page.tsx` scannen. Diese Seiten brauchen interne Verlinkung/On-Page von Hand.

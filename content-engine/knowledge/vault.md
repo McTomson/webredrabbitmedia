@@ -194,3 +194,48 @@ quelle: https://web.redrabbit.media/tipps/wie-viel-kostet-eine-website-im-unterh
 quelle_name: Wie viel kostet eine Website im Unterhalt? Ehrlicher Überblick [Österreich 2026]
 geprueft_am: 2026-06-10
 recheck_nach: 2026-12-07
+
+## t5-2026-06-11-022
+cluster: 1
+keywords: warum, sind, manche, webdesign, agenturen, deutlich, teurer, andere
+aussage: Der größte Kostenblock einer Website ist nicht die Technik, sondern die Arbeitszeit mit rund 80 bis 150 Euro pro Stunde – Agenturen mit Senior-Teams, eigenem Strategie-/UX-Prozess und mehr Personal landen daher zwangsläufig am oberen Ende dieser Spanne, günstige Anbieter am unteren.
+quelle: https://web.redrabbit.media/tipps/wie-setzen-sich-die-kosten-fuer-eine-website-zusammen
+quelle_name: Red Rabbit Media - Wie setzen sich die Kosten für eine Website zusammen? (Österreich 2026)
+geprueft_am: 2026-06-11
+recheck_nach: 2026-12-08
+
+## t5-2026-06-11-023
+cluster: 1
+keywords: warum, sind, manche, webdesign, agenturen, deutlich, teurer, andere
+aussage: Agenturen verlangen höhere Stundensätze als Freelancer, weil der Preis ein ganzes Team plus Overhead abdeckt: Projektmanager, Designer, Entwickler, QA, Strategen und SEO-Spezialisten sowie Gehälter, Büro und Tools – typischerweise 50 bis 100 % mehr als ein vergleichbares Freelancer-Projekt.
+quelle: https://dribbble.com/resources/tips/web-design-agency-vs-freelancer-vs-in-house-team
+quelle_name: Dribbble Resources - Web Design Agency vs. Freelancer vs. In-House Team
+geprueft_am: 2026-06-11
+recheck_nach: 2026-12-08
+
+## t5-2026-06-11-024
+cluster: 1
+keywords: warum, sind, manche, webdesign, agenturen, deutlich, teurer, andere
+aussage: Professionelles, nutzerzentriertes Webdesign verursacht den Preisunterschied durch reinen Aufwand: allein User Research und Tests schlagen mit rund 24+ Stunden zu Buche, Konzeption und Design mit rund 40+ Stunden – Billigangebote ab 189–700 € können diesen Prozess nicht leisten.
+quelle: https://liechtenecker.at/blog/warum-webdesign-nicht-700e-kostet
+quelle_name: Liechtenecker UX Design Studio (AT) - Warum Webdesign nicht 700 € kostet
+geprueft_am: 2026-06-11
+recheck_nach: 2026-12-08
+
+## t5-2026-06-11-025
+cluster: 1
+keywords: warum, sind, manche, webdesign, agenturen, deutlich, teurer, andere
+aussage: Seit 28. Juni 2025 verlangt das Barrierefreiheitsstärkungsgesetz (Umsetzung der EU-Barrierefreiheitsrichtlinie im DACH-Raum) barrierefreie Websites und Online-Shops; bei Verstößen drohen Bußgelder bis zu 100.000 €. Die normgerechte Umsetzung (WCAG) ist zusätzlicher Aufwand, der seriöse Anbieter teurer macht als Billiganbieter, die ihn weglassen.
+quelle: https://bfsg-gesetz.de/
+quelle_name: BFSG-Gesetz - Barrierefreiheitsstärkungsgesetz (Gesetzestext & FAQ)
+geprueft_am: 2026-06-11
+recheck_nach: 2026-12-08
+
+## t5-2026-06-11-026
+cluster: 1
+keywords: warum, sind, manche, webdesign, agenturen, deutlich, teurer, andere
+aussage: Auch der Standort treibt den Preis: In Österreich liegen Business-Lösungen in Wien zwischen 2.500 € und 8.000 €, während Agenturen in Graz oder Linz oft zwischen 1.800 € und 5.500 € kalkulieren – höhere Betriebs- und Lebenshaltungskosten in Ballungszentren schlagen direkt auf die Stundensätze durch.
+quelle: https://web.redrabbit.media/tipps/website-regio-preise
+quelle_name: Red Rabbit Media - Was kostet eine Website in Österreich? (2026 Regionale Preisanalyse)
+geprueft_am: 2026-06-11
+recheck_nach: 2026-12-08
