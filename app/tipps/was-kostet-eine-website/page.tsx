@@ -45,7 +45,7 @@ export default function BlogPost() {
                         Und leider ist die Antwort oft: &quot;Es kommt darauf an.&quot;
                     </p>
                     <p>
-                        Aber damit geben wir uns 2026 nicht zufrieden. In diesem Artikel schlüsseln wir die Preise für den österreichischen Markt transparent auf – von der Freelancer-Lösung bis zur High-End Agentur.
+                        Aber damit geben wir uns 2026 nicht zufrieden. In diesem Artikel schlüsseln wir die Preise für den österreichischen Markt transparent auf: von der Freelancer-Lösung bis zur High-End-Agentur.
                     </p>
 
                     {/* Internal Link to Money Page (Cluster Rule #1) */}
@@ -94,21 +94,29 @@ export default function BlogPost() {
                     <p>
                         Viele unserer Kunden in Wien und Graz wechseln von WordPress zu Next.js. Warum? Weil die Wartungskosten wegfallen.
                         Bei WordPress müssen Sie Plugins aktualisieren, Sicherheitslücken schließen und PHP-Updates machen.
-                        Eine Next.js Seite ist statisch generiert – sie kann nicht &quot;gehackt&quot; werden wie eine Datenbank.
+                        Eine Next.js Seite ist statisch generiert und kann nicht &quot;gehackt&quot; werden wie eine Datenbank.
                     </p>
 
                 </div>
 
                 {/* Internal cluster links (topical authority). This bespoke page renders instead of
-                    the MDX, so the automatic cluster-link backfill cannot reach it — these are curated
+                    the MDX, so the automatic cluster-link backfill cannot reach it, so these are curated
                     by hand to keep the flagship article passing link equity to its cluster-mates. */}
                 <div className="mt-16 pt-8 border-t border-gray-200">
                     <h2 className="text-2xl font-light text-black mb-6">Das könnte Sie auch interessieren</h2>
-                    <div className="grid gap-3">
+                    <div className="grid gap-3 sm:grid-cols-2">
                         {[
-                            { href: '/tipps/website-kosten-oesterreich-2026', title: 'Wie viel kostet es, eine Website erstellen zu lassen?' },
+                            { href: '/tipps/wie-setzen-sich-die-kosten-fuer-eine-website-zusammen', title: 'Wie setzen sich die Website-Kosten zusammen?' },
+                            { href: '/tipps/website-5-seiten-kosten', title: 'Was kostet eine Webseite mit 5 Seiten?' },
                             { href: '/tipps/website-10-seiten-kosten', title: 'Was kostet eine Website mit 10 Seiten?' },
-                            { href: '/tipps/herold-webseite-vs-agentur-vergleich', title: 'Herold Webseite vs. spezialisierte Agentur im Vergleich' },
+                            { href: '/tipps/website-kosten-oesterreich-2026', title: 'Website erstellen lassen: Kosten in Österreich' },
+                            { href: '/tipps/website-regio-preise', title: 'Website-Kosten in Österreich: regionale Preise' },
+                            { href: '/tipps/wie-viel-kostet-eine-website-im-unterhalt', title: 'Was kostet eine Website im Unterhalt?' },
+                            { href: '/tipps/website-optimierung-kosten', title: 'Was kostet eine Website-Optimierung?' },
+                            { href: '/tipps/website-kosten-steuerlich-absetzbar-oesterreich', title: 'Website steuerlich absetzbar? Die Kosten' },
+                            { href: '/tipps/website-selbst-erstellen-vs-agentur', title: 'Website selbst erstellen vs. Agentur' },
+                            { href: '/tipps/wie-lange-dauert-website-erstellung', title: 'Wie lange dauert eine Website-Erstellung?' },
+                            { href: '/tipps/herold-webseite-vs-agentur-vergleich', title: 'Herold Webseite vs. Agentur im Vergleich' },
                         ].map((a) => (
                             <Link
                                 key={a.href}

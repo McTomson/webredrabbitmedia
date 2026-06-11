@@ -8,7 +8,7 @@ Datei: `content/blog/<slug>.mdx`. YAML-Frontmatter, dann MDX-Body.
 
 | Feld | Pflicht | Typ | Hinweis |
 |---|---|---|---|
-| `title` | ja | string | Mit Fokus-Keyword, gern Klammer-Zusatz wie `[... Österreich 2026]`. Kein "–". |
+| `title` | ja | string | **Max ~60 Zeichen** (SERP-Anzeige), Fokus-Keyword VORN, Jahr `2026` enthalten, `Österreich` nur wenn lokales Keyword. KEINE Marketing-Klammern wie `[Günstig & Professionell]`/`[Sicher & Schnell]` (werden in der SERP abgeschnitten, kein Keyword-Wert). Kein "–". |
 | `slug` | ja | string | == Dateiname ohne `.mdx`. Kebab-case, ascii. |
 | `excerpt` | ja | string | 1-2 Sätze, Fokus-Keyword natürlich. Kein "–". |
 | `featuredSnippetTitle` | empfohlen | string | Die exakte Nutzerfrage. |
@@ -29,7 +29,7 @@ Datei: `content/blog/<slug>.mdx`. YAML-Frontmatter, dann MDX-Body.
 `aiAssisted: true` als zusätzliches Frontmatter-Feld (On-Page-AI-Label, Phase 3 verdrahtet die Anzeige).
 
 ## Body-Struktur (siehe `voice/house.md` Archetyp A/B)
-- Genau **eine** H1 (== title). Danach Erst-Hand-Intro (2-3 kurze Absätze).
+- **KEINE H1 (`# `) im Body.** Die Seite rendert den `title` aus dem Frontmatter als einzige H1. Eine `# Titel`-Zeile im Body erzeugte sonst eine zweite H1 (SEO-Fehler) + zeigte den Titel doppelt. Body startet direkt mit dem Erst-Hand-Intro (2-3 kurze Absätze). Abschnitte beginnen bei `## ` (H2).
 - **Antwort zuerst** (Snippet-Block / kurze Direktantwort), dann Tiefe.
 - H2 alle ~200-300 Wörter, Fokus-Keyword natürlich in erster H2 + erstem Absatz (SEO-Leitfaden).
 - Mind. 1 interner Link auf passende bestehende Seite (`/kontakt`, passende `/tipps/...`, Service-Seite).
