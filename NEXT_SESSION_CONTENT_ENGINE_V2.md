@@ -1,7 +1,30 @@
-# NEXT SESSION — Content-Engine v2 (Übergabe, Stand 2026-06-11)
+# NEXT SESSION — Content-Engine v2 (Übergabe, Stand 2026-06-12 SPÄT)
 
 ZUERST LESEN. Nahtlos weitermachen. Verbindlicher Plan: `docs/superpowers/plans/2026-06-09-content-engine-v2-REVISED.md`
 (§0-§16). Diese Datei ist der Schnelleinstieg + die detaillierte To-do-Liste.
+
+---
+
+## SESSION-ENDE 2026-06-12 (SPÄT) — Zusammenfassung + offene Punkte
+
+**Diese Session erledigt + live (alles committet bis `fe00192`, Vercel deployt, prod-verifiziert):**
+- **Ehrlichkeit-Pivot Ratings:** echte Google-Sterne 5,0/8 (verifiziert vom öffentl. Profil) via SoT `lib/reviews.ts`; ALLE fabrizierten Ratings raus (9 Regionalseiten, Hero, CTA, Sidebar, About, Artikel-conclusionStats); Kundenzahl konsistent 164; 2 ECHTE Testimonials (Danesh, Rohrer) statt 3 erfundener. [[feedback_redrabbit_rating_ehrlichkeit_echte_google_sterne]]
+- **Slug-Hygiene:** 4 abgeschnittene Slugs gekürzt + 308-Redirects + 28 Bilder mit-umbenannt (Bild-404-Blindspot vor Commit gefangen, siehe LESSONS), prod-verifiziert.
+- **Regionalzahlen ehrlich** (statt 187>164 → „über 164 österreichweit"), **Entitäts-Schema Thomas** (@id+sameAs+knowsAbout gegen „thomas uhlir Pos 19"), **robots** OAI-SearchBot+Google-Extended, **Tageslauf-Timeout** gehärtet (Finalizer 600s), **GATE-Report-Tool** (`scripts/content-engine/dashboard/gate_report.ts`).
+- **Distribution gestartet:** Bing-Sitemap ✓ (47 URLs, 0 Fehler); Medium-Entwurf `f18a0f80bb66` korrekt re-importiert; LinkedIn-Post im Firmenseiten-Composer **gestaffelt** (Thomas klickt „Posten").
+
+**GATE-Realität (das Ziel ist NICHT erreicht):** GSC 90T = 5051 Impressionen, **2 Klicks**, Ø-Pos **47**. Kein Ranking-Beweis → NICHT skalieren (Plan-Disziplin korrekt). Hebel = Distribution + Zeit, nicht mehr Bauen.
+
+**Tageslauf/Mail-Status (verifiziert aus `.work/daily-*.log`):** Engine erzeugt + mailt FAST täglich an `t.uhlir@immo.red` (06-05…06-12 je 1 Mail, NUR 06-08 fiel aus = claude-CLI-Timeout, heute gefixt). Heutige Mail kam spät (20:22, weil Build/Engine langsam). „Keine Mails" = vermutlich Zustellung/Postfach (immo.red-Inbox + Spam prüfen; RR-Mails landen oft im Gmail thomas.uhlir@gmail.com [[reference_redrabbit_mails_landen_in_gmail]]), NICHT Generierung. **4 Drafts warten auf Freigabe:** bfsg-barrierefreiheit, was-kostet-ein-professioneller-website-relaunch, website-kosten-steuerlich-absetzbar, website-wartungsvertrag-sinnvoll.
+- **WICHTIG (ehrlich):** Der Tageslauf erzeugt nur den **optimierten TEXT-Draft** + Review-Mail. Medien (Podcast/Video/Bilder) + Publish + Multi-Plattform-Distribution (LinkedIn/Medium/Reddit) passieren ERST nach Freigabe und sind NICHT voll headless (Phase 4 offen) bzw. aktuell manuell. „Optimiert + verteilt + alles fertig" gilt also NICHT automatisch pro Artikel.
+
+**OFFEN — braucht Thomas (Pre-Mortem #5: die 3 kleinen Inputs nicht überspringen):**
+1. LinkedIn „Posten" + Medium veröffentlichen (alten Entwurf `08c1450d849f` löschen).
+2. **/interview-me-Sitzung Kosten-Cluster** (Meinungs-Pool = Policy-Schutz, wichtigster Moat-Punkt).
+3. Google-Business-Adresse aktualisieren (zeigt alte).
+4. Später: Reddit/Source-of-Sources (echte Redaktions-Links), Wikidata/Crunchbase.
+
+**OFFEN — autonom/aufgeschoben:** Phase 4 (Medien headless produktiv); Bilder neu im Marken-Stil; Artikel-Prozente bleiben (User: echt); Phase 5 (Breite) NUR nach Ranking-Beweis.
 
 ---
 
