@@ -5,6 +5,7 @@ import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google';
+import { aggregateRatingLd } from '@/lib/reviews';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -81,6 +82,9 @@ const jsonLd = {
       "@type": "LocalBusiness",
       "@id": "https://web.redrabbit.media/#localbusiness",
       "name": "Red Rabbit Media",
+      // Echtes Google-Rating (lib/reviews.ts). Rendert nur, wenn echte Zahlen hinterlegt
+      // sind — sonst kein aggregateRating (kein Review-Spam). Aktuell 5,0 aus 8.
+      ...(aggregateRatingLd() ? { aggregateRating: aggregateRatingLd() } : {}),
       "image": "https://web.redrabbit.media/images/og-image.jpg",
       "telephone": "+436769000955",
       "email": "office@redrabbit.media",

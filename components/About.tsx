@@ -35,29 +35,25 @@ const defaultFeatures: Feature[] = [
     { title: "Performance", text: "Blitzschnelle Ladezeiten für beste Nutzererfahrung." }
 ];
 
+// ECHTE Google-Bewertungen (verifiziert 2026-06-12 vom oeffentlichen Google-Profil
+// "Red Rabbit GmbH", 5,0 aus 8). Wortlaut der Kunden, nur leichte Zeichensetzung; KEINE
+// erfundenen Testimonials. Dmitry (Team/Autor) bewusst ausgenommen. Weitere echte Reviews
+// hier ergaenzen, sobald sie auf dem Google-Profil erscheinen.
 const defaultTestimonials: Testimonial[] = [
     {
         stars: "★★★★★",
         rating: "5.0",
-        quote: "Red Rabbit Media hat unsere Erwartungen übertroffen. Die neue Website ist nicht nur optisch ein Highlight, sondern bringt uns auch messbar mehr Anfragen.",
-        author: "Markus Weber",
-        company: "Baufirma Weber",
+        quote: "Für unsere beiden Firmen wurden zwei Webseiten erstellt. Die Zusammenarbeit war äußerst präzise, auf all unsere Wünsche wurde detailliert eingegangen, und wir sind mit den Ergebnissen sehr zufrieden! Danke!",
+        author: "Rafael Danesh",
+        company: "Verifizierte Google-Rezension",
         avatar: ""
     },
     {
         stars: "★★★★★",
         rating: "5.0",
-        quote: "Professionell, schnell und immer erreichbar. Die Zusammenarbeit war hervorragend und das Ergebnis spricht für sich.",
-        author: "Sarah Leitner",
-        company: "Praxis Leitner",
-        avatar: ""
-    },
-    {
-        stars: "★★★★★",
-        rating: "5.0",
-        quote: "Endlich eine Agentur, die mitdenkt! Unsere Online-Sichtbarkeit hat sich deutlich verbessert. Klare Empfehlung.",
-        author: "Thomas Huber",
-        company: "Huber Installationen",
+        quote: "Ich bin von der Firma begeistert, vor allem von der Umsetzung. Ein Lob an Herrn Uhlir, der mich durch die Zeit der Umsetzung begleitet hat. Vielen lieben Dank. 100 Prozent Empfehlung.",
+        author: "Rene Rohrer",
+        company: "Verifizierte Google-Rezension",
         avatar: ""
     }
 ];
@@ -197,8 +193,8 @@ const About = ({ headline, text, testimonialsHeadline, features = defaultFeature
                                 Echte Erfahrungen von Kunden, die mit uns erfolgreich geworden sind
                             </p>
 
-                            {/* Desktop Grid Layout */}
-                            <div className="hidden lg:grid md:grid-cols-3 gap-8">
+                            {/* Desktop Grid Layout — 2 echte Bewertungen, zentriert (mehr ergaenzen, wenn neue Reviews kommen) */}
+                            <div className="hidden lg:grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                                 {displayTestimonials.map((testimonial, index) => (
                                     <AOSWrapper
                                         key={index}

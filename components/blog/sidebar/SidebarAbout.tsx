@@ -16,7 +16,7 @@ export function SidebarAbout() {
     const stats = [
         { value: String(REVIEWS.customersServed), label: 'Projekte' },
         hasRealRating()
-            ? { value: `${REVIEWS.rating}/5`, label: 'Rating' }
+            ? { value: `${REVIEWS.rating?.toFixed(1)}/5`, label: 'Rating' }
             : { value: '100%', label: 'Risikofrei' },
         { value: '2016', label: 'Seit' }
     ];

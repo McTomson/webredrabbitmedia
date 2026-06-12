@@ -220,7 +220,7 @@ const Hero = () => {
                                         ))}
                                     </div>
                                     <div className="text-sm font-medium text-gray-700">
-                                        <span className="font-bold">{REVIEWS.rating}/5</span> • <span className="underline decoration-gray-300 underline-offset-4">{REVIEWS.reviewCount} Google-Bewertungen</span>
+                                        <span className="font-bold">{REVIEWS.rating?.toFixed(1)}/5</span> • <span className="underline decoration-gray-300 underline-offset-4">{REVIEWS.reviewCount} Google-Bewertungen</span>
                                     </div>
                                 </>
                             ) : (
