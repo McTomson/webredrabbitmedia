@@ -11,8 +11,10 @@ ZUERST LESEN. Nahtlos weitermachen. Verbindlicher Plan: `docs/superpowers/plans/
 
 **GATE-Messung (§14, neues Tool `npm-style`: `npx tsx scripts/content-engine/dashboard/gate_report.ts [days]`):** 90 Tage = 5051 Impressionen, **2 Klicks**, Ø-Position **47,4**. Wir sind WEIT vom GATE — Disziplin (kein Skalieren) bestaetigt. Kosten-Cluster bekommt kommerzielle Impressionen ("was kostet... österreich" Pos 18, "alternative zu teurer agentur" Pos 9, "homepage festpreis vs agentur" Pos 10), aber Autoritaet/Distribution fehlt = der Hebel. "thomas uhlir" nur Pos 19 = schwache Entitaet.
 
+**ERLEDIGT 12.06 (Teil 3): ECHTE Google-Sterne live.** Vom öffentlichen Google-Profil (Red Rabbit GmbH) verifiziert: 5,0 aus 8. In `lib/reviews.ts` gesetzt → aggregateRating rendert auf Homepage (layout.tsx LocalBusiness) + Regionalseiten + tipps; sichtbare Badges (Hero/Sidebar/CTA) zeigen 5,0/5 · 8 Google-Bewertungen. 3 erfundene About-Testimonials ersetzt durch 2 ECHTE (Rafael Danesh, Rene Rohrer; Dmitry raus), wortwörtlich, nichts erfunden. Commit `46a3c26`. Tageslauf hat sich erholt (Draft `was-kostet-ein-professioneller-website-relaunch` sauber erzeugt, keine Fake-Stats). OFFEN Google: Adresse im Profil aktualisieren (alt); Review-Zahl monatlich nachziehen, wenn mehr kommen (oder Business-Profile-API).
+
 **BRAUCHT THOMAS (Entscheidungen/Logins — hier blockiert):**
-1. **Google-Business-Profil-Link + echte Review-Zahl/Rating** → echtes aggregateRating + Auto-Update (monatlich/API) bauen. Ohne das bleiben Sterne aus (ehrlich).
+1. **Google-Business-Adresse aktualisieren** (Profil zeigt noch alte Adresse) — nur Thomas. Rating selbst ist erledigt (5,0/8 echt live).
 2. **`lib/regional-content.ts` Regional-Projektzahlen (187/179/168/164/156/145/142/134/128)** uebersteigen z.T. die Gesamtzahl 164 → echte Regionalverteilung geben ODER ich entferne die Zahlen.
 3. **Mehrdeutige Artikel-Prozente** (+215%, +145%, +38%, +35%, -72% in conclusionStats) — echte Eigenwerte, illustrative Branchenwerte, oder raus?
 4. **Slug-Hygiene (Phase 0 #5):** bereit, die abgeschnittenen URLs umzubenennen (mit 301). Aendert LIVE indexierte URLs → kurzes Go noetig. Vorschlag: grafikdesign-vs-webdesign, statische-vs-dynamische-website, ki-website-erstellung, generative-engine-optimization. Cost-Cluster-Slugs bleiben (Pilot-Stabilitaet).
