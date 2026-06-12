@@ -1,10 +1,34 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/config';
+
+// This bespoke money page previously set only title+description, so it INHERITED the root layout's
+// OpenGraph (homepage og:title/og:url/og:image). Every social share + the Medium importer therefore
+// showed "Website ab 790€" + the homepage banner instead of this article. Set article-specific OG +
+// a self-canonical so shares and syndication resolve to THIS page.
+const CANONICAL = `${SITE_URL}/tipps/was-kostet-eine-website`;
+const OG_TITLE = 'Was kostet eine Website? Preise für Österreich 2026';
+const OG_DESC = 'Ehrliche Preisübersicht für Webdesign in Österreich 2026. Von Baukasten bis Premium-Agentur, inklusive der laufenden Kosten, die viele übersehen.';
+const OG_IMAGE = `${SITE_URL}/images/blog/was-kostet-eine-website-mit-5-seiten-wien-preise-2026.png`;
 
 export const metadata: Metadata = {
     title: 'Was kostet eine Website 2026 in Österreich? | Red Rabbit Media',
-    description: 'Ehrliche Preisübersicht für Webdesign in Österreich (2026). Von Baukasten (30€) bis Premium-Agentur (10.000€). Versteckte Kosten enthüllt.',
+    description: OG_DESC,
+    alternates: { canonical: CANONICAL },
+    openGraph: {
+        type: 'article',
+        title: OG_TITLE,
+        description: OG_DESC,
+        url: CANONICAL,
+        images: [OG_IMAGE],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: OG_TITLE,
+        description: OG_DESC,
+        images: [OG_IMAGE],
+    },
 };
 
 export default function BlogPost() {
