@@ -90,21 +90,25 @@ export default async function BlogPostPage({ params }: Props) {
         },
         "datePublished": post.publishedAt,
         "dateModified": post.updatedAt,
+        "inLanguage": "de-AT",
+        "isPartOf": {
+            "@id": `${SITE_URL}/#website`
+        },
+        // Author referenced by stable @id (same node as app/layout.tsx) so Google/LLMs
+        // consolidate authorship into ONE entity instead of a fresh inline Person per article.
         "author": {
             "@type": "Person",
+            "@id": author.entityId,
             "name": author.name,
             "jobTitle": author.role,
             "url": author.linkedin,
             "sameAs": [author.linkedin],
-            "knowsAbout": author.knowsAbout
+            "knowsAbout": author.knowsAbout,
+            "worksFor": { "@id": `${SITE_URL}/#organization` }
         },
+        // Publisher referenced by @id of the Organization defined in lib/schema/organization.ts.
         "publisher": {
-            "@type": "Organization",
-            "name": "Red Rabbit Media",
-            "logo": {
-                "@type": "ImageObject",
-                "url": `${SITE_URL}/favicon.png`
-            }
+            "@id": `${SITE_URL}/#organization`
         },
         "mainEntityOfPage": {
             "@type": "WebPage",
