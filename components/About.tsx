@@ -368,7 +368,7 @@ const About = ({ headline, text, testimonialsHeadline, features = defaultFeature
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                                        <span>Durchschnitt: 4.8/5</span>
+                                        <span>Zahlung erst bei Zufriedenheit</span>
                                     </div>
                                 </div>
                             </div>

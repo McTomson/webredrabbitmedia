@@ -27,7 +27,10 @@ export const cities: Record<string, City> = {
         seoText: "Wien ist der Motor der österreichischen Wirtschaft. Hier entscheiden Millisekunden darüber, ob ein Kunde bei Ihnen anfragt oder zur Konkurrenz geht. Wir optimieren Ihren Auftritt für das Wiener Stadtgebiet und alle Bezirke. Von der Landstraße bis Floridsdorf – wir sorgen dafür, dass Ihr Betrieb bei den relevanten Suchbegriffen ganz oben erscheint. Dabei verbinden wir moderne Technik mit einer klaren Struktur, die Suchmaschinen und echten Menschen gleichermaßen gefällt.",
         marketTrends: "Hohe Nachfrage nach mobiler Nutzbarkeit durch die vielen Öffi-Nutzer und professionelles Auftreten für anspruchsvolle Stadtkunden.",
         localFacts: ["Zentrum für Dienstleistung und Handel", "Hoher Wettbewerbsdruck in allen Branchen", "Schnelllebiger Markt mit Fokus auf Qualität"],
-        projectCount: 315,
+        // projectCount entfernt (12.06): die alte "315" war groesser als die echte Gesamtzahl
+        // betreuter Kunden (164, lib/reviews.ts) und damit unmoeglich. Bis echte Regionalzahlen
+        // vorliegen, wird kein fabrizierter Regional-Projektwert behauptet (CitySEOContent blendet
+        // den Satz bei fehlendem projectCount aus).
         cluster: "metropolis"
     },
     salzburg: {

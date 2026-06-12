@@ -42,8 +42,8 @@ export default function FeaturedBlogPosts() {
                             Aktuelle Tipps & Insights
                         </h2>
                         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Expertenwissen rund um Webdesign, Kosten und Best Practices –
-                            direkt aus unserer täglichen Arbeit mit über 315 Kunden.
+                            Expertenwissen rund um Webdesign, Kosten und Best Practices,
+                            direkt aus unserer täglichen Arbeit mit 164 Kunden.
                         </p>
                     </div>
                 </AOSWrapper>

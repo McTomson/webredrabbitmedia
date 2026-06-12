@@ -3,13 +3,13 @@ import RegionalLandingPage from "@/components/RegionalLandingPage";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: "Webdesign OÖ: Digitaler Vorsprung für Macher | ab 790€ | ⭐ 4.8",
+    title: "Webdesign OÖ: Digitaler Vorsprung für Macher | ab 790€",
     description: "Webdesign Oberösterreich ab 790€ ✓ Für Handwerk, Tourismus & Dienstleister ✓ Zahlung erst bei Zufriedenheit ✓ Linz, Wels, Steyr",
     alternates: {
         canonical: 'https://web.redrabbit.media/webdesign-oberoesterreich',
     },
     openGraph: {
-        title: "Webdesign OÖ: Digitaler Vorsprung für Macher | ab 790€ | ⭐ 4.8",
+        title: "Webdesign OÖ: Digitaler Vorsprung für Macher | ab 790€",
         description: "Webdesign Oberösterreich ab 790€ ✓ Für Handwerk, Tourismus & Dienstleister ✓ Zahlung erst bei Zufriedenheit ✓ Linz, Wels, Steyr",
         url: 'https://web.redrabbit.media/webdesign-oberoesterreich',
         siteName: 'Red Rabbit Media',

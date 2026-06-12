@@ -1,4 +1,11 @@
 // Schema.org Organization Markup
+import { aggregateRatingLd } from '@/lib/reviews';
+
+// aggregateRating wird NUR aus echten Google-Reviews gerendert (lib/reviews.ts).
+// Solange dort keine echten Zahlen hinterlegt sind, liefert dies undefined und es
+// landet KEIN Rating im Schema (kein Review-Spam, kein UWG-Risiko).
+const ratingLd = aggregateRatingLd();
+
 export const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -31,11 +38,9 @@ export const organizationSchema = {
         'https://www.facebook.com/redrabbit.media',
         'https://www.instagram.com/redrabbit.media',
     ],
-    // aggregateRating entfernt (Juni 2026): erfundene Bewertungszahl ohne echte Reviews
-    // = Verstoss gegen Google Structured-Data-Richtlinien. Erst wieder einbauen,
-    // wenn echte Bewertungen (z.B. Google Business Profile) existieren.
+    ...(ratingLd ? { aggregateRating: ratingLd } : {}),
     priceRange: '€€',
-    description: 'Professionelle Webdesign Agentur in Wien. Website ab 790€. Über 315 zufriedene Kunden.',
+    description: 'Professionelle Webdesign Agentur in Wien. Website ab 790€. 164 zufriedene Kunden.',
 };
 
 // LocalBusiness Schema (zusätzlich zu Organization)
@@ -70,9 +75,7 @@ export const localBusinessSchema = {
             closes: '18:00',
         },
     ],
-    // aggregateRating entfernt (Juni 2026): erfundene Bewertungszahl ohne echte Reviews
-    // = Verstoss gegen Google Structured-Data-Richtlinien. Erst wieder einbauen,
-    // wenn echte Bewertungen (z.B. Google Business Profile) existieren.
+    ...(ratingLd ? { aggregateRating: ratingLd } : {}),
 };
 
 
@@ -83,7 +86,7 @@ export const websiteSchema = {
     '@id': 'https://web.redrabbit.media/#website',
     url: 'https://web.redrabbit.media',
     name: 'Red Rabbit Media - Website ab 790€',
-    description: 'Professionelle Website ab 790€. Über 315 zufriedene Kunden. Erst zahlen wenn zufrieden.',
+    description: 'Professionelle Website ab 790€. 164 zufriedene Kunden. Erst zahlen wenn zufrieden.',
     publisher: {
         '@id': 'https://web.redrabbit.media/#organization',
     },

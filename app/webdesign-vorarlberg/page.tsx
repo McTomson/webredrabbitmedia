@@ -3,14 +3,14 @@ import RegionalLandingPage from "@/components/RegionalLandingPage";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Webdesign Vorarlberg: Qualität, die sich rechnet | ⭐ 4.8",
-  description: "Gscheit online gehen. ⭐ 4.8 Bewertung. Premium-Website ab 790€. Wir schaffen Werte für Ihr Unternehmen. 0% Risiko.",
+  title: "Webdesign Vorarlberg: Qualität, die sich rechnet",
+  description: "Gscheit online gehen. Premium-Website ab 790€. Wir schaffen Werte für Ihr Unternehmen. 0% Risiko.",
   alternates: {
     canonical: 'https://web.redrabbit.media/webdesign-vorarlberg',
   },
   openGraph: {
-    title: "Webdesign Vorarlberg: Qualität, die sich rechnet | ⭐ 4.8",
-    description: "Gscheit online gehen. ⭐ 4.8 Bewertung. Premium-Website ab 790€. Wir schaffen Werte für Ihr Unternehmen. 0% Risiko.",
+    title: "Webdesign Vorarlberg: Qualität, die sich rechnet",
+    description: "Gscheit online gehen. Premium-Website ab 790€. Wir schaffen Werte für Ihr Unternehmen. 0% Risiko.",
     url: 'https://web.redrabbit.media/webdesign-vorarlberg',
     siteName: 'Red Rabbit Media',
     locale: 'de_AT',

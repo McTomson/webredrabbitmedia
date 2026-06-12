@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { REVIEWS, hasRealRating } from '@/lib/reviews';
 
 /**
  * Sidebar About Section Komponente
@@ -10,9 +11,13 @@ import Link from 'next/link';
  * - CTA Button
  */
 export function SidebarAbout() {
+    // Rating-Stat nur, wenn echte Google-Bewertungen vorliegen (lib/reviews.ts).
+    // Sonst ein wahres USP-Stat statt eines erfundenen Schnitts.
     const stats = [
-        { value: '315+', label: 'Projekte' },
-        { value: '4.8/5', label: 'Rating' },
+        { value: String(REVIEWS.customersServed), label: 'Projekte' },
+        hasRealRating()
+            ? { value: `${REVIEWS.rating}/5`, label: 'Rating' }
+            : { value: '100%', label: 'Risikofrei' },
         { value: '2016', label: 'Seit' }
     ];
 

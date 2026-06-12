@@ -3,14 +3,14 @@ import RegionalLandingPage from "@/components/RegionalLandingPage";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Webdesign Burgenland: Digitaler Aufschwung | ab 790€ | ⭐ 4.8",
-  description: "Modern, leistbar & regional. ⭐ 4.8 Bewertung. Website ab 790€. Wir bringen burgenländische Betriebe groß raus. Zahlung erst bei Erfolg.",
+  title: "Webdesign Burgenland: Digitaler Aufschwung | ab 790€",
+  description: "Modern, leistbar & regional. Website ab 790€. Wir bringen burgenländische Betriebe groß raus. Zahlung erst bei Erfolg.",
   alternates: {
     canonical: 'https://web.redrabbit.media/webdesign-burgenland',
   },
   openGraph: {
-    title: "Webdesign Burgenland: Digitaler Aufschwung | ab 790€ | ⭐ 4.8",
-    description: "Modern, leistbar & regional. ⭐ 4.8 Bewertung. Website ab 790€. Wir bringen burgenländische Betriebe groß raus. Zahlung erst bei Erfolg.",
+    title: "Webdesign Burgenland: Digitaler Aufschwung | ab 790€",
+    description: "Modern, leistbar & regional. Website ab 790€. Wir bringen burgenländische Betriebe groß raus. Zahlung erst bei Erfolg.",
     url: 'https://web.redrabbit.media/webdesign-burgenland',
     siteName: 'Red Rabbit Media',
     locale: 'de_AT',

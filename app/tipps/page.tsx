@@ -2,10 +2,11 @@ import { getAllPosts } from '@/lib/blog/posts';
 import { Metadata } from 'next';
 import BlogFilter from '@/components/blog/BlogFilter';
 import JsonLd from '@/components/JsonLd';
+import { aggregateRatingLd } from '@/lib/reviews';
 
 export const metadata: Metadata = {
-    title: "Webdesign & SEO Experten-Wissen | ⭐ 4.8 (315+ Votes) | Thomas Uhlir MBA",
-    description: "Lerne von Thomas Uhlir MBA (Top 0.1% Expert): Wie du Websiten erstellst, die verkaufen. ✅ 315+ Bewertungen ⭐ 4.8. Aktuelle Strategien für Webdesign, SEO & Marketing.",
+    title: "Webdesign & SEO Experten-Wissen | Thomas Uhlir MBA",
+    description: "Lerne von Thomas Uhlir MBA: Wie du Websiten erstellst, die verkaufen. Aktuelle Strategien für Webdesign, SEO & Marketing aus 164 Kundenprojekten.",
     openGraph: {
         title: "Webdesign & SEO Experten-Wissen | Thomas Uhlir MBA",
         description: "Exklusive Tipps für deinen Online-Erfolg. Lerne, wie du mit deiner Website Kunden gewinnst.",
@@ -34,9 +35,9 @@ export default async function BlogPage() {
             'name': 'Thomas Uhlir MBA',
             'jobTitle': 'Webdesign & SEO Experte',
             'url': 'https://web.redrabbit.media/tipps', // Corrected canonical URL
-            // aggregateRating entfernt (Juni 2026): erfundene Bewertungszahl ohne echte Reviews
-            // = Verstoss gegen Google Structured-Data-Richtlinien. Erst wieder einbauen,
-            // wenn echte Bewertungen (z.B. Google Business Profile) existieren.
+            // aggregateRating wird NUR aus echten Google-Reviews gerendert (lib/reviews.ts).
+            // Solange keine echten Zahlen hinterlegt sind, bleibt es weg (kein Review-Spam).
+            ...(aggregateRatingLd() ? { aggregateRating: aggregateRatingLd() } : {}),
         }
     };
 

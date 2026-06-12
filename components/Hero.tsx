@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { useContactForm } from './ContactFormProvider';
+import { REVIEWS, hasRealRating } from '@/lib/reviews';
 
 const Hero = () => {
     const { openForm } = useContactForm();
@@ -206,16 +207,27 @@ const Hero = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 1.3 }}
                         >
-                            <div className="flex gap-1">
-                                {[1, 2, 3, 4, 5].map((star) => (
-                                    <svg key={star} className="w-5 h-5 text-yellow-500 fill-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                ))}
-                            </div>
-                            <div className="text-sm font-medium text-gray-700">
-                                <span className="font-bold">4.8/5</span> • <span className="underline decoration-gray-300 underline-offset-4">315 Bewertungen</span>
-                            </div>
+                            {/* Trust-Badge: echte Google-Sterne werden NUR gezeigt, wenn echte
+                                Bewertungen vorliegen (lib/reviews.ts). Solange nicht, ehrliches
+                                Social-Proof ueber die Zahl betreuter Kunden statt erfundener Sterne. */}
+                            {hasRealRating() ? (
+                                <>
+                                    <div className="flex gap-1">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <svg key={star} className="w-5 h-5 text-yellow-500 fill-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                            </svg>
+                                        ))}
+                                    </div>
+                                    <div className="text-sm font-medium text-gray-700">
+                                        <span className="font-bold">{REVIEWS.rating}/5</span> • <span className="underline decoration-gray-300 underline-offset-4">{REVIEWS.reviewCount} Google-Bewertungen</span>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="text-sm font-medium text-gray-700">
+                                    <span className="font-bold text-gray-900">{REVIEWS.customersServed} zufriedene Kunden</span> • <span>Zahlung erst bei 100% Zufriedenheit</span>
+                                </div>
+                            )}
                         </motion.div>
 
                         <div className="flex justify-center lg:justify-start">

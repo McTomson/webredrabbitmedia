@@ -3,13 +3,13 @@ import RegionalLandingPage from "@/components/RegionalLandingPage";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Webdesign Niederösterreich | Ab 790 € | ⭐ 4.8",
+  title: "Webdesign Niederösterreich | Ab 790 €",
   description: "Professionelle Webseiten für NÖ-Betriebe ✓ Fixpreis ab 790 € ✓ Erst zahlen wenn's passt ✓ St. Pölten, Krems, Baden ✓ Jetzt anfragen!",
   alternates: {
     canonical: 'https://web.redrabbit.media/webdesign-niederoesterreich',
   },
   openGraph: {
-    title: "Webdesign Niederösterreich | Ab 790 € | ⭐ 4.8",
+    title: "Webdesign Niederösterreich | Ab 790 €",
     description: "Professionelle Webseiten für NÖ-Betriebe ✓ Fixpreis ab 790 € ✓ Erst zahlen wenn's passt ✓ St. Pölten, Krems, Baden ✓ Jetzt anfragen!",
     url: 'https://web.redrabbit.media/webdesign-niederoesterreich',
     siteName: 'Red Rabbit Media',

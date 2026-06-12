@@ -1,5 +1,7 @@
 "use client";
 
+import { REVIEWS, hasRealRating } from '@/lib/reviews';
+
 interface BlogCTASectionProps {
     onContactClick: () => void;
     onReadArticlesClick: () => void;
@@ -38,7 +40,7 @@ export default function BlogCTASection({ onContactClick, onReadArticlesClick }: 
 
                 {/* Trust Signal */}
                 <p className="mt-8 text-sm text-gray-500">
-                    ⭐ 4.8/5.0 • 315+ zufriedene Kunden • Zahlung erst bei Zufriedenheit
+                    {hasRealRating() ? `${REVIEWS.rating}/5.0 • ` : ''}{REVIEWS.customersServed} zufriedene Kunden • Zahlung erst bei Zufriedenheit
                 </p>
             </div>
         </section>

@@ -13,8 +13,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Webdesign Österreich: Premium-Qualität zum Fixpreis | ⭐ 4.8",
-  description: "Exklusives Webdesign ab 790€. Für Unternehmer, die smart rechnen. Kein Baukasten, keine Abos. Zahlung erst bei 100% Zufriedenheit. 315+ Kunden.",
+  title: "Webdesign Österreich: Premium-Qualität zum Fixpreis",
+  description: "Exklusives Webdesign ab 790€. Für Unternehmer, die smart rechnen. Kein Baukasten, keine Abos. Zahlung erst bei 100% Zufriedenheit. 164 Kunden.",
   metadataBase: new URL('https://web.redrabbit.media'),
 
   // Open Graph
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     url: 'https://web.redrabbit.media',
     siteName: 'Red Rabbit Media',
     title: 'Red Rabbit Media | Website ab 790€ - Keine Vorkasse',
-    description: 'Website ab 790€ ✓ Über 315 zufriedene Kunden ✓ Zahlung erst bei Zufriedenheit ✓ DSGVO-konform',
+    description: 'Website ab 790€ ✓ 164 zufriedene Kunden ✓ Zahlung erst bei Zufriedenheit ✓ DSGVO-konform',
     images: [{
       url: 'https://web.redrabbit.media/images/og-image-wien.jpg',
       width: 1200,
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Website ab 790€ | Red Rabbit Media Wien',
-    description: '315 zufriedene Kunden ✓ Kein Risiko ✓ DSGVO-konform',
+    description: '164 zufriedene Kunden ✓ Kein Risiko ✓ DSGVO-konform',
     images: ['https://web.redrabbit.media/images/twitter-card.jpg'],
   },
 
@@ -215,7 +215,7 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="Red Rabbit Media Website Tipps RSS Feed" href="/feed.xml" />
 
         {/* LLM/AI Search Optimization für ChatGPT, Claude, Perplexity */}
-        <meta name="chatgpt-summary" content="Red Rabbit Media: Professional websites from 790€ in Vienna. No risk, payment only after satisfaction. 315+ satisfied customers, 4.8 stars. Contact: office@redrabbit.media, +43 676 9000955" />
+        <meta name="chatgpt-summary" content="Red Rabbit Media: Professional websites from 790€ in Vienna. No risk, payment only after satisfaction. 164 satisfied customers. Contact: office@redrabbit.media, +43 676 9000955" />
         <meta name="ai-indexable" content="true" />
         <meta name="ai-description" content="Leading Webdesign agency in Vienna offering professional websites from 790€. GDPR-compliant, mobile-optimized, no upfront payment required." />
 

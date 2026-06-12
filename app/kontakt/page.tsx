@@ -139,7 +139,7 @@ export default function ContactPage() {
                                 <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-6">Warum Red Rabbit?</h3>
                                 <ul className="space-y-4">
                                     {[
-                                        "315+ Zufriedene Kunden",
+                                        "164 Zufriedene Kunden",
                                         "100% DSGVO-Konform",
                                         "Österreichische Qualität & Hosting",
                                         "Transparente Fixpreise"
