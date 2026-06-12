@@ -239,3 +239,48 @@ quelle: https://web.redrabbit.media/tipps/website-regio-preise
 quelle_name: Red Rabbit Media - Was kostet eine Website in Österreich? (2026 Regionale Preisanalyse)
 geprueft_am: 2026-06-11
 recheck_nach: 2026-12-08
+
+## t6-2026-06-12-027
+cluster: 1
+keywords: kostet, professioneller, website, relaunch
+aussage: Ein professioneller Website-Relaunch wird typischerweise in drei Preisstufen kalkuliert: einfacher Relaunch (5–15 Seiten, WordPress, responsives Design, Basis-SEO) 5.000–10.000 €, strategischer Relaunch (mit SEO-Analyse, Content-Strategie, Conversion-Optimierung, Post-Launch-Monitoring) 10.000–25.000 €, Enterprise-Relaunch (individuelle Programmierung, Systemanbindungen) 25.000–50.000+ €.
+quelle: https://davidkeiser.de/wissen/website-relaunch-kosten/
+quelle_name: David Keiser - Website Relaunch Kosten
+geprueft_am: 2026-06-12
+recheck_nach: 2026-12-09
+
+## t6-2026-06-12-028
+cluster: 1
+keywords: kostet, professioneller, website, relaunch
+aussage: Ein professioneller Relaunch verteilt sich auf Phasen mit eigenen Budgets: Strategie & Konzeption 3.000–15.000 €, UX/UI-Design 5.000–25.000 €, technische Umsetzung & CMS 10.000–60.000 €, Content-Überarbeitung & Migration 2.000–20.000 €, SEO & Performance 2.000–25.000 €, Projektmanagement & QS ca. 10–20 % der Gesamtkosten; das Gesamtbudget liegt damit häufig zwischen 20.000 € und 145.000 €.
+quelle: https://www.jungmut.com/blog/was-kostet-ein-website-relaunch/
+quelle_name: JUNGMUT - Was kostet ein Website-Relaunch?
+geprueft_am: 2026-06-12
+recheck_nach: 2026-12-09
+
+## t6-2026-06-12-029
+cluster: 1
+keywords: kostet, professioneller, website, relaunch
+aussage: Der größte Kostenblock eines Relaunches ist nicht die Technik, sondern die Arbeitszeit: In Österreich liegt der Stundensatz für professionelle Webentwicklung 2026 bei rund 80 bis 150 Euro pro Stunde.
+quelle: https://web.redrabbit.media/tipps/wie-setzen-sich-die-kosten-fuer-eine-website-zusammen
+quelle_name: Web Red Rabbit Media - Wie setzen sich die Kosten für eine Website zusammen?
+geprueft_am: 2026-06-12
+recheck_nach: 2026-12-09
+
+## t6-2026-06-12-030
+cluster: 1
+keywords: kostet, professioneller, website, relaunch
+aussage: Laufende Kosten nach dem Relaunch (Hosting, Wartung, Updates) liegen bei rund 50 bis 500 Euro pro Monat; professionelle Wartung allein wird oft mit 150 bis 500 Euro pro Monat angesetzt.
+quelle: https://davidkeiser.de/wissen/website-relaunch-kosten/
+quelle_name: David Keiser - Website Relaunch Kosten
+geprueft_am: 2026-06-12
+recheck_nach: 2026-12-09
+
+## t6-2026-06-12-031
+cluster: 1
+keywords: kostet, professioneller, website, relaunch
+aussage: Als Referenz für den österreichischen Markt: Eine professionelle Unternehmens-Website kostet 2026 grob zwischen 1.500 und 6.000 Euro, einfache Landingpages starten ab 790 € — ein Relaunch liegt aufwandsseitig meist im oberen Bereich oder darüber, da Konzept, Design und Technik neu gedacht werden.
+quelle: https://web.redrabbit.media/tipps/was-kostet-eine-website
+quelle_name: Web Red Rabbit Media - Was kostet eine Website 2026?
+geprueft_am: 2026-06-12
+recheck_nach: 2026-12-09
