@@ -5,6 +5,25 @@ ZUERST LESEN. Nahtlos weitermachen. Verbindlicher Plan: `docs/superpowers/plans/
 
 ---
 
+## STAND 2026-06-12 (Teil 2) — Ehrlichkeit-Pivot + GATE-Messung
+
+**Rating-Entscheidung GEAENDERT (Owner):** auf Ehrlichkeit umgestellt. Fabriziertes 315/4,9-Schema bleibt ENTFERNT (NICHT reverten). Neue SoT `lib/reviews.ts`: strukturiertes aggregateRating + sichtbare Sterne NUR aus echten Google-Reviews (rendert nichts, bis echte Zahlen eingetragen sind). Alle Fake-Rating-Claims raus (4.8/4.9-Sterne, "315 Bewertungen/Votes") aus 8 Bundesland-SERP-Titeln, Hero, BlogCTA, SidebarAbout, About, Schema, chatgpt-summary. Kundenzahl konsistent von rundem "315+" auf spezifisches **164** (Kunden, NICHT Bewertungen — glaubwuerdiger laut Trust-Psychologie). Fake-conclusionStats in 2 Seed-Artikeln gefixt (315+/4.9/+315% raus). Commits `76e8c79`, `26e114e`, `10c02bf` (live). Memory: [[feedback_redrabbit_rating_ehrlichkeit_echte_google_sterne]].
+
+**GATE-Messung (§14, neues Tool `npm-style`: `npx tsx scripts/content-engine/dashboard/gate_report.ts [days]`):** 90 Tage = 5051 Impressionen, **2 Klicks**, Ø-Position **47,4**. Wir sind WEIT vom GATE — Disziplin (kein Skalieren) bestaetigt. Kosten-Cluster bekommt kommerzielle Impressionen ("was kostet... österreich" Pos 18, "alternative zu teurer agentur" Pos 9, "homepage festpreis vs agentur" Pos 10), aber Autoritaet/Distribution fehlt = der Hebel. "thomas uhlir" nur Pos 19 = schwache Entitaet.
+
+**BRAUCHT THOMAS (Entscheidungen/Logins — hier blockiert):**
+1. **Google-Business-Profil-Link + echte Review-Zahl/Rating** → echtes aggregateRating + Auto-Update (monatlich/API) bauen. Ohne das bleiben Sterne aus (ehrlich).
+2. **`lib/regional-content.ts` Regional-Projektzahlen (187/179/168/164/156/145/142/134/128)** uebersteigen z.T. die Gesamtzahl 164 → echte Regionalverteilung geben ODER ich entferne die Zahlen.
+3. **Mehrdeutige Artikel-Prozente** (+215%, +145%, +38%, +35%, -72% in conclusionStats) — echte Eigenwerte, illustrative Branchenwerte, oder raus?
+4. **Slug-Hygiene (Phase 0 #5):** bereit, die abgeschnittenen URLs umzubenennen (mit 301). Aendert LIVE indexierte URLs → kurzes Go noetig. Vorschlag: grafikdesign-vs-webdesign, statische-vs-dynamische-website, ki-website-erstellung, generative-engine-optimization. Cost-Cluster-Slugs bleiben (Pilot-Stabilitaet).
+5. **Distribution:** Medium-Login (`rabbit.red.media@gmail.com`) + falschen Entwurf `medium.com/p/08c1450d849f/edit` verwerfen + neu importieren + Freigabe; LinkedIn; Reddit/SOS.
+6. **Bing-Webmaster + Wikidata/Crunchbase** (Entitaet) — Accounts.
+7. **Bilder** (verschoben, gemerkt): Cost-Cluster-Heroes off-brand → Marken-Stil via Gemini.
+
+**Watch:** Heutiger Tageslauf scheiterte (Finalizer `claude` CLI ETIMEDOUT, 4x Backoff erschoepft) — nichts publiziert. Wenn morgen wieder: Timeout-Config der Rollen pruefen.
+
+---
+
 ## STAND 2026-06-12 (Session-Ende) — SOFORT-NÄCHSTE-SCHRITTE
 
 Diese Session (Forts.): Quality-Scan (Punkt 4) + dessen Funde abgearbeitet — 1 H1/Seite, 20 Titel ≤60, Meta-Cap, /llms.txt, Pillar-Hub→Spoke (3→11), Skip-Nav-a11y, Indexierungs-Hook, conventions.md-Regeln (Regression-Schutz), **Money-Page-OG-Bug gefixt** (`4cde3f7`). Distribution gestartet.

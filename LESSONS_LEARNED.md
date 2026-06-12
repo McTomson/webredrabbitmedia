@@ -4,6 +4,13 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-12 — Ehrlichkeit-Pivot bei Ratings + Fabrikations-Funde
+
+- **Owner-Entscheidung kann sich umkehren — und eine andere (Cowork-)Session hatte schon vorgegriffen.** Der Plan hielt fest "315/4,9-Schema bleibt (Userwunsch)". Ein Cowork-Commit (`db2fe81`, 11.06) hatte das aggregateRating aber bereits entfernt. NICHT blind reverten oder annehmen — beim User rueckfragen. Ergebnis: Pivot auf Ehrlichkeit. Lehre: vor jeder Arbeit an einer "festen" Entscheidung den echten Code-Stand UND die letzte Owner-Aussage prüfen; Widerspruch = Frage, kein Raten ([[feedback_redrabbit_rating_ehrlichkeit_echte_google_sterne]]).
+- **Fake-Zahlen sitzen in 4 Schichten, nicht einer.** "315/4.8" steckte in: (a) JSON-LD-Schema, (b) sichtbaren Komponenten (Hero-Sterne, Sidebar, CTA, About), (c) Meta/Title von 9 Seiten (Bundesland-SERP + layout + tipps), (d) Artikel-Frontmatter (`conclusionStats` mit "315+", "4.9/5", "+315%"). Ein einzelner Grep über `app/components/lib` findet (d) NICHT (liegt in content/blog) und Stats in MDX-eingebetteten Datenblöcken auch nicht über die offensichtlichen Strings. Lehre: bei Zahlen-Bereinigung IMMER zusätzlich die gerenderte HTML der Schlüsselseiten greppen (`fetch` + Kontext-Slice), nicht nur den Quellcode — sonst bleiben generierte/eingebettete Vorkommen stehen.
+- **Single Source of Truth für Social-Proof-Zahlen** (`lib/reviews.ts`): rendert aggregateRating + Sterne nur bei `hasRealRating()`. So ist der Default ehrlich (nichts) und echte Google-Zahlen erscheinen automatisch überall, sobald eingetragen. Trust-Psychologie: spezifische "164" > rundes "315+" (wirkt gezählt statt geschätzt); Meta/Title sind KEIN Ranking-Faktor (nur CTR), also Zahl frei wählbar ohne Ranking-Risiko — aber muss wahr sein.
+- **Inkonsistente Bestandsdaten = das eigentliche Risiko:** Regional-Projektzahlen (187/179/...) > neue Gesamtzahl 164 → unmöglich. Ohne echte Verteilung NICHT runterraten (fail-closed: flaggen oder entfernen). cities.ts-Wien-"315" entfernt statt geschätzt.
+
 ## 2026-06-11 (Teil 10) — SEO-Batch aus Quality-Scan-Funden
 
 - **Doppelte H1 war systemisch + die conventions.md verursachte sie.** Jede MDX-Artikelseite hatte 2 H1 (Titel-Hero + Body-`# Titel`). Fix zweistufig: Render (`stripLeadingTitleH1` in posts.ts + `mdx-components` `#`→`<h2>`) UND Generator (`conventions.md` verbot Body-H1). Lehre: wenn ein Fehler in JEDEM generierten Artikel steckt, immer auch die Generator-Vorgabe (conventions.md/Prompt) prüfen, nicht nur die Artikel patchen — sonst regrediert es beim nächsten Tageslauf.
