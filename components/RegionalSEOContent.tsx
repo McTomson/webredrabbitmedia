@@ -5,6 +5,7 @@
  */
 
 import { RegionalContent } from "@/lib/regional-content";
+import { REVIEWS } from "@/lib/reviews";
 
 interface RegionalSEOContentProps {
     data: {
@@ -153,8 +154,8 @@ const RegionalSEOContent = ({ data, content }: RegionalSEOContentProps) => {
                         <h2>Persönlicher Service vor Ort in {data.region}</h2>
                         <p>
                             Wir kommen zu Ihnen! Mit unserem Hauptsitz in Wien bedienen wir ganz Österreich - inklusive persönlicher
-                            Beratung vor Ort in {data.region}. Bereits über {content.projectCount} erfolgreiche Webdesign-Projekte haben
-                            wir realisiert. Ob in {data.mainCity}, {data.cities[1]} oder {data.cities[2]} -
+                            Beratung vor Ort in {data.region}. Bereits über {REVIEWS.customersServed} erfolgreiche Webdesign-Projekte haben
+                            wir österreichweit realisiert. Ob in {data.mainCity}, {data.cities[1]} oder {data.cities[2]} -
                             wir sind für Sie da.
                         </p>
 

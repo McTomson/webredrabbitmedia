@@ -1,14 +1,14 @@
 import { City } from '../app/[slug]/cities';
+import { REVIEWS } from '@/lib/reviews';
 
 interface CitySEOContentProps {
     city: City;
 }
 
 const CitySEOContent = ({ city }: CitySEOContentProps) => {
-    // ENTFERNT (Juni 2026): Hash-generierte Fake-Projektzahlen (121 + hash % 92).
-    // Erfundene Zahlen = Google "fabricated content" + UWG-Risiko (irreführende Werbung).
-    // Es wird nur noch eine ECHTE, in cities.ts gepflegte Zahl angezeigt — sonst keine.
-    const projectCount = city.projectCount ?? 0;
+    // ENTFERNT (Juni 2026): Hash-generierte + per-Region erfundene Projektzahlen.
+    // Es wird nur die EINE konsistente, statewide Gesamtzahl aus der SoT (lib/reviews.ts)
+    // gezeigt — keine per-Region-Zahlen mehr (die überstiegen z.T. die Gesamtzahl = unmöglich).
     const isWien = city.name === "Wien";
 
     return (
@@ -43,7 +43,7 @@ const CitySEOContent = ({ city }: CitySEOContentProps) => {
                     <p>
                         {city.seoText}
                         Wir verstehen die Dynamik der {city.name}er Wirtschaft und bieten maßgeschneiderte Lösungen.
-                        {projectCount > 0 && `Bereits über ${projectCount} erfolgreiche Projekte haben wir in der Region realisiert.`}
+                        {` Bereits über ${REVIEWS.customersServed} erfolgreiche Projekte haben wir österreichweit realisiert.`}
                     </p>
                     <p className="text-gray-600 mb-8">
                         Sind Sie bereit, Ihre digitale Präsenz in {city.name} auf die nächste Stufe zu heben? Lassen Sie uns gemeinsam eine Website entwickeln, die nicht nur gut aussieht, sondern Ihre regionalen Ziele unterstützt. Klicken Sie auf &quot;Projekt anfragen&quot;, um ein kostenloses Erstgespräch zu vereinbaren, oder rufen Sie uns direkt an unter &quot;+43 676 9000955&quot;.
