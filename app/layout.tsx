@@ -121,16 +121,26 @@ const jsonLd = {
         { "@type": "City", "name": "St. Pölten" }
       ],
       "founder": {
-        "@type": "Person",
-        "name": "Thomas Uhlir MBA",
-        "jobTitle": "Founder & Strategy"
+        "@id": "https://web.redrabbit.media/#thomas-uhlir"
       },
       "employee": [
         {
           "@type": "Person",
+          "@id": "https://web.redrabbit.media/#thomas-uhlir",
           "name": "Thomas Uhlir MBA",
-          "jobTitle": "Strategie & Design",
-          "image": "https://web.redrabbit.media/images/thomas-uhlir.jpg"
+          "jobTitle": "Founder & Strategy",
+          "url": "https://web.redrabbit.media/#about",
+          "image": "https://web.redrabbit.media/images/thomas-uhlir.jpg",
+          "sameAs": "https://www.linkedin.com/in/thomasuhlir/",
+          "worksFor": { "@id": "https://web.redrabbit.media/#organization" },
+          "knowsAbout": [
+            "Webdesign",
+            "Suchmaschinenoptimierung (SEO)",
+            "Generative Engine Optimization (GEO)",
+            "Next.js",
+            "Conversion-Optimierung",
+            "Webdesign Österreich"
+          ]
         },
         {
           "@type": "Person",

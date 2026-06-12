@@ -92,6 +92,17 @@ export default function robots(): MetadataRoute.Robots {
                 allow: '/',
             },
             {
+                // OpenAI's SEARCH crawler (powers ChatGPT Search citations) — distinct from GPTBot
+                // (training). Explicit allow for GEO visibility (plan §11.2), though '*' already covers it.
+                userAgent: 'OAI-SearchBot',
+                allow: '/',
+            },
+            {
+                // Controls whether Google's Gemini / AI features may use the content.
+                userAgent: 'Google-Extended',
+                allow: '/',
+            },
+            {
                 userAgent: '*',
                 allow: '/',
                 disallow: ['/api/', '/private/'],

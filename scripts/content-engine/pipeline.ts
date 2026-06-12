@@ -280,7 +280,7 @@ async function main() {
 
     // 4) Editor
     console.log('4/5 Editor ...');
-    const eOut = runClaude(editorPrompt(draftBody), { timeoutSec: 360, label: 'editor' });
+    const eOut = runClaude(editorPrompt(draftBody), { timeoutSec: 480, label: 'editor' });
     save(dir, 'edited.raw.txt', eOut);
     const editedBody = extractMdxBlock(eOut);
     let flags: string[] = [];
@@ -299,7 +299,10 @@ async function main() {
     let errors: string[] = [];
     for (let attempt = 1; attempt <= 3; attempt++) {
         const fOut = runClaude(finalizerPrompt(t, editedBody, sources, today, attempt > 1 ? errors : undefined), {
-            timeoutSec: 360,
+            // 600s: the finalizer is the heaviest role (full MDX assembly + outgoing links +
+            // conclusionStats) and consistently exceeded the old 360s limit, which killed the
+            // whole daily run via ETIMEDOUT (2026-06-12). Match the researcher's headroom.
+            timeoutSec: 600,
             label: `finalizer (Versuch ${attempt})`,
         });
         save(dir, `final.attempt${attempt}.txt`, fOut);
