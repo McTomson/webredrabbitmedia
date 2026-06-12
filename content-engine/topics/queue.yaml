@@ -399,7 +399,7 @@ topics:
     is_pillar: false
   - id: 53
     frage: "Was ist der technologische Unterschied zwischen einer statischen und einer dynamischen Website?"
-    slug: was-ist-der-technologische-unterschied-zwischen-einer-statischen-und
+    slug: statische-vs-dynamische-website
     cluster: 2
     status: todo
     winnability: unknown
@@ -763,7 +763,7 @@ topics:
     is_pillar: false
   - id: 105
     frage: "Wie verändern KI-Technologien die Erstellung von modernen Websites?"
-    slug: wie-veraendern-ki-technologien-die-erstellung-von-modernen-websites
+    slug: ki-website-erstellung
     cluster: 3
     status: todo
     winnability: unknown
@@ -1134,7 +1134,7 @@ topics:
     is_pillar: false
   - id: 158
     frage: "Was ist Generative Engine Optimization (GEO) und warum ersetzt es klassisches SEO?"
-    slug: was-ist-generative-engine-optimization-geo-und-warum-ersetzt
+    slug: generative-engine-optimization
     cluster: 4
     status: todo
     winnability: unknown
@@ -1491,7 +1491,7 @@ topics:
     is_pillar: false
   - id: 209
     frage: "Was ist der Unterschied zwischen reinem Grafikdesign und funktionalem User Experience (UX) Design?"
-    slug: was-ist-der-unterschied-zwischen-reinem-grafikdesign-und-funktionalem
+    slug: grafikdesign-vs-webdesign
     cluster: 5
     status: todo
     winnability: unknown

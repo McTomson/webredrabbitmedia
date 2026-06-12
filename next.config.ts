@@ -123,6 +123,28 @@ const nextConfig = {
         destination: '/#about',
         permanent: true,
       },
+      // Slug-Hygiene 2026-06-12: abgeschnittene Auto-Slugs auf kurze Keyword-Slugs
+      // umgezogen. 301 erhaelt die (geringe) Linkkraft + indexierte URLs.
+      {
+        source: '/tipps/was-ist-der-unterschied-zwischen-reinem-grafikdesign-und-funktionalem',
+        destination: '/tipps/grafikdesign-vs-webdesign',
+        permanent: true,
+      },
+      {
+        source: '/tipps/was-ist-der-technologische-unterschied-zwischen-einer-statischen-und',
+        destination: '/tipps/statische-vs-dynamische-website',
+        permanent: true,
+      },
+      {
+        source: '/tipps/wie-veraendern-ki-technologien-die-erstellung-von-modernen-websites',
+        destination: '/tipps/ki-website-erstellung',
+        permanent: true,
+      },
+      {
+        source: '/tipps/was-ist-generative-engine-optimization-geo-und-warum-ersetzt',
+        destination: '/tipps/generative-engine-optimization',
+        permanent: true,
+      },
     ]
   },
 
