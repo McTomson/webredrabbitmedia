@@ -13,8 +13,12 @@ ZUERST LESEN. Nahtlos weitermachen. Verbindlicher Plan: `docs/superpowers/plans/
 
 **ERLEDIGT 12.06 (Teil 3): ECHTE Google-Sterne live.** Vom öffentlichen Google-Profil (Red Rabbit GmbH) verifiziert: 5,0 aus 8. In `lib/reviews.ts` gesetzt → aggregateRating rendert auf Homepage (layout.tsx LocalBusiness) + Regionalseiten + tipps; sichtbare Badges (Hero/Sidebar/CTA) zeigen 5,0/5 · 8 Google-Bewertungen. 3 erfundene About-Testimonials ersetzt durch 2 ECHTE (Rafael Danesh, Rene Rohrer; Dmitry raus), wortwörtlich, nichts erfunden. Commit `46a3c26`. Tageslauf hat sich erholt (Draft `was-kostet-ein-professioneller-website-relaunch` sauber erzeugt, keine Fake-Stats). OFFEN Google: Adresse im Profil aktualisieren (alt); Review-Zahl monatlich nachziehen, wenn mehr kommen (oder Business-Profile-API).
 
+**ERLEDIGT 12.06 (Teil 4):** Slug-Hygiene live + prod-verifiziert (4 abgeschnittene Slugs → kurz, mit 308-Redirects + 28 Bild-Renames; neue URL 200, alte 308, Bild 200; Commit `c8a3aad`). Regionalzahlen ehrlich (per-Region 187 > 164 unmöglich → SoT-statewide „über 164 österreichweit"; `38b8705`). Artikel-Prozente bleiben (User: echt). Bing-Sitemap war bereits eingereicht (3 Sitemaps, 47 URLs, 0 Fehler). Medium: neuer korrekter Entwurf `f18a0f80bb66` importiert (OG-Fix wirkt, Titel artikelspezifisch) — Thomas: alten Entwurf `08c1450d849f` löschen + neuen prüfen/veröffentlichen. Build-„Hang" war nur Disk-Last (tsc grün), siehe LESSONS.
+
 **BRAUCHT THOMAS (Entscheidungen/Logins — hier blockiert):**
 1. **Google-Business-Adresse aktualisieren** (Profil zeigt noch alte Adresse) — nur Thomas. Rating selbst ist erledigt (5,0/8 echt live).
+2. **Medium:** alten Entwurf `08c1450d849f` löschen + neuen `f18a0f80bb66` prüfen/veröffentlichen (Login rabbit.red.media).
+3. **LinkedIn:** Firmenseite (urn:li:organization:110794913) — ich kann einen Post-Entwurf bauen, Veröffentlichung mit dir.
 2. **`lib/regional-content.ts` Regional-Projektzahlen (187/179/168/164/156/145/142/134/128)** uebersteigen z.T. die Gesamtzahl 164 → echte Regionalverteilung geben ODER ich entferne die Zahlen.
 3. **Mehrdeutige Artikel-Prozente** (+215%, +145%, +38%, +35%, -72% in conclusionStats) — echte Eigenwerte, illustrative Branchenwerte, oder raus?
 4. **Slug-Hygiene (Phase 0 #5):** bereit, die abgeschnittenen URLs umzubenennen (mit 301). Aendert LIVE indexierte URLs → kurzes Go noetig. Vorschlag: grafikdesign-vs-webdesign, statische-vs-dynamische-website, ki-website-erstellung, generative-engine-optimization. Cost-Cluster-Slugs bleiben (Pilot-Stabilitaet).

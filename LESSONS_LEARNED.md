@@ -4,6 +4,14 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-12 (Teil 3) — Slug-Renames: 4 Blindspots + Build-Langsamkeit ≠ Hang
+
+- **Slug = Dateiname** (posts.ts), aber jede .mdx hat ZUSÄTZLICH ein `slug:`-Frontmatter-Feld UND `queue.yaml` hat `slug:`-Felder. status.json trackt per numerischer ID (nicht Slug) — gut. Beim Rename ALLE drei konsistent halten + Cross-Cluster-Links in anderen .mdx.
+- **GRÖSSTER Blindspot: Bilddateien.** Ein globales sed „alter-slug -> neuer-slug" über die .mdx ersetzt auch die **Bildpfade** im Frontmatter/Body — aber die Dateien in `public/images/blog/` heißen weiter alt → 404-Bilder. Lösung: Bilddateien per Präfix mit-umbenennen (Suffix wie `-hero-khuiu` bleibt). IMMER nach Slug-Rename die referenzierten Bilder auf Existenz prüfen (`[ -f public$ref ]`) + ein Bild im Browser auf 200.
+- **zsh-Falle:** `declare -a ARR=(...)` + `&&`-verkettete Multiline in `bash -c`/zsh-Eval lief mit LEEREM ersten Index → `grep -rl ""` matcht ALLE Dateien → `sed -i '' "s||"` (leere Regex) scheitert und lässt überall `.!PID!name`-Temp-Dateien zurück. Lehre: keine `declare`-Arrays in dem Eval-Kontext; lieber explizite Einzelbefehle oder eine Funktion mit Positionsargumenten. Nach sed-Crash immer `find -name '.!*' -delete` + `git diff --stat` zur Integritätsprüfung (Originale waren intakt, sed bricht vor dem Schreiben ab).
+- **Build-Langsamkeit ist kein Hang.** Unter Disk-/Swap-Last dauerte `next build` Compile 5,2 Min (statt ~100s) und die Type-Check-Phase >10 Min — wirkte wie ein Hang. `tsc --noEmit` separat (EXIT 0, 0 Fehler) beweist: Typen grün, nur langsam. Lehre: bei vermeintlichem Build-Hang ZUERST `tsc --noEmit` isolieren + stray next/node-Prozesse killen (akkumulieren über viele Builds/Dev-Server). Verifikation dann über Dev + Produktions-Curl + Vercel-Build (mehr Ressourcen) statt auf den lahmen Local-Build zu warten.
+- **301/308 verstanden (für den User):** Rename + Redirect = Seite bleibt, alte URL leitet permanent weiter (Next nutzt 308 ≙ 301 für SEO), ~alle Linkkraft wandert mit. KEINE Duplikat-Seiten erzeugen.
+
 ## 2026-06-12 — Ehrlichkeit-Pivot bei Ratings + Fabrikations-Funde
 
 - **Owner-Entscheidung kann sich umkehren — und eine andere (Cowork-)Session hatte schon vorgegriffen.** Der Plan hielt fest "315/4,9-Schema bleibt (Userwunsch)". Ein Cowork-Commit (`db2fe81`, 11.06) hatte das aggregateRating aber bereits entfernt. NICHT blind reverten oder annehmen — beim User rueckfragen. Ergebnis: Pivot auf Ehrlichkeit. Lehre: vor jeder Arbeit an einer "festen" Entscheidung den echten Code-Stand UND die letzte Owner-Aussage prüfen; Widerspruch = Frage, kein Raten ([[feedback_redrabbit_rating_ehrlichkeit_echte_google_sterne]]).
