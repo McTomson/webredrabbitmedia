@@ -64,6 +64,9 @@ export interface PublishedLinks {
     substackUrl?: string;
     // privacy hint shown to the user, e.g. YouTube still unlisted awaiting their OK
     youtubePrivacy?: 'unlisted' | 'public';
+    // Optional canonical-safe syndication kit (paste-ready teasers + Medium import URL),
+    // built by scripts/content-engine/media/distribution.ts. Shown so distribution is one paste away.
+    distributionKit?: string;
 }
 
 // Sent AFTER the article is pushed and the media is uploaded. Gives Thomas one mail with
@@ -84,6 +87,13 @@ export function buildPublishedEmail(p: PublishedLinks): { subject: string; html:
         ? '<p style="font-size:13px;color:#666;margin:0 0 6px">Das YouTube-Video ist noch ungelistet. Schauen Sie es an, und antworten Sie mit "Video oeffentlich", dann schalte ich es oeffentlich und bette es in den Artikel ein.</p>'
         : '';
 
+    const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const kitHtml = p.distributionKit
+        ? `<h2 style="font-size:15px;margin:22px 0 8px">Distribution (canonical-sicher, zum Kopieren)</h2>
+<pre style="white-space:pre-wrap;word-break:break-word;background:#f6f7f8;border:1px solid #eee;border-radius:9px;padding:14px;font-size:12px;line-height:1.5;color:#333;margin:0 0 18px">${esc(p.distributionKit)}</pre>`
+        : '';
+    const kitText = p.distributionKit ? `\n\n${p.distributionKit}\n` : '';
+
     const subject = `Hochgeladen und verlinkt: ${p.title}`;
     const html = `<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
 <body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f6f7f8;margin:0;padding:24px;color:#1a1a1a">
@@ -93,8 +103,9 @@ export function buildPublishedEmail(p: PublishedLinks): { subject: string; html:
 <p style="margin:0 0 18px;color:#444;line-height:1.5">Alles ist online: Artikel gepusht, Podcast eingebettet${p.substackUrl ? ', Substack-Beitrag erstellt' : ''}${p.youtubeUrl ? ', Video auf YouTube' : ''}. Hier sind die Links zum Ansehen und Pruefen.</p>
 <div style="margin:0 0 22px">${buttons}</div>
 ${privacyNote}
+${kitHtml}
 <p style="font-size:12px;color:#999;margin:0">Antworten Sie auf diese Mail mit Aenderungswuenschen, ich arbeite sie ein.</p>
 </div></body></html>`;
-    const text = `${p.title}\n\nAlles online.\n\nArtikel + Podcast: ${article}\n${p.youtubeUrl ? `YouTube (${p.youtubePrivacy || 'unlisted'}): ${p.youtubeUrl}\n` : ''}${p.substackUrl ? `Substack: ${p.substackUrl}\n` : ''}`;
+    const text = `${p.title}\n\nAlles online.\n\nArtikel + Podcast: ${article}\n${p.youtubeUrl ? `YouTube (${p.youtubePrivacy || 'unlisted'}): ${p.youtubeUrl}\n` : ''}${p.substackUrl ? `Substack: ${p.substackUrl}\n` : ''}${kitText}`;
     return { subject, html, text };
 }

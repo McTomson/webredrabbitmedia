@@ -18,6 +18,7 @@
     "remind": "tsx scripts/content-engine/dashboard/remind_tasks.ts",
     "media": "tsx scripts/content-engine/media/run-media.ts",
     "media:pending": "tsx scripts/content-engine/media/pending.ts",
+    "distribute": "tsx scripts/content-engine/media/distribution.ts",
     "quality:scan": "tsx scripts/content-engine/quality/scan.ts"
   },
   "dependencies": {
