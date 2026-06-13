@@ -284,3 +284,39 @@ quelle: https://web.redrabbit.media/tipps/was-kostet-eine-website
 quelle_name: Web Red Rabbit Media - Was kostet eine Website 2026?
 geprueft_am: 2026-06-12
 recheck_nach: 2026-12-09
+
+## t7-2026-06-13-032
+cluster: 1
+keywords: viel, budget, muss, neues, projekt, eingeplant, werden
+aussage: Die Erstellungskosten für eine professionelle Website in Österreich reichen 2026 je nach Umfang von rund 1.500-3.000 € (einfache Visitenkarten-Seite, 1-5 Seiten) über 1.500-8.000 € für KMU-Unternehmensseiten bis 50.000 €+ für Enterprise-/Portal-Projekte.
+quelle: https://www.herold.at/ratgeber/website-erstellen/website-kosten-oesterreich/
+quelle_name: Herold - Website Kosten: Das kostet eine Website in Österreich 2026
+geprueft_am: 2026-06-13
+recheck_nach: 2026-12-10
+
+## t7-2026-06-13-033
+cluster: 1
+keywords: viel, budget, muss, neues, projekt, eingeplant, werden
+aussage: Für KMU in Österreich liegt ein realistisches Website-Budget 2026 meist zwischen 2.500 € und 5.500 €; die Gesamtspanne reicht von 790 € für einfache Landingpages bis über 15.000 € für komplexe Portale. Treiber sind technisches Fundament, SEO-Strategie, Content-Qualität und Pflichten wie DSGVO und Barrierefreiheit (BFSG).
+quelle: https://web.redrabbit.media/tipps/was-kostet-eine-website
+quelle_name: Web Red Rabbit Media - Was kostet eine Website 2026? [Echte Preise & ROI in Österreich]
+geprueft_am: 2026-06-13
+recheck_nach: 2026-12-10
+
+## t7-2026-06-13-034
+cluster: 1
+keywords: viel, budget, muss, neues, projekt, eingeplant, werden
+aussage: Über die Erstellung hinaus müssen laufende Kosten eingeplant werden: typisch 300-1.200 € pro Jahr für Domain, Hosting, Wartung und Plugin-Lizenzen. Als Faustregel gelten 10-20 % der Erstellungskosten pro Jahr (eine 3.000-€-Website kostet also grob 300-600 € jährlich im Unterhalt).
+quelle: https://web.redrabbit.media/tipps/wie-viel-kostet-eine-website-im-unterhalt
+quelle_name: Web Red Rabbit Media - Wie viel kostet eine Website im Unterhalt? Ehrlicher Überblick [Österreich 2026]
+geprueft_am: 2026-06-13
+recheck_nach: 2026-12-10
+
+## t7-2026-06-13-035
+cluster: 1
+keywords: viel, budget, muss, neues, projekt, eingeplant, werden
+aussage: Einzelne Budgetposten lassen sich kalkulieren: eine .at-Domain kostet 12-18 € pro Jahr, Shared Hosting bei AT-Anbietern 60-180 € pro Jahr, Managed Hosting mit Backup/CDN/Security 240-600 € pro Jahr; externe Wartungsverträge starten bei 50-150 € pro Monat.
+quelle: https://wellewest.at/de/blog/was-kostet-eine-website-in-%C3%B6sterreich-preis%C3%BCbersicht-2026.html
+quelle_name: WelleWest - Website-Kosten Österreich 2026: Die ehrliche Übersicht
+geprueft_am: 2026-06-13
+recheck_nach: 2026-12-10
