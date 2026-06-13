@@ -42,6 +42,12 @@ export function runClaude(prompt: string, opts: RunOpts = {}): string {
             const out = execFileSync('claude', args, {
                 encoding: 'utf8',
                 timeout: (opts.timeoutSec ?? 300) * 1000,
+                // ENFORCE the timeout hard. Default killSignal is SIGTERM, which the headless
+                // `claude` CLI ignores / handles too slowly (observed: a call ran ~7140s despite a
+                // 600s timeout, blowing a daily run to ~2h and pushing the review mail to evening).
+                // SIGKILL cannot be trapped, so a hung call dies at timeoutSec and the retry/backoff
+                // below takes over, instead of the whole run stalling for hours.
+                killSignal: 'SIGKILL',
                 maxBuffer: 32 * 1024 * 1024,
             });
             if (opts.label) process.stderr.write(`  [role] ${opts.label} fertig (${Math.round((Date.now() - started) / 1000)}s)\n`);
