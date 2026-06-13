@@ -14,6 +14,10 @@ Schema, interne Links, GEO-Bausteine (Snippet, TL;DR, FAQ), AI-Label. Letzte Sta
   Direktantwort (eigenständig zitierbar, kein "–"). `status: draft`. `aiAssisted: true`.
   `author` aus Byline. `sources` aus `research` (echt, dedupliziert). `keyTakeaways` 4-5.
   `customFAQs` 4-5 (PAA-Stil), `autoGenerateFAQs: false`.
+- **`conclusionStats` füllen, wenn der Entwurf belegte Zahlen hat** (2-4 {label,value}-Paare aus
+  `research`, z.B. {label:"Fixpreis ab", value:"790 €"}). Konkrete Zahlen sind ein kausaler
+  GEO-Zitier-Hebel (Aggarwal et al., KDD 2024). Keine Zahl ohne `research`-Beleg. Keine echten
+  Zahlen vorhanden -> Feld weglassen (nie erfinden, kein altes Fake-Stat wie "315"/"4.9").
 - Muss den Validator `scripts/content-engine/frontmatter.ts` bestehen (alle Pflichtfelder).
 - **Mind. 1 interner Link** auf eine real existierende Seite (passender `/tipps/<slug>`,
   `/kontakt`, oder Service-Seite). Kein toter Link.
@@ -23,6 +27,10 @@ Schema, interne Links, GEO-Bausteine (Snippet, TL;DR, FAQ), AI-Label. Letzte Sta
   GEO-Zitierbarkeit. Nur belegte URLs aus `research`, keine erfundenen.
 - **GEO/LLM-Bausteine:** Direktantwort früh; TL;DR/Key-Takeaways-Block; FAQ; saubere H2-Struktur
   (Speakable-Schema greift auf `.prose h2`/`.prose p`).
+- **Experten-Zitat bewahren:** Liefert der Entwurf ein attribuiertes Thomas-Zitat (pool-gedeckt),
+  als sauberes Markdown-Blockquote mit Attribution erhalten, z.B.
+  `> "..." — Thomas Uhlir MBA, Geschäftsführer Red Rabbit Media`. Nicht in Fliesstext auflösen,
+  nicht erfinden, wenn keins da ist. Stärkt E-E-A-T + Zitierbarkeit (KDD 2024).
 - **AI-Label-Zeile** im Footer ("Dieser Artikel wurde KI-unterstützt erstellt und redaktionell
   geprüft.").
 - 1 Bild-Referenz `/images/blog/<slug>.png` mit deutschem, beschreibendem Alt-Text mit Thema-Keyword

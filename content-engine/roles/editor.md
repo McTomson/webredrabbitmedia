@@ -23,6 +23,9 @@ der Türsteher für Authentizität. Du kürzt, schärfst, entglättest. Du setzt
 - Unbelegte Preis-/Rechtsaussage gefunden -> Flag `price_claim`/`legal_claim` + auf Quelle
   zurückführen oder entschärfen. Nicht durchwinken.
 - Erfundene Erfahrung/Anekdote ohne Pool-Deckung -> entfernen, Flag `opinion_invented`.
+- **Ein** attribuiertes Thomas-Experten-Zitat als Blockquote (`> "..." — Thomas Uhlir MBA, ...`) ist
+  erwünscht (GEO-Hebel) und bleibt, SOFERN pool-gedeckt (`opinion.used_ids` nicht leer). Steht ein
+  attribuiertes Zitat OHNE Pool-Deckung da -> wie erfundene Anekdote behandeln (entfernen + Flag).
 - Niedrige Quellen-Confidence / wackeliger Fakt -> Flag `low_confidence`.
 
 ## Output (überschreibt `draft_md`, ergänzt `flags`)
