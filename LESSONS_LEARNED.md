@@ -383,6 +383,32 @@ Update this file at the end of every session when a debugging lesson, setup issu
 - **`npx skills add` installiert PROJEKT-lokal nach `.agents/skills/`:** Nicht global. `.agents/` ist
   gitignored, `skills-lock.json` wird committed (wie package-lock.json) -> Restore via `npx skills install`.
 
+### 2026-06-13 — Tägliche Mail blieb aus: Kill-Switch durch Slug-Rename falsch ausgelöst
+- **Symptom:** Keine Review-Mail mit neuem Artikel, obwohl Mac lief. **Ursache:** Der Indexierungs-
+  Kill-Switch (`content-engine/.kill-switch.json`, geschrieben von `dashboard/check_indexation.ts`)
+  pausiert die Produktion, wenn die Google-Indexierungsrate < 60% fällt. Die 4 am 12.06 umbenannten
+  Slugs + frische Tages-Artikel waren "unknown to Google" (normale Crawl-Lag von Tagen-Wochen), Rate
+  fiel auf 50% → Tageslauf brach bei `pipeline.ts` (pre-emit Kill-Switch-Read) ab, kein Stamp, keine Mail.
+- **Fix:** **Schonfrist** in `check_indexation.ts` (`RR_INDEXATION_GRACE_DAYS`, default 21): URLs deren
+  Artikel publishedAt/updatedAt < 21 Tage zurückliegt zählen NICHT in die Quote. Verifiziert: reife Quote
+  100% statt 50%. Lehre: Eine URL am Tag nach Anlegen/Rename als "nicht indexiert = Fehler" zu werten ist
+  falsch. **Slug-Renames bestehender Seiten = realer Schaden** (Re-Index-Lag triggert Schutzmechanismen);
+  URL-Länge ist KEIN Ranking-Faktor (Google offiziell) → bestehende Slugs nicht umbenennen.
+- **Kill-Switch manuell lösen:** `npx tsx scripts/content-engine/dashboard/check_indexation.ts` (re-evaluiert
+  + schreibt active:false) ODER `rm content-engine/.kill-switch.json`. Stamp wird erst am Ende (`touch`) nach
+  Publish geschrieben → ein gescheiterter Lauf "verbraucht" den Tag NICHT, der nächste Catch-up (alle 3h) zieht nach.
+
+### 2026-06-13 — Engine-Langsamkeit: Timeout wurde nicht durchgesetzt (SIGTERM)
+- **Symptom:** Gesunde Läufe ~10-15 Min (Rollen je 70-300s), aber gelegentlich (abends/unter Last) ein Lauf
+  ~2h. **Ursache:** Ein einzelner `claude -p`-Aufruf lief ~7140s TROTZ 600s-Timeout. `execFileSync` schickt
+  per Default SIGTERM, das die headless-`claude`-CLI ignoriert/zu langsam behandelt → Aufruf hängt, Parent
+  blockiert. Baseline: ein nackter `claude -p` braucht ~30s Startup-Overhead (×5 Rollen = ~150s Sockel).
+- **Fix:** `killSignal: 'SIGKILL'` in `runClaude` (`lib/roles.ts`) → hängender Aufruf stirbt bei timeoutSec,
+  Retry/Backoff greift. Healthy <200s bleibt unberührt (Limits 480-600s). Worst Case pro Rolle: ~2h → ~42 Min.
+- **Falls Hänger trotzdem wiederkehren:** Nächster Schritt = `claude` detached (eigene Prozessgruppe) starten
+  und bei Timeout die ganze Gruppe killen (`process.kill(-pid)`), da Enkel-Prozesse (MCP) die Pipe offenhalten
+  könnten. Erst nötig, wenn SIGKILL allein nicht reicht.
+
 ## Session-End Checklist
 
 - Add new lessons with dates.
