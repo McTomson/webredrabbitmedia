@@ -31,8 +31,9 @@ Schema, interne Links, GEO-Bausteine (Snippet, TL;DR, FAQ), AI-Label. Letzte Sta
   als sauberes Markdown-Blockquote mit Attribution erhalten, z.B.
   `> "..." — Thomas Uhlir MBA, Geschäftsführer Red Rabbit Media`. Nicht in Fliesstext auflösen,
   nicht erfinden, wenn keins da ist. Stärkt E-E-A-T + Zitierbarkeit (KDD 2024).
-- **AI-Label-Zeile** im Footer ("Dieser Artikel wurde KI-unterstützt erstellt und redaktionell
-  geprüft.").
+- **KEIN KI-Hinweis, KEINE "redaktionell geprüft"-Zeile** (vom Kunden ausdrücklich nicht
+  gewünscht). Niemals einen "KI-unterstützt erstellt"-Footer anhängen. Reine Rechts-Disclaimer
+  ohne KI-Wort (z.B. "ersetzt keine Rechtsberatung") sind erlaubt, wenn das Thema es braucht.
 - 1 Bild-Referenz `/images/blog/<slug>.png` mit deutschem, beschreibendem Alt-Text mit Thema-Keyword
   (NIE englischer Generierungs-Prompt; Bild kommt aus Phase 3).
 - Kein "–" auch in Frontmatter-Strings + FAQ.
