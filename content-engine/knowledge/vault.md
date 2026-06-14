@@ -320,3 +320,57 @@ quelle: https://wellewest.at/de/blog/was-kostet-eine-website-in-%C3%B6sterreich-
 quelle_name: WelleWest - Website-Kosten Österreich 2026: Die ehrliche Übersicht
 geprueft_am: 2026-06-13
 recheck_nach: 2026-12-10
+
+## t8-2026-06-14-036
+cluster: 1
+keywords: welchen, zeitpunkten, muss, website, bezahlt, werden
+aussage: Nach § 1170 ABGB ist der Werklohn grundsätzlich erst nach Vollendung (Übergabe) des Werks fällig — eine Vorleistungspflicht des Auftraggebers besteht nur, wenn vertraglich vereinbart. Mängel können die Fälligkeit hinausschieben.
+quelle: https://www.pak-immo.at/werkvertrag-abgb-einfach-erklaert/
+quelle_name: PAK Immo / JUSLINE - Werkvertrag nach ABGB §§ 1165-1171
+geprueft_am: 2026-06-14
+recheck_nach: 2026-12-11
+
+## t8-2026-06-14-037
+cluster: 1
+keywords: welchen, zeitpunkten, muss, website, bezahlt, werden
+aussage: Der WKO-Muster-Werkvertrag (Unternehmer–Verbraucher) sieht ausdrücklich vor, dass Anzahlungen, Teilzahlungen oder Schlusszahlung individuell im Vertrag geregelt werden; ohne Vereinbarung ist der gesamte Werklohn erst nach Übergabe fällig.
+quelle: https://www.wko.at/vertragsrecht/muster-werkvertrag-zwischen-unternehmer-verbraucher
+quelle_name: WKO - Muster: Werkvertrag zwischen Unternehmer und Verbraucher
+geprueft_am: 2026-06-14
+recheck_nach: 2026-12-11
+
+## t8-2026-06-14-038
+cluster: 1
+keywords: welchen, zeitpunkten, muss, website, bezahlt, werden
+aussage: Im branchenüblichen Webdesign-Werkvertrag (ff-webdesigner) ist der Webdesigner berechtigt, in angemessenen zeitlichen Abständen Abschlagszahlungen entsprechend dem Leistungsfortschritt zu verrechnen; sowohl Abschlags- als auch Schlussrechnung sind innerhalb von 10 Werktagen fällig.
+quelle: https://ff-webdesigner.com/webdesign-vertrag.html
+quelle_name: ff-webdesigner - Online-Webdesignvertrag (Werkvertrag)
+geprueft_am: 2026-06-14
+recheck_nach: 2026-12-11
+
+## t8-2026-06-14-039
+cluster: 1
+keywords: welchen, zeitpunkten, muss, website, bezahlt, werden
+aussage: Eine Anzahlung (Kundenanzahlung) ist laut WKO für den Unternehmer die vorteilhafteste Zahlungsvariante (sofortige Liquidität, Wegfall des Zahlungsausfallrisikos für diesen Teil), darf aber nur eingefordert werden, wenn sie in der Branche üblich oder vertraglich vereinbart ist.
+quelle: https://www.wko.at/gruendung/kundenanzahlung
+quelle_name: WKO - Kundenanzahlung
+geprueft_am: 2026-06-14
+recheck_nach: 2026-12-11
+
+## t8-2026-06-14-040
+cluster: 1
+keywords: welchen, zeitpunkten, muss, website, bezahlt, werden
+aussage: In Österreich muss eine Teilrechnung immer im Vorfeld mit dem Kunden vereinbart werden und setzt voraus, dass die in Rechnung gestellte Teilleistung bereits erbracht wurde; reine Anzahlungen vor Leistungserbringung sind umsatzsteuerlich Anzahlungsrechnungen, nicht Teilrechnungen.
+quelle: https://sevdesk.at/ratgeber/buchhaltung-finanzen/rechnungen/art/teilrechnung/
+quelle_name: sevdesk - Teilrechnung in Österreich
+geprueft_am: 2026-06-14
+recheck_nach: 2026-12-11
+
+## t8-2026-06-14-041
+cluster: 1
+keywords: welchen, zeitpunkten, muss, website, bezahlt, werden
+aussage: Bei Schlussrechnung müssen alle bereits vereinnahmten Teil-/Anzahlungsbeträge und die darauf entfallende Umsatzsteuer abgezogen werden, sonst kommt es zu einer doppelten Steuerschuld kraft Rechnungslegung (§ 11 Abs. 12 UStG).
+quelle: https://fidas.at/aktuelles/anzahlungs-teil-und-schlussrechnung/
+quelle_name: Fidas Steuerberatung - Anzahlungs-, Teil- und Schlussrechnung
+geprueft_am: 2026-06-14
+recheck_nach: 2026-12-11
