@@ -416,6 +416,9 @@ function generateHooks(title: string, snippet: string): string[] {
     const prompt = [
         'Du textest Hook-Zeilen fuer das Hero-Bild eines Blogartikels (Marke Red Rabbit, Webagentur Oesterreich).',
         'Erzeuge GENAU 3 verschiedene Hook-Vorschlaege nach diesen Kriterien:',
+        '- KORREKTES, SINNVOLLES DEUTSCH: jeder Hook ist ein vollstaendiger, grammatisch richtiger, sinnvoller',
+        '  deutscher Satz/Frage. KEINE Telegramm-Fragmente. Schlecht/kein Deutsch: "wie viel budget?".',
+        '  Gut: "was darf meine website kosten?".',
         '- WICHTIGSTE REGEL: der Hook muss STANDALONE funktionieren. Das Bild taucht ohne den Artikel-Titel',
         '  im Internet auf (Feed, Google-Bildersuche, geteilt, YouTube-Thumbnail). Ein Fremder, der NUR den',
         '  Hook sieht, muss das Thema verstehen UND neugierig bleiben. Darum IMMER ein themenbenennendes',

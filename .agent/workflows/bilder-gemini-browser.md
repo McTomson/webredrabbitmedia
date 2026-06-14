@@ -33,6 +33,12 @@ Ein guter Hook macht NEUGIERIG UND macht das Thema sofort erkennbar — **beides
 weil das Bild im Internet OHNE den Artikel-Titel auftaucht (Feed-Thumbnail, Google-Bildersuche, geteilt,
 YouTube-Thumbnail). Ein Fremder, der nur das Bild sieht, muss das Thema verstehen. Reine Mystery ohne
 Thema = Scroll-weiter; Thema + offene Frage = Klick.
+- **KORREKTES, SINNVOLLES DEUTSCH (Thomas 14.06):** der Hook ist ein vollstaendiger, grammatisch
+  richtiger, sinnvoller deutscher Satz/Frage — KEIN Telegramm-Fragment. "wie viel budget?" ist KEIN
+  Deutsch ("Bammish"). Richtig: "was darf meine website kosten?".
+- **WORKFLOW (Thomas 14.06): erst Hook waehlen, DANN Bild erzeugen.** Nicht das Bild mehrfach neu
+  rendern. Pro Artikel zuerst 3 verschiedene Hook-Saetze (proper Deutsch, Standalone) vorschlagen, der
+  User waehlt einen (AskUserQuestion / Freigabe-Email-Nummer), erst dann den gewaehlten Hook ins Hero.
 - **STANDALONE-TEST (wichtigste Regel, Thomas 14.06):** lies den Hook OHNE den Artikel daneben. Weiss
   ein Fremder, worum es geht, UND bleibt er neugierig? Wenn das Thema unklar ist -> ein themenbenennendes
   Wort einbauen. **Schlecht: "wie viel budget?"** (welches Budget?). **Gut: "website: wie viel budget?"**
