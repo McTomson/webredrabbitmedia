@@ -75,20 +75,56 @@ def build_body(title: str, description: str, tags: str, category: str,
     }
 
 
+def set_thumbnail(youtube, video_id: str, thumb_path: str) -> None:
+    """Upload a custom thumbnail for video_id. Needs the youtube scope (already granted).
+    Best-effort: a thumbnail failure must not fail an otherwise-successful upload."""
+    try:
+        youtube.thumbnails().set(
+            videoId=video_id,
+            media_body=MediaFileUpload(thumb_path),
+        ).execute()
+        print(f"THUMBNAIL_SET: {thumb_path}")
+    except Exception as exc:  # noqa: BLE001 - surface, don't crash the run
+        print(f"THUMBNAIL_FEHLER: {exc}", file=sys.stderr)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--file", required=True)
-    ap.add_argument("--title", required=True)
+    ap.add_argument("--file")
+    ap.add_argument("--title")
     ap.add_argument("--description", default="")
     ap.add_argument("--description-file", default="")
     ap.add_argument("--privacy", default="unlisted", choices=["unlisted", "public", "private"])
     ap.add_argument("--tags", default="")
     ap.add_argument("--category", default="27")  # 27 = Education
     ap.add_argument("--synthetic-content", default="true", choices=["true", "false"])
+    ap.add_argument("--thumbnail", default="", help="custom thumbnail JPG/PNG to set after upload")
+    ap.add_argument("--thumbnail-only", action="store_true",
+                    help="skip upload, just set --thumbnail on the existing --video-id")
+    ap.add_argument("--video-id", default="", help="existing video id (with --thumbnail-only)")
     args = ap.parse_args()
 
+    # Thumbnail-only mode: retrofit an already-published video without re-uploading.
+    if args.thumbnail_only:
+        if not args.video_id or not args.thumbnail:
+            print("--thumbnail-only braucht --video-id und --thumbnail", file=sys.stderr)
+            return 2
+        if not os.path.exists(args.thumbnail):
+            print(f"THUMBNAIL FEHLT: {args.thumbnail}", file=sys.stderr)
+            return 2
+        youtube = build("youtube", "v3", credentials=load_creds())
+        set_thumbnail(youtube, args.video_id, args.thumbnail)
+        print(f"VIDEO_URL: https://youtu.be/{args.video_id}")
+        return 0
+
+    if not args.file or not args.title:
+        print("--file und --title sind fuer den Upload erforderlich", file=sys.stderr)
+        return 2
     if not os.path.exists(args.file):
         print(f"VIDEO FEHLT: {args.file}", file=sys.stderr)
+        return 2
+    if args.thumbnail and not os.path.exists(args.thumbnail):
+        print(f"THUMBNAIL FEHLT: {args.thumbnail}", file=sys.stderr)
         return 2
     description = args.description
     if args.description_file:
@@ -109,6 +145,10 @@ def main() -> int:
     vid = response["id"]
     print(f"VIDEO_ID: {vid}")
     print(f"VIDEO_URL: https://youtu.be/{vid}")
+
+    # Custom thumbnail (our branded hero+play+logo poster) instead of YouTube's auto-frame.
+    if args.thumbnail:
+        set_thumbnail(youtube, vid, args.thumbnail)
     return 0
 
 

@@ -3,6 +3,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import matter from 'gray-matter';
 import { embedPodcast, embedVideo, parseYoutubeId } from './mdxMedia';
+import { buildVideoPoster } from './videoPoster';
 import { relinkAll } from '../lib/clusterLinks';
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -53,27 +54,34 @@ function loadEnvLocal(): Record<string, string> {
     return env;
 }
 
-function uploadToYoutube(videoFile: string, title: string, descFile: string, tags: string): string {
-    const out = execFileSync(
-        PYTHON,
-        [
-            path.join(ROOT, 'scripts/content-engine/upload/youtube_upload.py'),
-            '--file', videoFile,
-            '--title', title,
-            '--description-file', descFile,
-            '--privacy', 'public',
-            '--category', '27',
-            '--tags', tags,
-        ],
-        { encoding: 'utf8', timeout: 600_000, maxBuffer: 16 * 1024 * 1024 },
-    );
+function uploadToYoutube(videoFile: string, title: string, descFile: string, tags: string, thumbnail?: string): string {
+    const argv = [
+        path.join(ROOT, 'scripts/content-engine/upload/youtube_upload.py'),
+        '--file', videoFile,
+        '--title', title,
+        '--description-file', descFile,
+        '--privacy', 'public',
+        '--category', '27',
+        '--tags', tags,
+    ];
+    // Branded thumbnail (hero + hook + play badge + logo) instead of YouTube's auto-frame.
+    if (thumbnail && fs.existsSync(thumbnail)) argv.push('--thumbnail', thumbnail);
+    // Capture stdout (we parse VIDEO_URL from it) but forward stderr live, so PROGRESS lines and
+    // the best-effort THUMBNAIL_FEHLER (set_thumbnail swallows it, only prints to stderr) are not
+    // silently lost in this unattended run.
+    const out = execFileSync(PYTHON, argv, {
+        encoding: 'utf8',
+        timeout: 600_000,
+        maxBuffer: 16 * 1024 * 1024,
+        stdio: ['pipe', 'pipe', 'inherit'],
+    });
     process.stdout.write(out);
     const id = parseYoutubeId(out);
     if (!id) throw new Error('YouTube-Upload: keine VIDEO_URL im Output gefunden');
     return id;
 }
 
-function main() {
+async function main() {
     const slug = arg('slug');
     if (!slug) throw new Error('--slug fehlt');
     const podcast = arg('podcast');
@@ -119,7 +127,7 @@ function main() {
         log('1/6 Podcast uebersprungen (kein --podcast)');
     }
 
-    // 2+3) Video: YouTube upload (public) + embed
+    // 2+3) Video: branded poster -> YouTube upload (public, custom thumbnail) -> embed
     let youtubeUrl = '';
     if (video) {
         if (!fs.existsSync(video)) throw new Error(`Video-Datei fehlt: ${video}`);
@@ -128,25 +136,45 @@ function main() {
         fs.mkdirSync(path.dirname(descFile), { recursive: true });
         const desc = `${title}\n\nDen ganzen Artikel mit allen Details lesen Sie hier:\n${article}\n\nRed Rabbit Media, Webdesign und digitale Strategie aus Oesterreich.\nhttps://web.redrabbit.media`;
         fs.writeFileSync(descFile, desc);
-        log('2/6 Video wird auf YouTube hochgeladen (public) ...');
-        const id = uploadToYoutube(video, videoTitle, descFile, 'Webdesign,Website,Oesterreich,Red Rabbit Media');
-        youtubeUrl = `https://youtu.be/${id}`;
 
         // Self-host the MP4 so the article plays it via HTML5 <video> (never blocked by
         // content filters like uBlock/Brave/Pi-hole, unlike a YouTube iframe). The id is kept
-        // only for the "watch on YouTube" caption link. Copy the file + extract a poster frame.
+        // only for the "watch on YouTube" caption link.
         const videosDir = path.join(ROOT, 'public/videos');
         fs.mkdirSync(videosDir, { recursive: true });
         const videoDest = path.join(videosDir, `${slug}-video.mp4`);
         const posterDest = path.join(videosDir, `${slug}-poster.jpg`);
         fs.copyFileSync(video, videoDest);
-        try {
-            execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-ss', '3', '-i', videoDest, '-frames:v', '1', '-vf', 'scale=1280:-2', posterDest], { stdio: 'inherit' });
-        } catch {
-            // ffmpeg missing or frame extraction failed: fall back to the hero image as poster.
-            log('   Poster-Frame fehlgeschlagen, nutze Hero-Bild als Poster');
+
+        // Branded poster from the article hero (hook + logo + play badge) — NOT a NotebookLM
+        // video frame. Built BEFORE the upload so it doubles as the YouTube custom thumbnail.
+        const heroPath = path.join(ROOT, 'public/images/blog', `${slug}.png`);
+        let posterReady = false;
+        if (fs.existsSync(heroPath)) {
+            try {
+                await buildVideoPoster(heroPath, posterDest);
+                posterReady = true;
+                log('2/6 Branded Poster aus Hero erzeugt (Hook + Logo + Play)');
+            } catch (e: any) {
+                log(`   Poster-Build fehlgeschlagen (${e.message}), Fallback ffmpeg-Frame`);
+            }
+        } else {
+            log(`   Kein Hero (${heroPath}) — Fallback ffmpeg-Frame`);
         }
-        const posterRef = fs.existsSync(posterDest) ? `/videos/${slug}-poster.jpg` : `/images/blog/${slug}.png`;
+        if (!posterReady) {
+            try {
+                execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-ss', '3', '-i', videoDest, '-frames:v', '1', '-vf', 'scale=1280:-2', posterDest], { stdio: 'inherit' });
+                posterReady = fs.existsSync(posterDest);
+            } catch {
+                log('   Poster-Frame fehlgeschlagen, nutze Hero-Bild als Poster-Referenz');
+            }
+        }
+
+        log('2/6 Video wird auf YouTube hochgeladen (public) ...');
+        const id = uploadToYoutube(video, videoTitle, descFile, 'Webdesign,Website,Oesterreich,Red Rabbit Media', posterReady ? posterDest : undefined);
+        youtubeUrl = `https://youtu.be/${id}`;
+
+        const posterRef = posterReady ? `/videos/${slug}-poster.jpg` : `/images/blog/${slug}.png`;
         mdx = embedVideo(mdx, id, videoTitle, { src: `/videos/${slug}-video.mp4`, poster: posterRef });
         log(`3/6 Video selbst-gehostet + eingebettet (public/videos/${slug}-video.mp4, YouTube ${youtubeUrl})`);
     } else {
@@ -216,4 +244,7 @@ function main() {
     log(`\nFertig fuer ${slug}. YouTube: ${youtubeUrl || '(kein Video)'} | Substack: ${substack || '(keiner)'}`);
 }
 
-main();
+main().catch((e) => {
+    process.stderr.write((e?.stack || e?.message || String(e)) + '\n');
+    process.exit(1);
+});
