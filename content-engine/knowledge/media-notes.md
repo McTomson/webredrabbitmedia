@@ -18,6 +18,15 @@ Hero PFLICHT mit **Tuerkis->Blau-Farbverlauf** (horizontal, harmonisch) + handsc
   Session = jetzt, Tokens/Cookies = dauerhaft.
 
 
+## KONTEN (PFLICHT, Grund-Wissen, Thomas 14.06)
+- **NotebookLM + alle Google-Dienste (Gemini etc.) = `t.uhlir@immo.red`.** IMMER. Auch wenn im
+  Browser ein anderes Google-Konto aktiv ist, vor der Arbeit auf t.uhlir@immo.red umschalten
+  (Konto-Switcher oben rechts). NICHT thomas.uhlir@gmail.com verwenden.
+- **YouTube = `medi.redrabbit@gmail.com`** (User-Angabe; technisch laeuft der Upload ueber das
+  OAuth-Token in `~/.config/redrabbit-youtube/token.json`, kontounabhaengig vom Browser-Login).
+  Kanal @RedRabbitLab. Vor dem ersten Upload den Ziel-Kanal verifizieren (channels.list mine=true),
+  Adresse medi.redrabbit vs rabbit.red.media mit User abgleichen.
+
 ## RUNBOOK Podcast + Video (IMMER zuerst lesen, nicht neu herleiten)
 Ausloeser = **Freigabe** (approve-Route legt `content-engine/.media-requests/<slug>.json` an,
 status `requested`). Der Media-Checker verarbeitet nur den Auftrag von HEUTE -> alte Auftraege

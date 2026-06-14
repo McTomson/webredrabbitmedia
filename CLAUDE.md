@@ -47,6 +47,9 @@ Operative Fakten stehen verbindlich in den Runbooks. Vor jeder Bild-/Medien-Aufg
   Audio, **Video nur im Browser**; Default = Chrome-Session, 1 Notebook pro Artikel, deutsch. Tail =
   `media/run-media.ts` (YouTube oeffentlich + Substack = Veroeffentlichung -> pro Schritt OK holen).
 - Backlog pruefen: `ls content-engine/.media-requests/` (offene Marker = Medien nie produziert).
+- **KONTEN (Pflicht):** NotebookLM + Google/Gemini IMMER mit `t.uhlir@immo.red` (nicht
+  thomas.uhlir@gmail.com; ggf. Konto-Switcher umstellen). YouTube = `medi.redrabbit@gmail.com`
+  (Upload via OAuth-Token `~/.config/redrabbit-youtube/token.json`, Kanal @RedRabbitLab).
 
 ## Frontend And UI/UX Workflow
 
