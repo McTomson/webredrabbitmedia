@@ -9,12 +9,28 @@ function findH1Index(lines: string[]): number {
     return lines.findIndex((l) => /^#\s+\S/.test(l));
 }
 
-// Insert a block right after the H1 (skipping one blank line), keeping a blank line around it.
+// Index of the closing '---' of the frontmatter block (the second '---'), or -1.
+function frontmatterEndIndex(lines: string[]): number {
+    if (lines[0] !== '---') return -1;
+    for (let i = 1; i < lines.length; i++) if (lines[i].trim() === '---') return i;
+    return -1;
+}
+
+// Insert a block at the top of the article body. Prefer right after the H1; but our MDX
+// renders the title from frontmatter and has NO body H1 (conventions.md), so fall back to
+// inserting right after the frontmatter block. (Old code returned the MDX unchanged when no
+// H1 existed, which silently dropped every podcast/video embed.)
 function insertAfterH1(mdx: string, block: string): string {
     const lines = mdx.split('\n');
     const h1 = findH1Index(lines);
-    if (h1 === -1) return mdx; // no H1, leave untouched
-    const at = h1 + 1 < lines.length && lines[h1 + 1].trim() === '' ? h1 + 2 : h1 + 1;
+    let at: number;
+    if (h1 !== -1) {
+        at = h1 + 1 < lines.length && lines[h1 + 1].trim() === '' ? h1 + 2 : h1 + 1;
+    } else {
+        const fmEnd = frontmatterEndIndex(lines);
+        if (fmEnd === -1) return mdx; // no frontmatter and no H1: nothing safe to anchor on
+        at = fmEnd + 1 < lines.length && lines[fmEnd + 1].trim() === '' ? fmEnd + 2 : fmEnd + 1;
+    }
     lines.splice(at, 0, block, '');
     return lines.join('\n');
 }
