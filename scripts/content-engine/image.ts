@@ -19,6 +19,19 @@ export const BRAND_PHOTO_STYLE =
     'candid and honest, NOT a posed cheesy stock smile. Shallow depth of field. ' +
     'No text, no words, no letters, no readable screen content anywhere. 16:9 wide.';
 
+// Hero-specific art direction (Thomas, 2026-06-14): the hero subject stays the same authentic
+// editorial person/scene as the context photos, but the BACKGROUND is replaced by a smooth,
+// friendly horizontal colour gradient that blends turquoise into a matching blue. No real
+// location behind the subject, no red accent here (would clash with the cool gradient).
+export const HERO_PHOTO_STYLE =
+    'Photorealistic, authentic editorial portrait. A real, relatable Austrian person in the foreground, ' +
+    'candid and honest, upper body, naturally doing something related to the topic, NOT a posed cheesy stock smile. ' +
+    'Soft, even studio lighting, shallow depth of field on the subject. ' +
+    'The BACKGROUND is NOT a real location: it is a clean, smooth HORIZONTAL colour gradient that blends ' +
+    'turquoise (about #19B5AE) on the left seamlessly and harmoniously into a matching friendly blue ' +
+    '(about #2E6FD2) on the right. The two colours flow softly into each other, warm and welcoming, ' +
+    'no hard edge, no banding. No text, no words, no letters, no logos, no readable screen content anywhere. 16:9 wide.';
+
 export interface ImagePlanItem {
     kind: 'infographic' | 'photo';
     afterHeading: string; // exact H2 text to insert the image after
@@ -32,7 +45,7 @@ export interface ImagePlan {
 }
 
 const PLAN_SCHEMA = `{
-  "heroConcept": "<englischer Satz: authentische Foto-Szene zum Kernthema, Mensch ok, KEIN Text>",
+  "heroConcept": "<englischer Satz: NUR die Person/das Motiv im VORDERGRUND zum Kernthema (Mensch ok), KEINE Umgebung/Location beschreiben (der Hintergrund wird separat als Farbverlauf gesetzt), KEIN Text>",
   "items": [
     { "kind":"infographic", "afterHeading":"<exakte H2-Ueberschrift aus dem Artikel>", "data": {
         "layout":"comparison", "title":"<dt. Titel>", "subtitle":"<dt.>",
@@ -50,7 +63,9 @@ export function buildImagePlan(title: string, body: string, headings: string[]):
     const prompt = [
         'Du bist Art-Director fuer einen oesterreichischen Webagentur-Blog (Marke Red Rabbit, Akzent Rot).',
         'Plane 5 Bilder fuer den Artikel: 1 Hero-Foto + 1 Sketch-Infografik + 3 Kontext-Fotos.',
-        'FOTOS (Hero + 3 Kontext): authentische, photorealistische Szenen, gern mit echten Menschen, KEIN Text im Bild. Jedes Kontextfoto passt thematisch zu genau einer H2-Sektion.',
+        'FOTOS: authentische, photorealistische Szenen, gern mit echten Menschen, KEIN Text im Bild.',
+        'HERO: beschreibe NUR die Person/das Motiv im Vordergrund (keine Umgebung/Location, kein Hintergrund) - der Hintergrund wird separat als tuerkis-blauer Farbverlauf gesetzt.',
+        'KONTEXT (3 Fotos): jeweils eine vollstaendige Szene, passt thematisch zu genau einer H2-Sektion.',
         'ALT-TEXT: jedes Kontextfoto braucht zusaetzlich "alt" = ein deutscher, beschreibender Alt-Text fuer SEO und Barrierefreiheit (was ist konkret zu sehen, mit einem Thema-Keyword), NICHT der englische Generierungs-Prompt.',
         'INFOGRAFIK: die zentrale Aussage/der Kernvergleich des Artikels als Daten. layout "comparison" (zwei Spalten) ODER "keypoints" (3-5 Kernfakten, dann statt left/right ein Feld "points":[{"big":"JA","text":"..."},{"text":"..."}]). tone good=gruen, bad=rot, neutral.',
         'Die 4 "afterHeading"-Werte muessen EXAKT vorhandene H2-Ueberschriften sein, jede nur einmal, gut ueber den Artikel verteilt.',
@@ -72,10 +87,10 @@ function blogDir(): string {
 }
 
 // Generate a photoreal image via Codex, crop to size, strip metadata, versioned filename.
-export async function generatePhoto(slug: string, tag: string, concept: string, w = 1200, h = 675): Promise<string> {
+export async function generatePhoto(slug: string, tag: string, concept: string, w = 1200, h = 675, style = BRAND_PHOTO_STYLE): Promise<string> {
     const file = `${slug}-${tag}-${version()}.png`;
     const tmp = path.join(os.tmpdir(), `ce-${file}`);
-    const prompt = `Use the imagegen skill to generate ONE image. Subject: ${concept}. Style: ${BRAND_PHOTO_STYLE} After generating, copy the final PNG to ${tmp}`;
+    const prompt = `Use the imagegen skill to generate ONE image. Subject: ${concept}. Style: ${style} After generating, copy the final PNG to ${tmp}`;
     process.stderr.write(`  [image] Foto "${tag}" via Codex ...\n`);
     // codex auto-migrated its default model gpt-5.4 -> gpt-5.5, which reasons much longer before
     // calling image_gen (4-8 min/image). Pin gpt-5.4 (the proven-faster orchestrator; the actual
@@ -104,5 +119,5 @@ export function buildImageConcept(title: string, bodyText: string): string {
 }
 
 export async function generateImage(slug: string, concept: string): Promise<string> {
-    return generatePhoto(slug, 'hero', concept, 1200, 630);
+    return generatePhoto(slug, 'hero', concept, 1200, 630, HERO_PHOTO_STYLE);
 }

@@ -30,8 +30,15 @@ geschriebener, natuerlicher deutscher Ratgeber, am Vorbild der bestehenden Tipps
   nur weil man sich im Baumarkt eine Schaufel gekauft hat." Schlecht: technisch ueberladen,
   unrealistische Zahlen, Formulierungen die niemand so sagt ("Verbrenner mit hundert beweglichen
   Teilen will alle 15.000 km in die Werkstatt"). Lieber alltagsnah und klar als originell.
-- **Erst-Hand-Rahmen** natuerlich einbauen ("In meiner taeglichen Arbeit als Strategie-Berater
-  bei Red Rabbit Media sehe ich oft..."), nicht aufgesetzt.
+- **Erst-Hand-Rahmen** natuerlich einbauen, wenn er passt, aber JEDES MAL anders und nie als
+  Schablone. **VERBOTEN als Einstieg (und ueberhaupt) die Stock-Formel** "In meiner taeglichen
+  Arbeit als Strategie-Berater bei Red Rabbit Media ..." und alle Varianten davon ("hoere ich
+  diese Frage in fast jedem Erstgespraech", "begegnet mir fast jede Woche", "sehe ich immer
+  wieder"). Diese Phrase steht schon in 10+ Artikeln, klingt nach KI und ist sofort als Schablone
+  erkennbar. Wenn Erfahrung eingebracht wird, dann konkret und variabel: ein konkretes
+  Kundenbeispiel, eine Zahl, eine Szene, eine direkte Beobachtung. Kein "ich als Berater"-Floskel-
+  Aufhaenger. Im Zweifel startet der Artikel mit der Analogie oder direkt mit der Antwort, ganz
+  ohne Ich-Einstieg.
 - Absaetze 2-5 Saetze mit echten Uebergaengen. Rhetorische Fragen sparsam und natuerlich
   ("Haben Sie sich schon einmal gefragt, warum...?").
 - **Tag-Frage "oder?" nur ganz selten** (max 1-2 mal pro Artikel), nie aufgesetzt. "!!" und "..."
@@ -70,6 +77,10 @@ daraus sauberes, fluessiges Deutsch mit derselben Haltung.
 
 ## NO-GOs (sonst klingt es nach KI, nicht nach Thomas)
 - **"–" (Gedankenstrich) = sofortiger KI-Verdacht. NIE.**
+- **Stock-Berater-Einstieg = sofortiger KI-Verdacht. NIE.** Konkret verboten: "In meiner
+  täglichen Arbeit als Strategie-Berater bei Red Rabbit Media ..." und jede Variante ("höre
+  ich diese Frage in fast jedem Erstgespräch", "begegnet mir fast jede Woche", "sehe ich immer
+  wieder"). Erfahrung konkret und jedes Mal anders einbringen, nicht als Floskel.
 - Kein **"nicht nur … sondern auch"**, keine **Dreierfiguren/rule-of-three**, kein
   "in der heutigen schnelllebigen Welt", kein Buzzword-Hochglanz, keine makellos
   ausbalancierten Werbesätze ("Wir machen keine Kunst, wir machen Business" = KI-Gloss).
