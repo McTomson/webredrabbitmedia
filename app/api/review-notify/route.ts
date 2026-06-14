@@ -48,6 +48,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         sources: m.data.sources || [],
         flags: body.flags || [],
         risk,
+        hooks: Array.isArray(m.data.hookCandidates) ? m.data.hookCandidates.slice(0, 3) : undefined,
     };
 
     const to = process.env.SMTP_TO || process.env.REVIEW_TO;

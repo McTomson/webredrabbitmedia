@@ -37,6 +37,19 @@ describe('buildReviewEmail', () => {
         expect(mail.text).toMatch(/Risiko: high/);
     });
 
+    it('shows hook candidates with a pick-by-number instruction only when hooks are present', () => {
+        expect(mail.html).not.toContain('Hook fuers Titelbild');
+        const withHooks = buildReviewEmail(
+            { ...article, hooks: ['website gleich zahlen?', 'wann zahl ich?', 'erst zahlen, oder?'] },
+            'secret',
+        );
+        expect(withHooks.html).toContain('Hook fuers Titelbild');
+        expect(withHooks.html).toContain('website gleich zahlen?');
+        expect(withHooks.html).toMatch(/Antworte mit der Nummer/);
+        expect(withHooks.text).toMatch(/1\) "website gleich zahlen\?"/);
+        expect(/[–—]/.test(withHooks.html)).toBe(false); // Guardrail 8 still holds
+    });
+
     it('shows an interview reminder only when opinion_missing is flagged', () => {
         expect(mail.html).not.toContain('/interview-me');
         const withGap = buildReviewEmail({ ...article, flags: ['opinion_missing'] }, 'secret');

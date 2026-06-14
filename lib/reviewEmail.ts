@@ -13,6 +13,9 @@ export interface ReviewArticle {
     sources: Array<{ name: string; url: string }>;
     flags: string[];
     risk: 'low' | 'high';
+    // Up to 3 hook candidates for the hero image (handwritten teaser). Thomas picks one in his
+    // reply; the chosen hook is then rendered onto the hero when the images are generated.
+    hooks?: string[];
 }
 
 export function buildReviewEmail(a: ReviewArticle, secret: string): { subject: string; html: string; text: string } {
@@ -31,6 +34,18 @@ export function buildReviewEmail(a: ReviewArticle, secret: string): { subject: s
         ? `\nHINWEIS: Deine Meinung fehlt zu diesem Thema. Antworte kurz mit deiner Sicht oder /interview-me fuer ein 2-Minuten-Interview.\n`
         : '';
 
+    // Hook candidates for the hero image: Thomas picks one (reply with the number), then the
+    // chosen hook is rendered onto the turquoise->blue gradient hero when the images are made.
+    const hooks = (a.hooks || []).filter((h) => h && h.trim()).slice(0, 3);
+    const hooksHtml = hooks.length
+        ? `<div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:9px;padding:12px 14px;margin:0 0 18px;font-size:13px;color:#065f46;line-height:1.6"><strong>Hook fuers Titelbild, bitte einen waehlen:</strong><ol style="margin:8px 0 0;padding-left:20px">${hooks
+              .map((h) => `<li style="margin:0 0 3px">"${h.replace(/</g, '&lt;')}"</li>`)
+              .join('')}</ol><div style="margin-top:8px;color:#047857">Antworte mit der Nummer (1 bis ${hooks.length}), dann setze ich den Hook aufs Hero-Bild. Eigener Vorschlag jederzeit ok.</div></div>`
+        : '';
+    const hooksText = hooks.length
+        ? `\nHOOK fuers Titelbild (bitte einen waehlen, antworte mit der Nummer):\n${hooks.map((h, i) => `  ${i + 1}) "${h}"`).join('\n')}\n`
+        : '';
+
     const subject = `Neuer Tipps-Artikel zur Freigabe: ${a.title}`;
     const html = `<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
 <body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f6f7f8;margin:0;padding:24px;color:#1a1a1a">
@@ -44,6 +59,7 @@ export function buildReviewEmail(a: ReviewArticle, secret: string): { subject: s
 <tr><td style="padding:2px 12px 2px 0">Risiko</td><td>${a.risk === 'high' ? 'hoch, bitte Zahlen/Rechtliches gegenlesen' : 'niedrig'}</td></tr>
 <tr><td style="padding:2px 12px 2px 0">Flags</td><td>${flagsLine}</td></tr></table>
 ${opinionHintHtml}
+${hooksHtml}
 <div style="margin:0 0 22px">
 <a href="${preview}" style="display:block;text-align:center;background:#111;color:#fff;text-decoration:none;padding:13px;border-radius:9px;margin-bottom:10px;font-weight:600">Artikel live ansehen</a>
 <a href="${approve}" style="display:block;text-align:center;background:#1a7f37;color:#fff;text-decoration:none;padding:13px;border-radius:9px;margin-bottom:10px;font-weight:600">Freigeben und veroeffentlichen</a>
@@ -53,7 +69,7 @@ ${opinionHintHtml}
 <ul style="font-size:13px;color:#555;line-height:1.5;margin:0 0 16px;padding-left:18px">${sourcesList}</ul>
 <p style="font-size:12px;color:#999;margin:0">Antworten Sie auf diese Mail mit Aenderungswuenschen, ich arbeite sie ein. Der Artikel ist bis zur Freigabe nicht bei Google sichtbar.</p>
 </div></body></html>`;
-    const text = `${a.title}\n\n${a.excerpt}\n\nAutor: ${a.author} | ${a.wordCount} Woerter | ${a.sources.length} Quellen | Risiko: ${a.risk}\nFlags: ${flagsLine}\n${opinionHintText}\nAnsehen: ${preview}\nFreigeben: ${approve}\nAblehnen: ${reject}\n`;
+    const text = `${a.title}\n\n${a.excerpt}\n\nAutor: ${a.author} | ${a.wordCount} Woerter | ${a.sources.length} Quellen | Risiko: ${a.risk}\nFlags: ${flagsLine}\n${opinionHintText}${hooksText}\nAnsehen: ${preview}\nFreigeben: ${approve}\nAblehnen: ${reject}\n`;
     return { subject, html, text };
 }
 

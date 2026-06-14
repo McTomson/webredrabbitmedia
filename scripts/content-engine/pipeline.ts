@@ -342,6 +342,19 @@ async function main() {
         }
     }
 
+    // Hook-Kandidaten fuers Hero-Bild: 3 kurze, gesprochene Teaser nach den fixen Kriterien
+    // (siehe .agent/workflows/bilder-gemini-browser.md). Landen im Frontmatter; die Review-Mail
+    // zeigt sie, Thomas waehlt einen, der gewaehlte Hook kommt beim Bild-Schritt aufs Hero.
+    try {
+        const hooks = generateHooks(fm.title, fm.featuredSnippet || fm.excerpt || '');
+        if (hooks.length) {
+            mdx = injectHookCandidates(mdx, hooks);
+            console.log(`   Hook-Vorschlaege: ${hooks.map((h) => `"${h}"`).join(' | ')}`);
+        }
+    } catch (e: any) {
+        console.log(`   WARN Hook-Vorschlaege fehlgeschlagen (Artikel bleibt gueltig): ${e.message}`);
+    }
+
     save(dir, 'final.mdx', mdx);
     console.log(`\nOK. Valide Draft-MDX -> scripts/content-engine/.work/${t.slug}/final.mdx`);
     console.log(`   Titel: ${fm.title}`);
@@ -393,6 +406,41 @@ function ensureSingleDisclosure(mdx: string): string {
         return !(/\bKI[- ]?unterst/i.test(t) || /mit KI-Unterst/i.test(t)) || !/redaktionell gepr/i.test(t);
     });
     return lines.join('\n').replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
+}
+
+// Generate up to 3 hook candidates for the hero image. Criteria (Thomas 2026-06-14, fixed in
+// .agent/workflows/bilder-gemini-browser.md): 2-4 words, ~max 25 chars, sounds spoken (tag-question
+// "oder?" ok), curiosity gap + a topic-anchor word so it works as a feed thumbnail without the
+// title, lowercase, no em-dash, no glossy clickbait. One small LLM call; failure is non-fatal.
+function generateHooks(title: string, snippet: string): string[] {
+    const prompt = [
+        'Du textest Hook-Zeilen fuer das Hero-Bild eines Blogartikels (Marke Red Rabbit, Webagentur Oesterreich).',
+        'Erzeuge GENAU 3 verschiedene Hook-Vorschlaege nach diesen Kriterien:',
+        '- 2 bis 4 Woerter, hoechstens ca. 25 Zeichen.',
+        '- klingt gesprochen, wie es jemand wirklich sagt (Tag-Frage "oder?" erlaubt), nicht werblich.',
+        '- macht neugierig (offene Frage oder Spannung), beantwortet NICHT schon alles.',
+        '- enthaelt ein Thema-Anker-Wort, damit ohne Titel im Feed klar ist, worum es geht.',
+        '- kleingeschrieben. KEIN Gedankenstrich. Kein Hochglanz, kein Clickbait der am Thema vorbeigeht.',
+        `\nThema/Titel: ${title}`,
+        `Kernaussage: ${snippet}`,
+        '\nGib NUR die 3 Hooks aus, je einer pro Zeile, ohne Nummerierung, ohne Anfuehrungszeichen.',
+    ].join('\n');
+    const out = runClaude(prompt, { timeoutSec: 90, label: 'hooks' });
+    return out
+        .split('\n')
+        .map((l) => l.trim().replace(/^[-*\d.)\s]+/, '').replace(/^["']|["']$/g, '').replace(/[–—]/g, ',').trim())
+        .filter((l) => l.length > 0 && l.length <= 32)
+        .slice(0, 3);
+}
+
+// Append hookCandidates into the existing frontmatter block WITHOUT reserialising the rest
+// (keeps the finalizer's exact YAML). Inserts before the closing '---' of the frontmatter.
+function injectHookCandidates(mdx: string, hooks: string[]): string {
+    if (!mdx.startsWith('---')) return mdx;
+    const fmEnd = mdx.indexOf('\n---', 3);
+    if (fmEnd < 0) return mdx;
+    const block = '\nhookCandidates:\n' + hooks.map((h) => `  - ${JSON.stringify(h)}`).join('\n');
+    return mdx.slice(0, fmEnd) + block + mdx.slice(fmEnd);
 }
 
 // Point featuredImage (frontmatter) and the inline placeholder at the real hero file.
