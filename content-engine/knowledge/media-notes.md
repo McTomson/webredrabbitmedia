@@ -1,5 +1,12 @@
 # media-notes.md — verbindliche Regeln fuer Spur 2 (Podcast/Video), Phase 4
 
+## BILDER (Entscheidung Thomas 2026-06-14): Gemini-Browser PRIMAER, Codex Fallback
+Artikel-Bilder werden **primaer ueber Gemini im Browser** (Nano Banana, gratis, eingeloggtes
+Konto) in einer Claude+Chrome-Session erzeugt. Codex (`images-only.ts`) ist nur noch Fallback.
+Hero PFLICHT mit **Tuerkis->Blau-Farbverlauf** (horizontal, harmonisch) + handschriftlichem
+**Hook-Text** (cremeweiss, Negativraum). Genaue Prompts + Ablauf:
+`.agent/workflows/bilder-gemini-browser.md`. Cron bleibt Text-only; Bilder nach Freigabe in Session.
+
 ## Konten (Thomas ist in Chrome eingeloggt, Stand 2026-06-04)
 - Substack: https://redrabbitlab.substack.com/
 - NotebookLM: https://notebooklm.google.com/

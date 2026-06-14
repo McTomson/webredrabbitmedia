@@ -23,6 +23,9 @@ export const BRAND_PHOTO_STYLE =
 // editorial person/scene as the context photos, but the BACKGROUND is replaced by a smooth,
 // friendly horizontal colour gradient that blends turquoise into a matching blue. No real
 // location behind the subject, no red accent here (would clash with the cool gradient).
+// NOTE: this Codex path is now the FALLBACK only. Primary image generation is Gemini-in-browser
+// (gratis, adds the handwritten hook the brand wants) per .agent/workflows/bilder-gemini-browser.md.
+// This style intentionally has no hook text (Codex avoids legible text).
 export const HERO_PHOTO_STYLE =
     'Photorealistic, authentic editorial portrait. A real, relatable Austrian person in the foreground, ' +
     'candid and honest, upper body, naturally doing something related to the topic, NOT a posed cheesy stock smile. ' +
