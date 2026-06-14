@@ -35,6 +35,19 @@ At every session end, update both files when anything relevant changed:
 
 Do not put secrets, API keys, private credentials, or customer-sensitive data in these files.
 
+## Content-Engine: Bild- & Medien-Produktion (IMMER diese Runbooks abrufen, nicht neu herleiten)
+
+Operative Fakten stehen verbindlich in den Runbooks. Vor jeder Bild-/Medien-Aufgabe lesen:
+
+- **Bilder:** `.agent/workflows/bilder-gemini-browser.md`. Kurz: Gemini im Browser ist PRIMAER
+  (gratis, mit Hook), Codex (`images-only.ts`, gpt-5.5) nur Fallback. Hero = Tuerkis->Blau-Verlauf
+  + handschriftlicher Hook (Kriterien im Runbook). Daily-Cron schickt Text-only; Bilder nach Freigabe.
+- **Podcast/Video:** `content-engine/knowledge/media-notes.md` (Abschnitt "RUNBOOK Podcast + Video").
+  Kurz: Ausloeser = Freigabe (Marker in `content-engine/.media-requests/`). NotebookLM-MCP kann NUR
+  Audio, **Video nur im Browser**; Default = Chrome-Session, 1 Notebook pro Artikel, deutsch. Tail =
+  `media/run-media.ts` (YouTube oeffentlich + Substack = Veroeffentlichung -> pro Schritt OK holen).
+- Backlog pruefen: `ls content-engine/.media-requests/` (offene Marker = Medien nie produziert).
+
 ## Frontend And UI/UX Workflow
 
 Use the available frontend and UI/UX skills for all visual website work:

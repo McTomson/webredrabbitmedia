@@ -18,6 +18,24 @@ Hero PFLICHT mit **Tuerkis->Blau-Farbverlauf** (horizontal, harmonisch) + handsc
   Session = jetzt, Tokens/Cookies = dauerhaft.
 
 
+## RUNBOOK Podcast + Video (IMMER zuerst lesen, nicht neu herleiten)
+Ausloeser = **Freigabe** (approve-Route legt `content-engine/.media-requests/<slug>.json` an,
+status `requested`). Der Media-Checker verarbeitet nur den Auftrag von HEUTE -> alte Auftraege
+bleiben liegen (Backlog moeglich, pruefen mit `ls content-engine/.media-requests/`).
+- **Erzeugung ist browser-gestuetzt, nicht vollautonom.** In einer Claude+Chrome-Session (Thomas
+  eingeloggt) ueber notebooklm.google.com fahren.
+- **NotebookLM-MCP kann NUR Audio (Podcast)** (generate_audio/get_audio_status/download_audio) und
+  ist oft `authenticated:false`/headless/unzuverlaessig. **Video Overview gibt es NUR im Browser.**
+  Default-Weg = Chrome-Browser fuer beides (Audio + Video), MCP nur wenn authentifiziert.
+- **1 NEUES Notebook pro Artikel** (nie mischen, sonst Halluzination ueber Artikelgrenzen). NUR den
+  einen Artikel als Quelle (Text-Paste oder Artikel-URL). Audio + Video Overview **deutsch**.
+- Fehlgeschlagene Video-Generierung **haengt** -> frisches Notebook (NotebookLM-"Vergiftung").
+- Danach deterministischer Schwanz: `scripts/content-engine/media/run-media.ts --slug <slug>
+  --podcast <m4a/mp3> --video <mp4> [--substack <url>]` -> kopiert Podcast + bettet
+  `<SimpleAudioPlayer>` ein, laedt Video **oeffentlich auf YouTube** (Python Data-API, venv
+  `~/.config/redrabbit-youtube/venv`), bettet `<VideoEmbed>` ein, commit/push, Mail 2, Marker geloescht.
+- **YouTube (oeffentlich) + Substack = Veroeffentlichung im Namen des Users -> pro Schritt OK holen.**
+
 ## NotebookLM (KRITISCH)
 - **Pro Artikel ein NEUES Notebook erstellen.** Niemals mehrere Artikel im selben Notebook
   mischen. Sonst vermischen sich Quellen/Infos und der Podcast/Video-Inhalt wird verfaelscht
