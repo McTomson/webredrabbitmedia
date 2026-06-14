@@ -1,5 +1,22 @@
 # Naechste Session — content-engine media (2026-06-14)
 
+> STATUS 14.06 (Folge-Session): BEIDE offenen Punkte ERLEDIGT.
+> - **Video-Thumbnail-Feature gebaut + live**: `scripts/content-engine/media/videoPoster.ts` (sharp:
+>   Hero 16:9 + dunkler Scrim + YouTube-Play-Badge + Logo oben rechts), in run-media.ts verdrahtet
+>   (Poster VOR Upload gebaut, als YouTube-Custom-Thumbnail gesetzt via youtube_upload.py --thumbnail),
+>   getestet (videoPoster.test.ts, 164 Tests gruen), code-reviewed (stderr-Fix). Pilot kurFCoj0ebs
+>   nachgezogen.
+> - **Backlog (4 Artikel) komplett live** auf Konto t.uhlir@immo.red (NotebookLM PRO, authuser=3):
+>   Heroes via Gemini (Gradient+Hook) erzeugt, Podcast+Video (deutsch, Erklaervideo) produziert,
+>   YouTube public + branded Thumbnail, eingebettet, gepusht, Mail, Marker geleert.
+>   YouTube: unterhalt=I7j24Rjbt8w / warum-teurer=LF0Nx4l5n0k / relaunch=l_2WlRRXpbY / budget=v0neaQbM23g.
+> - **NEUE DAUERREGEL Hook** (Thomas 14.06): Hook muss STANDALONE das Thema tragen (taucht ohne Titel
+>   im Netz auf). "wie viel budget?" zu kontextlos -> besser "website: wie viel budget?". In
+>   generateHooks (pipeline.ts) + Runbook + Memory [[feedback_bildstil_cinematic_hook_redrabbit]] fix.
+>   Die 4 Backlog-Hooks liefen noch mit den kurzen Versionen (vom User so freigegeben). Ab naechster Welle anwenden.
+> Offene Folgepunkte unten sind damit erledigt; Datei bleibt als Referenz.
+
+
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, STATE.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
 - NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.
