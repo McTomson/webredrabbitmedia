@@ -92,11 +92,11 @@ export async function generatePhoto(slug: string, tag: string, concept: string, 
     const tmp = path.join(os.tmpdir(), `ce-${file}`);
     const prompt = `Use the imagegen skill to generate ONE image. Subject: ${concept}. Style: ${style} After generating, copy the final PNG to ${tmp}`;
     process.stderr.write(`  [image] Foto "${tag}" via Codex ...\n`);
-    // codex auto-migrated its default model gpt-5.4 -> gpt-5.5, which reasons much longer before
-    // calling image_gen (4-8 min/image). Pin gpt-5.4 (the proven-faster orchestrator; the actual
-    // picture comes from the separate image model either way). reasoning.effort 'minimal' is
-    // rejected for image_gen, so we keep the model default effort and a generous 600s timeout.
-    execFileSync('codex', ['exec', '--sandbox', 'workspace-write', '-m', 'gpt-5.4', prompt], { encoding: 'utf8', timeout: 600 * 1000, maxBuffer: 32 * 1024 * 1024 });
+    // Model pin (2026-06-14): gpt-5.4 is now REJECTED for ChatGPT accounts ("model is not supported
+    // when using Codex with a ChatGPT account"), which silently broke ALL image generation. gpt-5.5
+    // is the current supported default and works. It reasons a bit longer before calling image_gen,
+    // so we keep the generous 600s timeout. The picture itself comes from the separate image model.
+    execFileSync('codex', ['exec', '--sandbox', 'workspace-write', '-m', 'gpt-5.5', prompt], { encoding: 'utf8', timeout: 600 * 1000, maxBuffer: 32 * 1024 * 1024 });
     if (!fs.existsSync(tmp)) throw new Error(`Codex hat kein Bild erzeugt (${tag})`);
     await sharp(tmp).resize(w, h, { fit: 'cover', position: 'attention' }).png({ quality: 90 }).toFile(path.join(blogDir(), file));
     fs.rmSync(tmp, { force: true });
