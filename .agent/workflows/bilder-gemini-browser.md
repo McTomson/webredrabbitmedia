@@ -43,9 +43,10 @@ Interrupt im Feed"). Reine Mystery ohne Thema = Scroll-weiter; Thema + offene Fr
 - Gut (Beispiel Zahlungs-Artikel): "website gleich zahlen?". Schwach: "wann zahl ich?" (Thema
   fehlt im Feed), "Zahlungsmodalitaeten erklaert" (kein Sog).
 
-> GEPLANT (Folge-Schritt): die Engine generiert pro Artikel **3 Hook-Kandidaten** nach diesen
-> Kriterien und stellt sie in die Freigabe-Email; Thomas waehlt einen, erst dann wird der Hero
-> mit dem gewaehlten Hook erzeugt. Siehe MEMORY/Projektnotiz.
+> UMGESETZT (2026-06-14): die Engine generiert pro Artikel **3 Hook-Kandidaten** nach diesen
+> Kriterien (`generateHooks` in pipeline.ts, eine kleine LLM-Anfrage) und schreibt sie ins
+> Frontmatter (`hookCandidates`). Die Freigabe-Email listet sie nummeriert; Thomas antwortet mit
+> der Nummer, der gewaehlte Hook kommt beim Bild-Schritt aufs Hero. Eigener Vorschlag jederzeit ok.
 
 ## Infografik (1) + Kontextfotos (3)
 - Infografik: zentrale Aussage/Kernvergleich des Artikels als klare Daten-Grafik (zwei
