@@ -28,20 +28,25 @@ WICHTIG: Wenn der erste Prompt "kein Text" gesagt hat, im Hook-Prompt explizit s
 *"die Regel 'kein Text' gilt nicht mehr, schreibe jetzt tatsaechlich den Schriftzug"* —
 sonst laesst Gemini den Hook im selben Chat weg.
 
-### Hook-Art (verbindliche Kriterien, Thomas 2026-06-14)
-Ein guter Hook macht NEUGIERIG und macht das Thema sofort erkennbar. Beides zugleich, weil das
-Bild auch als Feed-Thumbnail OHNE den Artikel-Titel daneben funktionieren muss ("Pattern
-Interrupt im Feed"). Reine Mystery ohne Thema = Scroll-weiter; Thema + offene Frage = Klick.
-- **2 bis 4 Woerter, ~max 25 Zeichen.** Gross, in einer Sekunde lesbar. Laenger -> 3 Zeilen,
-  kleiner, Effekt weg.
+### Hook-Art (verbindliche Kriterien, Thomas 2026-06-14, geschaerft 14.06 (c))
+Ein guter Hook macht NEUGIERIG UND macht das Thema sofort erkennbar — **beides zugleich ist Pflicht**,
+weil das Bild im Internet OHNE den Artikel-Titel auftaucht (Feed-Thumbnail, Google-Bildersuche, geteilt,
+YouTube-Thumbnail). Ein Fremder, der nur das Bild sieht, muss das Thema verstehen. Reine Mystery ohne
+Thema = Scroll-weiter; Thema + offene Frage = Klick.
+- **STANDALONE-TEST (wichtigste Regel, Thomas 14.06):** lies den Hook OHNE den Artikel daneben. Weiss
+  ein Fremder, worum es geht, UND bleibt er neugierig? Wenn das Thema unklar ist -> ein themenbenennendes
+  Wort einbauen. **Schlecht: "wie viel budget?"** (welches Budget?). **Gut: "website: wie viel budget?"**
+  / "was kostet eine neue website?" / "relaunch — lohnt sich das?". Immer ein Substantiv aus dem Feld
+  rein: website, relaunch, kosten, hosting, budget...
+- **Laenge: bis ~5-6 Woerter / ~35 Zeichen** (frueher strikt 2-4 — gelockert, damit das Thema reinpasst).
+  Trotzdem in 1-2 Sekunden lesbar, sonst 3 Zeilen und Effekt weg.
 - **Klingt gesprochen**, wie es jemand wirklich sagt (Thomas-Stimme, Tag-Frage "oder?" erlaubt).
   Nicht werblich, nicht gestelzt.
 - **Neugier-Luecke:** offene Frage oder Spannung, beantwortet NICHT schon alles.
-- **Thema-Anker:** ein Wort, das das Thema traegt (z.B. "website"), damit es ohne Titel klar ist.
-- kleingeschrieben, cremeweiss Handschrift, im Negativraum. KEIN Gedankenstrich, kein Hochglanz,
-  kein Clickbait der am Thema vorbeigeht.
-- Gut (Beispiel Zahlungs-Artikel): "website gleich zahlen?". Schwach: "wann zahl ich?" (Thema
-  fehlt im Feed), "Zahlungsmodalitaeten erklaert" (kein Sog).
+- kleingeschrieben, cremeweiss Handschrift, im Negativraum. KEIN Gedankenstrich (ausser unvermeidbar),
+  kein Hochglanz, kein Clickbait der am Thema vorbeigeht.
+- Gut (Zahlungs-Artikel): "website gleich zahlen?". Schwach (Thema fehlt standalone): "wie viel budget?",
+  "wann zahl ich?". Tot (kein Sog): "Zahlungsmodalitaeten erklaert".
 
 > UMGESETZT (2026-06-14): die Engine generiert pro Artikel **3 Hook-Kandidaten** nach diesen
 > Kriterien (`generateHooks` in pipeline.ts, eine kleine LLM-Anfrage) und schreibt sie ins

@@ -416,10 +416,14 @@ function generateHooks(title: string, snippet: string): string[] {
     const prompt = [
         'Du textest Hook-Zeilen fuer das Hero-Bild eines Blogartikels (Marke Red Rabbit, Webagentur Oesterreich).',
         'Erzeuge GENAU 3 verschiedene Hook-Vorschlaege nach diesen Kriterien:',
-        '- 2 bis 4 Woerter, hoechstens ca. 25 Zeichen.',
+        '- WICHTIGSTE REGEL: der Hook muss STANDALONE funktionieren. Das Bild taucht ohne den Artikel-Titel',
+        '  im Internet auf (Feed, Google-Bildersuche, geteilt, YouTube-Thumbnail). Ein Fremder, der NUR den',
+        '  Hook sieht, muss das Thema verstehen UND neugierig bleiben. Darum IMMER ein themenbenennendes',
+        '  Substantiv aus dem Feld einbauen (website, relaunch, kosten, budget, hosting, ...).',
+        '  Schlecht: "wie viel budget?" (welches Budget?). Gut: "website: wie viel budget?".',
+        '- bis ca. 5-6 Woerter / max ca. 35 Zeichen, trotzdem in 1-2 Sekunden lesbar.',
         '- klingt gesprochen, wie es jemand wirklich sagt (Tag-Frage "oder?" erlaubt), nicht werblich.',
         '- macht neugierig (offene Frage oder Spannung), beantwortet NICHT schon alles.',
-        '- enthaelt ein Thema-Anker-Wort, damit ohne Titel im Feed klar ist, worum es geht.',
         '- kleingeschrieben. KEIN Gedankenstrich. Kein Hochglanz, kein Clickbait der am Thema vorbeigeht.',
         `\nThema/Titel: ${title}`,
         `Kernaussage: ${snippet}`,
@@ -429,7 +433,7 @@ function generateHooks(title: string, snippet: string): string[] {
     return out
         .split('\n')
         .map((l) => l.trim().replace(/^[-*\d.)\s]+/, '').replace(/^["']|["']$/g, '').replace(/[–—]/g, ',').trim())
-        .filter((l) => l.length > 0 && l.length <= 32)
+        .filter((l) => l.length > 0 && l.length <= 40)
         .slice(0, 3);
 }
 
