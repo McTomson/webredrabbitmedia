@@ -7,9 +7,17 @@
 > in `run-daily.sh` (420s), Test `google.test.ts`. Lauf nachgeholt -> Draft
 > `welche-versteckten-kosten-gibt-es-bei-der-website-erstellung` (Commit `da86852`), Review-Mail an
 > **t.uhlir@immo.red** ausgelöst (ok:true). Empfänger der DAILY-Mail = immo.red (nicht das alte Gmail).
-> Details + Triage + offene Schwäche (run-daily `alert()` loggt nur, kein Auto-Alert bei Ausfall):
-> Memory `reference_redrabbit_daily_mail_hang_fix`. **Empfehlung: Auto-Alert bei Tageslauf-Ausfall mit
-> Thomas abstimmen** (sonst fällt ein künftiger Ausfall wieder nur durch "keine Mail" auf).
+> Details + Triage: Memory `reference_redrabbit_daily_mail_hang_fix`.
+>
+> **AUTO-ALERT GEBAUT (Commit `3319bb7`, live-getestet):** Garantie "jeden Tag genau ein Signal" — neue
+> Route `app/api/ops-alert/route.ts` (Admin, Vercel-SMTP) + `run-daily.sh` `notify()` (dedupt pro Tag).
+> Bei Pipeline-Halt/Fehler/Mail-5xx/Token-fehlt kommt jetzt eine kurze Status-/Alarm-Mail ("[Red Rabbit
+> Ops] ...") statt Stille. Verifiziert: Test-POST an deployte Route -> HTTP 200, Mail an t.uhlir@immo.red.
+>
+> **NEUER MEDIEN-BACKLOG:** der heute generierte+freigegebene Artikel
+> `welche-versteckten-kosten-gibt-es-bei-der-website-erstellung` ist PUBLISHED und hat einen Medien-Marker
+> in `content-engine/.media-requests/` -> braucht noch Podcast+Video+Bilder (NotebookLM-Lauf wie die 4
+> Backlog-Artikel, Runbook unten). Noch nicht produziert.
 
 ## Arbeitsregeln (verbindlich)
 - **Lies ZUERST ALLE relevanten MD-Files** (Thomas-Wunsch): diesen Handoff, das Repo-`CLAUDE.md`,
