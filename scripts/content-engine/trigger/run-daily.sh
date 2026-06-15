@@ -18,6 +18,28 @@ NVM_MAJOR="$(cat "$HOME/.nvm/alias/default" 2>/dev/null | tr -dc '0-9.' )"
 NVM_BIN="$(ls -d "$HOME"/.nvm/versions/node/v${NVM_MAJOR:-20}*/bin 2>/dev/null | sort -V | tail -1)"
 export PATH="${NVM_BIN:-$HOME/.nvm/versions/node/v20.20.0/bin}:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.local/bin:$PATH"
 
+# Portable hard timeout (macOS ships no coreutils `timeout`/`gtimeout`). Runs the command in its
+# OWN process group (setsid) and kills the WHOLE group on expiry, so a hung node/tsx subtree can't
+# survive. Returns 124 on timeout. Belt-and-suspenders guard so a stalled network/LLM step can
+# never again freeze the unattended daily run and block the review mail (root cause 15.06: the GSC
+# indexation check hung 3+ h holding the lock -> no article, no mail).
+pgtimeout() {
+  local secs="$1"; shift
+  perl -e '
+    use POSIX qw(setsid);
+    my $secs = shift @ARGV;
+    my $pid = fork();
+    die "fork: $!" if !defined $pid;
+    if ($pid == 0) { setsid(); exec @ARGV or die "exec: $!"; }
+    local $SIG{ALRM} = sub { kill("-TERM", $pid); sleep 3; kill("-KILL", $pid); exit 124; };
+    alarm($secs);
+    waitpid($pid, 0);
+    my $rc = $? >> 8;
+    alarm(0);
+    exit($rc);
+  ' "$secs" "$@"
+}
+
 REPO="$HOME/dev/redrabbit"
 cd "$REPO" || exit 1
 [ -f .env.local ] && set -a && . ./.env.local && set +a
@@ -74,7 +96,10 @@ fi
 # Refresh the indexation kill-switch BEFORE generating, so the pipeline's pre-emit kill-switch read
 # reflects today's coverage. Non-blocking: if GSC creds are absent or the check errors, the existing
 # flag is left untouched (fail-safe — a missing/stale flag counts as inactive) and we still publish.
-npx tsx scripts/content-engine/dashboard/check_indexation.ts || echo "WARN: Indexierungs-Check fehlgeschlagen, Kill-Switch unverändert (fail-safe)."
+# Hard 7-min cap: the TS layer already bounds each GSC URL to ~15s, but the outer guard ensures
+# even a total auth/network stall can't wedge the daily run. On timeout/error the existing
+# kill-switch flag is left untouched (fail-safe — a missing/stale flag counts as inactive).
+pgtimeout 420 npx tsx scripts/content-engine/dashboard/check_indexation.ts || echo "WARN: Indexierungs-Check fehlgeschlagen/timeout, Kill-Switch unverändert (fail-safe)."
 
 # Generate next draft (quality-gated). On halt, exit cleanly without shipping.
 # --no-image: ship TEXT ONLY for review. Images (hero + infographic + context photos) are now

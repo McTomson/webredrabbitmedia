@@ -67,6 +67,23 @@ function safeErrorMessage(e: unknown): string {
     return raw.replace(/(access_token|refresh_token|client_secret|id_token)=[^&\s]+/gi, '$1=***');
 }
 
+// Race a promise against a wall-clock timeout. The googleapis/gaxios client has NO default
+// request timeout, so a single dead socket (token refresh stall, half-open TCP) can hang the
+// awaiting call FOREVER — this froze the unattended daily run for 3+ h on 15.06 (GSC URL
+// Inspection), holding the lock so no article + no review mail shipped. The timer is .unref()'d
+// so it never keeps the event loop alive on its own.
+export function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+        const t = setTimeout(() => reject(new Error(`Timeout nach ${ms} ms (${label})`)), ms);
+        // Node's Timeout has .unref(); guard for non-Node just in case.
+        (t as { unref?: () => void }).unref?.();
+        p.then(
+            (v) => { clearTimeout(t); resolve(v); },
+            (e) => { clearTimeout(t); reject(e); },
+        );
+    });
+}
+
 // ── Search Console ─────────────────────────────────────────────────────────
 
 export interface GscRow {
@@ -262,19 +279,37 @@ export async function getIndexationStatus(urls: string[]): Promise<Loaded<Indexa
     // URL Inspection requires the EXACT verified property string. GSC URL-prefix
     // properties carry a trailing slash (the Search Analytics API is more lenient).
     const property = SITE.endsWith('/') ? SITE : `${SITE}/`;
+    // Hard per-URL timeout (gaxios honours `timeout`, but token refresh can stall outside it —
+    // so we ALSO race the whole call). Bounds total runtime to ~urls.length * timeout worst case.
+    const perUrlTimeout = Number(process.env.RR_GSC_TIMEOUT_MS || '15000');
     try {
         const sc = google.searchconsole({ version: 'v1', auth });
         const perUrl: UrlIndexState[] = [];
+        let inspectErrors = 0; // URLs we could NOT inspect (timeout/network), as opposed to a clean verdict
         for (const url of urls) {
             try {
-                const res = await sc.urlInspection.index.inspect({ requestBody: { inspectionUrl: url, siteUrl: property } });
+                const res = await withTimeout(
+                    sc.urlInspection.index.inspect(
+                        { requestBody: { inspectionUrl: url, siteUrl: property } },
+                        { timeout: perUrlTimeout },
+                    ),
+                    perUrlTimeout + 2000,
+                    url,
+                );
                 const r = res.data.inspectionResult?.indexStatusResult;
                 const coverage = r?.coverageState || 'unbekannt';
                 const indexed = r?.verdict === 'PASS' || /indexed/i.test(coverage);
                 perUrl.push({ url, indexed, state: coverage });
             } catch (e: unknown) {
+                inspectErrors++;
                 perUrl.push({ url, indexed: false, state: e instanceof Error ? e.message.slice(0, 80) : 'Fehler' });
             }
+        }
+        // Fail-safe: if more than half the URLs could not be inspected, the check is INCONCLUSIVE
+        // (likely a connectivity/auth outage). Return `error` so the caller leaves the existing
+        // kill-switch untouched instead of computing a fake 0% rate and falsely pausing publishing.
+        if (urls.length > 0 && inspectErrors / urls.length > 0.5) {
+            return { state: 'error', message: `GSC-Inspektion unzuverlässig: ${inspectErrors}/${urls.length} Timeouts/Fehler — Ergebnis verworfen.` };
         }
         const indexed = perUrl.filter((u) => u.indexed).length;
         const total = perUrl.length;
