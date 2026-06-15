@@ -1,66 +1,110 @@
-# Naechste Session — content-engine media (2026-06-14)
-
-> STATUS 14.06 (Folge-Session): BEIDE offenen Punkte ERLEDIGT.
-> - **Video-Thumbnail-Feature gebaut + live**: `scripts/content-engine/media/videoPoster.ts` (sharp:
->   Hero 16:9 + dunkler Scrim + YouTube-Play-Badge + Logo oben rechts), in run-media.ts verdrahtet
->   (Poster VOR Upload gebaut, als YouTube-Custom-Thumbnail gesetzt via youtube_upload.py --thumbnail),
->   getestet (videoPoster.test.ts, 164 Tests gruen), code-reviewed (stderr-Fix). Pilot kurFCoj0ebs
->   nachgezogen.
-> - **Backlog (4 Artikel) komplett live** auf Konto t.uhlir@immo.red (NotebookLM PRO, authuser=3):
->   Heroes via Gemini (Gradient+Hook) erzeugt, Podcast+Video (deutsch, Erklaervideo) produziert,
->   YouTube public + branded Thumbnail, eingebettet, gepusht, Mail, Marker geleert.
->   YouTube: unterhalt=I7j24Rjbt8w / warum-teurer=LF0Nx4l5n0k / relaunch=l_2WlRRXpbY / budget=v0neaQbM23g.
-> - **NEUE DAUERREGEL Hook** (Thomas 14.06): Hook muss STANDALONE das Thema tragen (taucht ohne Titel
->   im Netz auf). "wie viel budget?" zu kontextlos -> besser "website: wie viel budget?". In
->   generateHooks (pipeline.ts) + Runbook + Memory [[feedback_bildstil_cinematic_hook_redrabbit]] fix.
->   Die 4 Backlog-Hooks liefen noch mit den kurzen Versionen (vom User so freigegeben). Ab naechster Welle anwenden.
-> Offene Folgepunkte unten sind damit erledigt; Datei bleibt als Referenz.
-
+# Naechste Session — content-engine media (2026-06-15)
 
 ## Arbeitsregeln (verbindlich)
-- Lies ZUERST alles Relevante: diesen Handoff, STATE.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
-- NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.
-- Erst einen Plan machen (TodoWrite), dann ausfuehren.
-- Skills + parallele Sub-Agenten nutzen wo es hilft. Fuer lange autonome Laeufe den `autonomous-runner` Agent verwenden.
-- Autonom handeln, voller Zugriff inkl. Browser — ohne fuer jeden Schritt nachzufragen (Grenze: kein Botschutz-Umgehen, keine Account-Anlage, nichts Destruktives ohne Deckung).
-- Laufend testen + `review-it` bei groesseren Schritten. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
-- Bei langen Agenten-/Hintergrund-Laeufen ALLE 15 MIN Health-Check + Stichprobe (TaskList/BashOutput/Monitor). Bricht ein Tool ein → STOPP + fixen, keine kaputten Daten schreiben. Nicht endlos haengen.
+- **Lies ZUERST ALLE relevanten MD-Files** (Thomas-Wunsch): diesen Handoff, das Repo-`CLAUDE.md`,
+  `~/CLAUDE.md`, `~/.claude/CLAUDE.md`, `MEMORY.md` + die verlinkten Memory-Files unter
+  `~/.claude/projects/-Users-McTomson/memory/`, sowie die Runbooks
+  `content-engine/knowledge/media-notes.md`, `.agent/workflows/bilder-gemini-browser.md`,
+  `.agent/workflows/podcast-einbinden.md`, `content/blog/CLAUDE.md` falls vorhanden. Nicht loslegen ohne Kontext.
+- **NIE raten — immer verifizieren** (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed,
+  nie einen Wert erfinden. Gilt verschaerft fuer alles, was live/veroeffentlicht wird.
+- **Kurz gegenpruefen, was die letzte Session gemacht hat**, ob es wirklich in Ordnung ist (Stichproben:
+  Artikel live im Browser ansehen, Bilder/Embeds/Thumbnails kontrollieren, Tests laufen lassen).
+- Erst einen Plan machen (TaskCreate/TodoWrite), dann ausfuehren.
+- Skills + parallele Sub-Agenten nutzen wo es hilft (Infografik/Embedding lief gut parallel).
+- Autonom handeln, voller Zugriff inkl. Browser — ohne fuer jeden Schritt nachzufragen. Grenze: kein
+  Botschutz-Umgehen, keine Account-Anlage, nichts Destruktives ohne Deckung; **Veroeffentlichen (Substack/
+  YouTube public) im Namen des Users -> pro Schritt OK holen** (genereller Backlog-OK lag fuer 14.06 vor).
+- Laufend testen + bei groesseren Schritten review. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
+- Bei langen Agenten-/Render-Laeufen ALLE ~15 MIN Health-Check + Stichprobe. Bricht ein Tool wiederholt
+  ein (2-3x) -> STOPP + andere Methode oder kurz abstimmen, nicht endlos den gleichen Klick wiederholen.
 
 ## PFLICHT-KONTEN (Grund-Wissen, immer anwenden)
-- **NotebookLM + alle Google-Dienste (Gemini etc.) = `t.uhlir@immo.red`.** IMMER. Im Konto-Switcher (oben rechts) umschalten, auch wenn ein anderes Konto aktiv ist. NICHT `thomas.uhlir@gmail.com`. (Pilot 14.06 lief versehentlich unter thomas.uhlir@gmail.com — User: "diesmal ok, danach nicht mehr".)
-- **YouTube = Kanal "Red Rabbit Lab" (@redrabbitlab)**, Upload laeuft technisch ueber OAuth-Token `~/.config/redrabbit-youtube/token.json` (kontounabhaengig vom Browser; Ziel-Kanal 14.06 via channels.list verifiziert = UC6hInJDtZeD8YSOwuvV60yA).
-- Runbooks (immer abrufen): `content-engine/knowledge/media-notes.md` (Abschnitt "RUNBOOK Podcast + Video" + "KONTEN"), `.agent/workflows/bilder-gemini-browser.md`, Repo-`CLAUDE.md` (Abschnitt "Content-Engine: Bild- & Medien-Produktion"). Memory: [[reference_redrabbit_media_produktion_runbook]], [[feedback_lange_renders_15min_check]].
+- **NotebookLM + Gemini + alle Google-Dienste = `t.uhlir@immo.red`** (im Konto-Switcher = **authuser=3**,
+  Label "Arbeit", Workspace "RED Real Estates Development GmbH", NotebookLM zeigt "PRO", Gemini-Modell "Pro").
+  NICHT `thomas.uhlir@gmail.com` (das ist der Default-Switcher-Account und war 14.06 versehentlich aktiv).
+  Im Switcher umstellen, auch wenn ein anderes Konto aktiv ist. Gemini-URL haengt am Konto: `/u/3/app`.
+- **YouTube** = Kanal "Red Rabbit Lab" (@redrabbitlab, UC6hInJDtZeD8YSOwuvV60yA). Upload technisch ueber
+  OAuth-Token `~/.config/redrabbit-youtube/token.json` (kontounabhaengig vom Browser).
+- **Substack** = Publikation **redrabbitlab.substack.com** ("Substack von Tom" / Publikation
+  "Red Rabbit Websiten infos", Autor "Tom"). Im Browser eingeloggt.
 
-## Stand dieser Session (14.06)
-### Erledigt + verifiziert
-- Heutiger Artikel **zu-welchen-zeitpunkten-muss-die-website-bezahlt-werden** ist KOMPLETT live:
-  - 5 Bilder via Gemini/SVG (Hero mit Tuerkis→Blau-Verlauf + Hook "website gleich zahlen?", Infografik aus echtem 6.000-€-Beispiel, 3 Kontextfotos).
-  - Podcast + Video via NotebookLM (deutsch) erzeugt, **YouTube public: https://youtu.be/kurFCoj0ebs** (@redrabbitlab, KI-gekennzeichnet), Video self-hosted (`public/videos/<slug>-video.mp4` + poster.jpg), beide eingebettet (`<SimpleAudioPlayer>` + `<VideoEmbed>`). Commit `501f9c0`, gepusht.
-- **BUG gefixt:** `scripts/content-engine/media/mdxMedia.ts` `insertAfterH1` gab MDX UNVERAENDERT zurueck wenn keine Body-H1 da ist (unsere Artikel rendern den Titel aus Frontmatter → es gibt NIE eine Body-H1) → jeder Podcast/Video-Embed wurde still verschluckt. Jetzt Fallback: einfuegen direkt nach dem Frontmatter-Block. Tests gruen (mdxMedia 8/8). Pilot nachtraeglich eingebettet.
-- Codex-Modell-Fix: `gpt-5.4` ist tot (ChatGPT-Konten) → `gpt-5.5` in `image.ts`. Bild-Policy: **Gemini-Browser primaer, Codex Fallback**. Hook-Schablonen-Satz ("In meiner taeglichen Arbeit als Strategie-Berater…") aus house.md/writer.md verbannt. Hook-Email-Feature: Engine schlaegt 3 Hooks in der Freigabe-Mail vor (frontmatter `hookCandidates`).
+## Stand 14.06 (diese Session) — alles committet + gepusht (main, bis `8100b81`), 164 Tests gruen, Tree clean
+### ERLEDIGT + verifiziert
+- **NEUES FEATURE Video-Thumbnail LIVE**: `scripts/content-engine/media/videoPoster.ts` (sharp:
+  Hero 16:9 + dunkler Scrim + grosser YouTube-Play-Badge + Red-Rabbit-Logo oben rechts). In
+  `run-media.ts` verdrahtet: Poster wird VOR dem Upload aus dem Hero gebaut und als YouTube-Custom-
+  Thumbnail gesetzt (`youtube_upload.py --thumbnail` neu, plus `--thumbnail-only --video-id` zum
+  Nachziehen bestehender Videos). Tests `videoPoster.test.ts`, code-reviewed (stderr-Forward-Fix).
+- **PILOT** zu-welchen-zeitpunkten-... komplett live, neuer Branded-Poster + YT-Thumbnail (kurFCoj0ebs).
+- **BACKLOG 4 Artikel komplett live** (Podcast+Video deutsch via NotebookLM, YouTube public + Branded-
+  Thumbnail, self-hosted, eingebettet, gepusht, Marker geleert) auf Konto t.uhlir@immo.red:
+  - wie-viel-kostet-eine-website-im-unterhalt — YT `I7j24Rjbt8w`
+  - warum-sind-manche-webdesign-agenturen-deutlich-teurer-als-andere — YT `LF0Nx4l5n0k`
+  - was-kostet-ein-professioneller-website-relaunch — YT `l_2WlRRXpbY`
+  - wie-viel-budget-muss-fuer-ein-neues-web-projekt — YT `v0neaQbM23g`
+- **VOLLE BILD-PARITAET fuer alle 4 Backlog-Artikel** = Hero (Tuerkis->Blau-Verlauf + Hook) + 1 Infografik
+  (lokaler SVG-Renderer `image/sketchInfographik.ts`, echte Artikel-Zahlen) + 3 Kontextfotos (Gemini,
+  dokumentarisch). Infografik + Kontextfoto-Einbettung lief ueber **parallele general-purpose Agenten**.
+- **HOOK-DAUERREGELN** (Thomas 14.06, in `pipeline.ts` generateHooks + `bilder-gemini-browser.md` +
+  Memory `feedback_bildstil_cinematic_hook_redrabbit`): Hook muss (1) **STANDALONE das Thema tragen**
+  (taucht ohne Titel im Netz auf) und (2) **korrektes, sinnvolles Deutsch** sein (kein Telegramm-Fragment;
+  "wie viel budget?" war "Bammish"/kein Deutsch). (3) **Workflow: erst 3 Hooks vorschlagen -> User waehlt
+  -> DANN Bild rendern** (nicht mehrfach neu rendern). Backlog-Hooks final: "was macht webdesign so teuer?"
+  / "lohnt sich ein website-relaunch?" / "was darf meine website kosten?" / "was kostet eine website pro jahr?".
+- **BONUS**: verbotener KI-Floskel-Einstieg "In meiner taeglichen Arbeit als Strategie-Berater bei Red
+  Rabbit Media..." in den 4 Backlog-Artikeln entfernt (jeder Einstieg anders umformuliert).
 
-### Offen / Naechste konkrete Schritte
-1. **BACKLOG Medien-Produktion (4 Artikel, Marker in `content-engine/.media-requests/`)** — auf Konto **t.uhlir@immo.red**:
-   - `warum-sind-manche-webdesign-agenturen-deutlich-teurer-als-andere`
-   - `was-kostet-ein-professioneller-website-relaunch`
-   - `wie-viel-budget-muss-fuer-ein-neues-web-projekt`
-   - `wie-viel-kostet-eine-website-im-unterhalt`
-   Pro Artikel: **(a)** Erst pruefen welche Bilder fehlen — User sagt bei 3 davon (Warum-teurer, Relaunch, Budget) fehlen BILDER; bei "Was kostet eine Website im Unterhalt" fehlen Video+Podcast. `ls public/images/blog/<slug>*` + `grep '!\[' content/blog/<slug>.mdx`; fehlende Hero/Infografik/Kontext via Gemini (Runbook) nachziehen. **(b)** Podcast+Video via NotebookLM (deutsch, 1 neues Notebook/Artikel). **(c)** `npx tsx scripts/content-engine/media/run-media.ts --slug <slug> --podcast <mp3> --video <mp4> --no-images --video-title "<Artikel-Titel>" --podcast-title "<...> (Podcast)"`. **WICHTIG:** `--no-images` IMMER (sonst ueberschreibt Codex/images-only die Gemini-Bilder). Podcast-Download ist `.m4a` → vorher `ffmpeg -i in.m4a -codec:a libmp3lame -q:a 2 out.mp3`. 15-Min-Check waehrend Render.
-2. **NEUES FEATURE: Video-Poster/Thumbnail neu (User-Wunsch 14.06)** — der jetzige Poster ist das erste NotebookLM-Frame (zeigt gross "NotebookLM" / "Launch ist erst der Anfang"). Soll weg. Stattdessen:
-   - Basis = das **Hero-Bild des Artikels** (Gradient + Hook), aber **leicht ANGEPASST**, damit es NICHT wie ein 3. Hero-Duplikat wirkt — User: "Bilder sollen im Artikel nur EINMAL vorkommen, auch das Hero". Also der Poster ist eine eigene, abgewandelte Variante, nicht 1:1 das Hero.
-   - **Red-Rabbit-Logo oben rechts** drauf (Asset: `public/images/logo.png`, alt: `logo.webp`/`logo-alt.webp`).
-   - **YouTube-Play-Button GROSS mittig** drueber.
-   - Das wird der YouTube-Thumbnail UND der self-hosted Video-Poster. Hook = der Artikel-Hook.
-   - Umsetzen in `run-media.ts`: den ffmpeg-Frame-Schritt (Zeile ~143-149) ersetzen durch ein sharp-Composite (Hero-PNG + Logo top-right + Play-Kreis mittig → poster.jpg). Zusaetzlich YouTube-Custom-Thumbnail setzen: `youtube_upload.py` um `thumbnails().set()` (YouTube Data API) erweitern und das gleiche Bild hochladen.
-   - **Pilot nachziehen:** denselben neuen Poster + YouTube-Thumbnail fuer `zu-welchen-zeitpunkten-...` / Video `kurFCoj0ebs` nachtraeglich erzeugen+setzen.
-   - Constraint pruefen: jedes Bild erscheint im Artikel nur einmal (Hero einmal; Poster ist eigenstaendig, taucht nur im VideoEmbed auf, nicht zusaetzlich inline).
+### OFFEN / NAECHSTE SCHRITTE
+1. **SUBSTACK-Cross-Post der 4 Artikel (als ENTWUERFE, Thomas-Wunsch "erst als Entwuerfe")** — DAS ist der
+   einzige offene Punkt. Thomas' letzte Frage dazu: *"kannst du das nochmal versuchen? und wird dann auch
+   der Podcast dort gepostet?"* -> bei naechster Session beantworten + umsetzen:
+   - **WICHTIG/LESSON**: der Substack-URL-Import (`redrabbitlab.substack.com/publish/import`, "Paste the URL
+     Here") ist ein **Bulk-RSS-Import** — er findet den ganzen Site-Feed ("22 Posts gefunden") und wuerde
+     ALLE importieren (dupliziert die 8 schon vorhandenen Cross-Posts). NICHT auf "Importieren" klicken fuer
+     selektive Posts. Fuer nur die 4 -> **manuell im Editor komponieren** (Erstellen -> Artikel):
+     Titel + Untertitel (aus Frontmatter), Body (von der Live-Seite uebernehmen), Bilder, **Rubrik PFLICHT**
+     ("RUBRIK AUSWAEHLEN"-Dropdown), canonical auf den Original-Artikel, als Entwurf speichern (auto-save).
+     Quirks aus Memory: YouTube-Embed nur per Paste auf leerer Zeile; Erst-Publish-mit-Video haengt ->
+     Text publizieren, Video per Aktualisieren nachziehen.
+   - **Podcast auf Substack**: Substack hat eine eigene **Podcast/Audio-Funktion** (separat). Der manuelle
+     Cross-Post bringt NICHT automatisch den selbst-gehosteten `<SimpleAudioPlayer>`. Optionen klaeren:
+     (a) den YouTube-Video-Link einbetten (enthaelt das Audio nicht separat), (b) die mp3 als Substack-
+     Audio/Podcast hochladen, (c) nur Text+Bilder+YouTube-Embed. Mit Thomas abstimmen, bevor man baut.
+   - Ein **leerer Test-Entwurf** (post 202031517 "newsletter in Bearbeitung") wurde 14.06 angelegt und nicht
+     befuellt — kann geloescht werden.
+2. Optional: Pilot zu-welchen-zeitpunkten-... hat Hero+Infografik+3 Kontextfotos schon; pruefen ob er die
+   gleiche Hook-Standalone-Regel braucht (Pilot-Hook "website gleich zahlen?" ist ok).
+3. Optional: gleicher KI-Floskel-Einstieg steckt noch in 3 weiteren Artikeln ausserhalb des Backlogs
+   (warum-ist-eine-website-mit-dem-tag-des-live, website-wartungsvertrag-sinnvoll,
+   website-selbst-erstellen-vs-agentur) — bei Gelegenheit auch entschaerfen.
 
-### Blocker / Risiken
-- NotebookLM-MCP ist `authenticated:false`/headless → NICHT nutzbar; alles ueber Chrome-Browser. Video-Overview gibt es NUR im Browser (MCP kann nur Audio).
-- run-media `uploadToYoutube` ist nicht idempotent → bei erneutem Lauf doppelter YouTube-Upload. Fuer Re-Runs `--no-push`/manuell, oder nur Embed/Poster-Schritt separat.
-- Grosse Binaries (Video 47MB/Podcast 20MB) gehen via run-media in den git-Push (public/videos, public/audio) — ist so gewollt (self-hosting), aber Repo waechst.
+### LESSONS / verlaessliche Methoden (gegen Zeitverlust)
+- **Gemini-Bild-Download zuverlaessig** (die inline-Toolbar-Download-Position springt je nach Caption-Laenge,
+  daher unzuverlaessig; CORS blockt JS-`fetch`-Download): Bild generieren -> ~16-25s warten ->
+  **auf das Bild klicken (oeffnet den Editor/Vollbild mit "Speichern" oben rechts)** -> dort den
+  **Download-Pfeil oben rechts (~x=1281,y=33)** klicken -> Datei landet in `~/Downloads/Gemini_Generated_Image_*.png`.
+  Pro Bild per Bash die neueste Datei holen + nach `public/images/blog/<slug>-ctxN-v1.png` (sharp resize 1200x675).
+- Gemini-Pro-Renders dauern ~16-28s; "kein Text"-Warnungen im Caption sind meist Fehlalarm (Skizzen/Papier
+  blurry = ok). Bei Kontextfotos im Prompt "KEIN Text, keine lesbare Schrift" + keine Bildschirm-mit-Text-Szenen.
+- **Hero-Hook**: Gemini setzt den Hook handschriftlich ins Bild (Tuerkis #19B5AE -> Blau #2E6FD2 Verlauf,
+  Person rechts, Hook links). Danach Poster via `videoPoster.ts` + YT-Thumbnail via
+  `youtube_upload.py --thumbnail-only --video-id <ID> --thumbnail <poster.jpg>`.
+- **NotebookLM Podcast+Video**: 1 neues Notebook/Artikel, Quelle = Live-Artikel-URL, Audio-Overview + Video-
+  Overview (Erklaervideo, Deutsch) parallel starten; ~5 bzw ~10-15 Min; Download via Studio-Eintrag
+  3-Punkte -> "Herunterladen". Audio kommt als `.m4a` -> `ffmpeg -i in.m4a -codec:a libmp3lame -q:a 2 out.mp3`.
+  Tail: `npx tsx scripts/content-engine/media/run-media.ts --slug <slug> --podcast <mp3> --video <mp4>
+  --no-images --video-title "<exakter Frontmatter-Titel>" --podcast-title "<Titel> (Podcast)"`.
+  **`--no-images` IMMER** (sonst ueberschreibt images-only die Gemini-Bilder). **Titel direkt als String
+  uebergeben, NICHT per `sed` aus dem Frontmatter** (BSD-sed liess 14.06 das `title: "`-Praefix stehen ->
+  Bug; per node/gray-matter sauber lesen oder direkt eintippen).
+- run-media `uploadToYoutube` ist NICHT idempotent -> bei Re-Run doppelter YouTube-Upload. Fuer Re-Embeds
+  nur Poster/Thumbnail-Schritt separat, oder `--no-push`.
 
 ### Relevante Dateien/Befehle
-- `scripts/content-engine/media/run-media.ts` (Orchestrator), `mdxMedia.ts` (Embeds, gefixt), `scripts/content-engine/upload/youtube_upload.py` (+ `youtube_auth.py`), `image.ts`/`images-only.ts` (Bilder), `image/sketchInfographic.ts` (Infografik-SVG).
-- Staging vom Pilot: `~/.config/redrabbit-youtube/staging/` (m4a/mp3/mp4) — als Referenz/Format-Vorlage.
-- Backlog-Stand: `ls content-engine/.media-requests/` (4 offene Marker).
+- `scripts/content-engine/media/run-media.ts` (Orchestrator), `videoPoster.ts` (+ Test), `mdxMedia.ts`,
+  `scripts/content-engine/upload/youtube_upload.py` (+ `youtube_auth.py`),
+  `scripts/content-engine/image/sketchInfographik.ts` (Infografik-SVG), `pipeline.ts` (generateHooks).
+- Staging der Medien: `~/.config/redrabbit-youtube/staging/`. Kontextfoto-Staging: `~/ctx-staging/`.
+- Backlog-Marker: `ls content-engine/.media-requests/` (aktuell leer = alle 4 erledigt).
+- Tests: `npx vitest run` (164 gruen). Graph: `graphify update . --no-cluster --force` (kein API-Cost).
