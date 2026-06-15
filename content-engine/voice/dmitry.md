@@ -1,3 +1,7 @@
+> HINWEIS (Entscheidung Tomson 2026-06-15): Dmitry wird ab jetzt NICHT mehr verwendet (keine
+> neuen Bylines, keine neuen Inhalte unter seinem Namen). Bestehende Artikel, Config und Schema
+> bleiben UNVERAENDERT (kein Refactor, kein Entfernen). Fuer alle NEUEN Inhalte = Thomas Uhlir.
+
 # Autor: Dmitry Pashlov
 
 - **Echte Person**, technischer Leiter / Lead Entwickler bei Red Rabbit Media.

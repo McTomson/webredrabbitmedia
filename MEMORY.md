@@ -6,6 +6,18 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-06-15 — Brand Second Brain, SEO-Monitor-Dashboard, Option 3, Dmitri raus
+
+Cowork-Session (Claude). Branch `feat/seo-monitor-und-brand-second-brain` (Commit `4517d0e`) liegt lokal, **Push offen** (Sandbox ohne Git-Creds, GitHub-Connector 401). Push via `git push -u origin feat/seo-monitor-und-brand-second-brain` (Tomson) ODER GitHub-Connector neu verbinden.
+
+- **SEO-Monitor (wöchentlich, Montag):** Lauf 15.06 gemacht. GSC 28T = 4 Klicks / 6.081 Impr / CTR 0,1% / Pos 40,5 (3-Mon: 10/18.400/42,3 vs. Baseline 12/18.200/42,7 → Position leicht besser). Indexiert 30 / nicht 27 (10× 404 unverändert, 11× gecrawlt-nicht-indexiert, 6× gefunden-nicht-indexiert). Top-Impressionen = Bundesland-Begriffe auf Pos 35–48 (Seite 4–5), "webdesign wien" + Brand NICHT in Top. Canonicals alle self ✓. aggregateRating sitewide = 5,0/8 echte Reviews (NICHT die erfundene 4,8/315; web_fetch lieferte für /webdesign-klagenfurt eine veraltete 4,8/315-Cache-Variante → beobachten). PageSpeed nicht abrufbar (keyless-API 429). Verlauf: `docs/seo-monitor-log.md`.
+- **Broken Links / 404:** Tippfehler-Link `/webdesign-st.-poelten` (mit Punkt) im Body der St.-Pölten-Seite; `/webdesign-feldkirchen` + `/webdesign-voelkermarkt` lösen nicht auf; villach/spittal = Soft-Redirect auf Kärnten (aber wie eigene Stadtseiten verlinkt). Kundenzahlen inkonsistent (164/152/315/800+).
+- **SEO-Monitor-Dashboard-Tab (neu):** `app/dashboard/seo-monitor/page.tsx` + `lib/dashboard/seoMonitor.ts` lesen `content-engine/seo-monitor/tasks.json` (Wochenbefunde + To-do-Liste), Tab in `DashboardTabs.tsx`. tsc+eslint grün. Dashboard auf Prod weiter via `DASHBOARD_ENABLED` gated (sonst 404). Plan: Montags-Task aktualisiert künftig tasks.json (erledigt abhaken/ergänzen) + Push → Vercel. Erst Test, dann voll-auto (Tomson 15.06).
+- **Brand Second Brain (neu):** Ordner `brand/` (README, positioning, cult-brand-playbook, messaging, decisions-log) = Single Source of Truth für Marke/Identität/Copy. In `CLAUDE.md` verankert ("zuerst lesen"). Cult-Brand-Wissen aus NotebookLM (13 Videos, `t.uhlir@immo.red`) extrahiert + nach Eignung gefiltert.
+- **Marken-Entscheidung (Tomson 15.06): Option 3 "fair + selektiv".** Kern (zugänglich, risikofrei) bleibt, aufgeladen mit Menschlichkeit/Story/Feindbild. Preis/Risiko: **Design-Vorschlag ohne Vorkasse, Anzahlung erst bei Auftragszusage**, 790 € wird Starter/One-Pager, höhere Pakete darüber (Struktur offen). Details `brand/positioning.md` + `brand/decisions-log.md`.
+- **Dmitri ab jetzt nicht mehr verwenden (Tomson 15.06):** Dmitry Pashlov wird für NEUE Inhalte/Bylines nicht mehr genutzt → Thomas Uhlir ist Autor/Gesicht. **KEIN Refactor, KEIN Entfernen:** bestehende Bylines (10-fehler, ki-website-erstellung, statische-vs-dynamische, website-5-seiten-kosten u.a.), `AUTHORS.dmitry` in `lib/config.ts`, Person-Schema in `app/layout.tsx`, About.tsx bleiben UNVERÄNDERT. Nur `voice/dmitry.md` mit Hinweis markiert (Content-Engine vergibt ab jetzt nur Thomas-Bylines).
+- **OFFENE Brand-Entscheidungen (grill-me Q&A läuft):** Paket-/Preisstruktur über 790 €, Anzahlungs-Höhe & ob "kein Risiko" pro Tier, Schärfe des Feindbilds, persönliche Marken-Stimme erfassen (für Website-Copy), Social-Proof-Aufbau (echte Reviews/Cases).
+
 ## Stand 2026-06-11 (Teil 11) — SEO-Batch: Titel, H1, Meta, llms.txt, Pillar, a11y (main `cfcc6fe`)
 
 Diese Session (Fortsetzung Teil 10) hat den Quality-Scan genutzt, um echte Funde abzuarbeiten:

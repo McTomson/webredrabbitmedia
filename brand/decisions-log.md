@@ -7,6 +7,7 @@ Neueste oben. Nichts loeschen, nur ergaenzen. Bei Aenderung einer alten Entschei
 - **Preis/Risiko-Modell:** Design-Vorschlag bleibt OHNE Vorkasse. **Anzahlung erst, wenn der Kunde zusagt und den Auftrag erteilt.** 790 EUR wird zum Starter/One-Pager-Einstieg, hoehere Pakete darueber (Struktur noch zu definieren).
 - **Cult-Brand-Wissen** aus NotebookLM (13 Videos) extrahiert und nach Eignung gefiltert (siehe `cult-brand-playbook.md`): sofort nutzen = Menschlichkeit/Imperfektion, Storytelling, Feindbild schaerfen; bedingt = Identitaet/In-Group, Wert an obere Motive koppeln; nur abgeschwaecht = Kapazitaets-Selektivitaet; Tabu = Fake-Scarcity, echte Exklusivitaet.
 - **Second Brain angelegt:** Ordner `brand/` im Repo als Single Source of Truth, in `CLAUDE.md` verankert.
+- **Dmitri ab jetzt nicht mehr verwenden (Tomson 15.06):** Dmitry Pashlov wird fuer NEUE Inhalte/Bylines nicht mehr genutzt, Thomas Uhlir ist das Gesicht/der Autor. Bestehende Artikel, `lib/config.ts` und Schema bleiben UNVERAENDERT (kein Refactor, kein Loeschen). `voice/dmitry.md` entsprechend markiert.
 
 ## Offene Punkte (zu entscheiden)
 - Paket-/Preisstruktur ueber dem 790-EUR-Starter (Tiers, Preise, Leistungen).
