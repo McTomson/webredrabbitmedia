@@ -35,6 +35,14 @@ At every session end, update both files when anything relevant changed:
 
 Do not put secrets, API keys, private credentials, or customer-sensitive data in these files.
 
+## Brand & Markenidentitaet (Second Brain) — IMMER zuerst lesen bei Marken-/Design-/Copy-Arbeit
+
+Der Ordner `brand/` ist die Single Source of Truth fuer Positionierung, Markenidentitaet, Tonalitaet und Messaging von web.redrabbit.media. Vor JEDER Arbeit an Brand, Identitaet, Design-Richtung, Copy/Texten, Preis-Kommunikation oder FAQ zuerst `brand/README.md` lesen (verweist auf positioning, cult-brand-playbook, messaging, decisions-log).
+
+- Neue Marken-Entscheidungen kommen datiert in `brand/decisions-log.md` (append-only).
+- Tonalitaets-/Schreibstil-Regeln bleiben in `content-engine/voice/house.md` (nicht duplizieren).
+- Aktueller Stand: Marken-Richtung = Option 3 "fair + selektiv". Preis/Risiko: Entwurf ohne Vorkasse, Anzahlung erst bei Auftragszusage, 790 EUR = Starter/One-Pager. Cult-Brand-Wissen (NotebookLM, 13 Videos) in `brand/cult-brand-playbook.md` nach Eignung gefiltert.
+
 ## Content-Engine: Bild- & Medien-Produktion (IMMER diese Runbooks abrufen, nicht neu herleiten)
 
 Operative Fakten stehen verbindlich in den Runbooks. Vor jeder Bild-/Medien-Aufgabe lesen:

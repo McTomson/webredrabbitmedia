@@ -1,0 +1,72 @@
+{
+  "updatedAt": "2026-06-15",
+  "week": "2026-KW25",
+  "source": "Wöchentlicher SEO-Monitor (Search Console, Indexierung, Live-Checks)",
+  "metrics": {
+    "rangeLabel": "28 Tage (17.05.–13.06.2026)",
+    "clicks": 4,
+    "impressions": 6081,
+    "ctr": "0,1 %",
+    "position": 40.5,
+    "indexed": 30,
+    "notIndexed": 27,
+    "pagespeedHome": null,
+    "baseline3MonthNote": "3-Monats-Vergleich zur Baseline: 10 Klicks / 18.400 Impr / Pos 42,3 (Baseline 12 / 18.200 / 42,7) → Position leicht besser, Klicks ~stabil."
+  },
+  "tasks": [
+    {
+      "id": "404-broken-links",
+      "title": "404s & kaputte interne Links beheben",
+      "area": "Indexierung / Links",
+      "priority": "high",
+      "status": "open",
+      "detail": "Tippfehler-Link /webdesign-st.-poelten (mit Punkt) im Body der St.-Pölten-Seite auf /webdesign-st-poelten korrigieren. Für /webdesign-feldkirchen und /webdesign-voelkermarkt echte Seiten anlegen oder 301 auf /webdesign-kaernten. /webdesign-villach und /webdesign-spittal sind nur Soft-Redirects auf Kärnten, werden aber wie eigene Stadtseiten verlinkt. Danach 404-Validierung in der GSC starten.",
+      "evidence": "GSC Indexierung: 10× 'Nicht gefunden (404)', Validierung nicht gestartet. Live-Linkcheck 15.06."
+    },
+    {
+      "id": "wien-bundeslaender-rankings",
+      "title": "Wien-Seite & Bundesland-Seiten von Position 35–48 nach vorne bringen",
+      "area": "Rankings",
+      "priority": "high",
+      "status": "open",
+      "detail": "Alle Impressionen kommen aus Bundesland-Begriffen (Vorarlberg, OÖ, Tirol, Steiermark, NÖ) auf Seite 4–5 — dort klickt niemand. Fokus-Keyword 'webdesign wien' und Brand 'red rabbit media' tauchen nicht in den Top-Impressionen auf. Wien-Seite inhaltlich & per interner Verlinkung stärken; stärkste Bundesland-Seiten gezielt Richtung Seite 1–2 schieben.",
+      "evidence": "GSC Top-Queries 28T: webdesign vorarlberg 351 Impr/Pos 35,3; oberösterreich 339/45,0; tirol 243/47,6."
+    },
+    {
+      "id": "crawled-not-indexed",
+      "title": "'Gecrawlt – nicht indexiert' (11 Seiten) entschärfen",
+      "area": "Content / Indexierung",
+      "priority": "medium",
+      "status": "open",
+      "detail": "Die Stadt-/Regions-Templates sind fast identisch (nur Ortsname getauscht) — klassischer Grund, warum Google sie crawlt aber nicht indexiert. Pro Seite einzigartigen, differenzierten Inhalt schaffen.",
+      "evidence": "GSC Indexierung: 11× 'Gecrawlt – zurzeit nicht indexiert'."
+    },
+    {
+      "id": "schema-aggregaterating-scope",
+      "title": "aggregateRating-Scope prüfen (auch auf Nicht-Review-Seiten)",
+      "area": "Schema",
+      "priority": "medium",
+      "status": "open",
+      "detail": "Das sitewide LocalBusiness-Rating 5,0/8 (echte Google-Reviews, gut) liegt auch auf Nicht-Review-Seiten wie /tipps-Artikeln. Prüfen ob gewollt; ggf. auf relevante Seiten beschränken, um eine manuelle Maßnahme zu vermeiden.",
+      "evidence": "Live-Check 15.06: aggregateRating 5,0/8 auf allen geprüften Seiten inkl. /tipps/was-kostet-eine-website."
+    },
+    {
+      "id": "klagenfurt-stale-cache",
+      "title": "Stale-Cache der Klagenfurt-Seite beobachten",
+      "area": "Technik",
+      "priority": "low",
+      "status": "watch",
+      "detail": "Ein Roh-Fetch lieferte für /webdesign-klagenfurt eine veraltete Variante (Canonical → Homepage, Titel '⭐4.8', 315 Kunden). Live ist die Seite korrekt (self-canonical, 5,0/8). Wahrscheinlich Stale-Cache/Edge. Beobachten, ob Googlebot die alte Version sieht.",
+      "evidence": "web_fetch vs. Live-Browser-Fetch Diskrepanz, 15.06."
+    },
+    {
+      "id": "kundenzahlen-konsistenz",
+      "title": "Inkonsistente Kundenzahlen vereinheitlichen",
+      "area": "Content / Trust",
+      "priority": "low",
+      "status": "open",
+      "detail": "Über die Seiten verteilt stehen 164 / 152 / 315 / 800+ Kunden. Auf eine konsistente, belegbare Zahl vereinheitlichen.",
+      "evidence": "Live-Check 15.06 über mehrere Stadt-/Regionsseiten."
+    }
+  ]
+}
