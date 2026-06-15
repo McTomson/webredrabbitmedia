@@ -1,5 +1,16 @@
 # Naechste Session — content-engine media (2026-06-15)
 
+> **UPDATE 15.06 (Reliability-Fix, Commit `f12d0c4`):** Die tägliche Review-Mail blieb heute aus.
+> Ursache: der GSC-Indexierungs-Check (`getIndexationStatus` in `lib/dashboard/google.ts`) hatte
+> KEINEN Timeout und hing 3h+ -> `run-daily.sh` blockiert (Lock gehalten), kein Artikel, keine Mail.
+> Behoben: `withTimeout`+15s-Cap+Fail-safe-Schwelle in google.ts, portabler perl-`pgtimeout`-Wächter
+> in `run-daily.sh` (420s), Test `google.test.ts`. Lauf nachgeholt -> Draft
+> `welche-versteckten-kosten-gibt-es-bei-der-website-erstellung` (Commit `da86852`), Review-Mail an
+> **t.uhlir@immo.red** ausgelöst (ok:true). Empfänger der DAILY-Mail = immo.red (nicht das alte Gmail).
+> Details + Triage + offene Schwäche (run-daily `alert()` loggt nur, kein Auto-Alert bei Ausfall):
+> Memory `reference_redrabbit_daily_mail_hang_fix`. **Empfehlung: Auto-Alert bei Tageslauf-Ausfall mit
+> Thomas abstimmen** (sonst fällt ein künftiger Ausfall wieder nur durch "keine Mail" auf).
+
 ## Arbeitsregeln (verbindlich)
 - **Lies ZUERST ALLE relevanten MD-Files** (Thomas-Wunsch): diesen Handoff, das Repo-`CLAUDE.md`,
   `~/CLAUDE.md`, `~/.claude/CLAUDE.md`, `MEMORY.md` + die verlinkten Memory-Files unter
