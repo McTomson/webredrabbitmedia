@@ -374,3 +374,57 @@ quelle: https://fidas.at/aktuelles/anzahlungs-teil-und-schlussrechnung/
 quelle_name: Fidas Steuerberatung - Anzahlungs-, Teil- und Schlussrechnung
 geprueft_am: 2026-06-14
 recheck_nach: 2026-12-11
+
+## t9-2026-06-15-042
+cluster: 1
+keywords: welche, versteckten, kosten, gibt, website, erstellung
+aussage: Die offizielle .at-Domain kostet bei der Registrierungsstelle nic.at im ersten Jahr 68,00 € netto (Registrierung + erstes Jahr) und danach 34,00 € netto pro Jahr; mit 20 % österreichischer USt sind das 81,60 € bzw. 40,80 € jährlich. Diese laufende Domain-Gebühr wird im Angebotspreis einer Website oft nicht ausgewiesen.
+quelle: https://www.nic.at/de/meine-at-domain/registrieren/preise
+quelle_name: nic.at - .at-Domain registrieren, Preise (offizielle Registry)
+geprueft_am: 2026-06-15
+recheck_nach: 2026-12-12
+
+## t9-2026-06-15-043
+cluster: 1
+keywords: welche, versteckten, kosten, gibt, website, erstellung
+aussage: Das österreichische Barrierefreiheitsgesetz (BaFG) ist seit 28. Juni 2025 in Kraft und verpflichtet Unternehmen mit B2C-Onlineangeboten (z. B. Onlineshops, Online-Buchung, E-Banking, E-Ticketing) zur digitalen Barrierefreiheit nach WCAG 2.1 Level AA. Kleinstunternehmen (unter 10 Mitarbeitende und unter 2 Mio. € Umsatz) sind bei Dienstleistungen ausgenommen.
+quelle: https://www.wko.at/oe/netzwerke/informationen-barrierefreiheitsgesetz-28-06-2025.pdf
+quelle_name: WKO - Informationen zum Barrierefreiheitsgesetz ab 28.06.2025 (PDF)
+geprueft_am: 2026-06-15
+recheck_nach: 2026-12-12
+
+## t9-2026-06-15-044
+cluster: 1
+keywords: welche, versteckten, kosten, gibt, website, erstellung
+aussage: Verstöße gegen das BaFG können mit Verwaltungsstrafen geahndet werden: bis 80.000 € für Großunternehmen, bis 50.000 € für KMU und bis 25.000 € für Kleinstunternehmen; zuständig für die Marktüberwachung ist das Sozialministeriumservice. Nachträgliche Barrierefreiheit ist damit ein realer Kostenfaktor (kein Hinweis = keine Rechtsberatung).
+quelle: https://www.sozialministerium.gv.at/Services/Aktuelles/Archiv-2025/barrierefreiheitsgesetz.html
+quelle_name: Sozialministerium - Barrierefreiheitsgesetz seit 28. Juni 2025 in Kraft
+geprueft_am: 2026-06-15
+recheck_nach: 2026-12-12
+
+## t9-2026-06-15-045
+cluster: 1
+keywords: welche, versteckten, kosten, gibt, website, erstellung
+aussage: Das dynamische Einbinden von Google Fonts (Laden vom Google-Server) überträgt die IP-Adresse der Besucher in die USA ohne Einwilligung und gilt als DSGVO-Verstoß; das LG München I sprach am 20.01.2022 (Az. 3 O 17493/20) einem Website-Besucher 100 € Schadenersatz zu, gefolgt von einer Abmahnwelle auch in Österreich. Lokales Einbinden der Schriften ist ein nachträglicher, oft übersehener Kostenpunkt.
+quelle: https://www.dataprotect.at/2022/07/18/abmahnungen-wegen-google-web-fonts/
+quelle_name: dataprotect.at - Abmahnungen wegen Google Web Fonts (DSGVO Österreich)
+geprueft_am: 2026-06-15
+recheck_nach: 2026-12-12
+
+## t9-2026-06-15-046
+cluster: 1
+keywords: welche, versteckten, kosten, gibt, website, erstellung
+aussage: Laufende Kosten für Hosting, Domain, Wartung, Sicherheits-Updates und Plugin-Lizenzen liegen bei einer typischen WordPress-Website in Österreich im Schnitt zwischen rund 300 und 1.200 € pro Jahr (ca. 25–100 € pro Monat) und werden im einmaligen Erstellungspreis meist nicht eingerechnet.
+quelle: https://onedaysite.at/blog/website-kosten-oesterreich.html
+quelle_name: onedaysite.at - Website-Kosten Österreich 2026
+geprueft_am: 2026-06-15
+recheck_nach: 2026-12-12
+
+## t9-2026-06-15-047
+cluster: 1
+keywords: welche, versteckten, kosten, gibt, website, erstellung
+aussage: Als Planungsregel gilt: pro Jahr etwa 10–20 % der Erstellungskosten als laufende Kosten einkalkulieren (eine 3.000-€-Website verursacht so grob 300–600 € jährlich im Unterhalt). Posten wie Hosting, Plugins/Lizenzen, Wartung, DSGVO-/Cookie-Banner-Konfiguration und Text-/Bildmaterial summieren sich erfahrungsgemäß über drei Jahre auf rund 30–45 % des Anschaffungspreises.
+quelle: https://wellewest.at/de/blog/was-kostet-eine-website-in-%C3%B6sterreich-preis%C3%BCbersicht-2026.html
+quelle_name: WelleWest - Website-Kosten Österreich 2026: Die ehrliche Übersicht
+geprueft_am: 2026-06-15
+recheck_nach: 2026-12-12
