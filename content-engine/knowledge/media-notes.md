@@ -50,9 +50,16 @@ bleiben liegen (Backlog moeglich, pruefen mit `ls content-engine/.media-requests
   mischen. Sonst vermischen sich Quellen/Infos und der Podcast/Video-Inhalt wird verfaelscht
   (Halluzination ueber Artikelgrenzen hinweg). Regel von Thomas, 2026-06-03.
 - Ablauf je Artikel: neues Notebook -> NUR den einen Artikel-Entwurfstext als Source ->
-  Audio Overview (deutsch) + Video Overview generieren -> downloaden -> Notebook kann danach
-  archiviert/geloescht werden. (`scripts/content-engine/media/notebooklm_cli.py` muss das
-  pro Lauf frisch anlegen, kein Wiederverwenden.)
+  Audio Overview (deutsch) + Video Overview generieren -> downloaden ->
+  **Notebook PFLICHT-LOESCHEN nach erfolgreichem Lauf** (`notebooklm_cli.py` legt pro Lauf frisch
+  an, kein Wiederverwenden).
+- **AUTO-CLEANUP (Regel Thomas 15.06): jedes pro Artikel angelegte Notebook automatisch wieder
+  loeschen, sobald Podcast UND Video heruntergeladen, integritaetsgeprueft, eingebettet und
+  committet sind.** Sonst sammeln sich Hunderte Notebooks an. Loeschen via NotebookLM-MCP
+  `remove_notebook` (notebook_id aus `add_notebook`/`list_notebooks` merken). SICHERHEIT:
+  Loeschen ist ENDGUELTIG -> NUR loeschen wenn die mp3/mp4 nachweislich gespeichert sind (erst
+  Integritaetspruefung, dann loeschen); im Zweifel behalten. NIE fremde/aeltere Notebooks
+  blind massenloeschen -> bei Bestands-Aufraeumung erst Liste zeigen + Thomas bestaetigen lassen.
 - Integritaetspruefung nach Download: Datei nicht leer/trunkiert (Groesse/Dauer/Codec).
 - Re-Auth (Cookie-Ablauf) ist ein ERWARTETES Ereignis -> Alarm-Email an Thomas, kein Crash.
 

@@ -75,23 +75,17 @@
   Rabbit Media..." in den 4 Backlog-Artikeln entfernt (jeder Einstieg anders umformuliert).
 
 ### OFFEN / NAECHSTE SCHRITTE
-1. **SUBSTACK-Cross-Post der 4 Artikel (als ENTWUERFE, Thomas-Wunsch "erst als Entwuerfe")** — DAS ist der
-   einzige offene Punkt. Thomas' letzte Frage dazu: *"kannst du das nochmal versuchen? und wird dann auch
-   der Podcast dort gepostet?"* -> bei naechster Session beantworten + umsetzen:
-   - **WICHTIG/LESSON**: der Substack-URL-Import (`redrabbitlab.substack.com/publish/import`, "Paste the URL
-     Here") ist ein **Bulk-RSS-Import** — er findet den ganzen Site-Feed ("22 Posts gefunden") und wuerde
-     ALLE importieren (dupliziert die 8 schon vorhandenen Cross-Posts). NICHT auf "Importieren" klicken fuer
-     selektive Posts. Fuer nur die 4 -> **manuell im Editor komponieren** (Erstellen -> Artikel):
-     Titel + Untertitel (aus Frontmatter), Body (von der Live-Seite uebernehmen), Bilder, **Rubrik PFLICHT**
-     ("RUBRIK AUSWAEHLEN"-Dropdown), canonical auf den Original-Artikel, als Entwurf speichern (auto-save).
-     Quirks aus Memory: YouTube-Embed nur per Paste auf leerer Zeile; Erst-Publish-mit-Video haengt ->
-     Text publizieren, Video per Aktualisieren nachziehen.
-   - **Podcast auf Substack**: Substack hat eine eigene **Podcast/Audio-Funktion** (separat). Der manuelle
-     Cross-Post bringt NICHT automatisch den selbst-gehosteten `<SimpleAudioPlayer>`. Optionen klaeren:
-     (a) den YouTube-Video-Link einbetten (enthaelt das Audio nicht separat), (b) die mp3 als Substack-
-     Audio/Podcast hochladen, (c) nur Text+Bilder+YouTube-Embed. Mit Thomas abstimmen, bevor man baut.
-   - Ein **leerer Test-Entwurf** (post 202031517 "newsletter in Bearbeitung") wurde 14.06 angelegt und nicht
-     befuellt — kann geloescht werden.
+1. **SUBSTACK-Cross-Post — 15.06 ERLEDIGT (4 Entwuerfe).** Entscheidungen Thomas: **Teaser + Link** (NICHT
+   Voll-Text, weil Substack KEIN Canonical-Feld hat -> Voll-Text wuerde die eigene Domain kannibalisieren)
+   und **keine Inline-Bilder** (gebrandetes Video + dessen Thumbnail = Vorschaubild reicht). Jeder Entwurf:
+   Titel+Untertitel, Rubrik "Red Rabbit Websiten infos", YouTube-Embed (visuell verifiziert), 2-Absatz-Teaser
+   + Original-Link. Posts: budget 202102439 / relaunch 202103806 / teurer 202104387 / unterhalt 202104582.
+   Editor-Mechanik + Clipboard-Clobber-Lesson + YT-ID-oEmbed-Verify in Memory `reference_substack_import_und_gemini_download`.
+   - **OFFEN für Thomas**: die 4 Entwuerfe **reviewen + veroeffentlichen** (Publish im eigenen Namen = bewusst
+     ihm ueberlassen). Podcast-Audio auf Substack ist eine separate Funktion (nicht im Teaser enthalten) —
+     falls gewuenscht, mp3 als Substack-Audio nachladen.
+   - Alter **leerer Test-Entwurf** (post 202031517 "Untitled", 14.06) + ggf. dieser-Session-Leichen: nicht
+     autonom geloescht (Loeschen unwiderruflich) — Thomas kann sie per "..." -> Loeschen entfernen.
 2. Optional: Pilot zu-welchen-zeitpunkten-... hat Hero+Infografik+3 Kontextfotos schon; pruefen ob er die
    gleiche Hook-Standalone-Regel braucht (Pilot-Hook "website gleich zahlen?" ist ok).
 3. Optional: gleicher KI-Floskel-Einstieg steckt noch in 3 weiteren Artikeln ausserhalb des Backlogs
