@@ -62,11 +62,30 @@ if [ -f "$LOCK" ] && [ "$(find "$LOCK" -mmin -120 2>/dev/null)" ]; then echo "Lo
 echo $$ > "$LOCK"
 trap 'rm -f "$LOCK"' EXIT
 
-alert() {
-  local msg="$1"
-  echo "ALERT: $msg"
-  # best-effort crash alert via the deployed mailer (reuses review-notify is not ideal; just log)
+# Notify Thomas via the deployed ops-alert route (this box holds NO SMTP creds — mail only ships
+# through Vercel). Guarantees a daily signal: on success the review mail ships; on halt/failure THIS
+# does, so a silent no-mail day (root cause 15.06) can't recur. Best-effort (never aborts the run)
+# and de-duped per kind per day via a marker, so the 3h catch-up ticks can't spam repeat mails.
+# Payload JSON is built by node so a message with quotes/newlines can't break the request.
+notify() {
+  local kind="$1" subject="$2" message="$3"
+  echo "NOTIFY[$kind]: $subject — $message"
+  local marker="$WORK/notified-$kind-$(date +%F)"
+  [ -f "$marker" ] && { echo "($kind heute schon gemeldet, kein Doppelversand)"; return 0; }
+  if [ -z "${ADMIN_API_TOKEN:-}" ]; then echo "WARN: ADMIN_API_TOKEN fehlt, keine Ops-Mail."; return 0; fi
+  local payload
+  payload=$(SUBJECT="$subject" MESSAGE="$message" KIND="$kind" node -e 'process.stdout.write(JSON.stringify({subject:process.env.SUBJECT,message:process.env.MESSAGE,kind:process.env.KIND}))' 2>/dev/null)
+  if [ -n "$payload" ] && curl -s -o /dev/null -w '%{http_code}' --max-time 25 \
+       -X POST "$SITE_URL/api/ops-alert" \
+       -H "Authorization: Bearer $ADMIN_API_TOKEN" -H 'Content-Type: application/json' \
+       -d "$payload" | grep -q '^200$'; then
+    touch "$marker"; echo "Ops-Mail ausgeloest ($kind)"
+  else
+    echo "WARN: Ops-Mail fehlgeschlagen ($kind) — Catch-up versucht erneut."
+  fi
 }
+
+alert() { notify "alert" "Tageslauf-Fehler" "$1"; }
 
 # Always work on main for the daily publish.
 git checkout main >/dev/null 2>&1 || { alert "git checkout main fehlgeschlagen"; exit 1; }
@@ -107,6 +126,10 @@ pgtimeout 420 npx tsx scripts/content-engine/dashboard/check_indexation.ts || ec
 # podcast + video. No point spending expensive image generation on text he might reject.
 if ! npx tsx scripts/content-engine/pipeline.ts --next --emit --no-image; then
   echo "Pipeline hat gehalten oder Fehler. Nichts publiziert."
+  # Daily-signal guarantee: even on a no-article day Thomas gets one mail explaining why, instead of
+  # silence. NOT stamped, so the 3h catch-up still retries a transient halt; notify() de-dupes so he
+  # gets at most one such mail per day.
+  notify "halt" "Heute kein neuer Artikel" "Die Content-Pipeline hat heute angehalten — kein neues Thema in der Queue, Quality-Gate, oder der Indexierungs-Kill-Switch ist aktiv. Es wurde nichts publiziert. Der Catch-up versucht es im Tagesverlauf erneut. Log: $LOG"
   exit 0
 fi
 
@@ -130,11 +153,24 @@ for i in $(seq 1 30); do
 done
 
 if [ -n "${ADMIN_API_TOKEN:-}" ]; then
-  curl -s -X POST "$SITE_URL/api/review-notify" \
+  # curl exits 0 even on HTTP 5xx, so check the STATUS CODE, not curl's exit. -o<file> sends the body
+  # to a file (portable; macOS head has no `-n -1`), -w prints just the code to stdout.
+  RESPFILE="$WORK/.review-resp-$$"
+  CODE=$(curl -s -o "$RESPFILE" -w '%{http_code}' --max-time 30 -X POST "$SITE_URL/api/review-notify" \
     -H "Authorization: Bearer $ADMIN_API_TOKEN" -H 'Content-Type: application/json' \
-    -d "{\"slug\":\"$SLUG\"}" && echo " review-mail ausgeloest"
+    -d "{\"slug\":\"$SLUG\"}")
+  BODY=$(cat "$RESPFILE" 2>/dev/null); rm -f "$RESPFILE"
+  if [ "$CODE" = "200" ]; then
+    echo "review-mail ausgeloest: $BODY"
+  else
+    # Article exists + is pushed, so we still stamp (a re-run would generate a DUPLICATE article);
+    # but the mail failed -> alert so the day isn't silent and Thomas can approve from the dashboard.
+    echo "FEHLER: Review-Mail HTTP $CODE — $BODY"
+    notify "alert" "Review-Mail-Versand fehlgeschlagen" "Der Artikel '$SLUG' wurde erstellt und nach main gepusht, aber der Versand der Review-Mail schlug fehl (HTTP $CODE: $BODY). Bitte im Dashboard freigeben. Log: $LOG"
+  fi
 else
   echo "WARN: ADMIN_API_TOKEN fehlt, keine Review-Mail gesendet."
+  notify "alert" "Review-Mail nicht gesendet (Token fehlt)" "Artikel '$SLUG' wurde erstellt, aber ADMIN_API_TOKEN fehlt -> keine Review-Mail moeglich. Bitte im Dashboard freigeben. Log: $LOG"
 fi
 
 touch "$STAMP"
