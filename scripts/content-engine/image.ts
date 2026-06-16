@@ -35,6 +35,25 @@ export const HERO_PHOTO_STYLE =
     '(about #2E6FD2) on the right. The two colours flow softly into each other, warm and welcoming, ' +
     'no hard edge, no banding. No text, no words, no letters, no logos, no readable screen content anywhere. 16:9 wide.';
 
+// Hero background gradient ROTATES per article (Thomas 2026-06-16) so the feed/blog does not look
+// monochrome over time and we can later measure which palette performs. The subject art-direction
+// stays the same authentic editorial style; only the two gradient colours change.
+const HERO_GRADIENTS: Array<{ name: string; left: string; right: string }> = [
+    { name: 'turquoise-blue', left: '#19B5AE', right: '#2E6FD2' },
+    { name: 'teal-green', left: '#13B5A6', right: '#1F9E5A' },
+    { name: 'golden-yellow-amber', left: '#F7C948', right: '#E8951C' },
+    { name: 'soft-violet-indigo', left: '#8B7DF0', right: '#5A4FD0' },
+];
+export function heroPhotoStyle(idx: number): string {
+    const g = HERO_GRADIENTS[((idx % HERO_GRADIENTS.length) + HERO_GRADIENTS.length) % HERO_GRADIENTS.length];
+    return HERO_PHOTO_STYLE.replace(
+        'turquoise (about #19B5AE) on the left seamlessly and harmoniously into a matching friendly blue (about #2E6FD2) on the right',
+        `${g.name.split('-')[0]} (about ${g.left}) on the left seamlessly and harmoniously into ${g.right} on the right`,
+    );
+}
+// Rotates each time a new article is planned (recordMotif grows the hero log).
+export function pickHeroColorIndex(): number { return readMotifLog().heroes.length % HERO_GRADIENTS.length; }
+
 export interface ImagePlanItem {
     kind: 'infographic' | 'photo';
     afterHeading: string; // exact H2 text to insert the image after
@@ -61,24 +80,63 @@ const PLAN_SCHEMA = `{
   ]
 }`;
 
-// Art-director: reads the article, returns the full image plan as JSON.
+// Cross-article variety memory (Thomas 2026-06-16): without this, every cost-themed article kept
+// landing on the same "person at a laptop reviewing paper" motif and the same 2-column infographic.
+// We persist the last ~12 hero concepts + infographic layouts and feed them back so the art-director
+// actively avoids repeating itself. So the variation is measurable later (what readers respond to).
+const MOTIF_LOG = path.join(ROOT, 'content-engine', 'knowledge', 'recent-image-motifs.json');
+interface MotifLog { heroes: string[]; layouts: string[] }
+function readMotifLog(): MotifLog {
+    try { const m = JSON.parse(fs.readFileSync(MOTIF_LOG, 'utf8')); return { heroes: m.heroes || [], layouts: m.layouts || [] }; }
+    catch { return { heroes: [], layouts: [] }; }
+}
+function recordMotif(heroConcept: string, layout?: string): void {
+    const log = readMotifLog();
+    log.heroes = [heroConcept, ...log.heroes].slice(0, 12);
+    if (layout) log.layouts = [layout, ...log.layouts].slice(0, 12);
+    try { fs.mkdirSync(path.dirname(MOTIF_LOG), { recursive: true }); fs.writeFileSync(MOTIF_LOG, JSON.stringify(log, null, 2)); } catch { /* best-effort */ }
+}
+
+// Art-director: reads the article, returns the full image plan as JSON. Each image is derived from the
+// content of the SECTION it sits in, archetypes are varied (so not every article looks the same), and
+// recently-used motifs are avoided.
 export function buildImagePlan(title: string, body: string, headings: string[]): ImagePlan {
+    const recent = readMotifLog();
     const prompt = [
         'Du bist Art-Director fuer einen oesterreichischen Webagentur-Blog (Marke Red Rabbit, Akzent Rot).',
         'Plane 5 Bilder fuer den Artikel: 1 Hero-Foto + 1 Sketch-Infografik + 3 Kontext-Fotos.',
-        'FOTOS: authentische, photorealistische Szenen, gern mit echten Menschen, KEIN Text im Bild.',
-        'HERO: beschreibe NUR die Person/das Motiv im Vordergrund (keine Umgebung/Location, kein Hintergrund) - der Hintergrund wird separat als tuerkis-blauer Farbverlauf gesetzt.',
-        'KONTEXT (3 Fotos): jeweils eine vollstaendige Szene, passt thematisch zu genau einer H2-Sektion.',
+        'OBERSTE REGEL (Thomas): die Bilder eines Artikels duerfen NICHT alle gleich aussehen, und ueber',
+        'Artikel hinweg soll sich das Motiv DREHEN. Jedes Foto wird aus dem KONKRETEN Inhalt SEINER Sektion',
+        'abgeleitet - lies den Absatz und zeige eine Szene, die genau diesen Punkt illustriert (nicht generisch).',
+        'ARCHETYPEN VARIIEREN: nutze ueber die 4 Fotos (Hero + 3 Kontext) BEWUSST VERSCHIEDENE Bild-Typen,',
+        'mische aus: (a) Konzept/Still-Life (Objekte, die das Thema symbolisieren, keine Person), (b) Detail/',
+        'Nahaufnahme (Haende, ein Gegenstand), (c) Umgebung/Ort (echte Szene/Werkstatt/Geschaeft), (d) Menschen',
+        'in Aktion (variiert: Geschlecht, Alter, Setting). HOECHSTENS EIN Bild zeigt eine Person an Laptop/',
+        'Schreibtisch - "Laptop" nur, wenn die Sektion es wirklich verlangt. Variiere Perspektive (nah/weit/',
+        'top-down) und Setting.',
+        'FOTOS: authentische, photorealistische Szenen, KEIN Text/Logo im Bild.',
+        'HERO: beschreibe NUR das Motiv im Vordergrund (Person ODER Objekt) - KEINE Umgebung/Location/Wand,',
+        'der Hintergrund wird separat als weicher Farbverlauf gesetzt. Der Hero soll das Artikel-Thema sofort',
+        'erkennbar machen (Standalone, da das Bild auch ohne Titel im Feed/Bildersuche auftaucht).',
+        recent.heroes.length ? 'VERMEIDE diese zuletzt genutzten Hero-Motive (nimm etwas anderes):\n- ' + recent.heroes.join('\n- ') : '',
+        'KONTEXT (3 Fotos): jeweils passend zu genau einer H2-Sektion, je ein ANDERER Archetyp (s.o.).',
         'ALT-TEXT: jedes Kontextfoto braucht zusaetzlich "alt" = ein deutscher, beschreibender Alt-Text fuer SEO und Barrierefreiheit (was ist konkret zu sehen, mit einem Thema-Keyword), NICHT der englische Generierungs-Prompt.',
-        'INFOGRAFIK: die zentrale Aussage/der Kernvergleich des Artikels als Daten. layout "comparison" (zwei Spalten) ODER "keypoints" (3-5 Kernfakten, dann statt left/right ein Feld "points":[{"big":"JA","text":"..."},{"text":"..."}]). tone good=gruen, bad=rot, neutral.',
+        'INFOGRAFIK: die zentrale Aussage/der Kernvergleich des Artikels als Daten. WAEHLE das Layout passend',
+        'zum Inhalt UND moeglichst anders als zuletzt: "comparison" (zwei Spalten gut/schlecht) ODER "keypoints"',
+        '(3-5 Kernfakten, dann statt left/right ein Feld "points":[{"big":"JA","text":"..."},{"text":"..."}]).',
+        recent.layouts.length ? 'Zuletzt genutzte Layouts (nimm moeglichst ein anderes): ' + recent.layouts.slice(0, 3).join(', ') : '',
+        'tone good=gruen, bad=rot, neutral.',
         'Die 4 "afterHeading"-Werte muessen EXAKT vorhandene H2-Ueberschriften sein, jede nur einmal, gut ueber den Artikel verteilt.',
         '\nVerfuegbare H2-Ueberschriften:\n' + headings.map((h) => '- ' + h).join('\n'),
         '\nTITEL: ' + title,
         '\nARTIKEL:\n' + body.slice(0, 6000),
         '\nGib AUSSCHLIESSLICH einen ```json Codeblock im Schema aus:\n' + PLAN_SCHEMA,
-    ].join('\n');
+    ].filter(Boolean).join('\n');
     const out = runClaude(prompt, { timeoutSec: 150, label: 'art-director' });
-    return extractJsonBlock(out) as ImagePlan;
+    const plan = extractJsonBlock(out) as ImagePlan;
+    const infoLayout = plan.items?.find((i) => i.kind === 'infographic')?.data?.layout;
+    recordMotif(plan.heroConcept, infoLayout);
+    return plan;
 }
 
 const version = () => Date.now().toString(36).slice(-5);

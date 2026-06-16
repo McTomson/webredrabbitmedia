@@ -7,7 +7,7 @@ import { readKillSwitch } from './lib/killSwitch';
 import { extractJsonBlock, extractMdxBlock } from './lib/extract';
 import { verifySources, type Source } from './lib/verifySources';
 import { validateFrontmatter } from './frontmatter';
-import { buildImagePlan, generatePhoto, renderInfographic, HERO_PHOTO_STYLE } from './image';
+import { buildImagePlan, generatePhoto, renderInfographic, heroPhotoStyle, pickHeroColorIndex } from './image';
 import { loadVault, searchVault, formatVaultContext, appendFacts, type NewFactInput } from './lib/vault';
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -321,7 +321,7 @@ async function main() {
         try {
             const headings = [...matter(mdx).content.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim());
             const plan = buildImagePlan(fm.title, matter(mdx).content, headings);
-            const heroPath = await generatePhoto(t.slug, 'hero', plan.heroConcept, 1200, 630, HERO_PHOTO_STYLE);
+            const heroPath = await generatePhoto(t.slug, 'hero', plan.heroConcept, 1200, 630, heroPhotoStyle(pickHeroColorIndex()));
             mdx = setHeroImage(mdx, t.slug, heroPath);
             let nCtx = 0;
             for (const item of plan.items) {

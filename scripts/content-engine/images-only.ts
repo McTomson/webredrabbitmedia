@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { ROOT } from './lib/roles';
-import { buildImagePlan, generatePhoto, renderInfographic, HERO_PHOTO_STYLE, type ImagePlanItem } from './image';
+import { buildImagePlan, generatePhoto, renderInfographic, heroPhotoStyle, pickHeroColorIndex, type ImagePlanItem } from './image';
 
 // ──────────────────────────────────────────────────────────────────────────
 // Apply ONLY the multi-image stage of the pipeline to an EXISTING article,
@@ -61,8 +61,9 @@ async function main() {
 
     // Optional fresh hero (otherwise keep approved featuredImage).
     if (regenHero) {
-        console.log('2/3 Hero-Foto via Codex ...');
-        const heroPath = await generatePhoto(slug, 'hero', plan.heroConcept, 1200, 630, HERO_PHOTO_STYLE);
+        const colorIdx = pickHeroColorIndex();
+        console.log(`2/3 Hero-Foto via Codex (Verlauf rotiert, Variante ${colorIdx}) ...`);
+        const heroPath = await generatePhoto(slug, 'hero', plan.heroConcept, 1200, 630, heroPhotoStyle(colorIdx));
         fm.featuredImage = heroPath;
     } else {
         console.log('2/3 Hero uebersprungen (approved featuredImage bleibt)');
