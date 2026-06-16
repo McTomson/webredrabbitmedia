@@ -55,12 +55,30 @@ export function runClaude(prompt: string, opts: RunOpts = {}): string {
         } catch (e) {
             lastErr = e;
             const isLast = attempt === MAX_ATTEMPTS;
-            if (opts.label) process.stderr.write(`  [role] ${opts.label} Versuch ${attempt} fehlgeschlagen, ${isLast ? 'aufgeben' : 'neuer Versuch'}\n`);
+            // Surface WHY claude failed. execFileSync swallows the real cause in error.message
+            // ("Command failed: claude -p <entire huge prompt>") while the actual reason sits in
+            // error.stderr / .status / .signal. Without this, a failed generation only ever logged
+            // the generic "Pipeline hat gehalten" + ops-mail with no actionable cause (blindspot
+            // 16.06). SIGKILL signal => our hard timeout fired (hang); a non-zero status + stderr
+            // => rate limit / overload / auth; E2BIG => prompt too large for argv.
+            const err = e as { status?: number; signal?: string; stderr?: Buffer | string; code?: string };
+            const stderrStr = (err.stderr ? err.stderr.toString() : '').trim();
+            const reason = [
+                err.code ? `code=${err.code}` : '',
+                err.signal ? `signal=${err.signal}` : '',
+                err.status != null ? `status=${err.status}` : '',
+                stderrStr ? `stderr=${stderrStr.slice(-500)}` : '',
+            ].filter(Boolean).join(' ') || 'kein Detail (stderr leer)';
+            if (opts.label) process.stderr.write(`  [role] ${opts.label} Versuch ${attempt} fehlgeschlagen (${reason}), ${isLast ? 'aufgeben' : 'neuer Versuch'}\n`);
             if (!isLast) {
                 // Exponential backoff: 15s, 30s, 60s. Gives an overloaded service room to recover.
                 const backoffSec = 15 * 2 ** (attempt - 1);
                 if (opts.label) process.stderr.write(`  [role] ${opts.label} warte ${backoffSec}s vor naechstem Versuch ...\n`);
                 sleepSync(backoffSec * 1000);
+            } else {
+                // Re-throw with the real cause baked into the message so the orchestrator's
+                // catch (which logs only error.message) records something diagnosable.
+                throw new Error(`claude (${opts.label ?? 'role'}) failed nach ${MAX_ATTEMPTS} Versuchen: ${reason}`);
             }
         }
     }
