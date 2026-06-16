@@ -428,3 +428,57 @@ quelle: https://wellewest.at/de/blog/was-kostet-eine-website-in-%C3%B6sterreich-
 quelle_name: WelleWest - Website-Kosten Österreich 2026: Die ehrliche Übersicht
 geprueft_am: 2026-06-15
 recheck_nach: 2026-12-12
+
+## t10-2026-06-16-048
+cluster: 1
+keywords: kostet, eine, maßgeschneiderte, commerce, website
+aussage: Ein individueller Online-Shop mit eigenem Design und 50–500 Produkten kostet in Österreich (2026) einmalig 5.000–15.000 €; einfache Shops für EPU mit bis zu ~50 Artikeln liegen bei 2.500–5.000 €, komplexe Shops mit ERP-Anbindung und B2B-Funktionen beginnen ab 15.000 € (B2B mit 500+ Produkten ab ca. 20.000 €).
+quelle: https://diemarketingnerds.com/magazin/online-shop-erstellen-lassen-kosten-oesterreich/
+quelle_name: Die Marketing Nerds - Online-Shop erstellen lassen: Kosten in Österreich 2026
+geprueft_am: 2026-06-16
+recheck_nach: 2026-12-13
+
+## t10-2026-06-16-049
+cluster: 1
+keywords: kostet, eine, maßgeschneiderte, commerce, website
+aussage: Bei einer Agentur kostet ein Standard-Webshop (20–50 Produkte, individuelles Design, Zahlungsanbindung, DSGVO-Einrichtung) 3.000–10.000 €; komplexe Projekte mit 500+ Produkten, ERP-Anbindung und Mehrsprachigkeit liegen zwischen 10.000 und 20.000 €, Enterprise-Lösungen darüber.
+quelle: https://davidkeiser.de/wissen/onlineshop-erstellen-lassen-kosten/
+quelle_name: David Keiser - Onlineshop erstellen lassen: Was kostet ein professioneller Webshop
+geprueft_am: 2026-06-16
+recheck_nach: 2026-12-13
+
+## t10-2026-06-16-050
+cluster: 1
+keywords: kostet, eine, maßgeschneiderte, commerce, website
+aussage: Laufende Kosten eines Webshops in Österreich: Hosting 20–80 €/Monat, Wartungspaket 80–250 €/Monat, Plugin-Lizenzen 200–800 €/Jahr und Zahlungsgebühren von 1,4–2,9 % pro Transaktion.
+quelle: https://diemarketingnerds.com/magazin/online-shop-erstellen-lassen-kosten-oesterreich/
+quelle_name: Die Marketing Nerds - Online-Shop erstellen lassen: Kosten in Österreich 2026
+geprueft_am: 2026-06-16
+recheck_nach: 2026-12-13
+
+## t10-2026-06-16-051
+cluster: 1
+keywords: kostet, eine, maßgeschneiderte, commerce, website
+aussage: Mietshop-Lösungen wie Shopify starten bei 29 €/Monat (Basic), der beliebteste Plan kostet 79 €/Monat, Shopify Plus (Enterprise) ab ca. 2.300 $/Monat; bei externen Zahlungsanbietern fallen zusätzlich 0,5–2 % Transaktionsgebühren pro Verkauf an.
+quelle: https://blog.swagger-bros.com/shopify-kosten/
+quelle_name: Swagger Bros - Shopify Kosten 2026: Alle Preise im Überblick
+geprueft_am: 2026-06-16
+recheck_nach: 2026-12-13
+
+## t10-2026-06-16-052
+cluster: 1
+keywords: kostet, eine, maßgeschneiderte, commerce, website
+aussage: Im DACH-Raum entstehen bei Mietshops Zusatzkosten für Apps/Rechtstexte: allein DSGVO/AGB/Widerruf 10–25 €/Monat; kleine Shops 30–60 €/Monat, wachsende Shops (50–200 Produkte) 80–150 €/Monat, große Shops mit vollem App-Stack 200–400 €/Monat.
+quelle: https://davidkeiser.de/wissen/onlineshop-erstellen-lassen-kosten/
+quelle_name: David Keiser - Onlineshop erstellen lassen Kosten (DACH-App-Kosten)
+geprueft_am: 2026-06-16
+recheck_nach: 2026-12-13
+
+## t10-2026-06-16-053
+cluster: 1
+keywords: kostet, eine, maßgeschneiderte, commerce, website
+aussage: Der größte Kostenblock einer individuellen Web-/Shop-Entwicklung ist die Arbeitszeit: In Österreich liegt der Stundensatz für professionelle Webentwicklung 2026 bei rund 80–150 €/Stunde.
+quelle: https://web.redrabbit.media/tipps/wie-setzen-sich-die-kosten-fuer-eine-website-zusammen
+quelle_name: Web Red Rabbit Media - Wie setzen sich die Kosten für eine Website zusammen?
+geprueft_am: 2026-06-16
+recheck_nach: 2026-12-13
