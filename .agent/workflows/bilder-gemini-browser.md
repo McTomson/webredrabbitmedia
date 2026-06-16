@@ -76,5 +76,32 @@ Thema = Scroll-weiter; Thema + offene Frage = Klick.
 
 ## Fallback (Codex)
 Nur wenn keine Browser-Session moeglich: `npx tsx scripts/content-engine/images-only.ts <slug> --hero`
-(nutzt `HERO_PHOTO_STYLE` in `scripts/content-engine/image.ts`, Modell gpt-5.5). Liefert KEINEN
-Hook-Text. Erst lauffaehig, wenn der Codex-image_gen-Pfad wieder rendert.
+(Modell gpt-5.5). Liefert KEINEN Hook-Text. **ACHTUNG: Codex-Nutzungslimit erreicht, zurueck erst ~14.07.2026**
+(`You've hit your usage limit`) -> Codex faellt aktuell ganz aus, Gemini-Browser ist der EINZIGE Weg.
+
+## VARIATION (Thomas 2026-06-16, PFLICHT) — nicht jeder Artikel/jedes Bild gleich
+Die Bilder duerfen nicht immer „Frau + Laptop + Cafe" sein. Regeln (auch in der Engine verankert,
+`image.ts` Art-Director + `content-engine/knowledge/recent-image-motifs.json`):
+- **Inhaltsgetrieben:** jedes Bild aus dem KONKRETEN Text SEINER Sektion ableiten (Absatz lesen, genau
+  diesen Punkt zeigen), nicht generisch. „du bist knapp vorbei" = Motiv passt nicht klar zum Thema.
+- **Archetypen mischen** ueber die 4 Fotos: (a) Konzept/Still-Life ohne Person, (b) Detail/Nahaufnahme,
+  (c) Umgebung/Ort, (d) Mensch-in-Aktion (Geschlecht/Alter/Setting variieren). **HOECHSTENS 1× „Person
+  am Laptop"** — Laptop nur, wenn die Sektion es wirklich verlangt.
+- **Hero-Verlauf ROTIERT** pro Artikel (Palette in `image.ts`: turquoise-blue / teal-green /
+  golden-yellow-amber / violet-indigo) — fuer Abwechslung + spaeter messen, was Leute moegen.
+- **Infografik-Format rotieren** (comparison / keypoints), nicht immer die 2-Spalten.
+- Wiederhol-Sperre: die letzten ~12 Hero-Motive meiden.
+
+## LESSONS Bild-Browser (16.06)
+- **Verlauf-Hintergrund ≠ echte Wand/Location.** Prompt MUSS sagen „background is NOT a real location and
+  NOT a wall: a smooth horizontal colour gradient …" und das Subjekt isoliert im Vordergrund halten. Eine
+  Szenen-Beschreibung mit Umgebung (Pack-Raum, Werkstatt) erzeugt eine echte Wand → kein sauberer Verlauf.
+- **Hook im EINEN Generierungs-Prompt mitschreiben**, nicht als Folge-Edit. Gemini verweigerte 16.06 den
+  nachtraeglichen „add handwritten text"-Edit („I'm having a hard time…"). Im Erst-Prompt funktioniert:
+  „No logos and no other text anywhere, EXCEPT exactly one handwritten caption in the upper-left: large,
+  casual, dark espresso-brown handwritten lowercase script reading: <hook>." Hook-Farbe an Verlauf anpassen
+  (creme-weiss auf dunkel/tuerkis, dunkles Espresso-Braun auf gelb) fuer Kontrast.
+- **Browser-Stoerquellen:** LanguageTool/Grammarly-Extension-Popups koennen den Senden-Klick abfangen;
+  Senden-Button-Position wandert (oranger Pfeil im Eingabefeld). Bild-Klick → Editor → Download-Pfeil oben
+  rechts; Download landet in `~/Downloads/Gemini_Generated_Image_*.png`, dann per Bash ins Repo (sharp
+  resize Breite 1200, NICHT oben beschneiden sonst Hook weg).
