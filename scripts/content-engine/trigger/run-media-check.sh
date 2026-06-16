@@ -14,9 +14,22 @@ NVM_MAJOR="$(cat "$HOME/.nvm/alias/default" 2>/dev/null | tr -dc '0-9.')"
 NVM_BIN="$(ls -d "$HOME"/.nvm/versions/node/v${NVM_MAJOR:-20}*/bin 2>/dev/null | sort -V | tail -1)"
 export PATH="${NVM_BIN:-$HOME/.nvm/versions/node/v20.20.0/bin}:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.local/bin:$PATH"
 
-REPO="$HOME/dev/redrabbit"
+# Self-locating: run from the dedicated BOT worktree (always on main), NOT the shared human checkout
+# ~/dev/redrabbit which sits on a dirty feature branch. Root cause of the 16.06 media-no-show: this
+# checker ran from the shared checkout on a feature branch and never saw the approval marker that was
+# committed to main. Resolving REPO from the script path means it runs wherever the plist points it
+# (the worktree). Then ff-only-merge in the latest origin/main so freshly approved markers/articles
+# become visible WITHOUT clobbering an in-flight daily run (ff-only fails-safe -> skip + retry in 30m).
+SELF="${BASH_SOURCE[0]}"
+while [ -L "$SELF" ]; do SELF="$(cd "$(dirname "$SELF")" && pwd)/$(readlink "$SELF")"; done
+REPO="$(cd "$(dirname "$SELF")/../../.." && pwd)"
 cd "$REPO" || exit 1
 [ -f .env.local ] && set -a && . ./.env.local && set +a
+
+# Pull in the latest main so a marker approved since the last daily reset is visible. ff-only is
+# safe in this bot worktree: if the daily run is mid-pipeline with uncommitted tracked changes the
+# merge refuses and we simply skip this tick (retry in 30 min) instead of corrupting anything.
+git fetch origin main >/dev/null 2>&1 && git merge --ff-only origin/main >/dev/null 2>&1 || true
 
 WORK="scripts/content-engine/.work"
 mkdir -p "$WORK"
@@ -41,8 +54,11 @@ SLUG=""
 if [ -d "$MEDIA_DIR" ]; then
     for marker in "$MEDIA_DIR"/*.json; do
         [ -f "$marker" ] || continue
-        requested="$(grep -o '"requestedAt":"[^"]*"' "$marker" | cut -d'"' -f4)"
-        status="$(grep -o '"status":"[^"]*"' "$marker" | cut -d'"' -f4)"
+        # Robust JSON parse via node. The old grep '"requestedAt":"..."' required NO space after the
+        # colon, but the marker is pretty-printed ('"requestedAt": "..."') -> it never matched, so no
+        # media ever triggered (co-root-cause 16.06). node JSON.parse is whitespace-agnostic.
+        requested="$(node -e 'const fs=require("fs");try{process.stdout.write(String(JSON.parse(fs.readFileSync(process.argv[1],"utf8")).requestedAt||""))}catch(e){}' "$marker" 2>/dev/null)"
+        status="$(node -e 'const fs=require("fs");try{process.stdout.write(String(JSON.parse(fs.readFileSync(process.argv[1],"utf8")).status||""))}catch(e){}' "$marker" 2>/dev/null)"
         if [ "$requested" = "$TODAY" ] && [ "$status" = "requested" ]; then
             SLUG="$(basename "$marker" .json)"
             break
