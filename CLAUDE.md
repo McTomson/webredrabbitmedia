@@ -51,6 +51,27 @@ Operative Fakten stehen verbindlich in den Runbooks. Vor jeder Bild-/Medien-Aufg
   thomas.uhlir@gmail.com; ggf. Konto-Switcher umstellen). YouTube = `medi.redrabbit@gmail.com`
   (Upload via OAuth-Token `~/.config/redrabbit-youtube/token.json`, Kanal @RedRabbitLab).
 
+## Content-Engine: launchd-Automatisierung (KRITISCHE REGEL — sonst Stille/keine Medien)
+Drei launchd-Bot-Jobs laufen unbeaufsichtigt: `com.redrabbit.contentengine` (täglich Artikel+Review-Mail),
+`com.redrabbit.mediachecker` (alle 30 Min: erkennt Freigabe-Marker → Bilder headless + Notification),
+`com.redrabbit.reminder` (wöchentlich). Ablauf: Tageslauf publiziert Text → Review-Mail an
+**t.uhlir@immo.red** → Thomas gibt frei → Marker `content-engine/.media-requests/<slug>.json`
+(`status:requested`) auf main → media-checker → Bilder + Notification → Browser-Session (Claude) macht
+Podcast/Video/Substack.
+
+**EISERNE REGEL: jeder launchd-Bot-Job läuft aus dem BOT-WORKTREE `~/dev/redrabbit-daily` (immer `main`),
+NIE aus dem geteilten Mensch-Checkout `~/dev/redrabbit`** (der steht oft auf einem Feature-Branch → der
+Job sieht main-Stand/Marker NICHT). Alle Trigger-Scripts sind self-locating (`REPO` aus `$BASH_SOURCE`)
++ `git fetch && git merge --ff-only origin/main`. Die plists zeigen auf `~/dev/redrabbit-daily/...`.
+Wer einen neuen Bot-Job/Script baut oder ein plist anfasst: dieses Muster zwingend übernehmen, sonst
+wiederholt sich der 16.06-Ausfall (Daily-Mail + Medien liefen nicht, weil die Jobs auf dem Feature-Branch
+liefen). Marker-Parsing IMMER mit `JSON.parse` (Marker sind pretty-printed, grep ohne Leerzeichen matcht
+nicht). Details: LESSONS_LEARNED.md (2026-06-16).
+
+**„Kompletter Prozess nach Freigabe" ist NICHT 100% headless:** Bilder = headless (Codex), aber
+**Podcast (NotebookLM) / Video (nur Browser) / Substack** brauchen eine Browser-/Claude-Session. Der
+media-checker schickt dafür eine macOS-Notification. YouTube-Public + Substack-Publish = OK von Thomas.
+
 ## Frontend And UI/UX Workflow
 
 Use the available frontend and UI/UX skills for all visual website work:
