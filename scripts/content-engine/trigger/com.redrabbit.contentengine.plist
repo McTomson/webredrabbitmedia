@@ -2,8 +2,15 @@
 <!-- launchd LaunchAgent for the daily content engine.
      Install:  cp this file to ~/Library/LaunchAgents/ and run
                launchctl load ~/Library/LaunchAgents/com.redrabbit.contentengine.plist
-     The script is idempotent (one article/day) and self-locks, so the extra StartInterval
-     catch-up tick is safe: if the Mac was asleep at the scheduled time, the next wake fires it. -->
+     Runs from the BOT-ONLY git worktree ~/dev/redrabbit-daily (always on main), so the human's
+     main checkout ~/dev/redrabbit can sit on any dirty feature branch without breaking the job.
+     The script is idempotent (one article/day, per-day stamp) and self-locks, so all three triggers
+     below are safe to overlap: per-day stamp => at most one article, no double publish.
+       - StartCalendarInterval 07:53 = primary daily slot (asleep at the time => fires on next wake).
+       - StartInterval 3h        = catch-up ticks (proven to recover a missed/asleep slot).
+       - RunAtLoad true          = run immediately at login/boot, so a Mac that was OFF at 07:53
+                                   publishes + mails as soon as it is switched on (user requirement
+                                   16.06: "wenn der Computer aus war, beim nächsten Einschalten senden"). -->
 <plist version="1.0">
 <dict>
     <key>Label</key>
@@ -13,7 +20,7 @@
     <array>
         <string>/bin/bash</string>
         <string>-lc</string>
-        <string>$HOME/dev/redrabbit/scripts/content-engine/trigger/run-daily.sh</string>
+        <string>$HOME/dev/redrabbit-daily/scripts/content-engine/trigger/run-daily.sh</string>
     </array>
 
     <!-- Primary daily slot: 07:53, so the article + review mail arrive around 08:10-08:15. -->
@@ -28,7 +35,7 @@
     <integer>10800</integer>
 
     <key>RunAtLoad</key>
-    <false/>
+    <true/>
 
     <key>StandardOutPath</key>
     <string>/tmp/redrabbit-contentengine.out</string>

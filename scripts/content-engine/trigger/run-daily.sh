@@ -40,7 +40,15 @@ pgtimeout() {
   ' "$secs" "$@"
 }
 
-REPO="$HOME/dev/redrabbit"
+# Self-locating: this script lives at <repo>/scripts/content-engine/trigger/run-daily.sh.
+# Resolving the repo from the script path means the daily job runs from its OWN dedicated git
+# worktree (~/dev/redrabbit-daily, always on main) no matter which branch the human's main checkout
+# (~/dev/redrabbit) currently sits on. That worktree is bot-only, so its tree is always clean — no
+# more "git checkout main: local changes would be overwritten" (root cause 16.06: the shared checkout
+# sat on a feature branch with uncommitted brand/ work, so every catch-up run failed at checkout).
+SELF="${BASH_SOURCE[0]}"
+while [ -L "$SELF" ]; do SELF="$(cd "$(dirname "$SELF")" && pwd)/$(readlink "$SELF")"; done
+REPO="$(cd "$(dirname "$SELF")/../../.." && pwd)"
 cd "$REPO" || exit 1
 [ -f .env.local ] && set -a && . ./.env.local && set +a
 SITE_URL="${SITE_URL:-https://web.redrabbit.media}"
@@ -87,9 +95,13 @@ notify() {
 
 alert() { notify "alert" "Tageslauf-Fehler" "$1"; }
 
-# Always work on main for the daily publish.
-git checkout main >/dev/null 2>&1 || { alert "git checkout main fehlgeschlagen"; exit 1; }
-git pull --ff-only origin main >/dev/null 2>&1 || echo "WARN: git pull nicht ff"
+# Hard-sync the bot worktree to origin/main. `reset --hard` is SAFE here because this worktree is
+# bot-only (no human edits ever land in it) -> it guarantees a clean, current main on every run and
+# discards any orphan state from a previously failed push (no slow drift, no accidental double
+# article). Replaces the old `git checkout main` which failed whenever the SHARED checkout was on a
+# dirty feature branch (root cause of the silent 16.06 no-mail day).
+git fetch origin main >/dev/null 2>&1 || { alert "git fetch origin main fehlgeschlagen"; exit 1; }
+git reset --hard origin/main >/dev/null 2>&1 || { alert "git reset --hard origin/main fehlgeschlagen"; exit 1; }
 
 # Safety net for internal cluster linking. The primary path adds links per-publish inside
 # run-media.ts, but an article published outside the approve->media flow (e.g. a direct status
