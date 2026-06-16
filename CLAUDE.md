@@ -45,7 +45,9 @@ Operative Fakten stehen verbindlich in den Runbooks. Vor jeder Bild-/Medien-Aufg
 - **Podcast/Video:** `content-engine/knowledge/media-notes.md` (Abschnitt "RUNBOOK Podcast + Video").
   Kurz: Ausloeser = Freigabe (Marker in `content-engine/.media-requests/`). NotebookLM-MCP kann NUR
   Audio, **Video nur im Browser**; Default = Chrome-Session, 1 Notebook pro Artikel, deutsch. Tail =
-  `media/run-media.ts` (YouTube oeffentlich + Substack = Veroeffentlichung -> pro Schritt OK holen).
+  `media/run-media.ts` (YouTube oeffentlich + Substack-Draft). AUTOMATISCH, NICHT pro Schritt fragen
+  (Thomas 16.06, Dauerregel): nach Freigabe laeuft der GANZE Flow durch; YouTube=public auto, Substack=Draft
+  (Thomas publisht final); nur bei echtem Fehler/Hang melden.
 - Backlog pruefen: `ls content-engine/.media-requests/` (offene Marker = Medien nie produziert).
 - **KONTEN (Pflicht):** NotebookLM + Google/Gemini IMMER mit `t.uhlir@immo.red` (nicht
   thomas.uhlir@gmail.com; ggf. Konto-Switcher umstellen). YouTube = `medi.redrabbit@gmail.com`
@@ -70,7 +72,7 @@ nicht). Details: LESSONS_LEARNED.md (2026-06-16).
 
 **„Kompletter Prozess nach Freigabe" ist NICHT 100% headless:** Bilder = headless (Codex), aber
 **Podcast (NotebookLM) / Video (nur Browser) / Substack** brauchen eine Browser-/Claude-Session. Der
-media-checker schickt dafür eine macOS-Notification. YouTube-Public + Substack-Publish = OK von Thomas.
+media-checker schickt dafuer eine macOS-Notification. Den ganzen Flow dann AUTOMATISCH durchziehen, NICHT pro Schritt fragen (Thomas 16.06): YouTube=public auto, Substack=Draft. Nur bei echtem Fehler melden.
 
 ## Frontend And UI/UX Workflow
 

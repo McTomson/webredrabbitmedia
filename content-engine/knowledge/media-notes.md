@@ -43,7 +43,7 @@ bleiben liegen (Backlog moeglich, pruefen mit `ls content-engine/.media-requests
   --podcast <m4a/mp3> --video <mp4> [--substack <url>]` -> kopiert Podcast + bettet
   `<SimpleAudioPlayer>` ein, laedt Video **oeffentlich auf YouTube** (Python Data-API, venv
   `~/.config/redrabbit-youtube/venv`), bettet `<VideoEmbed>` ein, commit/push, Mail 2, Marker geloescht.
-- **YouTube (oeffentlich) + Substack = Veroeffentlichung im Namen des Users -> pro Schritt OK holen.**
+- **YouTube (oeffentlich) + Substack-Draft: AUTOMATISCH durchziehen, NICHT pro Schritt fragen** (Thomas 16.06, Dauerregel). YouTube=public auto, Substack=Draft (Thomas publisht final). Nur bei echtem Fehler/Hang melden.
 
 ## NotebookLM (KRITISCH)
 - **Pro Artikel ein NEUES Notebook erstellen.** Niemals mehrere Artikel im selben Notebook
