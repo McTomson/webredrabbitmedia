@@ -1,71 +1,49 @@
-# Naechste Session — content-engine / Red Rabbit (Stand 2026-06-15, Abend)
+# Nächste Session — Red Rabbit Content-Engine / Medien (Stand 2026-06-16 spät)
 
 ## Arbeitsregeln (verbindlich)
-- **Lies ZUERST alles Relevante**: diesen Handoff, Repo-`CLAUDE.md`, `~/CLAUDE.md`, `~/.claude/CLAUDE.md`,
-  `MEMORY.md` + verlinkte Memory-Files unter `~/.claude/projects/-Users-McTomson/memory/`, sowie die Runbooks
-  `content-engine/knowledge/media-notes.md`, `.agent/workflows/bilder-gemini-browser.md`,
-  `.agent/workflows/podcast-einbinden.md`, und (NEU) `brand/README.md` bei Marken-/Copy-/Design-Arbeit.
-  Nicht loslegen ohne Kontext.
-- **NIE raten — immer verifizieren** (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed.
-  Gilt verschaerft fuer alles, was live/veroeffentlicht wird oder externe IDs betrifft (YouTube-ID via
-  oEmbed gegenpruefen; Clipboard kann zwischen pbcopy und Browser-Paste ueberschrieben werden -> nach
-  jedem Embed-Paste VISUELL kontrollieren).
-- **Kurz gegenpruefen, was die letzte Session gemacht hat** (Stichproben, Tests, Browser).
-- Erst Plan (TodoWrite/TaskCreate), dann ausfuehren. Skills + parallele Sub-Agenten nutzen wo es hilft.
-- Autonom handeln, voller Zugriff inkl. Browser — ohne fuer jeden Schritt zu fragen. Grenze: kein
-  Botschutz-Umgehen, keine Account-Anlage, **nichts unwiderruflich Destruktives** (Loeschen) ohne OK,
-  **Veroeffentlichen im Namen des Users (Substack/YouTube public) -> pro Schritt OK holen.**
-- Laufend testen + bei groesseren Schritten review. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
-- Bei langen Agenten-/Render-Laeufen ALLE ~15 MIN Health-Check. Bricht ein Tool 2-3x -> STOPP + andere Methode.
+- Lies ZUERST: diesen Handoff, CLAUDE.md, LESSONS_LEARNED.md, `content-engine/knowledge/media-notes.md`,
+  `.agent/workflows/bilder-gemini-browser.md`, und die globalen Memories
+  [[feedback_medien_flow_immer_automatisch]], [[reference_redrabbit_daily_mail_hang_fix]],
+  [[reference_redrabbit_media_produktion_runbook]]. Nicht ohne Kontext loslegen.
+- **NIE raten — immer verifizieren** (Code/DB/Browser/Docs). Bei Unsicherheit fragen oder fail-closed.
+- **MEDIEN-FLOW IMMER AUTOMATISCH (Thomas-Dauerregel 16.06):** nach Freigabe den GANZEN Flow durchziehen
+  (Bilder → Podcast → Video → YouTube-public → Substack-Draft), **NICHT bei jedem Schritt fragen**. Nur bei
+  echtem Fehler/Hang melden. YouTube=public auto, Substack=Draft (Thomas publisht final).
+- Autonom handeln, voller Browser-Zugang. Lange Browser-Läufe: nicht in Schleifen kämpfen (Runbook-Lessons).
+- Alle launchd-Bot-Jobs laufen aus dem Worktree `~/dev/redrabbit-daily` (immer main) — NIE `~/dev/redrabbit`.
 
-## PFLICHT-KONTEN
-- **NotebookLM + Gemini + alle Google-Dienste = `t.uhlir@immo.red`** (Konto-Switcher authuser=3, NICHT
-  thomas.uhlir@gmail.com). YouTube = Kanal "Red Rabbit Lab" (@redrabbitlab) via OAuth-Token
-  `~/.config/redrabbit-youtube/token.json`. Substack = `redrabbitlab.substack.com` ("Tom").
-- **Tägliche Review-Mail geht an `t.uhlir@immo.red`** (nicht das alte Gmail).
+## OFFEN — als Erstes: Medien für den heutigen Artikel fertigstellen
+**Artikel:** `was-kostet-eine-massgeschneiderte-e-commerce-website` (status: published, von Thomas freigegeben).
+**Bilder sind FERTIG + live** (Hero gelb mit Hook + Infografik Preis-Treppe + 3 Kontextfotos, alle gepusht).
+**Es fehlen NOCH: Podcast + Video + Substack-Draft.** Automatisch durchziehen (Runbook media-notes.md):
+1. NotebookLM (Tab eingeloggt als t.uhlir@immo.red / authuser=3): **1 NEUES Notebook** für diesen Artikel,
+   NUR diesen Artikel als Quelle (URL
+   `https://web.redrabbit.media/tipps/was-kostet-eine-massgeschneiderte-e-commerce-website` oder Text-Paste).
+   Audio Overview + Video Overview **deutsch** generieren (Audio 2-10 Min, Video länger, ~30s pollen; bei
+   Video-Hang frisches Notebook).
+2. Podcast (m4a) + Video (mp4) herunterladen.
+3. `npx tsx scripts/content-engine/media/run-media.ts --slug was-kostet-eine-massgeschneiderte-e-commerce-website
+   --podcast <m4a> --video <mp4>` → bettet `<SimpleAudioPlayer>` ein, lädt Video **public** auf YouTube
+   (venv `~/.config/redrabbit-youtube/`), bettet `<VideoEmbed>` ein, commit/push, Mail, Marker gelöscht.
+4. Substack-Draft (Teaser+Link, kein Voll-Text wegen Kannibalisierung; Rubrik Pflicht). Bleibt Draft.
+- NotebookLM-MCP ist `authenticated:false` (headless) → Browser-Weg. Marker:
+  `content-engine/.media-requests/was-kostet-...json` (status requested) — nach Fertigstellung löschen.
+- Codex-Bilder-Fallback ist tot (Limit bis ~14.07) → künftige Artikel-Bilder via Gemini-Browser.
 
-## Stand 15.06 — alles committet + gepusht (main bis `e9a1311`), 168 Tests gruen
-### ERLEDIGT + verifiziert
-- **DAILY-MAIL-AUSFALL behoben** (`f12d0c4`): GSC-Indexierungs-Check (`getIndexationStatus` in
-  `lib/dashboard/google.ts`) hatte KEINEN Timeout und hing 3h+ -> blockierte `run-daily.sh` (Lock
-  gehalten) -> kein Artikel, keine Mail. Fix: `withTimeout`+15s-Cap+Fail-safe-Schwelle, portabler
-  perl-`pgtimeout`-Wächter in run-daily.sh (420s), Test `google.test.ts`. Heutigen Lauf nachgeholt ->
-  Artikel `welche-versteckten-kosten-gibt-es-bei-der-website-erstellung` generiert, von Thomas
-  freigegeben + PUBLISHED. Details: Memory `reference_redrabbit_daily_mail_hang_fix`.
-- **AUTO-ALERT "jeden Tag ein Signal"** (`3319bb7`, live-getestet): neue Route `app/api/ops-alert/route.ts`
-  (Admin, Vercel-SMTP, slug-frei) + `run-daily.sh` `notify()` (dedupt pro Tag). Bei Pipeline-Halt/Fehler/
-  Mail-5xx/Token-fehlt kommt jetzt eine "[Red Rabbit Ops] ..."-Status-/Alarm-Mail statt Stille. Verifiziert:
-  Test-POST -> HTTP 200, Mail an t.uhlir@immo.red.
-- **SUBSTACK-CROSS-POST: 4 Entwuerfe fertig** (Teaser + Link, NICHT Voll-Text — Substack hat kein
-  Canonical-Feld, Voll-Text wuerde die eigene Domain kannibalisieren; keine Inline-Bilder, Video+Thumbnail
-  reicht). Pro Entwurf: Titel+Untertitel, Rubrik "Red Rabbit Websiten infos", verifiziertes YouTube-Embed,
-  2-Absatz-Teaser + Original-Link. Posts: budget 202102439 / relaunch 202103806 / teurer 202104387 /
-  unterhalt 202104582. Mechanik+Lessons: Memory `reference_substack_import_und_gemini_download`.
-- **NOTEBOOKLM AUTO-CLEANUP als Regel** in `content-engine/knowledge/media-notes.md`: pro Artikel angelegtes
-  Notebook nach bestaetigtem Download+Embed+Commit via MCP `remove_notebook` loeschen (nur nach Save, nie blind).
+## ERLEDIGT diese Session (16.06) — alles committet+gepusht (main)
+- **Daily-Mail dauerhaft gefixt:** Ursache war `git checkout main` im geteilten Checkout auf dirty Feature-
+  Branch. Fix: Bot-Worktree `~/dev/redrabbit-daily` (immer main) + run-daily self-locating + `reset --hard`
+  + RunAtLoad + `caffeinate` + `pmset repeat wakeorpoweron 07:48`. Verifiziert (Artikel+Mail+Freigabe live).
+- **Media-Checker-Fix:** lief auf falschem Branch + kaputter JSON-Parser → freigegebene Artikel bekamen nie
+  Medien. Self-locating + ff-merge + node JSON.parse. Auch run-remind gefixt (gleiche Bug-Klasse).
+- **Bild-Variations-System** in der Engine (`image.ts`): inhaltsgetrieben, Archetypen rotieren (max 1× Laptop),
+  Verlauf-Farbe + Infografik-Format rotieren, Wiederhol-Sperre (`recent-image-motifs.json`). + Runbook + Lessons.
+- **Heutiger Artikel:** alle Bilder live (gelber Hero, Infografik, 3 Kontextfotos).
+- **Medien-Flow-Dauerregel** in CLAUDE.md/media-notes.md verankert (automatisch, nicht fragen).
+- Außerhalb redrabbit (globale Memory): thermewarten.at-Backlink live (world4you-Konto 50137300 TXT),
+  lashesbydanesh-Recovery — siehe globalen Handoff NEXT_SESSION_redrabbit_backlinks.md.
 
-### OFFEN / NAECHSTE SCHRITTE
-1. **Substack: die 4 Entwuerfe reviewen + veroeffentlichen** — bewusst Thomas ueberlassen (Publish in seinem
-   Namen). Optional: Podcast-mp3 als Substack-Audio nachladen (separate Funktion, nicht im Teaser). Alten
-   leeren "Untitled"-Testentwurf (202031517) ggf. loeschen (nicht autonom gemacht).
-2. **MEDIEN fuer neuen Artikel** `welche-versteckten-kosten-gibt-es-bei-der-website-erstellung`: ist published,
-   hat Medien-Marker in `content-engine/.media-requests/` -> Podcast+Video (NotebookLM, deutsch) + Bilder
-   (Hero+Infografik+3 Kontext, Gemini) produzieren wie die 4 Backlog-Artikel. Runbook: media-notes.md +
-   bilder-gemini-browser.md. Beim Lauf die NEUE NotebookLM-Auto-Cleanup-Regel anwenden.
-3. **Optional**: Bestands-NotebookLM-Notebooks aufraeumen — erst `list_notebooks` zeigen, dann Thomas OK holen
-   (Loeschen endgueltig). KI-Floskel-Einstieg steckt noch in 3 Nicht-Backlog-Artikeln (website-wartungsvertrag-
-   sinnvoll, website-selbst-erstellen-vs-agentur, warum-ist-eine-website-mit-dem-tag-des-live).
-
-### NICHT ANFASSEN (parallele Workstreams, uncommitted im Tree)
-- `brand/` (Brand Second-Brain), `app/dashboard/seo-monitor/`, `content-engine/seo-monitor/`,
-  `lib/dashboard/seoMonitor.ts`, `docs/seo-monitor-log.md`, Aenderungen in `CLAUDE.md` + `DashboardTabs.tsx`
-  gehoeren anderen Sessions/Codex. Nicht committen, nicht reverten.
-
-### Relevante Dateien/Befehle
-- `scripts/content-engine/trigger/run-daily.sh` (Daily-Orchestrator + pgtimeout + notify),
-  `lib/dashboard/google.ts` (withTimeout/getIndexationStatus), `app/api/ops-alert/route.ts`,
-  `app/api/review-notify/route.ts`, `scripts/content-engine/media/run-media.ts` + `videoPoster.ts`.
-- Daily manuell nachholen: `bash scripts/content-engine/trigger/run-daily.sh` (idempotent via Tagesstempel
-  `scripts/content-engine/.work/last-run-$(date +%F)`; Logs `.work/daily-$(date +%F).log`).
-- YT-ID pruefen: `curl -s "https://www.youtube.com/oembed?url=https://youtu.be/<id>&format=json"`.
-- Tests: `npx vitest run` (168 gruen). Graph: `graphify update . --no-cluster --force`.
+## Relevante Befehle/Pfade
+- Worktree: `~/dev/redrabbit-daily` (bot, main). Mensch: `~/dev/redrabbit` (Feature-Branches).
+- launchd: com.redrabbit.contentengine / .mediachecker / .reminder (alle plists → Worktree-Pfad).
+- Triage „keine Tagesmail": Tageslog `scripts/content-engine/.work/daily-$(date +%F).log` ERSTE Fehlerzeile.
