@@ -70,6 +70,15 @@ if [ -f "$LOCK" ] && [ "$(find "$LOCK" -mmin -120 2>/dev/null)" ]; then echo "Lo
 echo $$ > "$LOCK"
 trap 'rm -f "$LOCK"' EXIT
 
+# Keep the Mac awake for the WHOLE run. The launchd job is paired with `pmset repeat wakeorpoweron`
+# (07:48), which wakes/powers the Mac shortly before the 07:53 slot — but after a scheduled wake (or
+# any run that starts while the machine is idle) macOS re-sleeps within minutes and would cut the
+# ~12-min generation pipeline off mid-flight. `caffeinate -w $$` holds an idle+system assertion bound
+# to THIS script's PID and releases it automatically on exit (success, halt, or crash). Best-effort:
+# placed AFTER the idempotency/lock guards so a no-op catch-up tick never spawns it; if caffeinate is
+# absent the run still proceeds. Implements the "bis der Job zu Ende ist"-requirement (16.06).
+command -v caffeinate >/dev/null 2>&1 && caffeinate -i -s -w $$ &
+
 # Notify Thomas via the deployed ops-alert route (this box holds NO SMTP creds — mail only ships
 # through Vercel). Guarantees a daily signal: on success the review mail ships; on halt/failure THIS
 # does, so a silent no-mail day (root cause 15.06) can't recur. Best-effort (never aborts the run)
