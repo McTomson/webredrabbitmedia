@@ -18,6 +18,21 @@ NVM_MAJOR="$(cat "$HOME/.nvm/alias/default" 2>/dev/null | tr -dc '0-9.' )"
 NVM_BIN="$(ls -d "$HOME"/.nvm/versions/node/v${NVM_MAJOR:-20}*/bin 2>/dev/null | sort -V | tail -1)"
 export PATH="${NVM_BIN:-$HOME/.nvm/versions/node/v20.20.0/bin}:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.local/bin:$PATH"
 
+# Working-`claude` guard. nvm's bin sits FIRST on PATH (needed for node/tsx), so whatever `claude`
+# lives there wins. A Claude Code auto-update that fails to download the platform-native optional
+# dependency leaves a 500-byte, shebang-LESS shell stub at nvm's global bin/claude.exe; roles.ts then
+# calls execFileSync('claude') and the kernel returns ENOEXEC -> Node throws "Unknown system error -8"
+# and the WHOLE pipeline halts at the researcher step (root cause of the silent 17.06 no-article day).
+# If the resolved `claude` can't even print its version, fall back to the first PATH dir whose claude
+# actually runs (the homebrew Mach-O binary). Self-healing: survives future broken nvm auto-updates.
+if ! claude --version >/dev/null 2>&1; then
+  for d in /opt/homebrew/bin /usr/local/bin "$HOME/.local/bin"; do
+    if [ -x "$d/claude" ] && "$d/claude" --version >/dev/null 2>&1; then
+      export PATH="$d:$PATH"; echo "claude-Guard: nvm-claude defekt, fiel zurueck auf $d/claude"; break
+    fi
+  done
+fi
+
 # Portable hard timeout (macOS ships no coreutils `timeout`/`gtimeout`). Runs the command in its
 # OWN process group (setsid) and kills the WHOLE group on expiry, so a hung node/tsx subtree can't
 # survive. Returns 124 on timeout. Belt-and-suspenders guard so a stalled network/LLM step can
