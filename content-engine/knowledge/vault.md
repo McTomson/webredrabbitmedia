@@ -482,3 +482,57 @@ quelle: https://web.redrabbit.media/tipps/wie-setzen-sich-die-kosten-fuer-eine-w
 quelle_name: Web Red Rabbit Media - Wie setzen sich die Kosten für eine Website zusammen?
 geprueft_am: 2026-06-16
 recheck_nach: 2026-12-13
+
+## t11-2026-06-17-054
+cluster: 1
+keywords: hoch, sind, laufenden, kosten, webhosting, domain
+aussage: Die offizielle .at-Domain kostet bei der Registry nic.at im ersten Jahr 68,00 € netto (Registrierung + erstes Jahr) und ab dem zweiten Jahr 34,00 € netto pro Jahr; inkl. 20 % USt sind das 81,60 € bzw. 40,80 €.
+quelle: https://www.nic.at/de/meine-at-domain/registrieren/preise
+quelle_name: nic.at - .at-Domain Preise (offizielle Registry)
+geprueft_am: 2026-06-17
+recheck_nach: 2026-12-14
+
+## t11-2026-06-17-055
+cluster: 1
+keywords: hoch, sind, laufenden, kosten, webhosting, domain
+aussage: Laufende Kosten fuer Hosting, Domain, Wartung, Sicherheits-Updates und Plugin-Lizenzen liegen bei einer typischen WordPress-Website in Oesterreich im Schnitt zwischen rund 300 und 1.200 € pro Jahr (ca. 25-100 € pro Monat) und werden im einmaligen Erstellungspreis meist nicht eingerechnet.
+quelle: https://onedaysite.at/blog/website-kosten-oesterreich.html
+quelle_name: onedaysite.at - Website-Kosten Oesterreich 2026
+geprueft_am: 2026-06-17
+recheck_nach: 2026-12-14
+
+## t11-2026-06-17-056
+cluster: 1
+keywords: hoch, sind, laufenden, kosten, webhosting, domain
+aussage: Webhosting fuer eine typische KMU-Website in Oesterreich kostet ueblicherweise rund 5 bis 30 € pro Monat (etwa 60 bis 360 € pro Jahr), je nach Paket, Speicher und Performance.
+quelle: https://onedaysite.at/blog/website-kosten-oesterreich.html
+quelle_name: onedaysite.at - Website-Kosten Oesterreich 2026
+geprueft_am: 2026-06-17
+recheck_nach: 2026-12-14
+
+## t11-2026-06-17-057
+cluster: 1
+keywords: hoch, sind, laufenden, kosten, webhosting, domain
+aussage: Bei World4You (oesterreichischer Hoster) kostet das Webhosting-Paket 'Grow' regulaer 7,00 € inkl. 20 % USt pro Monat (ca. 84 € pro Jahr).
+quelle: https://www.world4you.com/hosting/web-hosting
+quelle_name: World4You - Webhosting Oesterreich
+geprueft_am: 2026-06-17
+recheck_nach: 2026-12-14
+
+## t11-2026-06-17-058
+cluster: 1
+keywords: hoch, sind, laufenden, kosten, webhosting, domain
+aussage: Bei easyname kostet das Webhosting-Paket 'Medium' 7,90 € inkl. 20 % USt pro Monat (ca. 94,80 € pro Jahr).
+quelle: https://www.hosttest.at/vs/easyname-world4you
+quelle_name: easyname vs. World4You Vergleich (hosttest.at)
+geprueft_am: 2026-06-17
+recheck_nach: 2026-12-14
+
+## t11-2026-06-17-059
+cluster: 1
+keywords: hoch, sind, laufenden, kosten, webhosting, domain
+aussage: Als Faustregel fuer den laufenden Unterhalt einer Website (inkl. Hosting+Domain+Wartung) gelten 10 bis 20 % der Erstellungskosten pro Jahr; einfache Visitenkarten-Seiten liegen am unteren, gepflegte Unternehmensseiten am oberen Rand der 300-1.200 €-Spanne.
+quelle: https://web.redrabbit.media/tipps/wie-viel-kostet-eine-website-im-unterhalt
+quelle_name: Red Rabbit Media - Wie viel kostet eine Website im Unterhalt?
+geprueft_am: 2026-06-17
+recheck_nach: 2026-12-14
