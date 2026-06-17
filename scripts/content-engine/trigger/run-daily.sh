@@ -67,6 +67,17 @@ REPO="$(cd "$(dirname "$SELF")/../../.." && pwd)"
 cd "$REPO" || exit 1
 [ -f .env.local ] && set -a && . ./.env.local && set +a
 SITE_URL="${SITE_URL:-https://web.redrabbit.media}"
+# External dead-man-switch (healthchecks.io o.ae.). Set HEARTBEAT_URL in .env.local. The ping fires
+# ONLY when this script reaches a healthy end (article published OR clean halt) — NOT on the
+# alert()->exit-1 crash paths. So if the Mac is off, launchd is dead, or the script dies early, NO
+# ping arrives and the external service (independent of this Mac AND of Vercel) alarms after its
+# grace period. This is the layer that catches the "silently stopped + local alert also dead" case.
+# Unset => no-op (safe). See reference_redrabbit_daily_heartbeat memory for setup.
+HEARTBEAT_URL="${HEARTBEAT_URL:-}"
+heartbeat() {
+  [ -n "$HEARTBEAT_URL" ] || return 0
+  curl -fsS --max-time 10 "${HEARTBEAT_URL}${1:-}" >/dev/null 2>&1 || echo "WARN: Heartbeat-Ping fehlgeschlagen (${1:-ok})"
+}
 
 WORK="scripts/content-engine/.work"
 mkdir -p "$WORK"
@@ -166,6 +177,9 @@ if ! npx tsx scripts/content-engine/pipeline.ts --next --emit --no-image; then
   # silence. NOT stamped, so the 3h catch-up still retries a transient halt; notify() de-dupes so he
   # gets at most one such mail per day.
   notify "halt" "Heute kein neuer Artikel" "Die Content-Pipeline hat heute angehalten — kein neues Thema in der Queue, Quality-Gate, oder der Indexierungs-Kill-Switch ist aktiv. Es wurde nichts publiziert. Der Catch-up versucht es im Tagesverlauf erneut. Log: $LOG"
+  # Sauberer Halt = die Engine LIEF (sie hat bewusst nichts publiziert). Heartbeat senden, damit der
+  # externe Watchdog NICHT faelschlich "Engine tot" meldet — der Halt-Grund kommt ja per notify().
+  heartbeat
   exit 0
 fi
 
@@ -192,9 +206,25 @@ if [ -n "${ADMIN_API_TOKEN:-}" ]; then
   # curl exits 0 even on HTTP 5xx, so check the STATUS CODE, not curl's exit. -o<file> sends the body
   # to a file (portable; macOS head has no `-n -1`), -w prints just the code to stdout.
   RESPFILE="$WORK/.review-resp-$$"
+  # Forward the deterministic risk gate (pipeline.ts wrote .work/<slug>/gate.json) so the review
+  # mail shows "Risiko: hoch, bitte gegenlesen" + the opinion/price hints for high-risk articles.
+  # Without this run-daily sent only {slug} and the mail ALWAYS fell back to "risk: low", even for
+  # price_claim/legal_claim/low_confidence/opinion_missing (gap observed 17.06). Payload via node so
+  # the flags array + quotes can't break the JSON; falls back to {slug} if the sidecar is missing.
+  REVIEW_PAYLOAD=$(SLUG="$SLUG" GATEFILE="$WORK/$SLUG/gate.json" node -e '
+    const fs=require("fs");
+    let g={};
+    try{ g=JSON.parse(fs.readFileSync(process.env.GATEFILE,"utf8")); }catch(e){}
+    const out={slug:process.env.SLUG};
+    if(Array.isArray(g.flags)) out.flags=g.flags;
+    if(g.risk==="low"||g.risk==="high") out.risk=g.risk;
+    process.stdout.write(JSON.stringify(out));
+  ' 2>/dev/null)
+  [ -z "$REVIEW_PAYLOAD" ] && REVIEW_PAYLOAD="{\"slug\":\"$SLUG\"}"
+  echo "review-payload: $REVIEW_PAYLOAD"
   CODE=$(curl -s -o "$RESPFILE" -w '%{http_code}' --max-time 30 -X POST "$SITE_URL/api/review-notify" \
     -H "Authorization: Bearer $ADMIN_API_TOKEN" -H 'Content-Type: application/json' \
-    -d "{\"slug\":\"$SLUG\"}")
+    -d "$REVIEW_PAYLOAD")
   BODY=$(cat "$RESPFILE" 2>/dev/null); rm -f "$RESPFILE"
   if [ "$CODE" = "200" ]; then
     echo "review-mail ausgeloest: $BODY"
@@ -210,4 +240,6 @@ else
 fi
 
 touch "$STAMP"
+# Healthy end: Artikel publiziert + Review-Mail raus. Heartbeat-Ping = "Engine lebt heute".
+heartbeat
 echo "==== fertig $(date) ===="

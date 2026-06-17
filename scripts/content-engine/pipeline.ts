@@ -7,6 +7,7 @@ import { readKillSwitch } from './lib/killSwitch';
 import { extractJsonBlock, extractMdxBlock } from './lib/extract';
 import { verifySources, type Source } from './lib/verifySources';
 import { validateFrontmatter } from './frontmatter';
+import { runGate } from './gate';
 import { buildImagePlan, generatePhoto, renderInfographic, heroPhotoStyle, pickHeroColorIndex } from './image';
 import { loadVault, searchVault, formatVaultContext, appendFacts, type NewFactInput } from './lib/vault';
 
@@ -365,6 +366,24 @@ async function main() {
         fs.writeFileSync(dest, mdx);
         setStatus(t.id, 'review'); // taken out of the todo pool, awaiting approval
         console.log(`   --emit: geschrieben nach content/blog/${t.slug}.mdx (status: draft, queue: review)`);
+
+        // Risk-Gate (gate.ts = Single Source of Truth) als Sidecar nach .work/<slug>/gate.json,
+        // damit run-daily.sh flags+risk an /api/review-notify durchreicht. Vorher schickte run-daily
+        // nur {slug} -> die Mail fiel IMMER auf "risk: low" zurueck, auch bei price_claim/legal_claim/
+        // low_confidence/opinion_missing -> die "bitte Zahlen/Rechtliches gegenlesen"-Warnung feuerte
+        // genau dann NICHT, wenn sie noetig war (beobachtet 17.06). Nicht blockierend.
+        try {
+            const gate = runGate({
+                frontmatter: { title: fm.title, category: fm.category, cluster: fm.cluster, sources },
+                body: matter(mdx).content,
+                flags,
+                hasOpinion: !flags.includes('opinion_missing'),
+            });
+            fs.writeFileSync(path.join(dir, 'gate.json'), JSON.stringify({ risk: gate.risk, flags, reasons: gate.reasons }, null, 2) + '\n');
+            console.log(`   Gate: risk=${gate.risk}${gate.reasons.length ? ' (' + gate.reasons.join('; ') + ')' : ''}`);
+        } catch (e: any) {
+            console.log(`   WARN Gate-Sidecar fehlgeschlagen (nicht blockierend): ${e.message}`);
+        }
 
         // Backflow (§3): this article's verified facts become reusable vault knowledge.
         // The article's reviewed answer (featuredSnippet) is added separately on publish via
