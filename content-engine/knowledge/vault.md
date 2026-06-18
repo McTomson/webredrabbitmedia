@@ -536,3 +536,57 @@ quelle: https://web.redrabbit.media/tipps/wie-viel-kostet-eine-website-im-unterh
 quelle_name: Red Rabbit Media - Wie viel kostet eine Website im Unterhalt?
 geprueft_am: 2026-06-17
 recheck_nach: 2026-12-14
+
+## t14-2026-06-18-060
+cluster: 1
+keywords: wann, rechnet, sich, investment, eine, neue, website
+aussage: Eine professionelle Website für KMU in Österreich kostet 2026 typisch 2.500–5.500 €, mit Spannweite 790 € (Landingpage) bis über 15.000 € (komplexes Portal).
+quelle: https://web.redrabbit.media/tipps/was-kostet-eine-website
+quelle_name: Red Rabbit Media - Was kostet eine Website 2026
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
+
+## t14-2026-06-18-061
+cluster: 1
+keywords: wann, rechnet, sich, investment, eine, neue, website
+aussage: Website-Kosten sind in Österreich betrieblich absetzbar: Agentur-Website wird über 3 Jahre via AfA abgeschrieben; bei Netto-Kosten unter 1.000 € (GWG-Grenze) sofort als Betriebsausgabe; Hosting/Wartung sind laufend voll abzugsfähig.
+quelle: https://www.usp.gv.at/themen/steuern-finanzen/steuerliche-gewinnermittlung/weitere-informationen-zur-steuerlichen-gewinnermittlung/betriebseinnahmen-und-ausgaben/abschreibung.html
+quelle_name: USP.gv.at - Abschreibung (Gewinnermittlung)
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
+
+## t14-2026-06-18-062
+cluster: 1
+keywords: wann, rechnet, sich, investment, eine, neue, website
+aussage: Die KMU.DIGITAL-Förderung (BMWET + WKO) bezuschusst Umsetzungsprojekte inkl. Website-Entwicklung mit 30 % der Kosten bei einem Projektvolumen von 2.000–30.000 € – maximal 6.000 € pro Unternehmen.
+quelle: https://www.bmwet.gv.at/Services/Foerderungen/aws/KMU-DIGITAL.html
+quelle_name: BMWET - Förderungsprogramm KMU.DIGITAL
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
+
+## t14-2026-06-18-063
+cluster: 1
+keywords: wann, rechnet, sich, investment, eine, neue, website
+aussage: Als realistischer Benchmark für KMU-Websites in Österreich gilt eine Conversion-Rate von 2–5 % (Besucher zu Anfrage/Anruf); darunter ist meist Usability der größte Hebel.
+quelle: https://webdesignland.at/website-usability-optimieren-kmu-oesterreich/
+quelle_name: Webdesignland - Website Usability KMU 2026
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
+
+## t14-2026-06-18-064
+cluster: 1
+keywords: wann, rechnet, sich, investment, eine, neue, website
+aussage: B2B-Leadkosten 2026 liegen branchenüblich bei 110–300 € pro Lead via Google Ads bzw. 160–460 € via LinkedIn Ads – relevanter Vergleichswert für die Amortisation organischer Website-Leads.
+quelle: https://lead-gene.com/de/blog/cout-par-lead-b2b-2026-benchmark
+quelle_name: Lead-Gene - B2B-Kosten pro Lead 2026 Benchmark
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
+
+## t14-2026-06-18-065
+cluster: 1
+keywords: wann, rechnet, sich, investment, eine, neue, website
+aussage: In Österreich existiert keine eigenständige amtliche AfA-Tabelle; die Nutzungsdauer ist je Wirtschaftsgut individuell festzulegen – relevant für die Wahl der Abschreibungsdauer einer Website (Praxis: 3 Jahre).
+quelle: https://www.usp.gv.at/themen/steuern-finanzen/steuerliche-gewinnermittlung/weitere-informationen-zur-steuerlichen-gewinnermittlung/betriebseinnahmen-und-ausgaben/gesetzliche-afa-saetze.html
+quelle_name: USP.gv.at - Gesetzliche AfA-Sätze
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
