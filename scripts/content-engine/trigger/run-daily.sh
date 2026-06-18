@@ -33,6 +33,13 @@ if ! claude --version >/dev/null 2>&1; then
   done
 fi
 
+# Dependency-Pin: nach dem Guard steht ein funktionierendes `claude` auf PATH. Die Pipeline (roles.ts)
+# wird EXPLIZIT auf genau diese Binary gepinnt (CLAUDE_BIN), statt sich auf spaetere PATH-Aufloesung zu
+# verlassen. DISABLE_AUTOUPDATER verhindert, dass die headless-Aufrufe sich mitten im Lauf selbst
+# updaten. Beides scoped auf den Tageslauf — Thomas' interaktives Claude bleibt unberuehrt.
+export CLAUDE_BIN="$(command -v claude)"
+export DISABLE_AUTOUPDATER=1
+
 # Portable hard timeout (macOS ships no coreutils `timeout`/`gtimeout`). Runs the command in its
 # OWN process group (setsid) and kills the WHOLE group on expiry, so a hung node/tsx subtree can't
 # survive. Returns 124 on timeout. Belt-and-suspenders guard so a stalled network/LLM step can
@@ -87,6 +94,9 @@ LOG="$WORK/daily-$(date +%F).log"
 
 exec >>"$LOG" 2>&1
 echo "==== run-daily $(date) ===="
+# Preflight-Observability: exakte Toolchain in JEDEN Tageslauf, damit bei Problemen sofort sichtbar
+# ist, womit gebaut wurde (Pin-Nachweis). node-Version + gepinnte claude-Binary + deren Version.
+echo "Toolchain: node $(node -v 2>/dev/null) | CLAUDE_BIN=${CLAUDE_BIN:-claude} ($(${CLAUDE_BIN:-claude} --version 2>/dev/null))"
 
 # Idempotency: one article per calendar day.
 if [ -f "$STAMP" ]; then echo "Heute schon gelaufen, Abbruch."; exit 0; fi

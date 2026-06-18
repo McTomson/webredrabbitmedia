@@ -25,6 +25,12 @@ export interface RunOpts {
 // the pipeline is single-threaded and a stuck article should pause, not crash the whole run.
 const MAX_ATTEMPTS = 4;
 
+// Pin the claude binary. run-daily.sh sets CLAUDE_BIN to the guard-verified, working binary
+// (the brew-managed native install is "autoUpdatesProtectedForNative" and survived the 17.06
+// breakage). Falls back to PATH resolution ('claude') for interactive/dev runs. This keeps the
+// daily pipeline on a known-good binary instead of whatever a silent auto-update left on PATH.
+const CLAUDE_BIN = process.env.CLAUDE_BIN || 'claude';
+
 function sleepSync(ms: number): void {
     // Blocking sleep without extra deps: spin a synchronous wait via Atomics on a tiny buffer.
     const shared = new Int32Array(new SharedArrayBuffer(4));
@@ -39,7 +45,7 @@ export function runClaude(prompt: string, opts: RunOpts = {}): string {
     let lastErr: unknown;
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
         try {
-            const out = execFileSync('claude', args, {
+            const out = execFileSync(CLAUDE_BIN, args, {
                 encoding: 'utf8',
                 timeout: (opts.timeoutSec ?? 300) * 1000,
                 // ENFORCE the timeout hard. Default killSignal is SIGTERM, which the headless
