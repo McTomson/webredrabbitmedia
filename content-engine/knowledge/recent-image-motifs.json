@@ -1,10 +1,16 @@
 {
   "heroes": [
+    "Close-up of two hands carefully assembling a small structure from four smooth wooden building blocks, placing the final block on top to complete it - the precise, deliberate gesture symbolizing building something step by step in the correct order, soft warm natural lighting on the hands and blocks, foreground subject only, no text",
+    "A confident female web project manager standing and holding up a printed project timeline with a clear Gantt-style bar sequence, pointing at the phases with one finger, calm professional expression, foreground subject only",
+    "A clean top-down still-life arrangement of a rolled-out architectural blueprint, a small wooden house model sitting on it, and a tablet beside them displaying a tidy website wireframe with grey placeholder blocks - the objects overlapping to symbolize building a website step by step like a house, no text or logos",
     "Small-business owner reading a surprise paper invoice, soft violet-indigo gradient",
     "Small-business owner holding a shipping parcel and a phone showing an online shop, golden-yellow gradient",
     "Woman reviewing a printed cost estimate at a laptop, teal-green gradient"
   ],
   "layouts": [
+    "comparison",
+    "keypoints",
+    "comparison",
     "iceberg"
   ]
 }
