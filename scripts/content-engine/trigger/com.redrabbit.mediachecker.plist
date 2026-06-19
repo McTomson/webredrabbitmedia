@@ -20,9 +20,11 @@
     <key>StartInterval</key>
     <integer>1800</integer>
 
-    <!-- Nicht sofort beim Laden starten — erst nach dem ersten Intervall. -->
+    <!-- Sofort beim Laden/Login starten (z.B. nachdem der Mac eingeschaltet wurde, waehrend eine
+         Freigabe-Mail offline bestaetigt wurde) UND danach alle 30 Min. Der Lauf ist idempotent
+         (Tages-Stempel + reagiert nur auf den heutigen Marker), also unschaedlich wenn nichts ansteht. -->
     <key>RunAtLoad</key>
-    <false/>
+    <true/>
 
     <key>StandardOutPath</key>
     <string>/tmp/redrabbit-mediachecker.out</string>
