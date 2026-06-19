@@ -49,3 +49,6 @@ content-engine/.indexation.json
 content-engine/.quality-report.json
 graphify-out/
 .agents/
+
+# Scratch-Ordner fuer Medien-Rohdaten (Bilder/Audio vor Einbettung)
+.media-incoming/

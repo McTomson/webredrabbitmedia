@@ -84,10 +84,33 @@ else
     echo "WARN: Bilder fehlgeschlagen (weiter mit Notification)."
 fi
 
-# macOS-Benachrichtigung: Browser-Session starten.
+# --- Podcast headless erzeugen (NotebookLM-MCP + Pool-Notebook, kein Browser) ---
+# Loest den frueheren manuellen "npm run media"-Schritt ab. Schlaegt etwas fehl,
+# faellt das Skript sauber auf die alte Browser-Session-Notification zurueck.
+echo "Podcast (NotebookLM, headless) fuer $SLUG ..."
+GP_OUT="$(scripts/content-engine/media/generate-podcast.sh "$SLUG" 2>&1)"
+echo "$GP_OUT"
+PODCAST_FILE="$(printf '%s\n' "$GP_OUT" | grep -oE '^PODCAST_FILE=.*' | head -1 | sed 's/^PODCAST_FILE=//')"
+
+if [ -n "$PODCAST_FILE" ] && [ -f "$PODCAST_FILE" ]; then
+    echo "Podcast da ($PODCAST_FILE). Medien-Tail (einbetten + push + Mail) ..."
+    # run-media bettet den Podcast ein, pusht, schickt die Fertig-Mail und LOESCHT den Marker.
+    # Video/Substack bewusst weggelassen (brauchen Browser) -> separater Schritt.
+    if npx tsx scripts/content-engine/media/run-media.ts --slug "$SLUG" --podcast "$PODCAST_FILE" --no-images 2>&1; then
+        echo "Medien-Tail fertig. Artikel hat jetzt Podcast live."
+        osascript -e "display notification \"Podcast fuer '$SLUG' ist automatisch live. Video/Bilder ggf. noch manuell.\" with title \"Red Rabbit Media\" subtitle \"Podcast auto-publiziert\" sound name \"Glass\"" 2>/dev/null || true
+        echo "==== fertig $(date) ===="
+        exit 0
+    fi
+    echo "WARN: run-media fehlgeschlagen — Fallback auf Browser-Session-Notification."
+else
+    echo "WARN: Podcast-Generierung lieferte keine Datei — Fallback auf Browser-Session-Notification."
+fi
+
+# Fallback: manuelle Browser-Session noetig (Pool leer, MCP-Auth weg, Timeout, ...).
 osascript <<APPLESCRIPT 2>/dev/null || true
-display notification "Artikel \"$SLUG\" ist freigegeben. Bitte Claude Code starten und 'npm run media' ausfuehren (NotebookLM + YouTube + Substack)." with title "Red Rabbit Media" subtitle "Media-Session benoetigt" sound name "Glass"
+display notification "Artikel \"$SLUG\": Auto-Podcast unvollstaendig. Bitte Claude Code starten und 'npm run media' ausfuehren (NotebookLM + YouTube + Substack)." with title "Red Rabbit Media" subtitle "Manuelle Media-Session noetig" sound name "Glass"
 APPLESCRIPT
 
-echo "Notification gesendet. Warte auf Browser-Session."
+echo "Fallback-Notification gesendet. Warte auf Browser-Session."
 echo "==== fertig $(date) ===="
