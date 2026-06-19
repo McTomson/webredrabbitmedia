@@ -590,3 +590,57 @@ quelle: https://www.usp.gv.at/themen/steuern-finanzen/steuerliche-gewinnermittlu
 quelle_name: USP.gv.at - Gesetzliche AfA-Sätze
 geprueft_am: 2026-06-18
 recheck_nach: 2026-12-15
+
+## t16-2026-06-18-066
+cluster: 1
+keywords: sieht, genaue, ablauf, erstellung, einer, website
+aussage: Die Erstellung einer professionellen Business-Website in Österreich gliedert sich typischerweise in vier Phasen: Strategie (ca. 1 Woche), Design & Prototyping (ca. 2 Wochen), technische Entwicklung (2-3 Wochen) sowie Inhalts-Optimierung und Qualitätssicherung (ca. 1 Woche) - insgesamt durchschnittlich 4 bis 8 Wochen.
+quelle: https://web.redrabbit.media/tipps/wie-lange-dauert-website-erstellung
+quelle_name: Web Red Rabbit Media - Wie lange dauert eine Website-Erstellung?
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
+
+## t16-2026-06-18-067
+cluster: 1
+keywords: sieht, genaue, ablauf, erstellung, einer, website
+aussage: Eine österreichische Webagentur beschreibt den Projektablauf in 10 konkreten Schritten: Erstgespräch/Zieldefinition, Angebot mit Umfang und Zeitplan, Strategiephase, Sitemap/Seitenstruktur, Inhalts- und Materialsammlung, Designphase, technische Umsetzung, Feedback/Korrekturen, Tests vor Launch und Launch mit anschließender Betreuung.
+quelle: https://mayemedia.at/blog/wie-laeuft-ein-webdesign-projekt-ab
+quelle_name: MaYE Media (AT) - Wie läuft ein Webdesign-Projekt ab
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
+
+## t16-2026-06-18-068
+cluster: 1
+keywords: sieht, genaue, ablauf, erstellung, einer, website
+aussage: In der Designphase eines österreichischen Webprojekts sind üblicherweise zwei bis drei Überarbeitungsschleifen bis zur Freigabe durch den Kunden vorgesehen; nach der technischen Umsetzung folgt zudem eine Einschulung des Kunden ins Content-Management-System, damit dieser Inhalte selbst verwalten kann.
+quelle: https://www.designtiger.at/ueber-uns-designtiger/webdesign-projekt-ablauf/
+quelle_name: Designtiger (AT) - Projektablauf eines Webdesign-Projekts
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
+
+## t16-2026-06-18-069
+cluster: 1
+keywords: sieht, genaue, ablauf, erstellung, einer, website
+aussage: Die der eigentlichen Gestaltung vorgelagerte Discovery-/Konzeptphase (Zieldefinition, Zielgruppen- und Wettbewerbsanalyse, Seitenarchitektur, technische Anforderungen) dauert in professionellen Webprojekten typischerweise 2 bis 4 Wochen, teils bis zu 6 Wochen, und ist die Grundlage für alle nachfolgenden Schritte.
+quelle: https://www.whitepeakdigital.com/blog/web-design-discovery-process/
+quelle_name: White Peak Digital - What Is A Web Design Discovery Process
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
+
+## t16-2026-06-18-070
+cluster: 1
+keywords: sieht, genaue, ablauf, erstellung, einer, website
+aussage: Zum Launch- und Übergabe-Schritt gehören in Österreich laufende Kosten, die im einmaligen Erstellungspreis oft nicht enthalten sind: die .at-Domain kostet bei nic.at im ersten Jahr 68,00 € netto und danach 34,00 € netto pro Jahr (mit 20 % USt 81,60 € bzw. 40,80 €).
+quelle: https://www.nic.at/de/meine-at-domain/registrieren/preise
+quelle_name: nic.at - .at-Domain registrieren, Preise
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
+
+## t16-2026-06-18-071
+cluster: 1
+keywords: sieht, genaue, ablauf, erstellung, einer, website
+aussage: Bereits in der Konzept- und Designphase muss in Österreich die digitale Barrierefreiheit nach WCAG 2.1 Level AA mitgedacht werden: Das Barrierefreiheitsgesetz (BaFG) ist seit 28. Juni 2025 in Kraft und verpflichtet Unternehmen mit B2C-Onlineangeboten; Kleinstunternehmen (unter 10 Mitarbeitende und unter 2 Mio. € Umsatz) sind bei Dienstleistungen ausgenommen.
+quelle: https://www.wko.at/oe/netzwerke/informationen-barrierefreiheitsgesetz-28-06-2025.pdf
+quelle_name: WKO - Informationen zum Barrierefreiheitsgesetz ab 28.06.2025
+geprueft_am: 2026-06-18
+recheck_nach: 2026-12-15
