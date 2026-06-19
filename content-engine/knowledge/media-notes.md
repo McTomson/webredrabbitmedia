@@ -41,19 +41,25 @@ bleiben liegen (Backlog moeglich, pruefen mit `ls content-engine/.media-requests
     in die Pool-JSON eintragen. Bei niedrigem Vorrat nachfuellen (Konto t.uhlir@immo.red).
   - **`get_audio_status` luegt** (meldet `ready` zu frueh) -> nur ein erfolgreicher `download_audio`
     ist die Wahrheit. Render kann >20 Min dauern (21 Min am 19.06 gemessen).
-- **VIDEO Overview: Generierung im Browser (kein MCP-Tool), Download via video-faehiges CLI.**
-  KORREKTUR der frueheren Fehldiagnosen (verifiziert 19.06):
-  - **Video-Generierung FUNKTIONIERT** (19.06 live: Studio "Videoübersicht" -> Dialog -> Erstellen -> generiert).
-    Frueher Abbrueche ("Die Video-Zusammenfassung...", konto-unabhaengig) = **temporaeres Google-Server/Rollout-Limit**
-    (Veo/Imagen, teils Ultra-gated) -> RETRY/TIMING, NICHT am Inhalt doktern. NICHT "zu wenig Quelle" (1.900+ Woerter reichen).
-  - **"Download gesperrt" stimmt so NICHT:** nur der claude-in-chrome-Tab ist sandboxed (Downloads landen nicht auf Platte).
-    Der NotebookLM-**server-seitige** Download ist NICHT blockiert (Beweis: 45-MB-Podcast via MCP `download_audio` geladen).
-    Fuer Video-MP4 fehlt nur das video-faehige Tool: die Audio-MCP kann kein Video -> **`teng-lin/notebooklm-py`** (pip `notebooklm-py`, laedt MP4).
-  - Ablauf: Studio "Videoübersicht" -> Dialog: Format **Erklaervideo**, Sprache **Deutsch**, Stil **Automatische Auswahl**,
-    Feld "Worauf konzentrieren?" **LEER lassen** (custom prompt kann Button brechen) -> **Erstellen** -> warten (Veo schwer, mehrere Min) ->
-    MP4 server-seitig laden -> `run-media.ts --slug X --video Y.mp4 --no-images`.
-  - **Quelle: Volltext-Paste (`add_source type=text`) ist robuster als URL-Crawl** (ganzer Artikel garantiert, kein Crawl-Risiko).
-  Browser-gebunden bleiben ausserdem **Gemini-Hero/Kontextbilder** (Codex-Fallback tot bis ~14.07) und **Substack-Draft**.
+- **VIDEO Overview: jetzt HEADLESS via `notebooklm-py` CLI (generate + download), verifiziert 19.06.**
+  WICHTIGSTE LEKTION (empirisch bewiesen, Thomas' Hypothese war richtig):
+  - **Video-Generierung SCHEITERT mit URL-Crawl-Quelle, GELINGT mit Volltext-Paste.** Gleicher Artikel/Konto/Zeit:
+    URL-Crawl -> `GENERATION_FAILED` (2x). Volltext (`source add --type text`, ~13k Zeichen) -> `completed` + MP4.
+    **Also IMMER Volltext-Paste fuers Video** (Audio kommt mit URL-Crawl klar, Video NICHT). NICHT "zu wenig Woerter".
+  - **Cinematic (Veo 3) = Ultra-gated** -> auf PRO nur **`--format explainer`** (das waren auch die 16.-17.06-Videos).
+  - **"Download gesperrt" galt NUR fuer den sandboxed claude-in-chrome-Tab.** Server-seitiger NotebookLM-Download geht
+    (45-MB-Podcast lud sauber). Video-MP4: **`notebooklm-py` CLI** (pip `notebooklm-py[browser]` + `playwright install chromium`,
+    Auth `notebooklm login` als t.uhlir@immo.red -> ~/.notebooklm/.../storage_state.json). Kann generate/download video|audio|...
+  - Headless-Ablauf:
+    ```
+    notebooklm create "..." --json
+    notebooklm source add "<voller Artikeltext>" --type text -n <id>
+    notebooklm generate video -n <id> --format explainer --style auto --language de --wait --json
+    notebooklm download video <out.mp4> -n <id>     # Pfad ist POSITIONAL, nicht --output
+    tsx scripts/content-engine/media/run-media.ts --slug X --video <out.mp4> --no-images
+    notebooklm delete -n <id> -y                     # Test-/Artikel-Notebook nach Integritaet loeschen
+    ```
+  Browser-gebunden bleibt nur noch **Substack-Draft** (kein API) + **Gemini-Hero/Kontextbilder** (Codex tot bis ~14.07; via Gemini-Browser headless-fern moeglich).
 - **1 NEUES Notebook pro Artikel** (nie mischen, sonst Halluzination ueber Artikelgrenzen). NUR den
   einen Artikel als Quelle (Text-Paste oder Artikel-URL). Audio + Video Overview **deutsch**.
 - Fehlgeschlagene Video-Generierung **haengt** -> frisches Notebook (NotebookLM-"Vergiftung").
