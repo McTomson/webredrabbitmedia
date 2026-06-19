@@ -92,24 +92,38 @@ GP_OUT="$(scripts/content-engine/media/generate-podcast.sh "$SLUG" 2>&1)"
 echo "$GP_OUT"
 PODCAST_FILE="$(printf '%s\n' "$GP_OUT" | grep -oE '^PODCAST_FILE=.*' | head -1 | sed 's/^PODCAST_FILE=//')"
 
-if [ -n "$PODCAST_FILE" ] && [ -f "$PODCAST_FILE" ]; then
-    echo "Podcast da ($PODCAST_FILE). Medien-Tail (einbetten + push + Mail) ..."
-    # run-media bettet den Podcast ein, pusht, schickt die Fertig-Mail und LOESCHT den Marker.
-    # Video/Substack bewusst weggelassen (brauchen Browser) -> separater Schritt.
-    if npx tsx scripts/content-engine/media/run-media.ts --slug "$SLUG" --podcast "$PODCAST_FILE" --no-images 2>&1; then
-        echo "Medien-Tail fertig. Artikel hat jetzt Podcast live."
-        osascript -e "display notification \"Podcast fuer '$SLUG' ist automatisch live. Video/Bilder ggf. noch manuell.\" with title \"Red Rabbit Media\" subtitle \"Podcast auto-publiziert\" sound name \"Glass\"" 2>/dev/null || true
+# --- Video headless erzeugen (notebooklm-py CLI, Volltext-Quelle, kein Browser) ---
+# Best-effort: ein Video-Fehler darf den Podcast-Versand NIE abbrechen. Die wichtigste
+# Lektion (19.06) steckt im Skript: Video MUSS aus Volltext entstehen (URL-Crawl scheitert).
+echo "Video (NotebookLM CLI, headless) fuer $SLUG ..."
+GV_OUT="$(scripts/content-engine/media/generate-video.sh "$SLUG" 2>&1)"
+echo "$GV_OUT"
+VIDEO_FILE="$(printf '%s\n' "$GV_OUT" | grep -oE '^VIDEO_FILE=.*' | head -1 | sed 's/^VIDEO_FILE=//')"
+[ -n "$VIDEO_FILE" ] && [ -f "$VIDEO_FILE" ] || { echo "WARN: kein Video — fahre ggf. Podcast-only fort."; VIDEO_FILE=""; }
+
+# Mindestens eine Mediendatei? Dann den deterministischen Tail EINMAL fahren (ein commit/push/Mail),
+# mit allem was vorliegt. run-media bettet ein, laedt das Video oeffentlich auf YouTube (klickbares
+# Marken-Poster -> Video, Artikel-Link in der Beschreibung), pusht, mailt und LOESCHT den Marker.
+if { [ -n "$PODCAST_FILE" ] && [ -f "$PODCAST_FILE" ]; } || [ -n "$VIDEO_FILE" ]; then
+    RM_ARGS=(--slug "$SLUG" --no-images)
+    [ -n "$PODCAST_FILE" ] && [ -f "$PODCAST_FILE" ] && RM_ARGS+=(--podcast "$PODCAST_FILE")
+    [ -n "$VIDEO_FILE" ] && RM_ARGS+=(--video "$VIDEO_FILE")
+    echo "Medien-Tail (einbetten + YouTube + push + Mail) ... ${RM_ARGS[*]}"
+    if npx tsx scripts/content-engine/media/run-media.ts "${RM_ARGS[@]}" 2>&1; then
+        WHAT="Podcast"; [ -n "$VIDEO_FILE" ] && { [ -n "$PODCAST_FILE" ] && WHAT="Podcast + Video" || WHAT="Video"; }
+        echo "Medien-Tail fertig. Artikel hat jetzt $WHAT live."
+        osascript -e "display notification \"$WHAT fuer '$SLUG' ist automatisch live. Substack-Draft ggf. noch manuell.\" with title \"Red Rabbit Media\" subtitle \"Medien auto-publiziert\" sound name \"Glass\"" 2>/dev/null || true
         echo "==== fertig $(date) ===="
         exit 0
     fi
     echo "WARN: run-media fehlgeschlagen — Fallback auf Browser-Session-Notification."
 else
-    echo "WARN: Podcast-Generierung lieferte keine Datei — Fallback auf Browser-Session-Notification."
+    echo "WARN: Weder Podcast noch Video erzeugt — Fallback auf Browser-Session-Notification."
 fi
 
 # Fallback: manuelle Browser-Session noetig (Pool leer, MCP-Auth weg, Timeout, ...).
 osascript <<APPLESCRIPT 2>/dev/null || true
-display notification "Artikel \"$SLUG\": Auto-Podcast unvollstaendig. Bitte Claude Code starten und 'npm run media' ausfuehren (NotebookLM + YouTube + Substack)." with title "Red Rabbit Media" subtitle "Manuelle Media-Session noetig" sound name "Glass"
+display notification "Artikel \"$SLUG\": Auto-Medien unvollstaendig. Bitte Claude Code starten und 'npm run media' ausfuehren (NotebookLM + YouTube + Substack)." with title "Red Rabbit Media" subtitle "Manuelle Media-Session noetig" sound name "Glass"
 APPLESCRIPT
 
 echo "Fallback-Notification gesendet. Warte auf Browser-Session."

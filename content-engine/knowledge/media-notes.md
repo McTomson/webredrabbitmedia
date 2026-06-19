@@ -41,7 +41,11 @@ bleiben liegen (Backlog moeglich, pruefen mit `ls content-engine/.media-requests
     in die Pool-JSON eintragen. Bei niedrigem Vorrat nachfuellen (Konto t.uhlir@immo.red).
   - **`get_audio_status` luegt** (meldet `ready` zu frueh) -> nur ein erfolgreicher `download_audio`
     ist die Wahrheit. Render kann >20 Min dauern (21 Min am 19.06 gemessen).
-- **VIDEO Overview: jetzt HEADLESS via `notebooklm-py` CLI (generate + download), verifiziert 19.06.**
+- **VIDEO Overview: JETZT HEADLESS + AUTOMATISCH NACH FREIGABE (verifiziert 19.06).** Der media-checker
+  ruft nach dem Podcast `scripts/content-engine/media/generate-video.sh <slug>` auf (notebooklm-py CLI,
+  Volltext-Quelle via `extract-body.ts`), dann `run-media --podcast … --video …` in EINEM Lauf
+  (ein commit/push/Mail). Ein Video-Fehler bricht den Podcast-Versand NIE ab (best-effort). Notebook
+  wird nach Integritaetspruefung automatisch geloescht. End-to-end getestet (40-MB-mp4 aus Volltext).
   WICHTIGSTE LEKTION (empirisch bewiesen, Thomas' Hypothese war richtig):
   - **Video-Generierung SCHEITERT mit URL-Crawl-Quelle, GELINGT mit Volltext-Paste.** Gleicher Artikel/Konto/Zeit:
     URL-Crawl -> `GENERATION_FAILED` (2x). Volltext (`source add --type text`, ~13k Zeichen) -> `completed` + MP4.
