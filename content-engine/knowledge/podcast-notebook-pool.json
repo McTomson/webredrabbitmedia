@@ -1,7 +1,8 @@
 {
   "_doc": "Pool leerer NotebookLM-Notebooks (Konto t.uhlir@immo.red) fuer den headless Podcast-Generator (generate-podcast.sh). Die notebooklm-MCP kann headless KEIN Notebook anlegen, daher werden leere Notebooks im Browser vorab erstellt und hier eingetragen. Jeder Podcast-Lauf verbraucht einen Slot (used=true) und fuegt den Artikel als einzige Quelle hinzu. Wenn die freien Slots zur Neige gehen, im Browser (NotebookLM Home -> 'Neu erstellen') neue leere Notebooks anlegen und mit used=false ergaenzen.",
   "notebooks": [
-    { "url": "https://notebooklm.google.com/notebook/ad9a658c-eda9-432f-8d02-b07f77135b43", "used": false }
+    { "url": "https://notebooklm.google.com/notebook/ad9a658c-eda9-432f-8d02-b07f77135b43", "used": false },
+    { "url": "https://notebooklm.google.com/notebook/d795c06b-4d07-4894-9839-f0164e4b81b4", "used": false }
   ],
   "updatedAt": "2026-06-19"
 }

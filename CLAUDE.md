@@ -70,9 +70,14 @@ wiederholt sich der 16.06-Ausfall (Daily-Mail + Medien liefen nicht, weil die Jo
 liefen). Marker-Parsing IMMER mit `JSON.parse` (Marker sind pretty-printed, grep ohne Leerzeichen matcht
 nicht). Details: LESSONS_LEARNED.md (2026-06-16).
 
-**„Kompletter Prozess nach Freigabe" ist NICHT 100% headless:** Bilder = headless (Codex), aber
-**Podcast (NotebookLM) / Video (nur Browser) / Substack** brauchen eine Browser-/Claude-Session. Der
-media-checker schickt dafuer eine macOS-Notification. Den ganzen Flow dann AUTOMATISCH durchziehen, NICHT pro Schritt fragen (Thomas 16.06): YouTube=public auto, Substack=Draft. Nur bei echtem Fehler melden.
+**Nach Freigabe headless (Stand 2026-06-19):** **Podcast laeuft jetzt headless automatisch** ueber
+`media/generate-podcast.sh` (NotebookLM-MCP + Pool leerer Notebooks in
+`content-engine/knowledge/podcast-notebook-pool.json`, da die MCP headless kein Notebook anlegen
+kann). Der media-checker erzeugt Podcast + faehrt `run-media` (einbetten/push/Mail/Marker) selbst;
+nur bei Fehler Fallback auf die alte Browser-Notification. **Noch Browser-gebunden:** Video Overview
+(kein MCP-Tool), Gemini-Hero/Kontextbilder (Codex tot bis ~14.07), Substack-Draft. Pool bei niedrigem
+Vorrat im Browser nachfuellen (t.uhlir@immo.red). Den ganzen Flow AUTOMATISCH durchziehen, NICHT pro
+Schritt fragen (Thomas 16.06): YouTube=public auto, Substack=Draft. Nur bei echtem Fehler melden.
 
 ## Frontend And UI/UX Workflow
 

@@ -31,11 +31,18 @@ Hero PFLICHT mit **Tuerkis->Blau-Farbverlauf** (horizontal, harmonisch) + handsc
 Ausloeser = **Freigabe** (approve-Route legt `content-engine/.media-requests/<slug>.json` an,
 status `requested`). Der Media-Checker verarbeitet nur den Auftrag von HEUTE -> alte Auftraege
 bleiben liegen (Backlog moeglich, pruefen mit `ls content-engine/.media-requests/`).
-- **Erzeugung ist browser-gestuetzt, nicht vollautonom.** In einer Claude+Chrome-Session (Thomas
-  eingeloggt) ueber notebooklm.google.com fahren.
-- **NotebookLM-MCP kann NUR Audio (Podcast)** (generate_audio/get_audio_status/download_audio) und
-  ist oft `authenticated:false`/headless/unzuverlaessig. **Video Overview gibt es NUR im Browser.**
-  Default-Weg = Chrome-Browser fuer beides (Audio + Video), MCP nur wenn authentifiziert.
+- **PODCAST = JETZT HEADLESS AUTOMATISCH (NEU 2026-06-19).** Der media-checker erzeugt den Podcast
+  nach Freigabe selbst, ohne Browser, via `scripts/content-engine/media/generate-podcast.sh`:
+  nimmt ein leeres **Pool-Notebook** aus `content-engine/knowledge/podcast-notebook-pool.json`,
+  `add_source(url)` -> `generate_audio` -> Download, dann `run-media`. Kein manueller "npm run media"
+  mehr. Faellt nur bei Fehler (Pool leer / MCP-Auth weg / Timeout) auf die Browser-Notification zurueck.
+  - **WARUM Pool:** die MCP kann headless KEIN Notebook anlegen und KEINE Quellen loeschen. Daher
+    leere Notebooks vorab im Browser anlegen (NotebookLM Home -> "Neu erstellen") und mit `used:false`
+    in die Pool-JSON eintragen. Bei niedrigem Vorrat nachfuellen (Konto t.uhlir@immo.red).
+  - **`get_audio_status` luegt** (meldet `ready` zu frueh) -> nur ein erfolgreicher `download_audio`
+    ist die Wahrheit. Render kann >20 Min dauern (21 Min am 19.06 gemessen).
+- **VIDEO Overview gibt es weiterhin NUR im Browser** (kein MCP-Tool) -> bleibt manuelle/Browser-Stufe.
+  Genauso **Gemini-Hero/Kontextbilder** (Codex-Fallback tot bis ~14.07) und **Substack-Draft**.
 - **1 NEUES Notebook pro Artikel** (nie mischen, sonst Halluzination ueber Artikelgrenzen). NUR den
   einen Artikel als Quelle (Text-Paste oder Artikel-URL). Audio + Video Overview **deutsch**.
 - Fehlgeschlagene Video-Generierung **haengt** -> frisches Notebook (NotebookLM-"Vergiftung").
