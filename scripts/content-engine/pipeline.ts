@@ -248,9 +248,22 @@ async function main() {
         console.log('1/5 Researcher ...');
         const vaultCtx = vaultContextFor(t, today);
         if (vaultCtx) console.log('   Vault-Treffer injiziert (zuerst pruefen, dann Web).');
-        const rOut = runClaude(researcherPrompt(t, vaultCtx), { web: true, timeoutSec: 600, label: 'researcher' });
-        save(dir, 'research.raw.txt', rOut);
-        research = extractJsonBlock(rOut) as any;
+        // LLM JSON output is occasionally malformed (a stray brace/comma deep in the array — observed
+        // 2026-06-20, which aborted the whole day with no article + no mail). A single bad parse must
+        // NOT kill the day: retry the researcher up to 3x — a fresh call reliably yields valid JSON.
+        // Only the final attempt's failure propagates as a HALT (the 3h catch-up still retries later).
+        const RESEARCH_TRIES = 3;
+        for (let attempt = 1; attempt <= RESEARCH_TRIES; attempt++) {
+            const rOut = runClaude(researcherPrompt(t, vaultCtx), { web: true, timeoutSec: 600, label: 'researcher' });
+            save(dir, 'research.raw.txt', rOut);
+            try {
+                research = extractJsonBlock(rOut) as any;
+                break; // parsed cleanly
+            } catch (e: any) {
+                if (attempt === RESEARCH_TRIES) throw new Error(`HALT: Researcher-JSON nach ${RESEARCH_TRIES} Versuchen unparsbar (${e.message}).`);
+                console.log(`   WARN: Researcher-JSON ungueltig (Versuch ${attempt}/${RESEARCH_TRIES}: ${e.message}) — neuer Versuch ...`);
+            }
+        }
         if (!research.enough) throw new Error('HALT: Researcher meldet enough=false (zu wenig belegte Fakten). Kein halber Artikel.');
 
         // 2) Verify source URLs (no-hallucination gate)
