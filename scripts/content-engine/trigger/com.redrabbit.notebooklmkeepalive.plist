@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- launchd LaunchAgent: haelt die notebooklm-py CLI-Sitzung (Video-Auth) warm.
+     Laeuft beim Login/Boot UND alle 3 Tage. Jeder Aufruf frischt die Google-Cookies
+     in ~/.notebooklm/profiles/default/storage_state.json auf -> Sitzung laeuft nicht
+     zwischen Artikeln aus. Bei abgelaufener Auth: Banner + Alert-Datei (proaktiv).
+     Install:
+       cp scripts/content-engine/trigger/com.redrabbit.notebooklmkeepalive.plist ~/Library/LaunchAgents/
+       launchctl load ~/Library/LaunchAgents/com.redrabbit.notebooklmkeepalive.plist -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.redrabbit.notebooklmkeepalive</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-lc</string>
+        <string>$HOME/dev/redrabbit-daily/scripts/content-engine/trigger/notebooklm-keepalive.sh</string>
+    </array>
+
+    <!-- Alle 3 Tage (259200 s). Kuerzeste relevante Cookie-Lebensdauer ist ~30 Tage,
+         alle 3 Tage auffrischen haelt grossen Puffer ohne unnoetige Last. -->
+    <key>StartInterval</key>
+    <integer>259200</integer>
+
+    <!-- Auch sofort beim Login/Boot auffrischen (haelt die Sitzung nach laengerem Aus warm). -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/redrabbit-nlm-keepalive.out</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/redrabbit-nlm-keepalive.err</string>
+</dict>
+</plist>
