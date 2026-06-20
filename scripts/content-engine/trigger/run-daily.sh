@@ -145,7 +145,18 @@ alert() { notify "alert" "Tageslauf-Fehler" "$1"; }
 # discards any orphan state from a previously failed push (no slow drift, no accidental double
 # article). Replaces the old `git checkout main` which failed whenever the SHARED checkout was on a
 # dirty feature branch (root cause of the silent 16.06 no-mail day).
-git fetch origin main >/dev/null 2>&1 || { alert "git fetch origin main fehlgeschlagen"; exit 1; }
+# Network-resilient fetch: when launchd fires this at boot/wake (RunAtLoad + the 3h catch-up),
+# WiFi is often not reconnected yet for the first few seconds, so a single `git fetch` fails and
+# would abort the WHOLE day's article (observed 2026-06-20: 3 consecutive fails at 01:55/04:55/07:53,
+# no article, no mail). Retry with backoff up to ~2.5 min so a transient wake-time network blip is
+# non-fatal; only alert+exit if it is still unreachable after all attempts (a real outage).
+fetch_ok=0
+for attempt in 1 2 3 4 5 6; do
+  if git fetch origin main >/dev/null 2>&1; then fetch_ok=1; break; fi
+  echo "WARN: git fetch Versuch $attempt fehlgeschlagen (Netzwerk noch nicht bereit?) — warte ..."
+  sleep 25
+done
+[ "$fetch_ok" = "1" ] || { alert "git fetch origin main nach 6 Versuchen fehlgeschlagen (Netzwerk?)"; exit 1; }
 git reset --hard origin/main >/dev/null 2>&1 || { alert "git reset --hard origin/main fehlgeschlagen"; exit 1; }
 
 # Safety net for internal cluster linking. The primary path adds links per-publish inside
