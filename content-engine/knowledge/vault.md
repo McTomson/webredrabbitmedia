@@ -644,3 +644,57 @@ quelle: https://www.wko.at/oe/netzwerke/informationen-barrierefreiheitsgesetz-28
 quelle_name: WKO - Informationen zum Barrierefreiheitsgesetz ab 28.06.2025
 geprueft_am: 2026-06-18
 recheck_nach: 2026-12-15
+
+## t17-2026-06-20-072
+cluster: 1
+keywords: muss, vorbereitet, sein, bevor, eine, agentur, beauftragt, wird
+aussage: Seit 28. Juni 2025 gilt in Österreich das Barrierefreiheitsgesetz (BaFG): Websites, über die Verbraucher etwas kaufen, buchen, bestellen oder einen Vertrag abschließen können (Webshops, Online-Buchung, Ticketing, Terminbuchung), müssen barrierefrei sein. Vor der Agentur-Beauftragung muss daher geklärt werden, ob das eigene Projekt unter das BaFG fällt.
+quelle: https://www.sozialministerium.gv.at/Services/Aktuelles/Archiv-2025/barrierefreiheitsgesetz.html
+quelle_name: Sozialministerium - Barrierefreiheitsgesetz seit 28. Juni 2025 in Kraft
+geprueft_am: 2026-06-20
+recheck_nach: 2026-12-17
+
+## t17-2026-06-20-073
+cluster: 1
+keywords: muss, vorbereitet, sein, bevor, eine, agentur, beauftragt, wird
+aussage: Kleinstunternehmen mit weniger als 10 Mitarbeitern oder unter 2 Mio. Euro Jahresumsatz sind von der Barrierefreiheitspflicht für Dienstleistungen grundsätzlich ausgenommen - relevant, um vor der Beauftragung den eigenen Pflichtenumfang einzuschätzen.
+quelle: https://www.wko.at/oe/netzwerke/informationen-barrierefreiheitsgesetz-28-06-2025.pdf
+quelle_name: WKO - Informationen Barrierefreiheitsgesetz (28.06.2025)
+geprueft_am: 2026-06-20
+recheck_nach: 2026-12-17
+
+## t17-2026-06-20-074
+cluster: 1
+keywords: muss, vorbereitet, sein, bevor, eine, agentur, beauftragt, wird
+aussage: Bei Nichterfüllung der Barrierefreiheits-Vorgaben drohen in Österreich Geldbußen von bis zu 100.000 Euro, im Wiederholungsfall bis zu 150.000 Euro - ein Grund, die Anforderung schon im Briefing an die Agentur festzuschreiben statt später nachzurüsten.
+quelle: https://www.wko.at/oe/netzwerke/informationen-barrierefreiheitsgesetz-28-06-2025.pdf
+quelle_name: WKO - Informationen Barrierefreiheitsgesetz (28.06.2025)
+geprueft_am: 2026-06-20
+recheck_nach: 2026-12-17
+
+## t17-2026-06-20-075
+cluster: 1
+keywords: muss, vorbereitet, sein, bevor, eine, agentur, beauftragt, wird
+aussage: Ein belastbares Agentur-Briefing sollte vor der Beauftragung vorliegen und Unternehmensinfos (Größe, Sortiment, Marktpositionierung, Wettbewerber, Stärken/Schwächen), Zielgruppenanalyse sowie die gewünschten Kernfunktionen der Website enthalten - je konkreter, desto weniger Rückfragen und desto näher das Ergebnis an der Erwartung.
+quelle: https://www.heise-regioconcept.de/online-marketing/checklisten-agenturbriefing/
+quelle_name: heise regioconcept - Agenturbriefing: Tipps und Checklisten
+geprueft_am: 2026-06-20
+recheck_nach: 2026-12-17
+
+## t17-2026-06-20-076
+cluster: 1
+keywords: muss, vorbereitet, sein, bevor, eine, agentur, beauftragt, wird
+aussage: Die häufigste Ursache für Projektverzögerungen bei Websites sind fehlende Inhalte und spätes Feedback - nicht die Design- oder Technikarbeit. Eine Unternehmensseite braucht oft 5.000-10.000 Wörter Text; wer Texte und Bilder nicht zu Projektstart bereithält, verzögert das Projekt nahezu sicher.
+quelle: https://www.dcm-net.de/blog/8-wochen-website-projektablauf.html
+quelle_name: dcm-net - In 8 Wochen zur fertigen Website: Der realistische Projektablauf (2026)
+geprueft_am: 2026-06-20
+recheck_nach: 2026-12-17
+
+## t17-2026-06-20-077
+cluster: 1
+keywords: muss, vorbereitet, sein, bevor, eine, agentur, beauftragt, wird
+aussage: Webdesign-Auftraggeber sollten vor der Beauftragung zentrale Punkte selbst klären: konkretes Projektziel, Zielgruppe, benötigte Funktionen, vorhandenes/zu lieferndes Content-Material sowie Domain/Hosting-Situation - ungeklärte Punkte führen zu Mehraufwand und Mehrkosten.
+quelle: https://www.primaprofi.de/webdesigner/auftraggeber-vor-webdesign-projekt/
+quelle_name: primaprofi - Was Auftraggeber vor einem Webdesign-Projekt klären sollten
+geprueft_am: 2026-06-20
+recheck_nach: 2026-12-17
