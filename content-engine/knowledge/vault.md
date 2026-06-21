@@ -698,3 +698,48 @@ quelle: https://www.primaprofi.de/webdesigner/auftraggeber-vor-webdesign-projekt
 quelle_name: primaprofi - Was Auftraggeber vor einem Webdesign-Projekt klären sollten
 geprueft_am: 2026-06-20
 recheck_nach: 2026-12-17
+
+## t18-2026-06-21-078
+cluster: 1
+keywords: übernimmt, texterstellung, neue, website
+aussage: Professionelle Texterstellung in Österreich wird über Stundensätze kalkuliert: Junior-Texter ca. 60 € brutto/Stunde, erfahrene SEO-Texter ca. 80 €, Spezialisten mit viel Erfahrung 100–130 € pro Stunde.
+quelle: https://www.select-seo.at/seo-texte-kosten/
+quelle_name: Select-SEO - Texter Preisliste: Was kosten SEO-Texte?
+geprueft_am: 2026-06-21
+recheck_nach: 2026-12-18
+
+## t18-2026-06-21-079
+cluster: 1
+keywords: übernimmt, texterstellung, neue, website
+aussage: Ein solider SEO-Text von einem erfahrenen Freelancer (inkl. Keyword-Recherche und Briefing) kostet in der DACH-Region rund 200–500 €, Agenturen liegen bei 300–800 € pro Text; Angebote unter 100 € liefern selten ranking-taugliche Qualität.
+quelle: https://diemarketingnerds.com/magazin/seo-texte-schreiben-lassen/
+quelle_name: Die Marketing Nerds - SEO Texter beauftragen: Kosten
+geprueft_am: 2026-06-21
+recheck_nach: 2026-12-18
+
+## t18-2026-06-21-080
+cluster: 1
+keywords: übernimmt, texterstellung, neue, website
+aussage: Google bewertet Inhalte nach dem 'people-first'-Prinzip: Texte sollen primär für Menschen erstellt werden und nachweisbare First-Hand-Expertise sowie Tiefe zeigen, nicht zur Ranking-Manipulation. Reines Zusammenfassen fremder Inhalte ohne Mehrwert wird als 'search-engine-first' abgewertet.
+quelle: https://developers.google.com/search/docs/fundamentals/creating-helpful-content
+quelle_name: Google Search Central - Creating Helpful, Reliable, People-First Content
+geprueft_am: 2026-06-21
+recheck_nach: 2026-12-18
+
+## t18-2026-06-21-081
+cluster: 1
+keywords: übernimmt, texterstellung, neue, website
+aussage: Google penalisiert Inhalte nicht danach, OB sie von Mensch oder KI stammen, sondern nach Wert und Absicht: Das massenhafte Erzeugen von Seiten mit generativer KI ohne Mehrwert fällt unter 'Scaled content abuse' und verstößt gegen die Richtlinien — die Produktionsweise allein ist nicht entscheidend.
+quelle: https://developers.google.com/search/docs/essentials/spam-policies
+quelle_name: Google Search Central - Spam policies for Google web search
+geprueft_am: 2026-06-21
+recheck_nach: 2026-12-18
+
+## t18-2026-06-21-082
+cluster: 1
+keywords: übernimmt, texterstellung, neue, website
+aussage: Bei Webdesign-Agenturen ist die Texter-Leistung oft NICHT im Standard-Paketpreis enthalten; Auftraggeber müssen explizit klären, ob Texte mitgeliefert, vom Kunden beigestellt oder gegen Aufpreis getextet werden.
+quelle: https://federfuehrerin.at/texte-schreiben-lassen/
+quelle_name: Federführerin - Texte schreiben lassen (Leistungen & Preise)
+geprueft_am: 2026-06-21
+recheck_nach: 2026-12-18
