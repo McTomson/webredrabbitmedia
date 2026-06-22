@@ -743,3 +743,57 @@ quelle: https://federfuehrerin.at/texte-schreiben-lassen/
 quelle_name: Federführerin - Texte schreiben lassen (Leistungen & Preise)
 geprueft_am: 2026-06-21
 recheck_nach: 2026-12-18
+
+## t19-2026-06-22-083
+cluster: 1
+keywords: müssen, bilder, grafiken, selbst, geliefert, werden
+aussage: Auf Websites veroeffentlichte Personenfotos (z.B. Mitarbeiterfotos) brauchen nach § 78 UrhG (Bildnisschutz) eine Einwilligung der abgebildeten Person; fuer werbliche Nutzung ist die Zustimmung schriftlich einzuholen. Der OGH wertet die Veroeffentlichung eines Mitarbeiterfotos ohne Rueckfrage als Verletzung des Bildnisschutzes.
+quelle: https://www.ds-law.eu/grundsatzurteil-zum-recht-am-eigenen-bild-im-arbeitsverhaeltnis-einwilligung-und-datenschutz/
+quelle_name: DS Law - Grundsatzurteil zum Recht am eigenen Bild im Arbeitsverhaeltnis
+geprueft_am: 2026-06-22
+recheck_nach: 2026-12-19
+
+## t19-2026-06-22-084
+cluster: 1
+keywords: müssen, bilder, grafiken, selbst, geliefert, werden
+aussage: Lichtbildwerke sind in Oesterreich 70 Jahre nach Tod des Urhebers geschuetzt, einfache Lichtbilder 50 Jahre nach Aufnahme; jede Bildnutzung auf der Website braucht ein passendes Nutzungsrecht fuer genau diesen Zweck - Foto-Abmahnungen sind seit Jahren der haeufigste Urheberrechts-Streitpunkt.
+quelle: https://ts.at/wissen/urheberrecht/bilder-fotos-website-social-media-rechtssicher/
+quelle_name: Tonninger & Schermaier - Bilder & Fotos auf Website / Social Media rechtssicher
+geprueft_am: 2026-06-22
+recheck_nach: 2026-12-19
+
+## t19-2026-06-22-085
+cluster: 1
+keywords: müssen, bilder, grafiken, selbst, geliefert, werden
+aussage: Bei Stockfoto-Lizenzen (z.B. Adobe Stock, Shutterstock) ist die Lizenz an die kaufende Person/Firma gebunden und nicht uebertragbar; eine Agentur, die unter eigenem Account lizenziert, kann das Bild fuer den Kunden einsetzen, der Kunde darf es aber nicht eigenstaendig weiterverwenden. Best Practice: Stockfoto-Account auf den Kundennamen anlegen.
+quelle: https://magaziniker.de/umgang-mit-lizenzen-fuer-stockbilder-im-corporate-publishing/
+quelle_name: Magaziniker - Der richtige Umgang mit Lizenzen fuer Stockbilder
+geprueft_am: 2026-06-22
+recheck_nach: 2026-12-19
+
+## t19-2026-06-22-086
+cluster: 1
+keywords: müssen, bilder, grafiken, selbst, geliefert, werden
+aussage: Auch bei lizenzfreien (Royalty-Free) Bildern und kostenlosen Plattformen bleibt in der Regel eine Urhebernennung Pflicht, und die Lizenzbedingungen muessen pro Anwendungsfall geprueft werden - 'lizenzfrei' bedeutet nicht 'frei verwendbar wie man will'.
+quelle: https://www.q2e.at/blog/urheberrecht-und-bildrechte-auf-websites-haeufige-fragen
+quelle_name: Q2E Online-Agentur - Urheberrecht & Bildrechte auf Websites
+geprueft_am: 2026-06-22
+recheck_nach: 2026-12-19
+
+## t19-2026-06-22-087
+cluster: 1
+keywords: müssen, bilder, grafiken, selbst, geliefert, werden
+aussage: Im Briefing/Onboarding fuer Website-Projekte gehoeren bestehende Assets (Texte, Bilder, Logo/CI, Cases, PDFs) zum Pflicht-Input; fehlende oder unsortierte Bilder sind ein Haupttreiber fuer Projektverzoegerungen, Best Practice ist Content-Vorbereitung parallel zur Designphase mit klarer Liefer-Owner-Liste.
+quelle: https://oawebagentur.de/blog/website-briefing-checkliste-vorlage/
+quelle_name: OA Webagentur - Website Briefing Checkliste & Vorlage
+geprueft_am: 2026-06-22
+recheck_nach: 2026-12-19
+
+## t19-2026-06-22-088
+cluster: 1
+keywords: müssen, bilder, grafiken, selbst, geliefert, werden
+aussage: Eine Unternehmens-Website braucht oft 5.000-10.000 Woerter Text plus Bildmaterial; wer Texte und Bilder nicht zu Projektstart bereithaelt, verzoegert das Projekt nahezu sicher - fehlende Inhalte sind die haeufigste Ursache fuer Projektverzoegerungen, nicht Design- oder Technikarbeit.
+quelle: https://www.dcm-net.de/blog/8-wochen-website-projektablauf.html
+quelle_name: dcm-net - In 8 Wochen zur fertigen Website: Der realistische Projektablauf
+geprueft_am: 2026-06-22
+recheck_nach: 2026-12-19
