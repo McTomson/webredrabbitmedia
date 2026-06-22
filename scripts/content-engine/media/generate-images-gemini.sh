@@ -104,7 +104,19 @@ valid_png() { [ -f "$1" ] && [ "$(stat -f%z "$1" 2>/dev/null || echo 0)" -gt 204
 # │ Everything OUTSIDE this function (plan, idempotency, decode, apply, fail-    │
 # │ closed) is already verified and does not depend on the calibration.         │
 # └────────────────────────────────────────────────────────────────────────────┘
+# Retry wrapper: transiente Gemini/agent-browser-Aussetzer kommen vor (v.a. beim ERSTEN Bild nach
+# Daemon-Kaltstart — beobachtet 22.06: Hero-Render-Timeout, danach auf Anhieb ok). Bis zu 3 Versuche.
 gemini_render() {
+    local prompt="$1" outfile="$2" attempt
+    for attempt in 1 2 3; do
+        if _gemini_render_once "$prompt" "$outfile"; then return 0; fi
+        echo "  Render-Versuch $attempt fuer $(basename "$outfile") fehlgeschlagen$( [ "$attempt" -lt 3 ] && echo ', neuer Versuch ...' || echo ' (aufgegeben)')" | tee -a "$LOG"
+        sleep 3
+    done
+    return 1
+}
+
+_gemini_render_once() {
     local prompt="$1" outfile="$2"
     local dataurl_file; dataurl_file="$(mktemp /tmp/gemini-dataurl.XXXXXX)"
 
