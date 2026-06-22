@@ -84,11 +84,23 @@ else
     echo "WARN: Bilder fehlgeschlagen (weiter mit Notification)."
 fi
 
-# --- Podcast headless erzeugen (NotebookLM-MCP + Pool-Notebook, kein Browser) ---
-# Loest den frueheren manuellen "npm run media"-Schritt ab. Schlaegt etwas fehl,
-# faellt das Skript sauber auf die alte Browser-Session-Notification zurueck.
-echo "Podcast (NotebookLM, headless) fuer $SLUG ..."
-GP_OUT="$(scripts/content-engine/media/generate-podcast.sh "$SLUG" 2>&1)"
+# HERO-GUARD (22.06): der headless-Bildweg laeuft ueber Codex, das zeitweise leer ist
+# (Usage-Limit). Schlaegt er fehl, referenziert der Artikel ein Hero, das es nicht gibt -> kaputtes
+# Titelbild live (passiert 21.-22.06). Deshalb hier hart pruefen: fehlt das Hero, LAUT alarmieren,
+# damit der manuelle Gemini-Bildschritt angestossen wird (Frontend zeigt dank Fallback kein kaputtes
+# Bild). Wir brechen NICHT ab: Podcast/Video sollen trotzdem laufen.
+HERO="public/images/blog/${SLUG}.png"
+if [ ! -f "$HERO" ]; then
+    echo "ALARM: Hero-Bild fehlt ($HERO) — Codex vermutlich leer. Bilder muessen manuell via Gemini-Browser nachgezogen werden."
+    osascript -e "display notification \"Artikel '$SLUG': Bilder FEHLEN (Codex leer). Bitte Gemini-Bildschritt manuell nachziehen.\" with title \"Red Rabbit Media\" subtitle \"Bilder fehlen — Hero kaputt\" sound name \"Basso\"" 2>/dev/null || true
+fi
+
+# --- Podcast headless erzeugen (notebooklm-py CLI, kein Browser, KEIN claude/Pool) ---
+# Umgestellt 22.06 von generate-podcast.sh (MCP+Pool+claude) auf generate-podcast-cli.sh:
+# der MCP-Pfad brach 21.-22.06 zweimal (kaputter nvm-claude-Stub + leerer Notebook-Pool).
+# Die CLI legt ihr eigenes Notebook an und hat eigene Auth -> keine dieser Abhaengigkeiten.
+echo "Podcast (NotebookLM CLI, headless) fuer $SLUG ..."
+GP_OUT="$(scripts/content-engine/media/generate-podcast-cli.sh "$SLUG" 2>&1)"
 echo "$GP_OUT"
 PODCAST_FILE="$(printf '%s\n' "$GP_OUT" | grep -oE '^PODCAST_FILE=.*' | head -1 | sed 's/^PODCAST_FILE=//')"
 
