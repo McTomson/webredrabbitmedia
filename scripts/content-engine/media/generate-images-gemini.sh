@@ -39,7 +39,7 @@ cd "$REPO" || { echo "FATAL: repo root nicht gefunden"; exit 1; }
 [ -f .env.local ] && set -a && . ./.env.local && set +a
 
 # --- Config ---
-GEMINI_URL="${GEMINI_URL:-https://gemini.google.com/u/3/app}"   # /u/3/ = t.uhlir@immo.red (NOT bare /app)
+GEMINI_URL="${GEMINI_URL:-https://gemini.google.com/app}"   # dedicated agent-browser profile = single account (t.uhlir@immo.red) -> /app
 GEMINI_PROFILE="${GEMINI_PROFILE:-$HOME/.agent-browser-profiles/gemini-immo}"
 RENDER_TIMEOUT_MS="${RENDER_TIMEOUT_MS:-200000}"   # Gemini image render ~60-120s; allow headroom
 SESSION="gemini-img"

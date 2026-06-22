@@ -76,23 +76,24 @@ echo "Offener Media-Request fuer heute gefunden: $SLUG"
 # Stempel setzen — nicht doppelt triggern.
 touch "$STAMP"
 
-# Bilder headless generieren (kein Browser noetig).
-echo "Generiere Bilder fuer $SLUG ..."
-if npx tsx scripts/content-engine/images-only.ts "$SLUG" --hero 2>&1; then
-    echo "Bilder fertig."
+# Bilder HEADLESS via Gemini (agent-browser) erzeugen — ersetzt den toten Codex-Pfad (22.06,
+# verifiziert: Hero mit Hook + 3 Kontextfotos + Infografik, voll unbeaufsichtigt, eingeloggtes
+# persistentes agent-browser-Profil). generate-images-gemini.sh baut den Plan, erzeugt die Bilder,
+# bettet sie via apply-images-browser ein (setzt featuredImage), ist idempotent + fail-closed.
+echo "Generiere Bilder (Gemini headless) fuer $SLUG ..."
+if scripts/content-engine/media/generate-images-gemini.sh "$SLUG" 2>&1; then
+    echo "Bilder fertig (Gemini)."
 else
-    echo "WARN: Bilder fehlgeschlagen (weiter mit Notification)."
+    echo "WARN: Gemini-Bilder fehlgeschlagen (weiter; Hero-Guard + needs-images greifen)."
 fi
 
-# HERO-GUARD (22.06): der headless-Bildweg laeuft ueber Codex, das zeitweise leer ist
-# (Usage-Limit). Schlaegt er fehl, referenziert der Artikel ein Hero, das es nicht gibt -> kaputtes
-# Titelbild live (passiert 21.-22.06). Deshalb hier hart pruefen: fehlt das Hero, LAUT alarmieren,
-# damit der manuelle Gemini-Bildschritt angestossen wird (Frontend zeigt dank Fallback kein kaputtes
-# Bild). Wir brechen NICHT ab: Podcast/Video sollen trotzdem laufen.
+# HERO-GUARD: fehlt nach dem Bildschritt das Hero (Gemini-Login abgelaufen / Google-Block / Render-
+# Timeout), LAUT alarmieren. Wir brechen NICHT ab (Podcast/Video laufen trotzdem); der needs-images-
+# Marker weiter unten haelt den Bildschritt offen, bis er nachgezogen ist.
 HERO="public/images/blog/${SLUG}.png"
 if [ ! -f "$HERO" ]; then
-    echo "ALARM: Hero-Bild fehlt ($HERO) — Codex vermutlich leer. Bilder muessen manuell via Gemini-Browser nachgezogen werden."
-    osascript -e "display notification \"Artikel '$SLUG': Bilder FEHLEN (Codex leer). Bitte Gemini-Bildschritt manuell nachziehen.\" with title \"Red Rabbit Media\" subtitle \"Bilder fehlen — Hero kaputt\" sound name \"Basso\"" 2>/dev/null || true
+    echo "ALARM: Hero-Bild fehlt ($HERO) — Gemini-Bildschritt fehlgeschlagen (Login? Google-Block?). Profil pruefen: generate-images-gemini.sh login."
+    osascript -e "display notification \"Artikel '$SLUG': Bilder FEHLEN (Gemini-Bildschritt). Login/Profil pruefen.\" with title \"Red Rabbit Media\" subtitle \"Bilder fehlen — Hero kaputt\" sound name \"Basso\"" 2>/dev/null || true
 fi
 
 # --- Podcast headless erzeugen (notebooklm-py CLI, kein Browser, KEIN claude/Pool) ---
