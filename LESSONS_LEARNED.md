@@ -419,6 +419,31 @@ Update this file at the end of every session when a debugging lesson, setup issu
   und bei Timeout die ganze Gruppe killen (`process.kill(-pid)`), da Enkel-Prozesse (MCP) die Pipe offenhalten
   könnten. Erst nötig, wenn SIGKILL allein nicht reicht.
 
+### 2026-06-22 — `grep` spammte "claude native binary not installed" (Shell-Snapshot-Funktion)
+- **Symptom:** Jeder Bash-Befehl mit `grep` (auch via Redirect `> file 2>&1`) gab die mehrzeilige Fehlermeldung
+  `Error: claude native binary not installed ...` statt der grep-Treffer aus → grep/Befehlssubstitution unbrauchbar,
+  Diagnose-Befehle korrumpiert. `which -a claude` zeigte NUR das funktionierende Homebrew-claude → irreführend.
+- **Ursache:** `grep` ist eine **Shell-Funktion** aus dem Claude-Code-Shell-Snapshot (`~/.claude/shell-snapshots/...`),
+  die grep durch `claude` als `ugrep` routet: `ARGV0=ugrep "$CLAUDE_CODE_EXECPATH" -G ...`. `CLAUDE_CODE_EXECPATH`
+  zeigte auf den **kaputten 500-Byte nvm-`claude.exe`-Stub** (`~/.nvm/versions/node/v20.20.0/.../claude.exe`, vom
+  Auto-Update ohne native Binary). Der Stub druckt die Fehlermeldung → landet als grep-Ausgabe.
+- **Fix:** Den kaputten nvm-Stub durch einen **Symlink auf die echte Homebrew-claude.exe** ersetzen
+  (`ln -sf /opt/homebrew/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe <nvm-stub-pfad>`). Danach läuft
+  sowohl `claude` als auch die grep-`ugrep`-Route sauber. (Auto-Updates können den Stub neu anlegen → bei Wiederkehr
+  erneut symlinken; die echte Absicherung für den Tageslauf ist der `resolve_claude`-Guard in run-daily.sh.)
+- **Diagnose-Kürzel:** `type grep` → ist es eine Funktion, die `$CLAUDE_CODE_EXECPATH` aufruft? `file $CLAUDE_CODE_EXECPATH`
+  → "ASCII text" (kaputt) vs "Mach-O" (ok). Homebrew-claude funktioniert separat (`/opt/homebrew/bin/claude --version`).
+
+### 2026-06-22 — macOS `/bin/bash` ist 3.2: kein `mapfile`/`readarray`
+- **Symptom:** Ein neues Trigger-Script (`generate-images-gemini.sh`, Shebang `#!/bin/bash`) nutzte `mapfile -t arr < <(...)`.
+  `bash -n` (Syntax) war grün, aber zur Laufzeit: `mapfile: command not found` + unter `set -u` Folgefehler `arr: unbound variable`.
+- **Ursache:** Der Shebang `#!/bin/bash` löst auf macOS zu **/bin/bash 3.2.57** auf (Apple friert bash bei 3.2 ein, GPLv3).
+  `mapfile`/`readarray` kamen erst mit bash 4.0. Homebrew-bash (5.x) liegt unter `/opt/homebrew/bin/bash`, wird aber vom
+  absoluten Shebang NICHT genutzt.
+- **Fix/Regel:** In allen `#!/bin/bash`-Trigger-Scripts **bash-3.2-kompatibel** bleiben: statt `mapfile` ein Read-Loop
+  `arr=(); while IFS= read -r l; do arr+=("$l"); done < <(...)`; leere Arrays unter `set -u` mit Count-Check absichern.
+  Keine `declare -A`, kein `${var^^}`. Vor Commit Logik unter `/bin/bash <script>` testen, nicht nur `bash -n`.
+
 ## Session-End Checklist
 
 - Add new lessons with dates.
