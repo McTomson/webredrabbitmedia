@@ -31,8 +31,19 @@ cd "$REPO" || exit 1
 POOL="content-engine/knowledge/podcast-notebook-pool.json"
 DEST="$REPO/scripts/content-engine/.work/${SLUG}-podcast"
 ARTICLE_URL="${SITE_URL:-https://web.redrabbit.media}/tipps/${SLUG}"
-CLAUDE_BIN="${CLAUDE_BIN:-claude}"
 export DISABLE_AUTOUPDATER=1   # pin toolchain; avoids the nvm-claude auto-update ENOEXEC trap
+# Resolve a WORKING claude. The nvm auto-updater periodically leaves a stub `claude.exe` that throws
+# "native binary not installed" (observed 2026-06-22, it broke every headless podcast for 2 days),
+# and that nvm bin sits FIRST on the launchd PATH, shadowing the working Homebrew claude. So pick the
+# first candidate whose `--version` actually succeeds, preferring Homebrew, instead of trusting `claude`.
+resolve_claude() {
+    for c in "${CLAUDE_BIN:-}" /opt/homebrew/bin/claude "$(command -v claude 2>/dev/null)"; do
+        [ -n "$c" ] && [ -x "$c" ] && "$c" --version >/dev/null 2>&1 && { echo "$c"; return 0; }
+    done
+    return 1
+}
+CLAUDE_BIN="$(resolve_claude)" || { echo "ERROR: kein funktionierendes claude gefunden (nvm-Stub kaputt + Homebrew fehlt?)." >&2; exit 4; }
+echo "claude: $CLAUDE_BIN ($("$CLAUDE_BIN" --version 2>/dev/null | head -1))"
 NLM_ALLOW_ADD="mcp__notebooklm__add_source mcp__notebooklm__generate_audio"
 NLM_ALLOW_DL="mcp__notebooklm__download_audio"
 mkdir -p "$DEST"
