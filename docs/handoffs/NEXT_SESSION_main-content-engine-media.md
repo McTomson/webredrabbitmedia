@@ -1,4 +1,7 @@
-# Naechste Session — main / content-engine media (Gemini-Bilder voll headless) — Stand 2026-06-22 (Teil 2 gebaut, Kalibrierung offen)
+# Naechste Session — main / content-engine media — Stand 2026-06-22 (Teil 2 FERTIG + live verifiziert)
+
+## TL;DR — Gemini-Bilder voll headless laeuft
+Die naechtliche Bilderzeugung ist jetzt **voll automatisch ueber Gemini headless** (Ersatz fuer den toten Codex). Heute end-to-end verifiziert: agent-browser bleibt ueber das persistente Profil bei Gemini eingeloggt (kein Fenster, keine Claude-Session), Hero MIT handschriftlichem Hook + 3 Kontextfotos + Infografik werden erzeugt und eingebettet. In `run-media-check.sh` verdrahtet. Commits bis `26cf5d5`. **Einzige laufende Wartung:** wenn Google das Gemini-Login irgendwann ausloggt, feuert der Hero-Guard (Notification „Bilder fehlen") + das needs-images-Netz haelt den Bildschritt offen → einmal `scripts/content-engine/media/generate-images-gemini.sh login` neu einloggen (Konto t.uhlir@immo.red).
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, `content-engine/knowledge/media-notes.md`, `.agent/workflows/bilder-gemini-browser.md`, CLAUDE.md, betroffene Dateien. Nicht loslegen ohne Kontext.
@@ -22,15 +25,16 @@ Teil 2 (Gemini-Bilder headless) ist zu ~80% gebaut. Drei neue Dateien, alle test
 3. `scripts/content-engine/media/generate-images-gemini.sh <slug>` — Orchestrator: plan → pro Bild Gemini-Render via agent-browser → decode → `apply-images-browser.ts`. Idempotent (valides PNG >20KB wird uebersprungen), fail-closed (ohne Hero bleibt Artikel unangetastet, needs-images-Netz greift). Subcommand `login` fuer den einmaligen headed Google-Login. **Verifiziert** (bash-3.2-Syntax, Plan-Parse/base64-Roundtrip unter /bin/bash 3.2, vitest 25/25). Eslint/`buildImagePlan` gruen.
 4. `scripts/content-engine/media/gemini-extract.js` — In-Page-Extraktion: groesstes generiertes blob:/data:-`<img>` → canvas.toDataURL('png').
 
-## OFFEN — die letzten 20% (brauchen Thomas + Live-Gemini)
-**Blocker, die NUR Thomas loesen kann (unvermeidbar):**
-- **A. agent-browser ausfuehrbar machen.** npm-Paket ist installiert, aber der Auto-Classifier blockt das AUSFUEHREN von agent-browser durch den Agenten ("untrusted code"). Thomas: entweder `agent-browser`-Permission-Rule erlauben, ODER die Tests/den Login selbst per `!`-Prefix anstossen. (Im Nacht-Cron laeuft es spaeter unter launchd OHNE Classifier — der Block betrifft nur die interaktive Agenten-Ausfuehrung.)
-- **B. Einmaliger Gemini-Login** (Agent darf keine Google-Credentials eingeben): `./scripts/content-engine/media/generate-images-gemini.sh login` → headed-Fenster → als `t.uhlir@immo.red` (/u/3/) einloggen → Fenster offen lassen bis Startseite → `agent-browser --session gemini-img close`. Profil persistiert unter `~/.agent-browser-profiles/gemini-immo`.
+## ERLEDIGT diese Session (committet + gepusht, bis `26cf5d5`) — Teil 2 LIVE
+- **agent-browser installiert** (Chrome-for-Testing 150) + **Gemini-Login** im dedizierten Profil `~/.agent-browser-profiles/gemini-immo`. Headless-Login bleibt erhalten (verifiziert).
+- **`gemini_render` live kalibriert + bestaetigt:** Eingabe `find role textbox fill`, Submit `press Enter`, Warten `wait --fn` (blob:/data:-img, naturalWidth>256), Extraktion `gemini-extract.js` (groesstes blob-img → canvas.toDataURL, same-origin = nicht tainted), decode → 1200px-PNG. URL = `/app`.
+- **Hero MIT Hook verifiziert:** Gemini rendert den handschriftlichen Hook (luminanz-adaptive Tinte). Voller Script-Lauf (Hero+ctx1-3+Infografik eingebettet) exit 0, headless.
+- **In `run-media-check.sh` verdrahtet:** Codex-Aufruf ersetzt durch `generate-images-gemini.sh "$SLUG"` (Bilder VOR Podcast/Video). Hero-Guard + needs-images-Netz bleiben als Fallback.
 
-**Dann (Agent, sobald A+B erledigt):**
-1. **`gemini_render` LIVE KALIBRIEREN** — die agent-browser↔Gemini-DOM-Schritte in `generate-images-gemini.sh` (klar markierte „CALIBRATION SEAM") sind eine Erstimplementierung. Auf einem eingeloggten Gemini-Chat `agent-browser --session gemini-img --profile ~/.agent-browser-profiles/gemini-immo snapshot -i` laufen lassen, die echten Refs/Rollen fuer (a) Prompt-Eingabefeld, (b) „Bild fertig"-Signal, (c) generiertes `<img>` ablesen und find/wait/eval in `gemini_render` + `gemini-extract.js` anpassen. Risiken: Google koennte headless-Chrome blocken (dann `--headed`/Attach an laufendes Chrome via `--cdp`), generierte Bilder evtl. als blob ohne canvas-Zugriff (dann Download-Pfeil-Weg statt canvas).
-2. **End-to-end testen** an einem Test-Slug bis Hero+3 ctx sauber gestaged + via `apply-images-browser.ts` eingebettet sind. Loop bis stabil.
-3. **In `run-media-check.sh` verdrahten:** den toten `images-only.ts`(Codex)-Aufruf durch `generate-images-gemini.sh` ERSETZEN, Reihenfolge BILDER VOR Podcast/Video (Hero fuers Video-Poster). Bei Fehler greift weiter das needs-images-Netz. ERST nach erfolgreichem e2e-Test wiring (nicht ungetestet in den Nacht-Job).
+## OFFEN / optional (kein Blocker)
+1. **Naechsten echten Tagesartikel beobachten:** bei der naechsten Freigabe pruefen, dass der Nacht-Job die Bilder zieht UND `chosenHook` korrekt im MDX landet (approve-with-hook ist unit-getestet, der echte Mail-Klick→GitHub-Commit→chosenHook noch nicht live durchlaufen).
+2. **Robustheit gegen Google-Logout:** falls das Profil-Login mal verfaellt, feuert der Hero-Guard (Notification) + needs-images-Netz → `generate-images-gemini.sh login` neu einloggen. Optional spaeter zusaetzlich `agent-browser state save` als Cookie-Backup.
+3. **agent-browser-Exec interaktiv:** der Auto-Classifier blockt das Ausfuehren durch den Agenten ohne explizite User-Autorisierung; im launchd-Nacht-Cron laeuft es ohne Classifier.
 
 ## Hook im Headless-Modus — ENTSCHIEDEN + GEBAUT (commit `347a7b5`)
 Thomas 22.06: ein Klick auf Hook-Button 1/2/3 in der Review-Mail ist ZUGLEICH die Freigabe UND die Hook-Wahl. Umgesetzt + unit-getestet (141/141): `approvalToken` traegt optionalen 1-basierten Hook-Index; `reviewEmail` rendert pro Kandidat einen gruenen „Freigeben mit Hook N"-Button (ersetzt den einzelnen Approve-Button, wenn Hooks da sind); `/api/approve` liest den Index, schreibt `chosenHook` ins Artikel-Frontmatter beim Publish + in den Media-Marker; `build-image-plan.ts` bevorzugt `frontmatter.chosenHook` vor Kandidat 1. Reine Logik verifiziert; der LIVE-Loop (echter Mail-Klick → GitHub-Commit → chosenHook) wird erst durch eine echte Freigabe end-to-end durchlaufen — beim naechsten Tagesartikel pruefen, ob `chosenHook` korrekt im MDX landet.
