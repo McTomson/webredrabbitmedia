@@ -22,6 +22,9 @@ export function buildReviewEmail(a: ReviewArticle, secret: string): { subject: s
     const preview = `${SITE_URL}/tipps/${a.slug}`;
     const approve = `${SITE_URL}/api/approve?token=${signToken(a.slug, 'approve', secret)}`;
     const reject = `${SITE_URL}/api/approve?token=${signToken(a.slug, 'reject', secret)}`;
+    // approve-with-hook URL: a single click both PUBLISHES the article AND pins the chosen hook
+    // (1-based) so the night image step renders exactly that hook onto the hero. (Thomas 22.06)
+    const approveHook = (n: number) => `${SITE_URL}/api/approve?token=${signToken(a.slug, 'approve', secret, undefined, undefined, n)}`;
     const flagsLine = a.flags.length ? a.flags.join(', ') : 'keine';
     const sourcesList = a.sources.map((s) => `<li><a href="${s.url}">${s.name}</a></li>`).join('');
     // Just-in-time interview reminder (§12): when the editor flagged a missing first-hand
@@ -34,17 +37,28 @@ export function buildReviewEmail(a: ReviewArticle, secret: string): { subject: s
         ? `\nHINWEIS: Deine Meinung fehlt zu diesem Thema. Antworte kurz mit deiner Sicht oder /interview-me fuer ein 2-Minuten-Interview.\n`
         : '';
 
-    // Hook candidates for the hero image: Thomas picks one (reply with the number), then the
-    // chosen hook is rendered onto the turquoise->blue gradient hero when the images are made.
+    // Hook candidates for the hero image. A click on a hook button below BOTH publishes the
+    // article AND pins that hook (one tap = Freigabe + Hook-Wahl), then the night image step
+    // renders exactly that hook onto the gradient hero. (Thomas 22.06)
     const hooks = (a.hooks || []).filter((h) => h && h.trim()).slice(0, 3);
     const hooksHtml = hooks.length
-        ? `<div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:9px;padding:12px 14px;margin:0 0 18px;font-size:13px;color:#065f46;line-height:1.6"><strong>Hook fuers Titelbild, bitte einen waehlen:</strong><ol style="margin:8px 0 0;padding-left:20px">${hooks
+        ? `<div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:9px;padding:12px 14px;margin:0 0 14px;font-size:13px;color:#065f46;line-height:1.6"><strong>Hook fuers Titelbild &mdash; ein Klick unten gibt frei UND setzt den Hook:</strong><ol style="margin:8px 0 0;padding-left:20px">${hooks
               .map((h) => `<li style="margin:0 0 3px">"${h.replace(/</g, '&lt;')}"</li>`)
-              .join('')}</ol><div style="margin-top:8px;color:#047857">Antworte mit der Nummer (1 bis ${hooks.length}), dann setze ich den Hook aufs Hero-Bild. Eigener Vorschlag jederzeit ok.</div></div>`
+              .join('')}</ol></div>`
         : '';
     const hooksText = hooks.length
-        ? `\nHOOK fuers Titelbild (bitte einen waehlen, antworte mit der Nummer):\n${hooks.map((h, i) => `  ${i + 1}) "${h}"`).join('\n')}\n`
+        ? `\nHOOK fuers Titelbild (ein Klick = Freigabe + Hook):\n${hooks.map((h, i) => `  ${i + 1}) "${h}"  -> ${approveHook(i + 1)}`).join('\n')}\n`
         : '';
+    // The action buttons: when hooks exist, the 3 hook buttons ARE the approve action (each pins
+    // its hook). A plain hook-less approve stays only as the no-hooks fallback.
+    const hookButtonsHtml = hooks.length
+        ? hooks
+              .map(
+                  (h, i) =>
+                      `<a href="${approveHook(i + 1)}" style="display:block;text-align:center;background:#1a7f37;color:#fff;text-decoration:none;padding:13px;border-radius:9px;margin-bottom:10px;font-weight:600">Freigeben mit Hook ${i + 1}: &bdquo;${h.replace(/</g, '&lt;')}&ldquo;</a>`,
+              )
+              .join('')
+        : `<a href="${approve}" style="display:block;text-align:center;background:#1a7f37;color:#fff;text-decoration:none;padding:13px;border-radius:9px;margin-bottom:10px;font-weight:600">Freigeben und veroeffentlichen</a>`;
 
     const subject = `Neuer Tipps-Artikel zur Freigabe: ${a.title}`;
     const html = `<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
@@ -62,14 +76,15 @@ ${opinionHintHtml}
 ${hooksHtml}
 <div style="margin:0 0 22px">
 <a href="${preview}" style="display:block;text-align:center;background:#111;color:#fff;text-decoration:none;padding:13px;border-radius:9px;margin-bottom:10px;font-weight:600">Artikel live ansehen</a>
-<a href="${approve}" style="display:block;text-align:center;background:#1a7f37;color:#fff;text-decoration:none;padding:13px;border-radius:9px;margin-bottom:10px;font-weight:600">Freigeben und veroeffentlichen</a>
+${hookButtonsHtml}
 <a href="${reject}" style="display:block;text-align:center;background:#fff;color:#b42318;border:1px solid #b42318;text-decoration:none;padding:12px;border-radius:9px;font-weight:600">Ablehnen / Aenderungen</a>
 </div>
 <p style="font-size:13px;color:#666;margin:0 0 6px">Quellen im Artikel:</p>
 <ul style="font-size:13px;color:#555;line-height:1.5;margin:0 0 16px;padding-left:18px">${sourcesList}</ul>
 <p style="font-size:12px;color:#999;margin:0">Antworten Sie auf diese Mail mit Aenderungswuenschen, ich arbeite sie ein. Der Artikel ist bis zur Freigabe nicht bei Google sichtbar.</p>
 </div></body></html>`;
-    const text = `${a.title}\n\n${a.excerpt}\n\nAutor: ${a.author} | ${a.wordCount} Woerter | ${a.sources.length} Quellen | Risiko: ${a.risk}\nFlags: ${flagsLine}\n${opinionHintText}${hooksText}\nAnsehen: ${preview}\nFreigeben: ${approve}\nAblehnen: ${reject}\n`;
+    const plainApproveText = hooks.length ? '' : `Freigeben: ${approve}\n`;
+    const text = `${a.title}\n\n${a.excerpt}\n\nAutor: ${a.author} | ${a.wordCount} Woerter | ${a.sources.length} Quellen | Risiko: ${a.risk}\nFlags: ${flagsLine}\n${opinionHintText}${hooksText}\nAnsehen: ${preview}\n${plainApproveText}Ablehnen: ${reject}\n`;
     return { subject, html, text };
 }
 

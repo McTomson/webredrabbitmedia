@@ -36,4 +36,21 @@ describe('approval token', () => {
     it('rejects malformed input', () => {
         expect(verifyToken('garbage', SECRET).valid).toBe(false);
     });
+
+    it('carries an optional hook index (approve-with-hook)', () => {
+        const t = signToken('s', 'approve', SECRET, 3600, 1000, 2);
+        const r = verifyToken(t, SECRET, 1100);
+        expect(r).toMatchObject({ valid: true, slug: 's', action: 'approve', hook: 2 });
+    });
+
+    it('omits hook when none was signed', () => {
+        const t = signToken('s', 'approve', SECRET, 3600, 1000);
+        expect(verifyToken(t, SECRET, 1100).hook).toBeUndefined();
+    });
+
+    it('a hook token still fails if tampered', () => {
+        const t = signToken('s', 'approve', SECRET, 3600, 1000, 3);
+        const tampered = t.slice(0, -2) + (t.slice(-2) === 'aa' ? 'bb' : 'aa');
+        expect(verifyToken(tampered, SECRET, 1100).valid).toBe(false);
+    });
 });

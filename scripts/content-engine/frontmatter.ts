@@ -50,6 +50,9 @@ const schema = z
         // Up to 3 hook candidates for the hero image (handwritten teaser). Thomas picks one in his
         // review-mail reply. Optional: only present once the engine has proposed hooks.
         hookCandidates: z.array(z.string().min(1)).max(3).optional(),
+        // The hook Thomas chose via the review email (approve-with-hook). Written by /api/approve;
+        // build-image-plan.ts renders it onto the hero. Optional: only set after an approve-with-hook.
+        chosenHook: z.string().min(1).optional(),
     })
     .refine((fm) => fm.autoGenerateFAQs !== false || (fm.customFAQs && fm.customFAQs.length > 0), {
         message: 'autoGenerateFAQs:false braucht mind. 1 customFAQ (sonst leere FAQ)',

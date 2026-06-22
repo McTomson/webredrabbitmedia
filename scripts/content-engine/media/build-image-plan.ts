@@ -74,7 +74,7 @@ function main() {
     if (!fs.existsSync(file)) throw new Error(`Artikel nicht gefunden: ${file}`);
 
     const parsed = matter(fs.readFileSync(file, 'utf8'));
-    const fm = parsed.data as { title?: string; hookCandidates?: string[] };
+    const fm = parsed.data as { title?: string; hookCandidates?: string[]; chosenHook?: string };
     const body = stripInlineBlogImages(parsed.content);
     const headings = [...body.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim());
 
@@ -107,9 +107,13 @@ function main() {
     } else {
         colorIdx = pickHeroColorIndex();
         const candidates = Array.isArray(fm.hookCandidates) ? fm.hookCandidates : [];
+        // Priority: explicit CLI override > the hook Thomas chose via the review email
+        // (frontmatter.chosenHook, written by /api/approve) > a CLI index > candidate 1 > none.
         if (noHook) hook = null;
         else if (hookOverride) hook = hookOverride.trim();
-        else hook = candidates[hookIndexArg]?.trim() || candidates[0]?.trim() || null;
+        else if (fm.chosenHook?.trim()) hook = fm.chosenHook.trim();
+        else if (args.includes('--hook-index')) hook = candidates[hookIndexArg]?.trim() || null;
+        else hook = candidates[0]?.trim() || null;
         fs.writeFileSync(metaFile, JSON.stringify({ colorIdx, hook }, null, 2));
     }
 

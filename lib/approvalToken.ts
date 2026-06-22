@@ -11,6 +11,7 @@ interface Payload {
     slug: string;
     action: ApprovalAction;
     exp: number; // unix seconds
+    hook?: number; // 1-based hook-candidate index chosen via the review email (approve-with-hook)
 }
 
 function b64url(buf: Buffer | string): string {
@@ -25,9 +26,10 @@ function sign(data: string, secret: string): string {
     return b64url(crypto.createHmac('sha256', secret).update(data).digest());
 }
 
-export function signToken(slug: string, action: ApprovalAction, secret: string, ttlSeconds = 7 * 24 * 3600, nowSec?: number): string {
+export function signToken(slug: string, action: ApprovalAction, secret: string, ttlSeconds = 7 * 24 * 3600, nowSec?: number, hook?: number): string {
     const now = nowSec ?? Math.floor(Date.now() / 1000);
     const payload: Payload = { slug, action, exp: now + ttlSeconds };
+    if (typeof hook === 'number') payload.hook = hook;
     const body = b64url(JSON.stringify(payload));
     return `${body}.${sign(body, secret)}`;
 }
@@ -37,6 +39,7 @@ export interface VerifyResult {
     expired?: boolean;
     slug?: string;
     action?: ApprovalAction;
+    hook?: number; // 1-based chosen hook index, if the token carried one
     reason?: string;
 }
 
@@ -57,7 +60,7 @@ export function verifyToken(token: string, secret: string, nowSec?: number): Ver
         return { valid: false, reason: 'bad payload' };
     }
     if (typeof payload.exp !== 'number' || payload.exp < now) {
-        return { valid: false, expired: true, slug: payload.slug, action: payload.action, reason: 'expired' };
+        return { valid: false, expired: true, slug: payload.slug, action: payload.action, hook: payload.hook, reason: 'expired' };
     }
-    return { valid: true, slug: payload.slug, action: payload.action };
+    return { valid: true, slug: payload.slug, action: payload.action, hook: payload.hook };
 }

@@ -37,16 +37,25 @@ describe('buildReviewEmail', () => {
         expect(mail.text).toMatch(/Risiko: high/);
     });
 
-    it('shows hook candidates with a pick-by-number instruction only when hooks are present', () => {
+    it('renders a one-click approve-with-hook button per candidate (Freigabe + Hook in einem)', () => {
         expect(mail.html).not.toContain('Hook fuers Titelbild');
         const withHooks = buildReviewEmail(
             { ...article, hooks: ['website gleich zahlen?', 'wann zahl ich?', 'erst zahlen, oder?'] },
             'secret',
         );
         expect(withHooks.html).toContain('Hook fuers Titelbild');
+        // one approve button per hook, each labelled with its hook text
+        expect(withHooks.html).toContain('Freigeben mit Hook 1');
+        expect(withHooks.html).toContain('Freigeben mit Hook 2');
+        expect(withHooks.html).toContain('Freigeben mit Hook 3');
         expect(withHooks.html).toContain('website gleich zahlen?');
-        expect(withHooks.html).toMatch(/Antworte mit der Nummer/);
-        expect(withHooks.text).toMatch(/1\) "website gleich zahlen\?"/);
+        // the plain hook-less approve button is NOT shown when hooks exist (the hook buttons ARE approve)
+        expect(withHooks.html).not.toContain('Freigeben und veroeffentlichen');
+        // each hook approve link carries a DISTINCT signed token (different hook index)
+        const tokens = [...withHooks.html.matchAll(/\/api\/approve\?token=([^"&]+)/g)].map((m) => m[1]);
+        expect(new Set(tokens).size).toBeGreaterThanOrEqual(4); // 3 hooks + reject
+        // text version lists each numbered hook with its own approve URL
+        expect(withHooks.text).toMatch(/1\) "website gleich zahlen\?"\s+->\s+\S*\/api\/approve\?token=/);
         expect(/[–—]/.test(withHooks.html)).toBe(false); // Guardrail 8 still holds
     });
 

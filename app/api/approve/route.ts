@@ -1,6 +1,7 @@
 import { verifyToken } from '@/lib/approvalToken';
 import { submitUrlToIndexNow } from '@/lib/indexnow';
 import { SITE_URL } from '@/lib/config';
+import { pickHook, setChosenHook } from '@/lib/chosenHook';
 
 export const runtime = 'nodejs';
 
@@ -81,11 +82,23 @@ export async function GET(req: Request): Promise<Response> {
         }
 
         const today = new Date().toISOString().slice(0, 10);
-        const updated = file.content
+        let updated = file.content
             .replace(/^status:\s*["']?draft["']?\s*$/m, 'status: "published"')
             .replace(/^updatedAt:\s*["']?[\d-]+["']?\s*$/m, `updatedAt: "${today}"`);
 
-        await ghPut(repo, path, ghToken, updated, file.sha, `feat(blog): publish ${slug} (approved via review email)`);
+        // approve-with-hook: pin the chosen hook into the frontmatter so the night image step
+        // renders exactly this hook onto the hero (one click = Freigabe + Hook-Wahl). Out-of-range
+        // index -> no chosenHook written (image step falls back to candidate 1).
+        let chosenHook: string | null = null;
+        if (typeof v.hook === 'number') {
+            chosenHook = pickHook(file.content, v.hook);
+            if (chosenHook) updated = setChosenHook(updated, chosenHook);
+        }
+
+        const commitMsg = chosenHook
+            ? `feat(blog): publish ${slug} + hook (approved via review email)`
+            : `feat(blog): publish ${slug} (approved via review email)`;
+        await ghPut(repo, path, ghToken, updated, file.sha, commitMsg);
 
         // Best-effort search-engine ping (non-blocking failure).
         let indexNote = '';
@@ -102,14 +115,19 @@ export async function GET(req: Request): Promise<Response> {
         // media run (Claude session / scheduled task) picks up, then it sends the final mail.
         try {
             const markerPath = `content-engine/.media-requests/${slug}.json`;
-            const marker = JSON.stringify({ slug, requestedAt: today, status: 'requested' }, null, 2) + '\n';
+            const markerData: Record<string, unknown> = { slug, requestedAt: today, status: 'requested' };
+            if (chosenHook) { markerData.chosenHook = chosenHook; markerData.hookIndex = v.hook; }
+            const marker = JSON.stringify(markerData, null, 2) + '\n';
             const existing = await ghGet(repo, markerPath, ghToken);
             await ghPut(repo, markerPath, ghToken, marker, existing?.sha, `chore(media): enqueue media for ${slug}`);
         } catch {
             /* best-effort; media can also be enqueued manually via /api/media-trigger */
         }
 
-        return page('Freigegeben und veroeffentlicht', `<p>Der Artikel <strong>${slug}</strong> ist jetzt online. Vercel deployt die Aenderung in ein, zwei Minuten.</p>${indexNote}<p><a href="${previewUrl}">Artikel ansehen</a></p>`);
+        const hookNote = chosenHook
+            ? `<p>Hook fuers Titelbild gesetzt: &bdquo;${chosenHook.replace(/</g, '&lt;')}&ldquo;. Er kommt beim Bild-Schritt aufs Hero.</p>`
+            : '';
+        return page('Freigegeben und veroeffentlicht', `<p>Der Artikel <strong>${slug}</strong> ist jetzt online. Vercel deployt die Aenderung in ein, zwei Minuten.</p>${hookNote}${indexNote}<p><a href="${previewUrl}">Artikel ansehen</a></p>`);
     } catch (e: unknown) {
         const msg = e instanceof Error ? e.message : String(e);
         return page('Fehler bei der Freigabe', `<p>${msg}</p><p>Bitte spaeter erneut versuchen oder lokal freigeben.</p>`, false);
