@@ -124,7 +124,20 @@ if { [ -n "$PODCAST_FILE" ] && [ -f "$PODCAST_FILE" ]; } || [ -n "$VIDEO_FILE" ]
     if npx tsx scripts/content-engine/media/run-media.ts "${RM_ARGS[@]}" 2>&1; then
         WHAT="Podcast"; [ -n "$VIDEO_FILE" ] && { [ -n "$PODCAST_FILE" ] && WHAT="Podcast + Video" || WHAT="Video"; }
         echo "Medien-Tail fertig. Artikel hat jetzt $WHAT live."
-        osascript -e "display notification \"$WHAT fuer '$SLUG' ist automatisch live. Substack-Draft ggf. noch manuell.\" with title \"Red Rabbit Media\" subtitle \"Medien auto-publiziert\" sound name \"Glass\"" 2>/dev/null || true
+        # TRIGGER WASSERDICHT (22.06): run-media hat den Marker geloescht ("fertig"). Fehlt aber das
+        # Hero (Codex leer), ist der Artikel NICHT fertig -> Bilder muessen noch via Gemini-Browser
+        # rein. Frueher wurde hier still beendet und der Gemini-Schritt nie ausgeloest. Jetzt: einen
+        # PERSISTENTEN needs-images-Marker neu anlegen, damit die naechste Claude+Chrome-Session (oder
+        # generate-images-gemini.sh) den Bildschritt zuverlaessig nachzieht. Plus laute Notification.
+        if [ ! -f "public/images/blog/${SLUG}.png" ]; then
+            mkdir -p "$MEDIA_DIR"
+            node -e 'const fs=require("fs");const f=process.argv[1],slug=process.argv[2];fs.writeFileSync(f,JSON.stringify({slug,status:"needs-images",reason:"codex-leer",requestedAt:new Date().toISOString().slice(0,10)},null,2))' \
+                "$MEDIA_DIR/${SLUG}.json" "$SLUG" 2>/dev/null || true
+            echo "NEEDS-IMAGES: Marker fuer $SLUG behalten — Gemini-Bildschritt steht aus."
+            osascript -e "display notification \"$WHAT fuer '$SLUG' live, aber BILDER fehlen (Codex leer) -> Gemini-Bildschritt nachziehen.\" with title \"Red Rabbit Media\" subtitle \"Bilder ausstehend (needs-images)\" sound name \"Basso\"" 2>/dev/null || true
+        else
+            osascript -e "display notification \"$WHAT fuer '$SLUG' ist automatisch live. Substack-Draft ggf. noch manuell.\" with title \"Red Rabbit Media\" subtitle \"Medien auto-publiziert\" sound name \"Glass\"" 2>/dev/null || true
+        fi
         echo "==== fertig $(date) ===="
         exit 0
     fi
