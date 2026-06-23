@@ -797,3 +797,48 @@ quelle: https://www.dcm-net.de/blog/8-wochen-website-projektablauf.html
 quelle_name: dcm-net - In 8 Wochen zur fertigen Website: Der realistische Projektablauf
 geprueft_am: 2026-06-22
 recheck_nach: 2026-12-19
+
+## t20-2026-06-22-089
+cluster: 1
+keywords: viele, korrekturschleifen, sind, einem, projekt, üblich
+aussage: In der Regel enthalten Webdesignprojekte ein bis drei Korrekturschleifen, die erfahrungsgemäß vollkommen ausreichend sind; mindestens eine Korrekturschleife kommt bei praktisch jedem Projekt vor und ist ein normaler Teil des Designprozesses.
+quelle: https://www.webdesign-journal.de/korrekturschleife/
+quelle_name: Webdesign-Journal - Korrekturschleifen im Webdesign
+geprueft_am: 2026-06-22
+recheck_nach: 2026-12-19
+
+## t20-2026-06-22-090
+cluster: 1
+keywords: viele, korrekturschleifen, sind, einem, projekt, üblich
+aussage: Österreichische Agentur WEBU staffelt die inkludierten Korrekturschleifen nach Paket: Starter = 1 Korrekturschleife, Business = 2 Korrekturschleifen, Premium = 3 Korrekturschleifen (gilt für Kauf- und Mietmodell).
+quelle: https://webu.at/preise/
+quelle_name: WEBU (AT) - Webdesign Preise 2026
+geprueft_am: 2026-06-22
+recheck_nach: 2026-12-19
+
+## t20-2026-06-22-091
+cluster: 1
+keywords: viele, korrekturschleifen, sind, einem, projekt, üblich
+aussage: Österreichische Agentur WEB DIR WAS inkludiert je nach Website-Paket konkrete Schleifen: Basic Starter = 1 Korrekturschleife, Onepager Deluxe und Advanced Website = je 2 Korrekturschleifen; Print-Produkte enthalten je 2 Feedbackschleifen.
+quelle: https://webdirwas.at/services-und-preise/
+quelle_name: WEB DIR WAS (AT) - Services und Preise
+geprueft_am: 2026-06-22
+recheck_nach: 2026-12-19
+
+## t20-2026-06-22-092
+cluster: 1
+keywords: viele, korrekturschleifen, sind, einem, projekt, üblich
+aussage: Im Agenturbereich werden dem Auftraggeber meist ein bis zwei Korrekturschleifen zugestanden; eine typische Vertragsformulierung lautet 'Zwei Korrekturschleifen inklusive, weitere Anpassungen werden nach Stundenlohn abgerechnet' — daher sollte die Anzahl explizit im Angebot/Vertrag festgehalten werden.
+quelle: https://page-online.de/branche-karriere/angebote-richtig-schreiben-tipps-fuer-designer-und-agenturen/
+quelle_name: PAGE Online - Angebote richtig schreiben (Tipps für Designer und Agenturen)
+geprueft_am: 2026-06-22
+recheck_nach: 2026-12-19
+
+## t20-2026-06-22-093
+cluster: 1
+keywords: viele, korrekturschleifen, sind, einem, projekt, üblich
+aussage: Beim Prüfen eines Webdesign-Angebots gilt: Die Zahl der inkludierten Korrekturschleifen muss konkret beschrieben sein, da jede weitere Korrekturrunde nach Stundensatz abgerechnet wird und der Aufwand bei mehreren Entscheidern mit unterschiedlichen Vorstellungen schnell stark steigt.
+quelle: https://www.kareon.de/webdesign-angebot-pruefen-worauf-achten/
+quelle_name: Kareon - Webdesign-Angebot prüfen: Worauf du wirklich achten musst
+geprueft_am: 2026-06-22
+recheck_nach: 2026-12-19
