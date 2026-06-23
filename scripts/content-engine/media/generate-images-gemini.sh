@@ -104,6 +104,22 @@ valid_png() { [ -f "$1" ] && [ "$(stat -f%z "$1" 2>/dev/null || echo 0)" -gt 204
 # │ Everything OUTSIDE this function (plan, idempotency, decode, apply, fail-    │
 # │ closed) is already verified and does not depend on the calibration.         │
 # └────────────────────────────────────────────────────────────────────────────┘
+# Open Gemini and confirm the page is ACTUALLY loaded there before proceeding. On a COLD
+# agent-browser daemon `open` returns nonzero with "Could not configure browser (os error 35)"
+# YET the browser still finishes launching ~16s later (verified 23.06 — manual patient open
+# succeeded while the script's `open || return 1` gave up). So we do NOT trust the exit code:
+# we poll get-url until we are on gemini.google.com (up to ~120s), which absorbs the slow
+# cold-start instead of treating the transient configure error as a fatal render failure.
+_ensure_gemini_loaded() {
+    local t=0 url=""
+    "${AB[@]}" open "$GEMINI_URL" >>"$LOG" 2>&1 || true
+    until printf '%s' "$url" | grep -q "gemini.google.com" || [ "$t" -ge 24 ]; do
+        sleep 5; t=$((t+1))
+        url="$("${AB[@]}" get url 2>/dev/null | grep -E '^https?://' | tail -1)"
+    done
+    printf '%s' "$url" | grep -q "gemini.google.com"
+}
+
 # Retry wrapper: transiente Gemini/agent-browser-Aussetzer kommen vor (v.a. beim ERSTEN Bild nach
 # Daemon-Kaltstart — beobachtet 22.06: Hero-Render-Timeout, danach auf Anhieb ok). Bis zu 3 Versuche.
 gemini_render() {
@@ -121,7 +137,8 @@ _gemini_render_once() {
     local dataurl_file; dataurl_file="$(mktemp /tmp/gemini-dataurl.XXXXXX)"
 
     # Fresh page = fresh conversation (clean context per image; profile keeps us logged in).
-    "${AB[@]}" open "$GEMINI_URL" >>"$LOG" 2>&1 || return 1
+    # Resilient open: tolerates the cold-start os-error-35 by verifying we landed on Gemini.
+    _ensure_gemini_loaded || return 1
     "${AB[@]}" wait --load networkidle >>"$LOG" 2>&1 || true
 
     # Type the prompt into Gemini's contenteditable input and submit.
@@ -147,6 +164,15 @@ _gemini_render_once() {
     rm -f "$dataurl_file"
     return 0
 }
+
+# Pre-warm the daemon ONCE: pay the slow cold-start here (outside any per-image retry budget) so
+# every per-image render below opens a warm, fast daemon. Non-fatal: if this can't reach Gemini the
+# per-image _ensure_gemini_loaded still retries, and the hero fail-closed guard catches a real outage.
+if _ensure_gemini_loaded; then
+    echo "  prewarm: Gemini geladen (Daemon warm)" | tee -a "$LOG"
+else
+    echo "  WARN prewarm: Gemini nicht erreichbar — pro-Bild-Retry greift, Hero-Guard sichert ab" | tee -a "$LOG"
+fi
 
 FAILED=0
 for line in "${IMG_LINES[@]}"; do
