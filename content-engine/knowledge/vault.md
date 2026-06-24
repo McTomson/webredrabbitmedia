@@ -842,3 +842,39 @@ quelle: https://www.kareon.de/webdesign-angebot-pruefen-worauf-achten/
 quelle_name: Kareon - Webdesign-Angebot prüfen: Worauf du wirklich achten musst
 geprueft_am: 2026-06-22
 recheck_nach: 2026-12-19
+
+## t21-2026-06-24-094
+cluster: 1
+keywords: passiert, direkt, nach, launch, website
+aussage: Direkt nach dem Launch greift in Österreich die Impressums- und Offenlegungspflicht: Nach § 5 ECG sowie §§ 24/25 Mediengesetz müssen u.a. Medieninhaber/Herausgeber, Anschrift, Kontakt und (bei wiederkehrenden elektronischen Medien) die Offenlegung der grundlegenden Ausrichtung online sein. Ein fehlendes/unvollständiges Impressum ist eine Verwaltungsübertretung und kann mit Geldstrafen bis zu 20.000 € geahndet werden.
+quelle: https://www.usp.gv.at/themen/brancheninformationen/information-und-kommunikation/impressumspflicht-gemaess-para-24-mediengesetz.html
+quelle_name: USP.gv.at (Unternehmensserviceportal Bund) - Impressumspflicht gemäß § 24 Mediengesetz
+geprueft_am: 2026-06-24
+recheck_nach: 2026-12-21
+
+## t21-2026-06-24-095
+cluster: 1
+keywords: passiert, direkt, nach, launch, website
+aussage: Nach dem Launch muss die Seite erst von Google entdeckt und indexiert werden. Das Einreichen einer XML-Sitemap in der Google Search Console ist laut Google ausdrücklich nur ein Hinweis ('merely a hint') und garantiert weder Crawling noch Indexierung — Google entscheidet selbst, ob und wann URLs aufgenommen werden.
+quelle: https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap
+quelle_name: Google Search Central - Build and submit a sitemap
+geprueft_am: 2026-06-24
+recheck_nach: 2026-12-21
+
+## t21-2026-06-24-096
+cluster: 1
+keywords: passiert, direkt, nach, launch, website
+aussage: Performance-Bewertung nach Launch braucht Geduld: Googles Core Web Vitals werden für das Ranking aus echten Nutzer-Felddaten (Chrome UX Report) über ein gleitendes 28-Tage-Fenster und am 75. Perzentil gemessen. Frische Seiten ohne genügend Traffic haben anfangs keine Felddaten. Schwellenwerte für 'gut': LCP ≤ 2,5 s, INP ≤ 200 ms, CLS ≤ 0,1.
+quelle: https://web.dev/articles/vitals
+quelle_name: web.dev (Google) - Core Web Vitals & Chrome UX Report
+geprueft_am: 2026-06-24
+recheck_nach: 2026-12-21
+
+## t21-2026-06-24-097
+cluster: 1
+keywords: passiert, direkt, nach, launch, website
+aussage: Mit dem Launch beginnen laufende Betriebskosten: Hosting, Wartung und Updates liegen typischerweise bei rund 50 bis 500 Euro pro Monat; reine professionelle Wartung wird oft mit 150 bis 500 Euro pro Monat angesetzt.
+quelle: https://davidkeiser.de/wissen/website-relaunch-kosten/
+quelle_name: David Keiser - Website Relaunch Kosten
+geprueft_am: 2026-06-24
+recheck_nach: 2026-12-21
