@@ -878,3 +878,48 @@ quelle: https://davidkeiser.de/wissen/website-relaunch-kosten/
 quelle_name: David Keiser - Website Relaunch Kosten
 geprueft_am: 2026-06-24
 recheck_nach: 2026-12-21
+
+## t22-2026-06-25-098
+cluster: 1
+keywords: lange, dauert, kompletter, website, relaunch
+aussage: Ein professioneller Website-Relaunch dauert typischerweise 3 bis 5 Monate und gliedert sich in sechs Phasen: Analyse & Briefing (2-4 Wochen), Konzept & Architektur (2-3 Wochen), Design (3-5 Wochen), Entwicklung (4-8 Wochen), Testing & QS (1-2 Wochen) sowie Go-live & Post-Launch (2-4 Wochen).
+quelle: https://rheinspace.de/insights/website-relaunch/
+quelle_name: rheinspace - Website Relaunch 2026: Ablauf & Zeitrahmen
+geprueft_am: 2026-06-25
+recheck_nach: 2026-12-22
+
+## t22-2026-06-25-099
+cluster: 1
+keywords: lange, dauert, kompletter, website, relaunch
+aussage: Die Relaunch-Dauer skaliert stark mit dem Umfang: kleine Sites (10-20 Seiten) 8-12 Wochen, mittelgrosse (30-75 Seiten) 12-16 Wochen, grosse (100+ Seiten) 16-24 Wochen, Enterprise-Projekte mit komplexen Integrationen 6-12 Monate.
+quelle: https://cliquestudios.com/faq/website-redesign-timeline-and-process
+quelle_name: Clique Studios - Website Redesign Timeline & Process
+geprueft_am: 2026-06-25
+recheck_nach: 2026-12-22
+
+## t22-2026-06-25-100
+cluster: 1
+keywords: lange, dauert, kompletter, website, relaunch
+aussage: Geplante Relaunch-Zeitplaene werden haeufig um 30-50 % ueberschritten, wenn Kunden Feedback/Freigaben verzoegern, Content nicht fertig ist oder mitten im Projekt der Scope erweitert wird; umgekehrt laesst sich der Zeitplan durch vorbereiteten Content und einen einzigen Entscheider um 25-30 % verkuerzen.
+quelle: https://cliquestudios.com/faq/website-redesign-timeline-and-process
+quelle_name: Clique Studios - Website Redesign Timeline & Process
+geprueft_am: 2026-06-25
+recheck_nach: 2026-12-22
+
+## t22-2026-06-25-101
+cluster: 1
+keywords: lange, dauert, kompletter, website, relaunch
+aussage: Als oesterreichischer Referenzwert: Die Erstellung einer professionellen Business-Website dauert 2026 durchschnittlich 4 bis 8 Wochen (Strategie 1 Woche, Design & Prototyping 2 Wochen, Entwicklung 2-3 Wochen, Content & QS 1 Woche) - ein Relaunch liegt aufwandsseitig meist im oberen Bereich oder darueber, da Konzept, Design und Technik neu gedacht werden.
+quelle: https://web.redrabbit.media/tipps/wie-lange-dauert-website-erstellung
+quelle_name: Web Red Rabbit Media - Wie lange dauert eine Website-Erstellung?
+geprueft_am: 2026-06-25
+recheck_nach: 2026-12-22
+
+## t22-2026-06-25-102
+cluster: 1
+keywords: lange, dauert, kompletter, website, relaunch
+aussage: Ein strategischer Relaunch umfasst nicht nur die Technik, sondern eigene Budgets/Arbeitspakete fuer Strategie & Konzeption, UX/UI-Design, technische Umsetzung & CMS, Content-Ueberarbeitung & Migration sowie SEO & Performance - diese parallelen Gewerke bestimmen massgeblich die Gesamtdauer.
+quelle: https://www.jungmut.com/blog/was-kostet-ein-website-relaunch/
+quelle_name: JUNGMUT - Was kostet ein Website-Relaunch?
+geprueft_am: 2026-06-25
+recheck_nach: 2026-12-22
