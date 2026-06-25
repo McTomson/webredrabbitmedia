@@ -149,14 +149,22 @@ alert() { notify "alert" "Tageslauf-Fehler" "$1"; }
 # WiFi is often not reconnected yet for the first few seconds, so a single `git fetch` fails and
 # would abort the WHOLE day's article (observed 2026-06-20: 3 consecutive fails at 01:55/04:55/07:53,
 # no article, no mail). Retry with backoff up to ~2.5 min so a transient wake-time network blip is
-# non-fatal; only alert+exit if it is still unreachable after all attempts (a real outage).
+# non-fatal; only alert+exit if it is still unreachable after a full hour (a real outage).
+# 2026-06-25: a Mac waking from sleep took LONGER than the old 6x25s (~2.5 min) window to reconnect
+# WiFi, so the fetch gave up and the whole day's article/mail was lost. Fix per Thomas' intent
+# ("erst loslegen, wenn das Internet sicher da ist"): wait patiently up to 60 min for real
+# connectivity (a successful git fetch IS the proof the network is up) instead of a blind fixed
+# delay -> we proceed the second the net is back, and only treat a full hour of silence as an outage.
 fetch_ok=0
-for attempt in 1 2 3 4 5 6; do
+fetch_attempt=0
+fetch_deadline=$(( $(date +%s) + 3600 ))
+while [ "$(date +%s)" -lt "$fetch_deadline" ]; do
+  fetch_attempt=$((fetch_attempt + 1))
   if git fetch origin main >/dev/null 2>&1; then fetch_ok=1; break; fi
-  echo "WARN: git fetch Versuch $attempt fehlgeschlagen (Netzwerk noch nicht bereit?) — warte ..."
-  sleep 25
+  echo "WARN: git fetch Versuch $fetch_attempt fehlgeschlagen (Netz nach Aufwachen noch nicht bereit?) — warte 30s ..."
+  sleep 30
 done
-[ "$fetch_ok" = "1" ] || { alert "git fetch origin main nach 6 Versuchen fehlgeschlagen (Netzwerk?)"; exit 1; }
+[ "$fetch_ok" = "1" ] || { alert "git fetch origin main: 60 Min lang kein Netz erreichbar (echter Ausfall?)"; exit 1; }
 git reset --hard origin/main >/dev/null 2>&1 || { alert "git reset --hard origin/main fehlgeschlagen"; exit 1; }
 
 # Safety net for internal cluster linking. The primary path adds links per-publish inside
