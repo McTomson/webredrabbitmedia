@@ -923,3 +923,48 @@ quelle: https://www.jungmut.com/blog/was-kostet-ein-website-relaunch/
 quelle_name: JUNGMUT - Was kostet ein Website-Relaunch?
 geprueft_am: 2026-06-25
 recheck_nach: 2026-12-22
+
+## t23-2026-06-25-103
+cluster: 1
+keywords: kann, alte, domain, beim, relaunch, behalten, werden
+aussage: Die Domain ist beim Relaunch unabhaengig von Agentur, Hosting-Provider und CMS und kann immer behalten werden: Wechselt man den Provider, wird die .at-Domain per AuthInfo-Code (eindeutiger Sicherheitscode des Inhabers) zum neuen Registrar transferiert. Der Transfer ist kostenlos und bei .at-Domains binnen weniger Minuten abgeschlossen.
+quelle: https://www.nic.at/de/so-funktioniert-at/domain-inhaber
+quelle_name: nic.at - Domain-Inhaber (offizielle .at-Registry)
+geprueft_am: 2026-06-25
+recheck_nach: 2026-12-22
+
+## t23-2026-06-25-104
+cluster: 1
+keywords: kann, alte, domain, beim, relaunch, behalten, werden
+aussage: Der bestehende Registrar MUSS den AuthInfo-Code zur Domain-Uebertragung herausgeben, auch wenn noch offene Rechnungen bestehen. Verweigert er die Herausgabe, bietet nic.at ein Ersatzverfahren: Der neue Registrar fordert bei nic.at ein 21 Tage gueltiges Bestaetigungs-Token an, mit dem die Domain uebernommen werden kann.
+quelle: https://www.nic.at/de/so-funktioniert-at/faqs/domain-inhaber
+quelle_name: nic.at - FAQ Domain-Inhaber
+geprueft_am: 2026-06-25
+recheck_nach: 2026-12-22
+
+## t23-2026-06-25-105
+cluster: 1
+keywords: kann, alte, domain, beim, relaunch, behalten, werden
+aussage: Wenn beim Relaunch zwar die Domain bleibt, sich aber URLs/Seitenstruktur aendern, gehen mit dauerhaften (301/308) serverseitigen Weiterleitungen keine PageRank-Signale verloren. Google empfiehlt permanente Server-Redirects als beste Methode, damit Ranking-Signale und Nutzer auf die richtige Seite uebertragen werden.
+quelle: https://developers.google.com/search/docs/crawling-indexing/301-redirects
+quelle_name: Google Search Central - Redirects and Google Search
+geprueft_am: 2026-06-25
+recheck_nach: 2026-12-22
+
+## t23-2026-06-25-106
+cluster: 1
+keywords: kann, alte, domain, beim, relaunch, behalten, werden
+aussage: Auch bei korrekter Umsetzung sind nach einem Relaunch voruebergehende Ranking-Schwankungen normal: Google muss neu crawlen und indexieren; bei einer mittelgrossen Website dauert es in der Regel einige Wochen, bis die meisten Seiten im Index aktualisiert sind, bei grossen Sites laenger. Das Einreichen einer aktualisierten Sitemap in der Search Console beschleunigt die Erfassung.
+quelle: https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes
+quelle_name: Google Search Central - Site Moves and Migrations
+geprueft_am: 2026-06-25
+recheck_nach: 2026-12-22
+
+## t23-2026-06-25-107
+cluster: 1
+keywords: kann, alte, domain, beim, relaunch, behalten, werden
+aussage: Beim Inhaberwechsel (z. B. neue Agentur uebernimmt die Domain-Verwaltung) mit gleichzeitigem Registrar-Wechsel fuehrt der neue Registrar zuerst den Transfer per AuthInfo durch und aendert danach die Inhaberdaten; die Domain bleibt waehrend des Vorgangs erreichbar, DNS-Aenderungen koennen jedoch bis zu 24 Stunden zur weltweiten Verbreitung brauchen.
+quelle: https://www.nic.at/de/so-funktioniert-at/domain-inhaber
+quelle_name: nic.at - Domain-Inhaber / Inhaberwechsel
+geprueft_am: 2026-06-25
+recheck_nach: 2026-12-22
