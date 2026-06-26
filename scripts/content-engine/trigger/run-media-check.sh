@@ -39,6 +39,28 @@ LOG="$WORK/media-check-$(date +%F).log"
 exec >>"$LOG" 2>&1
 echo "==== media-check $(date) ===="
 
+# Concurrency-Lock: der headless Bildschritt dauert viele Minuten. OHNE Lock startet der 30-Min-
+# launchd-Tick einen ZWEITEN Lauf, waehrend der erste noch rendert -> mehrere agent-browser-Daemons
+# + Chrome-Instanzen stapeln sich (beobachtet 2026-06-26: parallele Laeufe -> ~180 chrome-Prozesse,
+# Last 74). Ein PID-Lock (stale nach 90 Min => ueberlebt auch einen -9-Kill) macht ueberlappende
+# Ticks zu No-Ops. Liegt VOR dem date-Stamp, weil der Stamp manuell oft entfernt wird.
+LOCK="$WORK/media-check.lock"
+if [ -f "$LOCK" ] && [ "$(find "$LOCK" -mmin -90 2>/dev/null)" ]; then
+    echo "Media-Lauf laeuft bereits (Lock aktiv) — Abbruch."
+    exit 0
+fi
+echo $$ > "$LOCK"
+trap 'rm -f "$LOCK"' EXIT
+
+# Last-Schutz: bei extremer Systemlast kommt der headless Render ohnehin nicht durch und stapelt nur
+# Browser. Dann diesen Tick ueberspringen OHNE Stamp -> der naechste Tick versucht es erneut, sobald
+# die Maschine ruhiger ist (verhindert den Grind-bei-Last-74 vom 2026-06-26).
+LOAD1="$(sysctl -n vm.loadavg 2>/dev/null | awk '{print $2}' | tr ',' '.')"
+if awk -v a="${LOAD1:-0}" 'BEGIN{exit !(a+0 > 30)}'; then
+    echo "Systemlast $LOAD1 zu hoch (>30) — Media-Tick uebersprungen, Retry beim naechsten Tick."
+    exit 0
+fi
+
 # Schon heute getriggert — nichts tun.
 if [ -f "$STAMP" ]; then
     echo "Heute schon getriggert. Abbruch."

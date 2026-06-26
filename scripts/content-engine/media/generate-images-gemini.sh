@@ -64,6 +64,13 @@ fi
 
 SLUG="${1:-}"
 [ -n "$SLUG" ] || { echo "Usage: $0 <slug> | login"; exit 2; }
+
+# Cleanup: agent-browser-Daemon + Chrome bei JEDEM Exit dieses Skripts schliessen (Erfolg ODER Fehler),
+# damit ein fehlgeschlagener/abgebrochener Render keine verwaisten chrome-150-Prozesse hinterlaesst,
+# die sich ueber Laeufe hinweg stapeln (beobachtet 2026-06-26: ~90 Orphan-Chrome -> Last 74). NUR im
+# Normal-Pfad (der einmalige `login` oben haelt den Browser bewusst offen und endet vorher per exit).
+trap '"${AB[@]}" close --all >/dev/null 2>&1 || true' EXIT
+
 STAGE="scripts/content-engine/.work/${SLUG}-staging"
 mkdir -p "$STAGE"
 LOG="$STAGE/gemini-images.log"
