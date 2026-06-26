@@ -65,8 +65,10 @@ trap 'rmdir "$LOCKDIR" 2>/dev/null || rm -rf "$LOCKDIR" 2>/dev/null' EXIT
 # Browser. Dann diesen Tick ueberspringen OHNE Stamp -> der naechste Tick versucht es erneut, sobald
 # die Maschine ruhiger ist (verhindert den Grind-bei-Last-74 vom 2026-06-26).
 LOAD1="$(sysctl -n vm.loadavg 2>/dev/null | awk '{print $2}' | tr ',' '.')"
-if awk -v a="${LOAD1:-0}" 'BEGIN{exit !(a+0 > 30)}'; then
-    echo "Systemlast $LOAD1 zu hoch (>30) — Media-Tick uebersprungen, Retry beim naechsten Tick."
+if awk -v a="${LOAD1:-0}" 'BEGIN{exit !(a+0 > 12)}'; then
+    echo "Systemlast $LOAD1 zu hoch (>12) — Media-Tick uebersprungen, Retry beim naechsten Tick."
+    echo "(Headless-Gemini-Render braucht eine ruhige Maschine; verifiziert 2026-06-26: bei Last 16-30"
+    echo " laufen die ctx-Renders in den Timeout, bei Last <8 gelingt der Hero in Sekunden.)"
     exit 0
 fi
 
