@@ -968,3 +968,39 @@ quelle: https://www.nic.at/de/so-funktioniert-at/domain-inhaber
 quelle_name: nic.at - Domain-Inhaber / Inhaberwechsel
 geprueft_am: 2026-06-25
 recheck_nach: 2026-12-22
+
+## t24-2026-06-26-108
+cluster: 1
+keywords: viel, eigene, zeit, muss, website, projekt, investiert, werden
+aussage: Ein professionelles Website-Projekt dauert in der Regel vier bis acht Wochen (von Konzeption über Design bis Launch), bei komplexeren Projekten zehn bis zwölf Wochen. Über diesen Zeitraum verteilt sich die eigene Mitwirkung des Auftraggebers (Briefing, Inhalte, Freigaben).
+quelle: https://davidkeiser.de/wissen/wie-lange-dauert-website-erstellen/
+quelle_name: David Keiser - Wie lange dauert die Erstellung einer Website? Der realistische Zeitplan
+geprueft_am: 2026-06-26
+recheck_nach: 2026-12-23
+
+## t24-2026-06-26-109
+cluster: 1
+keywords: viel, eigene, zeit, muss, website, projekt, investiert, werden
+aussage: Der eigene Zeiteinsatz ist der kritische Engpass: 'Fehlt das Feedback an einer Stelle, stockt das ganze Projekt. Der Klassiker: Feedback zum Text bleibt aus, der/die Designer/in kann aber ohne Text nicht starten.' Ausbleibende Texte und Freigaben des Kunden blockieren also den ganzen Prozess.
+quelle: https://textstrategin.de/dauer-website-erstellung/
+quelle_name: Textstrategin - Website-Aufbau: so lange dauert er im Schnitt
+geprueft_am: 2026-06-26
+recheck_nach: 2026-12-23
+
+## t24-2026-06-26-110
+cluster: 1
+keywords: viel, eigene, zeit, muss, website, projekt, investiert, werden
+aussage: Eigene Vorarbeit hat einen messbaren Gegenwert: 'Eine klare Vor-Entscheidung im eigenen Team spart dir 800 bis 2.500 Euro.' Wer Texte selbst liefert, Bilder vorrätig hat und ein klares Zielgruppenbild mitbringt, zahlt nur noch die handwerkliche Umsetzung statt teurer Korrekturschleifen.
+quelle: https://wellewest.at/de/blog/was-kostet-eine-website-in-%C3%B6sterreich-preis%C3%BCbersicht-2026.html
+quelle_name: WelleWest - Website-Kosten Österreich 2026: Die ehrliche Übersicht
+geprueft_am: 2026-06-26
+recheck_nach: 2026-12-23
+
+## t24-2026-06-26-111
+cluster: 1
+keywords: viel, eigene, zeit, muss, website, projekt, investiert, werden
+aussage: Auch nach dem Launch fällt eigene Zeit an: Wer eine WordPress-Website selbst wartet, muss mit mindestens 2 bis 4 Stunden pro Woche rechnen; bei 3 Stunden pro Woche entspricht das rund 600 Euro monatlichen Opportunitätskosten. Sicherheits-/Minor-Updates und Backups sollten zeitnah bzw. wöchentlich eingespielt werden.
+quelle: https://davidkeiser.de/wissen/wordpress-wartung-pflege-sicherheit/
+quelle_name: David Keiser - WordPress Wartung, Pflege & Sicherheit
+geprueft_am: 2026-06-26
+recheck_nach: 2026-12-23
