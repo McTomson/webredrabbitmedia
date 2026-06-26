@@ -44,13 +44,22 @@ echo "==== media-check $(date) ===="
 # + Chrome-Instanzen stapeln sich (beobachtet 2026-06-26: parallele Laeufe -> ~180 chrome-Prozesse,
 # Last 74). Ein PID-Lock (stale nach 90 Min => ueberlebt auch einen -9-Kill) macht ueberlappende
 # Ticks zu No-Ops. Liegt VOR dem date-Stamp, weil der Stamp manuell oft entfernt wird.
-LOCK="$WORK/media-check.lock"
-if [ -f "$LOCK" ] && [ "$(find "$LOCK" -mmin -90 2>/dev/null)" ]; then
-    echo "Media-Lauf laeuft bereits (Lock aktiv) — Abbruch."
-    exit 0
+# ATOMAR via mkdir (POSIX-garantiert: nur EIN Prozess kann das Verzeichnis anlegen). Ein einfacher
+# "if -f LOCK; then ... ; echo $$ > LOCK" hat ein Race-Fenster (pruefen-dann-schreiben) -> zwei fast
+# gleichzeitige Ticks rutschen beide durch (beobachtet 2026-06-26: Watcher + launchd-Tick gleichzeitig
+# -> erneut Browser-Stau). mkdir schliesst das Fenster.
+LOCKDIR="$WORK/media-check.lock.d"
+if ! mkdir "$LOCKDIR" 2>/dev/null; then
+    # Lock existiert. Stale (>90 Min, z.B. nach -9-Kill)? Dann uebernehmen, sonst abbrechen.
+    if [ "$(find "$LOCKDIR" -mmin -90 2>/dev/null)" ]; then
+        echo "Media-Lauf laeuft bereits (Lock aktiv) — Abbruch."
+        exit 0
+    fi
+    rmdir "$LOCKDIR" 2>/dev/null
+    mkdir "$LOCKDIR" 2>/dev/null || { echo "Lock-Race verloren — Abbruch."; exit 0; }
 fi
-echo $$ > "$LOCK"
-trap 'rm -f "$LOCK"' EXIT
+echo $$ > "$LOCKDIR/pid" 2>/dev/null || true
+trap 'rmdir "$LOCKDIR" 2>/dev/null || rm -rf "$LOCKDIR" 2>/dev/null' EXIT
 
 # Last-Schutz: bei extremer Systemlast kommt der headless Render ohnehin nicht durch und stapelt nur
 # Browser. Dann diesen Tick ueberspringen OHNE Stamp -> der naechste Tick versucht es erneut, sobald
