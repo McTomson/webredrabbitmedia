@@ -134,6 +134,12 @@ gemini_render() {
     for attempt in 1 2 3; do
         if _gemini_render_once "$prompt" "$outfile"; then return 0; fi
         echo "  Render-Versuch $attempt fuer $(basename "$outfile") fehlgeschlagen$( [ "$attempt" -lt 3 ] && echo ', neuer Versuch ...' || echo ' (aufgegeben)')" | tee -a "$LOG"
+        # KRITISCH (2026-06-26): Browser-Daemon zwischen Fehlversuchen schliessen. Bei Systemlast wirft
+        # `open` os-error-35, der Daemon laesst aber oft einen halb-toten Chrome zurueck; der naechste
+        # Versuch oeffnet einen WEITEREN -> innerhalb EINES Laufs stapeln sich Dutzende chrome-150
+        # (beobachtet: ~130 -> Last 74). close --all toetet den Rest, der naechste Versuch startet sauber
+        # mit genau EINEM Browser. Kappt den Stau an der Wurzel.
+        "${AB[@]}" close --all >>"$LOG" 2>&1 || true
         sleep 3
     done
     return 1
