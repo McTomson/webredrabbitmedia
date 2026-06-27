@@ -47,6 +47,12 @@ GEMINI_PROFILE="${GEMINI_PROFILE:-$HOME/.agent-browser-profiles/gemini-immo}"
 RENDER_TIMEOUT_MS="${RENDER_TIMEOUT_MS:-200000}"   # Gemini image render ~60-120s; allow headroom
 IMG_SETTLE_S="${IMG_SETTLE_S:-42}"   # Wartezeit bis ein abgesendetes Bild server-seitig fertig ist,
                                      # bevor wir die Konversation in einer frischen Session laden (s.u.)
+# RENDER_ONLY=1 (oder 2. Argument `--render-only`): NUR die PNGs nach STAGE rendern, KEIN apply/Einbetten.
+# Fuer den VPS-als-reiner-Render-Worker (Mac baut den Plan via claude-Abo + bettet lokal ein; der VPS
+# macht nur die schwere Gemini-Browser-Last und schickt die PNGs zurueck). plan.json wird mitgeliefert,
+# also ruft der VPS NIE claude (build-image-plan reused den gecachten Plan) -> 0 API-Kosten.
+RENDER_ONLY="${RENDER_ONLY:-0}"
+[ "${2:-}" = "--render-only" ] && RENDER_ONLY=1
 SESSION="gemini-img"
 DECODE="scripts/content-engine/media/decode-img.cjs"
 EVAL_EXTRACT="scripts/content-engine/media/gemini-extract.js"   # the in-page extraction script
@@ -156,9 +162,13 @@ _ensure_gemini_loaded() {
 # Daemon-Kaltstart — beobachtet 22.06: Hero-Render-Timeout, danach auf Anhieb ok). Bis zu 3 Versuche.
 gemini_render() {
     local prompt="$1" outfile="$2" attempt
-    for attempt in 1 2 3; do
+    # 5 Versuche: v.a. der Hero (komplexer Prompt: Verlauf + handschriftlicher Hook) faellt in Geminis
+    # GENERIERUNG gelegentlich aus — eine FRISCHE Generierung (neue Konversation) ist dann noetig, nicht
+    # laengeres Pollen (verifiziert 2026-06-27: Hero brauchte 3 Anlaeufe). 5 statt 3 -> hoehere Trefferquote;
+    # plus das needs-images-Netz (Marker bleibt offen, Checker alle 30 Min) macht es eventual-reliable.
+    for attempt in 1 2 3 4 5; do
         if _gemini_render_once "$prompt" "$outfile"; then return 0; fi
-        echo "  Render-Versuch $attempt fuer $(basename "$outfile") fehlgeschlagen$( [ "$attempt" -lt 3 ] && echo ', neuer Versuch ...' || echo ' (aufgegeben)')" | tee -a "$LOG"
+        echo "  Render-Versuch $attempt fuer $(basename "$outfile") fehlgeschlagen$( [ "$attempt" -lt 5 ] && echo ', neuer Versuch ...' || echo ' (aufgegeben)')" | tee -a "$LOG"
         # KRITISCH (2026-06-26): Browser-Daemon zwischen Fehlversuchen schliessen. Bei Systemlast wirft
         # `open` os-error-35, der Daemon laesst aber oft einen halb-toten Chrome zurueck; der naechste
         # Versuch oeffnet einen WEITEREN -> innerhalb EINES Laufs stapeln sich Dutzende chrome-150
@@ -214,21 +224,29 @@ _gemini_render_once() {
     # rendert in ~3s (vor dem erneuten /glic-Hijack) und wird per Canvas (same-origin) extrahiert.
     sleep "$IMG_SETTLE_S"
     "${AB[@]}" close --all >>"$LOG" 2>&1 || true
-    sleep 3
-    # Frische Lade-Session (NICHT gemini-img wiederverwenden, s.o.). Stale Profil-Lock vorher weg.
-    _unlock_profile
-    "${ABLOAD[@]}" open "https://gemini.google.com${_cid}" >>"$LOG" 2>&1 || true
 
-    # Auf das fertige Bild in der frisch geladenen Konversation pollen (laedt i.d.R. in ~3-6s; grosszuegiges
-    # Fenster fuer langsame Faelle). eval-Fehler/leer zaehlen als "noch nicht da" (resilient).
+    # Auf das fertige Bild pollen — mit WIEDERHOLTEM Neu-Laden der Konversation. Ein frischer Load gibt nur
+    # ein ~14s-Fenster, bevor Gemini erneut zu /glic hijackt; war das Bild da noch nicht fertig (v.a. der
+    # komplexere Hero mit Hook braucht laenger als der Settle), scheitert EIN einzelner Load. Daher laden
+    # wir die Konversation mehrfach neu (jeweils neues un-hijacktes Fenster) und pruefen kurz nach jedem
+    # Load. So bekommt das Bild mehrere Chancen, im Fenster sichtbar zu sein. eval-Fehler/leer = "noch nicht
+    # da" (resilient). (Verifiziert 2026-06-27: Einzel-Load liess den Hero gelegentlich 3x durchfallen.)
     local _det_b64; _det_b64="$(printf '%s' '(() => { const im=[...document.querySelectorAll("img")].find(i=>/^(blob:|data:image)/.test(i.currentSrc||i.src) && (i.naturalWidth||0)>256); return !!im; })()' | base64 | tr -d '\n')"
-    local _waited=0 _step=4 _got=0
-    while [ "$_waited" -lt 84 ]; do
-        sleep "$_step"; _waited=$(( _waited + _step ))
-        if "${ABLOAD[@]}" eval -b "$_det_b64" 2>>"$LOG" | grep -qiw true; then _got=1; break; fi
+    local _got=0 _ld _jp
+    for _ld in $(seq 1 7); do
+        "${ABLOAD[@]}" close --all >>"$LOG" 2>&1 || true
+        sleep 2
+        _unlock_profile
+        "${ABLOAD[@]}" open "https://gemini.google.com${_cid}" >>"$LOG" 2>&1 || true
+        for _jp in 1 2 3 4; do          # schnelles Pollen im un-hijackten Fenster (~12s)
+            sleep 3
+            if "${ABLOAD[@]}" eval -b "$_det_b64" 2>>"$LOG" | grep -qiw true; then _got=1; break; fi
+        done
+        [ "$_got" = 1 ] && break
+        sleep 6                          # dem Server Zeit geben, dann neues Fenster
     done
     if [ "$_got" != 1 ]; then
-        echo "  WARN Bild nicht gefunden in Konversation ${_cid} ($outfile, ${_waited}s)" | tee -a "$LOG"; "${ABLOAD[@]}" close --all >>"$LOG" 2>&1 || true; rm -f "$dataurl_file"; return 1
+        echo "  WARN Bild nicht gefunden in Konversation ${_cid} ($outfile, ${_ld} Loads)" | tee -a "$LOG"; "${ABLOAD[@]}" close --all >>"$LOG" 2>&1 || true; rm -f "$dataurl_file"; return 1
     fi
 
     # Extract the generated image as a PNG data URL (canvas.toDataURL) to stdout, via the repo
@@ -276,6 +294,13 @@ if ! valid_png "$STAGE/hero.png"; then
     exit 5
 fi
 [ "$FAILED" -gt 0 ] && echo "WARN: $FAILED Kontextbild(er) fehlten — fahre mit vorhandenen fort." | tee -a "$LOG"
+
+# ── 3b. Render-only (VPS-Worker): PNGs liegen in STAGE, KEIN Einbetten. Der Aufrufer (Mac) holt sie ab. ──
+if [ "$RENDER_ONLY" = "1" ]; then
+    echo "RENDER_ONLY: $(ls "$STAGE"/*.png 2>/dev/null | wc -l | tr -d ' ') PNG(s) in $STAGE — kein apply." | tee -a "$LOG"
+    echo "RENDER_OK=$SLUG"
+    exit 0
+fi
 
 # ── 4. Apply: hero + staged ctx + local infographic into the MDX ──
 echo "  Einbetten via apply-images-browser ..." | tee -a "$LOG"
