@@ -109,15 +109,63 @@ echo "Offener Media-Request fuer heute gefunden: $SLUG"
 # Stempel setzen — nicht doppelt triggern.
 touch "$STAMP"
 
-# Bilder HEADLESS via Gemini (agent-browser) erzeugen — ersetzt den toten Codex-Pfad (22.06,
-# verifiziert: Hero mit Hook + 3 Kontextfotos + Infografik, voll unbeaufsichtigt, eingeloggtes
-# persistentes agent-browser-Profil). generate-images-gemini.sh baut den Plan, erzeugt die Bilder,
-# bettet sie via apply-images-browser ein (setzt featuredImage), ist idempotent + fail-closed.
-echo "Generiere Bilder (Gemini headless) fuer $SLUG ..."
-if scripts/content-engine/media/generate-images-gemini.sh "$SLUG" 2>&1; then
-    echo "Bilder fertig (Gemini)."
+# Bilder: die SCHWERE Gemini-Browser-Last laeuft auf dem IONOS-VPS (Mac wurde davon ueberlastet, 27.06).
+# Aufteilung (0 API-Kosten, alles unter dem claude-Abo): der MAC baut NUR den Art-Director-Plan
+# (`claude -p`, leicht), schickt ihn zum VPS; der VPS rendert die PNGs headless via Gemini (claude-frei,
+# gratis) und schickt sie zurueck; der MAC bettet lokal ein (browser-frei: copy + SVG-Infografik + MDX).
+# Faellt bei JEDEM Fehler auf lokales Rendern zurueck (Meltdown-Fixes greifen) -> nie ein Totalausfall.
+render_images_via_vps() {
+    local slug="$1"
+    local stage="scripts/content-engine/.work/${slug}-staging"
+    local SSH="ssh -o ConnectTimeout=20 -o BatchMode=yes ionos"
+    command -v ssh >/dev/null 2>&1 || return 1
+    $SSH true 2>/dev/null || { echo "  VPS nicht erreichbar — Fallback lokal."; return 1; }
+
+    # 1) Plan lokal bauen (Mac, claude-Abo). build-image-plan schreibt plan.json + gemini-meta.json.
+    mkdir -p "$stage"
+    echo "  Plan bauen (Mac, claude-Abo) ..."
+    npx tsx scripts/content-engine/media/build-image-plan.ts "$slug" >/dev/null 2>&1 || { echo "  Plan-Bau fehlgeschlagen."; return 1; }
+    [ -f "$stage/plan.json" ] || { echo "  keine plan.json."; return 1; }
+
+    # 2) VPS auf main + Plan hinschicken (tar ueber ssh, da Schreibrechte als redrabbit via sudo).
+    $SSH 'sudo -u redrabbit bash -lc "cd ~/projects/webredrabbitmedia && git fetch -q origin && git reset --hard -q origin/main"' >/dev/null 2>&1 || { echo "  VPS-git fehlgeschlagen."; return 1; }
+    # WICHTIG: absolute VPS-Pfade. `~` wuerde in `sudo -u redrabbit tar -C ~/...` zu /root expandieren
+    # (root-Shell VOR sudo), nicht /home/redrabbit -> Permission denied (verifiziert 27.06).
+    local VWORK="/home/redrabbit/projects/webredrabbitmedia/scripts/content-engine/.work"
+    tar czf - -C scripts/content-engine/.work "${slug}-staging/plan.json" "${slug}-staging/gemini-meta.json" 2>/dev/null \
+        | $SSH "sudo -u redrabbit tar xzf - -C $VWORK" 2>/dev/null || { echo "  Plan-Transfer fehlgeschlagen."; return 1; }
+    $SSH "sudo -u redrabbit rm -f $VWORK/${slug}-staging/*.png" 2>/dev/null
+
+    # 3) VPS rendert (--render-only), synchron auf RENDER_OK pollen (bis ~12 Min).
+    echo "  VPS rendert (Gemini headless) ..."
+    $SSH "sudo -u redrabbit bash -lc 'setsid bash /home/redrabbit/bin/genimg.sh $slug --render-only </dev/null >/home/redrabbit/logs/genimg.out 2>&1 &'" 2>/dev/null
+    local ok=0 i
+    for i in $(seq 1 72); do
+        sleep 10
+        $SSH "grep -q 'RENDER_OK=$slug' /home/redrabbit/logs/genimg.out" 2>/dev/null && { ok=1; break; }
+        $SSH "grep -q 'FATAL:' /home/redrabbit/logs/genimg.out" 2>/dev/null && { echo "  VPS-Render FATAL."; return 1; }
+    done
+    [ "$ok" = 1 ] || { echo "  VPS-Render Timeout."; return 1; }
+
+    # 4) PNGs zurueck (VPS -> Mac staging).
+    $SSH "sudo -u redrabbit tar czf - -C $VWORK ${slug}-staging" 2>/dev/null \
+        | tar xzf - -C scripts/content-engine/.work 2>/dev/null || { echo "  PNG-Rueckholung fehlgeschlagen."; return 1; }
+    [ -f "$stage/hero.png" ] && [ "$(wc -c < "$stage/hero.png" 2>/dev/null | tr -d ' ')" -gt 20480 ] || { echo "  Hero kam nicht zurueck."; return 1; }
+
+    # 5) Lokal einbetten (browser-frei).
+    echo "  Einbetten (lokal, browser-frei) ..."
+    npx tsx scripts/content-engine/media/apply-images-browser.ts "$slug" >/dev/null 2>&1 || { echo "  apply fehlgeschlagen."; return 1; }
+    [ -f "public/images/blog/${slug}.png" ] || return 1
+    return 0
+}
+
+echo "Generiere Bilder fuer $SLUG (VPS-Render, Mac bettet ein) ..."
+if render_images_via_vps "$SLUG"; then
+    echo "Bilder fertig (VPS-Render + lokales Einbetten)."
+elif scripts/content-engine/media/generate-images-gemini.sh "$SLUG" 2>&1; then
+    echo "Bilder fertig (LOKALER Fallback — VPS war nicht verfuegbar)."
 else
-    echo "WARN: Gemini-Bilder fehlgeschlagen (weiter; Hero-Guard + needs-images greifen)."
+    echo "WARN: Bilder fehlgeschlagen (weiter; Hero-Guard + needs-images greifen)."
 fi
 
 # HERO-GUARD: fehlt nach dem Bildschritt das Hero (Gemini-Login abgelaufen / Google-Block / Render-
