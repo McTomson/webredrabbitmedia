@@ -4,6 +4,15 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-06-27 — Medien-Browser-Stau (Last 74) Root-Cause + VPS-Umzug
+
+- **Symptom:** Beim Bildschritt stapelten sich ~130 chrome-150-Prozesse → Systemlast 74 → Mac unbrauchbar, Bilder kamen nie durch. Mehrfach am selben Tag.
+- **Root causes (mehrschichtig):** (1) `run-media-check.sh` hatte KEINEN Concurrency-Lock → der 30-Min-launchd-Tick startete einen 2. Lauf, waehrend der 1. noch rendert → mehrere agent-browser-Daemons + Chrome parallel. (2) Ein simpler `if -f LOCK`-Check hat ein TOCTOU-Race → zwei fast gleichzeitige Ticks rutschen beide durch. (3) **Der Haupttreiber:** `generate-images-gemini.sh` schloss den Browser NICHT zwischen den 3 Render-Retries — unter Last wirft `open` os-error-35, laesst aber einen halb-toten Chrome zurueck; jeder Retry oeffnet einen WEITEREN → ein EINZELNER Lauf stapelt Dutzende. (4) Cleanup-Trap feuert nur am EXIT, hilft also NICHT waehrend eines grindenden Laufs.
+- **Fixes (alle live):** atomarer `mkdir`-Lock (`4580600`), Last-Schutz `>12 → skip` (`7a3f8d0`), Cleanup-Trap (`452b55f`), und der entscheidende: **`agent-browser close --all` zwischen Retries** (`7624130`). Beweis: danach blieb chrome-150 bei 0, auch bei Last 30.
+- **Diagnose-Reflex:** bei explodierender Last ZUERST `pgrep -fc 'chrome-150'` + `uptime`. Beim Aufraeumen IMMER zuerst die Skript-ELTERN killen (`run-media-check.sh`,`generate-images`), DANN die Browser — sonst respawnt der noch lebende Lauf sie sofort (133 Chromes ueberlebten den Kill, bis die Eltern weg waren).
+- **Strukturelle Lehre:** Headless-Chrome-Bildrender braucht eine RUHIGE Maschine (Hero bei Last 5 in Sek., bei Last 16-30 Timeouts). Auf einem busy Personal-Mac unzuverlaessig → **Umzug auf den idle IONOS-VPS** (Login headless verifiziert, Details in Memory `reference_vps_redrabbit_media_setup` + `docs/handoffs/NEXT_SESSION_main-vps-media.md`).
+- **Tooling-Notiz (VPS):** macOS-Chrome-Cookies sind Keychain-verschluesselt (Schluessel NICHT im Profil) → Profil-Kopie auf Linux transferiert den Login NICHT. Frischer Login noetig (TigerVNC Xvnc + headful Chrome + xdotool fuer `@`, da VNC-Keymap das `@` verschluckt).
+
 ## 2026-06-23 — Gemini-Bildschritt scheiterte: agent-browser-Kaltstart + Maschinen-Ueberlast (nicht Login)
 
 - **Symptom:** Nach Freigabe bekam der Artikel keine Bilder; Tageslog zeigte „Render-Versuch 1/2/3 fehlgeschlagen" fuer Hero+ctx, dann FATAL. Der Hero-Guard tippte auf „Login? Google-Block?" — das war eine FALSCHE Faehrte.
