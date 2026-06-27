@@ -30,6 +30,9 @@ NVM_BIN="$(ls -d "$HOME"/.nvm/versions/node/v${NVM_MAJOR:-20}*/bin 2>/dev/null |
 NPM_GLOBAL_BIN="$(npm config get prefix 2>/dev/null)/bin"
 export PATH="${NVM_BIN:-$HOME/.nvm/versions/node/v20.20.0/bin}:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.local/bin:${NPM_GLOBAL_BIN}:$PATH"
 export DISABLE_AUTOUPDATER=1
+# Node-Binary portabel aufloesen (Mac: /opt/homebrew/bin/node, Linux/VPS: nvm) — NIE hart kodieren,
+# sonst scheitert das Plan-Parsing/Decode auf dem VPS (beobachtet 2026-06-27: "Plan enthielt keine Bilder").
+NODE_BIN="$(command -v node || echo /opt/homebrew/bin/node)"
 
 # --- Self-locate the repo root (works from worktree / symlink, like the other triggers) ---
 SELF="${BASH_SOURCE[0]}"
@@ -42,6 +45,8 @@ cd "$REPO" || { echo "FATAL: repo root nicht gefunden"; exit 1; }
 GEMINI_URL="${GEMINI_URL:-https://gemini.google.com/app}"   # dedicated agent-browser profile = single account (t.uhlir@immo.red) -> /app
 GEMINI_PROFILE="${GEMINI_PROFILE:-$HOME/.agent-browser-profiles/gemini-immo}"
 RENDER_TIMEOUT_MS="${RENDER_TIMEOUT_MS:-200000}"   # Gemini image render ~60-120s; allow headroom
+IMG_SETTLE_S="${IMG_SETTLE_S:-42}"   # Wartezeit bis ein abgesendetes Bild server-seitig fertig ist,
+                                     # bevor wir die Konversation in einer frischen Session laden (s.u.)
 SESSION="gemini-img"
 DECODE="scripts/content-engine/media/decode-img.cjs"
 EVAL_EXTRACT="scripts/content-engine/media/gemini-extract.js"   # the in-page extraction script
@@ -53,6 +58,15 @@ if ! command -v agent-browser >/dev/null 2>&1; then
     exit 3
 fi
 AB=(agent-browser --session "$SESSION" --profile "$GEMINI_PROFILE")
+# Zweite Session NUR zum frischen Laden der fertigen Konversation in Phase 2. Auf DERSELBEN Session
+# (gemini-img) nach close --all neu zu oeffnen reattached an einen halb-toten Kontext -> das Bild wird
+# nicht gefunden (verifiziert 2026-06-27); ein FRISCHER Session-Name laedt sauber (wie der bewiesene
+# probe7-Flow). Gleiches Profil ist ok, weil gemini-img vorher geschlossen wird (kein Profil-Doppellock).
+SESSION_LOAD="gemini-load"
+ABLOAD=(agent-browser --session "$SESSION_LOAD" --profile "$GEMINI_PROFILE")
+# Letzte verwendete Konversations-ID — jedes Bild MUSS eine neue Konversation bekommen, sonst extrahiert
+# ein Folgebild faelschlich das Bild des vorigen (verifiziert 2026-06-27: identische md5 bei /app-Reuse).
+_LAST_CID=""
 
 # ── One-time headed login ────────────────────────────────────────────────────
 if [ "${1:-}" = "login" ]; then
@@ -87,7 +101,7 @@ fi
 # Emit one line per image: TAG<TAB>OUT<TAB>PROMPT_BASE64  (base64 avoids all quoting issues).
 # read-loop instead of `mapfile` — macOS /bin/bash is 3.2 and has no mapfile.
 IMG_LINES=()
-while IFS= read -r _l; do IMG_LINES+=("$_l"); done < <(printf '%s' "$PLAN_JSON" | /opt/homebrew/bin/node -e '
+while IFS= read -r _l; do IMG_LINES+=("$_l"); done < <(printf '%s' "$PLAN_JSON" | "$NODE_BIN" -e '
 let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{
   const j=JSON.parse(s);
   for(const im of j.images){
@@ -99,7 +113,10 @@ if [ "${#IMG_LINES[@]}" -eq 0 ]; then
 fi
 
 # ── 2. Per image: idempotent skip, else render via Gemini ────────────────────
-valid_png() { [ -f "$1" ] && [ "$(stat -f%z "$1" 2>/dev/null || echo 0)" -gt 20480 ]; }
+# Dateigroesse portabel (Mac: stat -f%z, Linux: stat -c%s) -> `wc -c` funktioniert auf beiden.
+# (Vorher hart `stat -f%z`, das auf dem Linux-VPS Dateisystem-Info statt Groesse liefert -> valid_png
+# immer false -> Hero-Guard schlaegt faelschlich an + apply-images wird uebersprungen; verifiziert 2026-06-27.)
+valid_png() { [ -f "$1" ] && [ "$(wc -c < "$1" 2>/dev/null | tr -d ' ')" -gt 20480 ]; }
 
 # gemini_render <prompt> <outfile>  — drive Gemini headless to produce ONE image.
 # ┌─ CALIBRATION SEAM ─────────────────────────────────────────────────────────┐
@@ -117,8 +134,16 @@ valid_png() { [ -f "$1" ] && [ "$(stat -f%z "$1" 2>/dev/null || echo 0)" -gt 204
 # succeeded while the script's `open || return 1` gave up). So we do NOT trust the exit code:
 # we poll get-url until we are on gemini.google.com (up to ~120s), which absorbs the slow
 # cold-start instead of treating the transient configure error as a fatal render failure.
+# Stale Chrome-Profil-Lock entfernen. Beim Wechsel zwischen den zwei Sessions (gemini-img <-> gemini-load)
+# auf demselben Profil bleibt nach close --all oft die SingletonLock-Datei liegen -> der naechste Chrome
+# bricht mit "Failed to create SingletonLock: File exists (17)" ab (verifiziert 2026-06-27 VPS). Chrome
+# legt die Dateien beim Start neu an; Entfernen ist sicher, SOLANGE nur EIN Browser das Profil nutzt
+# (wir schliessen die jeweils andere Session immer vorher).
+_unlock_profile() { rm -f "$GEMINI_PROFILE"/Singleton* 2>/dev/null || true; }
+
 _ensure_gemini_loaded() {
     local t=0 url=""
+    _unlock_profile
     "${AB[@]}" open "$GEMINI_URL" >>"$LOG" 2>&1 || true
     until printf '%s' "$url" | grep -q "gemini.google.com" || [ "$t" -ge 24 ]; do
         sleep 5; t=$((t+1))
@@ -154,25 +179,65 @@ _gemini_render_once() {
     _ensure_gemini_loaded || return 1
     "${AB[@]}" wait --load networkidle >>"$LOG" 2>&1 || true
 
+    # ── Phase 1: Prompt auf /app absenden + Konversations-ID einsammeln ──
     # Type the prompt into Gemini's contenteditable input and submit.
     # Primary: semantic role; fallback: the Quill editor / contenteditable used by Gemini (CSS
     # selectors are passed DIRECTLY as the target, there is no `find css` subcommand).
     if ! "${AB[@]}" find role textbox fill "$prompt" >>"$LOG" 2>&1; then
         "${AB[@]}" fill 'div[contenteditable="true"]' "$prompt" >>"$LOG" 2>&1 \
-            || "${AB[@]}" fill '.ql-editor' "$prompt" >>"$LOG" 2>&1 || return 1
+            || "${AB[@]}" fill '.ql-editor' "$prompt" >>"$LOG" 2>&1 || { rm -f "$dataurl_file"; return 1; }
     fi
     "${AB[@]}" press Enter >>"$LOG" 2>&1 || true
 
-    # Wait until a generated image (blob:/data: <img>) appears in the response, or timeout.
-    "${AB[@]}" wait --fn "(() => { const im=[...document.querySelectorAll('img')].find(i=>/^(blob:|data:image)/.test(i.currentSrc||i.src)); return !!im && (im.naturalWidth>256); })()" --timeout "$RENDER_TIMEOUT_MS" >>"$LOG" 2>&1 || {
-        echo "  WARN Render-Timeout/keine Bild-Erkennung ($outfile)" | tee -a "$LOG"; return 1; }
+    # Konversations-ID (/app/<id>) einsammeln. Gemini vergibt sie ~2-12s nach dem Absenden; get-url
+    # flackert, daher mehrfach pollen.
+    local _cid="" _curl _k
+    for _k in $(seq 1 15); do
+        sleep 2
+        _curl="$("${AB[@]}" get url 2>/dev/null | grep -Eo '^https?://[^ ]*' | tail -1)"
+        _cid="$(printf '%s' "$_curl" | grep -Eo '/app/[a-z0-9]+' | head -1)"
+        # nur eine NEUE Konversations-ID akzeptieren (nicht die des vorigen Bildes)
+        if [ -n "$_cid" ] && [ "$_cid" != "$_LAST_CID" ]; then break; fi
+        _cid=""
+    done
+    if [ -z "$_cid" ]; then
+        echo "  WARN keine (neue) Konversations-ID nach Submit ($outfile)" | tee -a "$LOG"; rm -f "$dataurl_file"; return 1
+    fi
+    _LAST_CID="$_cid"
+
+    # ── Phase 2: warten bis das Bild server-seitig fertig ist, dann FRISCH laden ──
+    # KRITISCH (verifiziert 2026-06-27 auf dem VPS, headless): ~14s nach dem Absenden entfuehrt Gemini die
+    # Seite von /app/<id> zur /glic-Oberflaeche (0-Breite-Body, KEINE <img>) -> jede Detektion/Extraktion
+    # auf der LIVE-Seite scheitert (sah aus wie Crash/Timeout, war eine Navigation). Das generierte Bild
+    # bleibt server-seitig in der Konversation. Loesung: ID merken, kurz warten (Bild fertig), Session
+    # schliessen und die Konversation in einer FRISCHEN Session laden -> das fertige 1024px-blob-Bild
+    # rendert in ~3s (vor dem erneuten /glic-Hijack) und wird per Canvas (same-origin) extrahiert.
+    sleep "$IMG_SETTLE_S"
+    "${AB[@]}" close --all >>"$LOG" 2>&1 || true
+    sleep 3
+    # Frische Lade-Session (NICHT gemini-img wiederverwenden, s.o.). Stale Profil-Lock vorher weg.
+    _unlock_profile
+    "${ABLOAD[@]}" open "https://gemini.google.com${_cid}" >>"$LOG" 2>&1 || true
+
+    # Auf das fertige Bild in der frisch geladenen Konversation pollen (laedt i.d.R. in ~3-6s; grosszuegiges
+    # Fenster fuer langsame Faelle). eval-Fehler/leer zaehlen als "noch nicht da" (resilient).
+    local _det_b64; _det_b64="$(printf '%s' '(() => { const im=[...document.querySelectorAll("img")].find(i=>/^(blob:|data:image)/.test(i.currentSrc||i.src) && (i.naturalWidth||0)>256); return !!im; })()' | base64 | tr -d '\n')"
+    local _waited=0 _step=4 _got=0
+    while [ "$_waited" -lt 84 ]; do
+        sleep "$_step"; _waited=$(( _waited + _step ))
+        if "${ABLOAD[@]}" eval -b "$_det_b64" 2>>"$LOG" | grep -qiw true; then _got=1; break; fi
+    done
+    if [ "$_got" != 1 ]; then
+        echo "  WARN Bild nicht gefunden in Konversation ${_cid} ($outfile, ${_waited}s)" | tee -a "$LOG"; "${ABLOAD[@]}" close --all >>"$LOG" 2>&1 || true; rm -f "$dataurl_file"; return 1
+    fi
 
     # Extract the generated image as a PNG data URL (canvas.toDataURL) to stdout, via the repo
-    # extraction script piped over stdin (eval supports --stdin / -b, NOT --file).
-    "${AB[@]}" eval --stdin <"$EVAL_EXTRACT" >"$dataurl_file" 2>>"$LOG" || { echo "  WARN eval-extract fehlgeschlagen" | tee -a "$LOG"; return 1; }
+    # extraction script piped over stdin (eval supports --stdin / -b, NOT --file). Aus der LADE-Session.
+    "${ABLOAD[@]}" eval --stdin <"$EVAL_EXTRACT" >"$dataurl_file" 2>>"$LOG" || { echo "  WARN eval-extract fehlgeschlagen" | tee -a "$LOG"; "${ABLOAD[@]}" close --all >>"$LOG" 2>&1 || true; rm -f "$dataurl_file"; return 1; }
+    "${ABLOAD[@]}" close --all >>"$LOG" 2>&1 || true
 
     # Decode -> sized PNG. Fail-closed: decode rejects garbage/empty (no partial written).
-    NODE_PATH="$REPO/node_modules" /opt/homebrew/bin/node "$DECODE" "$dataurl_file" "$outfile" >>"$LOG" 2>&1 || {
+    NODE_PATH="$REPO/node_modules" "$NODE_BIN" "$DECODE" "$dataurl_file" "$outfile" >>"$LOG" 2>&1 || {
         echo "  WARN decode fehlgeschlagen ($outfile)" | tee -a "$LOG"; rm -f "$dataurl_file"; return 1; }
     rm -f "$dataurl_file"
     return 0
