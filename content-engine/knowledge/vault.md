@@ -1049,3 +1049,48 @@ quelle: https://web.redrabbit.media/tipps/herold-webseite-vs-agentur-vergleich
 quelle_name: Red Rabbit Media - Herold-Webseite vs. Agentur-Vergleich
 geprueft_am: 2026-06-27
 recheck_nach: 2026-12-24
+
+## t26-2026-06-28-117
+cluster: 1
+keywords: sind, vorteile, modernen, frameworks, next, gegenüber, wordpress
+aussage: WordPress betreibt im Juni 2026 laut W3Techs 41,9 % aller Websites und hält rund 59,4 % Anteil am CMS-Markt — d.h. die WordPress-Architektur (PHP, MySQL, Plugins) ist der De-facto-Standard, an dem moderne Framework-Alternativen wie Next.js gemessen werden.
+quelle: https://w3techs.com/technologies/details/cm-wordpress
+quelle_name: W3Techs - Usage Statistics and Market Share of WordPress
+geprueft_am: 2026-06-28
+recheck_nach: 2026-12-25
+
+## t26-2026-06-28-118
+cluster: 1
+keywords: sind, vorteile, modernen, frameworks, next, gegenüber, wordpress
+aussage: Im ersten Halbjahr 2025 wurden im WordPress-Oekosystem 6.700 neue Schwachstellen gemeldet; davon entfielen 3.044 (rund 89 %) auf Plugins und 386 auf Themes, aber nur 1 auf den WordPress-Core. Die Sicherheitslast liegt also fast ausschliesslich im Plugin-Oekosystem — eine Angriffsflaeche, die eine massgeschneiderte Next.js-Anwendung ohne Fremd-Plugins architektonisch vermeidet.
+quelle: https://patchstack.com/whitepaper/2025-mid-year-vulnerability-report/
+quelle_name: Patchstack - 2025 Mid-Year WordPress Security Report
+geprueft_am: 2026-06-28
+recheck_nach: 2026-12-25
+
+## t26-2026-06-28-119
+cluster: 1
+keywords: sind, vorteile, modernen, frameworks, next, gegenüber, wordpress
+aussage: Core Web Vitals (LCP unter 2,5 s, INP unter 200 ms, CLS unter 0,1) werden von Googles Ranking-Systemen als Signal genutzt und dienen bei gleichwertigen Inhalten als Tiebreaker. Next.js erzeugt durch Static Site Generation und Server-Side Rendering pre-gerenderte HTML-Seiten, was genau diese Ladewerte (FCP/LCP) verbessert.
+quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
+quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
+geprueft_am: 2026-06-28
+recheck_nach: 2026-12-25
+
+## t26-2026-06-28-120
+cluster: 1
+keywords: sind, vorteile, modernen, frameworks, next, gegenüber, wordpress
+aussage: Eine von Google beauftragte Deloitte/55-Studie ueber 37 europaeische und US-Marken zeigte: schon eine Verbesserung der mobilen Ladezeit um 0,1 Sekunden steigerte die Conversions im Handel um 8,4 % und den durchschnittlichen Bestellwert um 9,2 % (Reise: +10,1 % Conversions). Performance wirkt damit direkt auf den Umsatz — ein zentrales Argument fuer den Geschwindigkeitsvorsprung von Next.js gegenueber einem typischen plugin-lastigen WordPress.
+quelle: https://web.dev/case-studies/milliseconds-make-millions
+quelle_name: web.dev / Deloitte - Milliseconds Make Millions
+geprueft_am: 2026-06-28
+recheck_nach: 2026-12-25
+
+## t26-2026-06-28-121
+cluster: 1
+keywords: sind, vorteile, modernen, frameworks, next, gegenüber, wordpress
+aussage: Laut offizieller Next.js-Dokumentation wird bei Static Site Generation das HTML zur Build-Zeit erzeugt und kann ueber ein CDN ausgeliefert werden, wodurch Seiten und ihre Metadaten ohne JavaScript sofort beim Laden verfuegbar sind — entscheidend dafuer, dass Suchmaschinen Inhalte zuverlaessig crawlen und Seiten schnell laden. Next.js erlaubt diese Strategie (SSG/SSR/ISR) pro Seite einzeln.
+quelle: https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation
+quelle_name: Next.js Documentation - Static Site Generation (SSG)
+geprueft_am: 2026-06-28
+recheck_nach: 2026-12-25
