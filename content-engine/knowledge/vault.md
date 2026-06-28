@@ -1004,3 +1004,48 @@ quelle: https://davidkeiser.de/wissen/wordpress-wartung-pflege-sicherheit/
 quelle_name: David Keiser - WordPress Wartung, Pflege & Sicherheit
 geprueft_am: 2026-06-26
 recheck_nach: 2026-12-23
+
+## t25-2026-06-27-112
+cluster: 1
+keywords: welches, system, beste, eine, firmenwebsite
+aussage: WordPress ist mit rund 59,3 % Marktanteil unter allen Websites mit bekanntem CMS das mit Abstand meistgenutzte System; gemessen an allen Websites (auch ohne CMS) sind es etwa 41,5 %. Es folgen Shopify (7,5 %), Wix (6,1 %) und Squarespace (3,5 %).
+quelle: https://w3techs.com/technologies/overview/content_management
+quelle_name: W3Techs - Usage statistics of content management systems
+geprueft_am: 2026-06-27
+recheck_nach: 2026-12-24
+
+## t25-2026-06-27-113
+cluster: 1
+keywords: welches, system, beste, eine, firmenwebsite
+aussage: Digitalisierung ist fuer oesterreichische Unternehmen Standard: Sechs von zehn Unternehmen erreichen mindestens eine grundlegende digitale Intensitaet, und der ueber E-Commerce erzielte Umsatzanteil stieg laut Statistik Austria auf rund ein Fuenftel des Gesamtumsatzes (von 14 % im Vorjahr). Eine professionelle Website ist damit Geschaeftsgrundlage, nicht Kuer.
+quelle: https://www.statistik.at/ueber-uns/erhebungen/unternehmen/ikt-einsatz-in-unternehmen
+quelle_name: Statistik Austria - IKT-Einsatz in Unternehmen
+geprueft_am: 2026-06-27
+recheck_nach: 2026-12-24
+
+## t25-2026-06-27-114
+cluster: 1
+keywords: welches, system, beste, eine, firmenwebsite
+aussage: Seit 28. Juni 2025 gilt der European Accessibility Act (EU-Richtlinie 2019/882), in Oesterreich umgesetzt durch das Barrierefreiheitsgesetz (BaFG): B2C-Websites und Online-Shops muessen barrierefrei (WCAG-konform) sein. Bei Verstoessen drohen Massnahmen bis hin zu hohen Geldbussen; Kleinstunternehmen (unter 10 Mitarbeitende und bis 2 Mio. EUR Umsatz) sind fuer Dienstleistungen teils ausgenommen. Hinweis: keine Rechtsberatung.
+quelle: https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX%3A32019L0882
+quelle_name: European Accessibility Act / EU-Richtlinie 2019/882 (EUR-Lex)
+geprueft_am: 2026-06-27
+recheck_nach: 2026-12-24
+
+## t25-2026-06-27-115
+cluster: 1
+keywords: welches, system, beste, eine, firmenwebsite
+aussage: Google bewertet das Seitenerlebnis als Rankingsignal und stellt dafuer die Core Web Vitals (Ladegeschwindigkeit, Interaktivitaet, visuelle Stabilitaet) in den Mittelpunkt. Die technische Performance des gewaehlten Systems wirkt damit direkt auf die Sichtbarkeit in der Google-Suche.
+quelle: https://developers.google.com/search/docs/appearance/page-experience
+quelle_name: Google Search Central - Understanding page experience in Google Search results
+geprueft_am: 2026-06-27
+recheck_nach: 2026-12-24
+
+## t25-2026-06-27-116
+cluster: 1
+keywords: welches, system, beste, eine, firmenwebsite
+aussage: Herold und vergleichbare Anbieter setzen auf standardisierte Rundum-Pakete im Miet-/Abomodell (laufende Systemgebuehren, Plattformbindung), waehrend Agenturen wie Red Rabbit Media auf Individualentwicklung (z. B. Next.js) als Einmal-Investment mit vollem Eigentum am Quellcode und ohne laufende System-Gebuehren setzen - der zentrale Entscheidungs-Tradeoff bei der Systemwahl.
+quelle: https://web.redrabbit.media/tipps/herold-webseite-vs-agentur-vergleich
+quelle_name: Red Rabbit Media - Herold-Webseite vs. Agentur-Vergleich
+geprueft_am: 2026-06-27
+recheck_nach: 2026-12-24
