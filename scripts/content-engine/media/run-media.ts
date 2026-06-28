@@ -201,7 +201,11 @@ async function main() {
     if (!flag('no-push')) {
         // Stage only published .mdx (cluster-mate edits from 3.5) — NOT the whole dir, so a stray
         // non-mdx file under content/blog can never be swept into this unattended push to main.
-        execFileSync('git', ['add', 'content/blog/*.mdx', 'public/audio', 'public/images/blog', 'public/videos'], { cwd: ROOT, stdio: 'inherit' });
+        // recent-image-motifs.json MUST be committed too: build-image-plan.ts advances the hero-colour
+        // cursor + records motifs there during planning, and the next run does `git reset --hard
+        // origin/main` — without committing it the colour rotation would reset to the same colour every
+        // article (root cause of the "always blue" bug fixed 2026-06-28).
+        execFileSync('git', ['add', 'content/blog/*.mdx', 'public/audio', 'public/images/blog', 'public/videos', 'content-engine/knowledge/recent-image-motifs.json'], { cwd: ROOT, stdio: 'inherit' });
         try {
             const msg = `feat(blog): add media to ${slug}` + (clusterTouched ? ` (+${clusterTouched} cluster links)` : '');
             execFileSync('git', ['commit', '-q', '-m', msg], { cwd: ROOT, stdio: 'inherit' });

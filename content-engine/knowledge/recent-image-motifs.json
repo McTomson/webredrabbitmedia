@@ -26,5 +26,6 @@
     "keypoints",
     "comparison",
     "iceberg"
-  ]
+  ],
+  "colorCursor": 0
 }

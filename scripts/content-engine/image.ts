@@ -17,6 +17,9 @@ export const BRAND_PHOTO_STYLE =
     'Photorealistic, authentic editorial photograph. Natural daylight, warm muted documentary color palette, ' +
     'one subtle red accent object in frame (around #E2231A). Real, relatable Austrian people and settings, ' +
     'candid and honest, NOT a posed cheesy stock smile. Shallow depth of field. ' +
+    'The scene must depict a real, plausible everyday situation that makes immediate logical sense and looks ' +
+    'aesthetically pleasing; absolutely no surreal, abstract or impossible arrangements, and no random objects ' +
+    'staged on a surface as a metaphor. ' +
     'No text, no words, no letters, no readable screen content anywhere. 16:9 wide.';
 
 // Hero-specific art direction (Thomas, 2026-06-14): the hero subject stays the same authentic
@@ -38,11 +41,15 @@ export const HERO_PHOTO_STYLE =
 // Hero background gradient ROTATES per article (Thomas 2026-06-16) so the feed/blog does not look
 // monochrome over time and we can later measure which palette performs. The subject art-direction
 // stays the same authentic editorial style; only the two gradient colours change.
+// Rotation order (Thomas 2026-06-28): Gelb -> Gruen -> Blau -> Orange -> Rot, then repeat.
+// name.split('-')[0] feeds heroPhotoStyle() as the spoken left-colour word, so keep the first
+// token a clean colour name. The blue slot keeps the proven turquoise->blue brand look.
 const HERO_GRADIENTS: Array<{ name: string; left: string; right: string }> = [
+    { name: 'yellow-amber', left: '#F7C948', right: '#E8951C' },
+    { name: 'green-emerald', left: '#2FB457', right: '#1E8E4E' },
     { name: 'turquoise-blue', left: '#19B5AE', right: '#2E6FD2' },
-    { name: 'teal-green', left: '#13B5A6', right: '#1F9E5A' },
-    { name: 'golden-yellow-amber', left: '#F7C948', right: '#E8951C' },
-    { name: 'soft-violet-indigo', left: '#8B7DF0', right: '#5A4FD0' },
+    { name: 'orange-tangerine', left: '#FF9E40', right: '#F2660A' },
+    { name: 'red-coral', left: '#F2585B', right: '#D32F3A' },
 ];
 export function heroPhotoStyle(idx: number): string {
     const g = HERO_GRADIENTS[((idx % HERO_GRADIENTS.length) + HERO_GRADIENTS.length) % HERO_GRADIENTS.length];
@@ -51,8 +58,17 @@ export function heroPhotoStyle(idx: number): string {
         `${g.name.split('-')[0]} (about ${g.left}) on the left seamlessly and harmoniously into ${g.right} on the right`,
     );
 }
-// Rotates each time a new article is planned (recordMotif grows the hero log).
-export function pickHeroColorIndex(): number { return readMotifLog().heroes.length % HERO_GRADIENTS.length; }
+// Advance the hero gradient by exactly one per article and persist the cursor.
+// (Bug fixed 2026-06-28: the old formula `heroes.length % N` was permanently stuck because
+// recordMotif caps `heroes` at 12 entries -> 12 % 4 == 0 forever -> always the same colour.
+// A dedicated UNBOUNDED cursor rotates reliably.) Called once per article at plan time and the
+// result is pinned to gemini-meta.json, so reruns do not advance it twice.
+export function pickHeroColorIndex(): number {
+    const log = readMotifLog();
+    const cur = log.colorCursor || 0;
+    writeMotifLog({ ...log, colorCursor: cur + 1 });
+    return cur % HERO_GRADIENTS.length;
+}
 
 export interface ImagePlanItem {
     kind: 'infographic' | 'photo';
@@ -85,16 +101,19 @@ const PLAN_SCHEMA = `{
 // We persist the last ~12 hero concepts + infographic layouts and feed them back so the art-director
 // actively avoids repeating itself. So the variation is measurable later (what readers respond to).
 const MOTIF_LOG = path.join(ROOT, 'content-engine', 'knowledge', 'recent-image-motifs.json');
-interface MotifLog { heroes: string[]; layouts: string[] }
+interface MotifLog { heroes: string[]; layouts: string[]; colorCursor: number }
 function readMotifLog(): MotifLog {
-    try { const m = JSON.parse(fs.readFileSync(MOTIF_LOG, 'utf8')); return { heroes: m.heroes || [], layouts: m.layouts || [] }; }
-    catch { return { heroes: [], layouts: [] }; }
+    try { const m = JSON.parse(fs.readFileSync(MOTIF_LOG, 'utf8')); return { heroes: m.heroes || [], layouts: m.layouts || [], colorCursor: m.colorCursor || 0 }; }
+    catch { return { heroes: [], layouts: [], colorCursor: 0 }; }
+}
+function writeMotifLog(log: MotifLog): void {
+    try { fs.mkdirSync(path.dirname(MOTIF_LOG), { recursive: true }); fs.writeFileSync(MOTIF_LOG, JSON.stringify(log, null, 2)); } catch { /* best-effort */ }
 }
 function recordMotif(heroConcept: string, layout?: string): void {
     const log = readMotifLog();
     log.heroes = [heroConcept, ...log.heroes].slice(0, 12);
     if (layout) log.layouts = [layout, ...log.layouts].slice(0, 12);
-    try { fs.mkdirSync(path.dirname(MOTIF_LOG), { recursive: true }); fs.writeFileSync(MOTIF_LOG, JSON.stringify(log, null, 2)); } catch { /* best-effort */ }
+    writeMotifLog(log); // preserves colorCursor
 }
 
 // Art-director: reads the article, returns the full image plan as JSON. Each image is derived from the
@@ -108,15 +127,24 @@ export function buildImagePlan(title: string, body: string, headings: string[]):
         'OBERSTE REGEL (Thomas): die Bilder eines Artikels duerfen NICHT alle gleich aussehen, und ueber',
         'Artikel hinweg soll sich das Motiv DREHEN. Jedes Foto wird aus dem KONKRETEN Inhalt SEINER Sektion',
         'abgeleitet - lies den Absatz und zeige eine Szene, die genau diesen Punkt illustriert (nicht generisch).',
-        'ARCHETYPEN VARIIEREN: nutze ueber die 4 Fotos (Hero + 3 Kontext) BEWUSST VERSCHIEDENE Bild-Typen,',
-        'mische aus: (a) Konzept/Still-Life (Objekte, die das Thema symbolisieren, keine Person), (b) Detail/',
-        'Nahaufnahme (Haende, ein Gegenstand), (c) Umgebung/Ort (echte Szene/Werkstatt/Geschaeft), (d) Menschen',
-        'in Aktion (variiert: Geschlecht, Alter, Setting). HOECHSTENS EIN Bild zeigt eine Person an Laptop/',
-        'Schreibtisch - "Laptop" nur, wenn die Sektion es wirklich verlangt. Variiere Perspektive (nah/weit/',
-        'top-down) und Setting.',
-        'FOTOS: authentische, photorealistische Szenen, KEIN Text/Logo im Bild.',
-        'HERO: beschreibe NUR das Motiv im Vordergrund (Person ODER Objekt) - KEINE Umgebung/Location/Wand,',
-        'der Hintergrund wird separat als weicher Farbverlauf gesetzt. Der Hero soll das Artikel-Thema sofort',
+        'REALISMUS-PFLICHT (Thomas 2026-06-28, WICHTIGSTE BILDREGEL): Jedes Foto zeigt eine REALE, alltaegliche,',
+        'sofort verstaendliche Situation aus dem echten (oesterreichischen) Geschaeftsleben. STRENG VERBOTEN sind',
+        'abstrakte Metaphern und symbolische Objekt-Arrangements: KEINE zufaellig auf Tisch/Boden drapierten',
+        'Gegenstaende (Lego, Werkzeug, Holzkloetze, Modellhaeuser, Bauplaene als Stillleben), KEINE surrealen oder',
+        'unmoeglichen Kompositionen, KEIN "Objekte die etwas symbolisieren". Wenn ein Punkt nur als Metapher',
+        'funktioniert, zeige stattdessen eine konkrete Szene mit echten Menschen, die genau diese Situation erleben.',
+        'Das Bild muss logisch und aesthetisch ansprechend sein - so wie ein gutes redaktionelles Magazinfoto.',
+        'ARCHETYPEN VARIIEREN (innerhalb des Realismus): nutze ueber die 4 Fotos BEWUSST VERSCHIEDENE, aber immer',
+        'REALE Bild-Typen, mische aus: (a) eine Person bei genau der Taetigkeit der Sektion (variiere Geschlecht,',
+        'Alter, Setting), (b) zwei Menschen im Gespraech (Kunde+Beraterin, Team), (c) echter Ort/Umgebung',
+        '(Buero, Werkstatt, Geschaeft, Zuhause, Cafe) in dem das Thema real spielt, (d) ehrliche Detail-Nahaufnahme',
+        'einer realen Handlung (Haende bei einer konkreten Taetigkeit - NICHT ein arrangiertes Objekt-Stillleben).',
+        'HOECHSTENS EIN Bild zeigt eine Person an Laptop/Schreibtisch - nur wenn die Sektion es wirklich verlangt.',
+        'Variiere Perspektive (nah/weit) und Setting, aber immer plausibel und realistisch.',
+        'FOTOS: authentische, photorealistische, gut komponierte redaktionelle Szenen, KEIN Text/Logo im Bild.',
+        'HERO: beschreibe NUR das Motiv im Vordergrund - bevorzugt EINE reale, sympathische Person (Oberkoerper),',
+        'die etwas Konkretes zum Thema tut; KEINE Umgebung/Location/Wand (der Hintergrund wird separat als weicher',
+        'Farbverlauf gesetzt), und KEIN abstraktes Objekt-Stillleben. Der Hero soll das Artikel-Thema sofort',
         'erkennbar machen (Standalone, da das Bild auch ohne Titel im Feed/Bildersuche auftaucht).',
         recent.heroes.length ? 'VERMEIDE diese zuletzt genutzten Hero-Motive (nimm etwas anderes):\n- ' + recent.heroes.join('\n- ') : '',
         'KONTEXT (3 Fotos): jeweils passend zu genau einer H2-Sektion, je ein ANDERER Archetyp (s.o.).',
