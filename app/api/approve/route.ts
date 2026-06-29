@@ -81,7 +81,12 @@ export async function GET(req: Request): Promise<Response> {
             return page('Bereits freigegeben', `<p>Dieser Artikel ist schon veroeffentlicht. Kein zweites Mal noetig.</p><p><a href="${previewUrl}">Artikel ansehen</a></p>`);
         }
 
-        const today = new Date().toISOString().slice(0, 10);
+        // Austrian local date (NOT UTC). This route runs on Vercel (UTC); the media-checker on the
+        // Mac compares requestedAt against `date +%F` (Europe/Vienna). Using toISOString() here gave
+        // the UTC date, so any approval between 00:00-02:00 CEST stamped the PREVIOUS day -> the
+        // checker never matched it -> the article silently got no media (bug 2026-06-29). en-CA
+        // formats as YYYY-MM-DD.
+        const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Vienna' }).format(new Date());
         let updated = file.content
             .replace(/^status:\s*["']?draft["']?\s*$/m, 'status: "published"')
             .replace(/^updatedAt:\s*["']?[\d-]+["']?\s*$/m, `updatedAt: "${today}"`);

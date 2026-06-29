@@ -136,16 +136,23 @@ render_images_via_vps() {
         | $SSH "sudo -u redrabbit tar xzf - -C $VWORK" 2>/dev/null || { echo "  Plan-Transfer fehlgeschlagen."; return 1; }
     $SSH "sudo -u redrabbit rm -f $VWORK/${slug}-staging/*.png" 2>/dev/null
 
-    # 3) VPS rendert (--render-only), synchron auf RENDER_OK pollen (bis ~12 Min).
+    # 3) VPS rendert (--render-only), synchron auf RENDER_OK pollen (bis ~25 Min).
+    # Grosszuegiges Limit (2026-06-29): ein flaky ctx-Bild (der /glic-Hijack) kann viele Retries
+    # brauchen -> ein einzelner Lauf dauerte ~19 Min. Das alte 12-Min-Limit loeste faelschlich
+    # "Timeout" aus und fiel auf LOKALES Rendern zurueck (genau die Mac-Ueberlast, die der VPS-Umzug
+    # vermeiden soll). Der VPS-Render belastet den Mac nicht, also kostet ein laengeres Warten nichts.
+    # Frueh abbrechen, wenn der Render-Prozess stirbt (kein Sinn, 25 Min auf eine Leiche zu warten).
     echo "  VPS rendert (Gemini headless) ..."
     $SSH "sudo -u redrabbit bash -lc 'setsid bash /home/redrabbit/bin/genimg.sh $slug --render-only </dev/null >/home/redrabbit/logs/genimg.out 2>&1 &'" 2>/dev/null
     local ok=0 i
-    for i in $(seq 1 72); do
+    for i in $(seq 1 150); do
         sleep 10
         $SSH "grep -q 'RENDER_OK=$slug' /home/redrabbit/logs/genimg.out" 2>/dev/null && { ok=1; break; }
         $SSH "grep -q 'FATAL:' /home/redrabbit/logs/genimg.out" 2>/dev/null && { echo "  VPS-Render FATAL."; return 1; }
+        # nach einer Anlaufzeit: bricht der Render-Prozess weg, nicht bis zum Limit warten
+        [ "$i" -gt 6 ] && ! $SSH "pgrep -f generate-images-gemini >/dev/null 2>&1" 2>/dev/null && { echo "  VPS-Render-Prozess beendet ohne RENDER_OK."; return 1; }
     done
-    [ "$ok" = 1 ] || { echo "  VPS-Render Timeout."; return 1; }
+    [ "$ok" = 1 ] || { echo "  VPS-Render Timeout (>25 Min)."; return 1; }
 
     # 4) PNGs zurueck (VPS -> Mac staging).
     $SSH "sudo -u redrabbit tar czf - -C $VWORK ${slug}-staging" 2>/dev/null \
