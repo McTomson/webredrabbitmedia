@@ -1094,3 +1094,48 @@ quelle: https://nextjs.org/docs/pages/building-your-application/rendering/static
 quelle_name: Next.js Documentation - Static Site Generation (SSG)
 geprueft_am: 2026-06-28
 recheck_nach: 2026-12-25
+
+## t27-2026-06-29-122
+cluster: 1
+keywords: warum, ladezeit, pagespeed, entscheidend, umsatz
+aussage: Eine Studie von Deloitte im Auftrag von Google (37 grosse europaeische und US-Markensites, ueber 30 Mio. Sessions) zeigte: schon eine Verbesserung der mobilen Ladezeit um nur 0,1 Sekunden steigerte im Retail die Conversion-Rate um 8,4 % und den durchschnittlichen Bestellwert um 9,2 %; im Reise-Segment stieg die Conversion-Rate um 10,1 %.
+quelle: https://web.dev/case-studies/milliseconds-make-millions
+quelle_name: Deloitte / Google - Milliseconds Make Millions (web.dev Case Study)
+geprueft_am: 2026-06-29
+recheck_nach: 2026-12-26
+
+## t27-2026-06-29-123
+cluster: 1
+keywords: warum, ladezeit, pagespeed, entscheidend, umsatz
+aussage: Laut Google verlassen 53 % der mobilen Besucher eine Seite wieder, wenn sie laenger als 3 Sekunden zum Laden braucht – der Umsatz geht also verloren, bevor die Seite ueberhaupt sichtbar ist.
+quelle: https://www.thinkwithgoogle.com/_qs/documents/2453/64237_mobile-page-speed-new-industry-benchmarks_D2QxHYw.pdf
+quelle_name: Think with Google - Mobile Page Speed New Industry Benchmarks
+geprueft_am: 2026-06-29
+recheck_nach: 2026-12-26
+
+## t27-2026-06-29-124
+cluster: 1
+keywords: warum, ladezeit, pagespeed, entscheidend, umsatz
+aussage: Googles Analyse von Ladezeit-Daten ergab: steigt die mobile Ladezeit von 1 auf 3 Sekunden, erhoeht sich die Absprung-Wahrscheinlichkeit um 32 %; von 1 auf 5 Sekunden um 90 %.
+quelle: https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/
+quelle_name: Think with Google - Find Out How You Stack Up to New Industry Benchmarks for Mobile Page Speed
+geprueft_am: 2026-06-29
+recheck_nach: 2026-12-26
+
+## t27-2026-06-29-125
+cluster: 1
+keywords: warum, ladezeit, pagespeed, entscheidend, umsatz
+aussage: Google nutzt die Core Web Vitals (inkl. Ladezeit-Metrik Largest Contentful Paint, Zielwert unter 2,5 Sekunden) als Teil des Page-Experience-Signals, das die Ranking-Systeme belohnen – langsame Seiten verlieren also auch Sichtbarkeit in der organischen Suche.
+quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
+quelle_name: Google Search Central - Core Web Vitals & Page Experience
+geprueft_am: 2026-06-29
+recheck_nach: 2026-12-26
+
+## t27-2026-06-29-126
+cluster: 1
+keywords: warum, ladezeit, pagespeed, entscheidend, umsatz
+aussage: In derselben Deloitte/Google-Studie hatte die 0,1s-Beschleunigung auch im Funnel-Verlauf grosse Hebel: bei Luxusmarken stieg der Uebergang von der Produktdetail- zur Warenkorb-Seite um 40,1 %, bei Lead-Generierung der Anteil abgeschickter Formulare um 21,6 %.
+quelle: https://web.dev/case-studies/milliseconds-make-millions
+quelle_name: Deloitte / Google - Milliseconds Make Millions (web.dev Case Study)
+geprueft_am: 2026-06-29
+recheck_nach: 2026-12-26
