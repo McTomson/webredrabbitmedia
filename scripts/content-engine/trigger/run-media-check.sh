@@ -55,7 +55,7 @@ if ! mkdir "$LOCKDIR" 2>/dev/null; then
         echo "Media-Lauf laeuft bereits (Lock aktiv) — Abbruch."
         exit 0
     fi
-    rmdir "$LOCKDIR" 2>/dev/null
+    rm -rf "$LOCKDIR" 2>/dev/null
     mkdir "$LOCKDIR" 2>/dev/null || { echo "Lock-Race verloren — Abbruch."; exit 0; }
 fi
 echo $$ > "$LOCKDIR/pid" 2>/dev/null || true
