@@ -1139,3 +1139,39 @@ quelle: https://web.dev/case-studies/milliseconds-make-millions
 quelle_name: Deloitte / Google - Milliseconds Make Millions (web.dev Case Study)
 geprueft_am: 2026-06-29
 recheck_nach: 2026-12-26
+
+## t28-2026-07-01-127
+cluster: 1
+keywords: baukasten, system, seriöses, unternehmen, ausreichend
+aussage: Der grösste strukturelle Nachteil von Website-Baukästen ist die Anbieterbindung (Lock-in): Website-Inhalte lassen sich kaum brauchbar exportieren und müssen bei einem Umzug meist komplett neu angelegt werden, zudem sind Nutzer Preiserhöhungen, Funktions-Einstellungen und eingeschränktem SEO-Zugriff ausgeliefert - für ein Unternehmen, das langfristig planbar bleiben will, ein zentrales Risiko.
+quelle: https://www.fuer-gruender.de/wissen/unternehmen-gruenden/website-erstellen/homepage-baukasten-vergleich/
+quelle_name: Für-Gründer.de - Homepage-Baukasten-Vergleich 2026
+geprueft_am: 2026-07-01
+recheck_nach: 2026-12-28
+
+## t28-2026-07-01-128
+cluster: 1
+keywords: baukasten, system, seriöses, unternehmen, ausreichend
+aussage: Der zentrale Entscheidungs-Tradeoff bei der Systemwahl: Baukasten-/Plattform-Anbieter (z. B. Herold) setzen auf standardisierte Rundum-Pakete im Miet-/Abomodell mit laufenden Systemgebühren und Plattformbindung, während Individualentwicklung (z. B. Next.js über eine Agentur) ein Einmal-Investment mit vollem Eigentum am Quellcode und ohne laufende System-Gebühren ist.
+quelle: https://web.redrabbit.media/tipps/herold-webseite-vs-agentur-vergleich
+quelle_name: Red Rabbit Media - Herold-Webseite vs. Agentur-Vergleich
+geprueft_am: 2026-07-01
+recheck_nach: 2026-12-28
+
+## t28-2026-07-01-129
+cluster: 1
+keywords: baukasten, system, seriöses, unternehmen, ausreichend
+aussage: Google bewertet das Seitenerlebnis als Rankingsignal und stellt dafür die Core Web Vitals (Ladegeschwindigkeit, Interaktivität, visuelle Stabilität) in den Mittelpunkt - die technische Performance des gewählten Systems wirkt direkt auf die Sichtbarkeit in der Google-Suche, wo Baukästen wegen generischem Code oft schlechter abschneiden als optimierte Individuallösungen.
+quelle: https://developers.google.com/search/docs/appearance/page-experience
+quelle_name: Google Search Central - Understanding page experience
+geprueft_am: 2026-07-01
+recheck_nach: 2026-12-28
+
+## t28-2026-07-01-130
+cluster: 1
+keywords: baukasten, system, seriöses, unternehmen, ausreichend
+aussage: Eine professionelle Website ist für österreichische Unternehmen Geschäftsgrundlage, nicht Kür: Sechs von zehn Unternehmen erreichen laut Statistik Austria mindestens grundlegende digitale Intensität, und der über E-Commerce erzielte Umsatzanteil stieg auf rund ein Fünftel des Gesamtumsatzes (von 14 % im Vorjahr) - entsprechend hoch ist der Anspruch an den professionellen Auftritt.
+quelle: https://www.statistik.at/ueber-uns/erhebungen/unternehmen/ikt-einsatz-in-unternehmen
+quelle_name: Statistik Austria - IKT-Einsatz in Unternehmen
+geprueft_am: 2026-07-01
+recheck_nach: 2026-12-28
