@@ -1175,3 +1175,57 @@ quelle: https://www.statistik.at/ueber-uns/erhebungen/unternehmen/ikt-einsatz-in
 quelle_name: Statistik Austria - IKT-Einsatz in Unternehmen
 geprueft_am: 2026-07-01
 recheck_nach: 2026-12-28
+
+## t29-2026-07-02-131
+cluster: 1
+keywords: wird, sichergestellt, dass, website, allen, smartphones, perfekt, funktioniert
+aussage: Google indexiert und rankt Websites primär nach ihrer Mobilversion: 'Google uses the mobile version of a site's content, crawled with the smartphone agent, for indexing and ranking' (Mobile-First Indexing). Google empfiehlt dafür ausdrücklich Responsive Web Design als das am einfachsten umzusetzende und wartbare Design-Pattern.
+quelle: https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing
+quelle_name: Google Search Central - Mobile-first Indexing Best Practices
+geprueft_am: 2026-07-02
+recheck_nach: 2026-12-29
+
+## t29-2026-07-02-132
+cluster: 1
+keywords: wird, sichergestellt, dass, website, allen, smartphones, perfekt, funktioniert
+aussage: Die messbaren Qualitätsschwellen für gute Mobile-Erfahrung sind die Core Web Vitals: LCP (Ladezeit des Hauptinhalts) max. 2,5 Sekunden, INP (Reaktionszeit auf Eingaben) max. 200 Millisekunden, CLS (visuelle Stabilität) max. 0,1 – gemessen am 75. Perzentil der realen Seitenaufrufe, getrennt nach Mobil- und Desktop-Geräten. 'Perfekt auf allen Smartphones' ist damit kein Bauchgefühl, sondern ein prüfbarer Standard mit echten Nutzerdaten.
+quelle: https://web.dev/articles/vitals
+quelle_name: web.dev - Web Vitals (offizielle Google-Doku)
+geprueft_am: 2026-07-02
+recheck_nach: 2026-12-29
+
+## t29-2026-07-02-133
+cluster: 1
+keywords: wird, sichergestellt, dass, website, allen, smartphones, perfekt, funktioniert
+aussage: Für fehlerfreie Touch-Bedienung empfiehlt Google mindestens ca. 48 geräteunabhängige Pixel Tap-Target-Größe (entspricht rund 9 mm, etwa eine Fingerkuppe) und ca. 8 Pixel Abstand zwischen Touch-Elementen, damit Nutzer nicht versehentlich das falsche Element treffen – ein konkretes, testbares Kriterium für Smartphone-Tauglichkeit.
+quelle: https://web.dev/articles/accessible-tap-targets
+quelle_name: web.dev - Accessible tap targets
+geprueft_am: 2026-07-02
+recheck_nach: 2026-12-29
+
+## t29-2026-07-02-134
+cluster: 1
+keywords: wird, sichergestellt, dass, website, allen, smartphones, perfekt, funktioniert
+aussage: In Österreich nutzen die 16- bis 64-Jährigen das Internet nahezu lückenlos: Die Quote lag laut Statistik Austria in den vergangenen drei Jahren durchgängig bei rund 97 %, neun von zehn nutzen es mehrmals täglich. Auch die 65- bis 84-Jährigen holen auf – von 69 % (2023) auf 75 % (2025). Eine Website muss also für praktisch die gesamte erwerbsfähige Kundschaft funktionieren, zunehmend auch für ältere Zielgruppen.
+quelle: https://www.statistik.at/fileadmin/announcement/2025/10/20251023IKTHaushalte2025.pdf
+quelle_name: Statistik Austria - Pressemitteilung IKT-Einsatz in Haushalten 2025 (23.10.2025)
+geprueft_am: 2026-07-02
+recheck_nach: 2026-12-29
+
+## t29-2026-07-02-135
+cluster: 1
+keywords: wird, sichergestellt, dass, website, allen, smartphones, perfekt, funktioniert
+aussage: In Österreich kommen laut Statcounter (Juni 2026) 42,79 % der Web-Seitenaufrufe von Mobilgeräten, 57,21 % vom Desktop. Österreich ist damit desktop-lastiger als der weltweite Durchschnitt – trotzdem kommt gut vier von zehn Besuchern mobil, d. h. eine Website muss auf beiden Gerätewelten gleich gut funktionieren, nicht nur auf einer.
+quelle: https://gs.statcounter.com/platform-market-share/desktop-mobile/austria
+quelle_name: Statcounter Global Stats - Desktop vs Mobile Market Share Austria
+geprueft_am: 2026-07-02
+recheck_nach: 2026-12-29
+
+## t29-2026-07-02-136
+cluster: 1
+keywords: wird, sichergestellt, dass, website, allen, smartphones, perfekt, funktioniert
+aussage: Einfache Baukasten-Lösungen starten in Österreich meist ab ca. 25 € monatlich, bieten jedoch oft nicht die erforderliche Geschwindigkeit für Top-Platzierungen – professionelle 5-Seiten-Websites mit moderner Web-Architektur (Next.js), SEO und regionaler Anpassung gibt es ab 790 €.
+quelle: https://web.redrabbit.media/tipps/website-5-seiten-kosten
+quelle_name: Red Rabbit Media - Was kostet eine Webseite mit 5 Seiten?
+geprueft_am: 2026-07-02
+recheck_nach: 2026-12-29
