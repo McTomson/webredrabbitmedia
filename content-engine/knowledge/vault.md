@@ -1229,3 +1229,30 @@ quelle: https://web.redrabbit.media/tipps/website-5-seiten-kosten
 quelle_name: Red Rabbit Media - Was kostet eine Webseite mit 5 Seiten?
 geprueft_am: 2026-07-02
 recheck_nach: 2026-12-29
+
+## t30-2026-07-03-137
+cluster: 1
+keywords: bedeutet, responsive, design, praxis
+aussage: Responsive Web Design (RWD) bezeichnet einen Ansatz, bei dem Webseiten sich flexibel an unterschiedliche Geraete, Fenster- und Bildschirmgroessen anpassen, um Nutzbarkeit und Darstellung ueber alle Displaygroessen hinweg sicherzustellen. Der Begriff wurde 2010 von Ethan Marcotte gepraegt.
+quelle: https://en.wikipedia.org/wiki/Responsive_web_design
+quelle_name: Wikipedia - Responsive web design
+geprueft_am: 2026-07-03
+recheck_nach: 2026-12-30
+
+## t30-2026-07-03-138
+cluster: 1
+keywords: bedeutet, responsive, design, praxis
+aussage: In der Praxis stuetzt sich Responsive Design auf drei technische Bausteine: fluide Raster (Groessen in relativen Einheiten wie Prozent statt fixen Pixeln), flexible Bilder (skalieren relativ, damit sie nicht ueber ihren Container hinausragen) und Media Queries (verschiedene CSS-Regeln je nach Geraeteeigenschaften wie Viewport-Breite).
+quelle: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design
+quelle_name: MDN Web Docs - Responsive Design
+geprueft_am: 2026-07-03
+recheck_nach: 2026-12-30
+
+## t30-2026-07-03-139
+cluster: 1
+keywords: bedeutet, responsive, design, praxis
+aussage: Google indexiert und rankt Websites primaer nach ihrer Mobilversion (Mobile-First Indexing) und empfiehlt dafuer ausdruecklich Responsive Web Design als das am einfachsten umzusetzende und wartbare Design-Pattern. Ein nicht-responsives Layout benachteiligt eine Website damit direkt im Google-Ranking.
+quelle: https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing
+quelle_name: Google Search Central - Mobile-first Indexing Best Practices
+geprueft_am: 2026-07-03
+recheck_nach: 2026-12-30
