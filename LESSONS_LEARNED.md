@@ -415,3 +415,9 @@ Update this file at the end of every session when a debugging lesson, setup issu
 - Prefer root-cause notes over vague summaries.
 - Include the command or file involved when it helps future debugging.
 - Do not store secrets or credentials here.
+
+## 2026-07-04 — Morph-Engine v2 (relaunch)
+- Lottie `fromX/fromY` (erster Position-Keyframe) = Einflug von aussen, NICHT die sichtbare Zerfall-Verteilung (nur 31/129 im Canvas). Vollbild-Zerfall braucht eigenes gejittertes Raster.
+- SVG-Teile per CSS-transform hochskalieren = Matsch (GPU rastert Layout-Groesse). Fix: Element in seiner Maximal-Verwendung dimensionieren, Timeline-Scales normieren (nur Downscale).
+- Lenis vs. window.scrollTo = Race (Lenis-raf ueberschreibt). Automation: WheelEvents dispatchen; Screenshots: doppelt scrollTo + settle-Wartezeit.
+- `npm run build` waehrend `next dev` laeuft korrumpiert .next des Dev-Servers -> dev neu starten.
