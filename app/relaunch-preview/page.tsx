@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { fraunces, grotesk } from "@/lib/relaunch/fonts";
 import HeroMorph from "@/components/relaunch/HeroMorph";
+import ScenesMorph from "@/components/relaunch/ScenesMorph";
 import "../styleguide/styleguide.css";
 
 export const metadata: Metadata = {
@@ -12,14 +13,9 @@ export default function RelaunchPreviewPage() {
   return (
     <div className={`rr ${fraunces.variable} ${grotesk.variable}`}>
       <HeroMorph claim="Wir bauen Websites, die man findet. Bei Google und in der KI." />
-      <section className="rr-section" style={{ background: "var(--rr-surface)" }}>
-        <div className="rr-wrap">
-          <p className="rr-eyebrow" style={{ marginBottom: 24 }}>P1-Preview · nach dem Hero geht es hier weiter</p>
-          <p className="rr-statement">Deine Website schreibt selbst. Jede Woche neue Beitraege, die ranken.</p>
-        </div>
-      </section>
+      <ScenesMorph />
       <section className="rr-section">
-        <div className="rr-wrap"><p className="rr-body-lg" style={{ maxWidth: 640 }}>Platzhalter-Sektion, damit der Scroll-Track Auslauf hat. Die 5 Leistungs-Szenen mit Morph-Motiven folgen in P1b.</p></div>
+        <div className="rr-wrap"><p className="rr-claim">Ein paar unserer Projekte.</p><p className="rr-meta" style={{ marginTop: 14 }}>Hier folgen die 3 Case-Panels (P2) und die Kugel-Galerie (P2b).</p></div>
       </section>
     </div>
   );

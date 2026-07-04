@@ -44,7 +44,7 @@ export default function HeroMorph({ claim }: { claim: string }) {
         const im = document.createElement("img");
         im.src = p.url;
         im.alt = "";
-        im.style.cssText = `position:absolute;left:${p.hx}px;top:${p.hy}px;width:${p.w}px;height:${p.h}px;will-change:transform;`;
+        im.style.cssText = `position:absolute;left:${p.hx}px;top:${p.hy}px;max-width:none;width:${p.w}px;height:${p.h}px;will-change:transform;`;
         box.appendChild(im);
         return im;
       });

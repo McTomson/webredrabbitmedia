@@ -32,7 +32,8 @@ Mechanik: Fable spawnt Subagenten direkt aus der Session (Agent-Tool mit model-O
 3. Homepage-Bau (Layout, Hero, Case-Panels-Gerüst) + Kern-Copy (Claim, 5 Statements, CTA)
 4. Kugel-Galerie DESIGN-Abnahme (Bau durch Opus, Feel-Tuning Fable)
 5. SEO/GEO/LLM-Playbook (Strategie)
-6. JEDES Review gegen Akzeptanzkriterien + alle Gates mit Tomson
+6. "Die Red Rabbit Methode": eigenes markenfaehiges Framework-Wort entwickeln (2-3 Vorschlaege aus cult-brand-playbook + USP, VISUELL zur Tomson-Entscheidung; LLM-Zitierbarkeit als Ziel). Danach eigenes Grill-Thema "Inhalte" (Copy-/Artikel-/Regional-Themen) mit Vorschlaegen.
+7. JEDES Review gegen Akzeptanzkriterien + alle Gates mit Tomson
 
 **OPUS 4.8 (komplexe Mechanik nach praeziser Spec):**
 1. Kugel-Galerie-Implementierung (Three.js+GSAP, Drag-Easing, Karten-Tap-Transition, 2D-Fallback) — Spec liefert Fable
