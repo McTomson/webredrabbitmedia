@@ -142,3 +142,7 @@ NAECHSTE BAURUNDE (Reihenfolge): Wortmarken-Setzung -> Teile-Vermehrung/Dichte +
 - Formations-Kompositionen der 5 Szenen = exakte Zielkoordinaten aus dem all-turtles-Lottie (Tomson-Freigabe als Uebergangsloesung; keine at-Assets im Repo, nur Messwerte in lib/relaunch/morph/at-scenes.ts; eigene Kompositionen nach Launch).
 - Szenen-Texte dem Motiv zugeordnet (NACHTRAG zur Reihenfolge vom 04.07.): Zahnraeder=Webdesign, Gluehbirne=Google-Sichtbarkeit, Dokument=Content & KI-Artikel, Chart=Dashboard & Betreuung, Kopf=KI-Sichtbarkeit. Grund: Motiv-Semantik (Artikel-Text neben Dokument statt neben Chart). Leistungs-REIHENFOLGE auf der Seite damit: Webdesign, Google, Content, Dashboard, KI. Reversibel, falls Tomson die alte Reihenfolge wichtiger ist als die Motiv-Passung.
 - Footer = dunkel (var(--rr-dark)) mit grosser Wortmarke und Teile-Regen von oben (Original-Klammer).
+
+## 2026-07-05 (frueh) — Formationen: Original-Teilformen von all-turtles verwenden (Tomson-Entscheidung)
+- Nach Ablehnung aller Eigen-Kompositionen (vermessene Slots mit Fraunces-Teilen, geometrischer Komponist, 4 Buchstaben-Fuellstile im /morph-lab): Tomson entscheidet, fuer die Formations-Szenen die EXTRAHIERTEN ORIGINAL-TEILFORMEN aus dem at-Lottie zu verwenden, damit das Ergebnis identisch zum Original ist. Unsere Wortmarken-Teile eroeffnen (Burst), fliegen dann ab; deren Teile bauen die Motive.
+- Einordnung: Uebergangsloesung; Copyright-Risiko bekannt; VOR LAUNCH Wiedervorlage "Ersatz durch eigene Teile".
