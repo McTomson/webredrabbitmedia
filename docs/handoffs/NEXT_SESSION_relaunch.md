@@ -1,4 +1,4 @@
-# Naechste Session — relaunch (2026-07-04)
+# Naechste Session — relaunch (Stand 2026-07-04 mittag)
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
@@ -9,41 +9,49 @@
 - Laufend testen + `review-it` bei groesseren Schritten. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
 - Bei langen Agenten-/Hintergrund-Laeufen ALLE 15 MIN Health-Check + Stichprobe (TaskList/BashOutput/Monitor). Bricht ein Tool ein → STOPP + fixen, keine kaputten Daten schreiben. Nicht endlos haengen.
 
-## Projekt-Sonderregeln (Tomson, verbindlich — aus Session 03./04.07.)
-- Design-Entscheidungsfragen IMMER mit visuellen HTML-Beispielen (Artifacts) vorlegen, nie nur Text.
-- Detail-Grafikarbeit selbst im Zoom-Loop verifizieren bis 100% sauber, ERST DANN zeigen (Tomson ist nicht die QA).
-- grill-me-Stil: eine Frage nach der anderen, immer mit Empfehlung; ehrlich und direkt widersprechen, kein Schoenreden.
-- Keine Emojis, keine Gedankenstriche, echte Umlaute in User-Content.
+## Projekt-Sonderregeln (Tomson, verbindlich)
+- Design-Entscheidungsfragen IMMER mit visuellen, INTERAKTIVEN HTML-Beispielen (Artifacts) — und auf Fable-Niveau, keine generischen "Kindergarten-Menues" (Tomson-Kritik 04.07.). Bei Bedarf Internet-Inspiration holen.
+- Detail-Grafikarbeit selbst im Zoom-Loop verifizieren bis 100% sauber, ERST DANN zeigen.
+- grill-me-Stil: eine Frage nach der anderen, immer mit Empfehlung; ehrlich widersprechen.
+- Keine Emojis, keine Gedankenstriche, echte Umlaute, Du-Anrede in aller Website-Copy.
+- Keine erfundenen Fakten: fehlende Zahlen/Kommentare = realistisch gesetzte, KLAR MARKIERTE Platzhalter.
 
-## Stand dieser Session (03.-04.07.2026, Fable 5 Design-Session)
+## PFLICHT-LEKTUERE vor jeder Arbeit (Reihenfolge)
+1. `docs/TASK_SPECS_RELAUNCH.md` — komplette Rest-Inventur + LLM-Zuteilung + Ablauf pro Arbeitspaket
+2. `docs/HOMEPAGE_BLAUPAUSE_ALLTURTLES.md` — VERBINDLICHE Homepage-Sektionsfolge (live vermessen)
+3. `docs/MORPH_SYSTEM_BAUPLAN.md` §0 — Lottie-Befund: exakte Keyframe-Grammatik (DER Durchbruch)
+4. `docs/RELAUNCH_PLAN_2026-07.md` + `brand/decisions-log.md` (Eintraege 03.-04.07.) — alle Entscheidungen
+5. Referenz-Daten: `~/dev/at-reference-lottie/` (9 Original-Lottie-JSONs, NUR Studium, NIE verwenden/committen)
 
-### Erledigt + verifiziert
-- **Kompletter Plan steht:** `docs/RELAUNCH_PLAN_2026-07.md` (Phasen P0-P5 mit Gates, Zeitplan, Risiken, Tomson-Lieferliste). Alle Entscheidungen datiert in `brand/decisions-log.md` (Eintraege 2026-07-03/04).
-- **all-turtles-Grammatik vermessen + als Bauplan dokumentiert:** `docs/MORPH_SYSTEM_BAUPLAN.md` (7 Regeln, Parameter-Tabelle, Zerfalls-Kaskade G0-G3, Naturbruch-Regel). Live vermessen: 705 Pfade, Groessen 18/62/152px, 86% aufrecht, Dichte 31-35px, Szenen = strenge Ordnungssysteme (radial/spaltig/linear), Fonts = Heldane/Breit/Soehne.
-- **Zerlege-Vorlage ABGENOMMEN (Tomson, nach 6 Korrektur-Runden):** 14 Naturbruch-Teile fuer r,e,a,d,b,i,t. Bruch = vertikaler Schnitt EXAKT an der Beruehrungskante, Stammkanten schnurgerade, Pufferzonen gegen AA-Saeume. e = C-Schwung + Deckel (Querbalken beim Deckel!), a = 3 Teile, t/l/s bleiben ganz. G3 = VERMEHRUNG derselben Teile (kein weiteres Schneiden). Exakte Clip-Koordinaten: SPEC-Array in `brand/prototypes/relaunch-2026-07/bauplan-v10.html` + PIECES-Objekt in `scroll-prototyp-v6.html`.
-- **Scroll-Prototyp v6 gebaut + kalibriert:** `brand/prototypes/relaunch-2026-07/scroll-prototyp-v6.html`. Ablauf (Tomsons Regie): Logo oben fix + Wortmarke aus den 18 Teilen -> Kontraktion mittig-mittig (15%/38%, lesbar, kontrolliert) -> Buchstaben loesen sich ERST als Ganzes, dann brechen die Teile -> flaechige Verteilung (kleine Teile schneller/weiter) -> Footer-Heimkehr + Logo-Einblendung. Schrift-Rendering scharf (devicePixelRatio). Artifact-URLs: Prototyp https://claude.ai/code/artifact/a046696a-b5f0-4d01-98f9-4569c515290d · Bauplan https://claude.ai/code/artifact/0b26de08-2844-40bf-9d8a-818b03fdf7e6
-- Memory aktualisiert: `~/.claude/projects/-Users-McTomson/memory/project_webredrabbit_relaunch_2026_07.md` + 2 neue Dauerregeln (visuelle Designfragen, Pixel-Loop).
+## Stand 04.07. (diese Session — Grill abgeschlossen, Planung KOMPLETT)
+### Durchbruch
+all-turtles-Morph = handanimiertes LOTTIE (After Effects), per Scroll gescrubbt. Alle Keyframes extrahiert + Grammatik gemessen (EIN Easing cubic-bezier(.6,0,.4,1) fuer alles; Kontraktion ohne Rotation, flach ±20px vertikal, 20-50px horizontal; gerade 2-Punkt-Flugbahnen; Stagger; Dauer konstant, weiter=schneller; nur ~40% rotieren beim Burst). Konsequenz: Engine = Keyframe-Choreografie-Player, KEINE Physik. Prototyp-Politur beendet.
 
-### Fixierte Kern-Entscheidungen (nicht neu diskutieren)
-Nahezu identische all-turtles-Reproduktion (Ablauf identisch, BILDER eigen); Fatface-Serif-Schriftlogo (Ziel Heldane-Lizenz, bis dahin Fraunces; Kauf nur mit Tomson-OK); Logo-Zeichen (Hase) bleibt KOMPLETT unangetastet; Markenrot #F12032 (aus Logo gesampelt, themenfix); Preise 950/2.900/ab 4.900 + Abo ohne Bindung; Dashboard gratis ab Business; Regional: 9 Bundeslaender + 10-15 Staedte mit Substanz; Hosting: Site bleibt Vercel (Domain/URLs/301 -> Index+Links+Bewertungen erhalten), IONOS-VPS nur Automationen (nach Launch); Bau auf Branch `relaunch`, Vercel-Previews als Gates; SEO-Sofort-Fixes erst MIT Relaunch (Tomson-Entscheidung GEGEN Empfehlung; Wiedervorlage falls >3 Wochen); Arbeitsteilung: Fable 5 = Design-kritisches + Review, Opus 4.8 = mechanische Umsetzung nach Spezifikation.
+### Fixierte Entscheidungen 04.07. (nicht neu diskutieren)
+- Homepage-Struktur = all-turtles 1:1 (Blaupause-Doc), Anpassungen minimal. Fable-Recherche-Reihenfolge VERWORFEN.
+- 5 Leistungs-Szenen bestaetigt: Webdesign / Google-Sichtbarkeit / KI-Sichtbarkeit / Content & KI-Artikel / Dashboard & Betreuung — Statements problem-first (Entwuerfe im decisions-log/Chat 04.07.).
+- Positionierungs-Klammer bestaetigt: **"Die Website, die selbst arbeitet"** (AI-Automationen im Hintergrund als Extra-USP: Artikel-Engine, Auto-Reviews, Auto-Reports, Monitoring — alles durch eigenen Betrieb belegbar).
+- Anrede: DU. Sichtbares schlankes Menue Desktop (Referenzen, Leistungen, Preise, Ueber uns, Kontakt) + Burger mobil. Preise als Seite/Menuepunkt, NICHT als Homepage-Sektion.
+- Portfolio: eigener Bereich mit phantom.land-Kugel-Galerie (Three.js+GSAP, Kacheln duerfen sich wiederholen) + crawlbare Liste; Projektliste steht (rero, danesh, thermenwartung, rero-michael, Pizza-Seite, K2/villagegardencondo, La Morra, Tino Jugler, Global Insights, web.redrabbit).
+- B2B-Namen (SIGNA, 6B47, Tillmann & Kraus, MBT, Sans Souci, Vorsorgewohnungs GmbH, Phils.place): rein typografisch, eine Farbe/Art, in der Firmen-Listen-Sektion (all-turtles macht es exakt so).
+- FONTS: KEIN Kauf. Fraunces (OFL) + freie Sans. Punkt erledigt.
+- Regionalseiten = vollwertige regionale Landingpages (Local-SEO-Standard). SEO/GEO/LLM-Playbook = eigenes Dokument vor P4.
+- Artikel-Engine laeuft unveraendert; zusaetzlich 1 Pillar-Artikel pro Leistungs-/Regionalseite; keine zweite Posting-Routine.
+- Handoff-MD vom 03.07. (redrabbit-website-handoff.md) = nur Ideen-Steinbruch, kritisch filtern.
 
-### Naechste konkrete Schritte (diese Reihenfolge)
-1. **Prototyp-v6-Feedback abholen:** Tomson hat v6 noch nicht abgenommen (letzte Iteration: Schaerfe + Kontraktion + Buchstaben-zuerst-Verteilung). Kurz zeigen, Feedback, ggf. 1 Kalibrier-Runde.
-2. **grill-me fortsetzen — die 4 offenen Inhalts-Fragen** (visuell aufbereiten!): (a) Panels: Referenzen oder Leistungen? (b) Panel-Farbwelten pro Referenz wie all-turtles ja/nein (verlaesst Ein-Rot-Prinzip bewusst)? (c) Welche Referenz-Assets existieren (Screenshots/Videos/Freigaben)? (d) Engine wiederverwendbar fuer Kundenprojekte + schriftunabhaengig?
-3. **Tomson-Lieferliste einsammeln** (blockiert P2+): Referenz-Freigaben + echte Case-Zahlen, Google-Business-Link, Bio + Foto, EINE belegbare Kundenzahl, Font-Kauf-OK (Heldane-Preis vorher recherchieren), Kontaktdaten bestaetigen.
-4. **Konkreten Umsetzungs-Plan fuer Opus 4.8 schreiben:** praezise Task-Specs pro Phase (P0 Brand-Texte, P1 Engine, P2 Homepage, P3 Unterseiten, P4 Regional/SEO) mit Akzeptanzkriterien; Design-kritisches (Engine-Kern, Hero, Design-System) bleibt bei Fable 5. Opus-Tasks via Agent-Tool mit model-Override starten, Fable reviewt jedes Ergebnis.
-5. **Branch `relaunch` anlegen** (von main), Prototypen + Docs dort weiterfuehren, Vercel-Preview einrichten.
-6. P1-Engine: Choreografie-Feinmessung bei all-turtles (Wheel-Events statt scrollTo — Lenis ignoriert Springen; echte Easing-Kurven, Rand-Nachzuegler, Mobile-Verhalten), dann GSAP+Lenis-Fassung.
+### NAECHSTE SESSION: BAUEN (P0+P1 nach TASK_SPECS Reihenfolge S1)
+1. Branch `relaunch` anlegen (VORHER klaeren: Branch feat/seo-monitor-und-brand-second-brain traegt evtl. uncommittete brand/-Dateien).
+2. P0: Design-System/Guide + /styleguide-Seite (Fable), Messaging in brand/ finalisieren, Wortmarken-Spec formalisieren.
+3. P1: Keyframe-Player + Hero-Choreo nach §0-Grammatik (Fable). -> Vercel-Preview Gate 1.
+4. Subagenten spawnen per Agent-Tool mit model-Override (opus/sonnet) exakt nach TASK_SPECS-Zuteilung; Fable reviewt JEDES Ergebnis gegen die Akzeptanzkriterien.
+5. Tomson liefert (nachfragen wenn nicht da): Bio + Foto, Google-Business-Link, belegbare Kundenzahl.
 
 ### Blocker / Risiken
-- Verschobene SEO-Fixes kosten laufend Rankings (Canonical Klagenfurt -> Homepage, 404-Footer, Fake-Rating 4,8/315 im Code).
-- Referenz-Zahlen fehlen -> Premium-Beweis (4.900er) schwach.
-- Heldane-Lizenzkosten unbekannt -> vor Font-Frage recherchieren (Klim Type, Weblizenz traffic-abhaengig).
-- Branch `feat/seo-monitor-und-brand-second-brain` traegt weitere uncommittete brand/-Dateien aus frueherer Session (Second Brain) — vor Branch-Wechsel klaeren/committen.
+- Verschobene SEO-Fixes kosten weiter Rankings (mit Relaunch beheben; Wiedervorlage falls >3 Wochen).
+- Echte Case-Zahlen fehlen -> Platzhalter-Regel aktiv, vor Launch ersetzen/rausnehmen.
+- WebGL-Kugel: Mobile-Performance + SEO-Fallback sind PFLICHT-Bestandteil der Opus-Spec.
 
-### Relevante Dateien/Befehle
-- Plan: `docs/RELAUNCH_PLAN_2026-07.md` · Bauplan: `docs/MORPH_SYSTEM_BAUPLAN.md` · Entscheidungen: `brand/decisions-log.md`
-- Prototypen: `brand/prototypes/relaunch-2026-07/` (scroll-prototyp-v6.html = Referenz-Implementierung inkl. PIECES-Koordinaten; lokal testen: `python3 -m http.server 8899` im Ordner, NICHT file://)
-- Handoff-Rohstoff (Copy/Positionierung, teils verworfen): `~/Library/Application Support/Claude/local-agent-mode-sessions/e0aa2881-9215-447c-ab17-864d6ef5de75/16684f46-ac82-4407-a99e-a350a849a559/local_30f7e505-1170-4a76-a408-9c924a364fa8/outputs/redrabbit-website-handoff.md` (Panel-Icons + Hasen-Choreo daraus sind VERWORFEN)
-- Graphify vor Code-Aufgaben: `graphify query "<Begriff>" --graph graphify-out/graph.json` (Auto-Update via post-commit hook)
-- MCP-Anomalie dieser Session: programmatisches scrollTo feuert irgendwann keine Scroll-Events mehr im Chrome-MCP; Workaround im Prototyp: rAF-Loop + `window.__render()`-Hook.
+### Artifacts dieser Session
+- Scroll-Prototyp v6 (historisch): https://claude.ai/code/artifact/a046696a-b5f0-4d01-98f9-4569c515290d
+- Bauplan: https://claude.ai/code/artifact/0b26de08-2844-40bf-9d8a-818b03fdf7e6
+- 3 Panel-Konzepte (Ideen-Reserve, NICHT Bauvorlage): https://claude.ai/code/artifact/031c21a5-4c3d-4a18-9a89-53ab51c741de
