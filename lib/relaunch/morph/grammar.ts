@@ -154,9 +154,9 @@ export function buildHeroChoreo(
 }
 
 /**
- * Footer-Reassembly (all-turtles Footer-Lottie-Logik gespiegelt): Teile kommen
- * verstreut von aussen und setzen die Wortmarke zusammen. Grammatik wie gemessen:
- * gerade 2-Punkt-Bahnen, Stagger ueber ~50% der Phase, Flugdauer konstant
+ * Footer-Reassembly nach Video-Befund (f_0113-0122): die Teile REGNEN von OBEN
+ * in den dunklen Footer herab (nicht radial) und setzen die Wortmarke zusammen.
+ * Grammatik wie gemessen: gerade Bahnen, Stagger, Flugdauer konstant
  * (weiter = schneller), Transit-Rotation endet EXAKT bei Ankunft auf 0.
  */
 export function buildReassembly(
@@ -164,19 +164,17 @@ export function buildReassembly(
   opts: { viewportW: number; viewportH: number; seed?: number }
 ): Keyframe[][] {
   const rng = makeRng(opts.seed ?? 29);
-  const base = Math.hypot(opts.viewportW, opts.viewportH) * 0.5;
   return pieces.map((p) => {
-    // Herkunft radial verstreut, leicht verrauscht (deterministisch, LCG-Seed)
-    const ang = Math.atan2(p.cy + (rng() - 0.5) * 260, p.cx + (rng() - 0.5) * 260);
-    const dist = base * (0.4 + rng() * 0.55);
-    const sx = Math.cos(ang) * dist, sy = Math.sin(ang) * dist;
+    // Herkunft: oberhalb des Viewports, horizontal nahe der Zielspalte verstreut
+    const sx = p.cx + (rng() - 0.5) * opts.viewportW * 0.22;
+    const sy = p.cy - opts.viewportH * (0.75 + rng() * 0.6);
     const t0 = 0.04 + rng() * 0.42;         // Starts gestaffelt ueber ~46% der Phase
     const t1 = Math.min(0.97, t0 + 0.42);   // Dauer konstant -> weiter = schneller
-    const spins = rng() < 0.6;              // Transit-Rotation median ~|78 Grad|
-    const spin = spins ? (rng() < 0.5 ? -1 : 1) * (40 + rng() * 110) : 0;
+    const spins = rng() < 0.7;              // leichte Fall-Rotation, endet bei Ankunft
+    const spin = spins ? (rng() < 0.5 ? -1 : 1) * (18 + rng() * 60) : 0;
     return [
-      { t: 0, x: sx, y: sy, rot: -spin, scale: 1 },
-      { t: t0, x: sx, y: sy, rot: -spin, scale: 1 },
+      { t: 0, x: sx - p.cx, y: sy - p.cy, rot: -spin, scale: 1 },
+      { t: t0, x: sx - p.cx, y: sy - p.cy, rot: -spin, scale: 1 },
       { t: t1, x: 0, y: 0, rot: 0, scale: 1 },
       { t: 1, x: 0, y: 0, rot: 0, scale: 1 },
     ];

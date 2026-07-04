@@ -31,7 +31,8 @@ export default function FooterReassembly() {
 
     function build() {
       const fam = getComputedStyle(probeRef.current!).fontFamily;
-      const F = Math.min(72, Math.max(44, window.innerWidth * 0.055));
+      // Original-Proportion: Footer-Wortmarke gross (~35% Viewportbreite)
+      const F = Math.min(150, Math.max(56, window.innerWidth * 0.095));
       const l = buildWordLayout(fam, F, window.devicePixelRatio || 1);
       if (!l || l.pieces.length < 10) return false;
       layout = l;
@@ -90,7 +91,7 @@ export default function FooterReassembly() {
   }, []);
 
   return (
-    <footer ref={trackRef} style={{ height: "220vh", position: "relative" }}>
+    <footer ref={trackRef} style={{ height: "220vh", position: "relative", background: "var(--rr-dark)" }}>
       <span ref={probeRef} aria-hidden style={{ fontFamily: "var(--rr-font-display)", position: "absolute", opacity: 0, pointerEvents: "none" }}>probe</span>
       <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "9vh" }}>
         {reduced ? (
@@ -99,14 +100,14 @@ export default function FooterReassembly() {
           <div ref={boxRef} style={{ position: "relative" }} />
         )}
         <nav aria-label="Footer" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "14px 34px", padding: "0 24px" }}>
-          <Link className="rr-link" href="/referenzen-preview">Referenzen</Link>
-          <Link className="rr-link" href="/kontakt">Kontakt</Link>
-          <a className="rr-link" href="mailto:office@redrabbit.media">office@redrabbit.media</a>
-          <a className="rr-link" href="tel:+436769000955">+43 676 9000 955</a>
-          <Link className="rr-link" href="/impressum">Impressum</Link>
-          <Link className="rr-link" href="/datenschutz">Datenschutz</Link>
+          <Link className="rr-link rr-link-dark" href="/referenzen-preview">Referenzen</Link>
+          <Link className="rr-link rr-link-dark" href="/kontakt">Kontakt</Link>
+          <a className="rr-link rr-link-dark" href="mailto:office@redrabbit.media">office@redrabbit.media</a>
+          <a className="rr-link rr-link-dark" href="tel:+436769000955">+43 676 9000 955</a>
+          <Link className="rr-link rr-link-dark" href="/impressum">Impressum</Link>
+          <Link className="rr-link rr-link-dark" href="/datenschutz">Datenschutz</Link>
         </nav>
-        <p className="rr-meta">&copy; {new Date().getFullYear()} Red Rabbit Media</p>
+        <p className="rr-meta" style={{ color: "rgba(255,255,255,0.55)" }}>&copy; {new Date().getFullYear()} Red Rabbit Media</p>
       </div>
     </footer>
   );

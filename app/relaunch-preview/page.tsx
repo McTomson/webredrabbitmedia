@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { fraunces, grotesk } from "@/lib/relaunch/fonts";
-import HeroMorph from "@/components/relaunch/HeroMorph";
-import ScenesMorph from "@/components/relaunch/ScenesMorph";
+import HomeMorph from "@/components/relaunch/HomeMorph";
 import CasePanels from "@/components/relaunch/CasePanels";
 import HomeClosing from "@/components/relaunch/HomeClosing";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
@@ -20,8 +19,8 @@ export const metadata: Metadata = {
 export default function RelaunchPreviewPage() {
   return (
     <div className={`rr ${fraunces.variable} ${grotesk.variable}`}>
-      <HeroMorph claim="Wir bauen Websites, die man findet. Bei Google und in der KI." />
-      <ScenesMorph />
+      {/* Sektionen 1-3: durchgehende Morph-Buehne (Hero + 5 Leistungs-Szenen) */}
+      <HomeMorph claim="Wir bauen Websites, die man findet. Bei Google und in der KI." />
 
       {/* Sektion 4: Ueberleitung */}
       <section className="rr-section">

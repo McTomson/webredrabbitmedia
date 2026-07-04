@@ -151,6 +151,9 @@
 }
 .rr .rr-link:hover { gap: 14px; color: var(--rr-red); }
 .rr .rr-link::after { content: "\2192"; }
+/* Variante auf dunklem Grund (Footer): heller Text, Hover bleibt Rot */
+.rr .rr-link-dark { color: #f2f2ef; }
+.rr .rr-link-dark:hover { color: #ff5f6d; }
 
 /* ============ Formularfelder ============ */
 .rr .rr-field {
