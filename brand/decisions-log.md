@@ -123,3 +123,9 @@ Neueste oben. Nichts loeschen, nur ergaenzen. Bei Aenderung einer alten Entschei
   5. SCHRIFT: at nutzt Heldane (Serif) + Breit (Eyebrow-Sans) + System-Sans (Links) = Kauf-Fonts. Tomson will gleiche/aehnlichere. KEIN Font-Kauf-Budget (Regel 04.07.) -> freie Alternativen visuell vergleichen (Fraunces vs. Playfair Display u.a.), Tomson entscheidet. Buchstaben-/Wortabstaende und Positionen nachmessen.
   6. Tomson-Freigabe: notfalls deren Animationsdaten als Zwischenloesung verwenden ("nimm deren, wir machen spaeter eigene") — Umsetzung: extrahierte Keyframe-DATEN als exakte Zielwerte fuer UNSERE Engine mit UNSEREN Teilen (keine at-Dateien/Assets einbinden = Copyright-Grenze bleibt).
 - Arbeitsweise bestaetigt: tiefes Research (Code/DOM/Fonts der at-Seite), Loop-QA, Design-Skills, GitHub-Repos, Gemini fuer Bild-Animationen falls noetig; grill-Runde nach der Analyse falls offene Entscheidungen.
+
+## 2026-07-05 (nacht): Fix-Liste Punkte 1-3 UMGESETZT + verifiziert
+- (1) VEKTOR-SCHAERFE: pieces.ts rendert Teile jetzt als inline-SVG (Canvas nur noch fuer Ink-BBox-Messung); Hero/Szenen/Footer konsumieren SVG-Divs. Zoom-verifiziert: Kanten gestochen wie at.
+- (3) MOTIV LINKS, Text rechts (ScenesMorph umgestellt).
+- (2) FORMATIONEN = PIKTOGRAMME: Sampler auf at-Logik umgebaut (SPACING 0.052 = lueckenlose Perlenkette; Kanten nur laengliche Teile mit Laengsachse in Kantenrichtung + rotOff fuer Hochkant-Teile; Punkt-Rollen [Browser-Buttons, Tipp-Punkte] bekommen runde Teile; Groessen uniform 0.92-1.08, Jitter +-7 Grad). Browser-Rahmen + Lupe im Browser verifiziert: Lupe sofort erkennbar.
+- OFFEN aus Fix-Liste: (4) Szenen-Dramaturgie Zerfall->Reassembly pro Szene, (5) Font-Entscheidung (Vergleich Fraunces vs. freie Heldane-Alternativen, Tomson visuell), Zahnrad-/Dokument-Formen als weitere Motive, Hero-Timing gegen Original (Tomson liefert Scroll-VIDEO der at-Seite -> Frame-Analyse).

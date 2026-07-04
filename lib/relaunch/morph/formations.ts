@@ -8,32 +8,43 @@
 export interface FormationPoint {
   x: number;
   y: number;
-  /** Ziel-Rotation im Ruhezustand (Grad) — 85% aufrecht, Rest diagonal/tangential */
+  /** Ziel-Rotation im Ruhezustand (Grad) — Kantenrichtung (at-Logik) */
   rot: number;
   /** relative Teilgroesse 0..1 (multipliziert Basis-Groesse) */
   s: number;
+  /** Teil-Rolle: Kanten brauchen laengliche Teile, Punkte runde (at-Logik) */
+  role?: "edge" | "dot";
 }
 
-function ring(cx: number, cy: number, r: number, n: number, tangential = true): FormationPoint[] {
+/** Abstand zwischen Teil-Mitten im normierten Raum: dicht wie beim at-Original */
+const SPACING = 0.052;
+
+function ring(cx: number, cy: number, r: number, _n?: number, tangential = true): FormationPoint[] {
   const pts: FormationPoint[] = [];
+  const n = Math.max(8, Math.round((Math.PI * 2 * r) / SPACING));
   for (let i = 0; i < n; i++) {
     const a = (i / n) * Math.PI * 2;
+    const jitter = (((i * 7919) % 100) / 100 - 0.5) * 7;
     pts.push({
       x: cx + Math.cos(a) * r,
       y: cy + Math.sin(a) * r,
-      rot: tangential ? (a * 180) / Math.PI + 90 : 0,
-      s: 0.8 + 0.4 * ((i * 7919) % 100) / 100,
+      rot: (tangential ? (a * 180) / Math.PI + 90 : 0) + jitter,
+      s: 0.92 + 0.16 * ((i * 7919) % 100) / 100,
+      role: "edge",
     });
   }
   return pts;
 }
 
-function lineSeg(x0: number, y0: number, x1: number, y1: number, n: number, rot?: number): FormationPoint[] {
+function lineSeg(x0: number, y0: number, x1: number, y1: number, _n?: number, rot?: number): FormationPoint[] {
   const pts: FormationPoint[] = [];
+  const len = Math.hypot(x1 - x0, y1 - y0);
+  const n = Math.max(2, Math.round(len / SPACING) + 1);
   const ang = (Math.atan2(y1 - y0, x1 - x0) * 180) / Math.PI;
   for (let i = 0; i < n; i++) {
     const t = n === 1 ? 0.5 : i / (n - 1);
-    pts.push({ x: x0 + (x1 - x0) * t, y: y0 + (y1 - y0) * t, rot: rot ?? ang, s: 0.75 + 0.5 * ((i * 104729) % 100) / 100 });
+    const jitter = (((i * 104729) % 100) / 100 - 0.5) * 7;
+    pts.push({ x: x0 + (x1 - x0) * t, y: y0 + (y1 - y0) * t, rot: (rot ?? ang) + jitter, s: 0.92 + 0.16 * ((i * 104729) % 100) / 100, role: "edge" });
   }
   return pts;
 }
@@ -47,9 +58,9 @@ export function browserFormation(): FormationPoint[] {
     ...lineSeg(x, y + 0.09, x, y + H - 0.06, 4, 90),
     ...lineSeg(x + W, y + 0.09, x + W, y + H - 0.06, 4, 90),
     ...lineSeg(x + 0.05, y + 0.09, x + W - 0.05, y + 0.09, 7, 0),
-    { x: x + 0.045, y: y + 0.045, rot: 0, s: 0.55 },
-    { x: x + 0.085, y: y + 0.045, rot: 0, s: 0.55 },
-    { x: x + 0.125, y: y + 0.045, rot: 0, s: 0.55 },
+    { x: x + 0.045, y: y + 0.045, rot: 0, s: 0.55, role: "dot" },
+    { x: x + 0.085, y: y + 0.045, rot: 0, s: 0.55, role: "dot" },
+    { x: x + 0.125, y: y + 0.045, rot: 0, s: 0.55, role: "dot" },
     ...lineSeg(x + 0.08, y + 0.2, x + W * 0.62, y + 0.2, 5, 0),
     ...lineSeg(x + 0.08, y + 0.3, x + W * 0.45, y + 0.3, 4, 0),
     ...lineSeg(x + 0.08, y + H - 0.12, x + 0.26, y + H - 0.12, 3, 0),
@@ -77,9 +88,9 @@ export function bubbleFormation(): FormationPoint[] {
     ...lineSeg(x + 0.2, y + H, x + 0.14, y + H + 0.12, 2, 65),
     ...lineSeg(x + 0.14, y + H + 0.12, x + 0.3, y + H, 3, -65),
     // drei Punkte (KI tippt)
-    { x: -0.12, y: -0.06, rot: 0, s: 0.85 },
-    { x: 0, y: -0.06, rot: 0, s: 0.85 },
-    { x: 0.12, y: -0.06, rot: 0, s: 0.85 },
+    { x: -0.12, y: -0.06, rot: 0, s: 0.85, role: "dot" },
+    { x: 0, y: -0.06, rot: 0, s: 0.85, role: "dot" },
+    { x: 0.12, y: -0.06, rot: 0, s: 0.85, role: "dot" },
   ];
 }
 

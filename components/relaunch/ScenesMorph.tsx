@@ -27,6 +27,8 @@ export default function ScenesMorph() {
       el: HTMLDivElement;
       w: number;
       h: number;
+      /** Rotations-Offset, damit die Laengsachse des Teils der Kantenrichtung folgt */
+      rotOff: number;
       /** pro Szene: Ziel {x,y,rot,s} + Stagger-Fenster [t0,t1] */
       targets: { x: number; y: number; rot: number; s: number; t0: number; t1: number; spin: number }[];
     }
@@ -52,12 +54,22 @@ export default function ScenesMorph() {
       const formations = FORMATIONS.map((f) => f.build());
       const poolN = Math.max(...formations.map((f) => f.length));
       const scale = Math.min(window.innerWidth, window.innerHeight) * 0.62;
-      const baseSize = Math.min(window.innerWidth, window.innerHeight) * 0.055; // G3: ~0.1-0.25 H Wirkung
+      const baseSize = Math.min(window.innerWidth, window.innerHeight) * 0.045;
+
+      // at-Logik: Kanten bekommen LAENGLICHE Teile (Perlenkette), Punkte runde.
+      const elongated = rendered.filter((r) => Math.max(r.w / r.h, r.h / r.w) >= 1.5);
+      const roundish = rendered.filter((r) => Math.max(r.w / r.h, r.h / r.w) < 1.5);
+      const dotSlots = 3; // Formationen haengen ihre Punkt-Rollen ans Ende
 
       stage.innerHTML = "";
       pool = [];
       for (let i = 0; i < poolN; i++) {
-        const src = rendered[i % rendered.length];
+        const useRound = i >= poolN - dotSlots && roundish.length > 0;
+        const src = useRound
+          ? roundish[i % roundish.length]
+          : (elongated.length ? elongated[i % elongated.length] : rendered[i % rendered.length]);
+        // Laengsachse ausrichten: hochkant-Teile brauchen -90, damit "entlang der Kante" stimmt
+        const rotOff = !useRound && src.h > src.w ? -90 : 0;
         const el = document.createElement("div");
         el.innerHTML = src.svg;
         const w = baseSize * (src.w / Math.max(src.w, src.h));
@@ -78,7 +90,7 @@ export default function ScenesMorph() {
           }
           return { x: pt.x * scale, y: pt.y * scale, rot: pt.rot, s: pt.s, t0, t1, spin };
         });
-        pool.push({ el, w, h, targets });
+        pool.push({ el, w, h, rotOff, targets });
       }
       return true;
     }
@@ -104,7 +116,7 @@ export default function ScenesMorph() {
         const rotV = rotFrom + (to.rot - rotFrom) * u;
         const s = (seg === 0 ? to.s : from.s) + (to.s - (seg === 0 ? to.s : from.s)) * u;
         pc.el.style.opacity = p < 0.005 ? "0" : "1";
-        pc.el.style.transform = `translate(${x}px, ${y}px) rotate(${rotV}deg) scale(${s})`;
+        pc.el.style.transform = `translate(${x}px, ${y}px) rotate(${rotV + pc.rotOff}deg) scale(${s})`;
       }
       // Statements: aktives Segment einblenden
       textRefs.current.forEach((el, i) => {
