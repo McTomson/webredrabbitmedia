@@ -100,13 +100,15 @@ export function buildWordLayout(fontFamily: string, F: number, dpr: number): Wor
   const lines = ["red", "rabbit"];
   const scale = F / 100, lineH = F * 0.92;
   const widths = lines.map((w) => mctx.measureText(w).width * scale);
-  const boxW = Math.max(...widths), boxH = lineH * 2.06;
+  const boxW = Math.max(...widths), boxH = lineH * 1.94;
   if (boxW < F) return null; // Font offenbar nicht geladen -> fail-closed, Retry beim Aufrufer
   const S = Math.max(2, Math.ceil((F * dpr) / 100));
   const pieces: WordPiece[] = [];
   lines.forEach((word, li) => {
-    const x0 = (boxW - widths[li]) / 2;
-    const baseY = lineH * 0.78 + li * lineH * 1.06;
+    // at-Setzung (Video-Befund 05.07.): Zeile 1 EINGERUECKT ueber Zeile 2 (nicht zentriert),
+    // Einzug ~11% der Zeile-2-Breite; Zeilenabstand eng (Unterlaengen fast beruehrend).
+    const x0 = li === 0 ? widths[1] * 0.11 : 0;
+    const baseY = lineH * 0.78 + li * lineH * 0.94;
     let adv = 0;
     for (let ci = 0; ci < word.length; ci++) {
       const ch = word[ci];
