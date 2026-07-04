@@ -50,8 +50,9 @@ export function sampleTimeline(tl: PieceTimeline, u: number): PieceState {
   return segs[segs.length - 1].b;
 }
 
-/** Timeline-Aufteilung: Hero belegt u [0,2), Szene s belegt [2+s, 3+s). */
-export const U_HERO = 2;
+/** Timeline-Aufteilung: Hero belegt u [0,U_HERO), Szene s belegt [U_HERO+s, +1).
+ *  1.7 statt 2.0: die Zerfall-Haltephase war gegen das Original-Video zu lang. */
+export const U_HERO = 1.7;
 export const U_TOTAL = U_HERO + AT_SCENES.length;
 
 /** Eingabe: ein Pool-Teil (gerendertes Naturbruch-Fragment). */
@@ -93,8 +94,8 @@ export function buildStagePlan(
   const narrow = opts?.narrow ?? vp.w < 900;
   /** uniformer Massstab der vermessenen Kompositionen (1920x1080 -> Viewport) */
   const k = Math.min(vp.w / 1920, vp.h / 1080) * (narrow ? 1.15 : 1);
-  /** Zerfall-Teilgroesse: einheitliches Band ~3% Viewportbreite (Delta-Punkt 2) */
-  const scatterMajor = Math.max(26, Math.min(64, vp.w * 0.031));
+  /** Zerfall-Teilgroesse: Live-Messung all-turtles bei 1440x900 = ~70-100px (~5% vw) */
+  const scatterMajor = Math.max(34, Math.min(96, vp.w * 0.048));
 
   // ---- Szenen-Layouts (Formation-Zentrum + Text-Gegenseite) ----------------
   const scenes: SceneLayout[] = AT_SCENES.map((sc) => {
@@ -109,13 +110,25 @@ export function buildStagePlan(
   // ---- Zerfall-Ziele: ganzer Screen inkl. Raender (Delta-Punkt 3) ----------
   // Erste 129 = vermessene Einflug-Positionen von comp_1 (echte at-Verteilung),
   // Rest deterministisch ueber den ganzen Viewport inkl. Ueberhang.
+  // Sichtbare Zerfall-Ziele: gejittertes Raster ueber den GANZEN Viewport inkl.
+  // Raendern (f_0014: gleichmaessige Fuellung, Teile an den Kanten angeschnitten).
+  // Die Lottie-fromX/Y taugen NICHT als Muster (nur 31/129 liegen im Bild —
+  // das sind Einflug-Startpunkte von aussen). Rest parkt im Aussenring und
+  // kommt spaeter als Rand-Zugang in die Formationen.
   const scatterRaw: { x: number; y: number }[] = [];
-  const src = AT_SCENES[0].pieces;
+  const N_ON = Math.min(pool.length, Math.round((vp.w * vp.h) / (scatterMajor * scatterMajor * 3.0)));
+  const cols = Math.max(6, Math.round(Math.sqrt((N_ON * vp.w) / vp.h)));
+  const rows = Math.max(4, Math.ceil(N_ON / cols));
   for (let i = 0; i < pool.length; i++) {
-    if (i < src.length) {
-      scatterRaw.push({ x: (src[i][6] - 0.5) * vp.w * 1.1, y: (src[i][7] - 0.5) * vp.h * 1.1 });
+    if (i < N_ON) {
+      const c = i % cols, r = Math.floor(i / cols);
+      scatterRaw.push({
+        x: ((c + 0.5 + (rng() - 0.5) * 0.9) / cols - 0.5) * vp.w * 1.06,
+        y: ((r + 0.5 + (rng() - 0.5) * 0.9) / rows - 0.5) * vp.h * 1.06,
+      });
     } else {
-      scatterRaw.push({ x: (rng() - 0.5) * vp.w * 1.15, y: (rng() - 0.5) * vp.h * 1.15 });
+      const a = rng() * Math.PI * 2;
+      scatterRaw.push({ x: Math.cos(a) * vp.w * (0.58 + rng() * 0.2), y: Math.sin(a) * vp.h * (0.62 + rng() * 0.25) });
     }
   }
   // Radiale Zuordnung: jedes Teil bekommt ein Zerfall-Ziel in SEINEM Winkel-Sektor
@@ -192,7 +205,7 @@ export function buildStagePlan(
   }
 
   // ---- Timeline pro Teil ----------------------------------------------------
-  const U_REST = 0.22, U_CON = 0.5, U_SCAT = 1.3;
+  const U_REST = 0.22, U_CON = 0.5, U_SCAT = 1.2;
   const timelines: PieceTimeline[] = pool.map((p, i) => {
     const segs: Seg[] = [];
     const home: PieceState = { x: p.cx, y: p.cy, rot: 0, scale: 1, o: p.clone ? 0 : 1 };

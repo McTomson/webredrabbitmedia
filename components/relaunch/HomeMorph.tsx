@@ -45,14 +45,21 @@ export default function HomeMorph({ claim }: { claim: string }) {
       const layout = buildWordLayout(fam, F, window.devicePixelRatio || 1);
       if (!layout || layout.pieces.length < 10) return false;
 
-      // Pool: Original-Teile + Klone bis zur groessten Formation (~175)
+      // Pool: Original-Teile + Klone bis zur groessten Formation (~175).
+      // Klon-Quellen kuratiert: der reine Kreis (i-Punkt) wirkt im Vergleich
+      // zu den kalligrafischen at-Fragmenten schwach -> nicht vervielfachen.
       const POOL_N = 175;
+      const cloneSrcs = layout.pieces
+        .map((p, idx) => ({ p, idx }))
+        .filter(({ p }) => !(Math.max(p.w / p.h, p.h / p.w) < 1.2 && Math.max(p.w, p.h) < 0.3 * F))
+        .map(({ idx }) => idx);
       const pool: PoolPieceIn[] = [];
       const srcOf: number[] = [];
       for (let i = 0; i < POOL_N; i++) {
-        const src = layout.pieces[i % layout.pieces.length];
+        const si = i < layout.pieces.length ? i : cloneSrcs[i % cloneSrcs.length];
+        const src = layout.pieces[si];
         pool.push({ cx: src.cx, cy: src.cy, w: src.w, h: src.h, letter: src.letter, clone: i >= layout.pieces.length });
-        srcOf.push(i % layout.pieces.length);
+        srcOf.push(si);
       }
       const plan = buildStagePlan(pool, { w: window.innerWidth, h: window.innerHeight });
       timelines = plan.timelines;

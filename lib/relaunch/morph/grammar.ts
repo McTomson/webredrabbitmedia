@@ -167,7 +167,7 @@ export function buildReassembly(
   return pieces.map((p) => {
     // Herkunft: oberhalb des Viewports, horizontal nahe der Zielspalte verstreut
     const sx = p.cx + (rng() - 0.5) * opts.viewportW * 0.22;
-    const sy = p.cy - opts.viewportH * (0.75 + rng() * 0.6);
+    const sy = p.cy - opts.viewportH * (0.5 + rng() * 0.55);
     const t0 = 0.04 + rng() * 0.42;         // Starts gestaffelt ueber ~46% der Phase
     const t1 = Math.min(0.97, t0 + 0.42);   // Dauer konstant -> weiter = schneller
     const spins = rng() < 0.7;              // leichte Fall-Rotation, endet bei Ankunft
