@@ -29,14 +29,15 @@
 
   /* ---- Typo-Skala (gemessen -> responsiv) ---- */
   --rr-font-display: var(--font-fraunces), Georgia, serif;
+  --rr-font-serif: var(--font-crimson), Georgia, serif; /* Statements/Claims, Heldane-Gegenstueck */
   --rr-font-ui: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
 
   --rr-fs-display-1: clamp(58px, 9.4vw, 135px);  /* Case-Headline */
   --rr-fs-display-2: clamp(44px, 6.2vw, 89px);   /* Abschluss-CTA */
-  --rr-fs-statement: clamp(34px, 5.1vw, 74px);   /* 5-Punkte-Statements */
+  --rr-fs-statement: clamp(34px, 4.46vw, 92px);  /* 5-Punkte-Statements (at-Messung 05.07.) */
   --rr-fs-claim: clamp(28px, 3.3vw, 47px);       /* Hero-Claim */
   --rr-fs-sub: clamp(22px, 2.85vw, 41px);        /* Case-Subline */
-  --rr-fs-eyebrow-lg: clamp(17px, 1.9vw, 27px);  /* grosse Eyebrow (Case) */
+  --rr-fs-eyebrow-lg: clamp(15px, 1.69vw, 33px); /* grosse Eyebrow (at-Messung 05.07.) */
   --rr-fs-body-lg: 23px;
   --rr-fs-ui: 20px;
   --rr-fs-meta: 16px;
@@ -79,8 +80,22 @@
 }
 .rr .rr-display-1 { font-size: var(--rr-fs-display-1); }
 .rr .rr-display-2 { font-size: var(--rr-fs-display-2); line-height: 1.05; }
-.rr .rr-statement { font-size: var(--rr-fs-statement); line-height: 1.08; }
-.rr .rr-claim     { font-size: var(--rr-fs-claim); line-height: 1.15; }
+.rr .rr-statement {
+  font-family: var(--rr-font-serif);
+  font-size: var(--rr-fs-statement);
+  font-weight: 500;
+  line-height: 1.11;
+  letter-spacing: -0.01em;
+  font-variation-settings: normal;
+}
+.rr .rr-claim     {
+  font-family: var(--rr-font-serif);
+  font-size: var(--rr-fs-claim);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-variation-settings: normal;
+}
 .rr .rr-sub       { font-size: var(--rr-fs-sub); line-height: 1.22; font-weight: 480; }
 
 .rr .rr-eyebrow {
@@ -93,10 +108,11 @@
   margin: 0;
 }
 .rr .rr-eyebrow-lg {
-  font-family: var(--rr-font-display);
+  font-family: var(--rr-font-ui);
   font-size: var(--rr-fs-eyebrow-lg);
-  font-weight: 560;
-  letter-spacing: 0.01em;
+  font-weight: 460;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   margin: 0;
 }
 .rr .rr-body-lg { font-size: var(--rr-fs-body-lg); line-height: 1.5; margin: 0; }

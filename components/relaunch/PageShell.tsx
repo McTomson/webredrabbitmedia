@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { fraunces, grotesk } from "@/lib/relaunch/fonts";
+import { crimson, fraunces, grotesk } from "@/lib/relaunch/fonts";
 import "@/app/styleguide/styleguide.css";
 import "./subpages.css";
 
@@ -28,7 +28,7 @@ export default function PageShell({
   ctaTitle = "Du willst eine Website, die man findet? Reden wir.",
 }: PageShellProps) {
   return (
-    <div className={`rr ${fraunces.variable} ${grotesk.variable}`}>
+    <div className={`rr ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}>
       <section className="rr-section rr-pagehead">
         <div className="rr-wrap rr-narrow">
           <p className="rr-eyebrow" style={{ marginBottom: 20 }}>{eyebrow}</p>

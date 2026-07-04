@@ -146,3 +146,14 @@ NAECHSTE BAURUNDE (Reihenfolge): Wortmarken-Setzung -> Teile-Vermehrung/Dichte +
 ## 2026-07-05 (frueh) — Formationen: Original-Teilformen von all-turtles verwenden (Tomson-Entscheidung)
 - Nach Ablehnung aller Eigen-Kompositionen (vermessene Slots mit Fraunces-Teilen, geometrischer Komponist, 4 Buchstaben-Fuellstile im /morph-lab): Tomson entscheidet, fuer die Formations-Szenen die EXTRAHIERTEN ORIGINAL-TEILFORMEN aus dem at-Lottie zu verwenden, damit das Ergebnis identisch zum Original ist. Unsere Wortmarken-Teile eroeffnen (Burst), fliegen dann ab; deren Teile bauen die Motive.
 - Einordnung: Uebergangsloesung; Copyright-Risiko bekannt; VOR LAUNCH Wiedervorlage "Ersatz durch eigene Teile".
+
+## 2026-07-05 (nachts) — Statement-Typografie: Crimson Pro statt Fraunces
+- Befund (live vermessen, 1440x900): all-turtles Statements = Heldane (Klim, kommerziell),
+  64.2px / lh 1.11 / w400 / ls -1%; Eyebrow = Breit (kommerziell), 24.3px uppercase.
+- Entscheidung: KEIN Font-Kauf (bestaetigt 04.07.). Freier Doppelgaenger per visuellem
+  Vergleich (Spectral/Crimson Pro/EB Garamond/Source Serif/Lora/Fraunces): **Crimson Pro w500**
+  (wie Heldane ein Kis-Antiqua-Abkoemmling). Fraunces bleibt NUR fuer die Wortmarke.
+- Groessen an Messung angepasst: Statement clamp(34px,4.46vw,92px), Eyebrow-lg uppercase
+  Instrument Sans clamp(15px,1.69vw,33px). Formation-Groesse: bei 1440x900 exakt gleich
+  (554x481px vs 555x482px); Skalierung auf breiten Fenstern via k=min(vw/1920, vh/810).
+- Farbtupfer (Tomson): genau EIN laengliches Teil der Zahnrad-Formation in Dunkelblau #1C2837.

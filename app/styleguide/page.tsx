@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { fraunces, grotesk } from "@/lib/relaunch/fonts";
+import { crimson, fraunces, grotesk } from "@/lib/relaunch/fonts";
 import "./styleguide.css";
 
 export const metadata: Metadata = {
@@ -33,7 +33,7 @@ function Block({ label, children }: { label: string; children: React.ReactNode }
 
 export default function StyleguidePage() {
   return (
-    <div className={`rr ${fraunces.variable} ${grotesk.variable}`}>
+    <div className={`rr ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}>
       <header className="rr-section" style={{ paddingBottom: 24 }}>
         <div className="rr-wrap">
           <p className="rr-eyebrow" style={{ marginBottom: 18 }}>Intern · Design-System P0 · Stand 04.07.2026</p>

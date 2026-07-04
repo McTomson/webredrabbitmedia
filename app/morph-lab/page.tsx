@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { fraunces, grotesk } from "@/lib/relaunch/fonts";
+import { crimson, fraunces, grotesk } from "@/lib/relaunch/fonts";
 import MorphLab from "@/components/relaunch/MorphLab";
 import "../styleguide/styleguide.css";
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
  *  ohne Scroll-Choreografie — fuer schnelle Abnahme-Loops der Motive. */
 export default function MorphLabPage() {
   return (
-    <div className={`rr ${fraunces.variable} ${grotesk.variable}`}>
+    <div className={`rr ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}>
       <MorphLab />
     </div>
   );
