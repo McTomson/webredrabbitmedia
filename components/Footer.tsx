@@ -16,6 +16,7 @@ const Footer = () => {
     if (pathname?.startsWith('/dashboard')) return null;
     // Relaunch-Seiten (neues Design-System) rendern ihr eigenes Chrome.
     if (pathname?.startsWith('/styleguide')) return null;
+    if (pathname?.startsWith('/relaunch-preview')) return null;
 
     const handleSaveContact = () => {
         // Create a link element to download the VCF file

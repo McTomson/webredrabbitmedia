@@ -31,6 +31,7 @@ export default function Header({ onFormOpen }: HeaderProps) {
     if (pathname?.startsWith('/dashboard')) return null;
     // Relaunch-Seiten (neues Design-System) rendern ihr eigenes Chrome.
     if (pathname?.startsWith('/styleguide')) return null;
+    if (pathname?.startsWith('/relaunch-preview')) return null;
 
     const navLinks = [
         { name: 'Über uns', href: '/#about' },
