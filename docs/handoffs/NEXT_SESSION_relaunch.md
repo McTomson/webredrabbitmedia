@@ -6,6 +6,17 @@
 - **Nie raten, keine Halluzinationen:** verifizieren (Code/Browser/Messung/Docs) oder fail-closed; fehlende Fakten = klar markierte PLATZHALTER.
 - **Laufend testen** (Browser-Screenshots, Builds) + Kurs pruefen; **Doku permanent aktuell halten:** brand/decisions-log.md (datiert), dieser Handoff, Memory (~/.claude/projects/-Users-McTomson/memory/), Graphify laeuft via post-commit automatisch. Obsidian wird bewusst NICHT befuellt (Repo = Single Source of Truth, Entscheidung 04.07. frueh).
 
+## SKILLS — wann und wie (Tomson-Mandat 05.07., verbindlich)
+Volles Inventar: `~/.claude/skills/DESIGN-SKILLS-CATALOG.md` (+ CLAUDE.md-Projektregel). Fuer den Relaunch gilt:
+- **Vor JEDER UI-/Sektions-Arbeit laden:** `frontend-design` (Anti-Generik, Umsetzung) + `ui-ux-pro-max` (Review-Checkliste: Kontrast 4.5:1, Touch-Targets 44px, reduced-motion, kein Overflow). Beide sind Projektpflicht (CLAUDE.md).
+- **Motion-/Polish-Pass (Hero-Feintuning, Kugel-Feel):** `emil-design-eng`; fuer harte Qualitaets-Audits `impeccable` (audit/polish/harden).
+- **Bestehende Alt-Seiten aufwerten (P3-Migration /artikel):** `redesign-existing-projects`.
+- **Groessere Meilensteine reviewen:** `review-it` (nach jedem Agenten-Merge zusaetzlich zur Fable-Kontrolle sinnvoll).
+- **Plan-/Entscheidungsrunden mit Tomson:** `grill-me` (eine Frage, mit Empfehlung); Session-Abschluss IMMER via `session-end`.
+- **Referenz-Bilder/Assets:** `imagegen-frontend-web`/`brandkit` NUR wenn der etablierte Gemini-Browser-Flow nicht passt (Runbook bevorzugen).
+- **Brand-/Copy-Arbeit:** `brand` + brand/-Ordner zuerst lesen. NICHT verwenden: `stitch-*` (kein Stitch im Relaunch), `graphify`-Skill nur fuer Wissens-Ingest (Code-Graph laeuft via CLI).
+- Regel: Skill VOR der Arbeit laden, nicht danach; Ergebnis gegen die Skill-Checkliste pruefen, Befunde ins Review.
+
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
 - NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.

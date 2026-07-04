@@ -152,3 +152,33 @@ export function buildHeroChoreo(
     return { letterTrack, pieceTrack, splitAt: P_SPLIT };
   });
 }
+
+/**
+ * Footer-Reassembly (all-turtles Footer-Lottie-Logik gespiegelt): Teile kommen
+ * verstreut von aussen und setzen die Wortmarke zusammen. Grammatik wie gemessen:
+ * gerade 2-Punkt-Bahnen, Stagger ueber ~50% der Phase, Flugdauer konstant
+ * (weiter = schneller), Transit-Rotation endet EXAKT bei Ankunft auf 0.
+ */
+export function buildReassembly(
+  pieces: PieceHome[],
+  opts: { viewportW: number; viewportH: number; seed?: number }
+): Keyframe[][] {
+  const rng = makeRng(opts.seed ?? 29);
+  const base = Math.hypot(opts.viewportW, opts.viewportH) * 0.5;
+  return pieces.map((p) => {
+    // Herkunft radial verstreut, leicht verrauscht (deterministisch, LCG-Seed)
+    const ang = Math.atan2(p.cy + (rng() - 0.5) * 260, p.cx + (rng() - 0.5) * 260);
+    const dist = base * (0.4 + rng() * 0.55);
+    const sx = Math.cos(ang) * dist, sy = Math.sin(ang) * dist;
+    const t0 = 0.04 + rng() * 0.42;         // Starts gestaffelt ueber ~46% der Phase
+    const t1 = Math.min(0.97, t0 + 0.42);   // Dauer konstant -> weiter = schneller
+    const spins = rng() < 0.6;              // Transit-Rotation median ~|78 Grad|
+    const spin = spins ? (rng() < 0.5 ? -1 : 1) * (40 + rng() * 110) : 0;
+    return [
+      { t: 0, x: sx, y: sy, rot: -spin, scale: 1 },
+      { t: t0, x: sx, y: sy, rot: -spin, scale: 1 },
+      { t: t1, x: 0, y: 0, rot: 0, scale: 1 },
+      { t: 1, x: 0, y: 0, rot: 0, scale: 1 },
+    ];
+  });
+}
