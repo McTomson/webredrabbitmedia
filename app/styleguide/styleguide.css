@@ -191,3 +191,8 @@
 @media (prefers-reduced-motion: reduce) {
   .rr * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* Dashboard-Panel (Homepage Themen-Panel 2): Balken atmen mit Master-Easing */
+.rr .rr-dash-bar { transform-origin: bottom; animation: rr-grow 2.6s var(--rr-ease) infinite alternate; }
+@keyframes rr-grow { from { transform: scaleY(0.25); } to { transform: scaleY(1); } }
+@media (prefers-reduced-motion: reduce) { .rr .rr-dash-bar { animation: none; } }
