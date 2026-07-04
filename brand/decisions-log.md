@@ -102,3 +102,10 @@ Neueste oben. Nichts loeschen, nur ergaenzen. Bei Aenderung einer alten Entschei
 - PREIS-HELD bestaetigt: Business 2.900 bleibt "Beliebteste Wahl".
 - ALMTAL-DOMAIN von Tomson genannt und verifiziert: https://almtal-invest.vercel.app (Site-Titel "Tree House Apartments | Anleger-Immobilie im Salzkammergut") -> Link in projects.ts + CasePanels gesetzt. Hinweis fuer Launch: eigene Domain statt vercel.app waere fuers Schaufenster sauberer.
 - CASE-PANELS: Tomson will sie SEHEN bevor er die 3er-Auswahl bestaetigt -> Screenshots als Artifact vorgelegt (naechster Schritt dieser Session).
+
+## 2026-07-05 (abend): KURSKORREKTUR Case-Panels = THEMEN-Buehnen (Tomson)
+- Die 3 Homepage-Panels zeigen NICHT 3 Referenz-Websites, sondern 3 THEMEN (all-turtles-Logik: "Essential tools for video at work"). Referenz-Screens wandern als Beweis-MATERIAL in die Panels; komplette Werkschau bleibt Kugel /referenzen; Firmen-Liste bleibt.
+- Themen-Vorschlag v2 (Artifact 6ca8ed0a, wartet auf Tomson): 1. Webdesign & Handwerk (Petrol, Animation Hasenpfoten-Spur — Tomson-Idee statt at-Voegel) / 2. Dashboard & Selbstlauf (Nacht, lebendes Dashboard: Zahlen ticken; Harness-Leistungen belegbar aus webredrabbit/almtal/pumukel-Betrieb) / 3. Sichtbarkeit Google & KI (Puder, Animation: Suchanfrage tippt sich, KI-Antwort nennt Betrieb).
+- Klarstellung an Tomson: Dashboard-Panel != Red Rabbit Methode; Methode = ganzer 4-Schritte-Weg (eigene Sektion + /methode-Seite), Panel 2 = sichtbarer Beweis von Schritt 4 (Selbstlauf).
+- Tomson-Design-Mandat: all-turtles Farbwahl/Schrift/Animationen/Schreibweise im Detail studieren und uebernehmen wo passend; jede der 3 Panels braucht eine passende Animation. Tomson hat zusaetzlich eine eigene Referenz-Einbindungs-Idee (zeigt er noch).
+- OFFEN (Tomson): Themen 1-3 bestaetigen, Headline-Wording, Animations-Ideen; danach Umbau CasePanels.tsx.
