@@ -1,0 +1,156 @@
+---
+title: "CRM-System an die Website anbinden: So geht es 2026"
+slug: "wie-wird-ein-bestehendes-crm-system-an-die-website"
+excerpt: "Ein bestehendes CRM-System lässt sich auf drei Wegen an die Website anbinden: Fertigformular des Anbieters, direkter API-Endpoint oder eigener Server-Endpoint. Dieser Leitfaden zeigt, welcher Weg wann passt und was DSGVO-seitig Pflicht ist."
+featuredSnippetTitle: "Wie wird ein bestehendes CRM-System an die Website angebunden?"
+featuredSnippet: "Ein bestehendes CRM-System wird auf einem von drei Wegen an die Website angebunden: über ein fertiges Formular des CRM-Anbieters wie Salesforce Web-to-Lead, über einen direkten API-Endpoint wie bei HubSpot, oder über einen eigenen Server-Endpoint, der die Formulardaten serverseitig entgegennimmt und an die CRM-API weiterreicht. Der eigene Server-Endpoint ist der sauberste Weg, weil API-Schlüssel dort geschützt bleiben."
+author: "Thomas Uhlir MBA"
+publishedAt: "2026-07-04"
+updatedAt: "2026-07-04"
+category: "Strategie & Kosten"
+cluster: 1
+tags:
+  - "CRM"
+  - "Website-Anbindung"
+  - "API"
+  - "DSGVO"
+  - "KMU Österreich"
+featuredImage: "/images/blog/wie-wird-ein-bestehendes-crm-system-an-die-website.png"
+status: draft
+aiAssisted: true
+sources:
+  - name: "Eurostat - Statistics Explained: E-business integration"
+    url: "https://ec.europa.eu/eurostat/statistics-explained/index.php?title=E-business_integration"
+  - name: "Eurostat News - Large enterprises used more e-business applications"
+    url: "https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20240516-2"
+  - name: "WKO - EU-DSGVO: Pflichten des Auftragsverarbeiters"
+    url: "https://www.wko.at/datenschutz/eu-dsgvo-pflichten-auftragsverarbeiter"
+  - name: "Salesforce Help - How many leads can we capture from our website?"
+    url: "https://help.salesforce.com/s/articleView?id=sales.faq_leads_how_many_leads.htm&language=en_US&type=5"
+  - name: "HubSpot Developer Docs - Submit data to a form"
+    url: "https://developers.hubspot.com/docs/api-reference/legacy/marketing/forms/v3-legacy/submit-data-unauthenticated"
+  - name: "Next.js Docs - How to use Next.js as a backend for your frontend"
+    url: "https://nextjs.org/docs/app/guides/backend-for-frontend"
+keyTakeaways:
+  - "Es gibt drei Anbindungswege: Fertigformular des Anbieters (z.B. Salesforce Web-to-Lead), direkter API-Endpoint (z.B. HubSpot) oder eigener Server-Endpoint nach dem Backend-for-Frontend-Muster."
+  - "Salesforce Web-to-Lead hat ein hartes Limit von 500 Leads pro 24 Stunden. Für mehr Volumen braucht es laut Salesforce die REST-API."
+  - "Der eigene Server-Endpoint (etwa ein Next.js Route Handler) ist der sauberste Weg: API-Schlüssel bleiben am Server, Design und Fehlerbehandlung bleiben in Ihrer Hand."
+  - "Ohne Auftragsverarbeitungsvertrag nach Art. 28 DSGVO mit dem CRM-Anbieter läuft die Anbindung datenschutzrechtlich nicht sauber (laut WKO; keine Rechtsberatung)."
+  - "Laut Eurostat nutzten 2023 nur 22 % der kleinen EU-Unternehmen ein CRM, gegenüber 61 % der großen. Wer als KMU sauber anbindet, ist der eigenen Größenklasse voraus."
+conclusionStats:
+  - label: "Web-to-Lead-Limit (Salesforce)"
+    value: "500 Leads pro 24 Stunden"
+  - label: "CRM-Nutzung kleine EU-Unternehmen (2023)"
+    value: "22 %"
+  - label: "CRM-Nutzung große EU-Unternehmen (2023)"
+    value: "61 %"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Kann man ein CRM ohne Programmierung an die Website anbinden?"
+    answer: "Ja, über die Fertigformulare der CRM-Anbieter, etwa Salesforce Web-to-Lead. Sie generieren das Formular im CRM und betten es auf der Website ein, ohne eigenen Code. Der Preis dafür sind Design-Kompromisse, zusätzliche Skripte und harte Limits, bei Salesforce zum Beispiel 500 Leads pro 24 Stunden."
+  - question: "Was kostet es, ein CRM an die Website anzubinden?"
+    answer: "Das hängt von CRM, Edition und Anbindungsweg ab. Ein Fertigformular ist in wenigen Stunden eingebaut, ein eigener Server-Endpoint mit Feld-Mapping, Spam-Filter und Fehlerbehandlung ist eher ein kleines Tagesprojekt. Verglichen mit rund 40 Stunden Abtipp-Arbeit pro Jahr amortisiert sich auch die aufwendigere Variante meist im ersten Jahr."
+  - question: "Ist die CRM-Anbindung an die Website DSGVO-konform möglich?"
+    answer: "Ja, wenn die Grundlagen stimmen. Der CRM-Anbieter ist Auftragsverarbeiter, deshalb braucht es laut WKO zwingend einen Auftragsverarbeitungsvertrag nach Art. 28 DSGVO. Bei großen Anbietern ist der Vertrag Standard und schnell im Kundenkonto abgeschlossen. Zusätzlich muss die Datenschutzerklärung die Weitergabe an das CRM nennen. Das ersetzt keine Rechtsberatung."
+  - question: "Warum darf der API-Schlüssel nicht im Browser-Code stehen?"
+    answer: "Weil jeder Besucher den Quelltext der Seite einsehen kann. Ein API-Schlüssel im Frontend-Code ist damit öffentlich, und im schlimmsten Fall kann ein Fremder darüber Daten aus dem CRM lesen. Ein eigener Server-Endpoint löst das Problem: Der Schlüssel bleibt auf dem Server und landet nie im Browser."
+  - question: "Was passiert mit Anfragen, wenn das CRM kurz nicht erreichbar ist?"
+    answer: "Ohne Fehlerbehandlung gehen sie still verloren: Der Kunde glaubt, er hat angefragt, und niemand merkt etwas. Ein eigener Server-Endpoint kann solche Anfragen zwischenspeichern oder parallel per E-Mail zustellen. Genau diese Absicherung ist einer der Hauptgründe für den Server-Endpoint als Anbindungsweg."
+hookCandidates:
+  - "wie kommt das crm an die website?"
+  - "formular direkt ins crm, geht das?"
+  - "website an crm anbinden, aber wie?"
+---
+
+Stellen Sie sich einen Installateur-Betrieb in Wien vor, in dem der Chef jede Kundenanfrage auf einen Zettel schreibt und die Bürokraft am Abend alle Zettel in den Computer tippt. Klingt nach 1995, oder? Genau so arbeiten aber viele Unternehmen mit ihrer Website: Das Kontaktformular schickt eine E-Mail, jemand liest sie, kopiert Name und Telefonnummer händisch ins CRM, und mit etwas Pech geht dabei eine Anfrage unter. Dabei ist die Anbindung eines bestehenden CRM-Systems an die Website technisch gut gelöst und in den meisten Fällen ein überschaubares Projekt.
+
+**Die kurze Antwort:** Ein bestehendes CRM wird auf einem von drei Wegen an die Website angebunden. Erstens über ein fertiges Formular des CRM-Anbieters, etwa Salesforce Web-to-Lead. Zweitens über einen direkten API-Endpoint, etwa den Formular-Endpoint von HubSpot. Drittens, und das ist der sauberste Weg, über einen eigenen Server-Endpoint, der die Formulardaten serverseitig entgegennimmt und an die CRM-API weiterreicht.
+
+Welcher Weg für Sie der richtige ist, hängt von Ihrem CRM und Ihrem Anfrage-Volumen ab. Und ein Stück weit davon, wie wichtig Ihnen Design und Datenschutz sind. Schauen wir uns das der Reihe nach an.
+
+![Schema der drei Wege, ein bestehendes CRM-System an die Website anzubinden: Fertigformular, direkter API-Endpoint und eigener Server-Endpoint](/images/blog/wie-wird-ein-bestehendes-crm-system-an-die-website.png)
+
+## Warum sich die Anbindung überhaupt auszahlt
+
+Zuerst die Einordnung mit echten Zahlen. Laut [Eurostat](https://ec.europa.eu/eurostat/statistics-explained/index.php?title=E-business_integration) nutzten im Jahr 2025 28,51 % der EU-Unternehmen eine CRM-Software. Zum Vergleich: 46,45 % setzten ERP-Software ein, und 79,02 % hatten eine eigene Website. Ein CRM ist also verbreitet, aber längst kein Standard. Noch deutlicher wird es beim Blick auf die Unternehmensgröße: 2023 nutzten laut [Eurostat-Auswertung](https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20240516-2) nur 22 % der kleinen Unternehmen in der EU ein CRM, aber 61 % der großen. Das ist eine Lücke von 38 Prozentpunkten.
+
+Für Sie als KMU heißt das ganz praktisch: Wenn Sie ein CRM haben und es sauber an Ihre Website anbinden, arbeiten Sie bereits professioneller als die Mehrheit Ihrer Größenklasse. Die großen Player machen es Ihnen vor, und der technische Aufwand dafür ist heute deutlich kleiner als noch vor ein paar Jahren.
+
+Rechnen wir ein Beispiel durch. Ein Handwerksbetrieb im 22. Bezirk bekommt 40 Anfragen pro Monat über sein Kontaktformular. Ohne Anbindung landet jede Anfrage im E-Mail-Postfach und wird händisch ins CRM übertragen. Bei realistischen 5 Minuten pro Anfrage sind das über 3 Stunden im Monat, also rund 40 Stunden im Jahr, nur fürs Abtippen. Dazu kommen Tippfehler bei Telefonnummern und die eine Anfrage im Juli, die im Urlaubs-Chaos einfach verschwindet. Die Anbindung kostet einmal Projektarbeit und spart danach jedes Monat Zeit.
+
+## Weg 1: Das fertige Formular des CRM-Anbieters
+
+Der einfachste Einstieg ist das, was der CRM-Anbieter selbst mitliefert. Bei Salesforce heißt dieser Weg Web-to-Lead: Sie generieren im CRM ein HTML-Formular, bauen es auf Ihrer Website ein, und jede Anfrage landet direkt als Lead in Salesforce. Kein eigener Code, keine API-Schlüssel. In einer Stunde ist das eingerichtet.
+
+Der Haken steht in der offiziellen [Salesforce-Dokumentation](https://help.salesforce.com/s/articleView?id=sales.faq_leads_how_many_leads.htm&language=en_US&type=5): Web-to-Lead hat ein hartes Limit von 500 neuen Leads pro 24 Stunden, und das gilt quer durch die Editionen von Professional bis Performance. Für einen Wiener Steuerberater mit 30 Anfragen im Monat ist das völlig irrelevant. Für einen Webshop mit Gewinnspiel-Aktion oder eine Seite, die von Spam-Bots gefunden wird, kann das Limit aber schnell zum Problem werden, denn auch Bot-Einträge zählen mit. Wer mehr Volumen oder mehr Kontrolle braucht, muss laut Salesforce auf die REST-API ausweichen.
+
+Der zweite Nachteil ist das Design. Eingebettete Anbieter-Formulare sehen oft nach Fremdkörper aus und passen selten zum Rest der Seite. Dazu laden sie noch zusätzliche Skripte. Ich würde sagen: Web-to-Lead und vergleichbare Fertiglösungen sind ein guter erster Schritt, wenn es schnell gehen muss und das Anfrage-Volumen klein ist. Als Dauerlösung für eine Website, die Ihr Aushängeschild sein soll, würde ich sie nicht wählen.
+
+## Weg 2: Direkt an die API des CRM
+
+Die nächste Stufe ist die direkte Übergabe an einen dokumentierten API-Endpoint. [HubSpot](https://developers.hubspot.com/docs/api-reference/legacy/marketing/forms/v3-legacy/submit-data-unauthenticated) ist hier das anschaulichste Beispiel: Der Anbieter stellt einen offiziellen Submission-Endpoint bereit, an den Ihre Website Formulardaten per HTTP-POST schickt, zusammen mit Portal-ID und Formular-ID. Die Anfrage landet direkt im HubSpot-CRM, und das Entscheidende dabei: Ihr eigenes Formular-Design bleibt vollständig erhalten. Sie müssen kein fremdes Widget einbetten, sondern gestalten das Formular exakt so, wie es zu Ihrer Marke passt, und übergeben nur die Daten.
+
+Das ist für viele KMU der Sweet Spot. Die Website bleibt schnell und sieht aus wie aus einem Guss, und trotzdem fließt jede Anfrage ohne Umweg ins CRM. Der Aufwand liegt typischerweise bei wenigen Stunden Entwicklungsarbeit: Formularfelder auf die CRM-Felder abbilden, den POST-Request bauen, Fehlerfälle abfangen, testen.
+
+Eine Falle gibt es auch hier. Wer den API-Aufruf direkt aus dem Browser des Besuchers abschickt, legt unter Umständen Zugangsdaten oder interne IDs offen. Bei einem öffentlichen Formular-Endpoint wie dem von HubSpot ist das konzeptionell vorgesehen, bei den meisten anderen CRM-APIs aber nicht. Und damit sind wir beim dritten Weg.
+
+## Weg 3: Der eigene Server-Endpoint (der saubere Weg)
+
+Bei modernen Websites, etwa auf Basis von [Next.js](/tipps/was-sind-die-vorteile-von-modernen-frameworks-wie-next), ist der technisch sauberste Weg das sogenannte Backend-for-Frontend-Muster. Das klingt komplizierter als es ist. Übersetzt heißt es: Ihre Website bekommt einen kleinen eigenen Server-Endpoint, in Next.js ein Route Handler, der die Formulardaten entgegennimmt und erst auf dem Server an die CRM-API weiterreicht.
+
+Der Ablauf sieht so aus: Der Besucher füllt Ihr Formular aus und schickt es ab. Die Daten gehen an Ihren eigenen Endpoint, also an Ihre eigene Domain. Dort prüft der Server die Eingaben, hängt den API-Schlüssel an und ruft die CRM-API auf. Der API-Schlüssel bleibt dabei die ganze Zeit auf dem Server und landet nie im Browser-Code, wo ihn jeder mit zwölf Sekunden Neugier im Quelltext finden könnte. Die offizielle [Next.js-Dokumentation](https://nextjs.org/docs/app/guides/backend-for-frontend) beschreibt Route Handlers genau als den vorgesehenen Weg, eigene HTTP-Endpoints für solche Integrationen zu bauen.
+
+Dieser Weg hat noch zwei Vorteile, die im Alltag Gold wert sind. Erstens können Sie auf dem Server eine Fehlerbehandlung einbauen: Ist das CRM gerade nicht erreichbar, geht die Anfrage nicht verloren, sondern wird zwischengespeichert oder zusätzlich per E-Mail zugestellt. Zweitens können Sie an derselben Stelle Spam filtern, bevor er Ihr CRM verstopft. Wer schon einmal 300 Bot-Einträge händisch aus seiner Kundenliste gelöscht hat, weiß das zu schätzen.
+
+Meine klare Empfehlung: Für jede Website, die mehr sein soll als eine digitale Visitenkarte, ist der eigene Server-Endpoint der richtige Weg. Er kostet am Anfang ein paar Stunden mehr, erspart Ihnen aber die Design-Kompromisse von Weg 1 und die Sicherheitsfragen von Weg 2.
+
+## DSGVO: Ohne Auftragsverarbeitungsvertrag geht gar nichts
+
+Bevor die erste Anfrage fließt, kommt der Teil, den viele überspringen. Genau der wird bei einer Datenschutz-Prüfung unangenehm. Sobald Ihr CRM-Anbieter, und das ist bei jedem Cloud-CRM der Fall, personenbezogene Daten in Ihrem Auftrag verarbeitet, ist er datenschutzrechtlich Auftragsverarbeiter. Laut [WKO](https://www.wko.at/datenschutz/eu-dsgvo-pflichten-auftragsverarbeiter) muss dann zwingend ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO abgeschlossen werden. Dieser Vertrag legt unter anderem Gegenstand, Dauer, Art und Zweck der Verarbeitung fest, dazu die Datenkategorien und die Pflichten beider Seiten. Die WKO beschreibt den Auftragsverarbeiter als "verlängerten Arm" des Verantwortlichen, und der Verantwortliche sind Sie als Website-Betreiber.
+
+Die gute Nachricht: Bei den großen Anbietern wie Salesforce oder HubSpot ist so ein Vertrag Standard und meist mit wenigen Klicks im Kundenkonto abgeschlossen. Sie müssen es nur tatsächlich tun und dokumentieren. Prüfen Sie außerdem, dass Ihre Datenschutzerklärung die Weitergabe an das CRM nennt. Das ist kein Hexenwerk, aber es gehört zur Anbindung dazu wie der Gurt zum Autofahren. Wichtiger Hinweis: Das ist keine Rechtsberatung. Für den konkreten Fall gehören Datenschutz-Fragen zu Ihrem Anwalt oder Datenschutz-Berater, und der Rechtsstand auf der WKO-Seite ist zu beachten.
+
+## Schritt für Schritt: So gehen Sie konkret vor
+
+Damit das Ganze nicht abstrakt bleibt, hier der Ablauf, wie er sich in der Praxis bewährt hat:
+
+1. **Bestandsaufnahme machen.** Welches CRM haben Sie, in welcher Edition, und welche Schnittstellen bietet es? Ein Blick in die offizielle Doku des Anbieters klärt das in einer halben Stunde.
+2. **Auftragsverarbeitungsvertrag prüfen.** Existiert der Vertrag nach Art. 28 DSGVO mit Ihrem CRM-Anbieter bereits? Falls nein, jetzt abschließen, nicht nach dem Livegang.
+3. **Anbindungsweg wählen.** Kleines Volumen und wenig Budget: Fertigformular des Anbieters. Eigenes Design wichtig: direkter API-Endpoint. Langfristig sauber und flexibel: eigener Server-Endpoint.
+4. **Felder abbilden.** Legen Sie fest, welches Website-Feld in welches CRM-Feld fließt. Klingt banal, ist aber die häufigste Fehlerquelle, etwa wenn das CRM ein Pflichtfeld erwartet, das Ihr Formular gar nicht abfragt.
+5. **Testen, und zwar richtig.** Schicken Sie Testanfragen ab und kontrollieren Sie im CRM: Kommen Umlaute im Namen richtig an? Stimmt das Format der Telefonnummer? Wird die Quelle der Anfrage mitgeschrieben? Testen Sie auch den Fehlerfall, also was passiert, wenn das CRM nicht antwortet.
+6. **Betrieb im Blick behalten.** Eine Anbindung ist ein laufender Dienst. APIs ändern sich, Schlüssel laufen ab. Und irgendwann steht eine größere Aktion an, die am Limit kratzt. Einmal im Quartal kurz prüfen, ob die Leads noch sauber ankommen.
+
+## Die häufigsten Fehler in der Praxis
+
+Ein paar Fallen sehen wir immer wieder, und alle sind vermeidbar. Der Klassiker ist der API-Schlüssel im Frontend-Code: Er steht dann für jeden sichtbar im Quelltext der Seite, und im schlimmsten Fall kann ein Fremder damit Daten aus Ihrem CRM lesen. Genau dagegen hilft das Server-Endpoint-Muster aus Weg 3.
+
+Fehler Nummer zwei ist das ignorierte Limit. Wer bei Salesforce auf Web-to-Lead setzt und eine reichweitenstarke Kampagne fährt, kann am Limit von 500 Leads pro 24 Stunden anstehen, und alles darüber geht verloren oder verzögert sich. Prüfen Sie vor jeder größeren Aktion, ob Ihr Anbindungsweg das Volumen trägt.
+
+Fehler Nummer drei ist die fehlende Fehlerbehandlung. Wenn das CRM zehn Minuten nicht erreichbar ist und Ihr Formular die Anfrage einfach verwirft, merkt das niemand. Der Kunde glaubt, er hat angefragt, Sie wissen nichts davon. Eine Zwischenspeicherung oder eine parallele E-Mail-Zustellung kostet wenig und rettet genau diese Fälle.
+
+Und schließlich der organisatorische Fehler: Die Anbindung wird gebaut, funktioniert, und dann schaut zwei Jahre niemand mehr hin. Dazu eine ehrliche Einordnung aus unserer Beratungspraxis:
+
+> "Ein pauschaler Wartungsvertrag lohnt sich für eine reine Website nicht. Steht sie einmal, dann steht sie. Wartung zahlt sich erst aus, wenn Zusatzdienste dranhängen, die wirklich laufend betreut werden müssen", sagt Thomas Uhlir MBA, Geschäftsführer von Red Rabbit Media.
+
+Eine CRM-Anbindung ist genau so ein Zusatzdienst. Sie brauchen deswegen kein teures Rundum-Abo, aber jemanden, der die Schnittstelle kennt und im Fehlerfall erreichbar ist. Wann sich ein Wartungsvertrag wirklich lohnt, haben wir in einem [eigenen Beitrag zum Thema Wartungsvertrag](/tipps/website-wartungsvertrag-sinnvoll) aufgeschlüsselt. Das ist der faire Mittelweg zwischen Pauschal-Abzocke und "niemand fühlt sich zuständig".
+
+## Was kostet die Anbindung, und wann rechnet sie sich?
+
+Eine seriöse Hausnummer lässt sich erst nach der Bestandsaufnahme nennen, weil CRM, Edition und Anbindungsweg den Aufwand bestimmen. Die Spannweite reicht vom Fertigformular, das in wenigen Stunden eingebaut ist, bis zum eigenen Server-Endpoint mit Feld-Mapping, Spam-Filter und Fehlerbehandlung, der eher ein kleines Tagesprojekt ist. Verglichen mit den 40 Stunden Abtipp-Arbeit pro Jahr aus unserem Rechenbeispiel amortisiert sich selbst die aufwendigere Variante meist im ersten Jahr.
+
+Wichtiger als der Preis ist die Reihenfolge. Erst klären, was Ihr CRM kann. Dann den Weg wählen und bauen. Wer es umgekehrt macht, baut doppelt.
+
+## Key Takeaways
+
+- Es gibt drei Anbindungswege: Fertigformular des Anbieters (z.B. Salesforce Web-to-Lead), direkter API-Endpoint (z.B. HubSpot) oder eigener Server-Endpoint nach dem Backend-for-Frontend-Muster.
+- Salesforce Web-to-Lead hat ein hartes Limit von 500 Leads pro 24 Stunden; für mehr Volumen braucht es laut Salesforce die REST-API.
+- Der eigene Server-Endpoint (etwa ein Next.js Route Handler) ist der sauberste Weg: API-Schlüssel bleiben am Server, Design und Fehlerbehandlung bleiben in Ihrer Hand.
+- Ohne Auftragsverarbeitungsvertrag nach Art. 28 DSGVO mit dem CRM-Anbieter läuft die Anbindung datenschutzrechtlich nicht sauber (laut WKO; keine Rechtsberatung).
+- Laut Eurostat nutzten 2023 nur 22 % der kleinen EU-Unternehmen ein CRM, gegenüber 61 % der großen. Wer als KMU sauber anbindet, ist der eigenen Größenklasse voraus.
+
+## Fazit: Ein Standard-Projekt, wenn die Reihenfolge stimmt
+
+Die Anbindung eines bestehenden CRM an die Website ist 2026 ein gut dokumentiertes Standard-Projekt. Die Technik ist da, und die offiziellen Wege der Anbieter sind sauber beschrieben. Auch die Datenschutz-Hausaufgaben sind machbar. Entscheidend ist, dass jemand die Bestandsaufnahme sauber macht und den Weg wählt, der zu Ihrem Volumen und Ihrer Website passt, statt einfach das erstbeste Widget einzubetten.
+
+Wenn Sie wissen wollen, welcher Weg für Ihr CRM und Ihre Website der richtige ist, schauen wir uns das gerne gemeinsam an. Schreiben Sie uns über unsere [Kontaktseite](/kontakt), wir prüfen Ihre Ausgangslage und sagen Ihnen ehrlich, ob sich der Aufwand in Ihrem Fall auszahlt und welche Variante wir bauen würden.

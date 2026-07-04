@@ -1256,3 +1256,57 @@ quelle: https://developers.google.com/search/docs/crawling-indexing/mobile/mobil
 quelle_name: Google Search Central - Mobile-first Indexing Best Practices
 geprueft_am: 2026-07-03
 recheck_nach: 2026-12-30
+
+## t31-2026-07-04-140
+cluster: 1
+keywords: wird, bestehendes, system, website, angebunden
+aussage: Im Jahr 2025 nutzten laut Eurostat 28,51 % der EU-Unternehmen eine CRM-Software (Customer Relationship Management); zum Vergleich: 46,45 % nutzten ERP-Software und 79,02 % hatten eine eigene Website. CRM ist damit verbreitet, aber laengst nicht Standard — die Anbindung an die Website ist ein Differenzierungsthema.
+quelle: https://ec.europa.eu/eurostat/statistics-explained/index.php?title=E-business_integration
+quelle_name: Eurostat - Statistics Explained: E-business integration
+geprueft_am: 2026-07-04
+recheck_nach: 2026-12-31
+
+## t31-2026-07-04-141
+cluster: 1
+keywords: wird, bestehendes, system, website, angebunden
+aussage: Die CRM-Nutzung haengt stark von der Unternehmensgroesse ab: 2023 nutzten in der EU nur 22 % der kleinen Unternehmen CRM-Software, aber 61 % der grossen Unternehmen (Differenz 38 Prozentpunkte). Fuer KMU heisst das: Wer ein CRM hat und es sauber an die Website anbindet, ist der Mehrheit seiner Groessenklasse voraus.
+quelle: https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20240516-2
+quelle_name: Eurostat News - Large enterprises used more e-business applications
+geprueft_am: 2026-07-04
+recheck_nach: 2026-12-31
+
+## t31-2026-07-04-142
+cluster: 1
+keywords: wird, bestehendes, system, website, angebunden
+aussage: Verarbeitet ein CRM-Anbieter (z.B. Cloud-CRM) personenbezogene Daten im Auftrag des Website-Betreibers, ist er datenschutzrechtlich Auftragsverarbeiter: Laut WKO muss dann zwingend ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO abgeschlossen werden, der u.a. Gegenstand, Dauer, Art und Zweck der Verarbeitung, die Datenkategorien und die Pflichten beider Seiten festlegt. Der Auftragsverarbeiter gilt als 'verlaengerter Arm' des Verantwortlichen. (Keine Rechtsberatung; Rechtsstand laut WKO-Seite beachten.)
+quelle: https://www.wko.at/datenschutz/eu-dsgvo-pflichten-auftragsverarbeiter
+quelle_name: WKO - EU-DSGVO: Pflichten des Auftragsverarbeiters
+geprueft_am: 2026-07-04
+recheck_nach: 2026-12-31
+
+## t31-2026-07-04-143
+cluster: 1
+keywords: wird, bestehendes, system, website, angebunden
+aussage: Der einfachste offizielle Anbindungsweg bei Salesforce ist Web-to-Lead: Ein generiertes HTML-Formular auf der Website schreibt Anfragen direkt als Leads ins CRM — allerdings mit hartem Limit von 500 neuen Leads pro 24 Stunden (Professional/Enterprise/Unlimited/Performance/Developer Edition). Fuer hoehere Volumina oder mehr Kontrolle braucht es die REST-API.
+quelle: https://help.salesforce.com/s/articleView?id=sales.faq_leads_how_many_leads.htm&language=en_US&type=5
+quelle_name: Salesforce Help - How many leads can we capture from our website?
+geprueft_am: 2026-07-04
+recheck_nach: 2026-12-31
+
+## t31-2026-07-04-144
+cluster: 1
+keywords: wird, bestehendes, system, website, angebunden
+aussage: HubSpot bietet fuer individuell gestaltete Website-Formulare einen dokumentierten Submission-Endpoint: Formulardaten werden per HTTP-POST mit Portal-ID und Formular-ID direkt an das HubSpot-CRM uebermittelt — das eigene Formular-Design der Website bleibt dabei vollstaendig erhalten (kein Einbetten von Fremd-Widgets noetig).
+quelle: https://developers.hubspot.com/docs/api-reference/legacy/marketing/forms/v3-legacy/submit-data-unauthenticated
+quelle_name: HubSpot Developer Docs - Submit data to a form
+geprueft_am: 2026-07-04
+recheck_nach: 2026-12-31
+
+## t31-2026-07-04-145
+cluster: 1
+keywords: wird, bestehendes, system, website, angebunden
+aussage: Der technisch saubere Weg bei modernen Websites (z.B. Next.js) ist das Backend-for-Frontend-Muster: Route Handlers nehmen die Formulardaten serverseitig entgegen und reichen sie an die CRM-API weiter. API-Schluessel bleiben so auf dem Server und landen nie im Browser-Code — laut offizieller Next.js-Dokumentation der vorgesehene Weg, eigene HTTP-Endpoints fuer solche Integrationen zu bauen.
+quelle: https://nextjs.org/docs/app/guides/backend-for-frontend
+quelle_name: Next.js Docs - How to use Next.js as a backend for your frontend
+geprueft_am: 2026-07-04
+recheck_nach: 2026-12-31
