@@ -43,7 +43,7 @@ export const TILE_COLORS: TileColor[] = [
 
 export type Tile = Project & { colorIndex: number };
 
-export const TILE_COUNT = 24;
+export const TILE_COUNT = 40;
 
 // Basis-Liste bis TILE_COUNT wiederholen (ausdruecklich erlaubt),
 // Farbwelt rotiert unabhaengig vom Projekt.

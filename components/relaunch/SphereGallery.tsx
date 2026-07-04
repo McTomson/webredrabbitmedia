@@ -83,8 +83,14 @@ function drawTileTexture(tile: Tile, fontFamily: string): HTMLCanvasElement {
 
   // Projektname (mit einfachem Word-Wrap)
   ctx.fillStyle = col.text;
-  const nameSize = 58;
+  // Schrift schrumpfen bis das laengste Wort in die Kachel passt (kein Ueberlauf)
+  let nameSize = 58;
   ctx.font = `700 ${nameSize}px ${fontFamily}`;
+  const longest = tile.name.split(" ").reduce((a, b) => (ctx.measureText(b).width > ctx.measureText(a).width ? b : a), "");
+  while (nameSize > 26 && ctx.measureText(longest).width > W - pad * 2) {
+    nameSize -= 2;
+    ctx.font = `700 ${nameSize}px ${fontFamily}`;
+  }
   const words = tile.name.split(" ");
   const lines: string[] = [];
   let cur = "";
