@@ -1,0 +1,193 @@
+/* ============================================================
+   RED RABBIT RELAUNCH — DESIGN-TOKENS (P0)
+   Quelle der Werte: Live-Messung all-turtles.com 04.07.2026
+   (Typo-Stufen 135/89/74/47/41/27/23/20/16 px, Ink #252F3A-Logik,
+   Master-Easing cubic-bezier(.6,0,.4,1) aus Lottie-Extraktion)
+   + Markenrot #F12032 (aus Logo gesampelt, fix).
+   Scope: alles unter .rr — beruehrt die Bestandsseiten nicht.
+   ============================================================ */
+
+.rr {
+  /* ---- Farbe ---- */
+  --rr-red: #f12032;          /* Markenrot, einziger Akzent */
+  --rr-red-deep: #c81222;     /* Hover/gedrueckt */
+  --rr-ink: #23262e;          /* Text, warm-dunkles Schiefer (eigene Ableitung der at-Logik) */
+  --rr-ink-soft: #5a5e68;     /* Sekundaertext */
+  --rr-paper: #ffffff;        /* Grund */
+  --rr-surface: #f4f4f2;      /* zweite Flaeche */
+  --rr-dark: #17181d;         /* dunkle Sektion */
+  --rr-line: #e4e4e0;         /* Hairlines */
+
+  /* Case-Farbwelten (je Referenz eine Welt; Startset, im Design-Pass final) */
+  --rr-world-1-bg: #0b3f3b;   /* tiefes Petrol  (thermenwartung) */
+  --rr-world-1-accent: #ffd784;
+  --rr-world-2-bg: #17181d;   /* Nacht          (almtal-invest) */
+  --rr-world-2-accent: #f12032;
+  --rr-world-3-bg: #f3e8e4;   /* warmes Puder   (danesh) */
+  --rr-world-3-accent: #8c2f42;
+
+  /* ---- Typo-Skala (gemessen -> responsiv) ---- */
+  --rr-font-display: var(--font-fraunces), Georgia, serif;
+  --rr-font-ui: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+
+  --rr-fs-display-1: clamp(58px, 9.4vw, 135px);  /* Case-Headline */
+  --rr-fs-display-2: clamp(44px, 6.2vw, 89px);   /* Abschluss-CTA */
+  --rr-fs-statement: clamp(34px, 5.1vw, 74px);   /* 5-Punkte-Statements */
+  --rr-fs-claim: clamp(28px, 3.3vw, 47px);       /* Hero-Claim */
+  --rr-fs-sub: clamp(22px, 2.85vw, 41px);        /* Case-Subline */
+  --rr-fs-eyebrow-lg: clamp(17px, 1.9vw, 27px);  /* grosse Eyebrow (Case) */
+  --rr-fs-body-lg: 23px;
+  --rr-fs-ui: 20px;
+  --rr-fs-meta: 16px;
+  --rr-fs-nav: 15px;
+
+  /* ---- Motion (Master-Easing aus der Lottie-Messung) ---- */
+  --rr-ease: cubic-bezier(0.6, 0, 0.4, 1);
+  --rr-t-fast: 200ms;
+  --rr-t-med: 420ms;
+  --rr-t-slow: 700ms;
+
+  /* ---- Raum (all-turtles-Luft) ---- */
+  --rr-section-y: clamp(96px, 12vw, 180px);
+  --rr-gutter: clamp(20px, 4.6vw, 72px);
+  --rr-max: 1680px;
+
+  /* ---- Sonstiges ---- */
+  --rr-radius: 12px;
+  --rr-radius-lg: 22px;
+
+  font-family: var(--rr-font-ui);
+  color: var(--rr-ink);
+  background: var(--rr-paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ Typo-Rollen ============ */
+.rr .rr-display-1,
+.rr .rr-display-2,
+.rr .rr-statement,
+.rr .rr-claim,
+.rr .rr-sub {
+  font-family: var(--rr-font-display);
+  font-weight: 560;
+  letter-spacing: -0.018em;
+  line-height: 1.02;
+  font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
+  text-wrap: balance;
+  margin: 0;
+}
+.rr .rr-display-1 { font-size: var(--rr-fs-display-1); }
+.rr .rr-display-2 { font-size: var(--rr-fs-display-2); line-height: 1.05; }
+.rr .rr-statement { font-size: var(--rr-fs-statement); line-height: 1.08; }
+.rr .rr-claim     { font-size: var(--rr-fs-claim); line-height: 1.15; }
+.rr .rr-sub       { font-size: var(--rr-fs-sub); line-height: 1.22; font-weight: 480; }
+
+.rr .rr-eyebrow {
+  font-family: var(--rr-font-ui);
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--rr-red);
+  margin: 0;
+}
+.rr .rr-eyebrow-lg {
+  font-family: var(--rr-font-display);
+  font-size: var(--rr-fs-eyebrow-lg);
+  font-weight: 560;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+.rr .rr-body-lg { font-size: var(--rr-fs-body-lg); line-height: 1.5; margin: 0; }
+.rr .rr-body    { font-size: 17px; line-height: 1.55; margin: 0; }
+.rr .rr-meta    { font-size: var(--rr-fs-meta); line-height: 1.45; color: var(--rr-ink-soft); margin: 0; }
+
+/* ============ Buttons ============ */
+.rr .rr-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--rr-font-ui);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 16px 28px;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color var(--rr-t-fast) var(--rr-ease),
+    color var(--rr-t-fast) var(--rr-ease),
+    border-color var(--rr-t-fast) var(--rr-ease),
+    transform var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-btn:active { transform: scale(0.98); }
+.rr .rr-btn:focus-visible { outline: 2px solid var(--rr-red); outline-offset: 3px; }
+
+.rr .rr-btn--primary { background: var(--rr-red); color: #fff; }
+.rr .rr-btn--primary:hover { background: var(--rr-red-deep); }
+
+.rr .rr-btn--secondary { background: transparent; color: var(--rr-ink); border-color: var(--rr-ink); }
+.rr .rr-btn--secondary:hover { background: var(--rr-ink); color: var(--rr-paper); }
+
+.rr .rr-btn--ondark { background: #fff; color: var(--rr-ink); }
+.rr .rr-btn--ondark:hover { background: var(--rr-red); color: #fff; }
+
+/* Textlink mit Pfeil (all-turtles "See X's journey") */
+.rr .rr-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--rr-font-ui);
+  font-size: var(--rr-fs-ui);
+  font-weight: 550;
+  color: currentColor;
+  text-decoration: none;
+  border-bottom: 1.5px solid currentColor;
+  padding-bottom: 2px;
+  transition: gap var(--rr-t-fast) var(--rr-ease), color var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-link:hover { gap: 14px; color: var(--rr-red); }
+.rr .rr-link::after { content: "\2192"; }
+
+/* ============ Formularfelder ============ */
+.rr .rr-field {
+  display: block;
+  width: 100%;
+  font-family: var(--rr-font-ui);
+  font-size: 17px;
+  color: var(--rr-ink);
+  background: var(--rr-paper);
+  border: 1.5px solid var(--rr-line);
+  border-radius: var(--rr-radius);
+  padding: 15px 18px;
+  transition: border-color var(--rr-t-fast) var(--rr-ease), box-shadow var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-field::placeholder { color: #9a9ea8; }
+.rr .rr-field:focus { outline: none; border-color: var(--rr-ink); }
+.rr .rr-field[aria-invalid="true"] { border-color: var(--rr-red); }
+.rr .rr-label {
+  display: block;
+  font-family: var(--rr-font-ui);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+/* ============ Layout-Bausteine ============ */
+.rr .rr-section { padding: var(--rr-section-y) var(--rr-gutter); }
+.rr .rr-wrap { max-width: var(--rr-max); margin: 0 auto; }
+.rr .rr-hairline { border: 0; border-top: 1px solid var(--rr-line); margin: 0; }
+
+/* Firmen-Namensliste (Sektion 7): Name akzentfarben + grauer Einzeiler */
+.rr .rr-companyrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.rr .rr-company-name { font-family: var(--rr-font-ui); font-size: var(--rr-fs-meta); font-weight: 650; color: var(--rr-red); margin: 0; }
+.rr .rr-company-line { font-family: var(--rr-font-display); font-size: 23px; font-weight: 500; line-height: 1.25; margin: 6px 0 0; }
+@media (max-width: 860px) { .rr .rr-companyrow { grid-template-columns: 1fr; gap: 28px; } }
+
+/* Reduced Motion: alles springt auf Endzustand */
+@media (prefers-reduced-motion: reduce) {
+  .rr * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

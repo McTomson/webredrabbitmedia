@@ -29,6 +29,8 @@ export default function Header({ onFormOpen }: HeaderProps) {
 
     // The internal dashboard is a standalone tool — no marketing chrome.
     if (pathname?.startsWith('/dashboard')) return null;
+    // Relaunch-Seiten (neues Design-System) rendern ihr eigenes Chrome.
+    if (pathname?.startsWith('/styleguide')) return null;
 
     const navLinks = [
         { name: 'Über uns', href: '/#about' },
