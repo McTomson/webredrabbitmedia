@@ -30,6 +30,14 @@ Ton: klare Kante, nie herablassend gegenueber dem Kunden (Handwerk/KMU). Wir mac
 - "Warum seht ihr den Entwurf ohne Vorkasse, aber wollt dann eine Anzahlung?" (Story-/Haltungs-Antwort: wir tragen das Risiko bis du ueberzeugt bist, ab Auftrag arbeiten wir partnerschaftlich).
 - "Warum ist der Einstieg so guenstig, wo ist der Haken?" (Anker-Aufloesung: 790 EUR ist der Starter/One-Pager, nicht die ganze Welt; hoehere Pakete fuer mehr).
 
+## Echte Kunden-Zufriedenheits-Treiber (O-Ton Tomson 15.06, ownable + provable)
+Das ist KEINE Annahme, das ist real passiert und macht den Unterschied. Daraus bauen wir Standards/Versprechen statt Floskeln:
+- **"So lange, bis es passt"** = wir iterieren bis der Kunde zufrieden ist (das Kein-Risiko-Versprechen in Aktion).
+- **Gratis Tipps / echte Beratung** = Grosszuegigkeit statt Nickel-and-Dime (Gegenteil der Stundensatz-Abzocke).
+- **Immer "extra mehr" geliefert** (Geschwindigkeit, Design) = Over-Delivery-Kultur. Starker Premium-Rechtfertiger.
+- **Kunden "mehr als zufrieden"**, echte Testimonials/Statements sind beschaffbar -> fuer USP-Sprache + Social Proof einsammeln.
+Premium-Hinweis: bei 3.800+ "extra mehr machen, obwohl wir besser koennten aber sie wollten es so" wird zu "wir fuehren dich zur besseren Loesung" - Expertise zeigen, nicht nur ausfuehren.
+
 ## Do / Don't
 - DO: ehrliche Zahlen, echtes Gesicht, klare Haltung, Nutzen statt Funktion ("mehr Anfragen" statt "responsive Website").
 - DON'T: aufgeblasene Kennzahlen, Stockfotos, Fake-Scarcity/Countdown, erfundene Bewertungen, Arroganz gegen die Zielgruppe.

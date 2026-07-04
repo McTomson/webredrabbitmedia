@@ -5,6 +5,11 @@ Single Source of Truth fuer alles rund um **Marke, Positionierung, Identitaet, T
 ## Regel fuer jede Session
 Bevor du an Brand, Identitaet, Design-Richtung, Copy/Texten, Preis-Kommunikation oder FAQ von web.redrabbit.media arbeitest: **zuerst diesen Ordner lesen.** Neue Entscheidungen kommen in `decisions-log.md` (datiert, append-only). Tonalitaets-Regeln bleiben in `content-engine/voice/house.md` (nicht duplizieren, nur referenzieren).
 
+## Arbeitsprinzip (Dauer, Entscheidung Tomson 2026-06-15) — gilt fuer JEDE Session
+- **Knallhart, ehrlich, unabhaengig.** Nicht zustimmen, wenn etwas nicht stimmt. 100% unabhaengige Wahrheit, auch wenn sie unbequem ist. Risiken und Schwaechen offen benennen, Vorschlaege ehrlich bewerten (was ist stark, was ist Bullshit), nicht beschoenigen.
+- **Die Marke ist nicht "lieb und nett".** Wer lieb und nett ist, faellt nicht auf und gewinnt nicht gegen harte Konkurrenz. Red-Rabbit-Ton + Strategie duerfen polarisieren, Kante haben, ein Feindbild benennen. Kein 08/15, kein Hochglanz-Bla-bla, kein Schulmaedchen-Stil.
+- **Ziel ist ein WOW-Konzept, das wirklich anders ist** und funktioniert, nicht "wie alle anderen".
+
 ## Dateien
 - `positioning.md` — Wer wir sind, fuer wen, USP, Preis- & Risiko-Modell, die getroffene Grundsatz-Entscheidung.
 - `cult-brand-playbook.md` — Wissen aus dem NotebookLM "Cult Brand Psychology" (13 Videos), je Hebel ein klares Urteil: passt zu uns / passt nicht / wie konkret.
