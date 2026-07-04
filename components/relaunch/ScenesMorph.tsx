@@ -57,7 +57,13 @@ export default function ScenesMorph() {
       const baseSize = Math.min(window.innerWidth, window.innerHeight) * 0.045;
 
       // at-Logik: Kanten bekommen LAENGLICHE Teile (Perlenkette), Punkte runde.
-      const elongated = rendered.filter((r) => Math.max(r.w / r.h, r.h / r.w) >= 1.5);
+      // Deterministisch durchmischen, damit nicht dasselbe Teil in Serie liegt (Fransen-Look).
+      const shuffle = <T,>(arr: T[], seed: number) => {
+        const a = [...arr]; const rr = makeRng(seed);
+        for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(rr() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; }
+        return a;
+      };
+      const elongated = shuffle(rendered.filter((r) => Math.max(r.w / r.h, r.h / r.w) >= 1.5), 7);
       const roundish = rendered.filter((r) => Math.max(r.w / r.h, r.h / r.w) < 1.5);
       const dotSlots = 3; // Formationen haengen ihre Punkt-Rollen ans Ende
 

@@ -17,7 +17,7 @@ export interface FormationPoint {
 }
 
 /** Abstand zwischen Teil-Mitten im normierten Raum: dicht wie beim at-Original */
-const SPACING = 0.052;
+const SPACING = 0.066;
 
 function ring(cx: number, cy: number, r: number, _n?: number, tangential = true): FormationPoint[] {
   const pts: FormationPoint[] = [];
