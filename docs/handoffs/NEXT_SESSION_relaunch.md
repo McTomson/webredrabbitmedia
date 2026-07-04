@@ -39,6 +39,13 @@ all-turtles-Morph = handanimiertes LOTTIE (After Effects), per Scroll gescrubbt.
 - Artikel-Engine laeuft unveraendert; zusaetzlich 1 Pillar-Artikel pro Leistungs-/Regionalseite; keine zweite Posting-Routine.
 - Handoff-MD vom 03.07. (redrabbit-website-handoff.md) = nur Ideen-Steinbruch, kritisch filtern.
 
+### BAUSTAND 04.07 ABEND (Session hat begonnen zu bauen!)
+- Branch `relaunch` existiert (gepusht). Commits: Second-Brain-Docs, Planungs-Docs, P0 Design-System (993d10a), P1 Hero-Morph (e8d3a4a), P1b 5 Leistungs-Szenen (798695d).
+- LIVE VERIFIZIERT: /styleguide (Design-System komplett), /relaunch-preview (Hero: Kontraktion ohne Rotation -> Burst -> Naturbruch-Zerfall; danach 5 Szenen: Browser/Lupe/Sprechblase/Artikel/Chart-Formationen mit Assembly-Grammatik). Lupe klar erkennbar.
+- LESSON: Tailwind-Preflight `img{max-width:100%}` macht Teile unsichtbar (Buehne 0 breit) -> immer `max-width:none` auf Morph-Teilen.
+- OFFEN P1: Footer-Reassembly, Hero-Feintuning gegen Original, Mobile-Pass. OFFEN: Opus-Agent baute Kugel-Galerie in Worktree (Ergebnis reviewen/mergen!). NEU P0: "Red Rabbit Methode" (eigenes Framework-Wort, 2-3 Vorschlaege visuell) + danach Grill-Thema "Inhalte".
+- Tomson-Dauerregel NEU: autonome Loops, fragen NUR bei wichtigen Entscheidungen; laufend testen; Memory/Doku immer aktuell (memory/feedback_relaunch_autonomie_loop_regeln.md).
+
 ### NAECHSTE SESSION: BAUEN (P0+P1 nach TASK_SPECS Reihenfolge S1)
 1. Branch `relaunch` anlegen (VORHER klaeren: Branch feat/seo-monitor-und-brand-second-brain traegt evtl. uncommittete brand/-Dateien).
 2. P0: Design-System/Guide + /styleguide-Seite (Fable), Messaging in brand/ finalisieren, Wortmarken-Spec formalisieren.
