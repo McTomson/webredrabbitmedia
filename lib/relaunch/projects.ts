@@ -21,8 +21,8 @@ export const BASE_PROJECTS: Project[] = [
   // Domain verifiziert 05.07.: thermewarten.at ist unsere Site (thermenwartung.at gehoert allgas.at!)
   { name: "thermewarten.at", line: LINES[0], href: "https://thermewarten.at" },
   { name: "lashesbydanesh.at", line: LINES[1], href: "https://lashesbydanesh.at" },
-  // almtal-invest: Domain 05.07. nicht aufloesbar -> fail-closed KEIN Link (Tomson fragen)
-  { name: "Almtal Invest", line: LINES[2] },
+  // Domain von Tomson 05.07. genannt + verifiziert (Titel: Tree House Apartments, Salzkammergut)
+  { name: "Almtal Invest", line: LINES[2], href: "https://almtal-invest.vercel.app" },
   { name: "rero", line: LINES[0] },
   { name: "rero-michael", line: LINES[1] },
   { name: "La Morra", line: LINES[2] },
