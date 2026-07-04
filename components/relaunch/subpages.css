@@ -1,0 +1,157 @@
+/* ============================================================
+   RELAUNCH — Unterseiten-Bausteine (P3)
+   Nur aus den P0-Tokens (styleguide.css) komponiert:
+   keine neuen Farben, keine neuen Schriftgroessen ausserhalb der
+   Typo-Rollen, EIN Easing (var(--rr-ease)). Alles unter .rr.
+   ============================================================ */
+
+/* ---- Seitenkopf ---- */
+.rr .rr-pagehead {
+  padding-top: calc(var(--rr-section-y) + 48px);
+  padding-bottom: clamp(40px, 6vw, 80px);
+}
+.rr .rr-narrow { max-width: 1180px; }
+.rr .rr-prose { max-width: 720px; }
+
+/* ---- Grids ---- */
+.rr .rr-grid { display: grid; gap: clamp(20px, 2.6vw, 34px); }
+.rr .rr-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.rr .rr-grid-3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) {
+  .rr .rr-grid-2,
+  .rr .rr-grid-3 { grid-template-columns: 1fr; }
+}
+
+/* ---- Karten ---- */
+.rr .rr-card {
+  display: block;
+  border: 1px solid var(--rr-line);
+  border-radius: var(--rr-radius-lg);
+  padding: clamp(24px, 3vw, 40px);
+  background: var(--rr-paper);
+  transition: border-color var(--rr-t-fast) var(--rr-ease), transform var(--rr-t-fast) var(--rr-ease);
+}
+.rr a.rr-card { text-decoration: none; color: inherit; }
+.rr a.rr-card:hover { border-color: var(--rr-ink); transform: translateY(-3px); }
+.rr a.rr-card:focus-visible { outline: 2px solid var(--rr-red); outline-offset: 3px; }
+.rr .rr-card--surface { background: var(--rr-surface); border-color: transparent; }
+
+/* ---- Aufzaehlung mit rotem Haken ---- */
+.rr .rr-check { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.rr .rr-check li { position: relative; padding-left: 30px; font-size: 17px; line-height: 1.5; }
+.rr .rr-check li::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 4px;
+  width: 7px;
+  height: 12px;
+  border: solid var(--rr-red);
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+/* ---- Nummerierte Schritte ---- */
+.rr .rr-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(20px, 2.4vw, 30px); }
+.rr .rr-step-num {
+  font-family: var(--rr-font-display);
+  font-size: 27px;
+  font-weight: 560;
+  color: var(--rr-red);
+  line-height: 1;
+  margin: 0 0 8px;
+}
+
+/* ---- Preis-Karten ---- */
+.rr .rr-price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch; }
+@media (max-width: 980px) { .rr .rr-price-grid { grid-template-columns: 1fr; } }
+.rr .rr-price-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid var(--rr-line);
+  border-radius: var(--rr-radius-lg);
+  padding: clamp(28px, 3vw, 40px);
+  background: var(--rr-paper);
+}
+.rr .rr-price-card--featured {
+  border: 1.5px solid var(--rr-red);
+  box-shadow: 0 24px 70px -34px rgba(241, 32, 50, 0.45);
+}
+.rr .rr-price-badge {
+  align-self: flex-start;
+  font-family: var(--rr-font-ui);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--rr-red);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+.rr .rr-price-foot { margin-top: auto; }
+
+/* ---- FAQ (natives details/summary, SSR-crawlbar) ---- */
+.rr .rr-faq { border-top: 1px solid var(--rr-line); }
+.rr .rr-faq details { border-bottom: 1px solid var(--rr-line); }
+.rr .rr-faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 24px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--rr-font-ui);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--rr-ink);
+}
+.rr .rr-faq summary::-webkit-details-marker { display: none; }
+.rr .rr-faq summary::after {
+  content: "+";
+  font-family: var(--rr-font-ui);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--rr-red);
+  line-height: 1;
+  transition: transform var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-faq details[open] summary::after { transform: rotate(45deg); }
+.rr .rr-faq summary:focus-visible { outline: 2px solid var(--rr-red); outline-offset: 3px; }
+.rr .rr-faq-a { padding: 0 0 26px; max-width: 780px; }
+
+/* ---- Platzhalter-Markierung (Beleg fehlt, vor Launch ersetzen) ---- */
+.rr .rr-placeholder {
+  border: 1px dashed var(--rr-red);
+  border-radius: var(--rr-radius);
+  padding: 16px 18px;
+  background: var(--rr-surface);
+}
+.rr .rr-placeholder .rr-placeholder-tag {
+  font-family: var(--rr-font-ui);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rr-red);
+}
+
+/* ---- B2B-Namenszeile (eine Farbe, eine Schrift) ---- */
+.rr .rr-trustnames { display: flex; flex-wrap: wrap; gap: clamp(20px, 3vw, 48px); }
+.rr .rr-trustname {
+  font-family: var(--rr-font-display);
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 500;
+  color: var(--rr-ink);
+  line-height: 1.1;
+}
+
+/* ---- Kontakt: Formular + direkter Draht ---- */
+.rr .rr-contact-grid { display: grid; gap: clamp(20px, 2.6vw, 34px); grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; }
+@media (max-width: 900px) { .rr .rr-contact-grid { grid-template-columns: 1fr; } }
+
+/* ---- Dunkler Abschluss-CTA ---- */
+.rr .rr-cta-dark { background: var(--rr-dark); }
+.rr .rr-cta-actions { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; margin-top: 36px; }
