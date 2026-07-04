@@ -56,7 +56,15 @@ all-turtles-Morph = handanimiertes LOTTIE (After Effects), per Scroll gescrubbt.
 - Artikel-Engine laeuft unveraendert; zusaetzlich 1 Pillar-Artikel pro Leistungs-/Regionalseite; keine zweite Posting-Routine.
 - Handoff-MD vom 03.07. (redrabbit-website-handoff.md) = nur Ideen-Steinbruch, kritisch filtern.
 
-### BAUSTAND 04.07 ABEND (Session hat begonnen zu bauen!)
+### BAUSTAND 05.07 NACHMITTAG (P2 Homepage + P3 Unterseiten FERTIG, gepusht bis 8f9ebea)
+- P2 Homepage KOMPLETT nach Blaupause auf /relaunch-preview (b79dc69): Ueberleitung, 3 Case-Panels (Farbwelten, horizontale Fahrt mit Master-Easing, Riesen-Initial), Zahlen-Statement (PLATZHALTER markiert), Firmen-Liste 5x3, Riesen-CTA, Footer-Wortmarken-Reassembly (buildReassembly in grammar.ts). Browser-verifiziert, Build gruen.
+- P3 Unterseiten von Opus-Agent gebaut, Fable-Review bestanden (Umlaut-Fix 150 Stellen eingefordert, 14d0fc5), gemerged 8f9ebea: /leistungen (+4 Unterseiten mit FAQ-JSON-LD), /preise (950/2.900/ab 4.900, Entwurf-ohne-Vorkasse prominent), /ueber-uns (Bio/Foto PLATZHALTER), /faq (14 Fragen), /kontakt (neues Formular an bestehende /api/contact, DSGVO-Checkbox client-seitig). Adresse+Oeffnungszeiten gegen Impressum/layout.tsx verifiziert.
+- FAKTEN-FIX projects.ts: thermenwartung.at gehoert allgas.at -> UNSERE Domain thermewarten.at; almtal-invest-Domain nicht aufloesbar -> Link fail-closed raus (Tomson fragen!).
+- "Red Rabbit Methode": 3 Vorschlaege als Artifact vorgelegt (56e66763-3f60-4e0b-92c2-8fffc9100ecf), ENTSCHEIDUNG OFFEN.
+- LESSON NEU: (1) Pipe maskiert Build-Exit ("| tail; echo $?" zeigt tail-Exit!) -> Build in Log-Datei, EXIT separat. (2) Wiederkehrend korruptes Teil-node_modules unter .claude/worktrees/node_modules laesst JEDEN Worktree-Build scheitern ("Can't resolve ../lib/is-error") -> vor Worktree-Builds loeschen, Ursache offen. (3) Styleguide-Seite hat noch 5 ASCII-Umlaute (selbst fixen, intern).
+- OFFENE TOMSON-FRAGEN: Case-Panel-Auswahl bestaetigen (thermewarten/Almtal/Danesh), almtal-Domain, B2B-Einzeiler pruefen, Business vs Premium als hervorgehobenes Paket, Methode-Entscheidung.
+
+### BAUSTAND 04.07 ABEND (historisch)
 - Branch `relaunch` existiert (gepusht). Commits: Second-Brain-Docs, Planungs-Docs, P0 Design-System (993d10a), P1 Hero-Morph (e8d3a4a), P1b 5 Leistungs-Szenen (798695d).
 - LIVE VERIFIZIERT: /styleguide (Design-System komplett), /relaunch-preview (Hero: Kontraktion ohne Rotation -> Burst -> Naturbruch-Zerfall; danach 5 Szenen: Browser/Lupe/Sprechblase/Artikel/Chart-Formationen mit Assembly-Grammatik). Lupe klar erkennbar.
 - LESSON: Tailwind-Preflight `img{max-width:100%}` macht Teile unsichtbar (Buehne 0 breit) -> immer `max-width:none` auf Morph-Teilen.
