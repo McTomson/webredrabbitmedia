@@ -37,9 +37,9 @@ export const BASE_PROJECTS: Project[] = [
 export type TileColor = { bg: string; text: string; accent: string };
 
 export const TILE_COLORS: TileColor[] = [
-  { bg: "#0b3f3b", text: "#f4f4f2", accent: "#ffd784" }, // --rr-world-1-bg
-  { bg: "#17181d", text: "#f4f4f2", accent: "#f12032" }, // --rr-dark
-  { bg: "#f3e8e4", text: "#23262e", accent: "#8c2f42" }, // --rr-world-3-bg
+  { bg: "#1d8c98", text: "#f6f5f1", accent: "#fcfbc9" }, // --rr-world-1-bg (at-Tuerkis)
+  { bg: "#2d2d2d", text: "#f6f5f1", accent: "#f35b09" }, // --rr-world-2-bg (at-Anthrazit)
+  { bg: "#0a8aba", text: "#f6f5f1", accent: "#f2dc71" }, // --rr-world-3-bg (at-Blau)
   { bg: "#f4f4f2", text: "#23262e", accent: "#f12032" }, // --rr-surface
 ];
 

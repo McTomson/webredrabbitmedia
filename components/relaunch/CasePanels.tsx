@@ -46,7 +46,7 @@ const THEMES: Theme[] = [
     bg: "var(--rr-world-1-bg)",
     text: "#f6f5f1",
     accent: "var(--rr-world-1-accent)",
-    giantColor: "rgba(255,255,255,0.08)",
+    giantColor: "rgba(0,0,0,0.26)",
   },
   {
     key: "dashboard",
@@ -59,7 +59,7 @@ const THEMES: Theme[] = [
     bg: "var(--rr-world-2-bg)",
     text: "#f6f5f1",
     accent: "var(--rr-world-2-accent)",
-    giantColor: "rgba(255,255,255,0.07)",
+    giantColor: "rgba(0,0,0,0.34)",
   },
   {
     key: "sichtbar",
@@ -70,38 +70,33 @@ const THEMES: Theme[] = [
     href: "/leistungen/ki-sichtbarkeit",
     giant: "Sichtbar",
     bg: "var(--rr-world-3-bg)",
-    text: "var(--rr-ink)",
+    text: "#f6f5f1",
     accent: "var(--rr-world-3-accent)",
-    giantColor: "rgba(140,47,66,0.10)",
+    giantColor: "rgba(0,0,0,0.24)",
   },
 ];
 
 /* Pfotenspur (Panel 1): statisch auf der Buehne wie die Sora-Voegel — die
    Fahrt der Buehne laesst die Spur "durchlaufen". */
 function PawTrail({ color }: { color: string }) {
-  // Hasen-Hopser: pro Sprung 2 Pfoten nebeneinander, Spruenge entlang flacher Diagonale
-  const jumps = Array.from({ length: 9 }, (_, i) => {
-    const x = 30 + i * 105;
-    const y = 150 - i * 9;
-    const r = -6 + (i % 2 ? 3 : -3);
+  // Echte Hasenspur (Tomson-Vorlage): pro Sprung 2 laengliche Hinterlauf-Abdruecke
+  // nebeneinander (leicht V-gestellt) + 2 kleine runde Vorderpfoten-Punkte versetzt
+  // dahinter; Spur laeuft diagonal aufsteigend in Laufrichtung.
+  const jumps = Array.from({ length: 10 }, (_, i) => {
+    const x = 40 + i * 128;
+    const y = 300 - i * 26;
     return (
-      <g key={i} transform={`translate(${x} ${y}) rotate(${r})`}>
-        <g transform="translate(-7 0) scale(0.34)">
-          <ellipse cx="0" cy="0" rx="7" ry="10" />
-          <circle cx="-6" cy="-11" r="3" /><circle cx="-2" cy="-14" r="3" />
-          <circle cx="2" cy="-14" r="3" /><circle cx="6" cy="-11" r="3" />
-        </g>
-        <g transform="translate(7 -4) scale(0.34)">
-          <ellipse cx="0" cy="0" rx="7" ry="10" />
-          <circle cx="-6" cy="-11" r="3" /><circle cx="-2" cy="-14" r="3" />
-          <circle cx="2" cy="-14" r="3" /><circle cx="6" cy="-11" r="3" />
-        </g>
+      <g key={i} transform={`translate(${x} ${y}) rotate(38)`}>
+        <ellipse cx="-7" cy="0" rx="3.6" ry="12" transform="rotate(-7 -7 0)" />
+        <ellipse cx="7" cy="-2" rx="3.6" ry="12" transform="rotate(7 7 -2)" />
+        <circle cx="-2" cy="19" r="2.8" />
+        <circle cx="5" cy="26" r="2.8" />
       </g>
     );
   });
   return (
-    <svg viewBox="0 0 980 180" fill={color} aria-hidden
-      style={{ position: "absolute", left: "104vw", top: "16vh", width: "120vw", opacity: 0.85, pointerEvents: "none" }}>
+    <svg viewBox="0 0 1360 360" fill={color} aria-hidden
+      style={{ position: "absolute", left: "70vw", top: "8vh", width: "170vw", opacity: 0.9, pointerEvents: "none" }}>
       {jumps}
     </svg>
   );
@@ -111,7 +106,7 @@ function PawTrail({ color }: { color: string }) {
 function DashCard() {
   return (
     <div aria-hidden style={{
-      position: "absolute", left: "128vw", top: "22vh", width: "clamp(300px, 30vw, 460px)",
+      position: "absolute", left: "58vw", top: "50vh", width: "clamp(300px, 30vw, 460px)",
       background: "#1f2129", border: "1px solid #33353d", borderRadius: 16, padding: 22,
       boxShadow: "0 30px 80px rgba(0,0,0,.5)",
     }}>
@@ -135,7 +130,7 @@ function DashCard() {
 function AnswerCard() {
   return (
     <div aria-hidden style={{
-      position: "absolute", left: "126vw", top: "26vh", width: "clamp(300px, 32vw, 480px)",
+      position: "absolute", left: "58vw", top: "48vh", width: "clamp(300px, 32vw, 480px)",
       background: "#fff", border: "1px solid #e6d9d3", borderRadius: 16, padding: "20px 22px",
       boxShadow: "0 24px 60px rgba(140,47,66,.14)",
     }}>
@@ -210,8 +205,8 @@ function PanelTrack({ t }: { t: Theme }) {
         <div ref={giantRef} aria-hidden style={{ position: "absolute", left: 0, top: 0, height: "100%", display: "flex", alignItems: "flex-end", willChange: "transform", pointerEvents: "none" }}>
           <span style={{
             fontFamily: "var(--rr-font-display)", fontWeight: 640, whiteSpace: "nowrap",
-            fontSize: "min(56vh, 34vw)", lineHeight: 0.9, color: t.giantColor,
-            transform: "translateY(0.14em)", marginLeft: "68vw",
+            fontSize: "min(64vh, 40vw)", lineHeight: 0.9, color: t.giantColor,
+            transform: "translateY(0.16em)", marginLeft: "46vw",
           }}>{t.giant}</span>
         </div>
 
@@ -224,22 +219,28 @@ function PanelTrack({ t }: { t: Theme }) {
           </div>
 
           {/* Mittelzone: Themen-Animation + Material-Platzhalter */}
+          {/* Logo-Badge: weisser Kreis mit Hasen-Logo (at: Produkt-Icon-Badge) */}
+          <div aria-hidden style={{ position: "absolute", left: "64vw", top: "30vh", width: 116, height: 116, borderRadius: "50%", background: "#fff", display: "grid", placeItems: "center", boxShadow: "0 18px 50px rgba(0,0,0,0.22)" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/logo.webp" alt="" style={{ width: "58%", height: "58%", objectFit: "contain" }} />
+          </div>
           {t.key === "webdesign" && (
             <>
-              <PawTrail color="rgba(255,255,255,0.22)" />
-              <MediaPlaceholder left="150vw" top="52vh" label="echte Projekt-Screens (thermewarten, Danesh, La Morra)" />
+              <PawTrail color="rgba(0,0,0,0.30)" />
+              <MediaPlaceholder left="60vw" top="54vh" label="echte Projekt-Screens (thermewarten, Danesh, La Morra)" />
+              <MediaPlaceholder left="150vw" top="30vh" label="zweites Projekt-Motiv" />
             </>
           )}
           {t.key === "dashboard" && (
             <>
               <DashCard />
-              <MediaPlaceholder left="168vw" top="56vh" label="Dashboard-Aufnahme (echtes Produkt-Video)" />
+              <MediaPlaceholder left="150vw" top="32vh" label="Dashboard-Aufnahme (echtes Produkt-Video)" />
             </>
           )}
           {t.key === "sichtbar" && (
             <>
               <AnswerCard />
-              <MediaPlaceholder left="170vw" top="58vh" label="Google-Treffer / Regionalseiten-Material" dark />
+              <MediaPlaceholder left="152vw" top="30vh" label="Google-Treffer / Regionalseiten-Material" />
             </>
           )}
         </div>

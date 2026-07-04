@@ -19,12 +19,13 @@
   --rr-line: #e4e4e0;         /* Hairlines */
 
   /* Case-Farbwelten (je Referenz eine Welt; Startset, im Design-Pass final) */
-  --rr-world-1-bg: #0b3f3b;   /* tiefes Petrol  (thermenwartung) */
-  --rr-world-1-accent: #ffd784;
-  --rr-world-2-bg: #17181d;   /* Nacht          (almtal-invest) */
-  --rr-world-2-accent: #f12032;
-  --rr-world-3-bg: #f3e8e4;   /* warmes Puder   (danesh) */
-  --rr-world-3-accent: #8c2f42;
+  /* Panel-Farbwelten: 1:1 all-turtles (Tomson-Entscheidung 05.07., live aus deren CSS gemessen) */
+  --rr-world-1-bg: #1d8c98;   /* at "airtime"-Tuerkis */
+  --rr-world-1-accent: #fcfbc9; /* cream Eyebrow */
+  --rr-world-2-bg: #2d2d2d;   /* at "carrot-dark" Anthrazit */
+  --rr-world-2-accent: #f35b09; /* Orange Eyebrow */
+  --rr-world-3-bg: #0a8aba;   /* at "sora"-Blau */
+  --rr-world-3-accent: #f2dc71; /* Gelb Eyebrow */
 
   /* ---- Typo-Skala (gemessen -> responsiv) ---- */
   --rr-font-display: var(--font-fraunces), Georgia, serif;
