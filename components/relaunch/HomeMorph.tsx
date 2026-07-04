@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import { buildWordLayout } from "@/lib/relaunch/morph/pieces";
-import { clamp01 } from "@/lib/relaunch/morph/grammar";
+import { clamp01, masterEase } from "@/lib/relaunch/morph/grammar";
 import {
   buildStagePlan, sampleTimeline, U_HERO, U_TOTAL,
   type PieceTimeline, type PoolPieceIn, type SceneLayout,
@@ -133,17 +133,22 @@ export default function HomeMorph({ claim }: { claim: string }) {
         claimRef.current.style.transform = `translateY(${(1 - co) * -18}px)`;
       }
 
-      // Statements: pro Szene einblenden waehrend die Formation steht
+      // R3: Statement steigt VON UNTEN hoch waehrend die Formation entsteht —
+      // nie vorher da, nie nachher eingeblendet. Szene 0 laeuft waehrend des
+      // Hero-Einflugs (eigenes tin-Fenster ab u=1.9).
       textRefs.current.forEach((el, s) => {
         if (!el) return;
         const local = u - (U_HERO + s);
         const isLast = s === textRefs.current.length - 1;
-        const tin = clamp01((local - 0.38) / 0.22);
-        const tout = isLast ? 1 : clamp01((1.12 - local) / 0.14);
-        const o = local < 0 || local > (isLast ? 1.4 : 1.4) ? 0 : tin * tout;
+        const tin = s === 0 ? clamp01((u - 1.9) / 0.45) : clamp01((local - 0.22) / 0.35);
+        // Ausblenden erst ab local 1.05
+        const tout = isLast ? 1 : clamp01((1.4 - local) / 0.35);
+        const eased = masterEase(tin);
+        const o = eased * tout;
         el.style.opacity = String(o);
         const base = el.dataset.center === "1" ? "translateY(-50%) " : "";
-        el.style.transform = `${base}translateY(${(1 - o) * 24}px)`;
+        // Aufstieg von +56px (tin=0) auf 0 (tin=1)
+        el.style.transform = `${base}translateY(${(1 - eased) * 56}px)`;
       });
     }
 

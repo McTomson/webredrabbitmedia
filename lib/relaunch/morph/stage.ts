@@ -8,6 +8,14 @@
 
 import { masterEase, makeRng } from "./grammar";
 import { AT_SCENES, type SlotTuple } from "./at-scenes";
+import atTiming from "./at-timing.json";
+
+/** Timing-Messdaten (paralleler Vermessungs-Agent, at-timing.json):
+ *  pieces = [entryT, arriveT, entryX, entryY, onCanvas] pro Slot. Vorhanden ->
+ *  Einflug folgt dem Original-Rhythmus; fehlte die Datei, waeren es Defaults. */
+interface TimingScene { id: string; pieces: number[][]; visibleCurve?: number[] }
+interface TimingData { scenes: TimingScene[] }
+const AT_TIMING: TimingData | null = atTiming as TimingData;
 
 export interface PieceState {
   x: number;
@@ -94,8 +102,7 @@ export function buildStagePlan(
   const narrow = opts?.narrow ?? vp.w < 900;
   /** uniformer Massstab der vermessenen Kompositionen (1920x1080 -> Viewport) */
   const k = Math.min(vp.w / 1920, vp.h / 1080) * (narrow ? 1.15 : 1);
-  /** Zerfall-Teilgroesse: Live-Messung all-turtles bei 1440x900 = ~70-100px (~5% vw) */
-  const scatterMajor = Math.max(34, Math.min(96, vp.w * 0.048));
+  const diag = Math.hypot(vp.w, vp.h);
 
   // ---- Szenen-Layouts (Formation-Zentrum + Text-Gegenseite) ----------------
   const scenes: SceneLayout[] = AT_SCENES.map((sc) => {
@@ -107,39 +114,91 @@ export function buildStagePlan(
     };
   });
 
-  // ---- Zerfall-Ziele: ganzer Screen inkl. Raender (Delta-Punkt 3) ----------
-  // Erste 129 = vermessene Einflug-Positionen von comp_1 (echte at-Verteilung),
-  // Rest deterministisch ueber den ganzen Viewport inkl. Ueberhang.
-  // Sichtbare Zerfall-Ziele: gejittertes Raster ueber den GANZEN Viewport inkl.
-  // Raendern (f_0014: gleichmaessige Fuellung, Teile an den Kanten angeschnitten).
-  // Die Lottie-fromX/Y taugen NICHT als Muster (nur 31/129 liegen im Bild —
-  // das sind Einflug-Startpunkte von aussen). Rest parkt im Aussenring und
-  // kommt spaeter als Rand-Zugang in die Formationen.
-  const scatterRaw: { x: number; y: number }[] = [];
-  const N_ON = Math.min(pool.length, Math.round((vp.w * vp.h) / (scatterMajor * scatterMajor * 3.0)));
-  const cols = Math.max(6, Math.round(Math.sqrt((N_ON * vp.w) / vp.h)));
-  const rows = Math.max(4, Math.ceil(N_ON / cols));
-  for (let i = 0; i < pool.length; i++) {
-    if (i < N_ON) {
-      const c = i % cols, r = Math.floor(i / cols);
-      scatterRaw.push({
-        x: ((c + 0.5 + (rng() - 0.5) * 0.9) / cols - 0.5) * vp.w * 1.06,
-        y: ((r + 0.5 + (rng() - 0.5) * 0.9) / rows - 0.5) * vp.h * 1.06,
-      });
-    } else {
-      const a = rng() * Math.PI * 2;
-      scatterRaw.push({ x: Math.cos(a) * vp.w * (0.58 + rng() * 0.2), y: Math.sin(a) * vp.h * (0.62 + rng() * 0.25) });
-    }
+  // ---- R2 Nicht-Beruehren: pro Szene Ziel-Groesse je Slot vorberechnen ------
+  // dNear = Distanz zum naechsten anderen Slot-Zentrum (Canvas-px, VOR k).
+  // slotMajor = min(max(sw,sh), dNear*0.98), global gedeckelt auf 1.15*Median,
+  // Untergrenze 45% des urspruenglichen slotMajor -> Weiss fliesst durch.
+  const sceneSlotMajor: number[][] = AT_SCENES.map((sc) => {
+    const centers = sc.pieces.map((p) => ({ x: p[0] * 1920, y: p[1] * 1080 }));
+    const raw = sc.pieces.map((p, i) => {
+      const orig = Math.max(p[3], p[4]);
+      let dNear = Infinity;
+      for (let j = 0; j < centers.length; j++) {
+        if (j === i) continue;
+        const d = Math.hypot(centers[i].x - centers[j].x, centers[i].y - centers[j].y);
+        if (d < dNear) dNear = d;
+      }
+      return Math.min(orig, (Number.isFinite(dNear) ? dNear : orig) * 0.98);
+    });
+    const sorted = [...raw].sort((a, b) => a - b);
+    const median = sorted.length ? sorted[Math.floor(sorted.length / 2)] : 0;
+    const cap = median * 1.3;
+    return sc.pieces.map((p, i) => {
+      const orig = Math.max(p[3], p[4]);
+      const capped = Math.min(raw[i], cap);
+      // Untergrenze 62%: Browser-Befund 04.07. — bei 45% verlieren dicht
+      // vermessene Formationen (Birne, Dokument) Kontur und Substanz.
+      return Math.max(capped, orig * 0.62);
+    });
+  });
+
+  // ---- R1 Rand-Geometrie: Punkte auf/ueber dem Viewport-Rand ----------------
+  const halfW = vp.w / 2, halfH = vp.h / 2;
+  /** Punkt auf dem Ray (dx,dy) ab Zentrum, knapp UEBER den Rand (Ueberstand als
+   *  Bruchteil der Diagonale). */
+  function edgePoint(dx: number, dy: number, overshoot: number): { x: number; y: number } {
+    const len = Math.hypot(dx, dy) || 1;
+    dx /= len; dy /= len;
+    const tx = Math.abs(dx) > 1e-6 ? halfW / Math.abs(dx) : Infinity;
+    const ty = Math.abs(dy) > 1e-6 ? halfH / Math.abs(dy) : Infinity;
+    const t = Math.min(tx, ty) + overshoot * diag;
+    return { x: dx * t, y: dy * t };
   }
-  // Radiale Zuordnung: jedes Teil bekommt ein Zerfall-Ziel in SEINEM Winkel-Sektor
-  // (sonst kreuzen die Bahnen das Zentrum und der Burst wird zum Knoten).
-  const homeAng = pool.map((p, i) => ({
-    i,
-    ang: Math.atan2(p.cy + (rng() - 0.5) * 120, p.cx + (rng() - 0.5) * 160),
-  })).sort((a, b) => a.ang - b.ang);
-  const scatAng = scatterRaw.map((s, j) => ({ j, ang: Math.atan2(s.y, s.x) })).sort((a, b) => a.ang - b.ang);
-  const scatter = new Array<{ x: number; y: number }>(pool.length);
-  homeAng.forEach((h, k) => { scatter[h.i] = scatterRaw[scatAng[k].j]; });
+  /** Rand-Punkt auf der dem Ziel naechsten Seite, +10% Ueberstand, mit
+   *  rng-Streuung entlang der Kante. */
+  function edgeStartForSlot(t: PieceState): { x: number; y: number } {
+    const dR = halfW - t.x, dL = t.x + halfW, dB = halfH - t.y, dT = t.y + halfH;
+    const m = Math.min(dR, dL, dB, dT);
+    const jV = (rng() - 0.5) * vp.h * 0.3;
+    const jH = (rng() - 0.5) * vp.w * 0.3;
+    if (m === dR) return { x: halfW * 1.1, y: t.y + jV };
+    if (m === dL) return { x: -halfW * 1.1, y: t.y + jV };
+    if (m === dB) return { x: t.x + jH, y: halfH * 1.1 };
+    return { x: t.x + jH, y: -halfH * 1.1 };
+  }
+  /** Liegt der Punkt im Bild, auf mind. 8% ausserhalb des Randes projizieren. */
+  function projectOutside(x: number, y: number): { x: number; y: number } {
+    if (Math.abs(x) < halfW && Math.abs(y) < halfH) return edgePoint(x, y, 0.08);
+    return { x, y };
+  }
+
+  // ---- Einflug-Timing Szene 0 (comp_1): Original-Rhythmus falls vermessen ---
+  const timing0 = AT_TIMING ? AT_TIMING.scenes.find((s) => s.id === "comp_1") ?? null : null;
+  let entMin = 0, entMax = 1, arrMin = 0, arrMax = 1;
+  if (timing0 && timing0.pieces.length) {
+    const ents = timing0.pieces.map((p) => p[0]);
+    const arrs = timing0.pieces.map((p) => p[1]);
+    entMin = Math.min(...ents); entMax = Math.max(...ents);
+    arrMin = Math.min(...arrs); arrMax = Math.max(...arrs);
+  }
+  /** Einflug-Start/Ankunft fuer Teil mit Szene-0-Slot slotIdx0 (Fenster
+   *  Start 0.8..1.7, Ankunft 1.9..2.35). Mit Timing: entryT/arriveT linear
+   *  normiert; ohne: gestaffelt per rng. */
+  function flightTiming0(slotIdx0: number): { fs: number; ar: number; tp: number[] | null } {
+    // Fenster frueher + breiter (Browser-Befund 04.07.): mit Start erst ab 0.8
+    // und Ankunft ab 1.9 war der Screen zwischen Burst-Ende (~1.05) und
+    // Einflug LEER — die ersten Teile muessen schon einschweben, waehrend die
+    // letzten Wortmarken-Teile hinausfliegen (Original-visibleCurve steigt
+    // von Szenenbeginn an monoton).
+    if (timing0 && slotIdx0 >= 0 && slotIdx0 < timing0.pieces.length) {
+      const tp = timing0.pieces[slotIdx0];
+      const fe = entMax > entMin ? (tp[0] - entMin) / (entMax - entMin) : rng();
+      const fa = arrMax > arrMin ? (tp[1] - arrMin) / (arrMax - arrMin) : rng();
+      return { fs: 0.4 + fe * 0.7, ar: 1.35 + fa * 0.95, tp };
+    }
+    const q = rng();
+    return { fs: 0.4 + q * 0.7, ar: 1.35 + q * 0.95, tp: null };
+  }
 
   // ---- Slot-Zuordnung pro Szene: Teil-Klasse passend zum Slot-kind ---------
   const elongPool: number[] = [];
@@ -165,12 +224,12 @@ export function buildStagePlan(
     return res;
   });
 
-  /** Slot -> Zielzustand in Buehnen-px */
-  function slotState(slot: SlotTuple, scene: SceneLayout, sceneN: { cx: number; cy: number }, piece: PoolPieceIn): PieceState {
+  /** Slot -> Zielzustand in Buehnen-px. slotMajorPx = R2-vorberechnete Groesse. */
+  function slotState(slot: SlotTuple, scene: SceneLayout, sceneN: { cx: number; cy: number }, piece: PoolPieceIn, slotMajorPx: number): PieceState {
     const [sx, sy, srot, sw, sh] = slot;
     const x = scene.cx + (sx - sceneN.cx) * 1920 * k;
     const y = scene.cy + (sy - sceneN.cy) * 1080 * k;
-    const slotMajor = Math.max(sw, sh) * k;
+    const slotMajor = slotMajorPx * k;
     const pieceMajor = Math.max(piece.w, piece.h);
     // Achs-Ausrichtung: Hoch-/Querformat von Slot und Teil angleichen
     const mismatch = (sw >= sh) !== (piece.w >= piece.h);
@@ -205,66 +264,117 @@ export function buildStagePlan(
   }
 
   // ---- Timeline pro Teil ----------------------------------------------------
-  const U_REST = 0.22, U_CON = 0.5, U_SCAT = 1.2;
+  // R1: KEIN statischer Scatter-Haltezustand, KEINE Klon-Geburt. Die 18
+  // Wortmarken-Teile machen Ruhe -> Kontraktion -> Burst radial nach DRAUSSEN
+  // (knapp ueber den Rand) und fliegen anschliessend genau dort wieder herein
+  // an ihren Szene-0-Slot (Kontinuitaet). Alle uebrigen Teile stehen bis zu
+  // ihrem Einflug unsichtbar (o:0) AUSSERHALB und fliegen von einem Rand-Punkt
+  // ein. Nie erscheint ein Teil "aus dem Nichts" im Bild.
+  const U_REST = 0.22, U_CON = 0.5;
+  const sc0 = AT_SCENES[0];
   const timelines: PieceTimeline[] = pool.map((p, i) => {
     const segs: Seg[] = [];
-    const home: PieceState = { x: p.cx, y: p.cy, rot: 0, scale: 1, o: p.clone ? 0 : 1 };
-    const con = contract.get(p.letter) ?? { kx: 0, ky: 0 };
-    const conState: PieceState = { ...home, x: p.cx + con.kx, y: p.cy + con.ky };
-    const scatMajor = scatterMajor * (0.85 + rng() * 0.3);
-    const scatState: PieceState = {
-      x: scatter[i].x,
-      y: scatter[i].y,
-      rot: (rng() < 0.55 ? 1 : 0) * (rng() < 0.5 ? -1 : 1) * (22 + rng() * 95),
-      scale: scatMajor / Math.max(p.w, p.h),
-      o: 1,
-    };
+    const sIdx0 = assignment[0][i];
+    const target0 = sIdx0 >= 0 ? slotState(sc0.pieces[sIdx0], scenes[0], sc0, p, sceneSlotMajor[0][sIdx0]) : null;
+    let prev: PieceState | null = null;
+    let appeared = false;
 
     if (!p.clone) {
+      // ---- Wortmarken-Teil: Ruhe -> Kontraktion -> Burst nach draussen ------
+      const home: PieceState = { x: p.cx, y: p.cy, rot: 0, scale: 1, o: 1 };
+      const con = contract.get(p.letter) ?? { kx: 0, ky: 0 };
+      const conState: PieceState = { ...home, x: p.cx + con.kx, y: p.cy + con.ky };
       segs.push({ u0: U_REST, u1: U_CON, a: home, b: conState });
-      // Burst: gestaffelt loesen, gerade Bahn zum Zerfall-Ziel
-      const b0 = U_CON + rng() * 0.18;
-      segs.push({ u0: b0, u1: Math.min(U_SCAT, b0 + 0.62), a: conState, b: scatState });
-    } else {
-      // Klon: haengt unsichtbar am Parent-Home, wird beim Burst sichtbar
-      // "geboren" (Vermehrung sichtbar, Delta-Punkt 3) und fliegt an seinen Platz.
-      // Kurze Einblend-Rampe am Anfang des Flugs — lange Fades = Geister-Teile.
-      const ua = U_CON + 0.06 + rng() * 0.34;
-      const u1 = Math.min(U_SCAT + 0.15, ua + 0.5);
-      const birth: PieceState = { ...conState, o: 0, scale: scatState.scale * 0.6 };
-      const lerp = (a: PieceState, b: PieceState, t: number): PieceState => ({
-        x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t,
-        rot: a.rot + (b.rot - a.rot) * t, scale: a.scale + (b.scale - a.scale) * t, o: 1,
-      });
-      const mid = lerp(birth, scatState, 0.14);
-      segs.push({ u0: ua, u1: ua + (u1 - ua) * 0.14, a: birth, b: mid });
-      segs.push({ u0: ua + (u1 - ua) * 0.14, u1, a: mid, b: scatState });
-    }
+      // Burst: gestaffelt (Startjitter 0-0.15), gerade Bahn radial — aber wie im
+      // Original (f_0011/f_0012) NICHT ueber den Rand: die Buchstaben-Teile
+      // verteilen sich GROSS ueber den Screen (55-90% des Wegs zur Kante) und
+      // BLEIBEN dort, waehrend die neuen Teile von aussen hereinstroemen.
+      // So ist der Screen nach dem Burst nie leer (Tomson-Regel + Original).
+      let bax = conState.x, bay = conState.y;
+      if (Math.hypot(bax, bay) < 1) { const a = rng() * Math.PI * 2; bax = Math.cos(a); bay = Math.sin(a); }
+      const bAng = Math.atan2(bay, bax);
+      const dxN = Math.cos(bAng), dyN = Math.sin(bAng);
+      const tEdge = Math.min(
+        Math.abs(dxN) > 1e-6 ? halfW / Math.abs(dxN) : Infinity,
+        Math.abs(dyN) > 1e-6 ? halfH / Math.abs(dyN) : Infinity
+      );
+      const bDist = tEdge * (0.55 + rng() * 0.35);
+      const burstRot = (rng() < 0.55 ? 1 : 0) * (rng() < 0.5 ? -1 : 1) * (22 + rng() * 95);
+      const b0 = U_CON + rng() * 0.15;
+      const burstEnd = Math.min(1.05, b0 + 0.5);
+      const burstExit: PieceState = { x: dxN * bDist, y: dyN * bDist, rot: burstRot, scale: 1, o: 1 };
+      segs.push({ u0: b0, u1: burstEnd, a: conState, b: burstExit });
+      appeared = true;
 
-    // Szenen: direkter Morph Slot -> Slot, ueberzaehlige ueber den Rand
-    let prev: PieceState = scatState;
-    AT_SCENES.forEach((sc, s) => {
+      if (target0) {
+        // Weiterflug: von der Streu-Position direkt an den Szene-0-Slot
+        // (Groesse schrumpft dabei von Buchstaben- auf Slot-Massstab).
+        const { fs, ar } = flightTiming0(sIdx0);
+        const fStart = Math.max(fs, burstEnd + 0.08);
+        segs.push({ u0: fStart, u1: Math.max(ar, fStart + 0.1), a: { ...burstExit }, b: target0 });
+        prev = target0;
+      } else {
+        // kein Szene-0-Slot -> bleibt an der Streu-Position und geht mit
+        // der naechsten Szene ueber den Rand ab (exitState-Zweig).
+        prev = burstExit;
+      }
+    } else if (target0) {
+      // ---- Klon mit Szene-0-Slot: unsichtbar draussen -> Einflug -----------
+      const { fs, ar, tp } = flightTiming0(sIdx0);
+      const start = tp && tp[4] === 0
+        ? projectOutside((tp[2] - 0.5) * vp.w, (tp[3] - 0.5) * vp.h)
+        : edgeStartForSlot(target0);
+      const startPt: PieceState = { x: start.x, y: start.y, rot: target0.rot + (rng() - 0.5) * 60, scale: target0.scale, o: 1 };
+      // Unsichtbar-Halt bis Einflug (o:0), dann snap auf o:1 und geradliniger Flug.
+      segs.push({ u0: 0, u1: fs, a: { ...startPt, o: 0 }, b: { ...startPt, o: 0 } });
+      segs.push({ u0: fs, u1: Math.max(ar, fs + 0.1), a: startPt, b: target0 });
+      appeared = true;
+      prev = target0;
+    }
+    // Klon ohne Szene-0-Slot: noch gar keine Segmente, erscheint spaeter.
+
+    // ---- Szenen 1-4: bestehende Logik (Slot->Slot direkt, ueberzaehlige ----
+    // ueber den Rand). Erste Erscheinung einer Szene = Einflug von aussen. ----
+    for (let s = 1; s < AT_SCENES.length; s++) {
+      const sc = AT_SCENES[s];
       const us = U_HERO + s;
       const sIdx = assignment[s][i];
       const t0 = 0.08 + rng() * 0.21;   // gemessene Starts 2..7/24
       const t1 = 0.67 + rng() * 0.205;  // gemessene Ankuenfte 16..21/24
-      let target: PieceState;
       if (sIdx >= 0) {
-        target = slotState(sc.pieces[sIdx], scenes[s], sc, p);
-        // Ziel-Rotation auf die naechste Aequivalenz zur Vorposition normieren
-        // (sonst akkumulieren Szene fuer Szene unfreiwillige Extra-Umdrehungen)
-        let r = target.rot;
-        while (r - prev.rot > 180) r -= 360;
-        while (r - prev.rot < -180) r += 360;
-        target = { ...target, rot: r };
-        // Transit-Rotation: endet exakt bei Ankunft; ~40% drehen eine Extra-Runde
-        if (rng() < 0.4) target = { ...target, rot: target.rot + (rng() < 0.5 ? -360 : 360) };
-      } else {
-        target = exitState(prev, scenes[s]);
+        let target = slotState(sc.pieces[sIdx], scenes[s], sc, p, sceneSlotMajor[s][sIdx]);
+        if (!appeared || !prev) {
+          // erste Erscheinung: von einem Rand-Punkt einfliegen, snap auf sichtbar
+          const st = edgeStartForSlot(target);
+          const startPt: PieceState = { x: st.x, y: st.y, rot: target.rot + (rng() - 0.5) * 60, scale: target.scale, o: 1 };
+          segs.push({ u0: 0, u1: us + t0, a: { ...startPt, o: 0 }, b: { ...startPt, o: 0 } });
+          segs.push({ u0: us + t0, u1: us + t1, a: startPt, b: target });
+          appeared = true;
+        } else {
+          // Ziel-Rotation auf die naechste Aequivalenz zur Vorposition normieren
+          let r = target.rot;
+          while (r - prev.rot > 180) r -= 360;
+          while (r - prev.rot < -180) r += 360;
+          target = { ...target, rot: r };
+          // Transit-Rotation: endet exakt bei Ankunft; ~40% drehen eine Extra-Runde
+          if (rng() < 0.4) target = { ...target, rot: target.rot + (rng() < 0.5 ? -360 : 360) };
+          segs.push({ u0: us + t0, u1: us + t1, a: prev, b: target });
+        }
+        prev = target;
+      } else if (appeared && prev) {
+        // ueberzaehlig -> ueber den Rand abgehen
+        const target = exitState(prev, scenes[s]);
+        segs.push({ u0: us + t0, u1: us + t1, a: prev, b: target });
+        prev = target;
       }
-      segs.push({ u0: us + t0, u1: us + t1, a: prev, b: target });
-      prev = target;
-    });
+    }
+
+    // Fail-closed: Teil ohne jede Zuordnung braucht ein (unsichtbares) Segment,
+    // damit sampleTimeline nie auf ein leeres segs[] laeuft.
+    if (!segs.length) {
+      const off: PieceState = { x: halfW * 1.3, y: halfH * 1.3, rot: 0, scale: 0.5, o: 0 };
+      segs.push({ u0: 0, u1: U_TOTAL, a: off, b: off });
+    }
 
     return { segs };
   });
