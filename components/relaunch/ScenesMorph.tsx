@@ -24,7 +24,7 @@ export default function ScenesMorph() {
     let raf = 0;
 
     interface PoolPiece {
-      el: HTMLImageElement;
+      el: HTMLDivElement;
       w: number;
       h: number;
       /** pro Szene: Ziel {x,y,rot,s} + Stagger-Fenster [t0,t1] */
@@ -38,12 +38,12 @@ export default function ScenesMorph() {
       const rng = makeRng(41);
       const dpr = window.devicePixelRatio || 1;
       // G3-Teile: alle 14 Naturbruch-Teile einmal rendern, Pool zieht Kopien
-      const rendered: { url: string; w: number; h: number }[] = [];
+      const rendered: { svg: string; w: number; h: number }[] = [];
       const S = Math.max(2, Math.ceil((90 * dpr) / 100));
       for (const ch of Object.keys(PIECES)) {
         for (const rects of PIECES[ch]) {
           const p = renderPiece(ch, rects, fam, S);
-          if (p) rendered.push({ url: p.url, w: p.w, h: p.h });
+          if (p) rendered.push({ svg: p.svg, w: p.w, h: p.h });
         }
       }
       if (rendered.length < 10) return false;
@@ -58,9 +58,8 @@ export default function ScenesMorph() {
       pool = [];
       for (let i = 0; i < poolN; i++) {
         const src = rendered[i % rendered.length];
-        const el = document.createElement("img");
-        el.src = src.url;
-        el.alt = "";
+        const el = document.createElement("div");
+        el.innerHTML = src.svg;
         const w = baseSize * (src.w / Math.max(src.w, src.h));
         const h = baseSize * (src.h / Math.max(src.w, src.h));
         el.style.cssText = `position:absolute;left:50%;top:50%;max-width:none;width:${w}px;height:${h}px;margin-left:${-w / 2}px;margin-top:${-h / 2}px;will-change:transform;opacity:0;`;
@@ -145,12 +144,12 @@ export default function ScenesMorph() {
       <span ref={probeRef} aria-hidden style={{ fontFamily: "var(--rr-font-display)", position: "absolute", opacity: 0, pointerEvents: "none" }}>probe</span>
       <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
         {/* Motiv-Buehne (Zentrum rechts der Mitte, Text links — all-turtles-Anordnung) */}
-        <div ref={stageRef} style={{ position: "absolute", left: "62%", top: "50%" }} />
+        <div ref={stageRef} style={{ position: "absolute", left: "34%", top: "50%" }} />
         {FORMATIONS.map((f, i) => (
           <div
             key={f.key}
             ref={(el) => { textRefs.current[i] = el; }}
-            style={{ position: "absolute", left: "var(--rr-gutter)", top: "50%", transform: "translateY(-50%)", maxWidth: "44%", opacity: 0 }}
+            style={{ position: "absolute", right: "var(--rr-gutter)", top: "50%", transform: "translateY(-50%)", maxWidth: "38%", opacity: 0 }}
           >
             <h2 className="rr-eyebrow-lg" style={{ marginBottom: 18 }}>{f.eyebrow}</h2>
             <p className="rr-statement">{f.statement}</p>

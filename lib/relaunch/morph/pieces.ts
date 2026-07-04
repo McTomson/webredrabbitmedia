@@ -20,12 +20,15 @@ export const PIECES: Record<string, number[][][]> = {
 };
 
 export interface RenderedPiece {
-  url: string;
+  /** Vektor-Markup (inline-SVG, erbt die geladene Seiten-Font) */
+  svg: string;
   minx: number;
   miny: number;
   w: number;
   h: number;
 }
+
+let CLIP_SEQ = 0;
 
 /**
  * Rendert EIN Teil scharf (Canvas-Clip, Trim auf Ink-BBox).
@@ -59,14 +62,19 @@ export function renderPiece(ch: string, rects: number[][], fontFamily: string, S
   }
   if (maxx < minx || maxy < miny) return null; // leeres Teil (Font nicht geladen o.ae.) -> fail-closed
   const w = maxx - minx + 1, h = maxy - miny + 1;
-  const out = document.createElement("canvas");
-  out.width = w; out.height = h;
-  out.getContext("2d")!.drawImage(cv, minx, miny, w, h, 0, 0, w, h);
-  return { url: out.toDataURL(), minx: minx / S, miny: miny / S, w: w / S, h: h / S };
+  // Vektor-Ausgabe: SVG mit Clip-Rechtecken im 120x140-Glyphenraum, viewBox = Ink-BBox.
+  // Inline im DOM gerendert erbt es die echte Fraunces -> scharf bei jeder Groesse/Rotation.
+  const id = `rrclip${++CLIP_SEQ}`;
+  const rectsSvg = rects.map((r) => `<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}"/>`).join("");
+  const vb = `${minx / S} ${miny / S} ${w / S} ${h / S}`;
+  const fam = fontFamily.replace(/"/g, "&quot;");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="100%" height="100%" preserveAspectRatio="none" style="display:block;overflow:visible"><defs><clipPath id="${id}">${rectsSvg}</clipPath></defs><g clip-path="url(#${id})"><text x="10" y="100" font-family="${fam}" font-size="100" font-weight="650" fill="${BRAND_RED}">${ch}</text></g></svg>`;
+  return { svg, minx: minx / S, miny: miny / S, w: w / S, h: h / S };
 }
 
 export interface WordPiece {
-  url: string;
+  /** Vektor-Markup des Teils (inline-SVG) */
+  svg: string;
   /** Home-Position (linke obere Ecke) im Wortmarken-Koordinatensystem */
   hx: number;
   hy: number;
@@ -109,7 +117,7 @@ export function buildWordLayout(fontFamily: string, F: number, dpr: number): Wor
         const hy = baseY + (p.miny - 100) * scale;
         const w = p.w * scale, h = p.h * scale;
         pieces.push({
-          url: p.url, hx, hy, w, h,
+          svg: p.svg, hx, hy, w, h,
           cx: hx + w / 2 - boxW / 2,
           cy: hy + h / 2 - boxH / 2,
           letter: li * 10 + ci,

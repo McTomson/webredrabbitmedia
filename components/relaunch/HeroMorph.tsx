@@ -24,7 +24,7 @@ export default function HeroMorph({ claim }: { claim: string }) {
     const track = trackRef.current!, box = boxRef.current!;
     let layout: WordLayout | null = null;
     let choreo: HeroChoreo[] = [];
-    let els: HTMLImageElement[] = [];
+    let els: HTMLDivElement[] = [];
     let raf = 0;
     let destroyed = false;
 
@@ -41,9 +41,8 @@ export default function HeroMorph({ claim }: { claim: string }) {
       box.style.height = `${l.boxH}px`;
       box.innerHTML = "";
       els = l.pieces.map((p) => {
-        const im = document.createElement("img");
-        im.src = p.url;
-        im.alt = "";
+        const im = document.createElement("div");
+        im.innerHTML = p.svg;
         im.style.cssText = `position:absolute;left:${p.hx}px;top:${p.hy}px;max-width:none;width:${p.w}px;height:${p.h}px;will-change:transform;`;
         box.appendChild(im);
         return im;

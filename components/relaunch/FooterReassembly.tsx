@@ -25,7 +25,7 @@ export default function FooterReassembly() {
     const track = trackRef.current!, box = boxRef.current!;
     let layout: WordLayout | null = null;
     let tracks: Keyframe[][] = [];
-    let els: HTMLImageElement[] = [];
+    let els: HTMLDivElement[] = [];
     let raf = 0;
     let destroyed = false;
 
@@ -39,9 +39,8 @@ export default function FooterReassembly() {
       box.style.height = `${l.boxH}px`;
       box.innerHTML = "";
       els = l.pieces.map((p) => {
-        const im = document.createElement("img");
-        im.src = p.url;
-        im.alt = "";
+        const im = document.createElement("div");
+        im.innerHTML = p.svg;
         im.style.cssText = `position:absolute;left:${p.hx}px;top:${p.hy}px;max-width:none;width:${p.w}px;height:${p.h}px;will-change:transform;`;
         box.appendChild(im);
         return im;
