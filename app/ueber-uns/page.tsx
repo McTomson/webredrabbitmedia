@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import PageShell from "@/components/relaunch/PageShell";
 
 export const metadata: Metadata = {
-  title: "Ueber uns | Red Rabbit Media",
+  title: "Über uns | Red Rabbit Media",
   description:
-    "Ein echtes Gesicht statt gesichtsloser Agentur. Red Rabbit Media steht fuer faires, transparentes Webdesign aus Oesterreich. Kein Risiko bis zur Zusage.",
+    "Ein echtes Gesicht statt gesichtsloser Agentur. Red Rabbit Media steht für faires, transparentes Webdesign aus Österreich. Kein Risiko bis zur Zusage.",
   alternates: { canonical: "https://web.redrabbit.media/ueber-uns" },
 };
 
@@ -15,7 +15,7 @@ const personLd = {
   "@type": "Person",
   "@id": "https://web.redrabbit.media/ueber-uns#thomas-uhlir",
   name: "Thomas Uhlir MBA",
-  jobTitle: "Gruender & Strategie",
+  jobTitle: "Gründer & Strategie",
   url: "https://web.redrabbit.media/ueber-uns",
   image: "https://web.redrabbit.media/images/thomas-uhlir.jpg",
   sameAs: ["https://www.linkedin.com/in/thomasuhlir/"],
@@ -25,7 +25,7 @@ const personLd = {
     "Suchmaschinenoptimierung (SEO)",
     "Generative Engine Optimization (GEO)",
     "Conversion-Optimierung",
-    "Webdesign Oesterreich",
+    "Webdesign Österreich",
   ],
 };
 
@@ -44,7 +44,7 @@ const b2bNames = [
 export default function UeberUnsPage() {
   return (
     <PageShell
-      eyebrow="Ueber uns"
+      eyebrow="Über uns"
       title="Ein echtes Gesicht. Kein Callcenter."
       intro="Red Rabbit Media ist keine gesichtslose Agentur. Du redest mit einer Person, die dein Projekt kennt, von der ersten Idee bis nach dem Launch. Fair, direkt und ohne Agentur-Bullshit."
     >
@@ -67,12 +67,12 @@ export default function UeberUnsPage() {
             <div style={{ display: "grid", gap: 20 }}>
               <div>
                 <p className="rr-eyebrow" style={{ marginBottom: 12 }}>Thomas Uhlir MBA</p>
-                <p className="rr-sub">Gruender & Strategie</p>
+                <p className="rr-sub">Gründer & Strategie</p>
               </div>
               <div className="rr-placeholder">
                 <p className="rr-placeholder-tag">Platzhalter: Bio</p>
                 <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17, marginTop: 10 }}>
-                  Hier steht die persoenliche Geschichte von Thomas: Werdegang, warum Red Rabbit gegruendet wurde und
+                  Hier steht die persönliche Geschichte von Thomas: Werdegang, warum Red Rabbit gegründet wurde und
                   warum das Kein-Risiko-Prinzip. Finaler Text und Bild kommen von Tomson.
                 </p>
               </div>
@@ -84,12 +84,12 @@ export default function UeberUnsPage() {
       {/* Haltung */}
       <section className="rr-section" style={{ paddingTop: 0 }}>
         <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 34 }}>Wofuer wir stehen</p>
+          <p className="rr-eyebrow" style={{ marginBottom: 34 }}>Wofür wir stehen</p>
           <div className="rr-grid rr-grid-3">
             <div className="rr-card rr-card--surface">
               <h2 className="rr-sub" style={{ marginBottom: 14 }}>Kein Risiko</h2>
               <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17 }}>
-                Du siehst den Entwurf zuerst. Wir tragen das Risiko, bis du ueberzeugt bist.
+                Du siehst den Entwurf zuerst. Wir tragen das Risiko, bis du überzeugt bist.
               </p>
             </div>
             <div className="rr-card rr-card--surface">
@@ -111,9 +111,9 @@ export default function UeberUnsPage() {
       {/* B2B-Vergangenheit */}
       <section className="rr-section" style={{ paddingTop: 0 }}>
         <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 10 }}>Fruehere Stationen</p>
+          <p className="rr-eyebrow" style={{ marginBottom: 10 }}>Frühere Stationen</p>
           <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17, maxWidth: 720, marginBottom: 40 }}>
-            Vor Red Rabbit war Thomas im Immobilien-Umfeld taetig und hat mit diesen Unternehmen und Marken
+            Vor Red Rabbit war Thomas im Immobilien-Umfeld tätig und hat mit diesen Unternehmen und Marken
             zusammengearbeitet:
           </p>
           <div className="rr-trustnames">

@@ -34,9 +34,9 @@ export default function ContactFormRR() {
   function validate(): boolean {
     const next: Errors = {};
     if (form.name.trim().length < 2) next.name = "Bitte gib deinen Namen an.";
-    if (!EMAIL_RE.test(form.email.trim())) next.email = "Bitte gib eine gueltige E-Mail-Adresse an.";
+    if (!EMAIL_RE.test(form.email.trim())) next.email = "Bitte gib eine gültige E-Mail-Adresse an.";
     if (form.message.trim().length < 10) next.message = "Schreib uns kurz, worum es geht (mind. 10 Zeichen).";
-    if (!form.dsgvo) next.dsgvo = "Bitte stimme der Datenschutzerklaerung zu.";
+    if (!form.dsgvo) next.dsgvo = "Bitte stimme der Datenschutzerklärung zu.";
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -73,7 +73,7 @@ export default function ContactFormRR() {
       <div className="rr-card" style={{ background: "var(--rr-surface)", borderColor: "transparent" }}>
         <p className="rr-sub" style={{ marginBottom: 12 }}>Angekommen.</p>
         <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17 }}>
-          Danke fuer deine Nachricht. Wir melden uns zeitnah bei dir, in der Regel am selben Werktag.
+          Danke für deine Nachricht. Wir melden uns zeitnah bei dir, in der Regel am selben Werktag.
         </p>
         <button
           type="button"
@@ -170,7 +170,7 @@ export default function ContactFormRR() {
           onChange={(e) => update("message", e.target.value)}
           aria-invalid={errors.message ? "true" : undefined}
           aria-describedby={errors.message ? "rr-message-err" : undefined}
-          placeholder="Erzaehl kurz von deinem Betrieb und was du brauchst."
+          placeholder="Erzähl kurz von deinem Betrieb und was du brauchst."
           style={{ resize: "vertical" }}
         />
         {errors.message ? (
@@ -190,7 +190,7 @@ export default function ContactFormRR() {
           />
           <span className="rr-meta" style={{ color: "var(--rr-ink-soft)" }}>
             Ich bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet werden.
-            Details in der <Link href="/datenschutz" style={{ color: "var(--rr-ink)", textDecoration: "underline" }}>Datenschutzerklaerung</Link>.
+            Details in der <Link href="/datenschutz" style={{ color: "var(--rr-ink)", textDecoration: "underline" }}>Datenschutzerklärung</Link>.
           </span>
         </label>
         {errors.dsgvo ? (

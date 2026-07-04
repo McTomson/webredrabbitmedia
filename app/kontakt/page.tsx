@@ -5,7 +5,7 @@ import ContactFormRR from "@/components/relaunch/ContactFormRR";
 export const metadata: Metadata = {
   title: "Kontakt | Red Rabbit Media",
   description:
-    "Reden wir ueber deine Website. Schreib uns ueber das Formular oder ruf direkt an. Wir melden uns in der Regel am selben Werktag.",
+    "Reden wir über deine Website. Schreib uns über das Formular oder ruf direkt an. Wir melden uns in der Regel am selben Werktag.",
   alternates: { canonical: "https://web.redrabbit.media/kontakt" },
 };
 
@@ -13,7 +13,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
   name: "Kontakt - Red Rabbit Media",
-  description: "Kontaktiere Red Rabbit Media fuer Webdesign, SEO und KI-Sichtbarkeit.",
+  description: "Kontaktiere Red Rabbit Media für Webdesign, SEO und KI-Sichtbarkeit.",
   mainEntity: {
     "@type": "ProfessionalService",
     name: "Red Rabbit Media",
@@ -44,7 +44,7 @@ export default function KontaktPage() {
     <PageShell
       eyebrow="Kontakt"
       title="Reden wir."
-      intro="Erzaehl uns kurz von deinem Betrieb und was du brauchst. Wir melden uns in der Regel am selben Werktag. Lieber direkt? Ruf einfach an."
+      intro="Erzähl uns kurz von deinem Betrieb und was du brauchst. Wir melden uns in der Regel am selben Werktag. Lieber direkt? Ruf einfach an."
       hideCta
     >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -76,7 +76,7 @@ export default function KontaktPage() {
                 <p className="rr-body" style={{ fontSize: 17 }}>
                   Red Rabbit Media<br />
                   Grabnergasse 8<br />
-                  1060 Wien, Oesterreich
+                  1060 Wien, Österreich
                 </p>
               </div>
             </div>

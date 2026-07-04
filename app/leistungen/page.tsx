@@ -30,7 +30,7 @@ const areas: Area[] = [
     eyebrow: "02",
     title: "Google-Sichtbarkeit",
     teaser:
-      "Eine schoene Seite, die niemand findet, bringt nichts. Wir bauen die technische und inhaltliche Basis, damit dich Leute genau dann finden, wenn sie suchen.",
+      "Eine schöne Seite, die niemand findet, bringt nichts. Wir bauen die technische und inhaltliche Basis, damit dich Leute genau dann finden, wenn sie suchen.",
     href: "/leistungen/seo",
     linkLabel: "Google-Sichtbarkeit ansehen",
   },
@@ -38,7 +38,7 @@ const areas: Area[] = [
     eyebrow: "03",
     title: "KI-Sichtbarkeit",
     teaser:
-      "Immer mehr Menschen fragen ChatGPT, Gemini und Co. statt Google. Wir sorgen dafuer, dass dein Betrieb in diesen Antworten vorkommt.",
+      "Immer mehr Menschen fragen ChatGPT, Gemini und Co. statt Google. Wir sorgen dafür, dass dein Betrieb in diesen Antworten vorkommt.",
     href: "/leistungen/ki-sichtbarkeit",
     linkLabel: "KI-Sichtbarkeit ansehen",
   },
@@ -46,7 +46,7 @@ const areas: Area[] = [
     eyebrow: "04",
     title: "Content & KI-Artikel",
     teaser:
-      "Regelmaessige, hilfreiche Beitraege halten deine Seite lebendig und ranken langfristig. Diese Website beweist es: sie schreibt sich selbst.",
+      "Regelmäßige, hilfreiche Beiträge halten deine Seite lebendig und ranken langfristig. Diese Website beweist es: sie schreibt sich selbst.",
     href: "/tipps",
     linkLabel: "Zu unseren Artikeln",
   },
@@ -65,7 +65,7 @@ export default function LeistungenPage() {
     <PageShell
       eyebrow="Leistungen"
       title="Die Website, die selbst arbeitet."
-      intro="Wir bauen nicht einfach eine Website. Wir bauen einen Kanal, der dich sichtbar macht, Anfragen bringt und dir zeigt, was er leistet. Alles aus einer Hand, in fuenf Bereichen."
+      intro="Wir bauen nicht einfach eine Website. Wir bauen einen Kanal, der dich sichtbar macht, Anfragen bringt und dir zeigt, was er leistet. Alles aus einer Hand, in fünf Bereichen."
     >
       <section className="rr-section" style={{ paddingTop: 0 }}>
         <div className="rr-wrap rr-narrow">

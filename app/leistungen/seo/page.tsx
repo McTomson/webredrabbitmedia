@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 const faq = [
   {
     q: "Wie lange dauert es, bis ich bei Google steige?",
-    a: "SEO wirkt langfristig. Erste Bewegungen sind oft nach einigen Wochen sichtbar, stabile Rankings brauchen meist mehrere Monate. Wer schnelle Garantien verspricht, ist unserioes.",
+    a: "SEO wirkt langfristig. Erste Bewegungen sind oft nach einigen Wochen sichtbar, stabile Rankings brauchen meist mehrere Monate. Wer schnelle Garantien verspricht, ist unseriös.",
   },
   {
-    q: "Koennt ihr Platz 1 bei Google garantieren?",
-    a: "Nein, und niemand kann das serioes. Wir sorgen fuer eine starke technische Basis, guten Inhalt und die richtigen Signale. Ueber die Platzierung entscheidet am Ende Google.",
+    q: "Könnt ihr Platz 1 bei Google garantieren?",
+    a: "Nein, und niemand kann das seriös. Wir sorgen für eine starke technische Basis, guten Inhalt und die richtigen Signale. Über die Platzierung entscheidet am Ende Google.",
   },
   {
     q: "Ist SEO bei euch ein teures Extra?",
@@ -24,7 +24,7 @@ const faq = [
   },
   {
     q: "Was ist der Unterschied zwischen SEO und bezahlter Werbung?",
-    a: "Bezahlte Anzeigen bringen sofort Klicks, kosten aber pro Klick. SEO baut Sichtbarkeit auf, die dir langfristig ohne laufende Klickkosten Anfragen bringt. Beides ergaenzt sich.",
+    a: "Bezahlte Anzeigen bringen sofort Klicks, kosten aber pro Klick. SEO baut Sichtbarkeit auf, die dir langfristig ohne laufende Klickkosten Anfragen bringt. Beides ergänzt sich.",
   },
 ];
 
@@ -67,7 +67,7 @@ export default function SeoPage() {
             <div className="rr-card rr-card--surface">
               <h2 className="rr-sub" style={{ marginBottom: 14 }}>Inhalt, der rankt</h2>
               <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17 }}>
-                Beitraege, die echte Fragen deiner Kunden beantworten und langfristig Besucher bringen.
+                Beiträge, die echte Fragen deiner Kunden beantworten und langfristig Besucher bringen.
               </p>
             </div>
           </div>
@@ -80,14 +80,14 @@ export default function SeoPage() {
           <div className="rr-grid rr-grid-2" style={{ alignItems: "start" }}>
             <div>
               <p className="rr-eyebrow" style={{ marginBottom: 20 }}>Was du bekommst</p>
-              <p className="rr-sub">Ein Fundament, auf dem Sichtbarkeit waechst.</p>
+              <p className="rr-sub">Ein Fundament, auf dem Sichtbarkeit wächst.</p>
             </div>
             <ul className="rr-check">
               <li>SEO-Grundlagen direkt in die Website eingebaut</li>
               <li>Maschinenlesbare Auszeichnung (strukturierte Daten)</li>
-              <li>Lokale Sichtbarkeit fuer deine Region</li>
+              <li>Lokale Sichtbarkeit für deine Region</li>
               <li>Optional: laufende Optimierung und Content</li>
-              <li>Ehrliche Einschaetzung statt leerer Ranking-Versprechen</li>
+              <li>Ehrliche Einschätzung statt leerer Ranking-Versprechen</li>
             </ul>
           </div>
         </div>
@@ -96,7 +96,7 @@ export default function SeoPage() {
       {/* FAQ */}
       <section className="rr-section" style={{ paddingTop: 0 }}>
         <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 12 }}>Haeufige Fragen</p>
+          <p className="rr-eyebrow" style={{ marginBottom: 12 }}>Häufige Fragen</p>
           <Faq items={faq} id="faq-seo" />
         </div>
       </section>

@@ -5,26 +5,26 @@ import Faq from "@/components/relaunch/Faq";
 export const metadata: Metadata = {
   title: "KI-Sichtbarkeit | Red Rabbit Media",
   description:
-    "Immer mehr Menschen fragen ChatGPT, Gemini und Perplexity statt Google. Wir sorgen dafuer, dass dein Betrieb in diesen KI-Antworten vorkommt.",
+    "Immer mehr Menschen fragen ChatGPT, Gemini und Perplexity statt Google. Wir sorgen dafür, dass dein Betrieb in diesen KI-Antworten vorkommt.",
   alternates: { canonical: "https://web.redrabbit.media/leistungen/ki-sichtbarkeit" },
 };
 
 const faq = [
   {
-    q: "Was heisst KI-Sichtbarkeit ueberhaupt?",
-    a: "Wenn jemand ChatGPT, Gemini oder Perplexity nach einem Anbieter fragt, gibt die KI eine Antwort mit konkreten Empfehlungen. KI-Sichtbarkeit heisst, dass dein Betrieb in diesen Antworten auftaucht.",
+    q: "Was heißt KI-Sichtbarkeit überhaupt?",
+    a: "Wenn jemand ChatGPT, Gemini oder Perplexity nach einem Anbieter fragt, gibt die KI eine Antwort mit konkreten Empfehlungen. KI-Sichtbarkeit heißt, dass dein Betrieb in diesen Antworten auftaucht.",
   },
   {
     q: "Ist das nicht dasselbe wie SEO?",
-    a: "Es ueberschneidet sich, ist aber nicht identisch. KI-Systeme bewerten Inhalte etwas anders als die klassische Google-Suche. Wir bauen deine Seite so auf, dass beide sie gut verstehen und zitieren koennen.",
+    a: "Es überschneidet sich, ist aber nicht identisch. KI-Systeme bewerten Inhalte etwas anders als die klassische Google-Suche. Wir bauen deine Seite so auf, dass beide sie gut verstehen und zitieren können.",
   },
   {
-    q: "Koennt ihr garantieren, dass ChatGPT meinen Betrieb nennt?",
-    a: "Nein. Wie bei Google entscheidet am Ende das System selbst. Wir sorgen fuer klare, gut strukturierte und belegbare Inhalte, die die Chance deutlich erhoehen, genannt zu werden.",
+    q: "Könnt ihr garantieren, dass ChatGPT meinen Betrieb nennt?",
+    a: "Nein. Wie bei Google entscheidet am Ende das System selbst. Wir sorgen für klare, gut strukturierte und belegbare Inhalte, die die Chance deutlich erhöhen, genannt zu werden.",
   },
   {
     q: "Lohnt sich das jetzt schon?",
-    a: "Ja, gerade weil viele Betriebe es noch ignorieren. Wer jetzt eine saubere Basis hat, ist vorne dabei, waehrend die KI-Suche weiter waechst.",
+    a: "Ja, gerade weil viele Betriebe es noch ignorieren. Wer jetzt eine saubere Basis hat, ist vorne dabei, während die KI-Suche weiter wächst.",
   },
 ];
 
@@ -38,7 +38,7 @@ export default function KiSichtbarkeitPage() {
       {/* Problem */}
       <section className="rr-section" style={{ paddingTop: 0 }}>
         <div className="rr-wrap rr-prose">
-          <p className="rr-statement" style={{ marginBottom: 24 }}>Die Suche hat sich veraendert.</p>
+          <p className="rr-statement" style={{ marginBottom: 24 }}>Die Suche hat sich verändert.</p>
           <p className="rr-body-lg" style={{ color: "var(--rr-ink-soft)" }}>
             Wer heute einen Handwerker, eine Kanzlei oder ein Lokal sucht, fragt oft direkt eine KI und bekommt drei
             Namen genannt. Steht dein Betrieb nicht dabei, existierst du in diesem Moment nicht. Und viele Betriebe
@@ -87,7 +87,7 @@ export default function KiSichtbarkeitPage() {
               <li>Strukturierte, maschinenlesbare Angaben zu deinem Betrieb</li>
               <li>Inhalte in Frage-und-Antwort-Form, die KI-Systeme aufgreifen</li>
               <li>Klare Vertrauens- und Erfahrungssignale</li>
-              <li>Eine Basis, die fuer Google und KI-Suche zugleich arbeitet</li>
+              <li>Eine Basis, die für Google und KI-Suche zugleich arbeitet</li>
             </ul>
           </div>
         </div>
@@ -96,7 +96,7 @@ export default function KiSichtbarkeitPage() {
       {/* FAQ */}
       <section className="rr-section" style={{ paddingTop: 0 }}>
         <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 12 }}>Haeufige Fragen</p>
+          <p className="rr-eyebrow" style={{ marginBottom: 12 }}>Häufige Fragen</p>
           <Faq items={faq} id="faq-ki" />
         </div>
       </section>

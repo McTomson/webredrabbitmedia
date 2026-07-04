@@ -12,19 +12,19 @@ export const metadata: Metadata = {
 const faq = [
   {
     q: "Bekomme ich eine individuelle Seite oder einen Baukasten?",
-    a: "Du bekommst eine individuell gebaute Seite. Wir arbeiten nicht mit fertigen Baukasten-Vorlagen, sondern gestalten Struktur, Text und Design fuer deinen Betrieb.",
+    a: "Du bekommst eine individuell gebaute Seite. Wir arbeiten nicht mit fertigen Baukasten-Vorlagen, sondern gestalten Struktur, Text und Design für deinen Betrieb.",
   },
   {
     q: "Muss ich vorab bezahlen?",
-    a: "Nein. Du siehst zuerst einen echten Entwurf. Eine Anzahlung faellt erst an, wenn dir der Vorschlag gefaellt und du den Auftrag erteilst.",
+    a: "Nein. Du siehst zuerst einen echten Entwurf. Eine Anzahlung fällt erst an, wenn dir der Vorschlag gefällt und du den Auftrag erteilst.",
   },
   {
     q: "Ist die Seite auf dem Handy sauber?",
-    a: "Ja. Jede Seite wird fuer Handy, Tablet und Desktop gebaut und getestet. Der Grossteil deiner Besucher kommt vom Handy, also hat das oberste Prioritaet.",
+    a: "Ja. Jede Seite wird für Handy, Tablet und Desktop gebaut und getestet. Der Großteil deiner Besucher kommt vom Handy, also hat das oberste Priorität.",
   },
   {
-    q: "Kann ich Inhalte spaeter selbst aendern?",
-    a: "Ja. Auf Wunsch richten wir dir einen Zugang ein, mit dem du Texte und Bilder selbst pflegst. Oder wir uebernehmen die Pflege im Rahmen der Betreuung.",
+    q: "Kann ich Inhalte später selbst ändern?",
+    a: "Ja. Auf Wunsch richten wir dir einen Zugang ein, mit dem du Texte und Bilder selbst pflegst. Oder wir übernehmen die Pflege im Rahmen der Betreuung.",
   },
 ];
 
@@ -33,16 +33,16 @@ export default function WebdesignPage() {
     <PageShell
       eyebrow="Leistung · Webdesign"
       title="Eine Website, die arbeitet. Nicht nur gut aussieht."
-      intro="Viele Betriebe haben eine Seite, die schoen ist und trotzdem nichts bringt. Weil sie langsam ist, unklar aufgebaut oder auf dem Handy bricht. Genau da setzen wir an."
+      intro="Viele Betriebe haben eine Seite, die schön ist und trotzdem nichts bringt. Weil sie langsam ist, unklar aufgebaut oder auf dem Handy bricht. Genau da setzen wir an."
     >
       {/* Problem */}
       <section className="rr-section" style={{ paddingTop: 0 }}>
         <div className="rr-wrap rr-prose">
-          <p className="rr-statement" style={{ marginBottom: 24 }}>Schoen allein reicht nicht.</p>
+          <p className="rr-statement" style={{ marginBottom: 24 }}>Schön allein reicht nicht.</p>
           <p className="rr-body-lg" style={{ color: "var(--rr-ink-soft)" }}>
-            Deine Kunden entscheiden in Sekunden, ob sie bleiben. Laedt die Seite zu langsam, finden sie nicht
+            Deine Kunden entscheiden in Sekunden, ob sie bleiben. Lädt die Seite zu langsam, finden sie nicht
             sofort, was sie suchen, oder wirkt der Auftritt beliebig, sind sie wieder weg, meist zur Konkurrenz.
-            Eine gute Website nimmt Besucher an der Hand und fuehrt sie zur Anfrage.
+            Eine gute Website nimmt Besucher an der Hand und führt sie zur Anfrage.
           </p>
         </div>
       </section>
@@ -56,13 +56,13 @@ export default function WebdesignPage() {
               <h2 className="rr-sub" style={{ marginBottom: 14 }}>Klarer Aufbau</h2>
               <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17 }}>
                 Wir strukturieren deine Seite so, dass Besucher sofort verstehen, was du machst und was der
-                naechste Schritt ist.
+                nächste Schritt ist.
               </p>
             </div>
             <div className="rr-card rr-card--surface">
               <h2 className="rr-sub" style={{ marginBottom: 14 }}>Tempo & Technik</h2>
               <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17 }}>
-                Modern gebaut, schnell geladen, sauber auf jedem Geraet. Geschwindigkeit ist auch ein Ranking-Faktor.
+                Modern gebaut, schnell geladen, sauber auf jedem Gerät. Geschwindigkeit ist auch ein Ranking-Faktor.
               </p>
             </div>
             <div className="rr-card rr-card--surface">
@@ -98,7 +98,7 @@ export default function WebdesignPage() {
       {/* FAQ */}
       <section className="rr-section" style={{ paddingTop: 0 }}>
         <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 12 }}>Haeufige Fragen</p>
+          <p className="rr-eyebrow" style={{ marginBottom: 12 }}>Häufige Fragen</p>
           <Faq items={faq} id="faq-webdesign" />
         </div>
       </section>
