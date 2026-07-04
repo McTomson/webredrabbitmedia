@@ -137,3 +137,8 @@ Frames extrahiert nach scratchpad/at-video/. Drei harte Befunde gegen unseren St
 3. FORMATIONEN sind KOMPAKT-DICHT (Kontur + Innenfuellung, stark ueberlappend), nicht duenne Kontur-Kette; Formen: 2 Zahnraeder, Gluehbirne (Startseite #89), Dokument etc.
 - Antwort auf Tomsons Hilfsangebote: at-CSS-URL + kompletter Crawl NICHT noetig (Lottie-JSONs = die Animation als Rohdaten liegen schon in ~/dev/at-reference-lottie/, CSS/Fonts live vermessen); Video schliesst die Feel-Luecke. Sinnvollste Tomson-Hilfe ab jetzt: Gate-Urteile auf Previews + ggf. Referenz-Screenshot der Ziel-Wortmarken-Setzung "red rabbit".
 NAECHSTE BAURUNDE (Reihenfolge): Wortmarken-Setzung -> Teile-Vermehrung/Dichte + Rand-Zu-/Abgang -> kompakte Formationen (Zahnrad/Gluehbirne/Dokument) -> Timing-Abgleich gegen Video-Frames -> Font-Vergleich (Tomson-Entscheidung).
+
+## 2026-07-04 (spaet) — Morph-Engine v2 nach Original-Messdaten
+- Formations-Kompositionen der 5 Szenen = exakte Zielkoordinaten aus dem all-turtles-Lottie (Tomson-Freigabe als Uebergangsloesung; keine at-Assets im Repo, nur Messwerte in lib/relaunch/morph/at-scenes.ts; eigene Kompositionen nach Launch).
+- Szenen-Texte dem Motiv zugeordnet (NACHTRAG zur Reihenfolge vom 04.07.): Zahnraeder=Webdesign, Gluehbirne=Google-Sichtbarkeit, Dokument=Content & KI-Artikel, Chart=Dashboard & Betreuung, Kopf=KI-Sichtbarkeit. Grund: Motiv-Semantik (Artikel-Text neben Dokument statt neben Chart). Leistungs-REIHENFOLGE auf der Seite damit: Webdesign, Google, Content, Dashboard, KI. Reversibel, falls Tomson die alte Reihenfolge wichtiger ist als die Motiv-Passung.
+- Footer = dunkel (var(--rr-dark)) mit grosser Wortmarke und Teile-Regen von oben (Original-Klammer).

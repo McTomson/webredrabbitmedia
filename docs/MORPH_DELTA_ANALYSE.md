@@ -32,3 +32,16 @@ ANTWORT auf "wie bekommst du die Gluehbirne wie ein Kuenstler hin": GAR NICHT se
 3. KLAR MARKIERT als Uebergangsloesung (Tomson: "nimm deren, wir machen spaeter eigene") — at-Assets selbst werden NICHT eingebunden, nur Messdaten als Zielkoordinaten; eigene Kompositionen folgen nach Launch-Freigabe.
 4. Aus LLM-Fremdanalyse uebernommen (deckt sich mit Video): Formationen ALTERNIEREN links/rechts (Zahnraeder links, Birne RECHTS, Dokument links, Chart rechts, Kopf links), Text jeweils gegenueber; Z-Tiefen-Effekt (Groesse+leichte Unschaerfe vorn); Footer-Reassembly = Teile REGNEN von OBEN herab (nicht radial); Partikel-Anzahl 150-200.
 5. ScenesMorph: Seiten-Alternierung einbauen (aktuell alles links = falsch fuer Szenen 2/4).
+
+## STATUS-UPDATE 04.07.2026 spaet (Folge-Session): ENGINE V2 UMGESETZT
+Alle 8 Punkte adressiert (Commits 110ab35, 65f59d1, Szenen-Text-Fix):
+1. Teile-Anzahl: Pool 175, Formationen mit 129-175 vermessenen Slots. ERLEDIGT.
+2. Teile-Groesse: Zerfall einheitlich ~5vw (Live-Messung at 1440x900: 70-100px, NICHT die frueheren 3%!); Formations-Groessen exakt aus den Daten (k-Skalierung, Birne deckungsgleich mit Live-at). ERLEDIGT.
+3. Raumfuellung: gejittertes Vollbild-Raster inkl. Raendern; Ueberzaehlige im Aussenring, kommen als Rand-Zugang in die Formationen. WICHTIGE MESSUNG: die Lottie-fromX/Y sind Einflug-Startpunkte VON AUSSEN (nur 31/129 im Bild) und taugen NICHT als Zerfall-Muster. ERLEDIGT.
+4. Form-Kompaktheit: exakte Original-Slots (x,y,rot,w,h je Teil) aus tools/parse-at-lottie.py -> lib/relaunch/morph/at-scenes.ts. ERLEDIGT.
+5. Keine Leere: HomeMorph = EINE durchgehende Buehne (Hero+5 Szenen, ein Teile-Pool, eine Timeline); HeroMorph+ScenesMorph GELOESCHT. Morph Slot->Slot mit Stagger, Uebergaenge browser-verifiziert luecklos. ERLEDIGT.
+6. Teile-Charakter: i-Punkt-Kreis von Klonen ausgeschlossen. ERLEDIGT.
+7. Wortmarke: war schon gefixt.
+8. Traegheit: Lenis lerp 0.075. Gegen Videos geprueft; Feinurteil = Tomson.
+Zusatz: Seiten-Alternierung L-R-L-R-L aus Daten (comp_1 0.31/comp_2 0.71/comp_3 0.30/comp_4 0.78/comp_5 0.29), Texte auf Gegenseite; Footer dunkel + Regen von oben, Wortmarke gross; Schaerfe-Fix (Element auf Maximal-Scale gebacken, transform nur Downscale — CSS-Upscale rastert matschig); Szenen-Texte dem Motiv zugeordnet (Dokument=Content, Chart=Dashboard, Kopf=KI). 61 FPS, Konsole sauber, Build gruen, Mobile-Layout (Formation oben, Text unten).
+Vergleichs-Video unserer v2: ~/dev/at-reference-videos/unsere-version-v2-morph-engine-2026-07-04.mp4
