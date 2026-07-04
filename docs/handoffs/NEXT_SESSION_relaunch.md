@@ -43,7 +43,8 @@ all-turtles-Morph = handanimiertes LOTTIE (After Effects), per Scroll gescrubbt.
 - Branch `relaunch` existiert (gepusht). Commits: Second-Brain-Docs, Planungs-Docs, P0 Design-System (993d10a), P1 Hero-Morph (e8d3a4a), P1b 5 Leistungs-Szenen (798695d).
 - LIVE VERIFIZIERT: /styleguide (Design-System komplett), /relaunch-preview (Hero: Kontraktion ohne Rotation -> Burst -> Naturbruch-Zerfall; danach 5 Szenen: Browser/Lupe/Sprechblase/Artikel/Chart-Formationen mit Assembly-Grammatik). Lupe klar erkennbar.
 - LESSON: Tailwind-Preflight `img{max-width:100%}` macht Teile unsichtbar (Buehne 0 breit) -> immer `max-width:none` auf Morph-Teilen.
-- OFFEN P1: Footer-Reassembly, Hero-Feintuning gegen Original, Mobile-Pass. OFFEN: Opus-Agent baute Kugel-Galerie in Worktree (Ergebnis reviewen/mergen!). NEU P0: "Red Rabbit Methode" (eigenes Framework-Wort, 2-3 Vorschlaege visuell) + danach Grill-Thema "Inhalte".
+- ERLEDIGT ZUSAETZLICH: Kugel-Galerie (Opus-Agent, von Fable reviewt+gefixt+gemerged, d3a6e19): /referenzen-preview mit Three.js-Kugel (40 Kacheln, Drag mit Traegheit, Klick-Zoom+Overlay, 2D-Fallback, crawlbare SSR-Liste). LESSON: Repo-Build braucht jetzt NODE_OPTIONS=--max-old-space-size=6144 (steht im build-Script; Ursache: 200+ Seiten + three.js).
+- OFFEN P1: Footer-Reassembly, Hero-Feintuning gegen Original, Mobile-Pass. OFFEN P2b: Feel-Tuning Kugel (Drag-Daempfung vs. phantom.land), echte Site-Screenshots als Texturen. NEU P0: "Red Rabbit Methode" (eigenes Framework-Wort, 2-3 Vorschlaege visuell) + danach Grill-Thema "Inhalte".
 - Tomson-Dauerregel NEU: autonome Loops, fragen NUR bei wichtigen Entscheidungen; laufend testen; Memory/Doku immer aktuell (memory/feedback_relaunch_autonomie_loop_regeln.md).
 
 ### NAECHSTE SESSION: BAUEN (P0+P1 nach TASK_SPECS Reihenfolge S1)
