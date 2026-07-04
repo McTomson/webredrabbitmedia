@@ -49,3 +49,4 @@ content-engine/.indexation.json
 content-engine/.quality-report.json
 graphify-out/
 .agents/
+.claude/

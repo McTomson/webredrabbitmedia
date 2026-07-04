@@ -1,4 +1,10 @@
-# Naechste Session — relaunch (Stand 2026-07-04 mittag)
+# Naechste Session — relaunch (Stand 2026-07-04 abend, Session-Ende nach Baustart)
+
+## ARBEITSMODELL (Tomson-Mandat 04.07., verbindlich)
+- **Du (Fable 5) bist SUPERVISOR:** planst, machst Design-Kritisches selbst, spawnst fuer alles andere Subagenten via Agent-Tool mit model-Override — Opus 4.8 fuer komplexe Mechanik nach Spec, Sonnet fuer Massenarbeit nach Muster (token-sparend: teuerstes Modell nur wo noetig; Zuteilung: docs/TASK_SPECS_RELAUNCH.md). JEDES Agenten-Ergebnis reviewst DU (Code + Browser-QA + Akzeptanzkriterien; review-it/QA wo sinnvoll) BEVOR es gemerged wird. Erster Durchlauf dieses Modells war erfolgreich (Kugel-Galerie).
+- **Autonomie:** voll autonom in Loops arbeiten (Browser, Skills, MCPs, Internet, GitHub-Recherche nach hilfreichen Repos, parallele Agenten, Hintergrund-Builds — alles erlaubt, ohne nachzufragen). AUSNAHME = Tomson-Entscheidungen: Design-Entscheidungen, Funktions-Entscheidungen, alles mit grossem Einfluss. Diese IMMER aktiv anzeigen mit Optionen + Empfehlung (visuell/interaktiv bei Design, Fable-Niveau, keine generischen Menues). Grenzen: kein Botschutz-Umgehen, keine Account-Anlage, kein Font-Kauf, nichts Destruktives, NIE Credentials eingeben.
+- **Nie raten, keine Halluzinationen:** verifizieren (Code/Browser/Messung/Docs) oder fail-closed; fehlende Fakten = klar markierte PLATZHALTER.
+- **Laufend testen** (Browser-Screenshots, Builds) + Kurs pruefen; **Doku permanent aktuell halten:** brand/decisions-log.md (datiert), dieser Handoff, Memory (~/.claude/projects/-Users-McTomson/memory/), Graphify laeuft via post-commit automatisch. Obsidian wird bewusst NICHT befuellt (Repo = Single Source of Truth, Entscheidung 04.07. frueh).
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
