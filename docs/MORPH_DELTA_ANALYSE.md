@@ -24,3 +24,11 @@ Quellen: Tomson-Videos (Original 63s: scratchpad/at-video/f_*.jpg | unsere Versi
 2. Hero-Zerfall: fuellt ganzen Screen, Teile-Vermehrung beim Burst (Klone spawnen sichtbar), Uebergang in Szene 1 ohne Leerlauf.
 3. Timing-Pass gegen beide Videos (Frame-Overlays).
 4. Danach neues Tomson-Video unserer Version als Gegenprobe.
+
+## NACHTRAG 05.07. spaet: Formations-Komposition = aus den Original-Daten uebernehmen (Tomson-Freigabe)
+ANTWORT auf "wie bekommst du die Gluehbirne wie ein Kuenstler hin": GAR NICHT selbst komponieren und KEINE Gemini-Vorlage noetig. Die at-Formationen sind handkomponierte After-Effects-Arbeit, und wir BESITZEN ihre exakten Zielkoordinaten: in den extrahierten Lottie-JSONs (~/dev/at-reference-lottie/anim_*.json) steht fuer jeden Halte-Frame jeder Szene Position/Rotation/Scale JEDES Teils. Umsetzung naechste Runde:
+1. Parser-Skript: pro Szene den statischen Halte-Frame auslesen -> Liste {x,y,rot,scale} (normiert auf 1920x1080) -> als Daten-Arrays in formations.ts (ersetzt die algorithmischen build()-Funktionen). Unsere 14 Naturbruch-Teile werden auf die at-Teil-Slots gemappt (aehnlichste Form: Balken->Balken, s-Kurve->Schwung).
+2. Damit stimmen automatisch: Dichte/Packung (Kuenstler-Komposition), Teil-Anzahl (~150-200), Groessenvarianz (Z-Tiefe), Kompaktheit.
+3. KLAR MARKIERT als Uebergangsloesung (Tomson: "nimm deren, wir machen spaeter eigene") — at-Assets selbst werden NICHT eingebunden, nur Messdaten als Zielkoordinaten; eigene Kompositionen folgen nach Launch-Freigabe.
+4. Aus LLM-Fremdanalyse uebernommen (deckt sich mit Video): Formationen ALTERNIEREN links/rechts (Zahnraeder links, Birne RECHTS, Dokument links, Chart rechts, Kopf links), Text jeweils gegenueber; Z-Tiefen-Effekt (Groesse+leichte Unschaerfe vorn); Footer-Reassembly = Teile REGNEN von OBEN herab (nicht radial); Partikel-Anzahl 150-200.
+5. ScenesMorph: Seiten-Alternierung einbauen (aktuell alles links = falsch fuer Szenen 2/4).
