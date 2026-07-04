@@ -83,6 +83,10 @@ def main():
         for p in data["pieces"]:
             if p["hidden"]:
                 continue
+            # ip/op-Fenster (Flacker-/Reveal-Comps wie comp_2): Teil ist nur
+            # sichtbar solange ip <= frame < op (Lottie-Semantik).
+            if not (p.get("ip", 0) <= frame < p.get("op", dur + 1)):
+                continue
             if u <= p["entryT"]:
                 e = 0.0
             elif u >= p["arriveT"]:

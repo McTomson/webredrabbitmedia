@@ -8,14 +8,7 @@
 
 import { masterEase, makeRng } from "./grammar";
 import { AT_SCENES, type SlotTuple } from "./at-scenes";
-import atTiming from "./at-timing.json";
-
-/** Timing-Messdaten (paralleler Vermessungs-Agent, at-timing.json):
- *  pieces = [entryT, arriveT, entryX, entryY, onCanvas] pro Slot. Vorhanden ->
- *  Einflug folgt dem Original-Rhythmus; fehlte die Datei, waeren es Defaults. */
-interface TimingScene { id: string; pieces: number[][]; visibleCurve?: number[] }
-interface TimingData { scenes: TimingScene[] }
-const AT_TIMING: TimingData | null = atTiming as TimingData;
+import atShapes from "./at-shapes-comp1.json";
 
 export interface PieceState {
   x: number;
@@ -63,6 +56,9 @@ export function sampleTimeline(tl: PieceTimeline, u: number): PieceState {
 export const U_HERO = 1.7;
 export const U_TOTAL = U_HERO + AT_SCENES.length;
 
+/** u-Fenster, auf das die Comp-Anzeige (0..1) fuer Szene 0 linear gemappt wird. */
+const U_B0 = 0.45, U_B1 = 2.3;
+
 /** Eingabe: ein Pool-Teil (gerendertes Naturbruch-Fragment). */
 export interface PoolPieceIn {
   /** Wortmarken-Home (Mitte relativ zum Wort-Zentrum); Klone erben vom Parent */
@@ -74,6 +70,8 @@ export interface PoolPieceIn {
   letter: number;
   /** true = Klon (erst beim Burst sichtbar) */
   clone: boolean;
+  /** Index in atShapes.pieces (Original-Teilform); Wordmark-Teile: undefined */
+  at?: number;
 }
 
 export interface SceneLayout {
@@ -87,6 +85,8 @@ export interface SceneLayout {
 export interface StagePlan {
   timelines: PieceTimeline[];
   scenes: SceneLayout[];
+  /** Kamera-Fahrt (Szene 0): u -> Zoom/Pan des at-Teile-Wrappers. */
+  camera: (u: number) => { k: number; tx: number; ty: number };
 }
 
 /**
@@ -172,38 +172,38 @@ export function buildStagePlan(
     return { x, y };
   }
 
-  // ---- Einflug-Timing Szene 0 (comp_1): Original-Rhythmus falls vermessen ---
-  const timing0 = AT_TIMING ? AT_TIMING.scenes.find((s) => s.id === "comp_1") ?? null : null;
-  let entMin = 0, entMax = 1, arrMin = 0, arrMax = 1;
-  if (timing0 && timing0.pieces.length) {
-    const ents = timing0.pieces.map((p) => p[0]);
-    const arrs = timing0.pieces.map((p) => p[1]);
-    entMin = Math.min(...ents); entMax = Math.max(...ents);
-    arrMin = Math.min(...arrs); arrMax = Math.max(...arrs);
-  }
-  /** Einflug-Start/Ankunft fuer Teil mit Szene-0-Slot slotIdx0 (Fenster
-   *  Start 0.8..1.7, Ankunft 1.9..2.35). Mit Timing: entryT/arriveT linear
-   *  normiert; ohne: gestaffelt per rng. */
-  function flightTiming0(slotIdx0: number): { fs: number; ar: number; tp: number[] | null } {
-    // Fenster frueher + breiter (Browser-Befund 04.07.): mit Start erst ab 0.8
-    // und Ankunft ab 1.9 war der Screen zwischen Burst-Ende (~1.05) und
-    // Einflug LEER — die ersten Teile muessen schon einschweben, waehrend die
-    // letzten Wortmarken-Teile hinausfliegen (Original-visibleCurve steigt
-    // von Szenenbeginn an monoton).
-    if (timing0 && slotIdx0 >= 0 && slotIdx0 < timing0.pieces.length) {
-      const tp = timing0.pieces[slotIdx0];
-      const fe = entMax > entMin ? (tp[0] - entMin) / (entMax - entMin) : rng();
-      const fa = arrMax > arrMin ? (tp[1] - arrMin) / (arrMax - arrMin) : rng();
-      return { fs: 0.4 + fe * 0.7, ar: 1.35 + fa * 0.95, tp };
+  // ---- Szene-0-Anker + Canvas-norm -> Buehnen-px (Original-Teilformen) ------
+  const A = AT_SCENES[0];
+  const X0 = (xN: number) => scenes[0].cx + (xN - A.cx) * 1920 * k;
+  const Y0 = (yN: number) => scenes[0].cy + (yN - A.cy) * 1080 * k;
+
+  // ---- Kamera-Fahrt der Comp-Anzeige (atShapes.camera) auf u-Fenster gemappt -
+  const camN = atShapes.camera;
+  const cref = camN[camN.length - 1];
+  const tuCam = (t: number) => U_B0 + t * (U_B1 - U_B0);
+  const kView = k;
+  const camera = (u: number): { k: number; tx: number; ty: number } => {
+    const tu0 = tuCam(camN[0].t), tu1 = tuCam(cref.t);
+    let cx: number, cy: number, cs: number;
+    if (u <= tu0) { cx = camN[0].x; cy = camN[0].y; cs = camN[0].s; }
+    else if (u >= tu1) { cx = cref.x; cy = cref.y; cs = cref.s; }
+    else {
+      const e = masterEase((u - tu0) / (tu1 - tu0));
+      cx = camN[0].x + (cref.x - camN[0].x) * e;
+      cy = camN[0].y + (cref.y - camN[0].y) * e;
+      cs = camN[0].s + (cref.s - camN[0].s) * e;
     }
-    const q = rng();
-    return { fs: 0.4 + q * 0.7, ar: 1.35 + q * 0.95, tp: null };
-  }
+    const ck = cs / cref.s;
+    const tx = scenes[0].cx * (1 - ck) + (cx - ck * cref.x - A.cx * (1 - ck)) * 1920 * kView;
+    const ty = scenes[0].cy * (1 - ck) + (cy - ck * cref.y - A.cy * (1 - ck)) * 1080 * kView;
+    return { k: ck, tx, ty };
+  };
 
   // ---- Slot-Zuordnung pro Szene: Teil-Klasse passend zum Slot-kind ---------
   const elongPool: number[] = [];
   const roundPool: number[] = [];
   pool.forEach((p, i) => {
+    if (p.at == null) return; // Wortmarken-Teile fliegen ab, belegen keine Slots
     (Math.max(p.w / p.h, p.h / p.w) >= 1.5 ? elongPool : roundPool).push(i);
   });
 
@@ -264,32 +264,20 @@ export function buildStagePlan(
   }
 
   // ---- Timeline pro Teil ----------------------------------------------------
-  // R1: KEIN statischer Scatter-Haltezustand, KEINE Klon-Geburt. Die 18
-  // Wortmarken-Teile machen Ruhe -> Kontraktion -> Burst radial nach DRAUSSEN
-  // (knapp ueber den Rand) und fliegen anschliessend genau dort wieder herein
-  // an ihren Szene-0-Slot (Kontinuitaet). Alle uebrigen Teile stehen bis zu
-  // ihrem Einflug unsichtbar (o:0) AUSSERHALB und fliegen von einem Rand-Punkt
-  // ein. Nie erscheint ein Teil "aus dem Nichts" im Bild.
+  // 18 Wortmarken-Teile: Ruhe -> Kontraktion -> Burst -> RAUS ueber den Rand
+  // (nehmen an keiner Formations-Szene teil). Alle at-Teile: Szene 0 spielt die
+  // extrahierten all-turtles-Original-Teilformen 1:1 ab (Entry -> Slot; der
+  // Kamera-Zoom blendet sie anfangs aus), danach Formations-Szenen 1-4.
   const U_REST = 0.22, U_CON = 0.5;
-  const sc0 = AT_SCENES[0];
   const timelines: PieceTimeline[] = pool.map((p, i) => {
     const segs: Seg[] = [];
-    const sIdx0 = assignment[0][i];
-    const target0 = sIdx0 >= 0 ? slotState(sc0.pieces[sIdx0], scenes[0], sc0, p, sceneSlotMajor[0][sIdx0]) : null;
-    let prev: PieceState | null = null;
-    let appeared = false;
 
-    if (!p.clone) {
-      // ---- Wortmarken-Teil: Ruhe -> Kontraktion -> Burst nach draussen ------
+    // ---- Wortmarken-Teil: Ruhe -> Kontraktion -> Burst -> RAUS ---------------
+    if (!p.clone && p.at == null) {
       const home: PieceState = { x: p.cx, y: p.cy, rot: 0, scale: 1, o: 1 };
       const con = contract.get(p.letter) ?? { kx: 0, ky: 0 };
       const conState: PieceState = { ...home, x: p.cx + con.kx, y: p.cy + con.ky };
       segs.push({ u0: U_REST, u1: U_CON, a: home, b: conState });
-      // Burst: gestaffelt (Startjitter 0-0.15), gerade Bahn radial — aber wie im
-      // Original (f_0011/f_0012) NICHT ueber den Rand: die Buchstaben-Teile
-      // verteilen sich GROSS ueber den Screen (55-90% des Wegs zur Kante) und
-      // BLEIBEN dort, waehrend die neuen Teile von aussen hereinstroemen.
-      // So ist der Screen nach dem Burst nie leer (Tomson-Regel + Original).
       let bax = conState.x, bay = conState.y;
       if (Math.hypot(bax, bay) < 1) { const a = rng() * Math.PI * 2; bax = Math.cos(a); bay = Math.sin(a); }
       const bAng = Math.atan2(bay, bax);
@@ -304,34 +292,34 @@ export function buildStagePlan(
       const burstEnd = Math.min(1.05, b0 + 0.5);
       const burstExit: PieceState = { x: dxN * bDist, y: dyN * bDist, rot: burstRot, scale: 1, o: 1 };
       segs.push({ u0: b0, u1: burstEnd, a: conState, b: burstExit });
-      appeared = true;
-
-      if (target0) {
-        // Weiterflug: von der Streu-Position direkt an den Szene-0-Slot
-        // (Groesse schrumpft dabei von Buchstaben- auf Slot-Massstab).
-        const { fs, ar } = flightTiming0(sIdx0);
-        const fStart = Math.max(fs, burstEnd + 0.08);
-        segs.push({ u0: fStart, u1: Math.max(ar, fStart + 0.1), a: { ...burstExit }, b: target0 });
-        prev = target0;
-      } else {
-        // kein Szene-0-Slot -> bleibt an der Streu-Position und geht mit
-        // der naechsten Szene ueber den Rand ab (exitState-Zweig).
-        prev = burstExit;
-      }
-    } else if (target0) {
-      // ---- Klon mit Szene-0-Slot: unsichtbar draussen -> Einflug -----------
-      const { fs, ar, tp } = flightTiming0(sIdx0);
-      const start = tp && tp[4] === 0
-        ? projectOutside((tp[2] - 0.5) * vp.w, (tp[3] - 0.5) * vp.h)
-        : edgeStartForSlot(target0);
-      const startPt: PieceState = { x: start.x, y: start.y, rot: target0.rot + (rng() - 0.5) * 60, scale: target0.scale, o: 1 };
-      // Unsichtbar-Halt bis Einflug (o:0), dann snap auf o:1 und geradliniger Flug.
-      segs.push({ u0: 0, u1: fs, a: { ...startPt, o: 0 }, b: { ...startPt, o: 0 } });
-      segs.push({ u0: fs, u1: Math.max(ar, fs + 0.1), a: startPt, b: target0 });
-      appeared = true;
-      prev = target0;
+      // Weiterflug RAUS: radialer Ray der Burst-Position, knapp ueber den Rand.
+      let ex = burstExit.x, ey = burstExit.y;
+      if (Math.hypot(ex, ey) < 1) { const a = rng() * Math.PI * 2; ex = Math.cos(a); ey = Math.sin(a); }
+      const out = edgePoint(ex, ey, 0.12);
+      const exit: PieceState = { x: out.x, y: out.y, rot: burstRot + (rng() - 0.5) * 40, scale: burstExit.scale, o: 1 };
+      segs.push({ u0: burstEnd + 0.06, u1: 1.45 + rng() * 0.35, a: burstExit, b: exit });
+      return { segs };
     }
-    // Klon ohne Szene-0-Slot: noch gar keine Segmente, erscheint spaeter.
+
+    // ---- at-Teil: Szene 0 = Original-Teilform 1:1 ----------------------------
+    let prev: PieceState | null = null;
+    let appeared = false;
+    const jp = p.at != null ? atShapes.pieces[p.at] : null;
+    if (jp && !jp.hidden) {
+      const slotScale = (jp.w * Math.abs(jp.sx) * k) / p.w;
+      const slot: PieceState = { x: X0(jp.x), y: Y0(jp.y), rot: jp.rot, scale: slotScale, o: 1 };
+      const entry: PieceState = { x: X0(jp.fromX), y: Y0(jp.fromY), rot: jp.fromRot, scale: slotScale * jp.fromScale, o: 1 };
+      const fs = U_B0 + jp.entryT * (U_B1 - U_B0);
+      const ar = U_B0 + jp.arriveT * (U_B1 - U_B0);
+      // Unsichtbar bis zum eigenen Flugbeginn (R1: der Original-Trick —
+      // Teile stehen ab Comp-Start sichtbar am Entry — funktioniert nur mit
+      // dem verdeckenden comp_0-Burst; bei uns erscheinen sie, WAEHREND sie
+      // sich bewegen, gestaffelt nach Original-entryT).
+      segs.push({ u0: 0, u1: fs, a: { ...entry, o: 0 }, b: { ...entry, o: 0 } });
+      segs.push({ u0: fs, u1: ar, a: entry, b: slot });
+      prev = slot;
+      appeared = true;
+    }
 
     // ---- Szenen 1-4: bestehende Logik (Slot->Slot direkt, ueberzaehlige ----
     // ueber den Rand). Erste Erscheinung einer Szene = Einflug von aussen. ----
@@ -379,5 +367,5 @@ export function buildStagePlan(
     return { segs };
   });
 
-  return { timelines, scenes };
+  return { timelines, scenes, camera };
 }

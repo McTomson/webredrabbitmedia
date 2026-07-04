@@ -63,6 +63,21 @@ def decompose_flip(wm):
     return sx, sy, rot
 
 
+def world_rotation_raw(layer, ind_map, comp_frame, _depth=0, parent_frame=None):
+    """Rohe (nicht per atan2 gewrappte) Rotationssumme entlang der Elternkette —
+    gleiche Frame-Semantik wie world_matrix_ref. mat_decompose liefert nur
+    (-180,180] und verwirft damit Mehrfachumdrehungen (comp_2/3/5 haben Layer
+    mit rohen r-Keyframes >180 Grad Differenz, z.B. -162.42 -> -360). Rotation
+    ist additiv (keine Skew vorhanden, Rekompositions-Check prueft das separat)."""
+    r = atparse.prop_value(layer.get("ks", {}).get("r"), comp_frame)
+    rot = r[0] if isinstance(r, list) else (r if r is not None else 0.0)
+    par = layer.get("parent")
+    if par is not None and par in ind_map and _depth < 20:
+        pf = comp_frame if parent_frame is None else parent_frame
+        rot += world_rotation_raw(ind_map[par], ind_map, pf, _depth + 1)
+    return rot
+
+
 def collect_paths(shapes, frame, base=None, out=None):
     """Alle statischen sh-Pfade mit ihrer Gruppen-Matrix (Layer-Koordinaten)."""
     if base is None:
@@ -190,6 +205,14 @@ def main():
         opac = (o[0] if isinstance(o, list) else o)
         hidden = (100.0 if opac is None else float(opac)) <= 0.5
 
+        # In/Out-Point des Layers (Comp-lokale Frames): manche Comps (z.B. comp_2)
+        # nutzen ip/op als Flacker-/Reveal-Fenster - Teile koennen VOR dem
+        # Referenz-Frame wieder verschwinden (op <= ref) oder erst spaeter
+        # auftauchen (ip > 0). comp_1 hat ip=0/-1, op=dur+1 fuer alle Layer
+        # (immer sichtbar) -> Feld ist dort ein no-op.
+        ip_raw = L.get("ip", 0)
+        op_raw = L.get("op", dur + 1)
+
         # Entry-Zustand KOMPLETT (Position/Rotation/Scale) — Kamera auch hier
         # auf dem Referenz-Frame eingefroren: Original interpoliert in Layer-
         # Koordinaten VOR der Kamera. Entry und Slot im selben (REF-)Kamera-
@@ -200,6 +223,19 @@ def main():
         sx0, sy0, rot0 = decompose_flip(wm0)
         wc0 = atparse.mat_apply(wm0, [lcx, lcy])
 
+        # Kontinuierliche Rotation fuer die Sim-Interpolation (fromRot->rot):
+        # atan2 (rot/rot0 oben) wrapped auf (-180,180] und macht bei rohen
+        # Mehrfachdrehungen (z.B. -162.42 -> -360 Grad) die Zwischenbewegung
+        # falschrum/zu kurz. Rohsumme entlang der Kette ist kontinuierlich,
+        # braucht aber einen Flip-Ausgleich (Spiegelung addiert 180 Grad
+        # Mehrdeutigkeit zwischen (rot,sy) und (rot+180,-sy)) — Offset wird
+        # am Ankunfts-Frame gegen den verifizierten atan2-Wert justiert und
+        # gilt (Flip ist statisch) unveraendert auch am Eintritts-Frame.
+        raw_rot_arrive = world_rotation_raw(L, ind_map, lkt_c, parent_frame=ref)
+        rot_offset = round((rot - raw_rot_arrive) / 180.0) * 180.0
+        raw_rot_entry = world_rotation_raw(L, ind_map, fkt_c, parent_frame=ref)
+        rot0_cont = raw_rot_entry + rot_offset
+
         r4 = atparse.r4
         pieces.append({
             "d": d,
@@ -207,11 +243,13 @@ def main():
             "x": r4(wc[0] / CANVAS_W), "y": r4(wc[1] / CANVAS_H),
             "rot": r4(rot), "sx": r4(sx), "sy": r4(sy),
             "fromX": r4(wc0[0] / CANVAS_W), "fromY": r4(wc0[1] / CANVAS_H),
-            "fromRot": r4(rot0),
+            "fromRot": r4(rot0_cont),
             "fromScale": r4(sx0 / sx if sx else 1.0),
             "entryT": r4(fkt_c / dur),
             "arriveT": r4(lkt_c / dur),
             "hidden": hidden,
+            "ip": r4(ip_raw),
+            "op": r4(op_raw),
         })
 
     if max_recompose_err > 0.5:
