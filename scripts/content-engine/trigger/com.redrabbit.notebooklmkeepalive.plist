@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- launchd LaunchAgent: haelt die notebooklm-py CLI-Sitzung (Video-Auth) warm.
-     Laeuft beim Login/Boot UND alle 3 Tage. Jeder Aufruf frischt die Google-Cookies
+     Laeuft beim Login/Boot UND taeglich. Jeder Aufruf frischt die Google-Cookies
      in ~/.notebooklm/profiles/default/storage_state.json auf -> Sitzung laeuft nicht
      zwischen Artikeln aus. Bei abgelaufener Auth: Banner + Alert-Datei (proaktiv).
      Install:
@@ -18,10 +18,11 @@
         <string>$HOME/dev/redrabbit-daily/scripts/content-engine/trigger/notebooklm-keepalive.sh</string>
     </array>
 
-    <!-- Alle 3 Tage (259200 s). Kuerzeste relevante Cookie-Lebensdauer ist ~30 Tage,
-         alle 3 Tage auffrischen haelt grossen Puffer ohne unnoetige Last. -->
+    <!-- Taeglich (86400 s). 3 Tage waren zu lang: die NotebookLM-CLI-Auth lief in einer
+         ruhigen Woche aus (verifiziert 04.07: seit 01.07 tot). Taeglich haelt die Cookies
+         sicher frisch, der Aufruf (notebooklm list) ist billig. -->
     <key>StartInterval</key>
-    <integer>259200</integer>
+    <integer>86400</integer>
 
     <!-- Auch sofort beim Login/Boot auffrischen (haelt die Sitzung nach laengerem Aus warm). -->
     <key>RunAtLoad</key>

@@ -96,6 +96,42 @@ mkdir -p "$STAGE"
 LOG="$STAGE/gemini-images.log"
 echo "==== generate-images-gemini $SLUG $(date) ====" | tee -a "$LOG"
 
+# ── 0. Selbstheilung: korruptes Profil erkennen + aus sauberem Backup zuruckspielen ──
+# Ein externer kill -9 mitten im Render (Watchdog/System) korrumpiert das gemini-immo-Profil:
+# Chrome crasht dann beim Start, der Daemon relauncht endlos -> Prozess-STORM -> nie ein Bild
+# (verifiziert 02.-03.07). Das Exit-Trap dieses Scripts kann das nicht abfangen (kill -9). Also
+# heilen wir am START: ein billiger about:blank-Probe-Open; klettern die Chrome-Prozesse >STORM,
+# ist das Profil kaputt und wir spielen das bekannt-gute, eingeloggte Backup zuruck. Fail-safe:
+# JEDER Fehler in der Probe laesst den Render normal weiterlaufen (kein False-Positive-Block).
+# Backup anlegen/erneuern nach einem frischen `generate-images-gemini.sh login`:
+#   cp -a ~/.agent-browser-profiles/gemini-immo ~/.agent-browser-profiles/gemini-immo.CLEAN-loggedin
+_CLEAN_BACKUP="$(dirname "$GEMINI_PROFILE")/$(basename "$GEMINI_PROFILE").CLEAN-loggedin"
+_selfheal_profile() {
+    [ -d "$_CLEAN_BACKUP" ] || return 0        # kein Backup -> nichts zu heilen
+    local ses="gemini-heal" storm=40 max=0 c i
+    "${AB[@]}" close --all >>"$LOG" 2>&1 || true
+    rm -f "$GEMINI_PROFILE"/Singleton* 2>/dev/null || true   # (inline: _unlock_profile ist hier noch nicht definiert)
+    ( agent-browser --session "$ses" --profile "$GEMINI_PROFILE" open "about:blank" >>"$LOG" 2>&1 ) &
+    local op=$!
+    for i in 1 2 3 4 5; do
+        c=$(pgrep -f "Chrome for Testing" 2>/dev/null | wc -l | tr -d ' ')
+        [ "${c:-0}" -gt "$max" ] && max=$c
+        kill -0 "$op" 2>/dev/null || break
+        sleep 3
+    done
+    agent-browser --session "$ses" close --all >>"$LOG" 2>&1 || true
+    kill -9 "$op" 2>/dev/null || true
+    find "$HOME/.agent-browser" -maxdepth 1 -name "$ses.*" -delete 2>/dev/null || true
+    if [ "$max" -gt "$storm" ]; then
+        echo "  SELBSTHEILUNG: Profil korrupt (Probe-Storm max=$max Chrome) -> spiele CLEAN-Backup zurueck" | tee -a "$LOG"
+        pkill -9 -f "chrome-150" 2>/dev/null || true; sleep 1
+        rm -rf "$GEMINI_PROFILE" && cp -a "$_CLEAN_BACKUP" "$GEMINI_PROFILE" \
+            && echo "  SELBSTHEILUNG: Backup wiederhergestellt." | tee -a "$LOG"
+    fi
+    return 0
+}
+_selfheal_profile 2>>"$LOG" || true
+
 # ── 1. Build plan + fully-assembled Gemini prompts (single source of truth) ──
 PLAN_RAW="$(npx tsx scripts/content-engine/media/build-image-plan.ts "$SLUG" 2>>"$LOG")"
 PLAN_JSON="$(printf '%s\n' "$PLAN_RAW" | sed -n 's/^GEMINI_PLAN=//p' | head -1)"
