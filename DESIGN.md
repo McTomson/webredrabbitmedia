@@ -74,9 +74,11 @@ text color `#1C2837`). It is also the exact `.rrmenu-overlay` background in `Rel
 
 | Role | Font | next/font variable | Notes |
 |---|---|---|---|
-| Display / wordmark ("red rabbit") | **Fraunces** (OFL) | `--font-fraunces` | axes `["opsz","SOFT","WONK"]`. No font purchase — free only (decision 2026-07-04). |
-| Statements / claims | **Crimson Pro** (OFL) | `--font-crimson` | w500. Chosen 2026-07-05 as the free look-alike for all-turtles' commercial Heldane (both Kis-Antiqua descendants); Fraunces was visually the wrong genre (Didone) for this role. |
-| UI / eyebrows / nav / meta / forms | **Instrument Sans** (OFL) | `--font-grotesk` | |
+| Display / Headlines / wordmark ("red rabbit") | **DM Sans** (OFL) | `--font-dmsans` (to add to `fonts.ts`) | **Bold (700).** Chosen 2026-07-06 to replace Fraunces. The real brand logo wordmark is a bold geometric sans (side-by-side, black, mark red — see `docs/handoffs/assets/real-logo-redrabbitmedia.png`), and DM Sans is the closest free match that ALSO works as a workhorse headline font across the whole site (Variante B: sans carries wordmark + all headings). Montserrat was closest to the pure logo look but too wide/tiring for running headlines. Full wordmark spec in §3.1. |
+| Statements / claims | **Crimson Pro** (OFL) | `--font-crimson` | w500. Unchanged. Chosen 2026-07-05 as the free look-alike for all-turtles' commercial Heldane (both Kis-Antiqua descendants). Kept deliberately: geometric sans headings + humanist serif statements is an intentional, high-end pairing. |
+| UI / eyebrows / nav / meta / forms | **Instrument Sans** (OFL) | `--font-grotesk` | Unchanged. |
+
+> **Fraunces is retired from the display role** (decision 2026-07-06, Tomson). It was the wrong genre (Didone serif) for a brand whose real logo wordmark is a geometric sans. The actual font swap in the hero morph is **pending and owned by the Hero session** — the `pieces.ts` clip-rects are Fraunces-glyph-specific and must be re-tuned for DM Sans, and `buildWordLayout()` must change from stacked-two-line to single-line (§3.1). Do not flip `--rr-font-display` to DM Sans until that swap lands, or the morph breaks. See `docs/handoffs/HERO_font-swap_dm-sans.md`.
 
 Every relaunch page imports these three and applies `.variable` classes on the root wrapper (see
 §4 and §7). `styleguide.css` maps the roles onto its own aliases:
@@ -86,6 +88,28 @@ Every relaunch page imports these three and applies `.variable` classes on the r
 --rr-font-serif: var(--font-crimson), Georgia, serif;   /* Statements/Claims */
 --rr-font-ui: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
 ```
+
+### 3.1 Wortmarke "red rabbit" — locked spec (Tomson decisions 2026-07-06)
+
+The wordmark and the rabbit mark are **two independent elements** — never lock them together
+like the `.ai` corporate lockup (that layout is only a brand-guideline example).
+
+- **Font:** DM Sans, **Bold (700)**, both words same weight (no thin/bold contrast — a light
+  "rabbit" reads weak under the heavy red mark).
+- **Arrangement:** "red rabbit" **side-by-side, one line** (NOT stacked two-line). This matches the
+  real logo and reads as one coherent unit ("stimmiger", Tomson). Keep a **clear word space**
+  between "red" and "rabbit" (~`0.9em` at display size — smaller reads as one word "redrabbit",
+  which Tomson explicitly rejected). "media" is **dropped** for web use.
+- **Color:** the wordmark is **all one red** (`--rr-red` #f12032). **No single-letter accent color
+  inside the wordmark** — rejected 2026-07-06 as gimmicky ("wirkt wie Kinderschokolade"). The one
+  deliberate navy (`#1C2837`) piece belongs ONLY to the morph **scene formations** (§2 hard rule),
+  never to the wordmark itself.
+- **Mark:** the rabbit mark (`RabbitMark`) is always red and sits **above** the wordmark in the
+  hero (independent element), not to its left.
+- **Hero-swap TODO (Hero session):** add DM Sans to `fonts.ts`; re-tune `pieces.ts` clip-rects to
+  DM Sans glyph shapes; change `buildWordLayout()` from stacked two-line to a single line; keep the
+  fracture pieces all red. Visual reference of the locked result:
+  `docs/handoffs/HERO_font-swap_dm-sans.md`.
 
 ### Type scale (clamps, `styleguide.css`)
 
