@@ -4,15 +4,17 @@
  * (6 Korrektur-Runden, pixelverifiziert). Feld 120x140, Glyphe bei x=10,
  * Baseline y=100, Font "650 100px Fraunces" (opsz 144).
  * NICHT veraendern ohne neue Abnahme.
+ * a/e/r-Fuellung korrigiert, Tomson-Abnahme 2026-07-05 (Rechteck-Unionen deckten
+ * Ink-Luecken nicht ab; Teilanzahl je Buchstabe unveraendert, nur Rects erweitert).
  */
 
 export const BRAND_RED = "#F12032";
 
 /** Clip-Rechtecke [x, y, w, h] pro Teil, pro Buchstabe. */
 export const PIECES: Record<string, number[][][]> = {
-  r: [[[0, 0, 29.4, 76], [0, 76, 120, 64]], [[30.8, 0, 89.2, 76]]],
-  e: [[[0, 56, 34, 12], [0, 68, 25, 12], [0, 80, 120, 60]], [[34, 44, 86, 24], [25.8, 68, 94.2, 12]]],
-  a: [[[0, 0, 34.5, 72]], [[0, 72, 34.5, 68]], [[36, 57.5, 84, 82.5]]],
+  r: [[[0, 0, 31.4, 76], [0, 76, 120, 64]], [[30.8, 0, 89.2, 76]]],
+  e: [[[0, 44, 34, 24], [0, 68, 25, 12], [0, 80, 120, 60]], [[34, 44, 86, 24], [25.8, 68, 94.2, 12]]],
+  a: [[[0, 0, 34.5, 72]], [[0, 72, 34.5, 68]], [[34.5, 0, 85.5, 140]]],
   d: [[[0, 40, 40, 100]], [[42.5, 31.5, 77.5, 108.5], [35, 0, 85, 31.5]]],
   b: [[[0, 0, 28.5, 140]], [[33, 40, 87, 100]]],
   i: [[[0, 0, 120, 50.5]], [[0, 50.5, 120, 89.5]]],
