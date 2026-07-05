@@ -123,6 +123,54 @@ function Specimen({ label, children }: { label: string; children: React.ReactNod
   );
 }
 
+/* Line-Draw-Button (Kandidat 10) — feste Markup-Reihenfolge:
+   zwei Kappen-Linien, Text, zwei drow-Akzente. */
+function DrawBtn({ variant, label }: { variant: string; label: string }) {
+  return (
+    <a className={`rr-btn-draw rr-btn-draw--${variant}`} href="#">
+      <span className="rr-btn-draw__line" />
+      <span className="rr-btn-draw__line" />
+      <span className="rr-btn-draw__text">{label}</span>
+      <span className="rr-btn-draw__drow1" />
+      <span className="rr-btn-draw__drow2" />
+    </a>
+  );
+}
+
+/* Schalter (Kandidat 12) — Geschwister-Reihenfolge input, handle-wrapper,
+   base ist Pflicht (CSS nutzt + und ~). Label umschliesst alles. */
+function ToggleCell({
+  id,
+  label,
+  variant,
+  defaultChecked,
+}: {
+  id: string;
+  label: string;
+  variant?: "red";
+  defaultChecked?: boolean;
+}) {
+  return (
+    <div style={dsToggleCell}>
+      <label className={`rr-toggle${variant ? ` rr-toggle--${variant}` : ""}`} htmlFor={id}>
+        <input id={id} type="checkbox" className="rr-toggle__input" defaultChecked={defaultChecked} />
+        <span className="rr-toggle__handle-wrapper">
+          <span className="rr-toggle__handle">
+            <span className="rr-toggle__knob" />
+            <span className="rr-toggle__bar-wrapper">
+              <span className="rr-toggle__bar" />
+            </span>
+          </span>
+        </span>
+        <span className="rr-toggle__base">
+          <span className="rr-toggle__base-inside" />
+        </span>
+      </label>
+      <p className="rr-meta">{label}</p>
+    </div>
+  );
+}
+
 export default function DesignSystemPage() {
   return (
     <div className={`rr ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}>
@@ -650,6 +698,105 @@ export default function DesignSystemPage() {
         </div>
       </Section>
 
+      {/* ---------------------------------------------------------- */}
+      {/* 09 · Buttons - Metallisch (Kandidat) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="09" title="Buttons - Metallisch">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          Taktiler Druckknopf mit Verlaufs-Flaeche und geschichteten Schatten. Beim Hover ein leichtes
+          Leuchten, beim Druecken sinkt die Flaeche ein (Inset). Drei Flaechen zur Auswahl, Markenrot
+          immer dabei. Zum Pruefen mit der Maus drueberfahren und klicken.
+        </p>
+        <div style={dsBtnGrid}>
+          <div style={dsPairCol}>
+            <div><a className="rr-btn-metal rr-btn-metal--red" href="#">Projekt anfragen</a></div>
+            <p className="rr-meta">rr-btn-metal--red · rote Flaeche, heller Text</p>
+          </div>
+          <div style={dsPairCol}>
+            <div><a className="rr-btn-metal rr-btn-metal--navy" href="#">Referenzen</a></div>
+            <p className="rr-meta">rr-btn-metal--navy · dunkle Navy-Flaeche</p>
+          </div>
+          <div style={dsPairCol}>
+            <div><a className="rr-btn-metal rr-btn-metal--light" href="#">Mehr erfahren</a></div>
+            <p className="rr-meta">rr-btn-metal--light · neutral, hell (Original-Anmutung)</p>
+          </div>
+        </div>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 10 · Buttons - Line-Draw (Kandidat) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="10" title="Buttons - Line-Draw">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          Beim Hover spreizt sich die Schrift, eine abgerundete Linie zeichnet sich rund um die Pille
+          und kleine Akzente ziehen ein. Drei Farbthemen ueber <code>--line_color</code> /{" "}
+          <code>--back_color</code>, Markenrot inklusive. Zum Pruefen mit der Maus drueberfahren.
+        </p>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "56px 48px",
+            alignItems: "center",
+            background: "var(--rr-surface)",
+            border: "1px solid var(--rr-line)",
+            borderRadius: 16,
+            padding: "64px 40px",
+          }}
+        >
+          <DrawBtn variant="red" label="ANFRAGEN" />
+          <DrawBtn variant="navy" label="REFERENZEN" />
+          <DrawBtn variant="ink" label="KONTAKT" />
+        </div>
+        <p className="rr-meta" style={{ marginTop: 14 }}>
+          rr-btn-draw--red (Markenrot) · rr-btn-draw--navy · rr-btn-draw--ink
+        </p>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 11 · Cards - Soft (Kandidat) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="11" title="Cards - Soft">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          Weiche, plastische Karten (Neumorphismus) mit doppeltem Schatten, hell und dunkel. Auf hellem
+          Grund lesbar gehalten. Neutral, Markenrot und Navy zur Auswahl. Beispiel-Inhalt: Eyebrow plus
+          kurzer Titel.
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 40 }}>
+          <div className="rr-card-soft rr-card-soft--red">
+            <p className="rr-card-soft__eyebrow">Leistung</p>
+            <p className="rr-card-soft__label">Webdesign &amp; Handwerk</p>
+          </div>
+          <div className="rr-card-soft rr-card-soft--navy">
+            <p className="rr-card-soft__eyebrow">Leistung</p>
+            <p className="rr-card-soft__label">Dashboard &amp; Selbstlauf</p>
+          </div>
+          <div className="rr-card-soft rr-card-soft--neutral">
+            <p className="rr-card-soft__eyebrow">Leistung</p>
+            <p className="rr-card-soft__label">Sichtbarkeit bei Google &amp; KI</p>
+          </div>
+        </div>
+        <p className="rr-meta" style={{ marginTop: 18 }}>
+          rr-card-soft--red · rr-card-soft--navy · rr-card-soft--neutral
+        </p>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 12 · Toggle (Kandidat) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="12" title="Toggle">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          Schalter mit rotem Knopf, der beim Umlegen rotiert (maskierter Griff, plastische Basis). Der
+          Knopf ist bereits markenkonform rot. Das Stock-Gruen im Ein-Zustand ist auf Navy umgestellt,
+          alternativ auf Markenrot. Zum Pruefen anklicken.
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 40 }}>
+          <ToggleCell id="rr-tg-navy-off" label="Ein-Zustand Navy · aus" />
+          <ToggleCell id="rr-tg-navy-on" label="Ein-Zustand Navy · ein" defaultChecked />
+          <ToggleCell id="rr-tg-red-on" label="Ein-Zustand Rot · ein" variant="red" defaultChecked />
+        </div>
+      </Section>
+
       <footer className="rr-section" style={{ paddingTop: 20 }}>
         <div className="rr-wrap">
           <hr className="rr-hairline" />
@@ -763,6 +910,15 @@ const dsCandidateCard: React.CSSProperties = {
   borderRadius: 14,
   padding: "18px 20px",
   background: "var(--rr-paper)",
+};
+
+const dsToggleCell: React.CSSProperties = {
+  display: "grid",
+  gap: 16,
+  justifyItems: "center",
+  textAlign: "center",
+  width: 160,
+  paddingTop: 104,
 };
 
 const dsBuildingGrid: React.CSSProperties = {

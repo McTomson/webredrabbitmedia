@@ -550,3 +550,343 @@
 .rr .rr-dash-bar { transform-origin: bottom; animation: rr-grow 2.6s var(--rr-ease) infinite alternate; }
 @keyframes rr-grow { from { transform: scaleY(0.25); } to { transform: scaleY(1); } }
 @media (prefers-reduced-motion: reduce) { .rr .rr-dash-bar { animation: none; } }
+
+/* ============================================================
+   KANDIDATEN ZUR FREIGABE (05.07.) — vier Fremd-Snippets, 1:1
+   in der Mechanik uebernommen und auf die Marke umgefaerbt.
+   Jede Komponente kommt in mehreren Farbversionen, immer
+   inklusive Markenrot. Werden auf /design-system gezeigt.
+   ============================================================ */
+
+/* ---- 1) Metallischer Druckknopf (.rr-btn-metal) ----
+   Verlaufs-Flaeche + geschichtete Schatten: Hover = Leuchten,
+   Druck = eingesunkene Flaeche (Inset). Faces via CSS-Variablen,
+   damit jede Farbversion nur die Farben tauscht. */
+.rr .rr-btn-metal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 168px;
+  height: 52px;
+  padding: 0 24px;
+  border-radius: 30px;
+  font-family: var(--rr-font-ui);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 1px solid var(--m-border);
+  background-image: var(--m-face);
+  color: var(--m-fg);
+  text-shadow: var(--m-tsh);
+  box-shadow: var(--rr-shadow-sm);
+  -webkit-tap-highlight-color: transparent;
+  transition: box-shadow 220ms var(--rr-ease), transform 120ms var(--rr-ease);
+}
+.rr .rr-btn-metal:hover {
+  box-shadow:
+    0 5px 12px var(--m-out),
+    0 -4px 8px var(--m-hi),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45);
+}
+.rr .rr-btn-metal:active {
+  transform: scale(0.98);
+  box-shadow:
+    inset 0 2px 6px var(--m-press),
+    inset 0 0 22px var(--m-press);
+}
+.rr .rr-btn-metal:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--rr-red) 38%, transparent),
+    0 5px 12px var(--m-out),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45);
+}
+.rr .rr-btn-metal--light {
+  --m-face: linear-gradient(to top, #e6e7e9 0%, #ffffff 80%, #fdfdfd 100%);
+  --m-border: #c9cbce;
+  --m-fg: var(--rr-ink);
+  --m-tsh: 0 1px #fff;
+  --m-out: rgba(28, 40, 55, 0.16);
+  --m-hi: rgba(255, 255, 255, 0.9);
+  --m-press: rgba(28, 40, 55, 0.16);
+}
+.rr .rr-btn-metal--navy {
+  --m-face: linear-gradient(to top, #16202c 0%, #243444 82%, #2b3d50 100%);
+  --m-border: #0f1721;
+  --m-fg: #f4f6f8;
+  --m-tsh: 0 1px rgba(0, 0, 0, 0.4);
+  --m-out: rgba(15, 23, 33, 0.4);
+  --m-hi: rgba(255, 255, 255, 0.14);
+  --m-press: rgba(0, 0, 0, 0.4);
+}
+.rr .rr-btn-metal--red {
+  --m-face: linear-gradient(to top, #c81222 0%, #f12032 82%, #ff414f 100%);
+  --m-border: #a50f1c;
+  --m-fg: #fff;
+  --m-tsh: 0 1px rgba(0, 0, 0, 0.28);
+  --m-out: rgba(200, 18, 34, 0.42);
+  --m-hi: rgba(255, 255, 255, 0.25);
+  --m-press: rgba(120, 8, 18, 0.5);
+}
+
+/* ---- 2) Line-Draw-Button (.rr-btn-draw) ----
+   Hover: Schrift spreizt, abgerundete Linie zeichnet sich rundum,
+   kleine Akzente ziehen ein. Themen ueber --line_color/--back_color. */
+.rr .rr-btn-draw {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  width: 230px;
+  height: 56px;
+  text-decoration: none;
+  font-family: var(--rr-font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--line_color);
+  transition: letter-spacing 0.3s ease, color 0.3s ease;
+}
+.rr .rr-btn-draw__text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.rr .rr-btn-draw::before,
+.rr .rr-btn-draw::after,
+.rr .rr-btn-draw__text::before,
+.rr .rr-btn-draw__text::after {
+  content: "";
+  position: absolute;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--line_color);
+  transition: width 0.5s ease;
+}
+.rr .rr-btn-draw::before { top: 0; left: 54px; width: calc(100% - 56px * 2 - 16px); }
+.rr .rr-btn-draw::after { top: 0; right: 54px; width: 8px; }
+.rr .rr-btn-draw__text::before { bottom: 0; right: 54px; width: calc(100% - 56px * 2 - 16px); }
+.rr .rr-btn-draw__text::after { bottom: 0; left: 54px; width: 8px; }
+.rr .rr-btn-draw__line { position: absolute; top: 0; width: 56px; height: 100%; overflow: hidden; }
+.rr .rr-btn-draw__line::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 150%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 300px;
+  border: solid 3px var(--line_color);
+}
+.rr .rr-btn-draw__line:nth-child(1),
+.rr .rr-btn-draw__line:nth-child(1)::before { left: 0; }
+.rr .rr-btn-draw__line:nth-child(2),
+.rr .rr-btn-draw__line:nth-child(2)::before { right: 0; }
+.rr .rr-btn-draw:hover { letter-spacing: 6px; }
+.rr .rr-btn-draw:hover::before,
+.rr .rr-btn-draw:hover .rr-btn-draw__text::before { width: 8px; }
+.rr .rr-btn-draw:hover::after,
+.rr .rr-btn-draw:hover .rr-btn-draw__text::after { width: calc(100% - 56px * 2 - 16px); }
+.rr .rr-btn-draw__drow1,
+.rr .rr-btn-draw__drow2 { position: absolute; z-index: -1; border-radius: 16px; transform-origin: 16px 16px; }
+.rr .rr-btn-draw__drow1 { top: -16px; left: 40px; width: 32px; height: 0; transform: rotate(30deg); }
+.rr .rr-btn-draw__drow2 { top: 44px; left: 77px; width: 32px; height: 0; transform: rotate(-127deg); }
+.rr .rr-btn-draw__drow1::before,
+.rr .rr-btn-draw__drow1::after,
+.rr .rr-btn-draw__drow2::before,
+.rr .rr-btn-draw__drow2::after { content: ""; position: absolute; }
+.rr .rr-btn-draw__drow1::before { bottom: 0; left: 0; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(-60deg); }
+.rr .rr-btn-draw__drow1::after { top: -10px; left: 45px; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(69deg); }
+.rr .rr-btn-draw__drow2::before { bottom: 0; left: 0; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(-146deg); }
+.rr .rr-btn-draw__drow2::after { bottom: 26px; left: -40px; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(-262deg); }
+.rr .rr-btn-draw__drow1,
+.rr .rr-btn-draw__drow1::before,
+.rr .rr-btn-draw__drow1::after,
+.rr .rr-btn-draw__drow2,
+.rr .rr-btn-draw__drow2::before,
+.rr .rr-btn-draw__drow2::after { background: var(--back_color); }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow1 { animation: rr-drow1 ease-in 0.06s forwards; }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow1::before { animation: rr-drow2 linear 0.08s 0.06s forwards; }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow1::after { animation: rr-drow3 linear 0.03s 0.14s forwards; }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow2 { animation: rr-drow4 linear 0.06s 0.2s forwards; }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow2::before { animation: rr-drow3 linear 0.03s 0.26s forwards; }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow2::after { animation: rr-drow5 linear 0.06s 0.32s forwards; }
+@keyframes rr-drow1 { 0% { height: 0; } 100% { height: 100px; } }
+@keyframes rr-drow2 { 0% { width: 0; opacity: 0; } 10% { opacity: 0; } 11% { opacity: 1; } 100% { width: 120px; } }
+@keyframes rr-drow3 { 0% { width: 0; } 100% { width: 80px; } }
+@keyframes rr-drow4 { 0% { height: 0; } 100% { height: 120px; } }
+@keyframes rr-drow5 { 0% { width: 0; } 100% { width: 124px; } }
+.rr .rr-btn-draw--red { --line_color: #f12032; --back_color: #ffe1e5; }
+.rr .rr-btn-draw--navy { --line_color: #1c2837; --back_color: #e7ecf5; }
+.rr .rr-btn-draw--ink { --line_color: #23262e; --back_color: #efeee9; }
+
+/* ---- 3) Weiche, plastische Karte (.rr-card-soft) ----
+   Neumorphismus mit doppeltem Schatten; auf hellem Grund
+   lesbar gehalten. Neutral / Rot / Navy. */
+.rr .rr-card-soft {
+  width: 200px;
+  height: 250px;
+  border-radius: 32px;
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  transition: transform 240ms var(--rr-ease), box-shadow 240ms var(--rr-ease);
+}
+.rr .rr-card-soft:hover { transform: translateY(-4px); }
+.rr .rr-card-soft__eyebrow {
+  font-family: var(--rr-font-ui);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.rr .rr-card-soft__label {
+  font-family: var(--rr-font-display);
+  font-weight: 560;
+  font-size: 22px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.rr .rr-card-soft--neutral {
+  background: #f0f0ee;
+  color: var(--rr-ink);
+  box-shadow: 16px 16px 40px #d3d3cf, -16px -16px 40px #ffffff;
+}
+.rr .rr-card-soft--neutral .rr-card-soft__eyebrow { color: var(--rr-red); }
+.rr .rr-card-soft--red {
+  background: linear-gradient(145deg, #f4384a, #d3162a);
+  color: #fff;
+  box-shadow: 18px 18px 42px rgba(200, 18, 34, 0.3), -14px -14px 36px rgba(255, 255, 255, 0.9);
+}
+.rr .rr-card-soft--red .rr-card-soft__eyebrow { color: rgba(255, 255, 255, 0.82); }
+.rr .rr-card-soft--navy {
+  background: linear-gradient(145deg, #243646, #161f2b);
+  color: #fff;
+  box-shadow: 18px 18px 42px rgba(28, 40, 55, 0.32), -14px -14px 36px #ffffff;
+}
+.rr .rr-card-soft--navy .rr-card-soft__eyebrow { color: #ff6470; }
+
+/* ---- 4) Schalter mit rotierendem Knopf (.rr-toggle) ----
+   Mechanik 1:1: roter Radial-Knopf schwenkt, maskierter Griff,
+   Basis wechselt die Farbe im Ein-Zustand. Ein-Zustand auf Navy
+   (Default) oder Rot (--red) statt Stock-Gruen. */
+.rr .rr-toggle {
+  --knob-size: 1.75em;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  font-size: 15px;
+  cursor: pointer;
+}
+.rr .rr-toggle__input {
+  position: absolute;
+  z-index: 2;
+  bottom: 132.5%;
+  border-radius: 50%;
+  transform: rotate(-25deg);
+  transform-origin: 50% 4.75em;
+  width: var(--knob-size);
+  height: var(--knob-size);
+  opacity: 0;
+  font: inherit;
+  transition: transform 0.24s cubic-bezier(0.65, 1.35, 0.5, 1);
+  cursor: pointer;
+}
+.rr .rr-toggle__input:checked { transform: rotate(25deg); }
+.rr .rr-toggle__handle-wrapper {
+  position: absolute;
+  z-index: 1;
+  bottom: -135%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 62.125%, transparent 50%);
+  mask-image: linear-gradient(to bottom, #000 62.125%, transparent 50%);
+  width: 200%;
+  overflow: hidden;
+}
+.rr .rr-toggle__handle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: rotate(-25deg);
+  transform-origin: bottom center;
+  transition: transform 0.24s cubic-bezier(0.65, 1.35, 0.5, 1);
+}
+.rr .rr-toggle__input:checked + .rr-toggle__handle-wrapper > .rr-toggle__handle { transform: rotate(25deg); }
+.rr .rr-toggle__knob {
+  position: relative;
+  z-index: 1;
+  border-radius: 50%;
+  width: var(--knob-size);
+  height: var(--knob-size);
+  background-image: radial-gradient(farthest-corner at 70% 30%, #ffe0e4 4%, #f12032 12% 24%, #a50f1c 50% 65%, #f12032 75%);
+  transition: transform 0.24s cubic-bezier(0.65, 1.35, 0.5, 1);
+}
+.rr .rr-toggle__input:checked + .rr-toggle__handle-wrapper .rr-toggle__knob { transform: rotate(-90deg); }
+.rr .rr-toggle__knob::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 8px 2px rgb(255 255 255 / 0.4);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+@media (hover: hover) {
+  .rr .rr-toggle__input:hover + .rr-toggle__handle-wrapper .rr-toggle__knob::after,
+  .rr .rr-toggle__input:focus-visible + .rr-toggle__handle-wrapper .rr-toggle__knob::after { opacity: 1; }
+}
+.rr .rr-toggle__bar-wrapper { position: relative; width: 0.5em; height: 3em; }
+.rr .rr-toggle__bar {
+  position: absolute;
+  top: calc(var(--knob-size) / 2 * -1);
+  left: 0;
+  width: 100%;
+  height: calc(100% + var(--knob-size) / 2);
+  background-image: linear-gradient(to right, #777475, #a4a4a4, #fff 45% 55%, #a4a4a4, #777475);
+  background-position-x: 0.06125em;
+  transition: background-position-x 0.24s cubic-bezier(0.65, 1.35, 0.5, 1);
+  box-shadow: inset 0 1em 0.25em rgb(0 0 0 / 0.4);
+}
+.rr .rr-toggle__input:checked + .rr-toggle__handle-wrapper .rr-toggle__bar { background-position-x: -0.06125em; }
+.rr .rr-toggle__base {
+  position: relative;
+  border-radius: 3.125em;
+  padding: 0.25em;
+  width: 3.5em;
+  height: 1.125em;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom, #fff, #d7d7d7);
+  box-shadow: 0 -0.25em 0.5em #fff, 0 0.25em 0.5em #d7d7d7;
+}
+.rr .rr-toggle__base-inside {
+  position: relative;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, #a6a6a6, #7d7d7d);
+  box-shadow: inset 0 0.0625em rgb(255 255 255 / 0.2), inset 0 -0.03125em rgb(255 255 255 / 1), inset 0 -0.0625em 0.25em rgb(0 0 0 / 0.1);
+}
+.rr .rr-toggle__base-inside::after {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, #294056, #1c2837);
+  box-shadow: inherit;
+  opacity: 0;
+  transition: opacity 0.24s cubic-bezier(0.65, 1.35, 0.5, 1);
+}
+.rr .rr-toggle__input:checked ~ .rr-toggle__base .rr-toggle__base-inside::after { opacity: 1; }
+/* Ein-Zustand alternativ in Markenrot statt Navy */
+.rr .rr-toggle--red .rr-toggle__base-inside::after { background-image: linear-gradient(to bottom, #f12032, #c81222); }
