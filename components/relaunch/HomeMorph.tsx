@@ -114,16 +114,20 @@ export default function HomeMorph() {
           srcOf.push(-1);
         });
       });
-      // Farbtupfer (Tomson 05.07.): GENAU EIN laengliches Teil in Dunkelblau je
-      // Szene — deterministisch das gestreckteste (max. Seitenverhaeltnis) Teil
-      // jeder der 5 Kompositionen.
+      // Farbtupfer (Tomson 06.07.): die markante gestreckte Balken-Form (max.
+      // Seitenverhaeltnis) ist der Navy-Akzent — und zwar JEDE Instanz genau
+      // dieser Form (identischer SVG-Pfad), damit dasselbe Teil ueberall in
+      // Dunkelblau wiederkehrt und homogen wirkt. Der Rest bleibt rot.
       const asp = (jp: { w: number; h: number; sx: number; sy: number }) => {
         const W = jp.w * Math.abs(jp.sx), H = jp.h * Math.abs(jp.sy);
         return Math.max(W / H, H / W);
       };
-      const navyIdxByScene = COMPS.map((comp) =>
-        comp.pieces.reduce((best, jp, idx) => (asp(jp) > asp(comp.pieces[best]) ? idx : best), 0)
-      );
+      const navyPathByScene = COMPS.map((comp) => {
+        const ref = comp.pieces.reduce(
+          (best, jp, idx) => (asp(jp) > asp(comp.pieces[best]) ? idx : best), 0
+        );
+        return comp.pieces[ref].d;
+      });
       const plan = buildStagePlan(pool, { w: window.innerWidth, h: window.innerHeight });
       timelines = plan.timelines;
       sceneLayouts = plan.scenes;
@@ -158,7 +162,7 @@ export default function HomeMorph() {
         const el = document.createElement("div");
         if (p.at != null && p.scene != null) {
           const jp = COMPS[p.scene].pieces[p.at];
-          const navy = p.scene != null && p.at === navyIdxByScene[p.scene];
+          const navy = jp.d === navyPathByScene[p.scene];
           el.innerHTML = `<svg width="100%" height="100%" viewBox="${-jp.w / 2} ${-jp.h / 2} ${jp.w} ${jp.h}" preserveAspectRatio="none" style="display:block;overflow:visible"><g transform="scale(${jp.sx < 0 ? -1 : 1} ${jp.sy < 0 ? -1 : 1})"><path d="${jp.d}" fill="${navy ? "#1C2837" : "#F12032"}"/></g></svg>`;
         } else {
           el.innerHTML = layout.pieces[srcOf[i]].svg;
