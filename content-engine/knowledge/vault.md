@@ -1364,3 +1364,30 @@ quelle: https://www.world4you.com/hosting/dsgvo-hosting
 quelle_name: World4You - DSGVO-konformes Hosting: Daten sicher in der EU hosten
 geprueft_am: 2026-07-05
 recheck_nach: 2027-01-01
+
+## t33-2026-07-05-152
+cluster: 1
+keywords: gehört, code, website, nach, fertigstellung, kunden
+aussage: In Österreich ist das Urheberrecht laut § 23 UrhG grundsätzlich unübertragbar (nur vererblich) - der Urheber bleibt immer Urheber. Ein Kunde kann daher niemals das Urheberrecht am Website-Code 'kaufen', sondern nur Nutzungs-/Werknutzungsrechte eingeräumt bekommen.
+quelle: https://www.jusline.at/gesetz/urhg/paragraf/23
+quelle_name: JUSLINE Österreich - § 23 UrhG (Urheberrechtsgesetz), Wortlaut 'Im übrigen ist das Urheberrecht unübertragbar'
+geprueft_am: 2026-07-05
+recheck_nach: 2027-01-01
+
+## t33-2026-07-05-153
+cluster: 1
+keywords: gehört, code, website, nach, fertigstellung, kunden
+aussage: Das automatische Werknutzungsrecht des Auftraggebers am Code greift nur bei ANGESTELLTEN Programmierern: Nach § 40b UrhG erhält der Dienstgeber ein unbeschränktes Werknutzungsrecht an Programmen, die ein Dienstnehmer in Erfüllung seiner dienstlichen Obliegenheiten schafft. Bei selbstständigen Agenturen/Freelancern (Werkvertrag) gilt § 40b NICHT - hier muss der Kunde die Nutzungsrechte am Code ausdrücklich vertraglich vereinbaren.
+quelle: https://www.jusline.at/gesetz/urhg/paragraf/40b
+quelle_name: JUSLINE Österreich - § 40b UrhG (Dienstnehmer)
+geprueft_am: 2026-07-05
+recheck_nach: 2027-01-01
+
+## t33-2026-07-05-154
+cluster: 1
+keywords: gehört, code, website, nach, fertigstellung, kunden
+aussage: Auf die Herausgabe des Quellcodes selbst hat der Auftraggeber in Österreich keinen automatischen Anspruch - die Judikatur stellt stark auf den Einzelfall ab (Faktoren pro Herausgabe: eigenständige Änderungen durch den Kunden, keine Wartung durch den Entwickler, exklusive Nutzungsrechte, hohes Honorar). Eine Quellcode-Übergabe umfasst zudem meist nur kundenspezifische Teile, nicht Fremd-/Open-Source-Komponenten. Empfohlen wird daher eine eindeutige vertragliche Regelung von Anfang an.
+quelle: https://www.digital-recht.at/blog/ist-der-quellcode-geschuldet
+quelle_name: digital-recht.at - Ist der Quellcode geschuldet?
+geprueft_am: 2026-07-05
+recheck_nach: 2027-01-01
