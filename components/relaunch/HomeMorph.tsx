@@ -9,6 +9,7 @@ import {
   type PieceTimeline, type PoolPieceIn, type SceneLayout,
 } from "@/lib/relaunch/morph/stage";
 import { SCENE_TEXTS } from "@/lib/relaunch/morph/scene-content";
+import { RabbitMark } from "./RabbitMark";
 import atShapes1 from "@/lib/relaunch/morph/at-shapes-comp1.json";
 import atShapes2 from "@/lib/relaunch/morph/at-shapes-comp2.json";
 import atShapes3 from "@/lib/relaunch/morph/at-shapes-comp3.json";
@@ -17,6 +18,19 @@ import atShapes5 from "@/lib/relaunch/morph/at-shapes-comp5.json";
 
 /** alle 5 vermessenen Kompositionen (Index = Szene). */
 const COMPS = [atShapes1, atShapes2, atShapes3, atShapes4, atShapes5];
+
+/**
+ * Marken-Auftakt (Phasen 1-2) VOR dem Morph: zusaetzliche Scroll-Zeit am Anfang.
+ * uScroll laeuft [0, U_INTRO + U_TOTAL]; der Morph-u (= uScroll - U_INTRO, ab 0)
+ * treibt unveraendert die bestehende Timeline. So teilen Hasenkopf, Statement und
+ * Wortmarke EIN Koordinatensystem -> nahtloser Lockup -> Shatter-Uebergang.
+ */
+const U_INTRO = 1.25;
+const U_SPAN = U_INTRO + U_TOTAL;
+/** Hoehe des Hasenkopfs (konstant); Peek zeigt die obere Haelfte. */
+const HEAD_VH = 54;
+/** Lockup: Wortmarke sitzt tiefer (unter dem Kopf); gleitet in Ruhephase zur Mitte. */
+const LOCK_STAGE_VH = 22;
 
 /**
  * Durchgehende Morph-Buehne: Wortmarke -> Kontraktion -> Burst mit sichtbarer
@@ -28,6 +42,8 @@ export default function HomeMorph({ claim }: { claim: string }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const claimRef = useRef<HTMLHeadingElement>(null);
+  const headRef = useRef<HTMLDivElement>(null);
+  const statementRef = useRef<HTMLDivElement>(null);
   const probeRef = useRef<HTMLSpanElement>(null);
   const textRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [reduced, setReduced] = useState(false);
@@ -155,10 +171,13 @@ export default function HomeMorph({ claim }: { claim: string }) {
       if (!timelines.length) return;
       const r = track.getBoundingClientRect();
       const p = clamp01(-r.top / (r.height - window.innerHeight));
-      // QA-Override: window.__morphU erzwingt einen exakten u-Wert (nur wenn
-      // gesetzt; in Produktion nie aktiv) -> Lenis-unabhaengige Frame-Pruefung.
-      const forced = (window as unknown as { __morphU?: number }).__morphU;
-      const u = typeof forced === "number" ? forced : p * U_TOTAL;
+      // QA-Override: window.__uScroll erzwingt den Gesamt-Scroll-u, __morphU den
+      // Morph-u (nur wenn gesetzt) -> Lenis-unabhaengige Frame-Pruefung.
+      const w = window as unknown as { __morphU?: number; __uScroll?: number };
+      const uScroll = typeof w.__uScroll === "number" ? w.__uScroll : p * U_SPAN;
+      // u = Morph-Fortschritt (Wortmarke -> Shatter -> Szenen), erst NACH dem Intro.
+      const u =
+        typeof w.__morphU === "number" ? w.__morphU : Math.max(0, uScroll - U_INTRO);
 
       for (let i = 0; i < els.length; i++) {
         const st = sampleTimeline(timelines[i], u);
@@ -175,11 +194,42 @@ export default function HomeMorph({ claim }: { claim: string }) {
         camWraps[s].style.transform = `translate(${c.tx}px, ${c.ty}px) scale(${c.k})`;
       }
 
-      // Hero-Claim: sichtbar bis zur Kontraktion, dann raus
+      // Hero-Claim: erscheint NACH dem Auftakt-Statement (waehrend der Kopf
+      // ausblendet), sichtbar bis in die Kontraktion, dann raus.
       if (claimRef.current) {
-        const co = 1 - clamp01((u - 0.18) / 0.3);
+        const cin = clamp01((u - 0.06) / 0.14);
+        const cout = 1 - clamp01((u - 0.3) / 0.28);
+        const co = cin * cout;
         claimRef.current.style.opacity = String(co);
         claimRef.current.style.transform = `translateY(${(1 - co) * -18}px)`;
+      }
+
+      // ---- Marken-Auftakt (Phasen 1-2): Statement + Hasenkopf ueber der Wortmarke
+      // Wortmarke (Stage) blendet in Phase 2 unter dem steigenden Kopf ein und
+      // gleitet aus der tieferen Lockup-Position in der Ruhephase (u 0->0.22) in
+      // die Mitte -> danach kontrahiert/zerfaellt sie unveraendert.
+      const wmIn = clamp01((uScroll - U_INTRO * 0.55) / (U_INTRO * 0.4));
+      const slideY = (1 - masterEase(clamp01(u / 0.22))) * LOCK_STAGE_VH;
+      stage.style.opacity = String(u > 0 ? 1 : wmIn);
+      stage.style.transform = `translateY(${slideY}vh)`;
+
+      // Hasenkopf: Phase-1-Verweilen am Halb-Peek, dann Aufstieg zur vollen Ansicht
+      // (Top des Lockups); blendet zu Phase-3-Beginn aus, bevor die Wortmarke
+      // kontrahiert.
+      if (headRef.current) {
+        const headP = masterEase(clamp01((uScroll - U_INTRO * 0.3) / (U_INTRO * 0.62)));
+        const dyC = 50 + (-20 - 50) * headP; // vh: +50 (Peek: Mitte am unteren Rand) -> -20 (voll)
+        const headFade = 1 - clamp01(u / 0.14);
+        headRef.current.style.transform = `translate(-50%, calc(-50% + ${dyC}vh))`;
+        headRef.current.style.opacity = String(headFade);
+      }
+
+      // Statement: ruhig oben-mittig (all-turtles-Massstab), verblasst frueh und
+      // steigt dabei auf -> es raeumt nach oben, bevor der Kopf seine Zone erreicht.
+      if (statementRef.current) {
+        const stFade = 1 - clamp01((uScroll - U_INTRO * 0.34) / (U_INTRO * 0.32));
+        statementRef.current.style.opacity = String(stFade);
+        statementRef.current.style.transform = `translate(-50%, ${-(1 - stFade) * 80}px)`;
       }
 
       // R3: Statement steigt VON UNTEN hoch waehrend die Formation entsteht —
@@ -228,22 +278,80 @@ export default function HomeMorph({ claim }: { claim: string }) {
   }, []);
 
   return (
-    <div ref={trackRef} style={{ height: `${U_TOTAL * 150 + 100}vh`, position: "relative" }}>
+    <div ref={trackRef} style={{ height: `${U_SPAN * 150 + 100}vh`, position: "relative" }}>
       <span ref={probeRef} aria-hidden style={{ fontFamily: "var(--rr-font-display)", position: "absolute", opacity: 0, pointerEvents: "none" }}>probe</span>
       <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
-        {/* Teile-Buehne: Origin = Viewport-Zentrum */}
-        {!reduced && <div ref={stageRef} style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%" }} />}
+        {/* Teile-Buehne: Origin = Viewport-Zentrum (Wortmarke -> Shatter) */}
+        {!reduced && <div ref={stageRef} style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", willChange: "transform, opacity" }} />}
 
-        {/* Hero-Claim ueber der Wortmarke */}
-        <div style={{ position: "absolute", left: 0, right: 0, top: "11vh", textAlign: "center", pointerEvents: "none" }}>
-          <h1 ref={claimRef} className="rr-claim" style={{ padding: "0 24px" }}>{claim}</h1>
+        {/* Marken-Auftakt (Phase 1-2): Hasenkopf, steigt vom unteren Rand auf */}
+        {!reduced && (
+          <div
+            ref={headRef}
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              height: `${HEAD_VH}vh`,
+              aspectRatio: "174 / 267",
+              transform: "translate(-50%, calc(-50% + 50vh))",
+              zIndex: 4,
+              pointerEvents: "none",
+              willChange: "transform, opacity",
+            }}
+          >
+            <RabbitMark className="rr-heromark" color="var(--rr-red)" title="Red Rabbit" />
+          </div>
+        )}
+
+        {/* Marken-Auftakt (Phase 1-2): Statement, ruhig oben-mittig (Crimson Pro) */}
+        {!reduced && (
+          <div
+            ref={statementRef}
+            style={{
+              position: "absolute",
+              top: "clamp(64px, 19vh, 210px)",
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "min(90vw, 900px)",
+              textAlign: "center",
+              zIndex: 5,
+              pointerEvents: "none",
+            }}
+          >
+            <p style={{
+              margin: 0,
+              fontFamily: "var(--rr-font-serif)",
+              fontWeight: 500,
+              fontSize: "clamp(24px, 3vw, 42px)",
+              lineHeight: 1.2,
+              letterSpacing: "-0.01em",
+              color: "#1C2837",
+            }}>
+              Wir bauen ästhetische Websites, die man dort findet, wo deine Kunden sind.
+            </p>
+          </div>
+        )}
+
+        {/* Hero-Claim ueber der Wortmarke (Phase 3, waehrend Kontraktion/Shatter) */}
+        <div style={{ position: "absolute", left: 0, right: 0, top: "11vh", textAlign: "center", pointerEvents: "none", zIndex: 6 }}>
+          <h1 ref={claimRef} className="rr-claim" style={{ padding: "0 24px", opacity: 0 }}>{claim}</h1>
         </div>
 
         {reduced && (
-          <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center" }}>
-            <p className="rr-display-2" style={{ color: "var(--rr-red)", fontWeight: 640 }}>red<br />rabbit</p>
+          <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3vh", padding: "0 24px" }}>
+            <p style={{ fontFamily: "var(--rr-font-serif)", fontWeight: 500, fontSize: "clamp(24px, 3vw, 42px)", lineHeight: 1.2, textAlign: "center", color: "#1C2837", maxWidth: "min(90vw, 900px)", margin: 0 }}>
+              Wir bauen ästhetische Websites, die man dort findet, wo deine Kunden sind.
+            </p>
+            <div style={{ height: "40vh", aspectRatio: "174 / 267" }}>
+              <RabbitMark className="rr-heromark" color="var(--rr-red)" title="Red Rabbit" />
+            </div>
+            <p className="rr-display-2" style={{ color: "var(--rr-red)", fontWeight: 640, textAlign: "center", margin: 0 }}>red<br />rabbit</p>
           </div>
         )}
+
+        <style>{`.rr-heromark{display:block;width:100%;height:100%}`}</style>
 
         {/* Statements (SEO-Text immer im DOM), Seite = Gegenseite der Formation */}
         {!reduced && SCENE_TEXTS.map((t, i) => (

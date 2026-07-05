@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { crimson, fraunces, grotesk } from "@/lib/relaunch/fonts";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
-import BrandOpening from "@/components/relaunch/BrandOpening";
 import HomeMorph from "@/components/relaunch/HomeMorph";
 import CasePanels from "@/components/relaunch/CasePanels";
 import HomeClosing from "@/components/relaunch/HomeClosing";
@@ -24,10 +23,8 @@ export default function RelaunchPreviewPage() {
       {/* Fixes Menue (Trigger + Vollbild-Overlay) */}
       <RelaunchMenu />
 
-      {/* Sektion 0: Marken-Auftakt — Statement + Hasenkopf-Reveal (ueber dem Wortmarken-Morph) */}
-      <BrandOpening />
-
-      {/* Sektionen 1-3: durchgehende Morph-Buehne (Hero + 5 Leistungs-Szenen) */}
+      {/* Sektionen 0-3: Marken-Auftakt (Statement + Hasenkopf-Lockup) direkt in die
+          durchgehende Morph-Buehne integriert (Hero + 5 Leistungs-Szenen) */}
       <HomeMorph claim="Wir bauen Websites, die man findet. Bei Google und in der KI." />
 
       {/* Sektion 4: Ueberleitung */}

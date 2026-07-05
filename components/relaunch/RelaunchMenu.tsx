@@ -123,7 +123,6 @@ export default function RelaunchMenu() {
         <span className="rrmenu-bars" aria-hidden="true">
           <span className="rrmenu-bar rrmenu-bar--1" />
           <span className="rrmenu-bar rrmenu-bar--2" />
-          <span className="rrmenu-bar rrmenu-bar--3" />
         </span>
       </button>
 
@@ -214,41 +213,31 @@ export default function RelaunchMenu() {
         }
         .rrmenu-bars {
           position: relative;
-          width: 26px;
-          height: 14px;
+          width: 28px;
+          height: 11px;
           display: block;
         }
+        /* Zwei gleich lange Linien (wie all-turtles) */
         .rrmenu-bar {
           position: absolute;
           left: 0;
-          height: 2.5px;
-          width: 26px;
+          height: 2px;
+          width: 28px;
           border-radius: 2px;
           background: var(--rr-red, #f12032);
           transition: transform 360ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)),
-            width 260ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)),
             opacity 200ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
         }
         .rrmenu-bar--1 { top: 0; }
-        .rrmenu-bar--2 { top: 50%; transform: translateY(-50%); width: 20px; }
-        .rrmenu-bar--3 { bottom: 0; width: 26px; }
-        /* Ruhezustand: leicht "zerbrochenes" Raster (Marken-Motiv) */
-        .rrmenu-trigger:not(.is-open):hover .rrmenu-bar--2 { width: 26px; }
-        .rrmenu-trigger:not(.is-open):hover .rrmenu-bar--1 { transform: translateX(2px); }
+        .rrmenu-bar--2 { bottom: 0; }
         /* Offen: X */
         .rrmenu-trigger.is-open .rrmenu-bar--1 {
           top: 50%;
-          width: 26px;
           transform: translateY(-50%) rotate(45deg);
         }
         .rrmenu-trigger.is-open .rrmenu-bar--2 {
-          opacity: 0;
-          transform: translateY(-50%) scaleX(0.3);
-        }
-        .rrmenu-trigger.is-open .rrmenu-bar--3 {
           bottom: auto;
           top: 50%;
-          width: 26px;
           transform: translateY(-50%) rotate(-45deg);
         }
 
