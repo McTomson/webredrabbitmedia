@@ -27,10 +27,21 @@ export default function RelaunchPreviewPage() {
           durchgehende Morph-Buehne integriert (Hero + 5 Leistungs-Szenen) */}
       <HomeMorph />
 
-      {/* Sektion 4: Ueberleitung */}
-      <section className="rr-section">
+      {/* Sektion 4: Ueberleitung — zentriert und grosszuegig geluftet wie
+          all-turtles' "Meet a few of our studio companies" (viel Weissraum
+          vor dem ersten farbigen Panel). */}
+      <section
+        className="rr-section"
+        style={{
+          textAlign: "center",
+          paddingTop: "clamp(150px, 22vh, 300px)",
+          paddingBottom: "clamp(130px, 18vh, 260px)",
+        }}
+      >
         <div className="rr-wrap">
-          <h2 className="rr-claim">Ein paar unserer Projekte.</h2>
+          <h2 className="rr-claim" style={{ margin: "0 auto", maxWidth: "13em" }}>
+            Ein paar unserer Projekte.
+          </h2>
         </div>
       </section>
 

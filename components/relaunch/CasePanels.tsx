@@ -270,11 +270,11 @@ export default function CasePanels() {
       <div>
         {THEMES.map((t) => (
           <section key={t.key} aria-label={`Thema ${t.eyebrow}`} style={{ minHeight: "100vh", position: "relative", overflow: "hidden", background: t.bg, color: t.text, display: "flex", alignItems: "center" }}>
-            <div className="rr-wrap" style={{ position: "relative", width: "100%", padding: "12vh 0" }}>
+            <div className="rr-wrap" style={{ position: "relative", width: "100%", padding: "clamp(96px, 16vh, 200px) 0" }}>
               <p className="rr-eyebrow-lg" style={{ color: t.accent }}>{t.eyebrow}</p>
-              <h3 className="rr-display-1" style={{ margin: "0.18em 0 0.22em", color: "inherit" }}>{t.headline}</h3>
+              <h3 className="rr-display-1" style={{ margin: "0.22em 0 0.32em", color: "inherit" }}>{t.headline}</h3>
               <p className="rr-sub" style={{ maxWidth: "17em", margin: 0 }}>{t.statement}</p>
-              <p style={{ marginTop: 32 }}><Link href={t.href} style={{ color: "inherit", fontSize: 20, textDecoration: "underline", textUnderlineOffset: 5 }}>{t.linkText} {"→"}</Link></p>
+              <p style={{ marginTop: 40 }}><Link href={t.href} style={{ color: "inherit", fontSize: 20, textDecoration: "underline", textUnderlineOffset: 5 }}>{t.linkText} {"→"}</Link></p>
             </div>
           </section>
         ))}

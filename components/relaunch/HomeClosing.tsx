@@ -28,27 +28,34 @@ const COMPANIES: Array<{ name: string; line: string }> = [
 export default function HomeClosing() {
   return (
     <>
-      {/* Sektion 6: Zahlen-Statement */}
-      <section className="rr-section">
+      {/* Sektion 6: Zahlen-Statement — grosszuegig geluftet, viel Luft vor der Liste */}
+      <section
+        className="rr-section"
+        style={{ paddingTop: "clamp(120px, 16vw, 220px)", paddingBottom: "clamp(56px, 8vh, 104px)" }}
+      >
         <div className="rr-wrap">
           <p className="rr-statement" style={{ maxWidth: "14em" }}>
             Websites für Handwerk, Gastronomie, Beauty und Immobilien. Gebaut, betreut und sichtbar gemacht. Unter anderem für:
           </p>
-          <p className="rr-meta" style={{ marginTop: 18 }}>
+          <p className="rr-meta" style={{ marginTop: 24 }}>
             PLATZHALTER: Jahres- und Projektzahl folgen, sobald belegt (Tomson liefert). Einzeiler der B2B-Namen bitte prüfen.
           </p>
         </div>
       </section>
 
-      {/* Sektion 7: Firmen-Liste, 5 Reihen a 3 */}
-      <section className="rr-section" style={{ paddingTop: 0 }}>
-        <div className="rr-wrap" style={{ display: "grid", gap: "clamp(40px, 6vw, 72px)" }}>
+      {/* Sektion 7: Firmen-Liste, 5 Reihen a 3 — luftige Zeilen wie das
+          all-turtles-Portfolio-Raster (grosser vertikaler Rhythmus). */}
+      <section
+        className="rr-section"
+        style={{ paddingTop: "clamp(24px, 4vh, 64px)", paddingBottom: "clamp(120px, 16vw, 220px)" }}
+      >
+        <div className="rr-wrap" style={{ display: "grid", gap: "clamp(72px, 10vw, 150px)" }}>
           {Array.from({ length: Math.ceil(COMPANIES.length / 3) }, (_, row) => (
             <div className="rr-companyrow" key={row}>
               {COMPANIES.slice(row * 3, row * 3 + 3).map((c) => (
                 <div key={c.name}>
                   <p className="rr-company-name">{c.name}</p>
-                  <p className="rr-company-line">{c.line}</p>
+                  <p className="rr-company-line" style={{ marginTop: 10 }}>{c.line}</p>
                 </div>
               ))}
             </div>
@@ -56,13 +63,16 @@ export default function HomeClosing() {
         </div>
       </section>
 
-      {/* Sektion 8: Abschluss-CTA */}
-      <section className="rr-section">
+      {/* Sektion 8: Abschluss-CTA — eigener luftiger Block */}
+      <section
+        className="rr-section"
+        style={{ paddingTop: "clamp(80px, 12vw, 180px)", paddingBottom: "clamp(120px, 18vw, 240px)" }}
+      >
         <div className="rr-wrap">
           <p className="rr-display-2" style={{ maxWidth: "10em" }}>
             Du willst eine Website, die man findet? Reden wir.
           </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 18, marginTop: "clamp(32px, 5vh, 56px)" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 18, marginTop: "clamp(40px, 6vh, 64px)" }}>
             <Link className="rr-btn rr-btn--primary" href="/kontakt">Projekt anfragen</Link>
             <a className="rr-btn rr-btn--secondary" href="tel:+436769000955">+43 676 9000 955</a>
           </div>
