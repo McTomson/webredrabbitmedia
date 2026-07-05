@@ -1310,3 +1310,57 @@ quelle: https://nextjs.org/docs/app/guides/backend-for-frontend
 quelle_name: Next.js Docs - How to use Next.js as a backend for your frontend
 geprueft_am: 2026-07-04
 recheck_nach: 2026-12-31
+
+## t32-2026-07-05-146
+cluster: 1
+keywords: wird, website, dsgvo, konform, gehostet
+aussage: Der EuGH erklärte am 16.07.2020 im Urteil 'Schrems II' (Rechtssache C-311/18) den EU-US-Privacy-Shield für ungültig, weil das US-Datenschutzniveau wegen der weitreichenden Zugriffsrechte von US-Behörden nicht dem der EU entspricht — seither ist der Serverstandort bzw. Datentransfer in die USA ein zentrales DSGVO-Risiko beim Hosting.
+quelle: https://www.bfdi.bund.de/DE/Fachthemen/Inhalte/Europa-Internationales/Auswirkungen-Schrems-II-Urteil.html
+quelle_name: BfDI - Datenübermittlungen in die USA und Schrems II Urteil
+geprueft_am: 2026-07-05
+recheck_nach: 2027-01-01
+
+## t32-2026-07-05-147
+cluster: 1
+keywords: wird, website, dsgvo, konform, gehostet
+aussage: Seit 10.07.2023 erlaubt der Angemessenheitsbeschluss der EU-Kommission zum EU-U.S. Data Privacy Framework (nach Art. 45 DSGVO) Datentransfers in die USA ohne zusätzliche Maßnahmen — aber nur, wenn die empfangende US-Organisation unter dem Framework zertifiziert ist.
+quelle: https://www.bfdi.bund.de/SharedDocs/Kurzmeldungen/DE/2023/17_Angemessenheitsbeschluss-EU-US-DPF.html
+quelle_name: BfDI - Angemessenheitsbeschluss zum EU-U.S. Data Privacy Framework in Kraft getreten
+geprueft_am: 2026-07-05
+recheck_nach: 2027-01-01
+
+## t32-2026-07-05-148
+cluster: 1
+keywords: wird, website, dsgvo, konform, gehostet
+aussage: Beim Hosting muss der Website-Betreiber mit dem Hosting-Provider einen Auftragsverarbeitungsvertrag (AVV) nach Art. 28 DSGVO abschließen; fehlt dieser Vertrag, drohen Maßnahmen der Datenschutzaufsichtsbehörden. Die WKO stellt dafür einen österreichischen Mustervertrag bereit.
+quelle: https://www.wko.at/datenschutz/eu-dsgvo-auftragsverarbeitung-mustervertrag
+quelle_name: WKO - EU-DSGVO: Mustervertrag für die Auftragsverarbeitung nach Art. 28 DSGVO
+geprueft_am: 2026-07-05
+recheck_nach: 2027-01-01
+
+## t32-2026-07-05-149
+cluster: 1
+keywords: wird, website, dsgvo, konform, gehostet
+aussage: Ein Serverstandort in der EU allein garantiert keine DSGVO-Konformität: Der US CLOUD Act verpflichtet US-Anbieter — und ausdrücklich auch ihre europäischen Tochtergesellschaften — zur Datenherausgabe an US-Behörden, unabhängig davon, ob die Daten in einem EU-Rechenzentrum liegen. Entscheidend ist die Kontrolle über die Daten, nicht nur der physische Standort.
+quelle: https://www.activemind.legal/guides/us-cloud-act/
+quelle_name: activeMind.legal - U.S. CLOUD Act (Guide)
+geprueft_am: 2026-07-05
+recheck_nach: 2027-01-01
+
+## t32-2026-07-05-150
+cluster: 1
+keywords: wird, website, dsgvo, konform, gehostet
+aussage: Art. 48 DSGVO stellt klar, dass ein Gerichts- oder Behördenbeschluss eines Drittlands (z. B. eine CLOUD-Act-Anordnung), der zur Datenübermittlung verpflichtet, nur anerkannt werden darf, wenn er auf einem internationalen Abkommen beruht — ein solches Abkommen für den Strafverfolgungs-Datenzugriff zwischen EU und USA existiert nicht.
+quelle: https://www.edpb.europa.eu/sites/default/files/files/file2/edpb_edps_joint_response_us_cloudact_annex.pdf
+quelle_name: EDPB/EDPS - Initial legal assessment of the impact of the US CLOUD Act on the EU (Annex)
+geprueft_am: 2026-07-05
+recheck_nach: 2027-01-01
+
+## t32-2026-07-05-151
+cluster: 1
+keywords: wird, website, dsgvo, konform, gehostet
+aussage: Als praktische DSGVO-Empfehlung gilt: Website-Daten sollten grundsätzlich bei einem Hoster mit Serverstandort innerhalb der EU — idealerweise in der DACH-Region wie Österreich — verarbeitet werden, wobei nicht nur der Standort, sondern auch der Hoster und dessen eingesetzte Subdienstleister für die tatsächliche Konformität verantwortlich sind.
+quelle: https://www.world4you.com/hosting/dsgvo-hosting
+quelle_name: World4You - DSGVO-konformes Hosting: Daten sicher in der EU hosten
+geprueft_am: 2026-07-05
+recheck_nach: 2027-01-01
