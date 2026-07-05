@@ -9,7 +9,14 @@ import {
   type PieceTimeline, type PoolPieceIn, type SceneLayout,
 } from "@/lib/relaunch/morph/stage";
 import { SCENE_TEXTS } from "@/lib/relaunch/morph/scene-content";
-import atShapes from "@/lib/relaunch/morph/at-shapes-comp1.json";
+import atShapes1 from "@/lib/relaunch/morph/at-shapes-comp1.json";
+import atShapes2 from "@/lib/relaunch/morph/at-shapes-comp2.json";
+import atShapes3 from "@/lib/relaunch/morph/at-shapes-comp3.json";
+import atShapes4 from "@/lib/relaunch/morph/at-shapes-comp4.json";
+import atShapes5 from "@/lib/relaunch/morph/at-shapes-comp5.json";
+
+/** alle 5 vermessenen Kompositionen (Index = Szene). */
+const COMPS = [atShapes1, atShapes2, atShapes3, atShapes4, atShapes5];
 
 /**
  * Durchgehende Morph-Buehne: Wortmarke -> Kontraktion -> Burst mit sichtbarer
@@ -34,8 +41,8 @@ export default function HomeMorph({ claim }: { claim: string }) {
     let timelines: PieceTimeline[] = [];
     let sceneLayouts: SceneLayout[] = [];
     let els: HTMLDivElement[] = [];
-    let camWrap: HTMLDivElement | null = null;
-    let cameraFn: ((u: number) => { k: number; tx: number; ty: number }) | null = null;
+    let camWraps: HTMLDivElement[] = [];
+    let cameras: Array<(u: number) => { k: number; tx: number; ty: number }> = [];
     let raf = 0;
     let destroyed = false;
 
@@ -49,7 +56,7 @@ export default function HomeMorph({ claim }: { claim: string }) {
       if (!layout || layout.pieces.length < 10) return false;
 
       // Pool: 18 Wortmarken-Teile + die extrahierten all-turtles-Original-
-      // Teilformen (atShapes.pieces) fuer Szene 0.
+      // Teilformen aller 5 Comps (Szene 0..4).
       const kBase = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
       const pool: PoolPieceIn[] = [];
       const srcOf: number[] = [];
@@ -57,25 +64,27 @@ export default function HomeMorph({ claim }: { claim: string }) {
         pool.push({ cx: src.cx, cy: src.cy, w: src.w, h: src.h, letter: src.letter, clone: false });
         srcOf.push(idx);
       });
-      atShapes.pieces.forEach((jp, idx) => {
-        const elW = jp.w * Math.abs(jp.sx) * kBase;
-        const elH = jp.h * Math.abs(jp.sy) * kBase;
-        pool.push({ cx: 0, cy: 0, w: elW, h: elH, letter: -1, clone: true, at: idx });
-        srcOf.push(-1);
+      COMPS.forEach((comp, scene) => {
+        comp.pieces.forEach((jp, idx) => {
+          const elW = jp.w * Math.abs(jp.sx) * kBase;
+          const elH = jp.h * Math.abs(jp.sy) * kBase;
+          pool.push({ cx: 0, cy: 0, w: elW, h: elH, letter: -1, clone: true, at: idx, scene });
+          srcOf.push(-1);
+        });
       });
       // Farbtupfer (Tomson 05.07.): GENAU EIN laengliches Teil in Dunkelblau —
-      // deterministisch das gestreckteste Teil der Formation.
-      const navyIdx = atShapes.pieces.reduce((best, jp, idx) => {
+      // deterministisch das gestreckteste Teil von Szene 0 (comp_1).
+      const navyIdx = COMPS[0].pieces.reduce((best, jp, idx) => {
         const asp = (jp2: typeof jp) => {
           const W = jp2.w * Math.abs(jp2.sx), H = jp2.h * Math.abs(jp2.sy);
           return Math.max(W / H, H / W);
         };
-        return asp(jp) > asp(atShapes.pieces[best]) ? idx : best;
+        return asp(jp) > asp(COMPS[0].pieces[best]) ? idx : best;
       }, 0);
       const plan = buildStagePlan(pool, { w: window.innerWidth, h: window.innerHeight });
       timelines = plan.timelines;
       sceneLayouts = plan.scenes;
-      cameraFn = plan.camera;
+      cameras = plan.cameras;
 
       // Schaerfe: Element in seiner GROESSTEN Verwendung rendern und Timeline-Scales
       // darauf normieren — CSS-transform darf nur noch verkleinern (Upscale = Matsch).
@@ -92,23 +101,28 @@ export default function HomeMorph({ claim }: { claim: string }) {
       });
 
       stage.innerHTML = "";
-      // Kamera-Wrapper: nimmt ALLE at-Teile auf (Zoom/Pan der Szene-0-Fahrt);
-      // die 18 Wortmarken-Teile haengen direkt in der Stage.
-      camWrap = document.createElement("div");
-      camWrap.style.cssText = "position:absolute;inset:0;will-change:transform;transform-origin:50% 50%;";
-      stage.appendChild(camWrap);
+      // Ein Kamera-Wrapper pro Szene: nimmt die at-Teile dieser Szene auf
+      // (Zoom/Pan der jeweiligen Szenen-Fahrt); die 18 Wortmarken-Teile haengen
+      // direkt in der Stage.
+      camWraps = COMPS.map(() => {
+        const w = document.createElement("div");
+        w.style.cssText = "position:absolute;inset:0;will-change:transform;transform-origin:50% 50%;";
+        stage.appendChild(w);
+        return w;
+      });
       els = pool.map((p, i) => {
         const el = document.createElement("div");
-        if (p.at != null) {
-          const jp = atShapes.pieces[p.at];
-          el.innerHTML = `<svg width="100%" height="100%" viewBox="${-jp.w / 2} ${-jp.h / 2} ${jp.w} ${jp.h}" preserveAspectRatio="none" style="display:block;overflow:visible"><g transform="scale(${jp.sx < 0 ? -1 : 1} ${jp.sy < 0 ? -1 : 1})"><path d="${jp.d}" fill="${p.at === navyIdx ? "#1C2837" : "#F12032"}"/></g></svg>`;
+        if (p.at != null && p.scene != null) {
+          const jp = COMPS[p.scene].pieces[p.at];
+          const navy = p.scene === 0 && p.at === navyIdx;
+          el.innerHTML = `<svg width="100%" height="100%" viewBox="${-jp.w / 2} ${-jp.h / 2} ${jp.w} ${jp.h}" preserveAspectRatio="none" style="display:block;overflow:visible"><g transform="scale(${jp.sx < 0 ? -1 : 1} ${jp.sy < 0 ? -1 : 1})"><path d="${jp.d}" fill="${navy ? "#1C2837" : "#F12032"}"/></g></svg>`;
         } else {
           el.innerHTML = layout.pieces[srcOf[i]].svg;
         }
         el.style.cssText =
           `position:absolute;left:50%;top:50%;max-width:none;width:${p.w}px;height:${p.h}px;` +
           `margin-left:${-p.w / 2}px;margin-top:${-p.h / 2}px;will-change:transform;opacity:1;`;
-        (p.at != null ? camWrap! : stage).appendChild(el);
+        (p.at != null && p.scene != null ? camWraps[p.scene] : stage).appendChild(el);
         return el;
       });
 
@@ -146,12 +160,15 @@ export default function HomeMorph({ claim }: { claim: string }) {
         const st = sampleTimeline(timelines[i], u);
         els[i].style.transform = `translate(${st.x}px, ${st.y}px) rotate(${st.rot}deg) scale(${st.scale})`;
         els[i].style.opacity = String(st.o);
+        // 700 Teile: unsichtbare aus dem Paint nehmen (kein display:none -> kein
+        // Layout-Thrash).
+        els[i].style.visibility = st.o <= 0.001 ? "hidden" : "visible";
       }
 
-      // Kamera-Fahrt (Szene 0): Zoom/Pan des at-Teile-Wrappers.
-      if (cameraFn && camWrap) {
-        const c = cameraFn(u);
-        camWrap.style.transform = `translate(${c.tx}px, ${c.ty}px) scale(${c.k})`;
+      // Kamera-Fahrt pro Szene: Zoom/Pan des jeweiligen Szenen-Wrappers.
+      for (let s = 0; s < camWraps.length; s++) {
+        const c = cameras[s](u);
+        camWraps[s].style.transform = `translate(${c.tx}px, ${c.ty}px) scale(${c.k})`;
       }
 
       // Hero-Claim: sichtbar bis zur Kontraktion, dann raus
