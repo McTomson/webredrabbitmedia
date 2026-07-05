@@ -25,7 +25,7 @@ export default function RelaunchPreviewPage() {
 
       {/* Sektionen 0-3: Marken-Auftakt (Statement + Hasenkopf-Lockup) direkt in die
           durchgehende Morph-Buehne integriert (Hero + 5 Leistungs-Szenen) */}
-      <HomeMorph claim="Wir bauen Websites, die man findet. Bei Google und in der KI." />
+      <HomeMorph />
 
       {/* Sektion 4: Ueberleitung */}
       <section className="rr-section">

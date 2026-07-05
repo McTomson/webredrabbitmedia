@@ -43,9 +43,9 @@ const HEAD_LOCK_DY = -20;
  *  -> klarer Abstand Kopf<->Wortmarke am Lockup. Gleitet danach (u 0->0.22) zur Mitte
  *  und kontrahiert/zerfaellt unveraendert. */
 const LOCK_STAGE_VH = 22;
-/** Statement-Mitte (vh, relativ zur Viewport-Mitte) am Scroll-Anfang: obere/mittige
- *  Zone, bequem im Blick. */
-const STMT_TOP_DY = -12;
+/** Statement-Mitte (vh, relativ zur Viewport-Mitte) am Scroll-Anfang: EXAKT
+ *  vertikal zentriert (oben/unten gleicher Abstand). */
+const STMT_TOP_DY = 0;
 /** Starrer Aufwaerts-Weg des GANZEN Stacks vom Peek in den Lockup (vh). Alle drei
  *  Elemente teilen exakt diesen Shift -> es liest sich wie normales Seiten-Scrollen. */
 const STACK_TRAVEL = HEAD_PEEK_DY - HEAD_LOCK_DY; // 63.6vh
@@ -56,10 +56,9 @@ const STACK_TRAVEL = HEAD_PEEK_DY - HEAD_LOCK_DY; // 63.6vh
  * Original-Kompositionen, Seiten-Alternierung) — OHNE leeren Screen, ein
  * Teile-Pool ueber die ganze Fahrt (at-Struktur: EIN Lottie, kein Schnitt).
  */
-export default function HomeMorph({ claim }: { claim: string }) {
+export default function HomeMorph() {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const claimRef = useRef<HTMLHeadingElement>(null);
   const headRef = useRef<HTMLDivElement>(null);
   const statementRef = useRef<HTMLDivElement>(null);
   const probeRef = useRef<HTMLSpanElement>(null);
@@ -90,7 +89,11 @@ export default function HomeMorph({ claim }: { claim: string }) {
 
     function build() {
       const fam = getComputedStyle(probeRef.current!).fontFamily;
-      const F = Math.min(150, Math.max(56, window.innerWidth * 0.125));
+      // Wortmarke groesser (Tomson 05.07.): so gross wie moeglich, damit sie im
+      // Massstab zu den einfliegenden Szenen-Teilen passt ("alles gleich gross").
+      // Obergrenze so, dass "red rabbit" im Lockup unter dem Kopf mit balanciertem
+      // Abstand noch VOLL in den Viewport passt (Hoehe ~1.6*F, Kopf bei 30vh).
+      const F = Math.min(200, Math.max(72, window.innerWidth * 0.15));
       const layout = buildWordLayout(fam, F, window.devicePixelRatio || 1);
       if (!layout || layout.pieces.length < 10) return false;
 
@@ -224,16 +227,6 @@ export default function HomeMorph({ claim }: { claim: string }) {
         camWraps[s].style.opacity = sceneVis;
       }
 
-      // Hero-Claim: erscheint NACH dem Auftakt-Statement (waehrend der Kopf
-      // ausblendet), sichtbar bis in die Kontraktion, dann raus.
-      if (claimRef.current) {
-        const cin = clamp01((u - 0.06) / 0.14);
-        const cout = 1 - clamp01((u - 0.3) / 0.28);
-        const co = cin * cout;
-        claimRef.current.style.opacity = String(co);
-        claimRef.current.style.transform = `translateY(${(1 - co) * -18}px)`;
-      }
-
       // ---- Marken-Auftakt: EIN starrer vertikaler STACK, der beim Scrollen nach
       // oben wandert (wie normales Seiten-Scrollen). Reihenfolge oben->unten:
       // [1] Statement  [2] Hasenkopf  [3] "red rabbit"-Wortmarke. ALLE drei bei
@@ -275,11 +268,13 @@ export default function HomeMorph({ claim }: { claim: string }) {
       stage.style.transform = `translateY(${stageY}vh)`;
 
       // Hasenkopf: peekt am Anfang (Auge-Mitte an der Unterkante), faehrt starr mit
-      // dem Stack in den Lockup. Voll deckend im Intro; blendet erst im Shatter
-      // (u>0) LANGSAM aus.
+      // dem Stack in den Lockup. Voll deckend im Intro UND waehrend die Wortmarke
+      // noch starr nach oben gleitet (u 0->0.22 = U_REST, Wort noch unveraendert).
+      // Erst wenn die Wortmarke sich zu VERAENDERN beginnt (Kontraktion ab u=0.22),
+      // blendet der Kopf langsam aus (Tomson 05.07.: der Ablauf ist wichtig).
       if (headRef.current) {
         const dyC = HEAD_PEEK_DY - introShift; // 43.6 -> -20 (Lockup)
-        const headFade = 1 - clamp01(u / 0.42);
+        const headFade = 1 - clamp01((u - 0.22) / 0.42); // u<0.22: voll; 0.22->0.64: raus
         headRef.current.style.transform = `translate(-50%, calc(-50% + ${dyC}vh))`;
         headRef.current.style.opacity = String(headFade);
       }
@@ -393,11 +388,6 @@ export default function HomeMorph({ claim }: { claim: string }) {
             </p>
           </div>
         )}
-
-        {/* Hero-Claim ueber der Wortmarke (Phase 3, waehrend Kontraktion/Shatter) */}
-        <div style={{ position: "absolute", left: 0, right: 0, top: "11vh", textAlign: "center", pointerEvents: "none", zIndex: 6 }}>
-          <h1 ref={claimRef} className="rr-claim" style={{ padding: "0 24px", opacity: 0 }}>{claim}</h1>
-        </div>
 
         {reduced && (
           <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3vh", padding: "0 24px" }}>
