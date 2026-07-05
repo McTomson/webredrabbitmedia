@@ -1,7 +1,24 @@
 import type { Metadata } from "next";
 import { crimson, fraunces, grotesk } from "@/lib/relaunch/fonts";
 import { RabbitMark } from "@/components/relaunch/RabbitMark";
+import { RelaunchDropdown } from "@/components/relaunch/RelaunchDropdown";
 import "../styleguide/styleguide.css";
+
+/* Kleine Inline-Icons (stroke=currentColor), nur fuer die Button-Demos. */
+function Ico({ path, points }: { path?: string; points?: string }) {
+  return (
+    <span className="rr-btn__ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        {path ? <path d={path} /> : null}
+        {points ? <polyline points={points} /> : null}
+      </svg>
+    </span>
+  );
+}
+const ICO_ARROW = "M5 12h14M13 6l6 6-6 6";
+const ICO_PHONE = "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.9.35 1.78.65 2.63a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.45-1.15a2 2 0 0 1 2.11-.45c.85.3 1.73.52 2.63.65A2 2 0 0 1 22 16.92z";
+const ICO_PLUS = "M12 5v14M5 12h14";
+const ICO_MAIL = "M4 4h16v16H4zM4 6l8 6 8-6";
 
 export const metadata: Metadata = {
   title: "Design-System · Freigabe (intern) — Red Rabbit Relaunch",
@@ -158,7 +175,7 @@ export default function DesignSystemPage() {
               <p className="rr-meta" style={{ marginBottom: 8 }}>Copy-Regeln, verbindlich fuer jeden Text</p>
               <ul style={dsRuleList}>
                 <li>Keine Emojis, weder Code, UI noch Konversation.</li>
-                <li>Echte Umlaute ae ö ü ß in jedem Text, niemals ae/oe/ue-Ersatzschreibung.</li>
+                <li>Echte Umlaute ä ö ü ß in jedem Text, niemals ae/oe/ue-Ersatzschreibung.</li>
                 <li>
                   Kein Gedankenstrich: <span style={{ textDecoration: "line-through", opacity: 0.5 }}>Red Rabbit — Navigation</span>
                   {" "}wird zu <strong>&bdquo;Red Rabbit · Navigation&ldquo;</strong> (Mittelpunkt statt Strich).
@@ -278,53 +295,170 @@ export default function DesignSystemPage() {
       {/* ---------------------------------------------------------- */}
       {/* 04 · Buttons & Links */}
       {/* ---------------------------------------------------------- */}
-      <Section n="04" title="Buttons &amp; Links">
-        <p className="rr-meta" style={{ marginBottom: 24 }}>
-          Hover laeuft ausnahmslos ueber das Master-Easing cubic-bezier(.6, 0, .4, 1) · 200ms.
+      <Section n="04" title="Buttons — ueberarbeitet">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          Neu aufgebautes, token-basiertes Button-System. Alle Bewegungen laufen ueber das
+          Master-Easing cubic-bezier(.6, 0, .4, 1). Bestehende Klassennamen
+          (<code>rr-btn--primary</code>, <code>--secondary</code>, <code>--ondark</code>) bleiben
+          gueltig, nur eleganter. Zum Pruefen mit der Maus ueber die Buttons fahren
+          (Hover-Lift + Schatten), Tab druecken (Fokus-Ring).
         </p>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 22, alignItems: "center", marginBottom: 16 }}>
+
+        {/* Varianten */}
+        <p style={dsSubhead}>Varianten</p>
+        <div style={dsBtnGrid}>
           <div style={dsPairCol}>
-            <a className="rr-btn rr-btn--primary" href="#">Projekt anfragen</a>
-            <p className="rr-meta">rr-btn rr-btn--primary · gefuellte Pille, Markenrot</p>
+            <div><a className="rr-btn rr-btn--primary rr-btn--arrow" href="#">Projekt anfragen</a></div>
+            <p className="rr-meta">primary · Hero-CTA, Solid-Rot, Pfeil schiebt beim Hover</p>
           </div>
           <div style={dsPairCol}>
-            <a className="rr-btn rr-btn--secondary" href="#">+43 676 9000 955</a>
-            <p className="rr-meta">rr-btn rr-btn--secondary · Outline-Pille (Telefon-CTA, HomeClosing)</p>
+            <div><a className="rr-btn rr-btn--secondary" href="#">Referenzen ansehen</a></div>
+            <p className="rr-meta">secondary · Outline/Ghost auf hell (fuellt beim Hover)</p>
           </div>
           <div style={dsPairCol}>
-            <a className="rr-link" href="#">Zum Projekt</a>
-            <p className="rr-meta">rr-link · Textlink mit Pfeil, unterstrichen</p>
+            <div><a className="rr-btn rr-btn--tertiary" href="#">Mehr erfahren</a></div>
+            <p className="rr-meta">tertiary · Text-Button, minimal</p>
           </div>
         </div>
 
-        <div style={{ background: "var(--rr-dark)", borderRadius: 16, padding: "32px 34px", marginTop: 28 }}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 28, alignItems: "center" }}>
-            <div style={dsPairCol}>
-              <a className="rr-btn rr-btn--ondark" href="#">Auf dunklen Flaechen</a>
-              <p className="rr-meta" style={{ color: "rgba(255,255,255,0.55)" }}>rr-btn rr-btn--ondark</p>
-            </div>
-            <div style={dsPairCol}>
-              <a className="rr-link" href="#" style={{ color: "#fff" }}>Textlink auf Dunkel</a>
-              <p className="rr-meta" style={{ color: "rgba(255,255,255,0.55)" }}>rr-link auf --rr-dark</p>
-            </div>
-            <div style={dsPairCol}>
-              <span className="ds-navlink">Leistungen</span>
-              <p className="rr-meta" style={{ color: "rgba(255,255,255,0.55)" }}>
-                Vollbild-Menue-Navlink (RelaunchMenu.tsx) · Fraunces, Hover: Rot + Verschub + Skew — hier drueberfahren
-              </p>
-            </div>
+        {/* Groessen */}
+        <p style={dsSubhead}>Groessen · sm / md / lg</p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 18, alignItems: "center" }}>
+          <a className="rr-btn rr-btn--primary rr-btn--sm" href="#">Klein</a>
+          <a className="rr-btn rr-btn--primary" href="#">Standard</a>
+          <a className="rr-btn rr-btn--primary rr-btn--lg rr-btn--arrow" href="#">Gross</a>
+        </div>
+
+        {/* Zustaende */}
+        <p style={dsSubhead}>Zustaende</p>
+        <div style={dsBtnGrid}>
+          <div style={dsPairCol}>
+            <div><a className="rr-btn rr-btn--primary" href="#">Standard</a></div>
+            <p className="rr-meta">default · Ruhezustand mit weichem Schatten</p>
+          </div>
+          <div style={dsPairCol}>
+            <div><button className="rr-btn rr-btn--primary is-loading" type="button">Wird gesendet</button></div>
+            <p className="rr-meta">loading · <code>.is-loading</code>, Label wird zum Spinner</p>
+          </div>
+          <div style={dsPairCol}>
+            <div><button className="rr-btn rr-btn--primary" type="button" disabled>Nicht verfuegbar</button></div>
+            <p className="rr-meta">disabled · <code>:disabled</code> / <code>aria-disabled</code></p>
+          </div>
+          <div style={dsPairCol}>
+            <div><button className="rr-btn rr-btn--secondary is-loading" type="button">Lade</button></div>
+            <p className="rr-meta">loading · secondary (Spinner nimmt Ink-Farbe)</p>
+          </div>
+          <div style={dsPairCol}>
+            <div><button className="rr-btn rr-btn--secondary" type="button" disabled>Gesperrt</button></div>
+            <p className="rr-meta">disabled · secondary</p>
+          </div>
+          <div style={dsPairCol}>
+            <div><a className="rr-btn rr-btn--primary" href="#">Fokus mit Tab</a></div>
+            <p className="rr-meta">hover: Lift + Schatten · active: Press · focus-visible: Ring</p>
           </div>
         </div>
 
-        <div style={{ background: "#1C2837", borderRadius: 16, padding: "32px 34px", marginTop: 18 }}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-            <a className="ds-footlink" href="#">office@redrabbit.media</a>
-            <a className="ds-footlink" href="#">Referenzen</a>
-            <a className="ds-footlink" href="#">Impressum</a>
+        {/* Icons */}
+        <p style={dsSubhead}>Mit Icon · und Icon-only (quadratisch, mit aria-label)</p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center" }}>
+          <a className="rr-btn rr-btn--primary" href="#"><Ico path={ICO_PHONE} />Anrufen</a>
+          <a className="rr-btn rr-btn--secondary" href="#"><Ico path={ICO_MAIL} />Schreiben</a>
+          <button className="rr-btn rr-btn--secondary rr-btn--icon" type="button" aria-label="Hinzufuegen"><Ico path={ICO_PLUS} /></button>
+          <button className="rr-btn rr-btn--primary rr-btn--icon" type="button" aria-label="Weiter"><Ico path={ICO_ARROW} /></button>
+          <button className="rr-btn rr-btn--secondary rr-btn--icon rr-btn--sm" type="button" aria-label="Hinzufuegen (klein)"><Ico path={ICO_PLUS} /></button>
+          <button className="rr-btn rr-btn--primary rr-btn--icon rr-btn--lg" type="button" aria-label="Weiter (gross)"><Ico path={ICO_ARROW} /></button>
+        </div>
+
+        {/* Auf dunklem Grund */}
+        <p style={dsSubhead}>Auf dunklem Grund</p>
+        <div style={{ background: "var(--rr-navy)", borderRadius: 16, padding: "32px 34px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center" }}>
+            <a className="rr-btn rr-btn--ondark rr-btn--arrow" href="#">Projekt anfragen</a>
+            <a className="rr-btn rr-btn--ondark-ghost" href="#">Mehr erfahren</a>
+            <button className="rr-btn rr-btn--ondark rr-btn--icon" type="button" aria-label="Weiter"><Ico path={ICO_ARROW} /></button>
+            <p className="rr-meta" style={{ color: "rgba(255,255,255,0.55)", maxWidth: 220 }}>
+              rr-btn--ondark (Solid) · rr-btn--ondark-ghost (Outline)
+            </p>
           </div>
-          <p className="rr-meta" style={{ color: "rgba(255,255,255,0.5)", marginTop: 14 }}>
-            Footer-Link (FooterReassembly.tsx) · Grotesk 16px auf Navy, Hover-Farbe #FF5F6D — hier drueberfahren
-          </p>
+        </div>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 04b · Links */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="04b" title="Links — ueberarbeitet">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          <code>rr-link</code> bleibt der etablierte Pfeil-Link, jetzt mit feinerer Unterstreichung
+          und Pfeil-Nudge. Dazu drei neue Varianten. Zum Pruefen ueber die Links fahren
+          (Unterstreichung wischt ein, Pfeil schiebt).
+        </p>
+        <div style={dsBtnGrid}>
+          <div style={dsPairCol}>
+            <div><a className="rr-link" href="#">Zum Projekt</a></div>
+            <p className="rr-meta">rr-link · Pfeil-Link (Standard), unterstrichen</p>
+          </div>
+          <div style={dsPairCol}>
+            <div><a className="rr-link rr-link--text" href="#">Datenschutz</a></div>
+            <p className="rr-meta">rr-link--text · Fliesstext-Link, Unterstreichung wischt ein</p>
+          </div>
+          <div style={dsPairCol}>
+            <div><a className="rr-link rr-link--meta" href="#">Alle Referenzen</a></div>
+            <p className="rr-meta">rr-link--meta · leiser Sekundaer-Link</p>
+          </div>
+        </div>
+
+        <div style={{ background: "var(--rr-navy)", borderRadius: 16, padding: "32px 34px", marginTop: 24 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 32, alignItems: "center" }}>
+            <a className="rr-link rr-link--ondark" href="#">Zum Projekt</a>
+            <a className="rr-link rr-link--text rr-link--ondark" href="#">Impressum</a>
+            <p className="rr-meta" style={{ color: "rgba(255,255,255,0.55)", maxWidth: 260 }}>
+              rr-link--ondark · heller Text, Hover in hellem Rot (#FF5F6D). Kombinierbar mit --text.
+            </p>
+          </div>
+        </div>
+
+        <p className="rr-meta" style={{ marginTop: 22 }}>
+          Weiterhin im Einsatz und unveraendert freigegeben: der Vollbild-Menue-Navlink
+          (Fraunces, Hover Rot + Skew) und der Footer-Link auf Navy — siehe Abschnitt 06.
+        </p>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 04c · Dropdown & Select */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="04c" title="Dropdown &amp; Select">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          Barrierefreies Dropdown (Listbox-Semantik) fuer Navigation und Formulare, plus ein
+          natives <code>&lt;select&gt;</code> im Marken-Stil. Bedienbar mit Maus und Tastatur:
+          Pfeil hoch/runter, Home/End, Enter/Space waehlt, Esc schliesst, Tippen springt zum
+          Eintrag. Schliesst bei Aussenklick. Oeffnen ist animiert (Master-Easing), ohne
+          Layout-Shift.
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 40, alignItems: "flex-start" }}>
+          <div style={{ ...dsPairCol, maxWidth: 300 }}>
+            <RelaunchDropdown
+              ariaLabel="Leistung waehlen"
+              placeholder="Leistung waehlen"
+              defaultValue="webdesign"
+              options={[
+                { value: "webdesign", label: "Webdesign & Handwerk" },
+                { value: "dashboard", label: "Dashboard & Selbstlauf" },
+                { value: "sichtbarkeit", label: "Sichtbarkeit: Google & KI" },
+                { value: "seo", label: "SEO & lokale Auffindbarkeit" },
+                { value: "wartung", label: "Wartung & Betreuung" },
+              ]}
+            />
+            <p className="rr-meta">RelaunchDropdown.tsx · role=&quot;listbox&quot;, Tastatur + aria-activedescendant</p>
+          </div>
+          <div style={{ ...dsPairCol, maxWidth: 300 }}>
+            <select className="rr-select-native" aria-label="Region waehlen (nativ)" defaultValue="ktn">
+              <option value="ktn">Kaernten</option>
+              <option value="stmk">Steiermark</option>
+              <option value="ooe">Oberoesterreich</option>
+              <option value="sbg">Salzburg</option>
+            </select>
+            <p className="rr-meta">rr-select-native · natives &lt;select&gt; fuer einfache Formulare</p>
+          </div>
         </div>
       </Section>
 
@@ -362,6 +496,58 @@ export default function DesignSystemPage() {
                 <span className="ds-motion-letter" style={{ ["--i" as string]: 5 }}>t</span>
               </span>
             </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 05b · Animationen & Motion-Utilities */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="05b" title="Animationen &amp; Motion-Utilities">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          Wiederverwendbare Bewegungs-Muster als Utility-Klassen, alle auf der einen Easing-Kurve.
+          Zum Pruefen mit der Maus drueberfahren. <code>prefers-reduced-motion: reduce</code> schaltet
+          jede Animation global auf den Endzustand (Regel steht am Ende der styleguide.css).
+        </p>
+
+        {/* Dauern-Referenz */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, marginBottom: 34 }}>
+          <span style={dsToken}>--rr-ease · cubic-bezier(.6, 0, .4, 1)</span>
+          <span style={dsToken}>--rr-t-fast · 200ms</span>
+          <span style={dsToken}>--rr-t-med · 420ms</span>
+          <span style={dsToken}>--rr-t-slow · 700ms</span>
+        </div>
+
+        <div style={dsBtnGrid}>
+          {/* hover-lift */}
+          <div style={dsPairCol}>
+            <div className="rr-hover-lift" style={dsMotionCard}>
+              <p className="rr-body" style={{ fontWeight: 650 }}>Karte</p>
+              <p className="rr-meta" style={{ marginTop: 4 }}>hebt beim Hover</p>
+            </div>
+            <p className="rr-meta"><code>.rr-hover-lift</code> · translateY + Schatten (420ms)</p>
+          </div>
+
+          {/* underline-wipe */}
+          <div style={dsPairCol}>
+            <div style={{ ...dsMotionCard, display: "flex", alignItems: "center" }}>
+              <a className="rr-underline-wipe" href="#" style={{ fontFamily: "var(--rr-font-ui)", fontSize: 18, fontWeight: 550 }}>
+                Unterstreichung wischt ein
+              </a>
+            </div>
+            <p className="rr-meta"><code>.rr-underline-wipe</code> · Linie waechst von links (420ms)</p>
+          </div>
+
+          {/* fracture-settle */}
+          <div style={dsPairCol}>
+            <div style={{ ...dsMotionCard, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span className="rr-fracture-settle" aria-hidden="true" style={{ fontFamily: "var(--rr-font-display)", fontWeight: 560, fontSize: 40, color: "var(--rr-ink)" }}>
+                {["r", "a", "b", "b", "i", "t"].map((c, i) => (
+                  <span key={i} className="rr-fx-ch" style={{ ["--i" as string]: i }}>{c}</span>
+                ))}
+              </span>
+            </div>
+            <p className="rr-meta"><code>.rr-fracture-settle</code> · Buchstaben setzen sich zusammen (Echo der Wortmarke)</p>
           </div>
         </div>
       </Section>
@@ -438,6 +624,32 @@ export default function DesignSystemPage() {
         </div>
       </Section>
 
+      {/* ---------------------------------------------------------- */}
+      {/* 08 · Was noch fehlt / Kandidaten */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="08" title="Was noch fehlt · Kandidaten">
+        <p className="rr-meta" style={{ marginBottom: 24, maxWidth: 720 }}>
+          Nur eine Liste zum Priorisieren, nichts davon ist gebaut. Eine Marketing-Seite fuer den
+          Mittelstand will spaeter vermutlich noch diese Bausteine. Bitte pro Zeile Ja
+          (bauen) oder Nein (nicht noetig) entscheiden.
+        </p>
+        <div style={dsBtnGrid}>
+          {[
+            ["Formular-Inputs", "Textfeld, Textarea, Checkbox, Radio, Toggle im Marken-Stil (rr-field existiert bereits als Basis)"],
+            ["Cards", "Referenz-, Preis- und Leistungs-Karten als wiederverwendbares Muster"],
+            ["Accordion (FAQ)", "Aufklappbare Frage/Antwort fuer die FAQ-Sektion, animiert"],
+            ["Badges / Tags", "Kleine Labels, etwa Region oder Branche (Handwerk, Gastronomie)"],
+            ["Tooltip", "Kurzer Hinweis beim Hover/Fokus, barrierefrei"],
+            ["Modal / Dialog", "Overlay-Fenster mit Fokus-Falle, z. B. Kontakt-Popup"],
+          ].map(([title, desc]) => (
+            <div key={title} style={dsCandidateCard}>
+              <p className="rr-body" style={{ fontWeight: 650, marginBottom: 6 }}>{title}</p>
+              <p className="rr-meta">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
       <footer className="rr-section" style={{ paddingTop: 20 }}>
         <div className="rr-wrap">
           <hr className="rr-hairline" />
@@ -507,6 +719,50 @@ const dsPairCol: React.CSSProperties = {
   display: "grid",
   gap: 10,
   maxWidth: 260,
+  alignContent: "start",
+};
+
+const dsSubhead: React.CSSProperties = {
+  fontFamily: "var(--rr-font-ui)",
+  fontSize: 12.5,
+  fontWeight: 650,
+  letterSpacing: "0.14em",
+  textTransform: "uppercase",
+  color: "var(--rr-ink-soft)",
+  margin: "34px 0 16px",
+};
+
+const dsBtnGrid: React.CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+  gap: 24,
+  alignItems: "start",
+};
+
+const dsToken: React.CSSProperties = {
+  fontFamily: "var(--rr-font-ui)",
+  fontSize: 13,
+  fontWeight: 550,
+  color: "var(--rr-ink)",
+  background: "var(--rr-surface)",
+  border: "1px solid var(--rr-line)",
+  borderRadius: 8,
+  padding: "8px 12px",
+};
+
+const dsMotionCard: React.CSSProperties = {
+  background: "var(--rr-surface)",
+  border: "1px solid var(--rr-line)",
+  borderRadius: 14,
+  padding: "22px 24px",
+  minHeight: 96,
+};
+
+const dsCandidateCard: React.CSSProperties = {
+  border: "1px solid var(--rr-line)",
+  borderRadius: 14,
+  padding: "18px 20px",
+  background: "var(--rr-paper)",
 };
 
 const dsBuildingGrid: React.CSSProperties = {

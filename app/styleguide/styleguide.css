@@ -59,6 +59,13 @@
   --rr-radius: 12px;
   --rr-radius-lg: 22px;
 
+  /* ---- Schatten (tactile Buttons + schwebende Menues) ---- */
+  --rr-shadow-sm: 0 1px 2px rgba(28, 40, 55, 0.08);
+  --rr-shadow-btn: 0 1px 2px rgba(28, 40, 55, 0.10), 0 2px 8px rgba(28, 40, 55, 0.06);
+  --rr-shadow-btn-hover: 0 4px 14px rgba(28, 40, 55, 0.14), 0 2px 6px rgba(28, 40, 55, 0.08);
+  --rr-shadow-red: 0 5px 18px rgba(241, 32, 50, 0.30);
+  --rr-shadow-pop: 0 14px 44px rgba(28, 40, 55, 0.16), 0 2px 8px rgba(28, 40, 55, 0.08);
+
   font-family: var(--rr-font-ui);
   color: var(--rr-ink);
   background: var(--rr-paper);
@@ -120,40 +127,168 @@
 .rr .rr-body    { font-size: 17px; line-height: 1.55; margin: 0; }
 .rr .rr-meta    { font-size: var(--rr-fs-meta); line-height: 1.45; color: var(--rr-ink-soft); margin: 0; }
 
-/* ============ Buttons ============ */
+/* ============================================================
+   BUTTON-SYSTEM (ueberarbeitet 05.07.)
+   Token-basiert, ruecwaertskompatibel: primary / secondary /
+   ondark bleiben die alten Klassennamen, nur eleganter.
+   Jede Variante setzt --rr-btn-fg (Text + Spinnerfarbe), damit
+   der Loading-Spinner ohne Sonderfall die richtige Farbe hat.
+   ============================================================ */
 .rr .rr-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   font-family: var(--rr-font-ui);
   font-size: 16px;
   font-weight: 600;
+  letter-spacing: -0.005em;
   line-height: 1;
-  padding: 16px 28px;
+  padding: 15px 26px;
   border-radius: 999px;
   border: 1.5px solid transparent;
   cursor: pointer;
   text-decoration: none;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
   transition:
     background-color var(--rr-t-fast) var(--rr-ease),
     color var(--rr-t-fast) var(--rr-ease),
     border-color var(--rr-t-fast) var(--rr-ease),
+    box-shadow var(--rr-t-fast) var(--rr-ease),
     transform var(--rr-t-fast) var(--rr-ease);
 }
-.rr .rr-btn:active { transform: scale(0.98); }
-.rr .rr-btn:focus-visible { outline: 2px solid var(--rr-red); outline-offset: 3px; }
+.rr .rr-btn:hover { transform: translateY(-1px); }
+.rr .rr-btn:active { transform: translateY(0) scale(0.985); transition-duration: 90ms; }
+.rr .rr-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--rr-paper), 0 0 0 4.5px var(--rr-red);
+}
 
-.rr .rr-btn--primary { background: var(--rr-red); color: #fff; }
-.rr .rr-btn--primary:hover { background: var(--rr-red-deep); }
+/* Icon-Baustein (icon+label und icon-only) */
+.rr .rr-btn__ico { display: inline-flex; width: 18px; height: 18px; flex: 0 0 auto; }
+.rr .rr-btn__ico svg { width: 100%; height: 100%; display: block; }
 
-.rr .rr-btn--secondary { background: transparent; color: var(--rr-ink); border-color: var(--rr-ink); }
-.rr .rr-btn--secondary:hover { background: var(--rr-ink); color: var(--rr-paper); }
+/* ---- Variante: primary (Solid-Rot, Hero-CTA) ---- */
+.rr .rr-btn--primary {
+  --rr-btn-fg: #fff;
+  background: var(--rr-red);
+  color: var(--rr-btn-fg);
+  box-shadow: var(--rr-shadow-btn);
+}
+.rr .rr-btn--primary:hover { background: var(--rr-red-deep); box-shadow: var(--rr-shadow-red); }
+.rr .rr-btn--primary:active { box-shadow: var(--rr-shadow-btn); }
 
-.rr .rr-btn--ondark { background: #fff; color: var(--rr-ink); }
-.rr .rr-btn--ondark:hover { background: var(--rr-red); color: #fff; }
+/* ---- Variante: secondary (Outline/Ghost auf hell) ---- */
+.rr .rr-btn--secondary {
+  --rr-btn-fg: var(--rr-ink);
+  background: var(--rr-paper);
+  color: var(--rr-ink);
+  border-color: color-mix(in srgb, var(--rr-ink) 24%, transparent);
+}
+.rr .rr-btn--secondary:hover {
+  background: var(--rr-ink);
+  color: var(--rr-paper);
+  border-color: var(--rr-ink);
+  box-shadow: var(--rr-shadow-btn-hover);
+}
 
-/* Textlink mit Pfeil (all-turtles "See X's journey") */
+/* ---- Variante: tertiary (Text-Button, minimal) ---- */
+.rr .rr-btn--tertiary {
+  --rr-btn-fg: var(--rr-ink);
+  background: transparent;
+  color: var(--rr-ink);
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.rr .rr-btn--tertiary:hover {
+  color: var(--rr-red);
+  background: color-mix(in srgb, var(--rr-red) 8%, transparent);
+  transform: none;
+}
+.rr .rr-btn--tertiary:active { background: color-mix(in srgb, var(--rr-red) 15%, transparent); }
+
+/* ---- Variante: ondark (helle Pille auf dunklem Grund) ---- */
+.rr .rr-btn--ondark {
+  --rr-btn-fg: var(--rr-ink);
+  background: #fff;
+  color: var(--rr-ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+.rr .rr-btn--ondark:hover { background: var(--rr-red); color: #fff; box-shadow: var(--rr-shadow-red); }
+
+/* ---- Variante: ondark-ghost (Outline auf dunklem Grund) ---- */
+.rr .rr-btn--ondark-ghost {
+  --rr-btn-fg: #fff;
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.40);
+}
+.rr .rr-btn--ondark-ghost:hover { background: #fff; color: var(--rr-ink); border-color: #fff; }
+
+/* ---- Groessen: sm / md(default) / lg ---- */
+.rr .rr-btn--sm { font-size: 14px; padding: 10px 18px; gap: 7px; }
+.rr .rr-btn--lg { font-size: 18px; padding: 19px 34px; gap: 12px; }
+
+/* ---- Icon-only (quadratisch); aria-label ist Pflicht ---- */
+.rr .rr-btn--icon { padding: 0; width: 48px; height: 48px; gap: 0; }
+.rr .rr-btn--icon.rr-btn--sm { width: 38px; height: 38px; }
+.rr .rr-btn--icon.rr-btn--sm .rr-btn__ico { width: 16px; height: 16px; }
+.rr .rr-btn--icon.rr-btn--lg { width: 58px; height: 58px; }
+.rr .rr-btn--icon.rr-btn--lg .rr-btn__ico { width: 22px; height: 22px; }
+.rr .rr-btn--icon .rr-btn__ico { width: 20px; height: 20px; }
+
+/* ---- Pfeil-Affordance: schiebt beim Hover (fuer den Hero-CTA) ---- */
+.rr .rr-btn--arrow::after {
+  content: "\2192";
+  font-size: 1.05em;
+  line-height: 0;
+  transition: transform var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-btn--arrow:hover::after { transform: translateX(4px); }
+
+/* ---- Zustand: disabled ---- */
+.rr .rr-btn:disabled,
+.rr .rr-btn[aria-disabled="true"],
+.rr .rr-btn.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+  transform: none;
+  pointer-events: none;
+}
+
+/* ---- Zustand: loading (Spinner, Label transparent) ---- */
+.rr .rr-btn.is-loading {
+  color: transparent !important;
+  cursor: progress;
+  pointer-events: none;
+}
+.rr .rr-btn.is-loading::after { opacity: 0; }
+.rr .rr-btn.is-loading::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.05em;
+  height: 1.05em;
+  margin: -0.525em 0 0 -0.525em;
+  border-radius: 50%;
+  border: 2px solid var(--rr-btn-fg, currentColor);
+  border-top-color: transparent;
+  animation: rr-spin 640ms linear infinite;
+}
+@keyframes rr-spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   LINK-SYSTEM (ueberarbeitet 05.07.)
+   .rr-link bleibt der etablierte Pfeil-Link, nur mit feinerer
+   Unterstreichung + Pfeil-Nudge. Neue Varianten: --text (Wipe,
+   kein Pfeil), --meta (leise), --ondark (heller Grund).
+   ============================================================ */
 .rr .rr-link {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -162,15 +297,213 @@
   font-weight: 550;
   color: currentColor;
   text-decoration: none;
-  border-bottom: 1.5px solid currentColor;
-  padding-bottom: 2px;
+  padding-bottom: 3px;
   transition: gap var(--rr-t-fast) var(--rr-ease), color var(--rr-t-fast) var(--rr-ease);
 }
-.rr .rr-link:hover { gap: 14px; color: var(--rr-red); }
-.rr .rr-link::after { content: "\2192"; }
-/* Variante auf dunklem Grund (Footer): heller Text, Hover bleibt Rot */
+.rr .rr-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(1);
+  transform-origin: left center;
+  transition: transform var(--rr-t-med) var(--rr-ease), background-color var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-link::after { content: "\2192"; transition: transform var(--rr-t-fast) var(--rr-ease); }
+.rr .rr-link:hover { color: var(--rr-red); gap: 12px; }
+.rr .rr-link:hover::after { transform: translateX(2px); }
+
+/* Text-Link: kein Pfeil, Unterstreichung wischt beim Hover von links ein */
+.rr .rr-link--text { gap: 0; }
+.rr .rr-link--text::after { content: none; }
+.rr .rr-link--text::before { transform: scaleX(0); transform-origin: left center; }
+.rr .rr-link--text:hover { gap: 0; }
+.rr .rr-link--text:hover::before { transform: scaleX(1); }
+
+/* Meta/leiser Link: kleiner, sekundaer, Unterstreichung nur beim Hover */
+.rr .rr-link--meta {
+  font-size: var(--rr-fs-meta);
+  font-weight: 500;
+  color: var(--rr-ink-soft);
+  gap: 0;
+}
+.rr .rr-link--meta::after { content: none; }
+.rr .rr-link--meta::before { transform: scaleX(0); transform-origin: left center; }
+.rr .rr-link--meta:hover { color: var(--rr-ink); gap: 0; }
+.rr .rr-link--meta:hover::before { transform: scaleX(1); }
+
+/* Auf dunklem Grund: heller Text, Hover in hellem Rot */
+.rr .rr-link--ondark { color: #f2f2ef; }
+.rr .rr-link--ondark:hover { color: #ff5f6d; }
+/* Legacy-Alias (Footer), weiter unterstuetzt */
 .rr .rr-link-dark { color: #f2f2ef; }
 .rr .rr-link-dark:hover { color: #ff5f6d; }
+
+/* ============================================================
+   DROPDOWN / SELECT
+   Styling fuer RelaunchDropdown.tsx (listbox) + native <select>.
+   ============================================================ */
+.rr .rr-select { position: relative; display: inline-block; font-family: var(--rr-font-ui); }
+.rr .rr-select__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 240px;
+  width: 100%;
+  font-family: var(--rr-font-ui);
+  font-size: 16px;
+  font-weight: 550;
+  color: var(--rr-ink);
+  background: var(--rr-paper);
+  border: 1.5px solid var(--rr-line);
+  border-radius: var(--rr-radius);
+  padding: 13px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--rr-t-fast) var(--rr-ease), box-shadow var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-select__trigger:hover { border-color: color-mix(in srgb, var(--rr-ink) 34%, transparent); }
+.rr .rr-select__trigger:focus-visible {
+  outline: none;
+  border-color: var(--rr-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 22%, transparent);
+}
+.rr .rr-select__trigger[aria-expanded="true"] { border-color: var(--rr-ink); }
+.rr .rr-select__value--placeholder { color: #9a9ea8; }
+.rr .rr-select__chev {
+  flex: 0 0 auto;
+  color: var(--rr-ink-soft);
+  transition: transform var(--rr-t-med) var(--rr-ease);
+}
+.rr .rr-select__trigger[aria-expanded="true"] .rr-select__chev { transform: rotate(180deg); }
+
+.rr .rr-select__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--rr-paper);
+  border: 1px solid var(--rr-line);
+  border-radius: var(--rr-radius);
+  box-shadow: var(--rr-shadow-pop);
+  max-height: 288px;
+  overflow-y: auto;
+  transform-origin: top center;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--rr-t-fast) var(--rr-ease),
+    transform var(--rr-t-fast) var(--rr-ease),
+    visibility 0s linear var(--rr-t-fast);
+}
+.rr .rr-select__menu[data-open="true"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity var(--rr-t-fast) var(--rr-ease),
+    transform var(--rr-t-fast) var(--rr-ease),
+    visibility 0s;
+}
+.rr .rr-select__opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  font-size: 15.5px;
+  color: var(--rr-ink);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 120ms var(--rr-ease), color 120ms var(--rr-ease);
+}
+.rr .rr-select__opt.is-active { background: var(--rr-surface); }
+.rr .rr-select__opt[aria-selected="true"] { color: var(--rr-red); font-weight: 600; }
+.rr .rr-select__opt-check {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  color: var(--rr-red);
+  opacity: 0;
+  transition: opacity 120ms var(--rr-ease);
+}
+.rr .rr-select__opt[aria-selected="true"] .rr-select__opt-check { opacity: 1; }
+
+/* Natives <select> im Marken-Stil */
+.rr .rr-select-native {
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: var(--rr-font-ui);
+  font-size: 16px;
+  font-weight: 550;
+  color: var(--rr-ink);
+  background-color: var(--rr-paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235a5e68' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 14px;
+  border: 1.5px solid var(--rr-line);
+  border-radius: var(--rr-radius);
+  padding: 13px 44px 13px 16px;
+  min-width: 240px;
+  cursor: pointer;
+  transition: border-color var(--rr-t-fast) var(--rr-ease), box-shadow var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-select-native:hover { border-color: color-mix(in srgb, var(--rr-ink) 34%, transparent); }
+.rr .rr-select-native:focus-visible {
+  outline: none;
+  border-color: var(--rr-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 22%, transparent);
+}
+
+/* ============================================================
+   ANIMATIONS-UTILITIES
+   Wiederverwendbare Bewegungs-Muster, alle auf --rr-ease.
+   prefers-reduced-motion wird global weiter unten neutralisiert.
+   ============================================================ */
+.rr .rr-hover-lift {
+  transition: transform var(--rr-t-med) var(--rr-ease), box-shadow var(--rr-t-med) var(--rr-ease);
+}
+.rr .rr-hover-lift:hover { transform: translateY(-4px); box-shadow: var(--rr-shadow-pop); }
+
+.rr .rr-underline-wipe {
+  text-decoration: none;
+  color: inherit;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1.5px;
+  transition: background-size var(--rr-t-med) var(--rr-ease), color var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-underline-wipe:hover { background-size: 100% 1.5px; }
+
+/* fracture-settle: Buchstaben setzen sich aus leichter Rotation/Versatz
+   zusammen (Echo der Wortmarke). Hover-getriggert oder .is-settled setzen. */
+.rr .rr-fracture-settle { display: inline-flex; }
+.rr .rr-fracture-settle .rr-fx-ch {
+  display: inline-block;
+  transform: rotate(calc((var(--i, 0) - 2.5) * 6deg)) translateY(calc(var(--i, 0) * 1px + 8px));
+  opacity: 0.5;
+  transition:
+    transform var(--rr-t-slow) var(--rr-ease),
+    opacity var(--rr-t-slow) var(--rr-ease),
+    color var(--rr-t-slow) var(--rr-ease);
+  transition-delay: calc(var(--i, 0) * 45ms);
+}
+.rr .rr-fracture-settle:hover .rr-fx-ch,
+.rr .rr-fracture-settle.is-settled .rr-fx-ch { transform: none; opacity: 1; }
 
 /* ============ Formularfelder ============ */
 .rr .rr-field {
