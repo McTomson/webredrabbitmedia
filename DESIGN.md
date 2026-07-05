@@ -52,7 +52,21 @@ All from `.rr` scope in `app/styleguide/styleguide.css` (verbatim):
 --rr-world-2-accent: #f35b09;  /* Orange Eyebrow */
 --rr-world-3-bg: #0a8aba;      /* at "sora"-Blau */
 --rr-world-3-accent: #f2dc71;  /* Gelb Eyebrow */
+
+/* Semantische Farben (Formular-/Statuszustaende; Tomson 2026-07-06) */
+--rr-success: #17915b; --rr-success-ink: #146e46; --rr-success-bg: #e8f5ee;
+--rr-warning: #c8890a; --rr-warning-ink: #8a5f05; --rr-warning-bg: #fbf3e2;
+--rr-error: var(--rr-red); --rr-error-ink: #b1101f; --rr-error-bg: #fdeaec;
+--rr-info: var(--rr-navy); --rr-info-bg: #edf0f3;
 ```
+
+**Semantic colors (locked 2026-07-06):** brand **red doubles as the error/danger signal** (red
+already means "attention", keeps the palette minimal and red special). Error text uses `--rr-error-ink`
+for AA contrast on the light `--rr-error-bg`, the accent bar/border/dot uses the brand red itself.
+Success = a desaturated green, warning = amber, info/hint = navy, each with its own light tint bg and
+an AA-contrast ink. The three non-red hues are deliberately quiet so **only the brand red truly pops**.
+`ink` accents/dots use the base token, text uses the `-ink` variant. Dark-section variants of the light
+`-bg` tints are TBD (site is predominantly light; add when a dark form/banner surface actually appears).
 
 Navy `#1C2837` is used as a hardcoded literal (not yet a `--rr-*` token) in `FooterReassembly.tsx`
 (`const NAVY = "#1C2837"`, used for the footer background) and in `BrandOpening.tsx` (statement

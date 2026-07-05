@@ -28,6 +28,20 @@
   --rr-world-3-bg: #0a8aba;   /* at "sora"-Blau */
   --rr-world-3-accent: #f2dc71; /* Gelb Eyebrow */
 
+  /* ---- Semantische Farben (Formular-/Statuszustaende; Tomson-Entscheidung 06.07.) ---- */
+  /* Rot bleibt Marke UND Fehler-Signal; Erfolg/Warnung/Hinweis bewusst entsaettigt. */
+  --rr-success: #17915b;      /* Erfolg: Akzent/Rahmen/Punkt */
+  --rr-success-ink: #146e46;  /* Erfolg: Text auf hellem Fond (AA) */
+  --rr-success-bg: #e8f5ee;   /* Erfolg: heller Fond */
+  --rr-warning: #c8890a;      /* Warnung: Akzent/Punkt (Amber) */
+  --rr-warning-ink: #8a5f05;  /* Warnung: Text auf hellem Fond (AA) */
+  --rr-warning-bg: #fbf3e2;   /* Warnung: heller Fond */
+  --rr-error: var(--rr-red);  /* Fehler = Marken-Rot */
+  --rr-error-ink: #b1101f;    /* Fehler: Text auf hellem Fond (AA) */
+  --rr-error-bg: #fdeaec;     /* Fehler: heller Fond */
+  --rr-info: var(--rr-navy);  /* Hinweis = Navy */
+  --rr-info-bg: #edf0f3;      /* Hinweis: heller Fond */
+
   /* ---- Typo-Skala (gemessen -> responsiv) ---- */
   --rr-font-display: var(--font-fraunces), Georgia, serif;
   --rr-font-serif: var(--font-crimson), Georgia, serif; /* Statements/Claims, Heldane-Gegenstueck */
