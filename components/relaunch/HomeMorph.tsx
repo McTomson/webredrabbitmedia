@@ -327,7 +327,7 @@ export default function HomeMorph({ claim }: { claim: string }) {
               fontSize: "clamp(24px, 3vw, 42px)",
               lineHeight: 1.2,
               letterSpacing: "-0.01em",
-              color: "#1C2837",
+              color: "var(--rr-navy)",
             }}>
               Wir bauen ästhetische Websites, die man dort findet, wo deine Kunden sind.
             </p>
@@ -341,7 +341,7 @@ export default function HomeMorph({ claim }: { claim: string }) {
 
         {reduced && (
           <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3vh", padding: "0 24px" }}>
-            <p style={{ fontFamily: "var(--rr-font-serif)", fontWeight: 500, fontSize: "clamp(24px, 3vw, 42px)", lineHeight: 1.2, textAlign: "center", color: "#1C2837", maxWidth: "min(90vw, 900px)", margin: 0 }}>
+            <p style={{ fontFamily: "var(--rr-font-serif)", fontWeight: 500, fontSize: "clamp(24px, 3vw, 42px)", lineHeight: 1.2, textAlign: "center", color: "var(--rr-navy)", maxWidth: "min(90vw, 900px)", margin: 0 }}>
               Wir bauen ästhetische Websites, die man dort findet, wo deine Kunden sind.
             </p>
             <div style={{ height: "40vh", aspectRatio: "174 / 267" }}>

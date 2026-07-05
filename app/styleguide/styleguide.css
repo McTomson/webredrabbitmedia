@@ -16,6 +16,7 @@
   --rr-paper: #ffffff;        /* Grund */
   --rr-surface: #f4f4f2;      /* zweite Flaeche */
   --rr-dark: #17181d;         /* dunkle Sektion */
+  --rr-navy: #1c2837;         /* Navy: Footer-Grund, Menue-Overlay, Hero-Statement */
   --rr-line: #e4e4e0;         /* Hairlines */
 
   /* Case-Farbwelten (je Referenz eine Welt; Startset, im Design-Pass final) */

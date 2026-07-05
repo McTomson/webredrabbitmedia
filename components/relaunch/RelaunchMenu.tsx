@@ -246,7 +246,7 @@ export default function RelaunchMenu() {
           position: fixed;
           inset: 0;
           z-index: 1000;
-          background: #1c2837;
+          background: var(--rr-navy, #1c2837);
           display: flex;
           opacity: 0;
           transform: scale(1.03);

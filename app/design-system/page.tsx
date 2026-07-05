@@ -189,15 +189,14 @@ export default function DesignSystemPage() {
           <Swatch name="Line (Hairlines)" varName="--rr-line" hex="#E4E4E0" />
         </div>
         <p className="rr-meta" style={{ margin: "36px 0 16px" }}>
-          Navy · literal <code>#1C2837</code>, noch kein --rr-Token · Footer-Hintergrund, Menue-Overlay,
-          Statement-Farbe in BrandOpening
+          Navy · Token <code>--rr-navy</code> (#1C2837) · Footer-Hintergrund, Menue-Overlay, Hero-Statement
         </p>
         <div style={dsSwatchGrid}>
           <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid var(--rr-line)" }}>
-            <div style={{ background: "#1C2837", height: 92, borderBottom: "1px solid var(--rr-line)" }} />
+            <div style={{ background: "var(--rr-navy)", height: 92, borderBottom: "1px solid var(--rr-line)" }} />
             <div style={{ padding: "12px 14px" }}>
               <p className="rr-body" style={{ fontWeight: 650, fontSize: 14.5 }}>Navy</p>
-              <p className="rr-meta" style={{ fontSize: 12.5, marginTop: 3 }}>literal · #1C2837</p>
+              <p className="rr-meta" style={{ fontSize: 12.5, marginTop: 3 }}>--rr-navy · #1C2837</p>
             </div>
           </div>
         </div>
