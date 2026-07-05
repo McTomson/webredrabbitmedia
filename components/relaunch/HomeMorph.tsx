@@ -270,10 +270,15 @@ export default function HomeMorph() {
       // Hasenkopf: peekt am Anfang (Auge-Mitte an der Unterkante), faehrt starr mit
       // dem Stack in den Lockup. Voll deckend im Intro UND waehrend die Wortmarke
       // noch starr nach oben gleitet (u 0->0.22 = U_REST, Wort noch unveraendert).
-      // Erst wenn die Wortmarke sich zu VERAENDERN beginnt (Kontraktion ab u=0.22),
-      // blendet der Kopf langsam aus (Tomson 05.07.: der Ablauf ist wichtig).
+      // Ab u>0 bleibt der Kopf NICHT stehen (sonst verdeckt ihn die aufsteigende
+      // Wortmarke, Tomson 05.07. Bild 21), sondern faehrt WEITER nach oben:
+      // erst starr mit der Wortmarke (Settle u 0->0.22, Abstand bleibt), dann ganz
+      // aus dem Bild. Deckkraft bleibt voll bis zur Kontraktion (u=0.22), danach raus.
       if (headRef.current) {
-        const dyC = HEAD_PEEK_DY - introShift; // 43.6 -> -20 (Lockup)
+        const settleUp = masterEase(clamp01(u / 0.22)) * lockStageVh; // starr mit Wortmarke
+        const postUp = masterEase(clamp01((u - 0.22) / 0.4)) * 55;    // danach ganz nach oben raus
+        const headUp = u > 0 ? settleUp + postUp : 0;
+        const dyC = HEAD_PEEK_DY - introShift - headUp; // 43.6 -> -20 (Lockup) -> weiter hoch
         const headFade = 1 - clamp01((u - 0.22) / 0.42); // u<0.22: voll; 0.22->0.64: raus
         headRef.current.style.transform = `translate(-50%, calc(-50% + ${dyC}vh))`;
         headRef.current.style.opacity = String(headFade);
