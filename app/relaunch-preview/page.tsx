@@ -34,7 +34,7 @@ export default function RelaunchPreviewPage() {
         className="rr-section"
         style={{
           textAlign: "center",
-          paddingTop: "clamp(150px, 22vh, 300px)",
+          paddingTop: "clamp(360px, 52vh, 760px)",
           paddingBottom: "clamp(130px, 18vh, 260px)",
         }}
       >
