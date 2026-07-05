@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { crimson, fraunces, grotesk } from "@/lib/relaunch/fonts";
+import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
+import BrandOpening from "@/components/relaunch/BrandOpening";
 import HomeMorph from "@/components/relaunch/HomeMorph";
 import CasePanels from "@/components/relaunch/CasePanels";
 import HomeClosing from "@/components/relaunch/HomeClosing";
@@ -19,6 +21,12 @@ export const metadata: Metadata = {
 export default function RelaunchPreviewPage() {
   return (
     <div className={`rr ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}>
+      {/* Fixes Menue (Trigger + Vollbild-Overlay) */}
+      <RelaunchMenu />
+
+      {/* Sektion 0: Marken-Auftakt — Statement + Hasenkopf-Reveal (ueber dem Wortmarken-Morph) */}
+      <BrandOpening />
+
       {/* Sektionen 1-3: durchgehende Morph-Buehne (Hero + 5 Leistungs-Szenen) */}
       <HomeMorph claim="Wir bauen Websites, die man findet. Bei Google und in der KI." />
 

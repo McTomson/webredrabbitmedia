@@ -2,18 +2,60 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { RabbitMark } from "./RabbitMark";
 import { buildWordLayout, type WordLayout } from "@/lib/relaunch/morph/pieces";
 import { buildReassembly, sample, clamp01, type Keyframe } from "@/lib/relaunch/morph/grammar";
 
 /**
- * Footer mit Wortmarken-Reassembly (Blaupause Sektion 9): die Naturbruch-Teile
- * fliegen beim Erreichen des Seitenendes zusammen und setzen "red rabbit" neu
- * zusammen — Spiegelung des Hero-Zerfalls, gleiche Grammatik (grammar.ts).
- * Klein wie beim Original (Footer-Lottie ~259x106): F deutlich unter Hero-Groesse.
+ * Premium-Footer mit Wortmarken-Reassembly (Blaupause Sektion 9, all-turtles-Vorbild).
+ *
+ * Bewegung (Fix 05.07.): Der Fortschritt wird jetzt an der EINTRITTS-Phase der
+ * Wortmarke aufgehaengt, nicht an einem 220vh-Sticky-Track. Frueher lief die
+ * Reassembly waehrend die Wortmarke bereits fixiert/zentriert war -> beim
+ * eigentlichen "in den Footer scrollen" stand sie schon zusammengesetzt da.
+ * Jetzt: q=0 wenn die Wortmarken-Mitte knapp unter dem Viewport ist (Footer
+ * taucht auf), q~0.5 wenn sie im unteren Drittel erscheint (mid-settle), q=1
+ * wenn sie sich zentriert -> die Scherben setzen sich SICHTBAR beim Eintritt.
+ * Danach bleibt sie zusammengesetzt stehen, waehrend die Info-Spalten hochscrollen.
+ *
+ * Groesse (Fix 05.07.): F = clamp(88px, 13vw, 210px) — "red" ueber "rabbit"
+ * spannt fast die volle Breite (all-turtles-Massstab), statt Footer-Lottie-klein.
  */
+
+const NAVY = "#1C2837";
+
+const NAV = [
+  { label: "Start", href: "/relaunch-preview" },
+  { label: "Leistungen", href: "/leistungen" },
+  { label: "Referenzen", href: "/referenzen-preview" },
+  { label: "Preise", href: "/preise" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Über uns", href: "/ueber-uns" },
+  { label: "Kontakt", href: "/kontakt" },
+];
+
+const REGIONEN = [
+  { label: "Wien", href: "/webdesign-wien" },
+  { label: "Niederösterreich", href: "/webdesign-niederoesterreich" },
+  { label: "Oberösterreich", href: "/webdesign-oberoesterreich" },
+  { label: "Steiermark", href: "/webdesign-steiermark" },
+  { label: "Kärnten", href: "/webdesign-kaernten" },
+  { label: "Salzburg", href: "/webdesign-salzburg" },
+  { label: "Tirol", href: "/webdesign-tirol" },
+  { label: "Vorarlberg", href: "/webdesign-vorarlberg" },
+  { label: "Burgenland", href: "/webdesign-burgenland" },
+];
+
+const LEGAL = [
+  { label: "Impressum", href: "/impressum" },
+  { label: "Datenschutz", href: "/datenschutz" },
+  { label: "AGB", href: "/agb" },
+  { label: "Cookie-Einstellungen", href: "/cookie-einstellungen" },
+];
+
 export default function FooterReassembly() {
-  const trackRef = useRef<HTMLDivElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
   const probeRef = useRef<HTMLSpanElement>(null);
   const [reduced, setReduced] = useState(false);
 
@@ -22,7 +64,7 @@ export default function FooterReassembly() {
       setReduced(true);
       return;
     }
-    const track = trackRef.current!, box = boxRef.current!;
+    const box = boxRef.current!;
     let layout: WordLayout | null = null;
     let tracks: Keyframe[][] = [];
     let els: HTMLDivElement[] = [];
@@ -31,8 +73,8 @@ export default function FooterReassembly() {
 
     function build() {
       const fam = getComputedStyle(probeRef.current!).fontFamily;
-      // Original-Proportion: Footer-Wortmarke gross (~35% Viewportbreite)
-      const F = Math.min(150, Math.max(56, window.innerWidth * 0.095));
+      // Wortmarke gross wie all-turtles: F = clamp(88px, 13vw, 210px)
+      const F = Math.min(210, Math.max(88, window.innerWidth * 0.13));
       const l = buildWordLayout(fam, F, window.devicePixelRatio || 1);
       if (!l || l.pieces.length < 10) return false;
       layout = l;
@@ -55,14 +97,19 @@ export default function FooterReassembly() {
 
     function render() {
       if (!layout) return;
-      const r = track.getBoundingClientRect();
-      // Fortschritt: beginnt wenn der Track ins Bild kommt, endet wenn er ansteht
-      const total = r.height - window.innerHeight;
-      const p = total > 0 ? clamp01(-r.top / total) : 1;
+      const r = box.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const centerY = r.top + r.height / 2;
+      // Fortschritt an der Eintritts-Phase: q=0 wenn die Wortmarken-Mitte knapp
+      // unter dem Viewport steht (Footer taucht auf), q=1 wenn sie sich zentriert.
+      // -> Die Reassembly laeuft SICHTBAR waehrend man in den Footer scrollt.
+      const START = vh * 1.05; // Mitte knapp unter der Unterkante -> Anfang
+      const END = vh * 0.5; // Mitte im Viewport-Zentrum -> fertig zusammengesetzt
+      const q = clamp01((START - centerY) / (START - END));
       for (let i = 0; i < els.length; i++) {
-        const kf = sample(tracks[i], p);
+        const kf = sample(tracks[i], q);
         els[i].style.transform = `translate(${kf.x}px, ${kf.y}px) rotate(${kf.rot}deg)`;
-        els[i].style.opacity = p < 0.01 ? "0" : "1";
+        els[i].style.opacity = q < 0.01 ? "0" : "1";
       }
     }
 
@@ -90,25 +137,206 @@ export default function FooterReassembly() {
     };
   }, []);
 
+  const year = new Date().getFullYear();
+
   return (
-    <footer ref={trackRef} style={{ height: "220vh", position: "relative", background: "var(--rr-dark)" }}>
-      <span ref={probeRef} aria-hidden style={{ fontFamily: "var(--rr-font-display)", position: "absolute", opacity: 0, pointerEvents: "none" }}>probe</span>
-      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "9vh" }}>
+    <footer className="rr-foot" style={{ background: NAVY, color: "#fff", position: "relative", overflow: "hidden" }}>
+      <style>{FOOT_CSS}</style>
+      <span
+        ref={probeRef}
+        aria-hidden
+        style={{ fontFamily: "var(--rr-font-display)", position: "absolute", opacity: 0, pointerEvents: "none" }}
+      >
+        probe
+      </span>
+
+      {/* Riesen-Wortmarke — setzt sich beim Footer-Eintritt sichtbar zusammen */}
+      <div ref={wrapRef} className="rr-foot-word">
         {reduced ? (
-          <p className="rr-claim" style={{ color: "var(--rr-red)", fontWeight: 640, fontFamily: "var(--rr-font-display)" }}>red<br />rabbit</p>
+          <p
+            className="rr-claim"
+            style={{
+              color: "var(--rr-red)",
+              fontWeight: 640,
+              fontFamily: "var(--rr-font-display)",
+              fontSize: "clamp(88px, 13vw, 210px)",
+              lineHeight: 0.92,
+              textAlign: "center",
+              margin: 0,
+            }}
+          >
+            red<br />rabbit
+          </p>
         ) : (
           <div ref={boxRef} style={{ position: "relative" }} />
         )}
-        <nav aria-label="Footer" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "14px 34px", padding: "0 24px" }}>
-          <Link className="rr-link rr-link-dark" href="/referenzen-preview">Referenzen</Link>
-          <Link className="rr-link rr-link-dark" href="/kontakt">Kontakt</Link>
-          <a className="rr-link rr-link-dark" href="mailto:office@redrabbit.media">office@redrabbit.media</a>
-          <a className="rr-link rr-link-dark" href="tel:+436769000955">+43 676 9000 955</a>
-          <Link className="rr-link rr-link-dark" href="/impressum">Impressum</Link>
-          <Link className="rr-link rr-link-dark" href="/datenschutz">Datenschutz</Link>
-        </nav>
-        <p className="rr-meta" style={{ color: "rgba(255,255,255,0.55)" }}>&copy; {new Date().getFullYear()} Red Rabbit Media</p>
+      </div>
+
+      {/* Info-Spalten */}
+      <div className="rr-foot-inner">
+        <div className="rr-foot-cols">
+          {/* Marke */}
+          <div className="rr-foot-brand">
+            <RabbitMark className="rr-foot-logo" color="#F12032" />
+            <p className="rr-foot-brandname">Red Rabbit Media</p>
+            <p className="rr-foot-tag">Die faire Anti-Agentur für den österreichischen Mittelstand.</p>
+          </div>
+
+          {/* Navigation */}
+          <nav className="rr-foot-col" aria-label="Navigation">
+            <h3 className="rr-foot-head">Navigation</h3>
+            <ul className="rr-foot-list">
+              {NAV.map((l) => (
+                <li key={l.href}>
+                  <Link className="rr-foot-link" href={l.href}>{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Regionen */}
+          <nav className="rr-foot-col" aria-label="Regionen">
+            <h3 className="rr-foot-head">Regionen</h3>
+            <ul className="rr-foot-list rr-foot-list--regions">
+              {REGIONEN.map((l) => (
+                <li key={l.href}>
+                  <Link className="rr-foot-link rr-foot-link--sm" href={l.href}>{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Kontakt */}
+          <div className="rr-foot-col">
+            <h3 className="rr-foot-head">Kontakt</h3>
+            <address className="rr-foot-contact">
+              <span className="rr-foot-strong">Red Rabbit GmbH</span>
+              <span>Grabnergasse 8/8, 1060 Wien</span>
+              <a className="rr-foot-link" href="mailto:office@redrabbit.media">office@redrabbit.media</a>
+              <a className="rr-foot-link" href="tel:+436769000955">+43 676 9000 955</a>
+              <span className="rr-foot-social">
+                <a className="rr-foot-link" href="https://www.instagram.com/redrabbit.media/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a className="rr-foot-link" href="https://www.linkedin.com/in/thomasuhlir/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              </span>
+            </address>
+          </div>
+        </div>
+
+        <hr className="rr-foot-rule" />
+
+        {/* Legal-Zeile + Bottom */}
+        <div className="rr-foot-bottom">
+          <nav className="rr-foot-legal" aria-label="Rechtliches">
+            {LEGAL.map((l) => (
+              <Link key={l.href} className="rr-foot-link rr-foot-link--sm" href={l.href}>{l.label}</Link>
+            ))}
+          </nav>
+          <div className="rr-foot-copy">
+            <span>&copy; {year} Red Rabbit GmbH. Alle Rechte vorbehalten.</span>
+            <span className="rr-foot-madein">Gebaut in Wien.</span>
+          </div>
+        </div>
       </div>
     </footer>
   );
 }
+
+const FOOT_CSS = `
+.rr .rr-foot { padding: 0; }
+.rr .rr-foot-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: clamp(72px, 15vh, 168px) 24px clamp(48px, 9vh, 104px);
+}
+.rr .rr-foot-inner {
+  max-width: var(--rr-max);
+  margin: 0 auto;
+  padding: 0 var(--rr-gutter) clamp(40px, 6vh, 72px);
+}
+.rr .rr-foot-cols {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: clamp(36px, 4vw, 72px);
+  padding-top: clamp(48px, 7vh, 88px);
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+.rr .rr-foot-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.rr .rr-foot-logo { height: 48px; width: auto; display: block; }
+.rr .rr-foot-brandname {
+  font-family: var(--rr-font-display);
+  font-size: 24px;
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin: 2px 0 0;
+}
+.rr .rr-foot-tag {
+  font-family: var(--rr-font-ui);
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.70);
+  max-width: 30ch;
+  margin: 0;
+}
+.rr .rr-foot-head {
+  font-family: var(--rr-font-ui);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.50);
+  margin: 0 0 18px;
+}
+.rr .rr-foot-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.rr .rr-foot-list--regions { gap: 9px; }
+.rr .rr-foot-link {
+  font-family: var(--rr-font-ui);
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.72);
+  text-decoration: none;
+  transition: color var(--rr-t-fast, 200ms) var(--rr-ease, ease);
+}
+.rr .rr-foot-link:hover { color: #ff5f6d; }
+.rr .rr-foot-link:focus-visible { outline: 2px solid var(--rr-red); outline-offset: 3px; border-radius: 3px; }
+.rr .rr-foot-link--sm { font-size: 14.5px; color: rgba(255,255,255,0.62); }
+.rr .rr-foot-contact { font-style: normal; display: flex; flex-direction: column; gap: 11px; }
+.rr .rr-foot-contact > span,
+.rr .rr-foot-contact > a {
+  font-family: var(--rr-font-ui);
+  font-size: 16px;
+  line-height: 1.4;
+  color: rgba(255,255,255,0.72);
+}
+.rr .rr-foot-strong { color: #fff; font-weight: 600; }
+.rr .rr-foot-social { display: flex; gap: 20px; margin-top: 4px; }
+.rr .rr-foot-rule { border: 0; border-top: 1px solid rgba(255,255,255,0.12); margin: clamp(40px, 6vh, 72px) 0 26px; }
+.rr .rr-foot-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px 32px;
+}
+.rr .rr-foot-legal { display: flex; flex-wrap: wrap; gap: 12px 26px; }
+.rr .rr-foot-copy {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-family: var(--rr-font-ui);
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.45);
+}
+.rr .rr-foot-madein { color: rgba(255,255,255,0.62); }
+
+@media (max-width: 900px) {
+  .rr .rr-foot-cols { grid-template-columns: 1fr 1fr; gap: 40px 32px; }
+  .rr .rr-foot-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 560px) {
+  .rr .rr-foot-cols { grid-template-columns: 1fr; }
+  .rr .rr-foot-bottom { flex-direction: column; align-items: flex-start; }
+}
+`;
