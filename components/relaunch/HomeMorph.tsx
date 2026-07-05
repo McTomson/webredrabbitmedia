@@ -25,17 +25,30 @@ const COMPS = [atShapes1, atShapes2, atShapes3, atShapes4, atShapes5];
  * treibt unveraendert die bestehende Timeline. So teilen Hasenkopf, Statement und
  * Wortmarke EIN Koordinatensystem -> nahtloser Lockup -> Shatter-Uebergang.
  */
-const U_INTRO = 1.25;
+const U_INTRO = 1.6;
 const U_SPAN = U_INTRO + U_TOTAL;
 /** Hoehe des Hasenkopfs (konstant, ~50% kleiner als frueher). */
 const HEAD_VH = 30;
-/** Phase-1-Peek: Kopf-Mitte so tief parken, dass ~3/4 des (kleineren) Kopfs
- *  ueber die untere Kante lugt (visible = (50 - dyC + HEAD_VH/2)/HEAD_VH). */
-const HEAD_PEEK_DY = 50 - 0.25 * HEAD_VH; // ~42.5vh -> 3/4-Peek
+/**
+ * Phase-1-Peek: Kopf-Mitte (vh, relativ zur Viewport-Mitte) so tief parken, dass
+ * die untere Viewport-Kante GENAU durch die vertikale Mitte des runden Auge-Lochs
+ * schneidet. Auge-Mitte liegt bei y=190.8/267 (f=0.715) im RabbitMark-viewBox
+ * (Bezier-Analyse des eye-Subpfads), Kopf fuellt den 174/267-Rahmen exakt:
+ *   dyC = 50 - HEAD_VH*(f - 0.5) = 50 - 30*0.215 ≈ 43.6vh.
+ */
+const HEAD_PEEK_DY = 43.6;
 /** Lockup-Position der Kopf-Mitte (vh): Kopf oben, klarer Abstand zur Wortmarke. */
 const HEAD_LOCK_DY = -20;
-/** Lockup: Wortmarke sitzt tiefer (unter dem Kopf); gleitet in Ruhephase zur Mitte. */
+/** Lockup-Ruheposition der Wortmarke (vh unter der Mitte): sitzt tiefer als der Kopf
+ *  -> klarer Abstand Kopf<->Wortmarke am Lockup. Gleitet danach (u 0->0.22) zur Mitte
+ *  und kontrahiert/zerfaellt unveraendert. */
 const LOCK_STAGE_VH = 22;
+/** Statement-Mitte (vh, relativ zur Viewport-Mitte) am Scroll-Anfang: obere/mittige
+ *  Zone, bequem im Blick. */
+const STMT_TOP_DY = -12;
+/** Starrer Aufwaerts-Weg des GANZEN Stacks vom Peek in den Lockup (vh). Alle drei
+ *  Elemente teilen exakt diesen Shift -> es liest sich wie normales Seiten-Scrollen. */
+const STACK_TRAVEL = HEAD_PEEK_DY - HEAD_LOCK_DY; // 63.6vh
 
 /**
  * Durchgehende Morph-Buehne: Wortmarke -> Kontraktion -> Burst mit sichtbarer
@@ -64,6 +77,11 @@ export default function HomeMorph({ claim }: { claim: string }) {
     let els: HTMLDivElement[] = [];
     let camWraps: HTMLDivElement[] = [];
     let cameras: Array<(u: number) => { k: number; tx: number; ty: number }> = [];
+    // Lockup-Wortmarkenhoehe (vh) dynamisch bestimmt, damit der Abstand
+    // Kopf<->Wortmarke EXAKT dem Abstand oberer Rand<->Kopf entspricht (A == B) —
+    // auf jeder Breite (Wortmarke skaliert breitenabhaengig). Fallback bis gemessen.
+    let lockStageVh = LOCK_STAGE_VH;
+    let lockMeasured = false;
     let raf = 0;
     let destroyed = false;
 
@@ -123,6 +141,7 @@ export default function HomeMorph({ claim }: { claim: string }) {
       });
 
       stage.innerHTML = "";
+      lockMeasured = false; // pro (Re-)Build neu vermessen (Breite kann sich aendern)
       // Ein Kamera-Wrapper pro Szene: nimmt die at-Teile dieser Szene auf
       // (Zoom/Pan der jeweiligen Szenen-Fahrt); die 18 Wortmarken-Teile haengen
       // direkt in der Stage.
@@ -194,9 +213,15 @@ export default function HomeMorph({ claim }: { claim: string }) {
       }
 
       // Kamera-Fahrt pro Szene: Zoom/Pan des jeweiligen Szenen-Wrappers.
+      // Waehrend des Marken-Auftakts (u=0) sind die Szenen-/Shatter-Teile NICHT
+      // Teil des ruhenden "red rabbit"-Lockups -> ausblenden, damit im Intro nur
+      // Wortmarke + Kopf + Statement (voll deckend) zu sehen sind. Ab u>0 treibt
+      // wieder die Teile-Timeline die Sichtbarkeit (unveraendert).
+      const sceneVis = u > 0 ? "1" : "0";
       for (let s = 0; s < camWraps.length; s++) {
         const c = cameras[s](u);
         camWraps[s].style.transform = `translate(${c.tx}px, ${c.ty}px) scale(${c.k})`;
+        camWraps[s].style.opacity = sceneVis;
       }
 
       // Hero-Claim: erscheint NACH dem Auftakt-Statement (waehrend der Kopf
@@ -209,34 +234,62 @@ export default function HomeMorph({ claim }: { claim: string }) {
         claimRef.current.style.transform = `translateY(${(1 - co) * -18}px)`;
       }
 
-      // ---- Marken-Auftakt (Phasen 1-2): Statement + Hasenkopf ueber der Wortmarke
-      // Wortmarke (Stage) blendet in Phase 2 unter dem steigenden Kopf ein und
-      // gleitet aus der tieferen Lockup-Position in der Ruhephase (u 0->0.22) in
-      // die Mitte -> danach kontrahiert/zerfaellt sie unveraendert.
-      const wmIn = clamp01((uScroll - U_INTRO * 0.55) / (U_INTRO * 0.4));
-      const slideY = (1 - masterEase(clamp01(u / 0.22))) * LOCK_STAGE_VH;
-      stage.style.opacity = String(u > 0 ? 1 : wmIn);
-      stage.style.transform = `translateY(${slideY}vh)`;
+      // ---- Marken-Auftakt: EIN starrer vertikaler STACK, der beim Scrollen nach
+      // oben wandert (wie normales Seiten-Scrollen). Reihenfolge oben->unten:
+      // [1] Statement  [2] Hasenkopf  [3] "red rabbit"-Wortmarke. ALLE drei bei
+      // VOLLER Deckkraft die ganze Zeit — sie BEWEGEN sich nur (kein Fade-In/Out).
+      // ip = linearer Intro-Fortschritt (kein Easing -> Seiten-Scroll-Gefuehl).
+      const ip = clamp01(uScroll / U_INTRO);
+      const introShift = ip * STACK_TRAVEL; // gemeinsamer Aufwaerts-Weg (vh)
 
-      // Hasenkopf: Phase-1-Verweilen am Halb-Peek, dann Aufstieg zur vollen Ansicht
-      // (Top des Lockups); blendet zu Phase-3-Beginn aus, bevor die Wortmarke
-      // kontrahiert.
+      // Einmalig (bei u=0, Wortmarke montiert) die Lockup-Ruhehoehe so bestimmen,
+      // dass Abstand Kopf-Unterkante -> Wortmarke-Oberkante (B) == Abstand oberer
+      // Rand -> Kopf-Oberkante (A). Herleitung mit Kopf-Oberkante = (50+LOCK-15)vh
+      // und Wortmarke-Oberkante = (50 + S + off)vh:  S = 50 + 2*HEAD_LOCK_DY - off.
+      // off = Wortmarken-Oberkante relativ zur Stage-Mitte (vh) — translateY-neutral.
+      if (!lockMeasured && u === 0) {
+        const sr = stage.getBoundingClientRect();
+        let wtop = Infinity;
+        for (const c of Array.from(stage.children) as HTMLElement[]) {
+          if (c.tagName === "DIV" && c.style.inset !== "0px" && c.querySelector("svg")) {
+            const r = c.getBoundingClientRect();
+            if (r.width > 1 && r.height > 1) wtop = Math.min(wtop, r.top);
+          }
+        }
+        if (isFinite(wtop)) {
+          const offVh = ((wtop - sr.top - window.innerHeight / 2) / window.innerHeight) * 100;
+          lockStageVh = 50 + 2 * HEAD_LOCK_DY - offVh;
+          lockMeasured = true;
+        }
+      }
+
+      // Wortmarke (Stage): steigt starr mit dem Stack vom unteren Rand herauf und
+      // ruht am Lockup (u=0) in der lockStageVh-Position (klarer, gleichmaessiger
+      // Abstand unter dem Kopf, A == B). Ab u>0 uebernimmt der Settle-Slide
+      // (lockStageVh -> 0) + danach unveraendert Kontraktion/Shatter. Immer voll
+      // deckend (kein Fade-In).
+      const introStageY = lockStageVh + STACK_TRAVEL - introShift; // ip=0 -> weit unten; ip=1 -> lockStageVh
+      const settleY = (1 - masterEase(clamp01(u / 0.22))) * lockStageVh; // u 0->0.22: lockStageVh -> 0
+      const stageY = u > 0 ? settleY : introStageY; // stetig: introStageY(ip=1)=lockStageVh=settleY(u=0)
+      stage.style.opacity = "1";
+      stage.style.transform = `translateY(${stageY}vh)`;
+
+      // Hasenkopf: peekt am Anfang (Auge-Mitte an der Unterkante), faehrt starr mit
+      // dem Stack in den Lockup. Voll deckend im Intro; blendet erst im Shatter
+      // (u>0) LANGSAM aus.
       if (headRef.current) {
-        const headP = masterEase(clamp01((uScroll - U_INTRO * 0.3) / (U_INTRO * 0.62)));
-        const dyC = HEAD_PEEK_DY + (HEAD_LOCK_DY - HEAD_PEEK_DY) * headP; // vh: 3/4-Peek -> Lockup
-        // Phase 3: Kopf blendet LANGSAM/graduell aus, ueberlappt sanft mit dem Shatter.
+        const dyC = HEAD_PEEK_DY - introShift; // 43.6 -> -20 (Lockup)
         const headFade = 1 - clamp01(u / 0.42);
         headRef.current.style.transform = `translate(-50%, calc(-50% + ${dyC}vh))`;
         headRef.current.style.opacity = String(headFade);
       }
 
-      // Statement: ruhig in der VERTIKALEN MITTE (all-turtles-Massstab), verblasst
-      // frueh und steigt dabei auf -> es raeumt nach oben, bevor der Kopf seine
-      // Zone erreicht.
+      // Statement: startet in der oberen/mittigen Zone, scrollt mit dem Stack nach
+      // oben aus dem Bild — OHNE zu verblassen (volle Deckkraft durchgehend).
       if (statementRef.current) {
-        const stFade = 1 - clamp01((uScroll - U_INTRO * 0.34) / (U_INTRO * 0.32));
-        statementRef.current.style.opacity = String(stFade);
-        statementRef.current.style.transform = `translate(-50%, calc(-50% - ${(1 - stFade) * 80}px))`;
+        const stY = STMT_TOP_DY - introShift; // -12 -> off top
+        statementRef.current.style.opacity = "1";
+        statementRef.current.style.transform = `translate(-50%, calc(-50% + ${stY}vh))`;
       }
 
       // R3: Statement steigt VON UNTEN hoch waehrend die Formation entsteht —
@@ -336,7 +389,7 @@ export default function HomeMorph({ claim }: { claim: string }) {
               letterSpacing: "-0.01em",
               color: "var(--rr-navy)",
             }}>
-              Wir bauen ästhetische Websites, die man dort findet, wo deine Kunden sind.
+              Wir bauen ästhetische Websites,<br />die man dort findet, wo deine Kunden sind.
             </p>
           </div>
         )}
@@ -349,7 +402,7 @@ export default function HomeMorph({ claim }: { claim: string }) {
         {reduced && (
           <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3vh", padding: "0 24px" }}>
             <p style={{ fontFamily: "var(--rr-font-serif)", fontWeight: 500, fontSize: "clamp(24px, 3vw, 42px)", lineHeight: 1.2, textAlign: "center", color: "var(--rr-navy)", maxWidth: "min(90vw, 900px)", margin: 0 }}>
-              Wir bauen ästhetische Websites, die man dort findet, wo deine Kunden sind.
+              Wir bauen ästhetische Websites,<br />die man dort findet, wo deine Kunden sind.
             </p>
             <div style={{ height: "30vh", aspectRatio: "174 / 267" }}>
               <RabbitMark className="rr-heromark" color="var(--rr-red)" title="Red Rabbit" />
