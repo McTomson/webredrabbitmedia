@@ -27,8 +27,13 @@ const COMPS = [atShapes1, atShapes2, atShapes3, atShapes4, atShapes5];
  */
 const U_INTRO = 1.25;
 const U_SPAN = U_INTRO + U_TOTAL;
-/** Hoehe des Hasenkopfs (konstant); Peek zeigt die obere Haelfte. */
-const HEAD_VH = 54;
+/** Hoehe des Hasenkopfs (konstant, ~50% kleiner als frueher). */
+const HEAD_VH = 30;
+/** Phase-1-Peek: Kopf-Mitte so tief parken, dass ~3/4 des (kleineren) Kopfs
+ *  ueber die untere Kante lugt (visible = (50 - dyC + HEAD_VH/2)/HEAD_VH). */
+const HEAD_PEEK_DY = 50 - 0.25 * HEAD_VH; // ~42.5vh -> 3/4-Peek
+/** Lockup-Position der Kopf-Mitte (vh): Kopf oben, klarer Abstand zur Wortmarke. */
+const HEAD_LOCK_DY = -20;
 /** Lockup: Wortmarke sitzt tiefer (unter dem Kopf); gleitet in Ruhephase zur Mitte. */
 const LOCK_STAGE_VH = 22;
 
@@ -218,18 +223,20 @@ export default function HomeMorph({ claim }: { claim: string }) {
       // kontrahiert.
       if (headRef.current) {
         const headP = masterEase(clamp01((uScroll - U_INTRO * 0.3) / (U_INTRO * 0.62)));
-        const dyC = 50 + (-20 - 50) * headP; // vh: +50 (Peek: Mitte am unteren Rand) -> -20 (voll)
-        const headFade = 1 - clamp01(u / 0.14);
+        const dyC = HEAD_PEEK_DY + (HEAD_LOCK_DY - HEAD_PEEK_DY) * headP; // vh: 3/4-Peek -> Lockup
+        // Phase 3: Kopf blendet LANGSAM/graduell aus, ueberlappt sanft mit dem Shatter.
+        const headFade = 1 - clamp01(u / 0.42);
         headRef.current.style.transform = `translate(-50%, calc(-50% + ${dyC}vh))`;
         headRef.current.style.opacity = String(headFade);
       }
 
-      // Statement: ruhig oben-mittig (all-turtles-Massstab), verblasst frueh und
-      // steigt dabei auf -> es raeumt nach oben, bevor der Kopf seine Zone erreicht.
+      // Statement: ruhig in der VERTIKALEN MITTE (all-turtles-Massstab), verblasst
+      // frueh und steigt dabei auf -> es raeumt nach oben, bevor der Kopf seine
+      // Zone erreicht.
       if (statementRef.current) {
         const stFade = 1 - clamp01((uScroll - U_INTRO * 0.34) / (U_INTRO * 0.32));
         statementRef.current.style.opacity = String(stFade);
-        statementRef.current.style.transform = `translate(-50%, ${-(1 - stFade) * 80}px)`;
+        statementRef.current.style.transform = `translate(-50%, calc(-50% - ${(1 - stFade) * 80}px))`;
       }
 
       // R3: Statement steigt VON UNTEN hoch waehrend die Formation entsteht —
@@ -295,7 +302,7 @@ export default function HomeMorph({ claim }: { claim: string }) {
               top: "50%",
               height: `${HEAD_VH}vh`,
               aspectRatio: "174 / 267",
-              transform: "translate(-50%, calc(-50% + 50vh))",
+              transform: `translate(-50%, calc(-50% + ${HEAD_PEEK_DY}vh))`,
               zIndex: 4,
               pointerEvents: "none",
               willChange: "transform, opacity",
@@ -311,9 +318,9 @@ export default function HomeMorph({ claim }: { claim: string }) {
             ref={statementRef}
             style={{
               position: "absolute",
-              top: "clamp(64px, 19vh, 210px)",
+              top: "50%",
               left: "50%",
-              transform: "translateX(-50%)",
+              transform: "translate(-50%, -50%)",
               width: "min(90vw, 900px)",
               textAlign: "center",
               zIndex: 5,
@@ -344,7 +351,7 @@ export default function HomeMorph({ claim }: { claim: string }) {
             <p style={{ fontFamily: "var(--rr-font-serif)", fontWeight: 500, fontSize: "clamp(24px, 3vw, 42px)", lineHeight: 1.2, textAlign: "center", color: "var(--rr-navy)", maxWidth: "min(90vw, 900px)", margin: 0 }}>
               Wir bauen ästhetische Websites, die man dort findet, wo deine Kunden sind.
             </p>
-            <div style={{ height: "40vh", aspectRatio: "174 / 267" }}>
+            <div style={{ height: "30vh", aspectRatio: "174 / 267" }}>
               <RabbitMark className="rr-heromark" color="var(--rr-red)" title="Red Rabbit" />
             </div>
             <p className="rr-display-2" style={{ color: "var(--rr-red)", fontWeight: 640, textAlign: "center", margin: 0 }}>red<br />rabbit</p>
