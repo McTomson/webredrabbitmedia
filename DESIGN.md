@@ -122,7 +122,8 @@ like the `.ai` corporate lockup (that layout is only a brand-guideline example).
   hero (independent element), not to its left.
 - **Hero-swap TODO (Hero session):** add DM Sans to `fonts.ts`; re-tune `pieces.ts` clip-rects to
   DM Sans glyph shapes; change `buildWordLayout()` from stacked two-line to a single line; keep the
-  fracture pieces all red. Visual reference of the locked result:
+  fracture pieces all red; set the `.rr-display-*` roles to DM Sans **Bold 700** (was `font-weight:
+  560`; Bold-over-Medium confirmed 2026-07-06). Visual reference of the locked result:
   `docs/handoffs/HERO_font-swap_dm-sans.md`.
 
 ### Type scale (clamps, `styleguide.css`)

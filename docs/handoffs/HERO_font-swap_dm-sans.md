@@ -24,8 +24,10 @@ ist der genaue Auftrag. Die verbindliche Spec steht in `DESIGN.md` §3 + §3.1.
 2. **`app/styleguide/styleguide.css`** — erst NACH dem Swap `--rr-font-display` von Fraunces auf
    `var(--font-dmsans)` umstellen (sonst brechen die display-type-Rollen / der Morph auseinander).
    `font-variation-settings: "opsz" 144 ...` in den `.rr-display-*`-Rollen entfernen (DM Sans hat
-   diese Fraunces-Achsen nicht). Design-System-Session kann diesen CSS-Teil uebernehmen, sobald ihr
-   das Signal gebt — bitte kurz abstimmen, damit wir uns nicht in styleguide.css ueberschreiben.
+   diese Fraunces-Achsen nicht). **`.rr-display-*` `font-weight` von 560 auf 700 (Bold)** setzen
+   (Tomson-Entscheidung 2026-07-06: Headlines Bold, nicht Medium). Design-System-Session kann diesen
+   CSS-Teil uebernehmen, sobald ihr das Signal gebt — bitte kurz abstimmen, damit wir uns nicht in
+   styleguide.css ueberschreiben.
 3. **`lib/relaunch/morph/pieces.ts`** — die `PIECES`-Clip-Rects sind Fraunces-glyph-spezifisch
    ("Naturbruch-Regel", Schnitt nur an den duennsten Stellen). Fuer die DM-Sans-Glyphen `r/e/d/a/b/i/t`
    neu vermessen/tunen. DM Sans ist geometrischer/gleichmaessiger als Fraunces, die Gelenke sitzen anders.
