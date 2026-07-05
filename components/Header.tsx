@@ -33,6 +33,7 @@ export default function Header({ onFormOpen }: HeaderProps) {
     if (pathname?.startsWith('/styleguide')) return null;
     if (pathname?.startsWith('/relaunch-preview')) return null;
     if (pathname?.startsWith('/referenzen-preview')) return null;
+    if (pathname?.startsWith('/design-system')) return null;
 
     const navLinks = [
         { name: 'Über uns', href: '/#about' },

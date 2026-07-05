@@ -18,6 +18,7 @@ const Footer = () => {
     if (pathname?.startsWith('/styleguide')) return null;
     if (pathname?.startsWith('/relaunch-preview')) return null;
     if (pathname?.startsWith('/referenzen-preview')) return null;
+    if (pathname?.startsWith('/design-system')) return null;
 
     const handleSaveContact = () => {
         // Create a link element to download the VCF file
