@@ -63,7 +63,7 @@ export const U_HERO = 1.7;
 export const U_TOTAL = U_HERO + 5;
 
 /** u-Fenster fuer Szene 0 (laenger, weil sie aus dem Hero-Einflug entsteht). */
-const U_B0 = 0.45, U_B1 = 2.3;
+const U_B0 = 0.35, U_B1 = 2.25;
 
 /** Eingabe: ein Pool-Teil (gerendertes Naturbruch-Fragment). */
 export interface PoolPieceIn {
@@ -130,6 +130,17 @@ export function buildStagePlan(
     return { x: dx * t, y: dy * t };
   }
 
+  /** Punkt AUSSERHALB des Viewports, ausgehend von (fx,fy) in Richtung (dx,dy):
+   *  bis zum ersten Rand + Ueberstand. Fuer den Szene-0-Einflug von aussen. */
+  function offscreenFrom(fx: number, fy: number, dx: number, dy: number, overshoot: number): { x: number; y: number } {
+    const len = Math.hypot(dx, dy) || 1;
+    dx /= len; dy /= len;
+    const tx = dx > 1e-6 ? (halfW - fx) / dx : dx < -1e-6 ? (-halfW - fx) / dx : Infinity;
+    const ty = dy > 1e-6 ? (halfH - fy) / dy : dy < -1e-6 ? (-halfH - fy) / dy : Infinity;
+    const t = Math.max(0, Math.min(tx, ty)) + overshoot * diag;
+    return { x: fx + dx * t, y: fy + dy * t };
+  }
+
   // ---- Szenen-Fenster -------------------------------------------------------
   // Szene 0: Build [U_B0, U_B1], harter Schnitt bei uCut0 = U_HERO + 1.
   // Szene s>=1: us = U_HERO + s; Build [us, us+0.75]; Schnitt us+1
@@ -185,10 +196,23 @@ export function buildStagePlan(
 
     const slotScale = (jp.w * Math.abs(jp.sx) * k) / p.w;
     const slot: PieceState = { x: X(jp.x), y: Y(jp.y), rot: jp.rot, scale: slotScale, o: 1 };
-    const entry: PieceState = {
+    let entry: PieceState = {
       x: X(jp.fromX), y: Y(jp.fromY), rot: jp.fromRot,
       scale: slotScale * jp.fromScale, o: 1,
     };
+
+    // Szene 0: Einflug von AUSSERHALB des Bildschirms statt Aufpoppen am
+    // Original-Entry (das oft im Bild liegt). Startpunkt = slot in Original-
+    // Einflugrichtung verlaengert bis ueber den Rand -> die Teile stroemen
+    // sichtbar von aussen herein, waehrend die Wortmarke hinausfliegt.
+    // Der Halte-Frame (slot) bleibt exakt 1:1.
+    if (s === 0) {
+      let dx = entry.x - slot.x, dy = entry.y - slot.y;
+      if (Math.hypot(dx, dy) < 1) { dx = slot.x; dy = slot.y; }
+      if (Math.hypot(dx, dy) < 1) { const a = rng() * Math.PI * 2; dx = Math.cos(a); dy = Math.sin(a); }
+      const start = offscreenFrom(slot.x, slot.y, dx, dy, 0.06);
+      entry = { ...entry, x: start.x, y: start.y };
+    }
 
     // Fail-closed: verstecktes Teil -> nur Off-Segment.
     if (jp.hidden) {
@@ -198,10 +222,10 @@ export function buildStagePlan(
 
     const fs = uAt(jp.entryT * dur);              // Flugbeginn
     const ar = uAt(jp.arriveT * dur);             // Ankunft
-    // Szene 0 hat keinen verdeckenden Vorgaenger -> Teile erscheinen erst mit
-    // Flugbeginn. Szenen 1-4: ab Sichtbarkeitsfenster (ip) am Entry geparkt,
-    // der Vorgaenger-Formation-Standort verdeckt das Erscheinen.
-    const uVis0 = s === 0 ? fs : uAt(Math.max(jp.ip, 0));
+    // Szene 0: Teile ab u=0 sichtbar, aber off-screen geparkt (kein o-Snap im
+    // Bild) -> fliegen ab fs herein. Szenen 1-4: ab Sichtbarkeitsfenster (ip)
+    // am Entry geparkt, der Vorgaenger-Formation-Standort verdeckt das Erscheinen.
+    const uVis0 = s === 0 ? 0 : uAt(Math.max(jp.ip, 0));
     const finiteVis = s < 4 || jp.op < dur;
     const uVis1 = jp.op >= dur ? uCut : uAt(jp.op);
 
