@@ -154,7 +154,10 @@ export default function HomeMorph({ claim }: { claim: string }) {
       if (!timelines.length) return;
       const r = track.getBoundingClientRect();
       const p = clamp01(-r.top / (r.height - window.innerHeight));
-      const u = p * U_TOTAL;
+      // QA-Override: window.__morphU erzwingt einen exakten u-Wert (nur wenn
+      // gesetzt; in Produktion nie aktiv) -> Lenis-unabhaengige Frame-Pruefung.
+      const forced = (window as unknown as { __morphU?: number }).__morphU;
+      const u = typeof forced === "number" ? forced : p * U_TOTAL;
 
       for (let i = 0; i < els.length; i++) {
         const st = sampleTimeline(timelines[i], u);

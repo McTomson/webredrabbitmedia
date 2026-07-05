@@ -113,11 +113,24 @@ export function buildStagePlan(
   const diag = Math.hypot(vp.w, vp.h);
   const halfW = vp.w / 2, halfH = vp.h / 2;
 
-  // ---- GLOBALES Canvas-Mapping fuer ALLE Szenen (kein Szenen-Anker) ---------
-  // Dadurch stehen die Entry-Positionen von Szene s+1 EXAKT dort, wo Szene s
-  // endete (Original-Koordinaten) -> nahtloser harter Schnitt.
-  const X = (xN: number) => (xN - 0.5) * 1920 * k;
-  const Y = (yN: number) => (yN - 0.5) * 1080 * k;
+  // ---- Formations-Zentrum pro Szene (fuer Mobile-Zentrierung) ---------------
+  const sceneCenterX = COMPS.map((c) => {
+    const xs = c.pieces.filter((p) => !p.hidden).map((p) => p.x);
+    return xs.length ? (Math.min(...xs) + Math.max(...xs)) / 2 : 0.5;
+  });
+  const sceneCenterY = COMPS.map((c) => {
+    const ys = c.pieces.filter((p) => !p.hidden).map((p) => p.y);
+    return ys.length ? (Math.min(...ys) + Math.max(...ys)) / 2 : 0.5;
+  });
+
+  // ---- Canvas-Mapping. Desktop: GLOBAL (Original-Koordinaten -> Szene s+1
+  // startet wo s endete, nahtloser Schnitt; Formation seitlich, Text auf der
+  // Gegenseite). Mobile (narrow): jede Formation horizontal + vertikal um ihr
+  // eigenes Zentrum in den oberen Bildbereich zentriert (Text darunter).
+  const offX = (s: number) => (narrow ? -(sceneCenterX[s] - 0.5) * 1920 * k : 0);
+  const offY = (s: number) => (narrow ? (-(sceneCenterY[s] - 0.5) * 1080 * k) - vp.h * 0.16 : 0);
+  const X = (xN: number, s = 0) => (xN - 0.5) * 1920 * k + offX(s);
+  const Y = (yN: number, s = 0) => (yN - 0.5) * 1080 * k + offY(s);
 
   // ---- R1 Rand-Geometrie fuer den Wortmarken-Abflug -------------------------
   /** Punkt auf dem Ray (dx,dy) ab Zentrum, knapp UEBER den Rand. */
@@ -195,9 +208,9 @@ export function buildStagePlan(
     const uAt = (f: number) => uB0s + (f / dur) * W;
 
     const slotScale = (jp.w * Math.abs(jp.sx) * k) / p.w;
-    const slot: PieceState = { x: X(jp.x), y: Y(jp.y), rot: jp.rot, scale: slotScale, o: 1 };
+    const slot: PieceState = { x: X(jp.x, s), y: Y(jp.y, s), rot: jp.rot, scale: slotScale, o: 1 };
     let entry: PieceState = {
-      x: X(jp.fromX), y: Y(jp.fromY), rot: jp.fromRot,
+      x: X(jp.fromX, s), y: Y(jp.fromY, s), rot: jp.fromRot,
       scale: slotScale * jp.fromScale, o: 1,
     };
 
