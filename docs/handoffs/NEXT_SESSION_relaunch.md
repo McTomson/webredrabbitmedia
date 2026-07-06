@@ -1,67 +1,60 @@
-# Naechste Session — relaunch (Stand 2026-07-05 nachts, LAUFENDE Session-Fortsetzung)
+# Naechste Session — relaunch (Hero/Morph + Wortmarke) — Stand 2026-07-06 (nach Neustart nahtlos weiter)
 
-## FUER OPUS 4.8 (falls Fable 5 ausfaellt): Du uebernimmst AUTONOM, ohne Rueckfragen.
-Tomson-Auftrag: alle 5 Morph-Szenen 1:1 identisch zu all-turtles.com, testen im Browser,
-loopen bis fertig. Regeln unten strikt befolgen; bei Design-Zweifeln NICHT improvisieren,
-sondern gegen Original-Daten/Overlays verifizieren (die Werkzeuge dafuer existieren alle).
+## Arbeitsregeln (verbindlich)
+- Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
+- NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.
+- Erst einen Plan machen (TodoWrite), dann ausfuehren.
+- Skills + parallele Sub-Agenten nutzen wo es hilft. Fuer lange autonome Laeufe den `autonomous-runner` Agent verwenden.
+- Autonom handeln, voller Zugriff inkl. Browser — ohne fuer jeden Schritt nachzufragen (Grenze: kein Botschutz-Umgehen, keine Account-Anlage, nichts Destruktives ohne Deckung).
+- Laufend testen + `review-it` bei groesseren Schritten. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
+- Bei langen Agenten-/Hintergrund-Laeufen ALLE 15 MIN Health-Check + Stichprobe. Bricht ein Tool ein → STOPP + fixen, keine kaputten Daten schreiben.
+- KEINE Emojis. User-Content mit echten Umlauten.
 
-## WAS BEREITS FUNKTIONIERT (nicht neu bauen, nicht anfassen)
-1. **Extraktion (BEWIESEN, IoU 0.975-0.996 an den Halte-Frames):**
-   `tools/extract-at-shapes.py comp_N` -> `lib/relaunch/morph/at-shapes-comp{1..5}.json`.
-   Verifikation: `python3 tools/verify-at-shapes.py comp_N` (Simulation vs lottie-web-GT,
-   Overlays im Scratchpad). Erkenntnisse eingebaut: Keyframe-t = COMP-Zeit (st ignorieren!),
-   Easing ueberall cubic-bezier(0.6,0,0.4,1) = masterEase, Slot = eigener Ankunfts-Keyframe,
-   "Kamera" = animierter Null-Parent (Pan+Zoom 100->55%) als separater Track, ip/op =
-   Reveal-Fenster, Rotationen UNWRAPPED (nie normalisieren), 23 Layer mit Flip (sy<0).
-2. **Szene 0 (Zahnraeder) 1:1 in der Engine:** stage.ts + HomeMorph.tsx spielen comp_1 ab
-   (Entry->Slot, Original-Timing, Kamera-Wrapper). Wortmarke: Ruhe->Kontraktion->Burst->
-   Abflug ueber den Rand. at-Teile erscheinen erst mit Flugbeginn (Original-Cut-Trick
-   braucht comp_0-Burst als Deckung, den wir nicht haben). Live-QA: Standbild vs Original-
-   Frame f_0022 strukturgleich; Formation-Groesse bei 1440x900 pixelgleich (554px vs 555px).
-3. **Typografie:** Statements/Claims = Crimson Pro w500 (Heldane-Doppelgaenger, at-Messung:
-   4.46vw, lh 1.11, ls -1%); Eyebrow = Instrument Sans uppercase; Fraunces nur Wortmarke.
-4. **Farbtupfer (Tomson):** genau EIN laengliches comp_1-Teil in Dunkelblau #1C2837 (navyIdx
-   in HomeMorph).
+## Setup nach Neustart (zuerst)
+- Projekt: `~/dev/redrabbit`, Branch `relaunch`. Dev-Server: `npm run dev -- --port 9000` → http://localhost:9000/relaunch-preview
+- Falls `node_modules` fehlt: `npm install`.
+- Browser-QA: **agent-browser** verwenden (nicht die Chrome-Extension — deren committete localhost-Navigation haengt an einer Permission-Freigabe im Extension-Panel). `agent-browser open http://localhost:9000/relaunch-preview`.
 
-## WORAN GERADE GEARBEITET WIRD (Stand beim Schreiben)
-- Ein Opus-Agent baut nach detaillierter Spec die Szenen 1-4 auf 1:1 um (at-shapes-comp2..5):
-  Harte Schnitte wie im Original (Szene-s-Teile verschwinden am Cut, Szene-s+1-Teile stehen
-  ab Cut sichtbar an ihren Entry-Positionen = exakt wo die Vorgaenger-Formation stand ->
-  nahtloser Morph-Eindruck), GLOBALES Canvas-Mapping X(xN)=(xN-0.5)*1920*k mit
-  k=min(vw/1920, vh/810), 5 Kamera-Wrapper, ip/op-Reveal-Fenster, Perf via visibility:hidden.
-  Szenen-Fenster: Szene 0 Build [0.45, 2.3], Cut 2.7; Szene s>=1: Build [1.7+s, 1.7+s+0.75],
-  Cut 1.7+s+1. Details siehe Git-Log/stage.ts-Kommentare nach Merge.
-- Danach offen: voller QA-Loop (siehe unten), Tomson-Video, Push.
+## PARALLEL-SESSION-STRUKTUR (WICHTIG, fremde Handoffs nicht ueberschreiben)
+Auf Branch `relaunch` laufen zwei Straenge (siehe `docs/handoffs/PARALLEL_design-system_2026-07-05.md`):
+- **Design-System-Session** besitzt: `app/design-system/page.tsx`, `app/styleguide/styleguide.css`, `DESIGN.md`. Handoff: `NEXT_SESSION_relaunch-design-system.md` (NICHT anfassen).
+- **Hero/Morph-Session (DIESE)** besitzt: `components/relaunch/HomeMorph.tsx`, `FooterReassembly.tsx`, `lib/relaunch/morph/*`, `lib/relaunch/fonts.ts`, `RabbitMark.tsx`.
+- GRENZUEBERSCHREITUNG (bewusst, committet): Der Font-Swap MUSSTE `app/styleguide/styleguide.css` (Display-Token) + `app/relaunch-preview/page.tsx` (dmsans-Variable) mitaendern. Die Design-System-Session muss wissen: `--rr-font-display` ist jetzt **DM Sans** (nicht Fraunces), weight 700, opsz-Achsen raus. `.rr-claim`/`.rr-statement` bleiben bewusst Crimson-Serif (styleguide.css Zeile ~113 override).
 
-## QA-WERKZEUGE (alle erprobt, benutzen statt neu erfinden)
-- Dev: `npm run dev -- --port 9000`, Seite: http://localhost:9000/relaunch-preview
-- Headless: `agent-browser --session X open URL`, `set viewport 1440 900`, `eval`, `screenshot`.
-  ACHTUNG Lenis-Smooth-Scroll: window.scrollTo 2-3x mit 0.5-1s Abstand setzen + 3-4s warten,
-  sonst Screenshots mitten in der Lerp-Fahrt. Scroll-Formel: y = (u/6.7) * (trackHeight - vh),
-  track = erstes div im body. Szenen-Holds: u=2.55 (Zahnraeder), 3.55 (Birne), 4.55 (Dokument),
-  5.55 (Chart), 6.35 (Kopf). Bewegungs-Video: record start/stop + WheelEvents dispatchen.
-- Referenz-Frames: ~/dev/at-reference-videos/frames-original/ (f_0022=Zahnraeder-Hold).
-  Original live: all-turtles.com (gleiche Viewport-Groesse verwenden!).
-- Overlay-Vergleich (Python/PIL): Rot-Maske (r>120, r-g>50, r-b>50), IoU; Beispiele im
-  Scratchpad dieser Session und in tools/verify-at-shapes.py.
-- Lottie-Quelle (NUR lesen): ~/dev/at-reference-lottie/anim_0.json
+## Was diese Session gemacht hat (ALLES committet + im Browser verifiziert)
 
-## ARBEITSREGELN (verbindlich)
-- NIE raten — immer verifizieren (Messdaten/Overlays/Browser). Fail-closed.
-- Sub-Agenten: Opus fuer Mechanik NUR mit ausgekauter Spec (jede Entscheidung vorgeben);
-  Sonnet fuer Mess-/Massenarbeit nach bewiesenem Muster; Ergebnisse IMMER reviewen (Code +
-  Browser). Nach jedem Agenten-Merge: tsc + Live-Check.
-- Tomson fragen NUR bei echten Design-Entscheidungen; sonst autonom loopen. Visuelle
-  Entscheidungen als Bilder vorlegen.
-- Commits: conventional, regelmaessig; Push auf origin/relaunch am Ende jedes Meilensteins.
-- Session-Abschluss via session-end Skill; brand/decisions-log.md datiert pflegen.
+### Commit f0110f4 — Display-Font Fraunces → DM Sans (Auftrag aus HERO_font-swap_dm-sans.md = ERLEDIGT)
+- `lib/relaunch/fonts.ts`: DM Sans variabel (`--font-dmsans`), Fraunces aus Display-Slot ausgemustert.
+- `app/styleguide/styleguide.css`: `--rr-font-display` → DM Sans, weight 700, `font-variation-settings: normal`.
+- `lib/relaunch/morph/pieces.ts`: `buildWordLayout` zweizeilig gestapelt → **einzeilig nebeneinander**, Zentrierung ueber echte Ink-BBox (2 Paesse). Weight 700 in `renderPiece`.
+- `app/relaunch-preview/page.tsx`: `dmsans.variable` eingehaengt.
+- `components/relaunch/FooterReassembly.tsx`: einzeilige Marke breiter → F breitengefuehrt gedeckelt (kein overflow-Clipping mobil).
 
-## OFFENE PUNKTE / RISIKEN
-- comp_2 Mid-Flug-IoU 0.898 (Gate 0.90): Restrauschen grosser Rotations-Sweeps, kein
-  Strukturfehler. Bei sichtbaren Artefakten in Szene 1: v-overlay-comp_2-17.png ansehen.
-- Mobile/narrow: globales Mapping zentriert nicht mehr pro Szene — nach Desktop-Abnahme
-  pruefen und ggf. per Szenen-Wrapper-Offset zentrieren (Cut-Pop auf mobile akzeptiert).
-- Copyright at-Teilformen + Heldane: Uebergangsloesung, dokumentiert in brand/decisions-log.md
-  (04./05.07.) — WIEDERVORLAGE vor Launch (eigene Teile / Font-Kauf-Frage).
-- Spaeter-Liste: B2B-Logos/Schrift, Footer-Detail-Typografie, Case-Panel-Schriftpositionen,
-  Case-Panel-Auswahl (Tomson), "Red Rabbit Methode", Kugel-Texturen.
+### Commit fab62e4 — Tomson-Feedback (5 Punkte), alle gefixt
+1. **Navy-Akzent**: war 3/2/9/7/3 (4efde41 faerbte JEDE Instanz der Balken-Form). Jetzt GENAU EIN wandernder dunkelblauer Traveler durch alle 5 Figuren (Mechanismus aus revertiertem 189f3c7 wiederhergestellt). `HomeMorph.tsx`: `navyIdxByScene`, Szenen-Teile alle rot, `navyEl`/`navyRest`/`navyHide` + `NAVY_HOLD=[2.55,3.55,4.55,5.55,6.35]`. Verifiziert: `navyVisible==1` an jedem Hold UND Uebergang (inkl. altem 0-Frame u≈3.85).
+2. **Formation "zwei Knoedel"**: `stage.ts` `wordmarkSegs` leitete Burst-Winkel aus Position ab; einzeilig ⇒ cy≈0 ⇒ Kollaps links/rechts. Jetzt **Golden-Angle** (`GOLDEN=Math.PI*(3-Math.sqrt(5))`, `wmAngle`-Map) ⇒ harmonische Radial-Verteilung. Im Shatter-Frame bestaetigt.
+3. **Buchstaben-Gaps (e/d/b)**: `pieces.ts` `renderPiece` — Clip-Rechtecke um `M=2.4` inflatiert (Ueberlappung an Schnittkanten), Canvas UND SVG (`infl`-Array). DM-Sans-Glyphen jetzt luecken los solide. Bei 2,3x gezoomt bestaetigt.
+4. **Groesse**: Hero-Lockup `HomeMorph.tsx` F = clamp(52, 10.5vw, 132) (war 15vw/200). Footer `FooterReassembly.tsx` desiredF = clamp(56, 9.2vw, 128) (war 13vw/210).
+5. **Wortabstand**: `pieces.ts` `SPACE_EM` 0.9 → 0.42.
+
+## Offen / zu klaeren (mit Tomson)
+- **Groesse = Geschmackssache**: aktuell Hero 10.5vw/132, Footer 9.2vw/128. Aenderung = je EIN clamp-Wert (oben). Nicht raten — Tomson schauen lassen.
+- **prefers-reduced-motion-Fallback** in `FooterReassembly.tsx` (`reduced`-Zweig) rendert die Marke noch **zweizeilig** `red<br/>rabbit`. Fuer Konsistenz auf einzeilig umstellen (nur reduced-motion betroffen). Bewusst NICHT als Last-Minute-Edit gemacht.
+- **Mobil-Pixel-Screenshot der Footer-Marke** NICHT als echtes Bild gemacht (agent-browser-Viewport fuer Chromium nicht umstellbar). Fit rechnerisch mit echten DM-Sans-Metriken verifiziert (360–1600px passt). Echter Mobil-Shot → Chrome-Extension (Tomsons localhost-Freigabe noetig) oder DevTools-Device-Mode.
+
+## QA-Harness (wiederverwenden)
+- `window.__morphU = <u>` erzwingt Morph-Fortschritt (Lenis-unabhaengig). Figuren-Holds = NAVY_HOLD (gear 2.55, bulb 3.55, block 4.55, dash 5.55, face 6.35). Shatter ~u 0.75–1.2.
+- `window.__uScroll = <0..U_SPAN>` erzwingt Gesamt-Scroll. Intro-Lockup sichtbar: `__uScroll≈1.5` (U_INTRO=1.6).
+- Nach QA: `delete window.__morphU; delete window.__uScroll`.
+- Navy zaehlen: `document.querySelectorAll('path[fill="#1C2837"]')` → nur der Traveler ist navy; visible-Count muss ueberall 1 sein.
+- QA-ARTEFAKT: bei erzwungenem `__morphU` ohne passenden Scroll ueberlagert das Intro-Statement die Szenen-Statements — KEIN Bug (im echten Scroll weg).
+
+## Naechste konkrete Schritte
+1. Dev-Server hoch, `relaunch-preview` oeffnen, Tomson Wortmarke + Morph final abnehmen lassen (v.a. Groesse).
+2. Falls OK: pushen (s.u.). Sonst Groesse/Abstand per Einzelwert nachziehen.
+3. Optional: reduced-motion-Footer-Fallback auf einzeilig angleichen.
+
+## Git-Zustand
+- Branch `relaunch`, sauberer Arbeitsbaum. Session-Commits: **f0110f4**, **fab62e4** (beide lokal, ueberleben den Neustart).
+- **NICHT gepusht** (kein Upstream). Remote `origin https://github.com/McTomson/webredrabbitmedia.git`. Zum Pushen: `git push -u origin relaunch`.
+- graphify post-commit-Hook laeuft lokal (kein API-Cost).
