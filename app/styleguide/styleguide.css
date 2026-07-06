@@ -851,7 +851,7 @@
   border: none;
   cursor: pointer;
   overflow: hidden;
-  transition: color 0.4s var(--rr-ease);
+  transition: color 0.4s var(--rr-ease), box-shadow 0.35s var(--rr-ease);
 }
 .rr .rr-btn-sweep::before {
   content: "";
@@ -865,7 +865,7 @@
   transition: width 0.4s var(--rr-ease);
 }
 .rr .rr-btn-sweep:hover::before { width: 100%; }
-.rr .rr-btn-sweep:hover { color: #fff; }
+.rr .rr-btn-sweep:hover { color: #fff; box-shadow: 0 10px 26px rgba(241, 32, 50, 0.34); }
 .rr .rr-btn-sweep:active::before { background: var(--rr-red-deep); }
 .rr .rr-btn-sweep:focus-visible {
   outline: none;
