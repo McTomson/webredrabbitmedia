@@ -137,6 +137,20 @@ function DrawBtn({ variant, label }: { variant: string; label: string }) {
   );
 }
 
+/* Eck-Rahmen-Button (aufgenommen 13) — vier Eck-Winkel als <i>, dann der Text.
+   Ruhe zeigt nur die Winkel, Hover schliesst sie zum Rahmen (oder --fill). */
+function FrameBtn({ variant, fill, label }: { variant: string; fill?: boolean; label: string }) {
+  return (
+    <a className={`rr-btn-frame rr-btn-frame--${variant}${fill ? " rr-btn-frame--fill" : ""}`} href="#">
+      <i className="c1" />
+      <i className="c2" />
+      <i className="c3" />
+      <i className="c4" />
+      <span className="rr-btn-frame__t">{label}</span>
+    </a>
+  );
+}
+
 /* Schalter (Kandidat 12) — Geschwister-Reihenfolge input, handle-wrapper,
    base ist Pflicht (CSS nutzt + und ~). Label umschliesst alles. */
 function ToggleCell({
@@ -795,6 +809,51 @@ export default function DesignSystemPage() {
           <ToggleCell id="rr-tg-navy-on" label="Ein-Zustand Navy · ein" defaultChecked />
           <ToggleCell id="rr-tg-red-on" label="Ein-Zustand Rot · ein" variant="red" defaultChecked />
         </div>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 13 · Buttons - Aufgenommen (Sweep + Eck-Rahmen) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="13" title="Buttons - Aufgenommen (Sweep + Eck-Rahmen)">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 760 }}>
+          Von Tomson bestaetigt (2026-07-06). Sweep-Fill als Haupt-CTA in Rot: eckig, transparenter
+          Grund, der rote Balken waechst von links zur Vollflaeche. Dazu der Eck-Rahmen in vier
+          Versionen: die Ruhe zeigt nur die vier Eck-Winkel, beim Hover schliessen sich die Linien
+          zum Rahmen (Navy/Rot) oder der Inhalt fuellt sich (Navy/Rot). Zum Pruefen mit der Maus
+          drueberfahren.
+        </p>
+        <div style={dsBtnGrid}>
+          <div style={dsPairCol}>
+            <div><a className="rr-btn-sweep rr-btn-sweep--red" href="#">Projekt anfragen</a></div>
+            <p className="rr-meta">rr-btn-sweep--red · Haupt-CTA, roter Balken fuellt von links</p>
+          </div>
+          <div style={dsPairCol}>
+            <div><a className="rr-btn-sweep rr-btn-sweep--navy" href="#">Referenzen</a></div>
+            <p className="rr-meta">rr-btn-sweep--navy · gleiche Mechanik in Navy</p>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "48px 40px",
+            alignItems: "center",
+            background: "var(--rr-surface)",
+            border: "1px solid var(--rr-line)",
+            borderRadius: 16,
+            padding: "56px 40px",
+            marginTop: 24,
+          }}
+        >
+          <FrameBtn variant="navy" label="Projekt anfragen" />
+          <FrameBtn variant="red" label="Projekt anfragen" />
+          <FrameBtn variant="navy" fill label="Projekt anfragen" />
+          <FrameBtn variant="red" fill label="Projekt anfragen" />
+        </div>
+        <p className="rr-meta" style={{ marginTop: 14 }}>
+          rr-btn-frame--navy / --red (Linien schliessen sich) · zusaetzlich --fill (Inhalt faehrt
+          hoch, Schrift weiss)
+        </p>
       </Section>
 
       <footer className="rr-section" style={{ paddingTop: 20 }}>

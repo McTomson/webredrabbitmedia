@@ -904,3 +904,105 @@
 .rr .rr-toggle__input:checked ~ .rr-toggle__base .rr-toggle__base-inside::after { opacity: 1; }
 /* Ein-Zustand alternativ in Markenrot statt Navy */
 .rr .rr-toggle--red .rr-toggle__base-inside::after { background-image: linear-gradient(to bottom, #f12032, #c81222); }
+
+/* ============================================================
+   Aufgenommene Buttons (Tomson 2026-07-06)
+   ============================================================ */
+
+/* ---- Sweep-Fill (uiverse, originalgetreu, nur Farbe/Schrift auf Marke) ----
+   Eckig, transparenter Grund. Farbiger Balken links waechst beim Hover
+   zur Vollflaeche, Schrift invertiert auf weiss. Farbe ueber --c. */
+.rr .rr-btn-sweep {
+  --c: var(--rr-red);
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  text-align: center;
+  min-width: 150px;
+  font-family: var(--rr-font-ui);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 12px 26px;
+  color: var(--rr-ink);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.4s var(--rr-ease);
+}
+.rr .rr-btn-sweep::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  z-index: -1;
+  background: var(--c);
+  transition: width 0.4s var(--rr-ease);
+}
+.rr .rr-btn-sweep:hover::before { width: 100%; }
+.rr .rr-btn-sweep:hover { color: #fff; }
+.rr .rr-btn-sweep:active::before { background: var(--rr-red-deep); }
+.rr .rr-btn-sweep:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--rr-paper), 0 0 0 4.5px var(--c);
+}
+.rr .rr-btn-sweep--navy { --c: var(--rr-navy); }
+.rr .rr-btn-sweep--red { --c: var(--rr-red); }
+
+/* ---- Eck-Rahmen (uiverse-Idee, auf Marke) ----
+   Ruhe: nur vier Eck-Winkel (<i class="c1..c4">) + Schrift in --c,
+   Grund bleibt Seitenfarbe. Hover: die Winkel wachsen auf 50% und
+   schliessen den vollen Rahmen. Modifier --fill: statt Rahmen faehrt
+   eine farbige Fuellung hoch, Schrift wird weiss. Farbe --navy / --red. */
+.rr .rr-btn-frame {
+  --c: var(--rr-navy);
+  position: relative;
+  display: inline-block;
+  padding: 18px 38px;
+  font-family: var(--rr-font-ui);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c);
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.35s var(--rr-ease);
+}
+.rr .rr-btn-frame__t { position: relative; z-index: 2; }
+.rr .rr-btn-frame i {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 0 solid var(--c);
+  z-index: 2;
+  pointer-events: none;
+  transition: width 0.4s var(--rr-ease), height 0.4s var(--rr-ease);
+}
+.rr .rr-btn-frame .c1 { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
+.rr .rr-btn-frame .c2 { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+.rr .rr-btn-frame .c3 { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
+.rr .rr-btn-frame .c4 { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
+.rr .rr-btn-frame:hover i,
+.rr .rr-btn-frame:focus-visible i { width: 50%; height: 50%; }
+.rr .rr-btn-frame:focus-visible { outline: none; }
+.rr .rr-btn-frame--navy { --c: var(--rr-navy); }
+.rr .rr-btn-frame--red { --c: var(--rr-red); }
+.rr .rr-btn-frame--fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--c);
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  transition: transform 0.4s var(--rr-ease);
+}
+.rr .rr-btn-frame--fill:hover::before { transform: scaleY(1); }
+.rr .rr-btn-frame--fill:hover { color: #fff; }

@@ -340,3 +340,25 @@ reassembles into new formations while you scroll.**
    components use `860px`/`900px`/`560px` as their existing breakpoints — match them rather than
    inventing new ones), and confirm the page still builds/lints (`npm run build`, `npm run lint`)
    per root `CLAUDE.md` before considering the task finished.
+
+## 8. Buttons — aufgenommene Stile (Tomson-Entscheidung 2026-07-06)
+
+Neben dem vollständigen Solid-System (`rr-btn--primary/secondary/tertiary/ondark`, Sektion 04) hat
+Tomson zwei weitere Stile fest aufgenommen. Beide sind bewusst **eckig** (kein Pillen-Radius) und
+sitzen auf `app/styleguide/styleguide.css`; live auf `/design-system` Sektion 13.
+
+- **`rr-btn-sweep`** — Sweep-Fill (uiverse, originalgetreu übernommen, nur Farbe + Schrift auf Marke).
+  Eckig, transparenter Grund, ein farbiger Balken wächst beim Hover von links (`::before`, `width`
+  5px → 100%) zur Vollfläche, Schrift invertiert auf Weiß. Farbe über die CSS-Var `--c`, Modifier
+  `--red` (Haupt-CTA) / `--navy`. Markup: `<a class="rr-btn-sweep rr-btn-sweep--red">Label</a>`.
+- **`rr-btn-frame`** — Eck-Rahmen. Ruhe zeigt **nur die vier Eck-Winkel** (`<i class="c1..c4">`, je
+  zwei Border-Kanten) plus die Schrift in `--c`, Grund bleibt die Seitenfarbe. Beim Hover wachsen die
+  vier Winkel auf `50%` und **schließen den vollen Rahmen** (spiegelt das Fracture/Reassemble-Motiv
+  der Seite). Modifier `--navy` / `--red` für die Farbe, zusätzlich `--fill` (statt Rahmen fährt eine
+  farbige Füllung hoch, Schrift wird weiß). Alle vier Kombinationen sind aufgenommen. Markup: vier
+  `<i class="c1..c4">` vor `<span class="rr-btn-frame__t">Label</span>` (Helper `FrameBtn` in
+  `app/design-system/page.tsx`).
+
+**Rollen-Empfehlung (offen, wartet auf finale Tomson-Zuordnung):** `rr-btn-sweep--red` als
+Haupt-CTA (Rot = einzige Aktionsfarbe), `rr-btn-frame` als sekundärer/Outline-CTA. Nicht mehr als
+zwei Effekt-Stile pro Seite, sonst wirkt es nach Template.
