@@ -407,3 +407,21 @@ CSS-Interaktion (`:hover`), kein JS; jede hat einen `prefers-reduced-motion`-Fal
   „Über uns"), nicht als System.
 - **Noch offen (nicht aufgenommen):** Fragment-Karte (Hero-Splitter-Cluster) und Mechanik-Karte
   (Zahnräder) aus Runde 3 — als Prototyp gebaut, warten auf Tomson-Entscheidung.
+
+## 11. Formular-Karten (Tomson-Entscheidung 2026-07-07)
+
+Zwei bestätigte Anfrage-Karten. Ersetzen die Formular-Optik aus §9/Sektion 14; die
+`rr-field`/`rr-label`/`rr-form`-Primitive bleiben die Basis (die Split-Karte nutzt sie direkt).
+Live auf `/design-system` Sektion 16, CSS in `styleguide.css` (Abschnitt „Formular-Karten").
+
+- **`rr-formcard-neu`** (Neumorph, eckig) — uiverse-Vorlage originalgetreu übernommen, aber auf
+  Wunsch **eckig statt rund** (kein Radius) und auf Marke umgefärbt. Weiche Doppelschatten-Karte,
+  300px. `__title` (DM Sans, uppercase) + `__box` (transparentes Input mit `border-left`/`-bottom`
+  in Ink + `<span>`-Label). Das Label wandert per `input:focus ~ span` / `input:valid ~ span`
+  (`required` nötig) als **roter eckiger Block** nach oben rechts; Verschiebeweite pro Feld über
+  `--tx`. **Submit = `rr-btn-frame--red rr-btn-frame--fill`** (kein Sweep-Button — Tomson-Wunsch:
+  die vier Eck-Winkel, die beim Hover rot füllen). Kompakte Anfrage-Karte. Hinweis: die weichen
+  Neumorph-Schatten sind das einzige „runde" Element — bei Bedarf straffen oder auf 1px-Rahmen.
+- **`rr-formcard-split`** (Statement + Formular) — 560px, Navy-`__aside` (`__eyebrow`, `__stmt` in
+  Crimson Pro, `__meta`) links, `__form` rechts auf `rr-field`/`rr-label` + `rr-btn-sweep--red`.
+  Unter 560px einspaltig. Für eine ganze Kontakt-Sektion. Editorial, all-turtles-nah.

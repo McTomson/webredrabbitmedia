@@ -985,6 +985,74 @@ export default function DesignSystemPage() {
         </p>
       </Section>
 
+      {/* ---------------------------------------------------------- */}
+      {/* 16 · Formular-Karten (Neumorph eckig + Split) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="16" title="Formular-Karten (Neumorph eckig + Split)">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 800 }}>
+          Von Tomson bestaetigt (2026-07-07). Zwei Anfrage-Karten. Die Neumorph-Karte ist die
+          uiverse-Vorlage originalgetreu, aber ECKIG: das Label wandert beim Tippen/Fokus als roter
+          eckiger Block nach oben, Submit ist der Eck-Rahmen-Button (fuellt rot). Die Split-Karte
+          nutzt das rr-field/rr-label-System mit Navy-Statement-Panel. Felder sind echt: reinklicken
+          und tippen.
+        </p>
+
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 48, alignItems: "flex-start" }}>
+          <div>
+            <p style={dsSubhead}>Neumorph eckig · rr-formcard-neu</p>
+            <form className="rr-formcard-neu" action="#">
+              <span className="rr-formcard-neu__title">Anfrage</span>
+              <div className="rr-formcard-neu__box" style={{ ["--tx" as string]: "150px" }}>
+                <input type="text" required />
+                <span>E-Mail</span>
+              </div>
+              <div className="rr-formcard-neu__box" style={{ ["--tx" as string]: "158px" }}>
+                <input type="text" required />
+                <span>Name</span>
+              </div>
+              <div className="rr-formcard-neu__box" style={{ ["--tx" as string]: "120px" }}>
+                <input type="text" required />
+                <span>Nachricht</span>
+              </div>
+              <button className="rr-btn-frame rr-btn-frame--red rr-btn-frame--fill" type="submit" style={{ marginBottom: "1.2em" }}>
+                <i className="c1" />
+                <i className="c2" />
+                <i className="c3" />
+                <i className="c4" />
+                <span className="rr-btn-frame__t">Senden</span>
+              </button>
+            </form>
+          </div>
+
+          <div>
+            <p style={dsSubhead}>Split · rr-formcard-split</p>
+            <form className="rr-formcard-split" action="#">
+              <div className="rr-formcard-split__aside">
+                <div>
+                  <p className="rr-formcard-split__eyebrow">Kontakt</p>
+                  <p className="rr-formcard-split__stmt">Online.<br />Und jetzt?</p>
+                </div>
+                <p className="rr-formcard-split__meta">Antwort innerhalb eines Werktags. Kein Verkaufsdruck.</p>
+              </div>
+              <div className="rr-formcard-split__form">
+                <div className="rr-form__group" style={{ marginBottom: 16 }}>
+                  <label className="rr-label" htmlFor="s-mail">E-Mail</label>
+                  <input className="rr-field" id="s-mail" type="email" placeholder="name@firma.at" />
+                </div>
+                <div className="rr-form__group" style={{ marginBottom: 20 }}>
+                  <label className="rr-label" htmlFor="s-msg">Worum geht es?</label>
+                  <textarea className="rr-field rr-field--textarea" id="s-msg" placeholder="Ein paar Saetze reichen." />
+                </div>
+                <a className="rr-btn-sweep rr-btn-sweep--red" href="#">Anfrage senden</a>
+              </div>
+            </form>
+          </div>
+        </div>
+        <p className="rr-meta" style={{ marginTop: 18 }}>
+          rr-formcard-neu (+ rr-btn-frame--red--fill) · rr-formcard-split (+ rr-field / rr-btn-sweep--red)
+        </p>
+      </Section>
+
       <footer className="rr-section" style={{ paddingTop: 20 }}>
         <div className="rr-wrap">
           <hr className="rr-hairline" />

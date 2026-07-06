@@ -1177,3 +1177,132 @@
   .rr .rr-card-book:hover .rr-card-book__inner { transform: none; }
   .rr .rr-focus-row:hover > .rr-card-layer:not(:hover) { filter: none; opacity: 1; transform: none; }
 }
+
+/* ============================================================
+   Formular-Karten (Tomson 2026-07-07)
+   Neumorph eckig · Split. Ersetzen die Formular-Optik aus S.14;
+   die rr-field/rr-form-Primitive bleiben die Basis (Split nutzt sie).
+   ============================================================ */
+
+/* ---- Neumorph eckig (.rr-formcard-neu) ----
+   uiverse-Vorlage, originalgetreu, auf Marke + ECKIG (Tomson-Wunsch).
+   Wanderndes Label wird beim Fokus/Inhalt ein roter eckiger Block,
+   Submit = Eck-Rahmen-Button (rr-btn-frame--red--fill). --tx je Feld. */
+.rr .rr-formcard-neu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  width: 300px;
+  min-height: 378px;
+  padding-bottom: 10px;
+  border-radius: 0;
+  background: #eae9e6;
+  box-shadow: 16px 16px 32px #cbcbc6, -16px -16px 32px #ffffff;
+}
+.rr .rr-formcard-neu__title {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: x-large;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rr-ink);
+  margin-top: 1.4em;
+}
+.rr .rr-formcard-neu__box { position: relative; width: 250px; }
+.rr .rr-formcard-neu__box input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  font-family: var(--rr-font-ui);
+  font-size: 1em;
+  color: var(--rr-ink);
+  background: transparent;
+  border: none;
+  border-left: 2px solid var(--rr-ink);
+  border-bottom: 2px solid var(--rr-ink);
+  outline: none;
+  transition: 0.1s;
+}
+.rr .rr-formcard-neu__box span {
+  position: absolute;
+  left: 0;
+  margin-top: 5px;
+  margin-left: 10px;
+  padding: 10px;
+  transform: translateY(-4px);
+  pointer-events: none;
+  font-family: var(--rr-font-ui);
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--rr-ink);
+  transition: 0.5s;
+}
+.rr .rr-formcard-neu__box input:valid ~ span,
+.rr .rr-formcard-neu__box input:focus ~ span {
+  transform: translateX(var(--tx, 150px)) translateY(-15px);
+  padding: 5px 10px;
+  font-size: 0.8em;
+  letter-spacing: 0.2em;
+  color: #fff;
+  background: var(--rr-red);
+}
+.rr .rr-formcard-neu__box input:valid,
+.rr .rr-formcard-neu__box input:focus { border: 2px solid var(--rr-ink); }
+
+/* ---- Split (.rr-formcard-split) ----
+   Statement-Panel (Navy) + Formular auf rr-field/rr-label. Fuer eine
+   ganze Kontakt-Sektion. Submit = rr-btn-sweep--red. */
+.rr .rr-formcard-split {
+  display: flex;
+  width: 560px;
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--rr-line);
+  background: var(--rr-paper);
+}
+.rr .rr-formcard-split__aside {
+  flex: 0 0 200px;
+  padding: 26px;
+  background: var(--rr-navy);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+.rr .rr-formcard-split__eyebrow {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ff5f6d;
+  margin: 0;
+}
+.rr .rr-formcard-split__stmt {
+  font-family: var(--rr-font-serif);
+  font-weight: 600;
+  font-size: 27px;
+  line-height: 1.12;
+  color: #fff;
+  margin: 14px 0 0;
+}
+.rr .rr-formcard-split__meta {
+  font-family: var(--rr-font-ui);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+.rr .rr-formcard-split__form { flex: 1; padding: 26px; }
+@media (max-width: 560px) {
+  .rr .rr-formcard-split { flex-direction: column; }
+  .rr .rr-formcard-split__aside { flex: 0 0 auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-formcard-neu__box span { transition: none; }
+}
