@@ -384,3 +384,26 @@ Conversion-Kern der Seite, aufgebaut auf der bestehenden `rr-field` / `rr-label`
 - **Server-Komponente:** `app/design-system/page.tsx` ist eine Server Component (exportiert
   `Metadata`). Keine Event-Handler (`onSubmit` etc.) als Props übergeben, sonst 500. Interaktive
   Zustände laufen rein über CSS (`:checked`, `:focus-visible`) oder ausgelagerte Client-Komponenten.
+
+## 10. Karten — aufgenommene Muster (Tomson-Entscheidung 2026-07-07)
+
+Vier Karten-Muster, aus uiverse-Vorlagen originalgetreu übernommen (Mechanik exakt, nur Farbe auf
+Marke + Schrift gedreht — Dauerregel „Fremd-Komponenten originalgetreu"). Live auf `/design-system`
+Sektion 15, CSS in `app/styleguide/styleguide.css` (Abschnitt „Aufgenommene Karten"). Reine
+CSS-Interaktion (`:hover`), kein JS; jede hat einen `prefers-reduced-motion`-Fallback.
+
+- **`rr-card-slide`** (Slide-Reveal) — 190x254, geclippt. Beschreibungs-Fläche (`__desc`, `__title`,
+  `__body`) liegt über einer Navy→Rot-Fläche (`__image` mit `__cta`) und fährt beim Hover per
+  `translateY(100%)` nach unten weg. Für einzelne Blickfang-/CTA-Karten.
+- **`rr-card-layer`** (Layer-Schatten) — 190 breit, gestapelte Schatten + roter Innen-Balken unten
+  (`box-shadow ... var(--rr-red) 0 -3px 0 inset`). `__eyebrow` (rot) / `__title` / `__body`. Ruhig als
+  Einzelkarte; Standard-Leistungskarte.
+- **`rr-focus-row`** (Fokus-Stapel, V2xV3) — Wrapper um mehrere `rr-card-layer`. Karte unter dem
+  Cursor rückt in den Fokus (`translateY(-6px) scale(1.03)`), die anderen treten unscharf und blass
+  zurück (`:hover > :not(:hover)` → `blur(7px)`, `opacity .35`). Für Leistungs-Übersichten.
+- **`rr-card-book`** (Buch) — 180x250, `perspective`. Roter Deckel (`__cover`) klappt beim Hover per
+  `rotateY(-68deg)` auf, Innenseite (`__inner`, `transform-origin:100%`) schwenkt heraus. Flacher
+  Öffnungswinkel + `overflow:hidden`, damit Text im Rahmen bleibt. Sparsam, max. ein Moment (z.B.
+  „Über uns"), nicht als System.
+- **Noch offen (nicht aufgenommen):** Fragment-Karte (Hero-Splitter-Cluster) und Mechanik-Karte
+  (Zahnräder) aus Runde 3 — als Prototyp gebaut, warten auf Tomson-Entscheidung.

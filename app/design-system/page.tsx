@@ -915,6 +915,76 @@ export default function DesignSystemPage() {
         </div>
       </Section>
 
+      {/* ---------------------------------------------------------- */}
+      {/* 15 · Cards - Aufgenommen (Slide, Layer, Fokus, Buch) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="15" title="Cards - Aufgenommen (Slide, Layer, Fokus, Buch)">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 780 }}>
+          Von Tomson bestaetigt (2026-07-07). Vier Karten-Muster zur Auswahl je nach Kontext. Zum
+          Pruefen mit der Maus drueberfahren.
+        </p>
+
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 48, alignItems: "flex-start" }}>
+          <div>
+            <p style={dsSubhead}>Slide-Reveal · rr-card-slide</p>
+            <div className="rr-card-slide">
+              <div className="rr-card-slide__image">
+                <span className="rr-card-slide__cta">Anfrage starten &rarr;</span>
+              </div>
+              <div className="rr-card-slide__desc">
+                <p className="rr-card-slide__title">Webdesign</p>
+                <p className="rr-card-slide__body">Für deinen Betrieb gebaut, nicht aus dem Baukasten.</p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p style={dsSubhead}>Layer-Schatten · rr-card-layer (einzeln)</p>
+            <div className="rr-card-layer">
+              <p className="rr-card-layer__eyebrow">Sichtbarkeit</p>
+              <p className="rr-card-layer__title">Gefunden bei Google &amp; KI</p>
+              <p className="rr-card-layer__body">Sauber gebaut, lokal auffindbar. Ohne Tricks.</p>
+            </div>
+          </div>
+
+          <div>
+            <p style={dsSubhead}>Buch · rr-card-book</p>
+            <div className="rr-card-book">
+              <div className="rr-card-book__inner">
+                <p className="rr-card-book__title">Was du bekommst</p>
+                <p className="rr-card-book__body">Klare Seite, faire Fixpreise, echte Betreuung.</p>
+              </div>
+              <div className="rr-card-book__cover">
+                <p className="rr-card-book__eyebrow">Red Rabbit</p>
+                <p className="rr-card-book__title">Aufmachen</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p style={{ ...dsSubhead, marginTop: 44 }}>Fokus-Stapel · rr-focus-row + rr-card-layer</p>
+        <div className="rr-focus-row">
+          <div className="rr-card-layer">
+            <p className="rr-card-layer__eyebrow">Webdesign</p>
+            <p className="rr-card-layer__title">Auftritt der arbeitet</p>
+            <p className="rr-card-layer__body">Für deinen Betrieb, nicht aus dem Baukasten.</p>
+          </div>
+          <div className="rr-card-layer">
+            <p className="rr-card-layer__eyebrow">Sichtbarkeit</p>
+            <p className="rr-card-layer__title">Gefunden bei Google &amp; KI</p>
+            <p className="rr-card-layer__body">Sauber gebaut, lokal auffindbar.</p>
+          </div>
+          <div className="rr-card-layer">
+            <p className="rr-card-layer__eyebrow">Betreuung</p>
+            <p className="rr-card-layer__title">Wir bleiben dran</p>
+            <p className="rr-card-layer__body">Die Seite pflegt sich weitgehend selbst.</p>
+          </div>
+        </div>
+        <p className="rr-meta" style={{ marginTop: 18 }}>
+          rr-card-slide · rr-card-layer · rr-focus-row &gt; rr-card-layer · rr-card-book
+        </p>
+      </Section>
+
       <footer className="rr-section" style={{ paddingTop: 20 }}>
         <div className="rr-wrap">
           <hr className="rr-hairline" />

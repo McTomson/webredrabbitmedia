@@ -972,3 +972,208 @@
 .rr .rr-formnote--error { color: var(--rr-error-ink); background: var(--rr-error-bg); border-color: color-mix(in srgb, var(--rr-red) 40%, transparent); }
 
 @media (max-width: 560px) { .rr .rr-form__row { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   Aufgenommene Karten (Tomson 2026-07-07)
+   V1 Slide-Reveal · V2 Layer-Schatten · V2xV3 Fokus-Stapel · V5 Buch
+   ============================================================ */
+
+/* ---- V1 · Slide-Reveal (.rr-card-slide) ----
+   Beschreibungs-Flaeche liegt ueber einer Navy-Rot-Flaeche und faehrt
+   beim Hover nach unten weg. Eckradius weich, alles geclippt. */
+.rr .rr-card-slide {
+  position: relative;
+  width: 190px;
+  height: 254px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 20px 8px #d7d7d3;
+}
+.rr .rr-card-slide__image {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to top, var(--rr-navy), var(--rr-red));
+}
+.rr .rr-card-slide__cta {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+.rr .rr-card-slide__desc {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 70%;
+  box-sizing: border-box;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  background: var(--rr-surface);
+  border-radius: 16px;
+  transition: transform 700ms var(--rr-ease);
+}
+.rr .rr-card-slide__title {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.rr .rr-card-slide__body {
+  font-family: var(--rr-font-ui);
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--rr-ink-soft);
+  margin: 0;
+}
+.rr .rr-card-slide:hover .rr-card-slide__desc { transform: translateY(100%); }
+
+/* ---- V2 · Layer-Schatten (.rr-card-layer) ----
+   Gestapelte Schatten, roter Balken als Innen-Kante unten. Ruhig als
+   Einzelkarte; im Fokus-Stapel bekommt sie das Hover-Verhalten. */
+.rr .rr-card-layer {
+  width: 190px;
+  min-height: 236px;
+  box-sizing: border-box;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background: var(--rr-surface);
+  color: var(--rr-ink);
+  box-shadow:
+    rgba(28, 40, 55, 0.26) 0 2px 4px,
+    rgba(28, 40, 55, 0.18) 0 7px 13px -3px,
+    var(--rr-red) 0 -3px 0 inset;
+}
+.rr .rr-card-layer__eyebrow {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rr-red);
+  margin: 0;
+}
+.rr .rr-card-layer__title {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: auto 0 0;
+}
+.rr .rr-card-layer__body {
+  font-family: var(--rr-font-ui);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--rr-ink-soft);
+  margin: 8px 0 0;
+}
+
+/* ---- V2 x V3 · Fokus-Stapel (.rr-focus-row) ----
+   Reihe aus Layer-Karten. Die Karte unter dem Cursor rueckt in den
+   Fokus, die anderen treten unscharf und blass zurueck. */
+.rr .rr-focus-row { display: flex; flex-wrap: wrap; gap: 22px; }
+.rr .rr-focus-row .rr-card-layer {
+  cursor: pointer;
+  transition: transform 400ms var(--rr-ease), filter 400ms var(--rr-ease), opacity 400ms var(--rr-ease);
+}
+.rr .rr-focus-row .rr-card-layer:hover { transform: translateY(-6px) scale(1.03); }
+.rr .rr-focus-row:hover > .rr-card-layer:not(:hover) { filter: blur(7px); opacity: 0.35; transform: scale(0.95); }
+
+/* ---- V5 · Buch (.rr-card-book) ----
+   Roter Deckel klappt beim Hover auf und gibt die Innenseite frei.
+   Flacher Oeffnungswinkel, Text bleibt im Rahmen (overflow geclippt). */
+.rr .rr-card-book {
+  position: relative;
+  width: 180px;
+  height: 250px;
+  border-radius: 10px;
+  perspective: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rr-ink);
+  background: var(--rr-surface);
+  box-shadow: 1px 1px 12px rgba(28, 40, 55, 0.5);
+  transition: transform 500ms var(--rr-ease);
+}
+.rr .rr-card-book__cover,
+.rr .rr-card-book__inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  cursor: pointer;
+  transform-origin: 0;
+  box-shadow: 1px 1px 12px rgba(28, 40, 55, 0.45);
+  transition: transform 500ms var(--rr-ease), box-shadow 500ms var(--rr-ease);
+}
+.rr .rr-card-book__cover { background: var(--rr-red); color: #fff; }
+.rr .rr-card-book__inner { background: var(--rr-paper); transform-origin: 100%; }
+.rr .rr-card-book__eyebrow {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin: 0;
+}
+.rr .rr-card-book__title {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.rr .rr-card-book__inner .rr-card-book__title { font-size: 16px; }
+.rr .rr-card-book__body {
+  font-family: var(--rr-font-ui);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--rr-ink-soft);
+  max-width: 20ch;
+  margin: 0;
+}
+.rr .rr-card-book:hover { transform: rotate(-6deg); }
+.rr .rr-card-book:hover .rr-card-book__cover { transform: rotateY(-68deg); }
+.rr .rr-card-book:hover .rr-card-book__inner {
+  transform: rotateZ(11deg) rotateY(-6deg) translateX(96px);
+  box-shadow: 2px 2px 20px rgba(28, 40, 55, 0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-card-slide__desc,
+  .rr .rr-focus-row .rr-card-layer,
+  .rr .rr-card-book,
+  .rr .rr-card-book__cover,
+  .rr .rr-card-book__inner { transition: none; }
+  .rr .rr-card-slide:hover .rr-card-slide__desc,
+  .rr .rr-card-book:hover,
+  .rr .rr-card-book:hover .rr-card-book__cover,
+  .rr .rr-card-book:hover .rr-card-book__inner { transform: none; }
+  .rr .rr-focus-row:hover > .rr-card-layer:not(:hover) { filter: none; opacity: 1; transform: none; }
+}
