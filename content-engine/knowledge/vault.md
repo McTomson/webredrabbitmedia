@@ -1391,3 +1391,48 @@ quelle: https://www.digital-recht.at/blog/ist-der-quellcode-geschuldet
 quelle_name: digital-recht.at - Ist der Quellcode geschuldet?
 geprueft_am: 2026-07-05
 recheck_nach: 2027-01-01
+
+## t34-2026-07-06-155
+cluster: 1
+keywords: sicher, neue, website, gegen, hackerangriffe
+aussage: Laut BSI-Lagebericht 2025 richteten sich rund 80 % der angezeigten Cyberangriffe gegen kleine und mittlere Unternehmen (KMU), und die Zahl der Angriffe auf Webseiten stieg um 23 % – oft, weil deren Web-Angriffsflächen nicht ausreichend geschützt waren.
+quelle: https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/Lageberichte/Lagebericht2025_Achtseiter.pdf?__blob=publicationFile&v=7
+quelle_name: BSI - Die Lage der IT-Sicherheit in Deutschland 2025
+geprueft_am: 2026-07-06
+recheck_nach: 2027-01-02
+
+## t34-2026-07-06-156
+cluster: 1
+keywords: sicher, neue, website, gegen, hackerangriffe
+aussage: Im Berichtszeitraum des BSI-Lageberichts 2025 kamen durchschnittlich 119 neue IT-Schwachstellen pro Tag hinzu (+24 %), und die aktive Ausnutzung von Schwachstellen (Exploitation) nahm um 38 % gegenüber dem Vorjahr zu – Sicherheitsupdates zeitnah einzuspielen ist damit entscheidend.
+quelle: https://medien.bsi.bund.de/lagebericht/de/zusammenfassung-und-bewertung/
+quelle_name: BSI - Die Lage der IT-Sicherheit in Deutschland 2025 (Zusammenfassung)
+geprueft_am: 2026-07-06
+recheck_nach: 2027-01-02
+
+## t34-2026-07-06-157
+cluster: 1
+keywords: sicher, neue, website, gegen, hackerangriffe
+aussage: In Österreich war 2025 jeder sechste Wiener Betrieb von Cyberangriffen betroffen (Vorjahr: jeder zehnte); österreichische Organisationen verzeichneten laut Cyber Security Report rund 12 % mehr Angriffe als im Vorjahr, wobei KMU zunehmend durch automatisierte, teils KI-gestützte Angriffe ins Visier geraten.
+quelle: https://www.wko.at/wien/news/jeder-6.-wiener-betrieb-opfer-von-cyberangriffen
+quelle_name: WKO Wien - Jeder 6. Wiener Betrieb Opfer von Cyberangriffen (KPMG/KSÖ-Studie)
+geprueft_am: 2026-07-06
+recheck_nach: 2027-01-02
+
+## t34-2026-07-06-158
+cluster: 1
+keywords: sicher, neue, website, gegen, hackerangriffe
+aussage: Das häufigste Sicherheitsrisiko für Web-Anwendungen ist laut OWASP Top 10 2021 'Broken Access Control' (unzureichende Zugriffskontrolle) auf Platz 1 – in getesteten Anwendungen wies eine Form davon in 94 % der Fälle Schwächen auf; typische Web-Risiken sind zudem Injection (z. B. SQL) und Security Misconfiguration.
+quelle: https://owasp.org/Top10/A01_2021-Broken_Access_Control/
+quelle_name: OWASP Foundation - OWASP Top 10:2021, A01 Broken Access Control
+geprueft_am: 2026-07-06
+recheck_nach: 2027-01-02
+
+## t34-2026-07-06-159
+cluster: 1
+keywords: sicher, neue, website, gegen, hackerangriffe
+aussage: Ein eigenständiges Top-10-Risiko sind 'Vulnerable and Outdated Components' (verwundbare/veraltete Komponenten) – veraltete CMS-, Plugin- oder Bibliotheks-Versionen sind ein zentrales Einfallstor, weshalb regelmäßige Updates zur Grundhärtung jeder Website gehören.
+quelle: https://owasp.org/www-project-top-ten/
+quelle_name: OWASP Foundation - OWASP Top 10:2021 (Übersicht)
+geprueft_am: 2026-07-06
+recheck_nach: 2027-01-02
