@@ -374,7 +374,7 @@
   color: var(--rr-ink);
   background: var(--rr-paper);
   border: 1.5px solid var(--rr-line);
-  border-radius: var(--rr-radius);
+  border-radius: 0; /* eckig (Tomson 2026-07-07: D · Klar-Box wird Standard) */
   padding: 13px 16px;
   cursor: pointer;
   text-align: left;
@@ -406,7 +406,7 @@
   list-style: none;
   background: var(--rr-paper);
   border: 1px solid var(--rr-line);
-  border-radius: var(--rr-radius);
+  border-radius: 0; /* eckig */
   box-shadow: var(--rr-shadow-pop);
   max-height: 288px;
   overflow-y: auto;
@@ -436,7 +436,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 11px 12px;
-  border-radius: 8px;
+  border-radius: 0; /* eckig */
   font-size: 15.5px;
   color: var(--rr-ink);
   cursor: pointer;
@@ -469,7 +469,7 @@
   background-position: right 16px center;
   background-size: 14px;
   border: 1.5px solid var(--rr-line);
-  border-radius: var(--rr-radius);
+  border-radius: 0; /* eckig */
   padding: 13px 44px 13px 16px;
   min-width: 240px;
   cursor: pointer;
@@ -480,6 +480,70 @@
   outline: none;
   border-color: var(--rr-ink);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 22%, transparent);
+}
+
+/* ---- Eck-Rahmen-Variante (.rr-select-frame) — Akzent, Tomson 2026-07-07 ----
+   Vier Eck-Winkel wie rr-btn-frame; beim Hover/Oeffnen wachsen sie auf 50/50
+   und schliessen den VOLLEN Rahmen (keine Luecken) in Rot. <details>-basiert. */
+.rr .rr-select-frame { position: relative; display: inline-block; width: 260px; font-family: var(--rr-font-ui); }
+.rr .rr-select-frame > summary {
+  list-style: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 18px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--rr-navy);
+}
+.rr .rr-select-frame > summary::-webkit-details-marker { display: none; }
+.rr .rr-select-frame__chev { flex: 0 0 auto; width: 14px; height: 14px; color: var(--rr-ink-soft); transition: transform var(--rr-t-med) var(--rr-ease), color var(--rr-t-med) var(--rr-ease); }
+.rr .rr-select-frame[open] .rr-select-frame__chev { transform: rotate(180deg); }
+.rr .rr-select-frame i {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border: 0 solid var(--rr-navy);
+  pointer-events: none;
+  transition: width 0.35s var(--rr-ease), height 0.35s var(--rr-ease), border-color 0.35s var(--rr-ease);
+}
+.rr .rr-select-frame .c1 { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
+.rr .rr-select-frame .c2 { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+.rr .rr-select-frame .c3 { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
+.rr .rr-select-frame .c4 { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
+.rr .rr-select-frame > summary:hover i,
+.rr .rr-select-frame[open] i { width: 50%; height: 50%; border-color: var(--rr-red); }
+.rr .rr-select-frame__menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 60;
+  background: var(--rr-paper);
+  border: 2px solid var(--rr-red);
+  overflow: hidden;
+}
+.rr .rr-select-frame[open] .rr-select-frame__menu { animation: rr-ddin 0.2s var(--rr-ease); }
+@keyframes rr-ddin { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+.rr .rr-select-frame__opt {
+  position: relative;
+  padding: 11px 14px;
+  font-size: 14.5px;
+  color: var(--rr-ink);
+  cursor: pointer;
+  transition: background-color 120ms var(--rr-ease), color 120ms var(--rr-ease);
+}
+.rr .rr-select-frame__opt + .rr-select-frame__opt { border-top: 1px solid var(--rr-line); }
+.rr .rr-select-frame__opt:hover { background: color-mix(in srgb, var(--rr-red) 8%, transparent); color: var(--rr-red); }
+.rr .rr-select-frame__opt[data-sel] { color: var(--rr-red); font-weight: 600; }
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-select-frame i, .rr .rr-select-frame__chev { transition: none; }
+  .rr .rr-select-frame[open] .rr-select-frame__menu { animation: none; }
 }
 
 /* ============================================================

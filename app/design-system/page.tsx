@@ -507,12 +507,13 @@ export default function DesignSystemPage() {
       {/* 04c · Dropdown & Select */}
       {/* ---------------------------------------------------------- */}
       <Section n="04c" title="Dropdown &amp; Select">
-        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
-          Barrierefreies Dropdown (Listbox-Semantik) fuer Navigation und Formulare, plus ein
-          natives <code>&lt;select&gt;</code> im Marken-Stil. Bedienbar mit Maus und Tastatur:
-          Pfeil hoch/runter, Home/End, Enter/Space waehlt, Esc schliesst, Tippen springt zum
-          Eintrag. Schliesst bei Aussenklick. Oeffnen ist animiert (Master-Easing), ohne
-          Layout-Shift.
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 760 }}>
+          Standard = <b>D · Klar-Box</b> (Tomson 2026-07-07): das barrierefreie Listbox-Dropdown, jetzt
+          eckig statt rund, roter Fokus-Ring, gewaehlte Option rot mit Haken. Bedienbar mit Maus und
+          Tastatur (Pfeile, Home/End, Enter/Space, Esc, Tippen springt), schliesst bei Aussenklick,
+          Oeffnen animiert ohne Layout-Shift. Daneben die <b>Eck-Rahmen-Variante</b> als Akzent (die
+          Linien schliessen sich beim Oeffnen zum vollen roten Rahmen) und ein natives
+          <code>&lt;select&gt;</code> im Marken-Stil.
         </p>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 40, alignItems: "flex-start" }}>
           <div style={{ ...dsPairCol, maxWidth: 300 }}>
@@ -528,7 +529,26 @@ export default function DesignSystemPage() {
                 { value: "wartung", label: "Wartung & Betreuung" },
               ]}
             />
-            <p className="rr-meta">RelaunchDropdown.tsx · role=&quot;listbox&quot;, Tastatur + aria-activedescendant</p>
+            <p className="rr-meta">D · Standard · rr-select (Listbox, eckig, Tastatur + aria-activedescendant)</p>
+          </div>
+          <div style={{ ...dsPairCol, maxWidth: 300 }}>
+            <details className="rr-select-frame">
+              <summary>
+                <span>Worum geht es?</span>
+                <svg className="rr-select-frame__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+                <i className="c1" />
+                <i className="c2" />
+                <i className="c3" />
+                <i className="c4" />
+              </summary>
+              <div className="rr-select-frame__menu">
+                <div className="rr-select-frame__opt" data-sel>Webdesign</div>
+                <div className="rr-select-frame__opt">Sichtbarkeit bei Google</div>
+                <div className="rr-select-frame__opt">Laufende Betreuung</div>
+                <div className="rr-select-frame__opt">Weiss noch nicht</div>
+              </div>
+            </details>
+            <p className="rr-meta">B · Akzent · rr-select-frame (Eck-Rahmen schliesst rot). Wert-Logik = Client-Wrapper.</p>
           </div>
           <div style={{ ...dsPairCol, maxWidth: 300 }}>
             <select className="rr-select-native" aria-label="Region waehlen (nativ)" defaultValue="ktn">

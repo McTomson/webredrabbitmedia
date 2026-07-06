@@ -425,3 +425,17 @@ Live auf `/design-system` Sektion 16, CSS in `styleguide.css` (Abschnitt „Form
 - **`rr-formcard-split`** (Statement + Formular) — 560px, Navy-`__aside` (`__eyebrow`, `__stmt` in
   Crimson Pro, `__meta`) links, `__form` rechts auf `rr-field`/`rr-label` + `rr-btn-sweep--red`.
   Unter 560px einspaltig. Für eine ganze Kontakt-Sektion. Editorial, all-turtles-nah.
+
+## 12. Dropdown / Select (Tomson-Entscheidung 2026-07-07)
+
+Aus 5 Vorschlägen gewählt: **D · Klar-Box als Standard, B · Eck-Rahmen als Akzent.** Live auf
+`/design-system` Sektion 04c, CSS im Abschnitt „DROPDOWN / SELECT" in `styleguide.css`.
+
+- **Standard = `rr-select`** (das bestehende barrierefreie Listbox-Dropdown, `RelaunchDropdown.tsx`,
+  Hero-Session-Komponente) — jetzt **eckig** statt rund (alle `border-radius` auf 0, nur per CSS,
+  Komponente unangetastet). Roter Fokus-Ring, gewählte Option rot mit Haken (`rr-select__opt-check`).
+  Volle Tastatur-/ARIA-Semantik bleibt. Auch `rr-select-native` (natives `<select>`) ist eckig.
+- **Akzent = `rr-select-frame`** — vier Eck-Winkel wie `rr-btn-frame`; beim Hover/Öffnen wachsen sie
+  auf 50/50 und **schließen den vollen roten Rahmen ohne Lücken** (Tomson-Fix). `<details>`-basiert
+  (Open/Close ohne JS); die Wert-Auswahl-Logik braucht später einen Client-Wrapper analog
+  `RelaunchDropdown`. Für prominente Stellen (z.B. ein Filter über den Referenzen).
