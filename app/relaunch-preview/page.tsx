@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { crimson, fraunces, grotesk } from "@/lib/relaunch/fonts";
+import { crimson, dmsans, fraunces, grotesk } from "@/lib/relaunch/fonts";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
 import HomeMorph from "@/components/relaunch/HomeMorph";
 import CasePanels from "@/components/relaunch/CasePanels";
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
  */
 export default function RelaunchPreviewPage() {
   return (
-    <div className={`rr ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}>
+    <div className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}>
       {/* Fixes Menue (Trigger + Vollbild-Overlay) */}
       <RelaunchMenu />
 

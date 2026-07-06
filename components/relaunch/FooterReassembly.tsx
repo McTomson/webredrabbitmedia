@@ -73,8 +73,25 @@ export default function FooterReassembly() {
 
     function build() {
       const fam = getComputedStyle(probeRef.current!).fontFamily;
-      // Wortmarke gross wie all-turtles: F = clamp(88px, 13vw, 210px)
-      const F = Math.min(210, Math.max(88, window.innerWidth * 0.13));
+      // Wortmarke gross wie all-turtles, aber breitengefuehrt: die einzeilige Marke
+      // "red rabbit" ist breit -> auf schmalen Screens die Groesse an die verfuegbare
+      // Breite koppeln, sonst clippt overflow:hidden die Randbuchstaben (Fix 06.07.:
+      // 13vw-Floor 88px ergab ~491px @390px vs. 342px Container). F fuellt die Breite
+      // bis max 210px (Desktop-Kappung); Wort-Vorschub bei 100px messen = gleiche
+      // Metrik wie buildWordLayout (SPACE_EM 0.9), Ink-BBox ist etwas schmaler -> safe.
+      const HPAD = 24, SAFE = 20; // .rr-foot-word padding + Sicherheitsrand pro Seite
+      const avail = window.innerWidth - 2 * (HPAD + SAFE);
+      const mc = document.createElement("canvas").getContext("2d")!;
+      mc.font = `700 100px ${fam}`;
+      const adv100 = [..."red rabbit"].reduce(
+        (s, ch) => s + (ch === " " ? 0.9 * 100 : mc.measureText(ch).width), 0
+      );
+      // Wunschgroesse unveraendert (all-turtles-Massstab), aber nie breiter als der
+      // Platz: Ffit ist die Breite, bei der die Marke exakt passt -> min() greift nur
+      // auf schmalen Screens, Desktop/Tablet bleiben pixelgleich zu vorher.
+      const desiredF = Math.min(210, Math.max(88, window.innerWidth * 0.13));
+      const Ffit = adv100 > 0 ? (avail / adv100) * 100 : desiredF;
+      const F = Math.min(desiredF, Ffit);
       const l = buildWordLayout(fam, F, window.devicePixelRatio || 1);
       if (!l || l.pieces.length < 10) return false;
       layout = l;

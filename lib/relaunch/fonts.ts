@@ -1,7 +1,18 @@
-import { Crimson_Pro, Fraunces, Instrument_Sans } from "next/font/google";
+import { Crimson_Pro, DM_Sans, Fraunces, Instrument_Sans } from "next/font/google";
 
-// Display-Serif: Fraunces (OFL) — bleibt fuer die Wortmarke ("red rabbit").
-// Entscheidung 04.07.: KEIN Font-Kauf, nur freie Schriften.
+// Display-Sans: DM Sans (OFL) — Wortmarke ("red rabbit") UND alle Headlines.
+// Entscheidung 06.07. (Tomson): ersetzt Fraunces im Display-Slot. Das echte
+// Marken-Wortbild ist ein fetter geometrischer Sans (nebeneinander), DM Sans ist
+// der naechste freie Treffer, der zugleich als Fliesstext-Headline taugt. Variabel
+// geladen (wght-Achse) -> font-weight:700 (Bold) greift per CSS. Spec: DESIGN.md §3.1.
+export const dmsans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dmsans",
+  display: "swap",
+});
+
+// Display-Serif: Fraunces (OFL) — ausgemustert aus dem Display-Slot (06.07.), noch
+// importiert falls Alt-Referenzen darauf zeigen. Nicht mehr fuer die Wortmarke.
 export const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",

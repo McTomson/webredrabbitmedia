@@ -43,7 +43,7 @@
   --rr-info-bg: #edf0f3;      /* Hinweis: heller Fond */
 
   /* ---- Typo-Skala (gemessen -> responsiv) ---- */
-  --rr-font-display: var(--font-fraunces), Georgia, serif;
+  --rr-font-display: var(--font-dmsans), "DM Sans", system-ui, sans-serif; /* 06.07.: Fraunces -> DM Sans (Wortmarke + Headlines) */
   --rr-font-serif: var(--font-crimson), Georgia, serif; /* Statements/Claims, Heldane-Gegenstueck */
   --rr-font-ui: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
 
@@ -93,10 +93,10 @@
 .rr .rr-claim,
 .rr .rr-sub {
   font-family: var(--rr-font-display);
-  font-weight: 560;
+  font-weight: 700; /* DM Sans Bold (06.07., Tomson) — vorher Fraunces 560 */
   letter-spacing: -0.018em;
   line-height: 1.02;
-  font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
+  font-variation-settings: normal; /* DM Sans hat die Fraunces-Achsen (opsz/SOFT/WONK) nicht */
   text-wrap: balance;
   margin: 0;
 }
