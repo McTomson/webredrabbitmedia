@@ -194,16 +194,8 @@ function ToggleCell({
     <div style={dsToggleCell}>
       <label className={`rr-toggle${variant ? ` rr-toggle--${variant}` : ""}`} htmlFor={id}>
         <input id={id} type="checkbox" className="rr-toggle__input" defaultChecked={defaultChecked} />
-        <span className="rr-toggle__handle-wrapper">
-          <span className="rr-toggle__handle">
-            <span className="rr-toggle__knob" />
-            <span className="rr-toggle__bar-wrapper">
-              <span className="rr-toggle__bar" />
-            </span>
-          </span>
-        </span>
-        <span className="rr-toggle__base">
-          <span className="rr-toggle__base-inside" />
+        <span className="rr-toggle__track">
+          <span className="rr-toggle__knob" />
         </span>
       </label>
       <p className="rr-meta">{label}</p>
@@ -363,7 +355,7 @@ export default function DesignSystemPage() {
             <p className="rr-eyebrow-lg">thermenwartung</p>
           </Specimen>
           <Specimen label="rr-eyebrow · Instrument Sans · 13px · uppercase · Markenrot">
-            <p className="rr-eyebrow">Handwerk · Service · Kaernten</p>
+            <p className="rr-eyebrow">Handwerk · Service · Kärnten</p>
           </Specimen>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }} className="ds-grid-2">
             <Specimen label="rr-body-lg · 23px / 1.5 · Grotesk">
@@ -540,9 +532,9 @@ export default function DesignSystemPage() {
           </div>
           <div style={{ ...dsPairCol, maxWidth: 300 }}>
             <select className="rr-select-native" aria-label="Region waehlen (nativ)" defaultValue="ktn">
-              <option value="ktn">Kaernten</option>
+              <option value="ktn">Kärnten</option>
               <option value="stmk">Steiermark</option>
-              <option value="ooe">Oberoesterreich</option>
+              <option value="ooe">Oberösterreich</option>
               <option value="sbg">Salzburg</option>
             </select>
             <p className="rr-meta">rr-select-native · natives &lt;select&gt; fuer einfache Formulare</p>
@@ -739,31 +731,6 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ---------------------------------------------------------- */}
-      {/* 09 · Buttons - Metallisch (Kandidat) */}
-      {/* ---------------------------------------------------------- */}
-      <Section n="09" title="Buttons - Metallisch">
-        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
-          Taktiler Druckknopf mit Verlaufs-Flaeche und geschichteten Schatten. Beim Hover ein leichtes
-          Leuchten, beim Druecken sinkt die Flaeche ein (Inset). Drei Flaechen zur Auswahl, Markenrot
-          immer dabei. Zum Pruefen mit der Maus drueberfahren und klicken.
-        </p>
-        <div style={dsBtnGrid}>
-          <div style={dsPairCol}>
-            <div><a className="rr-btn-metal rr-btn-metal--red" href="#">Projekt anfragen</a></div>
-            <p className="rr-meta">rr-btn-metal--red · rote Flaeche, heller Text</p>
-          </div>
-          <div style={dsPairCol}>
-            <div><a className="rr-btn-metal rr-btn-metal--navy" href="#">Referenzen</a></div>
-            <p className="rr-meta">rr-btn-metal--navy · dunkle Navy-Flaeche</p>
-          </div>
-          <div style={dsPairCol}>
-            <div><a className="rr-btn-metal rr-btn-metal--light" href="#">Mehr erfahren</a></div>
-            <p className="rr-meta">rr-btn-metal--light · neutral, hell (Original-Anmutung)</p>
-          </div>
-        </div>
-      </Section>
-
-      {/* ---------------------------------------------------------- */}
       {/* 10 · Buttons - Line-Draw (Kandidat) */}
       {/* ---------------------------------------------------------- */}
       <Section n="10" title="Buttons - Line-Draw">
@@ -826,9 +793,9 @@ export default function DesignSystemPage() {
       {/* ---------------------------------------------------------- */}
       <Section n="12" title="Toggle">
         <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
-          Schalter mit rotem Knopf, der beim Umlegen rotiert (maskierter Griff, plastische Basis). Der
-          Knopf ist bereits markenkonform rot. Das Stock-Gruen im Ein-Zustand ist auf Navy umgestellt,
-          alternativ auf Markenrot. Zum Pruefen anklicken.
+          Klarer Schiebeschalter. Grauer Track im Aus-Zustand, der Knopf gleitet nach rechts, der
+          Track wird im Ein-Zustand Navy (Default) oder Markenrot (--red). Sichtbarer Fokus-Ring.
+          Zum Pruefen anklicken.
         </p>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 40 }}>
           <ToggleCell id="rr-tg-navy-off" label="Ein-Zustand Navy · aus" />

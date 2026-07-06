@@ -788,122 +788,43 @@
 }
 .rr .rr-card-soft--navy .rr-card-soft__eyebrow { color: #ff6470; }
 
-/* ---- 4) Schalter mit rotierendem Knopf (.rr-toggle) ----
-   Mechanik 1:1: roter Radial-Knopf schwenkt, maskierter Griff,
-   Basis wechselt die Farbe im Ein-Zustand. Ein-Zustand auf Navy
-   (Default) oder Rot (--red) statt Stock-Gruen. */
+/* ---- 4) Schalter (.rr-toggle) — klarer Schiebeschalter ----
+   Grauer Track im Aus-Zustand, Knopf gleitet nach rechts, Track
+   wird im Ein-Zustand Navy (Default) oder Rot (--red). */
 .rr .rr-toggle {
-  --knob-size: 1.75em;
-  display: flex;
-  justify-content: center;
-  position: relative;
-  font-size: 15px;
-  cursor: pointer;
-}
-.rr .rr-toggle__input {
-  position: absolute;
-  z-index: 2;
-  bottom: 132.5%;
-  border-radius: 50%;
-  transform: rotate(-25deg);
-  transform-origin: 50% 4.75em;
-  width: var(--knob-size);
-  height: var(--knob-size);
-  opacity: 0;
-  font: inherit;
-  transition: transform 0.24s cubic-bezier(0.65, 1.35, 0.5, 1);
-  cursor: pointer;
-}
-.rr .rr-toggle__input:checked { transform: rotate(25deg); }
-.rr .rr-toggle__handle-wrapper {
-  position: absolute;
-  z-index: 1;
-  bottom: -135%;
-  -webkit-mask-image: linear-gradient(to bottom, #000 62.125%, transparent 50%);
-  mask-image: linear-gradient(to bottom, #000 62.125%, transparent 50%);
-  width: 200%;
-  overflow: hidden;
-}
-.rr .rr-toggle__handle {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
-  transform: rotate(-25deg);
-  transform-origin: bottom center;
-  transition: transform 0.24s cubic-bezier(0.65, 1.35, 0.5, 1);
+  gap: 12px;
+  cursor: pointer;
+  font-family: var(--rr-font-ui);
+  font-size: 15px;
+  color: var(--rr-ink);
 }
-.rr .rr-toggle__input:checked + .rr-toggle__handle-wrapper > .rr-toggle__handle { transform: rotate(25deg); }
+.rr .rr-toggle__input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.rr .rr-toggle__track {
+  position: relative;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--rr-line);
+  transition: background var(--rr-t-fast) var(--rr-ease);
+}
 .rr .rr-toggle__knob {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  width: var(--knob-size);
-  height: var(--knob-size);
-  background-image: radial-gradient(farthest-corner at 70% 30%, #ffe0e4 4%, #f12032 12% 24%, #a50f1c 50% 65%, #f12032 75%);
-  transition: transform 0.24s cubic-bezier(0.65, 1.35, 0.5, 1);
+  background: var(--rr-paper);
+  box-shadow: 0 1px 3px rgb(28 40 55 / 0.35);
+  transition: transform var(--rr-t-fast) var(--rr-ease);
 }
-.rr .rr-toggle__input:checked + .rr-toggle__handle-wrapper .rr-toggle__knob { transform: rotate(-90deg); }
-.rr .rr-toggle__knob::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: inherit;
-  width: 100%;
-  height: 100%;
-  box-shadow: inset 0 0 8px 2px rgb(255 255 255 / 0.4);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-@media (hover: hover) {
-  .rr .rr-toggle__input:hover + .rr-toggle__handle-wrapper .rr-toggle__knob::after,
-  .rr .rr-toggle__input:focus-visible + .rr-toggle__handle-wrapper .rr-toggle__knob::after { opacity: 1; }
-}
-.rr .rr-toggle__bar-wrapper { position: relative; width: 0.5em; height: 3em; }
-.rr .rr-toggle__bar {
-  position: absolute;
-  top: calc(var(--knob-size) / 2 * -1);
-  left: 0;
-  width: 100%;
-  height: calc(100% + var(--knob-size) / 2);
-  background-image: linear-gradient(to right, #777475, #a4a4a4, #fff 45% 55%, #a4a4a4, #777475);
-  background-position-x: 0.06125em;
-  transition: background-position-x 0.24s cubic-bezier(0.65, 1.35, 0.5, 1);
-  box-shadow: inset 0 1em 0.25em rgb(0 0 0 / 0.4);
-}
-.rr .rr-toggle__input:checked + .rr-toggle__handle-wrapper .rr-toggle__bar { background-position-x: -0.06125em; }
-.rr .rr-toggle__base {
-  position: relative;
-  border-radius: 3.125em;
-  padding: 0.25em;
-  width: 3.5em;
-  height: 1.125em;
-  background-color: #fff;
-  background-image: linear-gradient(to bottom, #fff, #d7d7d7);
-  box-shadow: 0 -0.25em 0.5em #fff, 0 0.25em 0.5em #d7d7d7;
-}
-.rr .rr-toggle__base-inside {
-  position: relative;
-  border-radius: inherit;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(to bottom, #a6a6a6, #7d7d7d);
-  box-shadow: inset 0 0.0625em rgb(255 255 255 / 0.2), inset 0 -0.03125em rgb(255 255 255 / 1), inset 0 -0.0625em 0.25em rgb(0 0 0 / 0.1);
-}
-.rr .rr-toggle__base-inside::after {
-  content: "";
-  position: absolute;
-  border-radius: inherit;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(to bottom, #294056, #1c2837);
-  box-shadow: inherit;
-  opacity: 0;
-  transition: opacity 0.24s cubic-bezier(0.65, 1.35, 0.5, 1);
-}
-.rr .rr-toggle__input:checked ~ .rr-toggle__base .rr-toggle__base-inside::after { opacity: 1; }
-/* Ein-Zustand alternativ in Markenrot statt Navy */
-.rr .rr-toggle--red .rr-toggle__base-inside::after { background-image: linear-gradient(to bottom, #f12032, #c81222); }
+.rr .rr-toggle__input:checked + .rr-toggle__track { background: var(--rr-navy); }
+.rr .rr-toggle__input:checked + .rr-toggle__track .rr-toggle__knob { transform: translateX(20px); }
+.rr .rr-toggle--red .rr-toggle__input:checked + .rr-toggle__track { background: var(--rr-red); }
+.rr .rr-toggle__input:focus-visible + .rr-toggle__track { box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 30%, transparent); }
 
 /* ============================================================
    Aufgenommene Buttons (Tomson 2026-07-06)
