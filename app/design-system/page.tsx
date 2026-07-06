@@ -151,6 +151,32 @@ function FrameBtn({ variant, fill, label }: { variant: string; fill?: boolean; l
   );
 }
 
+/* Checkbox mit rotem Haken (Section 14) */
+function CheckRow({ id, label, name, defaultChecked }: { id: string; label: React.ReactNode; name?: string; defaultChecked?: boolean }) {
+  return (
+    <label className="rr-check" htmlFor={id}>
+      <input className="rr-check__input" type="checkbox" id={id} name={name} defaultChecked={defaultChecked} />
+      <span className="rr-check__box" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M5 12.5l4.2 4.2L19 6.5" />
+        </svg>
+      </span>
+      <span>{label}</span>
+    </label>
+  );
+}
+
+/* Radio mit rotem Punkt (Section 14) */
+function RadioRow({ id, name, label, defaultChecked }: { id: string; name: string; label: React.ReactNode; defaultChecked?: boolean }) {
+  return (
+    <label className="rr-radio" htmlFor={id}>
+      <input className="rr-radio__input" type="radio" id={id} name={name} defaultChecked={defaultChecked} />
+      <span className="rr-radio__dot" aria-hidden="true" />
+      <span>{label}</span>
+    </label>
+  );
+}
+
 /* Schalter (Kandidat 12) — Geschwister-Reihenfolge input, handle-wrapper,
    base ist Pflicht (CSS nutzt + und ~). Label umschliesst alles. */
 function ToggleCell({
@@ -854,6 +880,72 @@ export default function DesignSystemPage() {
           rr-btn-frame--navy / --red (Linien schliessen sich) · zusaetzlich --fill (Inhalt faehrt
           hoch, Schrift weiss)
         </p>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 14 · Formular-System */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="14" title="Formular-System">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 760 }}>
+          Der Conversion-Kern der Seite. Aufgebaut auf <code>rr-field</code> / <code>rr-label</code>:
+          Label ueber dem Feld, sichtbarer Fokus-Ring, Fehler unter dem Feld (rot, mit Punkt),
+          Erfolgs- und Fehler-Hinweis als Box. Checkbox und Radio im Marken-Stil mit rotem Haken
+          bzw. Punkt. Submit nutzt den aufgenommenen Sweep-CTA.
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "48px 56px", alignItems: "flex-start" }}>
+          <form className="rr-form" action="#" style={{ flex: "1 1 420px" }}>
+            <div className="rr-form__row">
+              <div className="rr-form__group">
+                <label className="rr-label" htmlFor="f-name">Name</label>
+                <input className="rr-field" id="f-name" type="text" placeholder="Vor- und Nachname" />
+              </div>
+              <div className="rr-form__group">
+                <label className="rr-label" htmlFor="f-firma">Betrieb</label>
+                <input className="rr-field" id="f-firma" type="text" placeholder="Firma (optional)" />
+              </div>
+            </div>
+            <div className="rr-form__group">
+              <label className="rr-label" htmlFor="f-mail">E-Mail</label>
+              <input className="rr-field" id="f-mail" type="email" aria-invalid="true" aria-describedby="f-mail-err" defaultValue="max@" />
+              <p className="rr-error" id="f-mail-err">Bitte eine gueltige E-Mail-Adresse eingeben.</p>
+            </div>
+            <div className="rr-form__group">
+              <label className="rr-label" htmlFor="f-msg">Worum geht es?</label>
+              <textarea className="rr-field rr-field--textarea" id="f-msg" aria-describedby="f-msg-help" placeholder="Erzaehl kurz, was du brauchst." />
+              <p className="rr-help" id="f-msg-help">Ein paar Saetze reichen. Wir melden uns innerhalb eines Werktags.</p>
+            </div>
+            <CheckRow id="f-consent" label="Ich stimme zu, dass meine Angaben zur Kontaktaufnahme gespeichert werden." />
+            <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap", marginTop: 4 }}>
+              <a className="rr-btn-sweep rr-btn-sweep--red" href="#">Anfrage senden</a>
+              <a className="rr-btn rr-btn--tertiary" href="#">Lieber anrufen</a>
+            </div>
+          </form>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 26, flex: "1 1 260px", minWidth: 240 }}>
+            <div>
+              <p style={dsSubhead}>Auswahl (Radio)</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <RadioRow name="paket" id="r-starter" label="Starter · One-Pager" defaultChecked />
+                <RadioRow name="paket" id="r-website" label="Website · mehrseitig" />
+                <RadioRow name="paket" id="r-unsure" label="Weiss noch nicht" />
+              </div>
+            </div>
+            <div>
+              <p style={dsSubhead}>Checkbox-Zustaende</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <CheckRow id="c1" label="Standard" />
+                <CheckRow id="c2" label="Vorausgewaehlt" defaultChecked />
+              </div>
+            </div>
+            <div>
+              <p style={dsSubhead}>Status-Hinweise</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div className="rr-formnote rr-formnote--success">Danke, deine Anfrage ist da. Wir melden uns innerhalb eines Werktags.</div>
+                <div className="rr-formnote rr-formnote--error">Da ist etwas schiefgegangen. Bitte pruefe die rot markierten Felder.</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </Section>
 
       <footer className="rr-section" style={{ paddingTop: 20 }}>

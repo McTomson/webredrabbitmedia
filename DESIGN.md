@@ -362,3 +362,25 @@ sitzen auf `app/styleguide/styleguide.css`; live auf `/design-system` Sektion 13
 **Rollen-Empfehlung (offen, wartet auf finale Tomson-Zuordnung):** `rr-btn-sweep--red` als
 Haupt-CTA (Rot = einzige Aktionsfarbe), `rr-btn-frame` als sekundärer/Outline-CTA. Nicht mehr als
 zwei Effekt-Stile pro Seite, sonst wirkt es nach Template.
+
+## 9. Formular-System (2026-07-06)
+
+Conversion-Kern der Seite, aufgebaut auf der bestehenden `rr-field` / `rr-label`-Basis. Live auf
+`/design-system` Sektion 14, CSS in `app/styleguide/styleguide.css` (Abschnitt "Formular-System").
+
+- **`rr-field`** (Input) + `rr-label` (Label darüber, 13.5px/600) waren die Basis. Neu ergänzt: ein
+  additiver **Fokus-Ring** (`:focus` box-shadow, im Fehlerfall rot) und die Textarea-Variante
+  `rr-field--textarea` (bzw. `textarea.rr-field`), `min-height:132px`, `resize:vertical`.
+- **Fehler/Hilfe:** `rr-error` (rot, `--rr-error-ink`, mit rotem Punkt davor) und `rr-help`
+  (`--rr-ink-soft`) unter dem Feld, per `aria-describedby` verdrahtet; das Feld bekommt
+  `aria-invalid="true"` (färbt Rahmen rot).
+- **Checkbox** `rr-check` (verstecktes native Input + `rr-check__box` mit rotem Haken, SVG-Pfad im
+  Markup) und **Radio** `rr-radio` (`rr-radio__dot`, roter Innenpunkt). Beide mit sichtbarem
+  `:focus-visible`-Ring. Helper `CheckRow` / `RadioRow` in `page.tsx`.
+- **Layout:** `rr-form` (grid, gap 20, max 560px), `rr-form__row` (2 Spalten, unter 560px einspaltig),
+  `rr-form__group`.
+- **Status-Box:** `rr-formnote--success` / `--error` nutzen die semantischen Tokens (grüner bzw.
+  roter heller Fond + AA-Ink). Submit im Formular = `rr-btn-sweep--red`.
+- **Server-Komponente:** `app/design-system/page.tsx` ist eine Server Component (exportiert
+  `Metadata`). Keine Event-Handler (`onSubmit` etc.) als Props übergeben, sonst 500. Interaktive
+  Zustände laufen rein über CSS (`:checked`, `:focus-visible`) oder ausgelagerte Client-Komponenten.

@@ -1006,3 +1006,48 @@
 }
 .rr .rr-btn-frame--fill:hover::before { transform: scaleY(1); }
 .rr .rr-btn-frame--fill:hover { color: #fff; }
+
+/* ============================================================
+   Formular-System (aufgebaut auf rr-field/rr-label, 2026-07-06)
+   ============================================================ */
+
+/* Sichtbarer Fokus-Ring zusaetzlich zur Rahmenfarbe (additiv) */
+.rr .rr-field:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-ink) 12%, transparent); }
+.rr .rr-field[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 20%, transparent); }
+
+/* Textarea-Variante */
+.rr textarea.rr-field,
+.rr .rr-field--textarea { min-height: 132px; line-height: 1.5; resize: vertical; }
+
+/* Feld-Gruppe (Label + Feld + Hilfe/Fehler) */
+.rr .rr-form { display: grid; gap: 20px; max-width: 560px; }
+.rr .rr-form__row { display: grid; gap: 20px; grid-template-columns: 1fr 1fr; }
+.rr .rr-form__group { display: block; }
+.rr .rr-help { font-family: var(--rr-font-ui); font-size: 13px; color: var(--rr-ink-soft); margin: 7px 0 0; }
+.rr .rr-error { font-family: var(--rr-font-ui); font-size: 13px; color: var(--rr-error-ink); margin: 7px 0 0; display: flex; align-items: center; gap: 7px; }
+.rr .rr-error::before { content: ""; flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--rr-red); }
+
+/* Checkbox (eigenes Kaestchen, roter Haken) */
+.rr .rr-check,
+.rr .rr-radio { display: inline-flex; align-items: flex-start; gap: 12px; cursor: pointer; font-family: var(--rr-font-ui); font-size: 15px; line-height: 1.5; color: var(--rr-ink); }
+.rr .rr-check__input,
+.rr .rr-radio__input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.rr .rr-check__box { flex: 0 0 auto; width: 22px; height: 22px; margin-top: 1px; border: 1.5px solid var(--rr-line); border-radius: 6px; background: var(--rr-paper); display: grid; place-items: center; transition: border-color var(--rr-t-fast) var(--rr-ease), background var(--rr-t-fast) var(--rr-ease); }
+.rr .rr-check__box svg { width: 13px; height: 13px; stroke: #fff; opacity: 0; transform: scale(0.7); transition: opacity var(--rr-t-fast) var(--rr-ease), transform var(--rr-t-fast) var(--rr-ease); }
+.rr .rr-check__input:checked + .rr-check__box { background: var(--rr-red); border-color: var(--rr-red); }
+.rr .rr-check__input:checked + .rr-check__box svg { opacity: 1; transform: scale(1); }
+.rr .rr-check__input:focus-visible + .rr-check__box { box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 30%, transparent); }
+
+/* Radio (runder Punkt) */
+.rr .rr-radio__dot { flex: 0 0 auto; position: relative; width: 22px; height: 22px; margin-top: 1px; border: 1.5px solid var(--rr-line); border-radius: 50%; background: var(--rr-paper); transition: border-color var(--rr-t-fast) var(--rr-ease); }
+.rr .rr-radio__dot::after { content: ""; position: absolute; inset: 0; margin: auto; width: 10px; height: 10px; border-radius: 50%; background: var(--rr-red); transform: scale(0); transition: transform var(--rr-t-fast) var(--rr-ease); }
+.rr .rr-radio__input:checked + .rr-radio__dot { border-color: var(--rr-red); }
+.rr .rr-radio__input:checked + .rr-radio__dot::after { transform: scale(1); }
+.rr .rr-radio__input:focus-visible + .rr-radio__dot { box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 30%, transparent); }
+
+/* Status-Hinweis (Erfolg / Fehler) */
+.rr .rr-formnote { font-family: var(--rr-font-ui); font-size: 14.5px; line-height: 1.5; padding: 14px 16px; border-radius: var(--rr-radius); border: 1px solid transparent; }
+.rr .rr-formnote--success { color: var(--rr-success-ink); background: var(--rr-success-bg); border-color: color-mix(in srgb, var(--rr-success) 40%, transparent); }
+.rr .rr-formnote--error { color: var(--rr-error-ink); background: var(--rr-error-bg); border-color: color-mix(in srgb, var(--rr-red) 40%, transparent); }
+
+@media (max-width: 560px) { .rr .rr-form__row { grid-template-columns: 1fr; } }
