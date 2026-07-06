@@ -43,9 +43,16 @@ export function renderPiece(ch: string, rects: number[][], fontFamily: string, S
   const cv = document.createElement("canvas");
   cv.width = W; cv.height = H;
   const ctx = cv.getContext("2d", { willReadFrequently: true })!;
+  // Schnittkanten leicht ueberlappen (Tomson 06.07.): die Clip-Rechtecke wurden
+  // fuer eine andere Schrift getunt und lassen an DM-Sans-Glyphen Haarlinien-
+  // Luecken (e/d/b). +M Einheiten rundum -> Nachbarteile ueberlappen an inneren
+  // Schnitten (Luecke weg), aussen greift weiterhin der Ink-Clip. M in 120x140-
+  // Glyphenraum; beim Auseinanderfliegen sind ~2/120 unsichtbar.
+  const M = 2.4;
+  const infl = rects.map((r) => [r[0] - M, r[1] - M, r[2] + 2 * M, r[3] + 2 * M]);
   ctx.save();
   ctx.beginPath();
-  for (const r of rects) ctx.rect(r[0] * S, r[1] * S, r[2] * S, r[3] * S);
+  for (const r of infl) ctx.rect(r[0] * S, r[1] * S, r[2] * S, r[3] * S);
   ctx.clip();
   ctx.font = `700 ${100 * S}px ${fontFamily}`;
   ctx.fillStyle = BRAND_RED;
@@ -68,7 +75,7 @@ export function renderPiece(ch: string, rects: number[][], fontFamily: string, S
   // Vektor-Ausgabe: SVG mit Clip-Rechtecken im 120x140-Glyphenraum, viewBox = Ink-BBox.
   // Inline im DOM gerendert erbt es die echte Fraunces -> scharf bei jeder Groesse/Rotation.
   const id = `rrclip${++CLIP_SEQ}`;
-  const rectsSvg = rects.map((r) => `<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}"/>`).join("");
+  const rectsSvg = infl.map((r) => `<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}"/>`).join("");
   const vb = `${minx / S} ${miny / S} ${w / S} ${h / S}`;
   const fam = fontFamily.replace(/"/g, "&quot;");
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="100%" height="100%" preserveAspectRatio="none" style="display:block;overflow:visible"><defs><clipPath id="${id}">${rectsSvg}</clipPath></defs><g clip-path="url(#${id})"><text x="10" y="100" font-family="${fam}" font-size="100" font-weight="700" fill="${BRAND_RED}">${ch}</text></g></svg>`;
@@ -106,7 +113,7 @@ export function buildWordLayout(fontFamily: string, F: number, dpr: number): Wor
   const mctx = mcv.getContext("2d")!;
   mctx.font = `700 100px ${fontFamily}`;
   const word = "red rabbit";
-  const SPACE_EM = 0.9; // klarer Wort-Abstand (nicht "redrabbit")
+  const SPACE_EM = 0.42; // Wort-Abstand: klar getrennt, aber enger (Tomson 06.07.: 0.9 war zu weit)
   const scale = F / 100;
   const advOf = (ch: string) => (ch === " " ? SPACE_EM * 100 : mctx.measureText(ch).width) * scale;
   const totalW = [...word].reduce((s, ch) => s + advOf(ch), 0);

@@ -294,6 +294,15 @@ export function buildStagePlan(
     contract.set(id, { kx, ky });
   }
 
+  // ---- Burst-Winkel: GLEICHMAESSIG rundum verteilt (Golden-Angle), nicht aus der
+  // Teil-Position abgeleitet. Grund (Tomson 06.07.): die einzeilige Wortmarke hat
+  // cy~0 fuer alle Teile -> positionsbasierte Winkel kollabieren auf links/rechts
+  // ("zwei Knoedel"). Der Golden-Angle faechert alle Teile harmonisch in ALLE
+  // Richtungen wie beim vorigen (zweizeiligen) Aufbruch. Deterministisch (seed).
+  const GOLDEN = Math.PI * (3 - Math.sqrt(5)); // ~2.39996 rad — Sonnenblumen-Streuung
+  const wmAngle = new Map<PoolPieceIn, number>();
+  wordmarkPieces.forEach((p, k) => wmAngle.set(p, k * GOLDEN + (rng() - 0.5) * 0.6));
+
   // ---- Wortmarken-Teil: Ruhe -> Kontraktion -> Burst -> RAUS ---------------
   const U_REST = 0.22, U_CON = 0.5;
   function wordmarkSegs(p: PoolPieceIn): Seg[] {
@@ -302,9 +311,7 @@ export function buildStagePlan(
     const con = contract.get(p.letter) ?? { kx: 0, ky: 0 };
     const conState: PieceState = { ...home, x: p.cx + con.kx, y: p.cy + con.ky };
     segs.push({ u0: U_REST, u1: U_CON, a: home, b: conState });
-    let bax = conState.x, bay = conState.y;
-    if (Math.hypot(bax, bay) < 1) { const a = rng() * Math.PI * 2; bax = Math.cos(a); bay = Math.sin(a); }
-    const bAng = Math.atan2(bay, bax);
+    const bAng = wmAngle.get(p) ?? rng() * Math.PI * 2;
     const dxN = Math.cos(bAng), dyN = Math.sin(bAng);
     const tEdge = Math.min(
       Math.abs(dxN) > 1e-6 ? halfW / Math.abs(dxN) : Infinity,

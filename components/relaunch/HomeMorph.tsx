@@ -76,6 +76,15 @@ export default function HomeMorph() {
     let els: HTMLDivElement[] = [];
     let camWraps: HTMLDivElement[] = [];
     let cameras: Array<(u: number) => { k: number; tx: number; ty: number }> = [];
+    // Navy-Traveler (Tomson 06.07.): GENAU EIN dunkelblaues Teil — derselbe
+    // identische Baustein — wandert durch die Navy-Slots aller 5 Figuren und
+    // wechselt nie die Farbe. Kein anderes Teil wird navy. navyRest = kamera-
+    // korrekte Ruheposition je Szene, navyEl = das eine Traveler-Element,
+    // navyHide = Pool-Indizes der Original-Slot-Teile (versteckt, Traveler ersetzt).
+    let navyRest: { x: number; y: number; rot: number; scale: number }[] = [];
+    let navyEl: HTMLDivElement | null = null;
+    const navyHide = new Set<number>();
+    const NAVY_HOLD = [2.55, 3.55, 4.55, 5.55, 6.35];
     // Lockup-Wortmarkenhoehe (vh) dynamisch bestimmt, damit der Abstand
     // Kopf<->Wortmarke EXAKT dem Abstand oberer Rand<->Kopf entspricht (A == B) —
     // auf jeder Breite (Wortmarke skaliert breitenabhaengig). Fallback bis gemessen.
@@ -93,7 +102,7 @@ export default function HomeMorph() {
       // Massstab zu den einfliegenden Szenen-Teilen passt ("alles gleich gross").
       // Obergrenze so, dass "red rabbit" im Lockup unter dem Kopf mit balanciertem
       // Abstand noch VOLL in den Viewport passt (Hoehe ~1.6*F, Kopf bei 30vh).
-      const F = Math.min(200, Math.max(72, window.innerWidth * 0.15));
+      const F = Math.min(132, Math.max(52, window.innerWidth * 0.105)); // Tomson 06.07.: kleiner (war 15vw/200)
       const layout = buildWordLayout(fam, F, window.devicePixelRatio || 1);
       if (!layout || layout.pieces.length < 10) return false;
 
@@ -114,20 +123,16 @@ export default function HomeMorph() {
           srcOf.push(-1);
         });
       });
-      // Farbtupfer (Tomson 06.07.): die markante gestreckte Balken-Form (max.
-      // Seitenverhaeltnis) ist der Navy-Akzent — und zwar JEDE Instanz genau
-      // dieser Form (identischer SVG-Pfad), damit dasselbe Teil ueberall in
-      // Dunkelblau wiederkehrt und homogen wirkt. Der Rest bleibt rot.
+      // Navy-Slot je Szene: der EINE markante gestreckte Balken (max. Seiten-
+      // verhaeltnis) — pro Figur genau EIN Teil. Der Traveler (unten) besetzt
+      // diese Slots nacheinander; alle Originalteile bleiben rot.
       const asp = (jp: { w: number; h: number; sx: number; sy: number }) => {
         const W = jp.w * Math.abs(jp.sx), H = jp.h * Math.abs(jp.sy);
         return Math.max(W / H, H / W);
       };
-      const navyPathByScene = COMPS.map((comp) => {
-        const ref = comp.pieces.reduce(
-          (best, jp, idx) => (asp(jp) > asp(comp.pieces[best]) ? idx : best), 0
-        );
-        return comp.pieces[ref].d;
-      });
+      const navyIdxByScene = COMPS.map((comp) =>
+        comp.pieces.reduce((best, jp, idx) => (asp(jp) > asp(comp.pieces[best]) ? idx : best), 0)
+      );
       const plan = buildStagePlan(pool, { w: window.innerWidth, h: window.innerHeight });
       timelines = plan.timelines;
       sceneLayouts = plan.scenes;
@@ -162,8 +167,8 @@ export default function HomeMorph() {
         const el = document.createElement("div");
         if (p.at != null && p.scene != null) {
           const jp = COMPS[p.scene].pieces[p.at];
-          const navy = jp.d === navyPathByScene[p.scene];
-          el.innerHTML = `<svg width="100%" height="100%" viewBox="${-jp.w / 2} ${-jp.h / 2} ${jp.w} ${jp.h}" preserveAspectRatio="none" style="display:block;overflow:visible"><g transform="scale(${jp.sx < 0 ? -1 : 1} ${jp.sy < 0 ? -1 : 1})"><path d="${jp.d}" fill="${navy ? "#1C2837" : "#F12032"}"/></g></svg>`;
+          // Alle Szenen-Teile rot; der EINE Navy-Akzent kommt vom Traveler (unten).
+          el.innerHTML = `<svg width="100%" height="100%" viewBox="${-jp.w / 2} ${-jp.h / 2} ${jp.w} ${jp.h}" preserveAspectRatio="none" style="display:block;overflow:visible"><g transform="scale(${jp.sx < 0 ? -1 : 1} ${jp.sy < 0 ? -1 : 1})"><path d="${jp.d}" fill="#F12032"/></g></svg>`;
         } else {
           el.innerHTML = layout.pieces[srcOf[i]].svg;
         }
@@ -173,6 +178,38 @@ export default function HomeMorph() {
         (p.at != null && p.scene != null ? camWraps[p.scene] : stage).appendChild(el);
         return el;
       });
+
+      // ---- Navy-Traveler aufbauen: EIN dunkles Teil wandert durch die Navy-
+      // Slots aller 5 Figuren. navyRest[s] = kamera-korrekte Bildschirmposition
+      // (Offset zur Mitte) des Navy-Slots in Szene s; Originalteile werden versteckt.
+      navyHide.clear();
+      const compBase: number[] = [];
+      { let off = layout.pieces.length; for (const comp of COMPS) { compBase.push(off); off += comp.pieces.length; } }
+      const navyPoolIdx = COMPS.map((_, s) => compBase[s] + navyIdxByScene[s]);
+      navyPoolIdx.forEach((idx) => navyHide.add(idx));
+      const h0 = pool[navyPoolIdx[0]].h || 1;
+      navyRest = COMPS.map((_, s) => {
+        const idx = navyPoolIdx[s];
+        const st = sampleTimeline(timelines[idx], NAVY_HOLD[s]);
+        const cam = cameras[s](NAVY_HOLD[s]);
+        return {
+          x: cam.tx + cam.k * st.x,
+          y: cam.ty + cam.k * st.y,
+          rot: st.rot,
+          scale: (pool[idx].h * st.scale * cam.k) / h0,
+        };
+      });
+      // Traveler-Element: konstante Form = Navy-Teil der Szene 0, dunkelblau.
+      const jp0 = COMPS[0].pieces[navyIdxByScene[0]];
+      const nbW = pool[navyPoolIdx[0]].w, nbH = pool[navyPoolIdx[0]].h;
+      navyEl = document.createElement("div");
+      navyEl.setAttribute("aria-hidden", "true");
+      navyEl.style.cssText =
+        `position:absolute;left:50%;top:50%;width:${nbW}px;height:${nbH}px;` +
+        `margin-left:${-nbW / 2}px;margin-top:${-nbH / 2}px;transform-origin:50% 50%;` +
+        `will-change:transform,opacity;opacity:0;pointer-events:none;z-index:6;`;
+      navyEl.innerHTML = `<svg width="100%" height="100%" viewBox="${-jp0.w / 2} ${-jp0.h / 2} ${jp0.w} ${jp0.h}" preserveAspectRatio="none" style="display:block;overflow:visible"><g transform="scale(${jp0.sx < 0 ? -1 : 1} ${jp0.sy < 0 ? -1 : 1})"><path d="${jp0.d}" fill="#1C2837"/></g></svg>`;
+      stage.appendChild(navyEl);
 
       // Statement-Bloecke auf die Gegenseite der jeweiligen Formation setzen;
       // mobil: Formation zentriert oben, Text unten ueber die volle Breite
@@ -213,10 +250,34 @@ export default function HomeMorph() {
       for (let i = 0; i < els.length; i++) {
         const st = sampleTimeline(timelines[i], u);
         els[i].style.transform = `translate(${st.x}px, ${st.y}px) rotate(${st.rot}deg) scale(${st.scale})`;
-        els[i].style.opacity = String(st.o);
+        // Original-Navy-Slot-Teile verstecken — der Traveler ersetzt sie an gleicher Stelle.
+        const oi = navyHide.has(i) ? 0 : st.o;
+        els[i].style.opacity = String(oi);
         // 700 Teile: unsichtbare aus dem Paint nehmen (kein display:none -> kein
         // Layout-Thrash).
-        els[i].style.visibility = st.o <= 0.001 ? "hidden" : "visible";
+        els[i].style.visibility = oi <= 0.001 ? "hidden" : "visible";
+      }
+
+      // ---- Navy-Traveler: EIN Teil durch alle 5 Figuren — ruht im Slot jeder
+      // Szene, gleitet sanft (masterEase) zur naechsten. Erscheint mit Szene 0,
+      // faded am Ende raus. Sichtbar bleibt IMMER DASSELBE Stueck (harmonisch).
+      if (navyEl && navyRest.length === 5) {
+        const H = NAVY_HOLD;
+        let tx: number, ty: number, tr: number, tsc: number;
+        if (u <= H[0]) { const a = navyRest[0]; tx = a.x; ty = a.y; tr = a.rot; tsc = a.scale; }
+        else if (u >= H[4]) { const a = navyRest[4]; tx = a.x; ty = a.y; tr = a.rot; tsc = a.scale; }
+        else {
+          let s = 0; while (s < 4 && u > H[s + 1]) s++;
+          const t = masterEase(clamp01((u - H[s]) / (H[s + 1] - H[s])));
+          const a = navyRest[s], b = navyRest[s + 1];
+          let dR = b.rot - a.rot; while (dR > 180) dR -= 360; while (dR < -180) dR += 360;
+          tx = a.x + (b.x - a.x) * t; ty = a.y + (b.y - a.y) * t;
+          tr = a.rot + dR * t; tsc = a.scale + (b.scale - a.scale) * t;
+        }
+        const appear = clamp01((u - 2.0) / 0.45);            // taucht mit Szene 0 auf
+        const outro = u > 6.5 ? clamp01((6.9 - u) / 0.3) : 1; // am Ende sanft raus
+        navyEl.style.opacity = String(appear * outro);
+        navyEl.style.transform = `translate(${tx}px, ${ty}px) rotate(${tr}deg) scale(${tsc})`;
       }
 
       // Kamera-Fahrt pro Szene: Zoom/Pan des jeweiligen Szenen-Wrappers.

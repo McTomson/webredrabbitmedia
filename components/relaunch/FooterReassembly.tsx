@@ -89,7 +89,7 @@ export default function FooterReassembly() {
       // Wunschgroesse unveraendert (all-turtles-Massstab), aber nie breiter als der
       // Platz: Ffit ist die Breite, bei der die Marke exakt passt -> min() greift nur
       // auf schmalen Screens, Desktop/Tablet bleiben pixelgleich zu vorher.
-      const desiredF = Math.min(210, Math.max(88, window.innerWidth * 0.13));
+      const desiredF = Math.min(128, Math.max(56, window.innerWidth * 0.092)); // Tomson 06.07.: kleiner (war 13vw/210)
       const Ffit = adv100 > 0 ? (avail / adv100) * 100 : desiredF;
       const F = Math.min(desiredF, Ffit);
       const l = buildWordLayout(fam, F, window.devicePixelRatio || 1);
