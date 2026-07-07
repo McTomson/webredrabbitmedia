@@ -1,7 +1,9 @@
 /**
  * Naturbruch-Zerlegung der Wortmarke "red rabbit".
- * Feld 120x140, Glyphe bei x=10, Baseline y=100, Font "700 100px DM Sans".
+ * Feld 120x140, Glyphe bei x=10, Baseline y=100, Font "600 100px DM Sans".
  * Font-Swap 06.07. (Tomson): Fraunces -> DM Sans Bold, einzeilig statt gestapelt.
+ * Variante C+F 07.07. (Tomson): Wortmarke in Tinte statt Rot, nur der i-Punkt
+ * bleibt Markenrot (eigenes Teil), Gewicht 600 statt 700, engere Wortluecke.
  * Die Clip-Rechtecke je Buchstabe KACHELN das gesamte 120x140-Feld (Aussenkanten
  * bis 0/120/140), decken also jede Glyphe vollstaendig ab — im intakten Zustand
  * rendert die Wortmarke als solide Buchstaben (Schnitte unsichtbar), erst beim
@@ -10,6 +12,8 @@
  */
 
 export const BRAND_RED = "#F12032";
+/** Wortmarken-Tinte (= --rr-ink). Variante C 07.07.: Buchstaben in Tinte statt Rot. */
+export const WORD_INK = "#23262e";
 
 /** Clip-Rechtecke [x, y, w, h] pro Teil, pro Buchstabe. */
 export const PIECES: Record<string, number[][][]> = {
@@ -38,7 +42,7 @@ let CLIP_SEQ = 0;
  * fontFamily: aufgeloester DM-Sans-Familienname (next/font hasht ihn),
  * S: Render-Scale (devicePixelRatio-gekoppelt).
  */
-export function renderPiece(ch: string, rects: number[][], fontFamily: string, S: number): RenderedPiece | null {
+export function renderPiece(ch: string, rects: number[][], fontFamily: string, S: number, fill: string = BRAND_RED): RenderedPiece | null {
   const W = Math.round(120 * S), H = Math.round(140 * S);
   const cv = document.createElement("canvas");
   cv.width = W; cv.height = H;
@@ -54,8 +58,8 @@ export function renderPiece(ch: string, rects: number[][], fontFamily: string, S
   ctx.beginPath();
   for (const r of infl) ctx.rect(r[0] * S, r[1] * S, r[2] * S, r[3] * S);
   ctx.clip();
-  ctx.font = `700 ${100 * S}px ${fontFamily}`;
-  ctx.fillStyle = BRAND_RED;
+  ctx.font = `600 ${100 * S}px ${fontFamily}`;
+  ctx.fillStyle = fill; // Farbe egal fuer die Ink-BBox (nur Alpha zaehlt), aber konsistent halten
   ctx.fillText(ch, 10 * S, 100 * S);
   ctx.restore();
   const d = ctx.getImageData(0, 0, W, H).data;
@@ -78,7 +82,7 @@ export function renderPiece(ch: string, rects: number[][], fontFamily: string, S
   const rectsSvg = infl.map((r) => `<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}"/>`).join("");
   const vb = `${minx / S} ${miny / S} ${w / S} ${h / S}`;
   const fam = fontFamily.replace(/"/g, "&quot;");
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="100%" height="100%" preserveAspectRatio="none" style="display:block;overflow:visible"><defs><clipPath id="${id}">${rectsSvg}</clipPath></defs><g clip-path="url(#${id})"><text x="10" y="100" font-family="${fam}" font-size="100" font-weight="700" fill="${BRAND_RED}">${ch}</text></g></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="100%" height="100%" preserveAspectRatio="none" style="display:block;overflow:visible"><defs><clipPath id="${id}">${rectsSvg}</clipPath></defs><g clip-path="url(#${id})"><text x="10" y="100" font-family="${fam}" font-size="100" font-weight="600" fill="${fill}">${ch}</text></g></svg>`;
   return { svg, minx: minx / S, miny: miny / S, w: w / S, h: h / S };
 }
 
@@ -111,9 +115,14 @@ export interface WordLayout {
 export function buildWordLayout(fontFamily: string, F: number, dpr: number): WordLayout | null {
   const mcv = document.createElement("canvas");
   const mctx = mcv.getContext("2d")!;
-  mctx.font = `700 100px ${fontFamily}`;
+  mctx.font = `600 100px ${fontFamily}`;
   const word = "red rabbit";
-  const SPACE_EM = 0.42; // Wort-Abstand: klar getrennt, aber enger (Tomson 06.07.: 0.9 war zu weit)
+  const SPACE_EM = 0.18; // Wort-Abstand: eng (Variante C, Tomson 07.07.: 0.42 war zu weit)
+  // Farben Variante C 07.07.: Buchstaben in Tinte, i-Punkt in Markenrot.
+  const DOT_RED = "#f12032";
+  // Trennhoehe i (empirisch, DM Sans 600, 120x140-Glyphraster; Canvas-Alpha-Probe):
+  // Punkt-Ink 27.5..41.5, Stamm-Ink 49.5..99.8 -> Trennlinie mittig in die Luecke.
+  const I_SPLIT = 45.5;
   const scale = F / 100;
   const advOf = (ch: string) => (ch === " " ? SPACE_EM * 100 : mctx.measureText(ch).width) * scale;
   const totalW = [...word].reduce((s, ch) => s + advOf(ch), 0);
@@ -126,17 +135,11 @@ export function buildWordLayout(fontFamily: string, F: number, dpr: number): Wor
   const baseY = F * 0.82; // Baseline; nur provisorisch, echte Mitte kommt aus der BBox
   let adv = 0, li = 0;
   let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-  for (let ci = 0; ci < word.length; ci++) {
-    const ch = word[ci];
-    if (ch === " ") { adv += advOf(ch); continue; }
-    // GANZE Buchstaben (Tomson 06.07.): kein Zerschneiden mehr. Die Fragment-
-    // Clips (PIECES) waren fuer Fraunces getunt und schnitten an DM Sans quer
-    // durch die Glyphen -> haessliche Splitter + Haarlinien-Sporne beim Burst.
-    // Die Wortmarken-Teile fliegen ohnehin nur RAUS (die Figuren entstehen aus
-    // den all-turtles-Teilen), das Zerschneiden hatte keinen Nutzen. Jeder
-    // Buchstabe ist jetzt EINE saubere, unverzerrte Glyphe (ein Voll-Feld-Clip).
-    const p = renderPiece(ch, [[0, 0, 120, 140]], fontFamily, S);
-    if (!p) return null; // leeres Teil -> fail-closed
+  // Rendert EIN Teil (Clip-Rechtecke + Farbe) an der aktuellen Advance-Position
+  // und traegt es unter dem aktuellen Buchstaben-Index li in die Zeile ein.
+  const emit = (ch: string, rects: number[][], fill: string): boolean => {
+    const p = renderPiece(ch, rects, fontFamily, S, fill);
+    if (!p) return false; // leeres Teil -> fail-closed
     const hx = adv + (p.minx - 10) * scale;
     const hy = baseY + (p.miny - 100) * scale;
     const w = p.w * scale, h = p.h * scale;
@@ -145,6 +148,24 @@ export function buildWordLayout(fontFamily: string, F: number, dpr: number): Wor
     if (hx + w > maxX) maxX = hx + w;
     if (hy < minY) minY = hy;
     if (hy + h > maxY) maxY = hy + h;
+    return true;
+  };
+  for (let ci = 0; ci < word.length; ci++) {
+    const ch = word[ci];
+    if (ch === " ") { adv += advOf(ch); continue; }
+    // GANZE Buchstaben (Tomson 06.07.): kein Zerschneiden mehr. Die Fragment-
+    // Clips (PIECES) waren fuer Fraunces getunt und schnitten an DM Sans quer
+    // durch die Glyphen -> haessliche Splitter + Haarlinien-Sporne beim Burst.
+    // Jeder Buchstabe ist EINE saubere Glyphe (ein Voll-Feld-Clip) in Tinte.
+    // AUSNAHME i (Variante C+F 07.07.): zwei Teile am selben Buchstaben-Index —
+    // Punkt (rot, oberes Clip-Rechteck) + Stamm (Tinte, unteres) -> der rote
+    // Punkt fliegt im Morph als eigenes kleines Teil mit (zitiert das Hasen-Auge).
+    if (ch === "i") {
+      if (!emit("i", [[0, 0, 120, I_SPLIT]], DOT_RED)) return null;              // Punkt = rot
+      if (!emit("i", [[0, I_SPLIT, 120, 140 - I_SPLIT]], WORD_INK)) return null; // Stamm = Tinte
+    } else {
+      if (!emit(ch, [[0, 0, 120, 140]], WORD_INK)) return null;
+    }
     adv += advOf(ch);
     li++;
   }

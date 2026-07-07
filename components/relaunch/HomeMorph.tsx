@@ -61,6 +61,7 @@ export default function HomeMorph() {
   const stageRef = useRef<HTMLDivElement>(null);
   const headRef = useRef<HTMLDivElement>(null);
   const statementRef = useRef<HTMLDivElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
   const probeRef = useRef<HTMLSpanElement>(null);
   const textRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [reduced, setReduced] = useState(false);
@@ -94,6 +95,9 @@ export default function HomeMorph() {
     // (sequenziell statt seitlich, um Doppelbelichtung zu vermeiden). In build()
     // gesetzt, in render() gelesen.
     let narrowMode = false;
+    // Ink-Hoehe der Wortmarke (px, aus buildWordLayout) — positioniert die stille
+    // Unterzeile (Variante F) mit klarem Abstand UNTER der Wortmarke.
+    let wordBoxH = 0;
     let raf = 0;
     let destroyed = false;
 
@@ -106,9 +110,12 @@ export default function HomeMorph() {
       // Massstab zu den einfliegenden Szenen-Teilen passt ("alles gleich gross").
       // Obergrenze so, dass "red rabbit" im Lockup unter dem Kopf mit balanciertem
       // Abstand noch VOLL in den Viewport passt (Hoehe ~1.6*F, Kopf bei 30vh).
-      const F = Math.min(132, Math.max(52, window.innerWidth * 0.105)); // Tomson 06.07.: kleiner (war 15vw/200)
+      // Tomson 07.07. (Variante C): Wortmarke ordnet sich unter dem Kopf unter,
+      // rund halb so gross wie zuvor (war 0.105/132/52).
+      const F = Math.min(66, Math.max(34, window.innerWidth * 0.055));
       const layout = buildWordLayout(fam, F, window.devicePixelRatio || 1);
-      if (!layout || layout.pieces.length < 6) return false; // ganze Buchstaben = 9 Teile (war 18 Fragmente)
+      if (!layout || layout.pieces.length < 6) return false; // ganze Buchstaben = 10 Teile (i gesplittet: Punkt+Stamm)
+      wordBoxH = layout.boxH; // fuer die Platzierung der Unterzeile (unter der Wortmarke)
 
       // Pool: 18 Wortmarken-Teile + die extrahierten all-turtles-Original-
       // Teilformen aller 5 Comps (Szene 0..4).
@@ -337,6 +344,19 @@ export default function HomeMorph() {
       stage.style.opacity = "1";
       stage.style.transform = `translateY(${stageY}vh)`;
 
+      // Stille Unterzeile (Variante F, Tomson 07.07.): faehrt mit dem Stack (gleiche
+      // vertikale Fahrt wie die Wortmarke) und sitzt mit klarem Abstand UNTER ihr.
+      // Kein Teil des Teile-Pools, nicht in der Lockup-Messung (haengt nur optisch).
+      // Blendet zum Lockup ein (Ende der Intro-Fahrt, kurz nachdem die Buchstaben
+      // stehen) und als ERSTES wieder aus, sobald der Zerfall beginnt (schneller Fade).
+      if (subtitleRef.current) {
+        const subIn = clamp01((ip - 0.72) / 0.28); // erscheint im letzten Stueck der Intro-Fahrt
+        const subOut = 1 - clamp01(u / 0.06);       // weg, bevor die Kontraktion (u=0.22) startet
+        const gapPx = wordBoxH / 2 + 26;            // Abstand unter der Wortmarken-Unterkante
+        subtitleRef.current.style.opacity = String(subIn * subOut);
+        subtitleRef.current.style.transform = `translate(-50%, calc(-50% + ${stageY}vh + ${gapPx}px))`;
+      }
+
       // Hasenkopf: peekt am Anfang (Auge-Mitte an der Unterkante), faehrt starr mit
       // dem Stack in den Lockup. Voll deckend im Intro UND waehrend die Wortmarke
       // noch starr nach oben gleitet (u 0->0.22 = U_REST, Wort noch unveraendert).
@@ -468,6 +488,33 @@ export default function HomeMorph() {
             }}>
               Wir bauen ästhetische Websites,<br />die man dort findet, wo deine Kunden sind.
             </p>
+          </div>
+        )}
+
+        {/* Stille Unterzeile (Variante F): gesperrt, grau, unter der Wortmarke */}
+        {!reduced && (
+          <div
+            ref={subtitleRef}
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+              textAlign: "center",
+              whiteSpace: "nowrap",
+              fontFamily: "var(--rr-font-ui)",
+              fontSize: "clamp(10px, 0.9vw, 13px)",
+              fontWeight: 500,
+              letterSpacing: "0.34em",
+              textIndent: "0.34em", // optische Zentrierung trotz Sperrung
+              color: "#8a8d94",
+              zIndex: 5,
+              opacity: 0,
+              pointerEvents: "none",
+              willChange: "transform, opacity",
+            }}
+          >
+            WEBDESIGN · SICHTBARKEIT · KI
           </div>
         )}
 
