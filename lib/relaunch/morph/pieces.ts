@@ -129,18 +129,22 @@ export function buildWordLayout(fontFamily: string, F: number, dpr: number): Wor
   for (let ci = 0; ci < word.length; ci++) {
     const ch = word[ci];
     if (ch === " ") { adv += advOf(ch); continue; }
-    for (const rects of PIECES[ch]) {
-      const p = renderPiece(ch, rects, fontFamily, S);
-      if (!p) return null; // leeres Teil -> fail-closed
-      const hx = adv + (p.minx - 10) * scale;
-      const hy = baseY + (p.miny - 100) * scale;
-      const w = p.w * scale, h = p.h * scale;
-      raw.push({ svg: p.svg, hx, hy, w, h, letter: li });
-      if (hx < minX) minX = hx;
-      if (hx + w > maxX) maxX = hx + w;
-      if (hy < minY) minY = hy;
-      if (hy + h > maxY) maxY = hy + h;
-    }
+    // GANZE Buchstaben (Tomson 06.07.): kein Zerschneiden mehr. Die Fragment-
+    // Clips (PIECES) waren fuer Fraunces getunt und schnitten an DM Sans quer
+    // durch die Glyphen -> haessliche Splitter + Haarlinien-Sporne beim Burst.
+    // Die Wortmarken-Teile fliegen ohnehin nur RAUS (die Figuren entstehen aus
+    // den all-turtles-Teilen), das Zerschneiden hatte keinen Nutzen. Jeder
+    // Buchstabe ist jetzt EINE saubere, unverzerrte Glyphe (ein Voll-Feld-Clip).
+    const p = renderPiece(ch, [[0, 0, 120, 140]], fontFamily, S);
+    if (!p) return null; // leeres Teil -> fail-closed
+    const hx = adv + (p.minx - 10) * scale;
+    const hy = baseY + (p.miny - 100) * scale;
+    const w = p.w * scale, h = p.h * scale;
+    raw.push({ svg: p.svg, hx, hy, w, h, letter: li });
+    if (hx < minX) minX = hx;
+    if (hx + w > maxX) maxX = hx + w;
+    if (hy < minY) minY = hy;
+    if (hy + h > maxY) maxY = hy + h;
     adv += advOf(ch);
     li++;
   }

@@ -90,6 +90,10 @@ export default function HomeMorph() {
     // auf jeder Breite (Wortmarke skaliert breitenabhaengig). Fallback bis gemessen.
     let lockStageVh = LOCK_STAGE_VH;
     let lockMeasured = false;
+    // Mobile-Modus (schmaler Viewport): steuert die Szenen-Text-Ein/Ausblendung
+    // (sequenziell statt seitlich, um Doppelbelichtung zu vermeiden). In build()
+    // gesetzt, in render() gelesen.
+    let narrowMode = false;
     let raf = 0;
     let destroyed = false;
 
@@ -104,7 +108,7 @@ export default function HomeMorph() {
       // Abstand noch VOLL in den Viewport passt (Hoehe ~1.6*F, Kopf bei 30vh).
       const F = Math.min(132, Math.max(52, window.innerWidth * 0.105)); // Tomson 06.07.: kleiner (war 15vw/200)
       const layout = buildWordLayout(fam, F, window.devicePixelRatio || 1);
-      if (!layout || layout.pieces.length < 10) return false;
+      if (!layout || layout.pieces.length < 6) return false; // ganze Buchstaben = 9 Teile (war 18 Fragmente)
 
       // Pool: 18 Wortmarken-Teile + die extrahierten all-turtles-Original-
       // Teilformen aller 5 Comps (Szene 0..4).
@@ -214,6 +218,7 @@ export default function HomeMorph() {
       // Statement-Bloecke auf die Gegenseite der jeweiligen Formation setzen;
       // mobil: Formation zentriert oben, Text unten ueber die volle Breite
       const narrow = window.innerWidth < 900;
+      narrowMode = narrow;
       textRefs.current.forEach((el, s) => {
         if (!el || !sceneLayouts[s]) return;
         el.dataset.center = narrow ? "0" : "1";
@@ -364,9 +369,16 @@ export default function HomeMorph() {
         if (!el) return;
         const local = u - (U_HERO + s);
         const isLast = s === textRefs.current.length - 1;
-        const tin = s === 0 ? clamp01((u - 1.9) / 0.45) : clamp01((local - 0.22) / 0.35);
-        // Ausblenden erst ab local 1.05
-        const tout = isLast ? 1 : clamp01((1.4 - local) / 0.35);
+        // Mobil sitzen ALLE Statements an derselben Position (unten) -> die
+        // Desktop-Fenster ueberlappen sich (0.18u) und ergeben eine Doppel-
+        // belichtung. Deshalb mobil sequenziell: Text s ist raus (local 1.2)
+        // BEVOR Text s+1 einsetzt (dessen local 0.35 = u+1.35) -> 0.15u Totfenster.
+        const tin = narrowMode
+          ? (s === 0 ? clamp01((u - 1.9) / 0.45) : clamp01((local - 0.35) / 0.3))
+          : (s === 0 ? clamp01((u - 1.9) / 0.45) : clamp01((local - 0.22) / 0.35));
+        const tout = isLast
+          ? 1
+          : (narrowMode ? clamp01((1.2 - local) / 0.25) : clamp01((1.4 - local) / 0.35));
         const eased = masterEase(tin);
         const o = eased * tout;
         el.style.opacity = String(o);

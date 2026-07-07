@@ -1,5 +1,31 @@
 # Naechste Session — relaunch (Hero/Morph + Wortmarke) — Stand 2026-07-06 (nach Neustart nahtlos weiter)
 
+---
+
+## NEUESTER STAND (07.07.) — Klick-Gate-Hero: Versuch + REVERT, 2. Anlauf geplant
+
+**Aufgabe (Tomson):** Interaktiver Hero — Intro laeuft, dann HARTER Scroll-Stopp beim Hasenkopf allein + Hinweis "DRUECK DEN HASEN"; Klick fuehlt sich an wie Knopfdruck; Buchstaben schwirren radial von allen Seiten herein und bilden "red rabbit" an FIXER Position unter dem Logo; erst danach normaler Shatter/Morph. Constraints: Hintergrund sauber weiss, fixer Abstand Logo<->Wortmarke, harte Sperre bis Klick.
+
+**Ergebnis:** Technisch lief die harte Gate-Mechanik (verifiziert: scrollY blieb gepinnt, kein Sprung), aber Tomson lehnte die OPTIK ab ("absolut nicht geklappt" — Position/Formatierung/Assembly nicht aesthetisch ueberzeugend). Zusammen mit einer SEO-Sorge (siehe unten) -> **zurueckgesetzt**, in neuer Session sauber neu versuchen.
+
+**Was gemacht wurde:**
+- `components/relaunch/HomeMorph.tsx` **zurueckgesetzt** auf Commit `fab62e4` (funktionierender Original-Morph). Verifiziert: HTTP 200, null Gate-Reste, Original-Morph laeuft wieder.
+- Gate-Versuch **gesichert** als `docs/handoffs/klick-gate-attempt.patch` (248 Insert / 37 Delete). Wieder anwendbar: `git apply docs/handoffs/klick-gate-attempt.patch` (am besten in Scratch-Branch, als Mechanik-Referenz).
+
+**Mechanik im Patch (lief technisch):** Phasen-Maschine `gate` = `intro -> gated -> rising -> entered`.
+- gated: `lenis.scrollTo(lockY,{immediate}) + lenis.stop()`, jeden Frame `window.scrollTo(0,lockY)` + `onGateWheel/onGateKey preventDefault` = harte Sperre.
+- rising: Klick -> `startRising()` tweent `gate.asm 0->1` (1350ms); Buchstaben von Radial-Scatter (`gate.scat[i]`, Kreisradius `hypot(w,h)*0.62`) zur Lockup-Pos (`gate.lock[i]=sampleTimeline(tl,0)`), Stagger `GATE_STAG=0.5`, masterEase.
+- Tactile Head als `role=button`, `--press` treibt scale+drop-shadow. QA-Bypass via `window.__morphU`/`__uScroll`.
+
+**Warum abgelehnt / Lektionen fuer den 2. Anlauf:**
+1. OPTIK zuerst abstimmen: die Zielkomposition (a: Hase allein + Hinweis, b: fertiges Lockup Hase+Wortmarke mit exaktem Abstand/Groesse) als statisches Artifact/Screenshot mit Tomson ABNEHMEN, DANN animieren. Groesse/Abstand ist Geschmack -> nicht raten.
+2. SEO (verifiziert): `curl` bestaetigt — ALLER indexrelevante Text (Hero-Statement, alle 5 Szenen-Statements, Ueberschriften, CTA) steht im **SSR-HTML** ohne JS. Googlebot liest DOM, scrollt/klickt nicht -> Indexierung sicher. Einziges Restrisiko: **intrusive interstitial** auf Mobil durch die harte Vollbild-Sperre. Mitigation: Mobil KEINE harte Sperre (oder Auto-Release nach Timeout); `prefers-reduced-motion`-Bypass + Tastatur-Zugang (Enter/Space) sind im Patch schon drin.
+3. Empfehlung: harte Sperre nur Desktop; Mobil weicher.
+
+**Nicht anfassen (separate uncommitted Arbeit):** `FooterReassembly.tsx`, `app/preise-preview/`, `brand/PREISE_SEITE_BRIEF.md`, `RevealOnScroll.tsx`, `Header.tsx`, `Footer.tsx`.
+
+---
+
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
 - NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.

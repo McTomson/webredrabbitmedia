@@ -421,3 +421,10 @@ Update this file at the end of every session when a debugging lesson, setup issu
 - SVG-Teile per CSS-transform hochskalieren = Matsch (GPU rastert Layout-Groesse). Fix: Element in seiner Maximal-Verwendung dimensionieren, Timeline-Scales normieren (nur Downscale).
 - Lenis vs. window.scrollTo = Race (Lenis-raf ueberschreibt). Automation: WheelEvents dispatchen; Screenshots: doppelt scrollTo + settle-Wartezeit.
 - `npm run build` waehrend `next dev` laeuft korrumpiert .next des Dev-Servers -> dev neu starten.
+
+## 2026-07-07 — Halb-Revert fror den Morph ein (relaunch)
+- Symptom: /relaunch-preview laedt sauber (keine JS-Fehler), aber die komplette Morph-Show steht — Scroll bewegt nur die Seite, am Track-Ende springt abrupt die naechste Sektion rein.
+- Root Cause: Revert von HomeMorph.tsx auf fab62e4 warf den Guard-Fix `pieces.length < 6` mit weg; die uncommittete "Ganze Buchstaben"-Aenderung in pieces.ts liefert nur 9 Teile, alter Guard `< 10` -> build() scheitert still (fail-closed), timelines leer, render() steigt in Zeile 239 aus. Lehre: bei Reverts pruefen, ob der revertierte Stand von UNCOMMITTETEN Aenderungen in anderen Dateien abhaengt.
+- Diagnose-Rezept: rAF-Loop laeuft, aber MutationObserver auf style-Attribute zeigt 0 Mutationen = frueher Return in render(); `window.__uScroll` ist eine ZAHL (kein Funktionsaufruf), als QA-Override setzen.
+- Mobile-Fix (gleiche Session): (1) stage.ts — auf narrow (<900px) Kamera-Pan unterdruecken (nur Zoom), sonst schiebt der Desktop-Pan die zentrierte Figur aus dem 390px-Viewport und der Navy-Traveler entkoppelt; (2) HomeMorph.tsx — Szenen-Statements mobil sequenziell faden (0.15u-Totfenster), sonst Doppelbelichtung, weil mobil alle Texte an derselben Position ankern.
+- QA-Abnahme (agent-browser): Desktop 1440x900 pixelgleich zu vorher, Mobile 390x844 alle 5 Holds zentriert + ein Statement + kein H-Scroll, Konsole sauber.

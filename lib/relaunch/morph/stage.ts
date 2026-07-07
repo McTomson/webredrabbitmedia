@@ -192,6 +192,12 @@ export function buildStagePlan(
         cs = track[0].s + (cref.s - track[0].s) * e;
       }
       const ck = cs / cref.s;
+      // Mobile (narrow): KEIN Kamera-Pan. Der Pan stammt aus der Desktop-Comp-
+      // Fahrt und rahmt die Formation seitlich — auf schmalen Viewports schoebe
+      // er die per offX/offY bereits zentrierte Figur wieder aus dem Bild (und
+      // der Navy-Traveler entkoppelt sich, weil er zur Hold-Zeit gesampelt wird).
+      // Nur der Zoom (ck) bleibt -> Figur bleibt mittig, Navy sitzt korrekt drin.
+      if (narrow) return { k: ck, tx: 0, ty: 0 };
       const tx = (cx - ck * cref.x - 0.5 * (1 - ck)) * 1920 * k;
       const ty = (cy - ck * cref.y - 0.5 * (1 - ck)) * 1080 * k;
       return { k: ck, tx, ty };

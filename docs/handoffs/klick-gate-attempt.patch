@@ -1,0 +1,434 @@
+diff --git a/components/relaunch/HomeMorph.tsx b/components/relaunch/HomeMorph.tsx
+index 7ad6f6e..e80baf9 100644
+--- a/components/relaunch/HomeMorph.tsx
++++ b/components/relaunch/HomeMorph.tsx
+@@ -61,6 +61,7 @@ export default function HomeMorph() {
+   const stageRef = useRef<HTMLDivElement>(null);
+   const headRef = useRef<HTMLDivElement>(null);
+   const statementRef = useRef<HTMLDivElement>(null);
++  const ctaRef = useRef<HTMLDivElement>(null);
+   const probeRef = useRef<HTMLSpanElement>(null);
+   const textRefs = useRef<(HTMLDivElement | null)[]>([]);
+   const [reduced, setReduced] = useState(false);
+@@ -85,6 +86,13 @@ export default function HomeMorph() {
+     let navyEl: HTMLDivElement | null = null;
+     const navyHide = new Set<number>();
+     const NAVY_HOLD = [2.55, 3.55, 4.55, 5.55, 6.35];
++    // Einflug-Bahn des Navy-Teils (Tomson 06.07.): der Traveler fliegt VOR dem
++    // ersten Hold von aussen herein — exakt auf der Timeline des Original-Navy-
++    // Slot-Teils der Szene 0 — statt am fertigen Zahnrad aufzupoppen. Dafuer
++    // braucht render() den Pool-Index + Groessen zur kamera-korrekten Abtastung.
++    let navyEntryIdx = -1;
++    let navyEntryPieceH = 1;
++    let navyH0 = 1;
+     // Lockup-Wortmarkenhoehe (vh) dynamisch bestimmt, damit der Abstand
+     // Kopf<->Wortmarke EXAKT dem Abstand oberer Rand<->Kopf entspricht (A == B) —
+     // auf jeder Breite (Wortmarke skaliert breitenabhaengig). Fallback bis gemessen.
+@@ -92,6 +100,22 @@ export default function HomeMorph() {
+     let lockMeasured = false;
+     let raf = 0;
+     let destroyed = false;
++    // ---- Klick-Gate (Tomson 07.07.): Original-Auftakt bleibt (Satz + Hase scrollen
++    // wie gehabt), die Wortmarke bleibt dabei aber verborgen. Wenn der Hase ALLEIN
++    // am Lockup steht (Satz weg), stoppt der Scroll -> Hinweis "Druck den Hasen".
++    // Klick -> Wortmarke steigt von unten ein (wie im Original) -> danach treibt der
++    // Scroll den bestehenden Morph (Shatter/Szenen).
++    // phase: 'intro' (scroll-Auftakt) -> 'gated' (Hase allein, gesperrt) ->
++    //        'rising' (Wortmarke steigt) -> 'entered' (Morph frei).
++    const gate = {
++      phase: "intro" as "intro" | "gated" | "rising" | "entered",
++      entered: false, asm: 0, press: 0, asmRaf: 0, nLetters: 0, wordReveal: 0, lockY: 0,
++      lock: [] as { x: number; y: number; rot: number; scale: number }[],
++      scat: [] as { x: number; y: number; rot: number }[],
++    };
++    (window as unknown as { __gate?: typeof gate }).__gate = gate;
++    const grnd = (s: number) => { const x = Math.sin(s * 99.7) * 1e4; return x - Math.floor(x); };
++    const GATE_STAG = 0.5; // Staffelung des Einschwirrens der Buchstaben
+ 
+     // schwerere Daempfung als Default — at-Fahrt wirkt gedaempfter (Delta-Punkt 8)
+     const lenis = new Lenis({ autoRaf: false, lerp: 0.075 });
+@@ -104,10 +128,10 @@ export default function HomeMorph() {
+       // Abstand noch VOLL in den Viewport passt (Hoehe ~1.6*F, Kopf bei 30vh).
+       const F = Math.min(132, Math.max(52, window.innerWidth * 0.105)); // Tomson 06.07.: kleiner (war 15vw/200)
+       const layout = buildWordLayout(fam, F, window.devicePixelRatio || 1);
+-      if (!layout || layout.pieces.length < 10) return false;
++      if (!layout || layout.pieces.length < 6) return false; // ganze Buchstaben = 9 Teile (war 18 Fragmente)
+ 
+-      // Pool: 18 Wortmarken-Teile + die extrahierten all-turtles-Original-
+-      // Teilformen aller 5 Comps (Szene 0..4).
++      // Pool: 9 ganze Wortmarken-Buchstaben + die extrahierten all-turtles-
++      // Original-Teilformen aller 5 Comps (Szene 0..4).
+       const kBase = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+       const pool: PoolPieceIn[] = [];
+       const srcOf: number[] = [];
+@@ -188,6 +212,9 @@ export default function HomeMorph() {
+       const navyPoolIdx = COMPS.map((_, s) => compBase[s] + navyIdxByScene[s]);
+       navyPoolIdx.forEach((idx) => navyHide.add(idx));
+       const h0 = pool[navyPoolIdx[0]].h || 1;
++      navyEntryIdx = navyPoolIdx[0];
++      navyEntryPieceH = pool[navyPoolIdx[0]].h;
++      navyH0 = h0;
+       navyRest = COMPS.map((_, s) => {
+         const idx = navyPoolIdx[s];
+         const st = sampleTimeline(timelines[idx], NAVY_HOLD[s]);
+@@ -232,9 +259,42 @@ export default function HomeMorph() {
+           el.style.maxWidth = "min(40%, 560px)";
+         }
+       });
++
++      // Gate: Wortmarken-Buchstaben (die ersten nLetters Pool-Teile). lock = feste
++      // Lockup-Position (u=0), scat = Startpunkt "aus allen Himmelsrichtungen".
++      // Beim Klick schwirren die Buchstaben von scat an die FESTE lock-Position ->
++      // Endzustand == Morph-u=0 (nahtlose Uebergabe, fixer Abstand, kein Wandern).
++      gate.nLetters = layout.pieces.length;
++      gate.lock = []; gate.scat = [];
++      const radius = Math.hypot(window.innerWidth, window.innerHeight) * 0.62;
++      for (let i = 0; i < gate.nLetters; i++) {
++        const st0 = sampleTimeline(timelines[i], 0);
++        gate.lock.push({ x: st0.x, y: st0.y, rot: st0.rot, scale: st0.scale });
++        const aa = (i / gate.nLetters) * Math.PI * 2 + (grnd(i + 1) - 0.5) * 1.2;
++        const rr = radius * (0.7 + grnd(i + 5) * 0.5);
++        gate.scat.push({ x: Math.cos(aa) * rr, y: Math.sin(aa) * rr, rot: (grnd(i + 3) - 0.5) * 240 });
++      }
+       return true;
+     }
+ 
++    function maybeMeasureLock() {
++      if (lockMeasured) return;
++      const sr = stage.getBoundingClientRect();
++      let wtop = Infinity;
++      for (const c of Array.from(stage.children) as HTMLElement[]) {
++        // aria-hidden ausschliessen (Navy-Traveler ist kein Wortmarken-Teil).
++        if (c.tagName === "DIV" && c.style.inset !== "0px" && c.getAttribute("aria-hidden") !== "true" && c.querySelector("svg")) {
++          const rr = c.getBoundingClientRect();
++          if (rr.width > 1 && rr.height > 1) wtop = Math.min(wtop, rr.top);
++        }
++      }
++      if (isFinite(wtop)) {
++        const offVh = ((wtop - sr.top - window.innerHeight / 2) / window.innerHeight) * 100;
++        lockStageVh = 50 + 2 * HEAD_LOCK_DY - offVh;
++        lockMeasured = true;
++      }
++    }
++
+     function render() {
+       if (!timelines.length) return;
+       const r = track.getBoundingClientRect();
+@@ -242,41 +302,100 @@ export default function HomeMorph() {
+       // QA-Override: window.__uScroll erzwingt den Gesamt-Scroll-u, __morphU den
+       // Morph-u (nur wenn gesetzt) -> Lenis-unabhaengige Frame-Pruefung.
+       const w = window as unknown as { __morphU?: number; __uScroll?: number };
+-      const uScroll = typeof w.__uScroll === "number" ? w.__uScroll : p * U_SPAN;
++      const overridden = typeof w.__morphU === "number" || typeof w.__uScroll === "number";
++      let uScroll = typeof w.__uScroll === "number" ? w.__uScroll : p * U_SPAN;
++      // Klick-Gate (nur ohne QA-Override): Intro laeuft per Scroll; sobald der
++      // Hase allein am Lockup steht (uScroll erreicht U_INTRO), einrasten + sperren.
++      if (!overridden) {
++        if (gate.phase === "intro" && uScroll >= U_INTRO - 0.03) {
++          const scrollable = r.height - window.innerHeight;
++          const targetY = (track.offsetTop || 0) + (U_INTRO / U_SPAN) * scrollable;
++          lenis.scrollTo(targetY, { immediate: true });
++          lenis.stop();
++          gate.lockY = targetY; // Scroll-Position festnageln
++          gate.phase = "gated";
++        }
++        // HARTE Sperre: Frame bei u=0 einfrieren UND die Scroll-Position festnageln,
++        // damit der Morph beim spaeteren Freigeben nicht nach vorn springt.
++        if (gate.phase === "gated" || gate.phase === "rising") {
++          uScroll = U_INTRO;
++          if (Math.abs(window.scrollY - gate.lockY) > 0.5) window.scrollTo(0, gate.lockY);
++        }
++      }
+       // u = Morph-Fortschritt (Wortmarke -> Shatter -> Szenen), erst NACH dem Intro.
+       const u =
+         typeof w.__morphU === "number" ? w.__morphU : Math.max(0, uScroll - U_INTRO);
+ 
++      // Wortmarke: nur im 'entered'-Zustand vom Haupt-Loop sichtbar; im 'rising' setzt
++      // der Radial-Block unten die Buchstaben direkt (Einschwirren), sonst verborgen.
++      gate.wordReveal = overridden || gate.phase === "entered" ? 1 : 0;
++
+       for (let i = 0; i < els.length; i++) {
+         const st = sampleTimeline(timelines[i], u);
+         els[i].style.transform = `translate(${st.x}px, ${st.y}px) rotate(${st.rot}deg) scale(${st.scale})`;
+         // Original-Navy-Slot-Teile verstecken — der Traveler ersetzt sie an gleicher Stelle.
+-        const oi = navyHide.has(i) ? 0 : st.o;
++        // Wortmarken-Buchstaben (i < nLetters) zusaetzlich per Gate ausblenden, bis geklickt.
++        const reveal = i < gate.nLetters ? gate.wordReveal : 1;
++        const oi = (navyHide.has(i) ? 0 : st.o) * reveal;
+         els[i].style.opacity = String(oi);
+         // 700 Teile: unsichtbare aus dem Paint nehmen (kein display:none -> kein
+         // Layout-Thrash).
+         els[i].style.visibility = oi <= 0.001 ? "hidden" : "visible";
+       }
+ 
++      // ---- Radiales Einschwirren beim Klick: die Buchstaben kommen von scat aus
++      // allen Richtungen an die FESTE lock-Position (gestaffelt). Endzustand = u=0.
++      if (!overridden && gate.phase === "rising") {
++        const a = gate.asm;
++        for (let i = 0; i < gate.nLetters; i++) {
++          const L = gate.lock[i], S = gate.scat[i];
++          const pa = masterEase(clamp01(a * (1 + GATE_STAG) - (i / gate.nLetters) * GATE_STAG));
++          const away = 1 - pa;
++          const x = L.x + S.x * away, y = L.y + S.y * away, rot = L.rot + S.rot * away;
++          const sc = (0.5 + 0.5 * pa) * L.scale;
++          els[i].style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${sc})`;
++          const o = clamp01(pa * 1.5);
++          els[i].style.opacity = String(o);
++          els[i].style.visibility = o <= 0.001 ? "hidden" : "visible";
++        }
++      }
++
+       // ---- Navy-Traveler: EIN Teil durch alle 5 Figuren — ruht im Slot jeder
+       // Szene, gleitet sanft (masterEase) zur naechsten. Erscheint mit Szene 0,
+       // faded am Ende raus. Sichtbar bleibt IMMER DASSELBE Stueck (harmonisch).
+-      if (navyEl && navyRest.length === 5) {
++      if (navyEl && navyRest.length === 5 && navyEntryIdx >= 0) {
+         const H = NAVY_HOLD;
+-        let tx: number, ty: number, tr: number, tsc: number;
+-        if (u <= H[0]) { const a = navyRest[0]; tx = a.x; ty = a.y; tr = a.rot; tsc = a.scale; }
+-        else if (u >= H[4]) { const a = navyRest[4]; tx = a.x; ty = a.y; tr = a.rot; tsc = a.scale; }
+-        else {
++        let tx: number, ty: number, tr: number, tsc: number, navyO: number;
++        if (u <= H[0]) {
++          // Einflug von AUSSEN (Tomson 06.07.): der Traveler folgt exakt der
++          // Timeline des Original-Navy-Teils der Szene 0 — er stroemt mit den
++          // anderen Teilen von ausserhalb herein und verankert sich im Zahnrad,
++          // statt am fertigen Slot aufzupoppen. Sichtbarkeit = o der Timeline
++          // (wird beim Kreuzen des Rands sichtbar). Bei u=H[0] deckungsgleich mit
++          // navyRest[0] -> nahtloser Uebergang in die Szenen-zu-Szene-Reise.
++          const st = sampleTimeline(timelines[navyEntryIdx], u);
++          const cam = cameras[0](u);
++          tx = cam.tx + cam.k * st.x;
++          ty = cam.ty + cam.k * st.y;
++          tr = st.rot;
++          tsc = (navyEntryPieceH * st.scale * cam.k) / navyH0;
++          // Intro/Lockup ausblenden: erst einfaden, wenn der Traveler tatsaechlich
++          // hereinfliegt (kreuzt den Rand ~u 1.0). Bei u=0 (Wortmarken-Lockup) = 0,
++          // sonst wuerde das dunkle Teil ueber der Wortmarke stehen.
++          navyO = st.o * clamp01((u - 0.8) / 0.35);
++        } else if (u >= H[4]) {
++          const a = navyRest[4]; tx = a.x; ty = a.y; tr = a.rot; tsc = a.scale;
++          navyO = u > 6.5 ? clamp01((6.9 - u) / 0.3) : 1; // am Ende sanft raus
++        } else {
+           let s = 0; while (s < 4 && u > H[s + 1]) s++;
+           const t = masterEase(clamp01((u - H[s]) / (H[s + 1] - H[s])));
+           const a = navyRest[s], b = navyRest[s + 1];
+           let dR = b.rot - a.rot; while (dR > 180) dR -= 360; while (dR < -180) dR += 360;
+           tx = a.x + (b.x - a.x) * t; ty = a.y + (b.y - a.y) * t;
+           tr = a.rot + dR * t; tsc = a.scale + (b.scale - a.scale) * t;
++          navyO = 1;
+         }
+-        const appear = clamp01((u - 2.0) / 0.45);            // taucht mit Szene 0 auf
+-        const outro = u > 6.5 ? clamp01((6.9 - u) / 0.3) : 1; // am Ende sanft raus
+-        navyEl.style.opacity = String(appear * outro);
++        navyEl.style.opacity = String(navyO);
+         navyEl.style.transform = `translate(${tx}px, ${ty}px) rotate(${tr}deg) scale(${tsc})`;
+       }
+ 
+@@ -302,24 +421,8 @@ export default function HomeMorph() {
+ 
+       // Einmalig (bei u=0, Wortmarke montiert) die Lockup-Ruhehoehe so bestimmen,
+       // dass Abstand Kopf-Unterkante -> Wortmarke-Oberkante (B) == Abstand oberer
+-      // Rand -> Kopf-Oberkante (A). Herleitung mit Kopf-Oberkante = (50+LOCK-15)vh
+-      // und Wortmarke-Oberkante = (50 + S + off)vh:  S = 50 + 2*HEAD_LOCK_DY - off.
+-      // off = Wortmarken-Oberkante relativ zur Stage-Mitte (vh) — translateY-neutral.
+-      if (!lockMeasured && u === 0) {
+-        const sr = stage.getBoundingClientRect();
+-        let wtop = Infinity;
+-        for (const c of Array.from(stage.children) as HTMLElement[]) {
+-          if (c.tagName === "DIV" && c.style.inset !== "0px" && c.querySelector("svg")) {
+-            const r = c.getBoundingClientRect();
+-            if (r.width > 1 && r.height > 1) wtop = Math.min(wtop, r.top);
+-          }
+-        }
+-        if (isFinite(wtop)) {
+-          const offVh = ((wtop - sr.top - window.innerHeight / 2) / window.innerHeight) * 100;
+-          lockStageVh = 50 + 2 * HEAD_LOCK_DY - offVh;
+-          lockMeasured = true;
+-        }
+-      }
++      // Rand -> Kopf-Oberkante (A). off = Wortmarken-Oberkante relativ zur Stage-Mitte.
++      if (u === 0) maybeMeasureLock();
+ 
+       // Wortmarke (Stage): steigt starr mit dem Stack vom unteren Rand herauf und
+       // ruht am Lockup (u=0) in der lockStageVh-Position (klarer, gleichmaessiger
+@@ -345,8 +448,10 @@ export default function HomeMorph() {
+         const headUp = u > 0 ? settleUp + postUp : 0;
+         const dyC = HEAD_PEEK_DY - introShift - headUp; // 43.6 -> -20 (Lockup) -> weiter hoch
+         const headFade = 1 - clamp01((u - 0.22) / 0.42); // u<0.22: voll; 0.22->0.64: raus
+-        headRef.current.style.transform = `translate(-50%, calc(-50% + ${dyC}vh))`;
++        // Press-in nur waehrend des Gates (sonst press=0 -> scale(1), unveraendert).
++        headRef.current.style.transform = `translate(-50%, calc(-50% + ${dyC}vh)) scale(${1 - gate.press * 0.06})`;
+         headRef.current.style.opacity = String(headFade);
++        headRef.current.style.setProperty("--press", String(gate.press));
+       }
+ 
+       // Statement: startet in der oberen/mittigen Zone, scrollt mit dem Stack nach
+@@ -357,6 +462,14 @@ export default function HomeMorph() {
+         statementRef.current.style.transform = `translate(-50%, calc(-50% + ${stY}vh))`;
+       }
+ 
++      // Gate-Hinweis "Druck den Hasen": nur wenn der Hase allein am Lockup steht;
++      // blendet aus, sobald die Wortmarke hochsteigt.
++      if (ctaRef.current) {
++        const hintO = overridden ? 0 : gate.phase === "gated" ? 1 : gate.phase === "rising" ? 1 - clamp01(gate.asm / 0.5) : 0;
++        ctaRef.current.style.opacity = String(hintO);
++        ctaRef.current.style.visibility = hintO <= 0.001 ? "hidden" : "visible";
++      }
++
+       // R3: Statement steigt VON UNTEN hoch waehrend die Formation entsteht —
+       // nie vorher da, nie nachher eingeblendet. Szene 0 laeuft waehrend des
+       // Hero-Einflugs (eigenes tin-Fenster ab u=1.9).
+@@ -376,6 +489,7 @@ export default function HomeMorph() {
+       });
+     }
+ 
++
+     function loop(time: number) {
+       if (destroyed) return;
+       lenis.raf(time);
+@@ -394,10 +508,59 @@ export default function HomeMorph() {
+ 
+     const onResize = () => { build(); render(); };
+     window.addEventListener("resize", onResize);
++
++    // ---- Klick-Gate-Verdrahtung ----
++    // Intro laeuft frei per Scroll; das Einrasten/Sperren passiert in render() sobald
++    // der Hase allein am Lockup steht. Klick startet den Wortmarken-Aufstieg; ist er
++    // fertig, wird der Scroll wieder freigegeben (Morph laeuft weiter).
++    function startRising() {
++      if (gate.phase !== "gated") return;
++      gate.phase = "rising";
++      gate.press = 1; setTimeout(() => { gate.press = 0; }, 220);
++      const t0 = performance.now();
++      const step = (now: number) => {
++        gate.asm = clamp01((now - t0) / 1350);
++        if (gate.asm < 1) { gate.asmRaf = requestAnimationFrame(step); }
++        else { gate.asmRaf = 0; gate.phase = "entered"; gate.entered = true; lenis.start(); }
++      };
++      gate.asmRaf = requestAnimationFrame(step);
++    }
++    const onPressDown = () => { if (gate.phase === "gated") gate.press = 1; };
++    const onPressUp = () => { if (gate.phase === "gated") gate.press = 0; };
++    const onRabbitClick = () => { startRising(); };
++    // HARTE Sperre: solange der Hase allein steht (gated) UND waehrend die Buchstaben
++    // einschwirren (rising), ist JEDES Weiterscrollen blockiert — nur der Klick auf den
++    // Hasen bringt weiter. Erst wenn die Wortmarke steht (entered), scrollt es normal.
++    const blocked = () => gate.phase === "gated" || gate.phase === "rising";
++    const onGateWheel = (e: Event) => { if (blocked()) e.preventDefault(); };
++    const SCROLL_KEYS = new Set([" ", "Spacebar", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "Home", "End"]);
++    const onGateKey = (e: KeyboardEvent) => { if (blocked() && SCROLL_KEYS.has(e.key)) e.preventDefault(); };
++    // Barrierefrei: der fokussierte Hase laesst sich per Enter/Leertaste ausloesen
++    // (sonst waeren Tastatur-Nutzer an der Sperre gefangen).
++    const onHeadKey = (e: KeyboardEvent) => {
++      if (gate.phase === "gated" && (e.key === "Enter" || e.key === " " || e.key === "Spacebar")) { e.preventDefault(); startRising(); }
++    };
++    const headEl = headRef.current;
++    headEl?.addEventListener("pointerdown", onPressDown);
++    window.addEventListener("pointerup", onPressUp);
++    headEl?.addEventListener("click", onRabbitClick);
++    headEl?.addEventListener("keydown", onHeadKey);
++    window.addEventListener("wheel", onGateWheel, { passive: false });
++    window.addEventListener("touchmove", onGateWheel, { passive: false });
++    window.addEventListener("keydown", onGateKey, { passive: false });
++
+     return () => {
+       destroyed = true;
+       cancelAnimationFrame(raf);
++      if (gate.asmRaf) cancelAnimationFrame(gate.asmRaf);
+       window.removeEventListener("resize", onResize);
++      headEl?.removeEventListener("pointerdown", onPressDown);
++      window.removeEventListener("pointerup", onPressUp);
++      headEl?.removeEventListener("click", onRabbitClick);
++      headEl?.removeEventListener("keydown", onHeadKey);
++      window.removeEventListener("wheel", onGateWheel);
++      window.removeEventListener("touchmove", onGateWheel);
++      window.removeEventListener("keydown", onGateKey);
+       lenis.destroy();
+     };
+   }, []);
+@@ -413,7 +576,10 @@ export default function HomeMorph() {
+         {!reduced && (
+           <div
+             ref={headRef}
+-            aria-hidden
++            className="rr-gatehead"
++            role="button"
++            tabIndex={0}
++            aria-label="Red Rabbit — drücken zum Starten"
+             style={{
+               position: "absolute",
+               left: "50%",
+@@ -421,15 +587,49 @@ export default function HomeMorph() {
+               height: `${HEAD_VH}vh`,
+               aspectRatio: "174 / 267",
+               transform: `translate(-50%, calc(-50% + ${HEAD_PEEK_DY}vh))`,
+-              zIndex: 4,
+-              pointerEvents: "none",
+-              willChange: "transform, opacity",
++              zIndex: 6,
++              cursor: "pointer",
++              pointerEvents: "auto",
++              willChange: "transform, opacity, filter",
+             }}
+           >
+             <RabbitMark className="rr-heromark" color="var(--rr-red)" title="Red Rabbit" />
+           </div>
+         )}
+ 
++        {/* Klick-Gate: Hinweis unter dem allein stehenden Hasen (nur waehrend des Stopps) */}
++        {!reduced && (
++          <div
++            ref={ctaRef}
++            style={{
++              position: "absolute",
++              left: "50%",
++              top: "50%",
++              transform: "translate(-50%, calc(-50% + 2vh))",
++              zIndex: 6,
++              pointerEvents: "none",
++              textAlign: "center",
++              width: "min(92vw, 720px)",
++              opacity: 0,
++              visibility: "hidden",
++              transition: "opacity 0.35s var(--rr-ease)",
++            }}
++          >
++            <p style={{
++              margin: 0,
++              fontFamily: "var(--rr-font-ui)",
++              fontWeight: 600,
++              fontSize: "clamp(15px, 1.7vw, 20px)",
++              letterSpacing: "0.02em",
++              textTransform: "uppercase",
++              color: "var(--rr-ink-soft)",
++            }}>
++              <span className="rr-gatedot" />
++              Drück den Hasen
++            </p>
++          </div>
++        )}
++
+         {/* Marken-Auftakt (Phase 1-2): Statement, ruhig oben-mittig (Crimson Pro) */}
+         {!reduced && (
+           <div
+@@ -471,7 +671,18 @@ export default function HomeMorph() {
+           </div>
+         )}
+ 
+-        <style>{`.rr-heromark{display:block;width:100%;height:100%}`}</style>
++        <style>{`
++          .rr-heromark{display:block;width:100%;height:100%}
++          /* Press-in Deboss (kein Chrome, kein Rahmen): der Hase wird in die weisse
++             Flaeche gedrueckt — Oberkante wird dunkler (recessed), leichte Verdunklung. */
++          .rr-gatehead{
++            filter: drop-shadow(0 calc(-2px * var(--press,0)) 3px rgba(20,25,35, calc(var(--press,0) * .28)));
++            transition: transform .14s var(--rr-ease), filter .14s var(--rr-ease);
++          }
++          .rr-gatedot{ display:inline-block; width:7px; height:7px; border-radius:50%;
++            background:var(--rr-red); margin-right:9px; vertical-align:middle; animation:rrpulse 1.6s infinite; }
++          @keyframes rrpulse{0%,100%{opacity:.3}50%{opacity:1}}
++        `}</style>
+ 
+         {/* Statements (SEO-Text immer im DOM), Seite = Gegenseite der Formation */}
+         {!reduced && SCENE_TEXTS.map((t, i) => (
