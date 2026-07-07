@@ -439,3 +439,42 @@ Aus 5 Vorschlägen gewählt: **D · Klar-Box als Standard, B · Eck-Rahmen als A
   auf 50/50 und **schließen den vollen roten Rahmen ohne Lücken** (Tomson-Fix). `<details>`-basiert
   (Open/Close ohne JS); die Wert-Auswahl-Logik braucht später einen Client-Wrapper analog
   `RelaunchDropdown`. Für prominente Stellen (z.B. ein Filter über den Referenzen).
+
+## 13. FAQ-Akkordeon (Tomson-Entscheidung 2026-07-07)
+
+Aus zwei Runden gewählt: **A · Farbwelt-Panel, B · Editorial, E · Konversation.** Live auf
+`/design-system` Sektion 17, CSS im Abschnitt „FAQ-Akkordeon" in `styleguide.css`. Alle als natives
+`<details>` (barrierefrei, kein JS), weiche `grid-template-rows: 0fr → 1fr`-Reveal, am Stil der
+Relaunch-Panels (Farbwelten, DM-Sans-Riesentype, Off-White #f6f5f1). Basis-Markup:
+`div.rr-faq > details > (summary + div.rr-faq__answer > div.rr-faq__answer-in > p)`.
+
+- **`rr-faq--panel`** (A) — volles Farb-Panel wie die Startseiten-Sektionen, `--rr-world-1-bg` (Teal,
+  Default) bzw. `.rr-faq--dark` / `.rr-faq--blue`. Riesige Off-White-Frage, Plus→Minus (`rr-faq__plus`).
+  Für die **Startseite**.
+- **`rr-faq--editorial`** (B) — heller Grund, große DM-Sans-Frage, feine Linien, `rr-faq__idx` +
+  offene Frage in Rot. Für eine **eigene FAQ-/Preisseite**.
+- **`rr-faq--chat`** (E) — dunkles Panel (`--rr-world-2-bg`), Frage als rote Bubble rechts, Antwort
+  (`rr-faq__bubble`) blendet links weich ein. **Signatur-Moment**, sparsam.
+- **Empfohlene Kombi:** `rr-faq--panel` als Häppchen auf der Startseite → Link „Alle Fragen" auf eine
+  FAQ-Seite mit `rr-faq--editorial`. `rr-faq--chat` als einmaliger Effekt.
+- **Verworfen (getestet, dokumentiert):** animiertes Fächer-System (horizontale Expander-Panels) und
+  durchblätterbarer Karten-Stapel (beide aus Tomson-Vorlagen adaptiert) — gut als Showpiece für 4–7
+  Fragen, aber nicht scannbar für eine lange FAQ. Prototypen im Scratchpad, nicht ins System übernommen.
+
+## 14. Stand der Relaunch-Entscheidungen (2026-07-07)
+
+Festgezurrt und im `/design-system` + `styleguide.css` umgesetzt:
+
+- **Wortmarke / Fonts:** DM Sans Bold (Headlines/Wortmarke), Instrument Sans (Fließtext/UI/Buttons),
+  Crimson Pro (Serif-Statements). Fraunces retired. (§3)
+- **Farben:** Rot `#f12032` als einziger Akzent; Panel-Farbwelten Teal `#1d8c98`, Anthrazit `#2d2d2d`,
+  Blau `#0a8aba`, Off-White `#f6f5f1`; Navy `#1c2837`. (§2)
+- **Buttons:** `rr-btn-sweep` (Haupt-CTA, roter Balken füllt) + `rr-btn-frame` (Eck-Rahmen, 4 Winkel). (§8)
+- **Karten:** `rr-card-slide`, `rr-card-layer`, `rr-focus-row`, `rr-card-book`. (§10)
+- **Formular-Karten:** `rr-formcard-neu` (Neumorph eckig) + `rr-formcard-split`. (§11)
+- **Dropdown:** `rr-select` (eckig, Standard) + `rr-select-frame` (Akzent). (§12)
+- **FAQ:** `rr-faq--panel` / `--editorial` / `--chat`. (§13)
+- **Formular-Primitive:** `rr-field`, `rr-check`, `rr-radio`, `rr-toggle`, `rr-formnote`. (§9)
+
+Noch offen (nächste Elemente): Zahlen-/Stat-Boxen, Badges/Tags, Testimonial/Zitat, Kunden-Logo-Leiste.
+Ganz offen (kein Bedarf entschieden): Fragment-/Mechanik-Karte aus Karten-Runde 3.

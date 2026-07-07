@@ -1073,6 +1073,64 @@ export default function DesignSystemPage() {
         </p>
       </Section>
 
+      {/* ---------------------------------------------------------- */}
+      {/* 17 · FAQ (A Farbwelt-Panel · B Editorial · E Konversation) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="17" title="FAQ (Farbwelt-Panel · Editorial · Konversation)">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 800 }}>
+          Von Tomson bestaetigt (2026-07-07), am Stil der Relaunch-Panels orientiert. Natives
+          <code>&lt;details&gt;</code> (barrierefrei, ohne JS), weiche grid-rows-Reveal. A = Farbwelt-Panel
+          fuer die Startseite, B = Editorial fuer eine eigene FAQ-Seite, E = Konversation als
+          Signatur-Moment. Zum Pruefen die Fragen auf- und zuklappen.
+        </p>
+
+        <p style={dsSubhead}>A · Farbwelt-Panel · rr-faq--panel (auch --dark / --blue)</p>
+        <div className="rr-faq rr-faq--panel" style={{ marginBottom: 44 }}>
+          <div className="rr-faq__inner">
+            <p className="rr-faq__eyebrow">Haeufige Fragen</p>
+            <details open>
+              <summary>Was kostet eine Website?<span className="rr-faq__plus" /></summary>
+              <div className="rr-faq__answer"><div className="rr-faq__answer-in"><p>Der Starter (One-Pager) beginnt bei 790 Euro. Mehrseitige Websites kalkulieren wir fix nach Umfang, den Preis bekommst du vorher schriftlich.</p></div></div>
+            </details>
+            <details>
+              <summary>Muss ich in Vorkasse gehen?<span className="rr-faq__plus" /></summary>
+              <div className="rr-faq__answer"><div className="rr-faq__answer-in"><p>Nein. Eine Anzahlung wird erst bei Auftragszusage faellig, nicht vorher.</p></div></div>
+            </details>
+          </div>
+        </div>
+
+        <p style={dsSubhead}>B · Editorial · rr-faq--editorial (heller Grund, eigene FAQ-Seite)</p>
+        <div className="rr-faq rr-faq--editorial" style={{ marginBottom: 44 }}>
+          <p className="rr-faq__eyebrow">Haeufige Fragen</p>
+          <details open>
+            <summary><span className="rr-faq__idx">01</span><span className="rr-faq__q">Was kostet eine Website?</span></summary>
+            <div className="rr-faq__answer"><div className="rr-faq__answer-in"><p>Der Starter (One-Pager) beginnt bei 790 Euro. Mehrseitige Websites kalkulieren wir fix nach Umfang, den Preis bekommst du vorher schriftlich.</p></div></div>
+          </details>
+          <details>
+            <summary><span className="rr-faq__idx">02</span><span className="rr-faq__q">Gibt es versteckte Kosten?</span></summary>
+            <div className="rr-faq__answer"><div className="rr-faq__answer-in"><p>Nein. Fixpreis heisst Fixpreis. Laufende Kosten wie Hosting und Domain nennen wir offen vorab.</p></div></div>
+          </details>
+        </div>
+
+        <p style={dsSubhead}>E · Konversation · rr-faq--chat (Signatur-Moment)</p>
+        <div className="rr-faq rr-faq--chat">
+          <div className="rr-faq__inner">
+            <p className="rr-faq__eyebrow">Haeufige Fragen</p>
+            <details open>
+              <summary>Was kostet eine Website?</summary>
+              <div className="rr-faq__answer"><div className="rr-faq__answer-in"><div className="rr-faq__bubble">Der Starter (One-Pager) beginnt bei 790 Euro. Mehrseitige Websites kalkulieren wir fix nach Umfang, den Preis bekommst du vorher schriftlich.</div></div></div>
+            </details>
+            <details>
+              <summary>Muss ich in Vorkasse gehen?</summary>
+              <div className="rr-faq__answer"><div className="rr-faq__answer-in"><div className="rr-faq__bubble">Nein. Eine Anzahlung wird erst bei Auftragszusage faellig, nicht vorher.</div></div></div>
+            </details>
+          </div>
+        </div>
+        <p className="rr-meta" style={{ marginTop: 18 }}>
+          rr-faq--panel · rr-faq--editorial · rr-faq--chat (alle: rr-faq + details/summary + rr-faq__answer)
+        </p>
+      </Section>
+
       <footer className="rr-section" style={{ paddingTop: 20 }}>
         <div className="rr-wrap">
           <hr className="rr-hairline" />
