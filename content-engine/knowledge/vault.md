@@ -1472,3 +1472,39 @@ quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
 quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
 geprueft_am: 2026-07-08
 recheck_nach: 2027-01-04
+
+## t36-2026-07-08-164
+cluster: 1
+keywords: macht, eine, high, firmenwebsite
+aussage: 92 % der oesterreichischen Unternehmen haben eine eigene Website, 94 % sind online praesent (Website oder Social Media). Selbst bei kleinen Unternehmen (10-49 Beschaeftigte) sind es 91 %, bei grossen 99 %. Eine Website allein ist also kein Differenzierungsmerkmal mehr - erst die Qualitaet (High-End vs. Standard) unterscheidet.
+quelle: https://www.statistik.at/fileadmin/announcement/2025/10/20251016IKTU2025.pdf
+quelle_name: Statistik Austria - Pressemitteilung 'Fast alle Unternehmen sind online praesent' (IKT-Einsatz in Unternehmen 2025)
+geprueft_am: 2026-07-08
+recheck_nach: 2027-01-04
+
+## t36-2026-07-08-165
+cluster: 1
+keywords: macht, eine, high, firmenwebsite
+aussage: Googles offizielle 'Gut'-Schwellenwerte fuer Core Web Vitals: Largest Contentful Paint (LCP) unter 2,5 Sekunden, Interaction to Next Paint (INP) unter 200 Millisekunden, Cumulative Layout Shift (CLS) unter 0,1 - jeweils am 75. Perzentil der realen Nutzer. Eine High-End-Website muss diese messbaren Werte erfuellen, nicht nur 'schnell wirken'.
+quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
+quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
+geprueft_am: 2026-07-08
+recheck_nach: 2027-01-04
+
+## t36-2026-07-08-166
+cluster: 1
+keywords: macht, eine, high, firmenwebsite
+aussage: Eine professionelle Website mit ca. 10 Seiten liegt in Oesterreich 2026 preislich zwischen 2.500 EUR und 5.500 EUR; Red Rabbit Media realisiert solche Projekte als High-Performance-Loesung (Next.js) oft ab 1.990 EUR. Preistreiber im High-End-Segment sind Individualitaet des Designs, Content-Erstellung und technische Features wie Buchungssysteme.
+quelle: https://web.redrabbit.media/tipps/website-10-seiten-kosten
+quelle_name: Red Rabbit Media - Was kostet eine Website mit 10 Seiten? [Oesterreich 2026]
+geprueft_am: 2026-07-08
+recheck_nach: 2027-01-04
+
+## t36-2026-07-08-167
+cluster: 1
+keywords: macht, eine, high, firmenwebsite
+aussage: Zentraler Entscheidungs-Tradeoff bei der Systemwahl: standardisierte Rundum-Pakete im Miet-/Abomodell (z. B. Herold; laufende Systemgebuehren, Plattformbindung) versus Individualentwicklung (z. B. Next.js) als Einmal-Investment mit vollem Eigentum am Quellcode und ohne laufende System-Gebuehren. High-End bedeutet auch: Eigentum und Unabhaengigkeit statt Plattform-Lock-in.
+quelle: https://web.redrabbit.media/tipps/herold-webseite-vs-agentur-vergleich
+quelle_name: Red Rabbit Media - Herold-Webseite vs. Agentur-Vergleich
+geprueft_am: 2026-07-08
+recheck_nach: 2027-01-04
