@@ -1436,3 +1436,39 @@ quelle: https://owasp.org/www-project-top-ten/
 quelle_name: OWASP Foundation - OWASP Top 10:2021 (Übersicht)
 geprueft_am: 2026-07-06
 recheck_nach: 2027-01-02
+
+## t35-2026-07-08-160
+cluster: 1
+keywords: gewinnt, unternehmen, über, website, neue, kunden
+aussage: 92 % der österreichischen Unternehmen (ab 10 Beschäftigten) haben eine eigene Website, 94 % sind online präsent; selbst bei kleinen Unternehmen (10–49 Beschäftigte) sind es 91 %. Nur 2 % setzen ausschließlich auf Social Media ohne eigene Website. Eine Website allein ist damit kein Differenzierungsmerkmal mehr — Kundengewinnung entscheidet sich über Auffindbarkeit und Qualität.
+quelle: https://www.statistik.at/fileadmin/announcement/2025/10/20251016IKTU2025.pdf
+quelle_name: Statistik Austria - Pressemitteilung 'Fast alle Unternehmen sind online präsent' (IKT-Einsatz in Unternehmen 2025)
+geprueft_am: 2026-07-08
+recheck_nach: 2027-01-04
+
+## t35-2026-07-08-161
+cluster: 1
+keywords: gewinnt, unternehmen, über, website, neue, kunden
+aussage: Rund 6 Millionen Österreicher:innen (ab 15 Jahren) kaufen im Distanzhandel ein; die Ausgaben stiegen 2025 um 14 % auf rund 12,5 Mrd. Euro. 51 % dieser Ausgaben fließen an ausländische Anbieter — für lokale Betriebe mit professioneller Website liegt hier ungenutztes Kundenpotenzial.
+quelle: https://www.kmuforschung.ac.at/studies/e-commerce-in-oesterreich-2025-distanzhandel-bleibt-stabil
+quelle_name: KMU Forschung Austria / Handelsverband - eCommerce-Studie Österreich 2025
+geprueft_am: 2026-07-08
+recheck_nach: 2027-01-04
+
+## t35-2026-07-08-162
+cluster: 1
+keywords: gewinnt, unternehmen, über, website, neue, kunden
+aussage: 56 % der Österreicher:innen (ab 15 Jahren) nutzen 2025 ihr Smartphone für Online-Bestellungen; die Mobile-Commerce-Ausgaben wuchsen um 28 % auf 4,1 Mrd. Euro. Eine Website, die Kunden gewinnen soll, muss zuerst mobil überzeugen.
+quelle: https://www.handelsverband.at/publikationen/studien/ecommerce-studie-oesterreich/ecommerce-studie-oesterreich-2025
+quelle_name: Handelsverband Österreich - eCommerce-Studie Österreich 2025
+geprueft_am: 2026-07-08
+recheck_nach: 2027-01-04
+
+## t35-2026-07-08-163
+cluster: 1
+keywords: gewinnt, unternehmen, über, website, neue, kunden
+aussage: Google empfiehlt Website-Betreibern ausdrücklich gute Core Web Vitals 'für den Erfolg in der Google-Suche': LCP (Ladezeit des Hauptinhalts) unter 2,5 Sekunden, INP (Reaktionszeit auf Interaktionen) unter 200 ms, CLS (visuelle Stabilität) unter 0,1. Wer über die Website Kunden gewinnen will, muss zuerst gefunden werden — Technik ist Teil der Kundengewinnung.
+quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
+quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
+geprueft_am: 2026-07-08
+recheck_nach: 2027-01-04
