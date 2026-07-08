@@ -1,0 +1,224 @@
+Archiv entfernter Design-System-Kandidaten — 2026-07-08
+=======================================================
+
+Entscheidung E3 (Design-System-Relaunch, Tomson 08.07.2026): Die beiden
+Effekt-Buttons rr-btn-metal (Metallischer Druckknopf) und rr-btn-draw
+(Line-Draw-Button) werden aus dem System entfernt (eine Button-Sprache,
+Eckig-Konsequenz). Der folgende Code wurde 1:1 aus
+app/styleguide/styleguide.css und app/design-system/page.tsx entfernt und
+hier zur eventuellen Reaktivierung archiviert. rr-card-soft BLEIBT (nur
+eckig), rr-btn-sweep/rr-btn-frame BLEIBEN.
+
+------------------------------------------------------------------------
+1) CSS aus app/styleguide/styleguide.css — .rr-btn-metal
+------------------------------------------------------------------------
+
+/* ---- 1) Metallischer Druckknopf (.rr-btn-metal) ----
+   Verlaufs-Flaeche + geschichtete Schatten: Hover = Leuchten,
+   Druck = eingesunkene Flaeche (Inset). Faces via CSS-Variablen,
+   damit jede Farbversion nur die Farben tauscht. */
+.rr .rr-btn-metal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 168px;
+  height: 52px;
+  padding: 0 24px;
+  border-radius: 30px;
+  font-family: var(--rr-font-ui);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 1px solid var(--m-border);
+  background-image: var(--m-face);
+  color: var(--m-fg);
+  text-shadow: var(--m-tsh);
+  box-shadow: var(--rr-shadow-sm);
+  -webkit-tap-highlight-color: transparent;
+  transition: box-shadow 220ms var(--rr-ease), transform 120ms var(--rr-ease);
+}
+.rr .rr-btn-metal:hover {
+  box-shadow:
+    0 5px 12px var(--m-out),
+    0 -4px 8px var(--m-hi),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45);
+}
+.rr .rr-btn-metal:active {
+  transform: scale(0.98);
+  box-shadow:
+    inset 0 2px 6px var(--m-press),
+    inset 0 0 22px var(--m-press);
+}
+.rr .rr-btn-metal:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--rr-red) 38%, transparent),
+    0 5px 12px var(--m-out),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45);
+}
+.rr .rr-btn-metal--light {
+  --m-face: linear-gradient(to top, #e6e7e9 0%, #ffffff 80%, #fdfdfd 100%);
+  --m-border: #c9cbce;
+  --m-fg: var(--rr-ink);
+  --m-tsh: 0 1px #fff;
+  --m-out: rgba(28, 40, 55, 0.16);
+  --m-hi: rgba(255, 255, 255, 0.9);
+  --m-press: rgba(28, 40, 55, 0.16);
+}
+.rr .rr-btn-metal--navy {
+  --m-face: linear-gradient(to top, #16202c 0%, #243444 82%, #2b3d50 100%);
+  --m-border: #0f1721;
+  --m-fg: #f4f6f8;
+  --m-tsh: 0 1px rgba(0, 0, 0, 0.4);
+  --m-out: rgba(15, 23, 33, 0.4);
+  --m-hi: rgba(255, 255, 255, 0.14);
+  --m-press: rgba(0, 0, 0, 0.4);
+}
+.rr .rr-btn-metal--red {
+  --m-face: linear-gradient(to top, #c81222 0%, #f12032 82%, #ff414f 100%);
+  --m-border: #a50f1c;
+  --m-fg: #fff;
+  --m-tsh: 0 1px rgba(0, 0, 0, 0.28);
+  --m-out: rgba(200, 18, 34, 0.42);
+  --m-hi: rgba(255, 255, 255, 0.25);
+  --m-press: rgba(120, 8, 18, 0.5);
+}
+
+Zugehoeriges Token (nur von rr-btn-metal genutzt, mitentfernt):
+  --rr-shadow-sm: 0 1px 2px rgba(28, 40, 55, 0.08);
+
+------------------------------------------------------------------------
+2) CSS aus app/styleguide/styleguide.css — .rr-btn-draw
+------------------------------------------------------------------------
+
+/* ---- 2) Line-Draw-Button (.rr-btn-draw) ----
+   Hover: Schrift spreizt, abgerundete Linie zeichnet sich rundum,
+   kleine Akzente ziehen ein. Themen ueber --line_color/--back_color. */
+.rr .rr-btn-draw {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  width: 230px;
+  height: 56px;
+  text-decoration: none;
+  font-family: var(--rr-font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--line_color);
+  transition: letter-spacing 0.3s ease, color 0.3s ease;
+}
+.rr .rr-btn-draw__text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.rr .rr-btn-draw::before,
+.rr .rr-btn-draw::after,
+.rr .rr-btn-draw__text::before,
+.rr .rr-btn-draw__text::after {
+  content: "";
+  position: absolute;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--line_color);
+  transition: width 0.5s ease;
+}
+.rr .rr-btn-draw::before { top: 0; left: 54px; width: calc(100% - 56px * 2 - 16px); }
+.rr .rr-btn-draw::after { top: 0; right: 54px; width: 8px; }
+.rr .rr-btn-draw__text::before { bottom: 0; right: 54px; width: calc(100% - 56px * 2 - 16px); }
+.rr .rr-btn-draw__text::after { bottom: 0; left: 54px; width: 8px; }
+.rr .rr-btn-draw__line { position: absolute; top: 0; width: 56px; height: 100%; overflow: hidden; }
+.rr .rr-btn-draw__line::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 150%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 300px;
+  border: solid 3px var(--line_color);
+}
+.rr .rr-btn-draw__line:nth-child(1),
+.rr .rr-btn-draw__line:nth-child(1)::before { left: 0; }
+.rr .rr-btn-draw__line:nth-child(2),
+.rr .rr-btn-draw__line:nth-child(2)::before { right: 0; }
+.rr .rr-btn-draw:hover { letter-spacing: 6px; }
+.rr .rr-btn-draw:hover::before,
+.rr .rr-btn-draw:hover .rr-btn-draw__text::before { width: 8px; }
+.rr .rr-btn-draw:hover::after,
+.rr .rr-btn-draw:hover .rr-btn-draw__text::after { width: calc(100% - 56px * 2 - 16px); }
+.rr .rr-btn-draw__drow1,
+.rr .rr-btn-draw__drow2 { position: absolute; z-index: -1; border-radius: 16px; transform-origin: 16px 16px; }
+.rr .rr-btn-draw__drow1 { top: -16px; left: 40px; width: 32px; height: 0; transform: rotate(30deg); }
+.rr .rr-btn-draw__drow2 { top: 44px; left: 77px; width: 32px; height: 0; transform: rotate(-127deg); }
+.rr .rr-btn-draw__drow1::before,
+.rr .rr-btn-draw__drow1::after,
+.rr .rr-btn-draw__drow2::before,
+.rr .rr-btn-draw__drow2::after { content: ""; position: absolute; }
+.rr .rr-btn-draw__drow1::before { bottom: 0; left: 0; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(-60deg); }
+.rr .rr-btn-draw__drow1::after { top: -10px; left: 45px; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(69deg); }
+.rr .rr-btn-draw__drow2::before { bottom: 0; left: 0; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(-146deg); }
+.rr .rr-btn-draw__drow2::after { bottom: 26px; left: -40px; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(-262deg); }
+.rr .rr-btn-draw__drow1,
+.rr .rr-btn-draw__drow1::before,
+.rr .rr-btn-draw__drow1::after,
+.rr .rr-btn-draw__drow2,
+.rr .rr-btn-draw__drow2::before,
+.rr .rr-btn-draw__drow2::after { background: var(--back_color); }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow1 { animation: rr-drow1 ease-in 0.06s forwards; }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow1::before { animation: rr-drow2 linear 0.08s 0.06s forwards; }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow1::after { animation: rr-drow3 linear 0.03s 0.14s forwards; }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow2 { animation: rr-drow4 linear 0.06s 0.2s forwards; }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow2::before { animation: rr-drow3 linear 0.03s 0.26s forwards; }
+.rr .rr-btn-draw:hover .rr-btn-draw__drow2::after { animation: rr-drow5 linear 0.06s 0.32s forwards; }
+@keyframes rr-drow1 { 0% { height: 0; } 100% { height: 100px; } }
+@keyframes rr-drow2 { 0% { width: 0; opacity: 0; } 10% { opacity: 0; } 11% { opacity: 1; } 100% { width: 120px; } }
+@keyframes rr-drow3 { 0% { width: 0; } 100% { width: 80px; } }
+@keyframes rr-drow4 { 0% { height: 0; } 100% { height: 120px; } }
+@keyframes rr-drow5 { 0% { width: 0; } 100% { width: 124px; } }
+.rr .rr-btn-draw--red { --line_color: #f12032; --back_color: #ffe1e5; }
+.rr .rr-btn-draw--navy { --line_color: #1c2837; --back_color: #e7ecf5; }
+.rr .rr-btn-draw--ink { --line_color: #23262e; --back_color: #efeee9; }
+
+------------------------------------------------------------------------
+3) TSX aus app/design-system/page.tsx — DrawBtn-Helper + Sektion 10
+------------------------------------------------------------------------
+
+/* Line-Draw-Button (Kandidat 10) — feste Markup-Reihenfolge:
+   zwei Kappen-Linien, Text, zwei drow-Akzente. */
+function DrawBtn({ variant, label }: { variant: string; label: string }) {
+  return (
+    <a className={`rr-btn-draw rr-btn-draw--${variant}`} href="#">
+      <span className="rr-btn-draw__line" />
+      <span className="rr-btn-draw__line" />
+      <span className="rr-btn-draw__text">{label}</span>
+      <span className="rr-btn-draw__drow1" />
+      <span className="rr-btn-draw__drow2" />
+    </a>
+  );
+}
+
+{/* 10 · Buttons - Line-Draw (Kandidat) */}
+<Section n="10" title="Buttons - Line-Draw">
+  <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+    Beim Hover spreizt sich die Schrift, eine abgerundete Linie zeichnet sich rund um die Pille
+    und kleine Akzente ziehen ein. Drei Farbthemen ueber <code>--line_color</code> /{" "}
+    <code>--back_color</code>, Markenrot inklusive. Zum Pruefen mit der Maus drueberfahren.
+  </p>
+  <div style={{ display: "flex", flexWrap: "wrap", gap: "56px 48px", alignItems: "center",
+    background: "var(--rr-surface)", border: "1px solid var(--rr-line)", borderRadius: 16,
+    padding: "64px 40px" }}>
+    <DrawBtn variant="red" label="ANFRAGEN" />
+    <DrawBtn variant="navy" label="REFERENZEN" />
+    <DrawBtn variant="ink" label="KONTAKT" />
+  </div>
+  <p className="rr-meta" style={{ marginTop: 14 }}>
+    rr-btn-draw--red (Markenrot) · rr-btn-draw--navy · rr-btn-draw--ink
+  </p>
+</Section>

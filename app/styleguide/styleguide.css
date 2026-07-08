@@ -70,11 +70,17 @@
   --rr-max: 1680px;
 
   /* ---- Sonstiges ---- */
-  --rr-radius: 12px;
-  --rr-radius-lg: 22px;
+  /* Radius 0 ist Gesetz (E2, Tomson 2026-07-08). Tokens bleiben als 0
+     bestehen, damit alle var()-Verweise (auch in subpages.css / SphereGallery)
+     eckig werden, ohne die Verbraucher-Dateien anzufassen. Einzige Ausnahmen:
+     Toggle-Track/Knob und Radio-Punkt (konventionell rund). */
+  --rr-radius: 0;
+  --rr-radius-lg: 0;
 
-  /* ---- Schatten (tactile Buttons + schwebende Menues) ---- */
-  --rr-shadow-sm: 0 1px 2px rgba(28, 40, 55, 0.08);
+  /* ---- Schatten (zwei Sprachen, E4 Tomson 2026-07-08) ----
+     FLAT ist Standard (kein Schatten). --rr-shadow-layer hebt Karten dezent ab.
+     Neumorph-Doppelschatten NUR als Ausnahme (rr-formcard-neu, rr-card-soft). */
+  --rr-shadow-layer: rgba(28, 40, 55, 0.26) 0 2px 4px, rgba(28, 40, 55, 0.18) 0 7px 13px -3px;
   --rr-shadow-btn: 0 1px 2px rgba(28, 40, 55, 0.10), 0 2px 8px rgba(28, 40, 55, 0.06);
   --rr-shadow-btn-hover: 0 4px 14px rgba(28, 40, 55, 0.14), 0 2px 6px rgba(28, 40, 55, 0.08);
   --rr-shadow-red: 0 5px 18px rgba(241, 32, 50, 0.30);
@@ -142,9 +148,11 @@
 .rr .rr-meta    { font-size: var(--rr-fs-meta); line-height: 1.45; color: var(--rr-ink-soft); margin: 0; }
 
 /* ============================================================
-   BUTTON-SYSTEM (ueberarbeitet 05.07.)
+   BUTTON-SYSTEM (ueberarbeitet 05.07., eckig E1 2026-07-08)
    Token-basiert, ruecwaertskompatibel: primary / secondary /
-   ondark bleiben die alten Klassennamen, nur eleganter.
+   ondark bleiben die alten Klassennamen, jetzt ECKIG (border-radius 0).
+   Rolle: rr-btn (eckig solid) = Formular-/Utility-Button. Primaer-CTA =
+   rr-btn-sweep, Sekundaer = rr-btn-frame (siehe DESIGN.md §8).
    Jede Variante setzt --rr-btn-fg (Text + Spinnerfarbe), damit
    der Loading-Spinner ohne Sonderfall die richtige Farbe hat.
    ============================================================ */
@@ -160,7 +168,7 @@
   letter-spacing: -0.005em;
   line-height: 1;
   padding: 15px 26px;
-  border-radius: 999px;
+  border-radius: 0;
   border: 1.5px solid transparent;
   cursor: pointer;
   text-decoration: none;
@@ -630,185 +638,23 @@
 @media (prefers-reduced-motion: reduce) { .rr .rr-dash-bar { animation: none; } }
 
 /* ============================================================
-   KANDIDATEN ZUR FREIGABE (05.07.) — vier Fremd-Snippets, 1:1
-   in der Mechanik uebernommen und auf die Marke umgefaerbt.
-   Jede Komponente kommt in mehreren Farbversionen, immer
-   inklusive Markenrot. Werden auf /design-system gezeigt.
+   AUFGENOMMENE FREMD-SNIPPETS (05.07.) — 1:1 in der Mechanik
+   uebernommen, auf die Marke umgefaerbt. rr-btn-metal und
+   rr-btn-draw wurden 2026-07-08 (E3) entfernt (eine Button-
+   Sprache, Eckig-Konsequenz); archiviert in
+   docs/handoffs/entfernte-kandidaten-2026-07-08.patch.
+   Es bleiben: rr-card-soft (jetzt eckig) + rr-toggle.
    ============================================================ */
 
-/* ---- 1) Metallischer Druckknopf (.rr-btn-metal) ----
-   Verlaufs-Flaeche + geschichtete Schatten: Hover = Leuchten,
-   Druck = eingesunkene Flaeche (Inset). Faces via CSS-Variablen,
-   damit jede Farbversion nur die Farben tauscht. */
-.rr .rr-btn-metal {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 168px;
-  height: 52px;
-  padding: 0 24px;
-  border-radius: 30px;
-  font-family: var(--rr-font-ui);
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.005em;
-  cursor: pointer;
-  text-decoration: none;
-  white-space: nowrap;
-  border: 1px solid var(--m-border);
-  background-image: var(--m-face);
-  color: var(--m-fg);
-  text-shadow: var(--m-tsh);
-  box-shadow: var(--rr-shadow-sm);
-  -webkit-tap-highlight-color: transparent;
-  transition: box-shadow 220ms var(--rr-ease), transform 120ms var(--rr-ease);
-}
-.rr .rr-btn-metal:hover {
-  box-shadow:
-    0 5px 12px var(--m-out),
-    0 -4px 8px var(--m-hi),
-    inset 0 1px 1px rgba(255, 255, 255, 0.45);
-}
-.rr .rr-btn-metal:active {
-  transform: scale(0.98);
-  box-shadow:
-    inset 0 2px 6px var(--m-press),
-    inset 0 0 22px var(--m-press);
-}
-.rr .rr-btn-metal:focus-visible {
-  outline: none;
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--rr-red) 38%, transparent),
-    0 5px 12px var(--m-out),
-    inset 0 1px 1px rgba(255, 255, 255, 0.45);
-}
-.rr .rr-btn-metal--light {
-  --m-face: linear-gradient(to top, #e6e7e9 0%, #ffffff 80%, #fdfdfd 100%);
-  --m-border: #c9cbce;
-  --m-fg: var(--rr-ink);
-  --m-tsh: 0 1px #fff;
-  --m-out: rgba(28, 40, 55, 0.16);
-  --m-hi: rgba(255, 255, 255, 0.9);
-  --m-press: rgba(28, 40, 55, 0.16);
-}
-.rr .rr-btn-metal--navy {
-  --m-face: linear-gradient(to top, #16202c 0%, #243444 82%, #2b3d50 100%);
-  --m-border: #0f1721;
-  --m-fg: #f4f6f8;
-  --m-tsh: 0 1px rgba(0, 0, 0, 0.4);
-  --m-out: rgba(15, 23, 33, 0.4);
-  --m-hi: rgba(255, 255, 255, 0.14);
-  --m-press: rgba(0, 0, 0, 0.4);
-}
-.rr .rr-btn-metal--red {
-  --m-face: linear-gradient(to top, #c81222 0%, #f12032 82%, #ff414f 100%);
-  --m-border: #a50f1c;
-  --m-fg: #fff;
-  --m-tsh: 0 1px rgba(0, 0, 0, 0.28);
-  --m-out: rgba(200, 18, 34, 0.42);
-  --m-hi: rgba(255, 255, 255, 0.25);
-  --m-press: rgba(120, 8, 18, 0.5);
-}
-
-/* ---- 2) Line-Draw-Button (.rr-btn-draw) ----
-   Hover: Schrift spreizt, abgerundete Linie zeichnet sich rundum,
-   kleine Akzente ziehen ein. Themen ueber --line_color/--back_color. */
-.rr .rr-btn-draw {
-  position: relative;
-  z-index: 0;
-  display: inline-block;
-  width: 230px;
-  height: 56px;
-  text-decoration: none;
-  font-family: var(--rr-font-ui);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--line_color);
-  transition: letter-spacing 0.3s ease, color 0.3s ease;
-}
-.rr .rr-btn-draw__text {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-.rr .rr-btn-draw::before,
-.rr .rr-btn-draw::after,
-.rr .rr-btn-draw__text::before,
-.rr .rr-btn-draw__text::after {
-  content: "";
-  position: absolute;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--line_color);
-  transition: width 0.5s ease;
-}
-.rr .rr-btn-draw::before { top: 0; left: 54px; width: calc(100% - 56px * 2 - 16px); }
-.rr .rr-btn-draw::after { top: 0; right: 54px; width: 8px; }
-.rr .rr-btn-draw__text::before { bottom: 0; right: 54px; width: calc(100% - 56px * 2 - 16px); }
-.rr .rr-btn-draw__text::after { bottom: 0; left: 54px; width: 8px; }
-.rr .rr-btn-draw__line { position: absolute; top: 0; width: 56px; height: 100%; overflow: hidden; }
-.rr .rr-btn-draw__line::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 150%;
-  height: 100%;
-  box-sizing: border-box;
-  border-radius: 300px;
-  border: solid 3px var(--line_color);
-}
-.rr .rr-btn-draw__line:nth-child(1),
-.rr .rr-btn-draw__line:nth-child(1)::before { left: 0; }
-.rr .rr-btn-draw__line:nth-child(2),
-.rr .rr-btn-draw__line:nth-child(2)::before { right: 0; }
-.rr .rr-btn-draw:hover { letter-spacing: 6px; }
-.rr .rr-btn-draw:hover::before,
-.rr .rr-btn-draw:hover .rr-btn-draw__text::before { width: 8px; }
-.rr .rr-btn-draw:hover::after,
-.rr .rr-btn-draw:hover .rr-btn-draw__text::after { width: calc(100% - 56px * 2 - 16px); }
-.rr .rr-btn-draw__drow1,
-.rr .rr-btn-draw__drow2 { position: absolute; z-index: -1; border-radius: 16px; transform-origin: 16px 16px; }
-.rr .rr-btn-draw__drow1 { top: -16px; left: 40px; width: 32px; height: 0; transform: rotate(30deg); }
-.rr .rr-btn-draw__drow2 { top: 44px; left: 77px; width: 32px; height: 0; transform: rotate(-127deg); }
-.rr .rr-btn-draw__drow1::before,
-.rr .rr-btn-draw__drow1::after,
-.rr .rr-btn-draw__drow2::before,
-.rr .rr-btn-draw__drow2::after { content: ""; position: absolute; }
-.rr .rr-btn-draw__drow1::before { bottom: 0; left: 0; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(-60deg); }
-.rr .rr-btn-draw__drow1::after { top: -10px; left: 45px; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(69deg); }
-.rr .rr-btn-draw__drow2::before { bottom: 0; left: 0; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(-146deg); }
-.rr .rr-btn-draw__drow2::after { bottom: 26px; left: -40px; width: 0; height: 32px; border-radius: 16px; transform-origin: 16px 16px; transform: rotate(-262deg); }
-.rr .rr-btn-draw__drow1,
-.rr .rr-btn-draw__drow1::before,
-.rr .rr-btn-draw__drow1::after,
-.rr .rr-btn-draw__drow2,
-.rr .rr-btn-draw__drow2::before,
-.rr .rr-btn-draw__drow2::after { background: var(--back_color); }
-.rr .rr-btn-draw:hover .rr-btn-draw__drow1 { animation: rr-drow1 ease-in 0.06s forwards; }
-.rr .rr-btn-draw:hover .rr-btn-draw__drow1::before { animation: rr-drow2 linear 0.08s 0.06s forwards; }
-.rr .rr-btn-draw:hover .rr-btn-draw__drow1::after { animation: rr-drow3 linear 0.03s 0.14s forwards; }
-.rr .rr-btn-draw:hover .rr-btn-draw__drow2 { animation: rr-drow4 linear 0.06s 0.2s forwards; }
-.rr .rr-btn-draw:hover .rr-btn-draw__drow2::before { animation: rr-drow3 linear 0.03s 0.26s forwards; }
-.rr .rr-btn-draw:hover .rr-btn-draw__drow2::after { animation: rr-drow5 linear 0.06s 0.32s forwards; }
-@keyframes rr-drow1 { 0% { height: 0; } 100% { height: 100px; } }
-@keyframes rr-drow2 { 0% { width: 0; opacity: 0; } 10% { opacity: 0; } 11% { opacity: 1; } 100% { width: 120px; } }
-@keyframes rr-drow3 { 0% { width: 0; } 100% { width: 80px; } }
-@keyframes rr-drow4 { 0% { height: 0; } 100% { height: 120px; } }
-@keyframes rr-drow5 { 0% { width: 0; } 100% { width: 124px; } }
-.rr .rr-btn-draw--red { --line_color: #f12032; --back_color: #ffe1e5; }
-.rr .rr-btn-draw--navy { --line_color: #1c2837; --back_color: #e7ecf5; }
-.rr .rr-btn-draw--ink { --line_color: #23262e; --back_color: #efeee9; }
-
-/* ---- 3) Weiche, plastische Karte (.rr-card-soft) ----
+/* ---- Weiche, plastische Karte (.rr-card-soft) ----
    Neumorphismus mit doppeltem Schatten; auf hellem Grund
-   lesbar gehalten. Neutral / Rot / Navy. */
+   lesbar gehalten. Neutral / Rot / Navy. ECKIG (E3, Tomson
+   2026-07-08): border-radius 0, Neumorph-Schatten bleiben.
+   Zweite Neumorph-Ausnahme neben rr-formcard-neu. */
 .rr .rr-card-soft {
   width: 200px;
   height: 250px;
-  border-radius: 32px;
+  border-radius: 0;
   padding: 24px 22px;
   display: flex;
   flex-direction: column;
@@ -1017,7 +863,7 @@
 .rr .rr-radio { display: inline-flex; align-items: flex-start; gap: 12px; cursor: pointer; font-family: var(--rr-font-ui); font-size: 15px; line-height: 1.5; color: var(--rr-ink); }
 .rr .rr-check__input,
 .rr .rr-radio__input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-.rr .rr-check__box { flex: 0 0 auto; width: 22px; height: 22px; margin-top: 1px; border: 1.5px solid var(--rr-line); border-radius: 6px; background: var(--rr-paper); display: grid; place-items: center; transition: border-color var(--rr-t-fast) var(--rr-ease), background var(--rr-t-fast) var(--rr-ease); }
+.rr .rr-check__box { flex: 0 0 auto; width: 22px; height: 22px; margin-top: 1px; border: 1.5px solid var(--rr-line); border-radius: 0; background: var(--rr-paper); display: grid; place-items: center; transition: border-color var(--rr-t-fast) var(--rr-ease), background var(--rr-t-fast) var(--rr-ease); }
 .rr .rr-check__box svg { width: 13px; height: 13px; stroke: #fff; opacity: 0; transform: scale(0.7); transition: opacity var(--rr-t-fast) var(--rr-ease), transform var(--rr-t-fast) var(--rr-ease); }
 .rr .rr-check__input:checked + .rr-check__box { background: var(--rr-red); border-color: var(--rr-red); }
 .rr .rr-check__input:checked + .rr-check__box svg { opacity: 1; transform: scale(1); }
@@ -1049,7 +895,7 @@
   position: relative;
   width: 190px;
   height: 254px;
-  border-radius: 16px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 0 20px 8px #d7d7d3;
 }
@@ -1081,7 +927,7 @@
   justify-content: flex-end;
   gap: 6px;
   background: var(--rr-surface);
-  border-radius: 16px;
+  border-radius: 0;
   transition: transform 700ms var(--rr-ease);
 }
 .rr .rr-card-slide__title {
@@ -1111,13 +957,10 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
+  border-radius: 0;
   background: var(--rr-surface);
   color: var(--rr-ink);
-  box-shadow:
-    rgba(28, 40, 55, 0.26) 0 2px 4px,
-    rgba(28, 40, 55, 0.18) 0 7px 13px -3px,
-    var(--rr-red) 0 -3px 0 inset;
+  box-shadow: var(--rr-shadow-layer), var(--rr-red) 0 -3px 0 inset;
 }
 .rr .rr-card-layer__eyebrow {
   font-family: var(--rr-font-display);
@@ -1162,14 +1005,14 @@
   position: relative;
   width: 180px;
   height: 250px;
-  border-radius: 10px;
+  border-radius: 0;
   perspective: 900px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--rr-ink);
   background: var(--rr-surface);
-  box-shadow: 1px 1px 12px rgba(28, 40, 55, 0.5);
+  box-shadow: var(--rr-shadow-layer);
   transition: transform 500ms var(--rr-ease);
 }
 .rr .rr-card-book__cover,
@@ -1181,7 +1024,7 @@
   height: 100%;
   box-sizing: border-box;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -1419,9 +1262,9 @@
 .rr .rr-faq--chat .rr-faq__eyebrow { color: #ff5f6d; }
 .rr .rr-faq--chat details { margin-bottom: 14px; }
 .rr .rr-faq--chat details::after { content: ""; display: table; clear: both; }
-.rr .rr-faq--chat summary { display: inline-flex; align-items: center; gap: 12px; max-width: 80%; padding: 15px 20px; float: right; clear: both; background: var(--rr-red); color: #fff; font-family: var(--rr-font-ui); font-size: 16px; font-weight: 600; border-radius: 16px 16px 4px 16px; }
+.rr .rr-faq--chat summary { display: inline-flex; align-items: center; gap: 12px; max-width: 80%; padding: 15px 20px; float: right; clear: both; background: var(--rr-red); color: #fff; font-family: var(--rr-font-ui); font-size: 16px; font-weight: 600; border-radius: 0; }
 .rr .rr-faq--chat .rr-faq__answer-in { padding-top: 14px; }
-.rr .rr-faq__bubble { max-width: 80%; float: left; clear: both; padding: 16px 20px; background: #3a3a3a; color: rgba(246, 245, 241, 0.92); font-size: 15px; line-height: 1.55; border-radius: 16px 16px 16px 4px; transform: translateY(8px); opacity: 0; }
+.rr .rr-faq__bubble { max-width: 80%; float: left; clear: both; padding: 16px 20px; background: #3a3a3a; color: rgba(246, 245, 241, 0.92); font-size: 15px; line-height: 1.55; border-radius: 0; transform: translateY(8px); opacity: 0; }
 .rr .rr-faq--chat details[open] .rr-faq__bubble { animation: rr-faq-bub 0.4s var(--rr-ease) 0.08s forwards; }
 @keyframes rr-faq-bub { to { transform: translateY(0); opacity: 1; } }
 
@@ -1429,4 +1272,344 @@
   .rr .rr-faq__answer { transition: none; }
   .rr .rr-faq__plus::before, .rr .rr-faq__plus::after, .rr .rr-faq--editorial summary { transition: none; }
   .rr .rr-faq--chat details[open] .rr-faq__bubble { animation: none; opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   SCROLL-REVEAL (E5, Tomson-Entscheidung 2026-07-08)
+   .rr-reveal (Einzelelement) / .rr-stagger (Kinder gestaffelt).
+   CSS-only ueber animation-timeline: view(); ohne Support einfach
+   sichtbar, reduced-motion immer sofort sichtbar.
+   ============================================================ */
+.rr .rr-reveal,
+.rr .rr-stagger > * {
+  opacity: 0;
+  transform: translateY(16px);
+}
+@keyframes rr-reveal-in { to { opacity: 1; transform: translateY(0); } }
+@supports (animation-timeline: view()) {
+  .rr .rr-reveal {
+    animation: rr-reveal-in 700ms var(--rr-ease) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+  .rr .rr-stagger > * {
+    animation: rr-reveal-in 700ms var(--rr-ease) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+  .rr .rr-stagger > *:nth-child(2) { animation-delay: 80ms; }
+  .rr .rr-stagger > *:nth-child(3) { animation-delay: 160ms; }
+  .rr .rr-stagger > *:nth-child(4) { animation-delay: 240ms; }
+  .rr .rr-stagger > *:nth-child(5) { animation-delay: 320ms; }
+  .rr .rr-stagger > *:nth-child(n+6) { animation-delay: 400ms; }
+}
+@supports not (animation-timeline: view()) {
+  .rr .rr-reveal,
+  .rr .rr-stagger > * { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-reveal,
+  .rr .rr-stagger > * { opacity: 1 !important; transform: none !important; animation: none !important; }
+}
+
+/* ============================================================
+   ZITAT / TESTIMONIAL (E6, Tomson-Entscheidung 2026-07-08)
+   .rr-quote (Teal-Panel, Signatur-Moment) + .rr-quote--editorial
+   (heller Einsatz auf redaktionellen Seiten).
+   ============================================================ */
+.rr .rr-quote {
+  position: relative;
+  background: var(--rr-world-1-bg);
+  color: #f6f5f1;
+  padding: clamp(40px, 6vw, 72px) clamp(28px, 5vw, 64px);
+  overflow: hidden;
+}
+.rr .rr-quote__mark {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 120px;
+  line-height: 1;
+  color: rgba(246, 245, 241, 0.22);
+  margin: 0 0 -44px;
+}
+.rr .rr-quote__text {
+  font-family: var(--rr-font-serif);
+  font-style: italic;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.3;
+  color: #f6f5f1;
+  margin: 0 0 32px;
+  max-width: 46ch;
+}
+.rr .rr-quote__attr { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.rr .rr-quote__name { font-family: var(--rr-font-ui); font-weight: 650; font-size: 15px; color: #f6f5f1; }
+.rr .rr-quote__stars { color: #fcfbc9; letter-spacing: 2px; font-size: 15px; }
+.rr .rr-quote__src { font-family: var(--rr-font-ui); font-size: 13px; color: rgba(246, 245, 241, 0.65); }
+
+.rr .rr-quote--editorial {
+  background: transparent;
+  color: var(--rr-ink);
+  padding: 48px 0;
+  border-top: 1px solid var(--rr-line);
+  border-bottom: 1px solid var(--rr-line);
+}
+.rr .rr-quote--editorial .rr-quote__mark { color: var(--rr-red); font-size: 48px; margin-bottom: -6px; }
+.rr .rr-quote--editorial .rr-quote__text { color: var(--rr-ink); }
+.rr .rr-quote--editorial .rr-quote__name { color: var(--rr-ink); }
+.rr .rr-quote--editorial .rr-quote__stars { color: var(--rr-red); }
+.rr .rr-quote--editorial .rr-quote__src { color: var(--rr-ink-soft); }
+
+/* ============================================================
+   TAG / LABEL (E7, Tomson-Entscheidung 2026-07-08)
+   Outline-Basis, semantische Modifier ueber Tokens.
+   ============================================================ */
+.rr .rr-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-family: var(--rr-font-ui);
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rr-ink-soft);
+  background: transparent;
+  border: 1px solid var(--rr-line);
+}
+.rr .rr-tag--red { background: var(--rr-red); border-color: var(--rr-red); color: #fff; }
+.rr .rr-tag--navy { background: var(--rr-navy); border-color: var(--rr-navy); color: #fff; }
+.rr .rr-tag--ok { background: var(--rr-success-bg); border-color: var(--rr-success); color: var(--rr-success-ink); }
+.rr .rr-tag--warn { background: var(--rr-warning-bg); border-color: var(--rr-warning); color: var(--rr-warning-ink); }
+
+/* ============================================================
+   REFERENZ-TABELLE (E8, Tomson-Entscheidung 2026-07-08)
+   Hairline-Tabelle: Name (gross) | Branche | Jahr (tabular-nums).
+   ============================================================ */
+.rr .rr-reftable { width: 100%; border-collapse: collapse; font-family: var(--rr-font-ui); }
+.rr .rr-reftable thead th {
+  text-align: left;
+  padding: 0 16px 14px 0;
+  border-bottom: 1px solid var(--rr-line);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rr-ink-soft);
+}
+.rr .rr-reftable thead th:last-child { text-align: right; padding-right: 0; }
+.rr .rr-reftable tbody tr { border-top: 1px solid var(--rr-line); transition: background 160ms var(--rr-ease); }
+.rr .rr-reftable tbody td { padding: 18px 16px 18px 0; font-size: 15.5px; color: var(--rr-ink); vertical-align: middle; }
+.rr .rr-reftable__name {
+  display: block;
+  font-family: var(--rr-font-display);
+  font-weight: 600;
+  font-size: 18px;
+  transition: color 160ms var(--rr-ease);
+}
+.rr .rr-reftable tbody tr:hover .rr-reftable__name { color: var(--rr-red); }
+.rr .rr-reftable__branche { color: var(--rr-ink-soft); }
+.rr .rr-reftable__year { text-align: right; padding-right: 0; font-variant-numeric: tabular-nums; color: var(--rr-ink-soft); }
+
+/* ============================================================
+   PROSA / FLIESSTEXT (E9, Tomson-Entscheidung 2026-07-08)
+   ============================================================ */
+.rr .rr-prose { font-family: var(--rr-font-ui); color: var(--rr-ink); }
+.rr .rr-prose p { max-width: 68ch; line-height: 1.6; margin: 0 0 20px; }
+.rr .rr-prose a {
+  color: var(--rr-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rr-red);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-thickness 200ms var(--rr-ease), color 200ms var(--rr-ease);
+}
+.rr .rr-prose a:hover, .rr .rr-prose a:focus-visible { color: var(--rr-red); text-decoration-thickness: 2px; }
+.rr .rr-prose ul { list-style: none; margin: 0 0 20px; padding: 0; max-width: 68ch; }
+.rr .rr-prose ul li { position: relative; padding-left: 22px; margin-bottom: 10px; line-height: 1.6; }
+.rr .rr-prose ul li::before { content: ""; position: absolute; left: 0; top: 0.58em; width: 7px; height: 7px; background: var(--rr-red); }
+.rr .rr-prose ol { list-style: none; counter-reset: rr-ol; margin: 0 0 20px; padding: 0; max-width: 68ch; }
+.rr .rr-prose ol li { position: relative; padding-left: 30px; margin-bottom: 10px; line-height: 1.6; counter-increment: rr-ol; }
+.rr .rr-prose ol li::before {
+  content: counter(rr-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--rr-red);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.rr .rr-prose blockquote {
+  position: relative;
+  margin: 28px 0;
+  padding-left: 28px;
+  max-width: 62ch;
+  font-family: var(--rr-font-serif);
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--rr-ink);
+}
+.rr .rr-prose blockquote::before {
+  content: "\201C";
+  position: absolute;
+  left: 0;
+  top: -0.12em;
+  font-family: var(--rr-font-display);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--rr-red);
+}
+
+/* ============================================================
+   PREMIUM-LAYER P1-P7 (Tomson-Entscheidung 2026-07-08)
+   Sparsame Signatur-Effekte, nicht als Flaechendecker gedacht
+   (siehe DESIGN.md §15 fuer Einsatzregeln). P8 (Custom Cursor)
+   bewusst verworfen.
+   ============================================================ */
+
+/* ---- P1 · Kinetic Headline ----
+   Buchstaben/Woerter morphen gestaffelt im Weight (500->700) plus
+   leichtes scaleY bei Hover. Fliessender Morph braucht eine Variable
+   Font (siehe DESIGN.md-Hinweis); ohne Variable Font springt der
+   Weight diskret, was als Effekt bewusst in Kauf genommen wird. */
+.rr .rr-kinetic {
+  display: inline-flex;
+  flex-wrap: wrap;
+  font-family: var(--rr-font-display);
+  font-size: clamp(40px, 6vw, 88px);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: var(--rr-ink);
+}
+.rr .rr-kinetic span {
+  display: inline-block;
+  font-weight: 500;
+  transition: font-weight 260ms var(--rr-ease), transform 260ms var(--rr-ease);
+  transition-delay: calc(var(--i, 0) * 30ms);
+}
+.rr .rr-kinetic:hover span { font-weight: 700; transform: scaleY(1.06); }
+
+/* ---- P2 · Outline-Word ----
+   Text-Stroke statt Fuellung; Hover/Fokus fuellt mit Rot (hell) bzw.
+   Off-White (dunkel). */
+.rr .rr-outline-word {
+  display: inline-block;
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  -webkit-text-stroke: 1px var(--rr-ink);
+  color: transparent;
+  transition: color 220ms var(--rr-ease), -webkit-text-stroke-color 220ms var(--rr-ease);
+}
+.rr .rr-outline-word:hover, .rr .rr-outline-word:focus-visible { color: var(--rr-red); -webkit-text-stroke-color: var(--rr-red); }
+.rr .rr-outline-word--ondark { -webkit-text-stroke-color: #f6f5f1; }
+.rr .rr-outline-word--ondark:hover, .rr .rr-outline-word--ondark:focus-visible { color: #f6f5f1; -webkit-text-stroke-color: #f6f5f1; }
+
+/* ---- P3 · Shatter (Variante B: alt zerfaellt, neu setzt sich zusammen) ----
+   3x3-Fragment-Raster ueber background-position; Eintritt via
+   animation-timeline: view() (Fragmente fliegen aus versetzten
+   Richtungen zusammen), Hover = minimales Auseinanderdriften,
+   reduced-motion = statisch. Bildquelle ueber --rr-shatter-img
+   (Custom Property, pro Instanz gesetzt). Einsatzort: Referenzen /
+   Case-Details, sparsam (siehe DESIGN.md). */
+.rr .rr-shatter {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--rr-ink);
+}
+.rr .rr-shatter__frag { background-image: var(--rr-shatter-img); background-size: 300% 300%; transition: transform 320ms var(--rr-ease); }
+.rr .rr-shatter__frag:nth-child(1) { background-position: 0% 0%; }
+.rr .rr-shatter__frag:nth-child(2) { background-position: 50% 0%; }
+.rr .rr-shatter__frag:nth-child(3) { background-position: 100% 0%; }
+.rr .rr-shatter__frag:nth-child(4) { background-position: 0% 50%; }
+.rr .rr-shatter__frag:nth-child(5) { background-position: 50% 50%; }
+.rr .rr-shatter__frag:nth-child(6) { background-position: 100% 50%; }
+.rr .rr-shatter__frag:nth-child(7) { background-position: 0% 100%; }
+.rr .rr-shatter__frag:nth-child(8) { background-position: 50% 100%; }
+.rr .rr-shatter__frag:nth-child(9) { background-position: 100% 100%; }
+.rr .rr-shatter:hover .rr-shatter__frag { transform: scale(0.96); }
+@supports (animation-timeline: view()) {
+  .rr .rr-shatter__frag { animation: rr-shatter-in 900ms var(--rr-ease) both; animation-timeline: view(); animation-range: entry 0% cover 50%; }
+  .rr .rr-shatter__frag:nth-child(1) { --tx: -60px; --ty: -60px; }
+  .rr .rr-shatter__frag:nth-child(2) { --tx: 0px; --ty: -72px; }
+  .rr .rr-shatter__frag:nth-child(3) { --tx: 60px; --ty: -60px; }
+  .rr .rr-shatter__frag:nth-child(4) { --tx: -72px; --ty: 0px; }
+  .rr .rr-shatter__frag:nth-child(5) { --tx: 0px; --ty: 0px; }
+  .rr .rr-shatter__frag:nth-child(6) { --tx: 72px; --ty: 0px; }
+  .rr .rr-shatter__frag:nth-child(7) { --tx: -60px; --ty: 60px; }
+  .rr .rr-shatter__frag:nth-child(8) { --tx: 0px; --ty: 72px; }
+  .rr .rr-shatter__frag:nth-child(9) { --tx: 60px; --ty: 60px; }
+}
+@keyframes rr-shatter-in {
+  from { transform: translate(var(--tx, 0), var(--ty, 0)) scale(0.85); opacity: 0; }
+  to { transform: translate(0, 0) scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-shatter__frag { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .rr .rr-shatter:hover .rr-shatter__frag { transform: none; }
+}
+
+/* ---- P4 · Draw-Line ----
+   Rote Linie waechst per scaleX mit dem Scroll-Fortschritt. */
+.rr .rr-drawline { transform-origin: left center; transform: scaleX(0); height: 2px; width: 100%; background: var(--rr-red); }
+@supports (animation-timeline: view()) {
+  .rr .rr-drawline { animation: rr-drawline-in linear both; animation-timeline: view(); animation-range: entry 0% cover 70%; }
+}
+@keyframes rr-drawline-in { to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-drawline { transform: scaleX(1); animation: none; }
+}
+
+/* ---- P5 · Block-Text ----
+   background-clip:text mit harten Farbbloecken (kein weicher
+   Verlauf). Regel: maximal eine Stelle pro Seite (siehe DESIGN.md). */
+.rr .rr-blocktext {
+  display: inline-block;
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: clamp(40px, 6vw, 96px);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  background: linear-gradient(
+    90deg,
+    var(--rr-world-1-bg) 0%, var(--rr-world-1-bg) 33.33%,
+    var(--rr-world-2-bg) 33.33%, var(--rr-world-2-bg) 66.66%,
+    var(--rr-world-3-bg) 66.66%, var(--rr-world-3-bg) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- P6 · Magnetic Button ----
+   Reine Marker-Klasse; die Cursor-Anziehung (max 8px, ease-out
+   zurueck) laeuft ueber ein kleines Inline-Script, nur bei
+   pointer:fine + ohne prefers-reduced-motion (siehe DESIGN.md §15). */
+.rr .rr-magnetic { display: inline-block; will-change: transform; transition: transform 200ms var(--rr-ease); }
+
+/* ---- P7 · Bild-Duoton + Grain ----
+   .rr-img-duo--teal/--navy: Graustufen-Bild + Farb-Overlay
+   (mix-blend-mode). .rr-grain: feines SVG-Rauschen, sehr dezent. */
+.rr .rr-img-duo { position: relative; overflow: hidden; display: block; }
+.rr .rr-img-duo > img,
+.rr .rr-img-duo > .rr-img-duo__ph { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
+.rr .rr-img-duo::after { content: ""; position: absolute; inset: 0; mix-blend-mode: multiply; pointer-events: none; }
+.rr .rr-img-duo--teal::after { background: var(--rr-world-1-bg); }
+.rr .rr-img-duo--navy::after { background: var(--rr-navy); }
+
+.rr .rr-grain { position: relative; }
+.rr .rr-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
 }

@@ -359,9 +359,11 @@ sitzen auf `app/styleguide/styleguide.css`; live auf `/design-system` Sektion 13
   `<i class="c1..c4">` vor `<span class="rr-btn-frame__t">Label</span>` (Helper `FrameBtn` in
   `app/design-system/page.tsx`).
 
-**Rollen-Empfehlung (offen, wartet auf finale Tomson-Zuordnung):** `rr-btn-sweep--red` als
-Haupt-CTA (Rot = einzige Aktionsfarbe), `rr-btn-frame` als sekundärer/Outline-CTA. Nicht mehr als
-zwei Effekt-Stile pro Seite, sonst wirkt es nach Template.
+**Rollen (fest, Tomson-Entscheidung 2026-07-08):** `rr-btn-sweep--red` = Primär-CTA (Rot = einzige
+Aktionsfarbe), `rr-btn-frame` = Sekundär-/Outline-CTA, `rr-btn` (Solid-System, Sektion 04) = reiner
+Formular-/Utility-Button (Submit-Fallback, kleine Aktionen). Nicht mehr als zwei Effekt-Stile pro
+Seite, sonst wirkt es nach Template. `rr-btn-metal` und `rr-btn-draw` wurden 2026-07-08 (E3, eine
+Button-Sprache) entfernt; archiviert in `docs/handoffs/entfernte-kandidaten-2026-07-08.patch`.
 
 ## 9. Formular-System (2026-07-06)
 
@@ -476,5 +478,101 @@ Festgezurrt und im `/design-system` + `styleguide.css` umgesetzt:
 - **FAQ:** `rr-faq--panel` / `--editorial` / `--chat`. (§13)
 - **Formular-Primitive:** `rr-field`, `rr-check`, `rr-radio`, `rr-toggle`, `rr-formnote`. (§9)
 
-Noch offen (nächste Elemente): Zahlen-/Stat-Boxen, Badges/Tags, Testimonial/Zitat, Kunden-Logo-Leiste.
+Zahlen-/Stat-Boxen, Badges/Tags, Testimonial/Zitat sind mit der Eckig-Konsequenz und dem
+Premium-Layer (2026-07-08, §15) umgesetzt. Noch offen: Kunden-Logo-Leiste.
+
+## 15. Entscheidungs-Stand 08.07.2026 — Eckig-Konsequenz, Premium-Layer, Testimonials/Tags/Reftable/Prose
+
+Zweiter großer Entscheidungs-Block nach §14 (2026-07-07). Alles live auf `/design-system`
+(Sektionen 18–26), CSS-Ergänzungen am Ende von `app/styleguide/styleguide.css`.
+
+### Fundament E1–E9
+
+- **E1 · Buttons eckig:** `.rr-btn` (Solid-System, Sektion 04) hat jetzt `border-radius: 0` statt
+  Pille; die Varianten `--primary/--secondary/--tertiary/--ondark` bleiben. Rollen siehe §8.
+- **E2 · Radius 0 ist Gesetz:** `--rr-radius` / `--rr-radius-lg` sind auf `0` gesetzt (Tokens
+  bleiben bestehen, damit alle `var()`-Verweise mitziehen). Eckig: `.rr-field`, `.rr-formnote`,
+  `.rr-card-slide` (+ inneres Bild), `.rr-card-layer`, `.rr-card-book` (Cover + Karte),
+  `.rr-check__box`, FAQ-Chat-Bubbles (`rr-faq--chat summary`, `rr-faq__bubble`). **Einzige
+  Ausnahmen:** `.rr-toggle__track` / `.rr-toggle__knob` und `.rr-radio__dot` (konventionell rund).
+  Kleine Status-Punkte (Spinner, `rr-error::before`) bleiben aus demselben Grund rund — sie sind
+  keine Flächen/Karten, sondern Mini-Indikatoren.
+- **E3 · Kandidaten entfernt:** `rr-btn-metal` und `rr-btn-draw` raus (eine Button-Sprache);
+  archiviert in `docs/handoffs/entfernte-kandidaten-2026-07-08.patch`. `.rr-card-soft` bleibt, jetzt
+  eckig (Neumorph-Schatten unverändert).
+- **E4 · Zwei Schatten-Sprachen:** Neuer Token `--rr-shadow-layer` (`rgba(28,40,55,.26) 0 2px 4px,
+  rgba(28,40,55,.18) 0 7px 13px -3px`). Flat ist Standard (kein Schatten); `--rr-shadow-layer` hebt
+  `rr-card-layer` / `rr-card-book` dezent ab (roter Inset bei `rr-card-layer` bleibt separat).
+  Neumorph-Doppelschatten nur als bewusste Ausnahme: `rr-formcard-neu`, `rr-card-soft`.
+- **E5 · Scroll-Reveal (`rr-reveal` / `rr-stagger`):** Opacity 0 + `translateY(16px)` bis sichtbar,
+  700ms ease-out, rein CSS über `@supports (animation-timeline: view())`. Ohne Support: sofort
+  sichtbar (`@supports not`). `prefers-reduced-motion`: immer sofort sichtbar. Sektion 18. Hinweis:
+  `RevealOnScroll.tsx` (Hero-Strang, `pp-reveal`) ist ein eigener, älterer Mechanismus und wird hier
+  nicht angefasst — kann bei Gelegenheit auf `rr-reveal` migrieren.
+- **E6 · Zitat/Testimonial (`rr-quote` / `rr-quote--editorial`):** Teal-Panel, Crimson Pro italic
+  `clamp(28px,4vw,44px)`, Off-White, großes eckiges Anführungszeichen, Attribution (Name + 5 Sterne +
+  "Google-Rezension"). `--editorial` = heller Einsatz mit Hairlines. Sektion 19, mit den drei echten
+  Google-Rezensionen (Rafael Danesh, Dmitry Pashlov, Rene Rohrer). Ehrlich: **5,0 auf Google bei 3
+  Rezensionen**, keine erfundene Zahl.
+- **E7 · Tags (`rr-tag`):** Outline-Basis (Hairline, uppercase), Modifier `--red` (solid),
+  `--navy`, `--ok`, `--warn` (semantische Tokens). Sektion 20.
+- **E8 · Referenz-Tabelle (`rr-reftable`):** Hairline-Tabelle, `<table>` mit `<th scope="col">`.
+  Name (DM Sans 600, groß) | Branche (Ink-Soft) | Jahr (tabular-nums, rechtsbündig). Hover: Name
+  wird rot. Sektion 21.
+- **E9 · Prosa (`rr-prose`):** `p` max-width 68ch/1.6; Links Ink mit roter 1px-Unterstreichung
+  (Hover 2px); `ul` mit rotem 7px-Quadrat-Marker; `ol` mit roten tabular-nums-Ziffern; `blockquote`
+  eingerückt, Crimson Pro italic, kleines rotes Anführungszeichen (kein Farbbalken). Sektion 22.
+
+### Premium-Layer P1–P7 (P8 verworfen)
+
+Sparsame Signatur-Effekte, nicht als Flächendecker gedacht — max. 1–2 pro Seite, nie kombiniert.
+
+- **P1 · Kinetic-Headline (`rr-kinetic`):** Buchstaben-`<span>` morphen gestaffelt im Font-Weight
+  (500→700) + leichtes `scaleY` bei Hover. Fließender Morph bräuchte eine Variable Font; ohne sie
+  springt der Weight diskret (aktuell akzeptierter Zwischenstand). Sektion 23.
+- **P2 · Outline-Word (`rr-outline-word`):** `-webkit-text-stroke`, transparent gefüllt; Hover/Fokus
+  füllt Rot (hell) bzw. Off-White (`--ondark`, dunkel). Sektion 23.
+- **P3 · Shatter, Variante B (`rr-shatter`):** 3×3-Fragment-Raster über `background-position`;
+  Eintritt via `animation-timeline: view()` — Fragmente fliegen aus versetzten Richtungen zusammen
+  (alt zerfällt, neu setzt sich zusammen). Hover: minimales Auseinanderdriften. Reduced-motion:
+  statisch. Bildquelle über die Custom Property `--rr-shatter-img`. **Einsatzort: Referenzen /
+  Case-Details, sparsam.** Sektion 24.
+- **P4 · Draw-Line (`rr-drawline`):** rote Linie wächst per `scaleX` mit dem Scroll-Fortschritt
+  (`animation-timeline: view()`). Sektion 24.
+- **P5 · Block-Text (`rr-blocktext`):** `background-clip: text` mit harten Farbblöcken
+  (Teal/Anthrazit/Blau, harte Stops, kein weicher Verlauf). **Regel: maximal eine Stelle pro
+  Seite.** Sektion 23.
+- **P6 · Magnetic Button:** Marker-Klasse `rr-magnetic` + `data-rr-magnetic`-Attribut, die
+  Cursor-Anziehung läuft über ein kleines Inline-Script (max. 8px Verschiebung Richtung Cursor,
+  ease-out zurück via CSS-Transition). Nur bei `pointer: fine`, nur `prefers-reduced-motion: no
+  preference`, nur 1–2 Haupt-CTAs pro Seite. Sektion 25.
+- **P7 · Bild-Duoton + Grain (`rr-img-duo--teal` / `--navy`, `rr-grain`):** Graustufen-Bild +
+  Farb-Overlay über `::after` (`mix-blend-mode: multiply`); `rr-grain` legt ein feines
+  SVG-`feTurbulence`-Rauschen (`data:`-URI, Opacity ~0.05, `pointer-events: none`) darüber. **Neuer
+  Bild-Standard für Cases/Über-uns.** Sektion 26.
+- **P8 · Custom Cursor — bewusst verworfen (D4).** Höchstens später als Overlay-Menü-Idee, kein
+  eigener Cursor-Ersatz auf der ganzen Seite.
+
+### Weitere Entscheidungen
+
+- **D1 — ein Signature-Moment pro Seite:** Premium-Layer-Effekte (P1–P7) werden pro Seite höchstens
+  einmal eingesetzt, nie gestapelt. Verhindert Templat-Gefühl trotz vieler verfügbarer Effekte.
+- **D2 — Bild-Zerlegung auf Referenzen:** `rr-shatter` (P3) ist für die Referenzen-/Case-Seiten
+  reserviert, nicht für Startseite oder Leistungen.
+- **D3 — kein neues WebGL außer der bestehenden Kugel-Galerie:** Die 3D-Kugel-Galerie aus
+  `referenzen-preview` bleibt die **einzige** 3D-Signature der Seite; keine weiteren
+  WebGL-Experimente ohne neue Tomson-Freigabe.
+- **D4 — kein Custom Cursor** (siehe P8).
+
+### 3-Welten-Konzept (Planungsstand, noch nicht gebaut)
+
+- **Leistungen** = Teal (`--rr-world-1-bg`) + geplant Scroll-Zoom / Video-Scrub.
+- **Referenzen** = Anthrazit (`--rr-world-2-bg`) + Kugel-Galerie + Bild-Zerlegung (P3/D2).
+- **Preise** = Blau (`--rr-world-3-bg`) + Paket-Snap, eventuell horizontal (siehe
+  `project_redrabbit_preisseite_horizontal`-Notiz).
+
+### Video-Scrub-Specs (für das kommende Flow-Video, Leistungen-Welt)
+
+Eine Kamerafahrt ohne Schnitte, ruhiger Start und ruhiges Ende, kein Text im Video, Format 16:9,
+ca. 100–150 WebP-Frames (Scrub-Sequenz statt klassischem Videoplayer).
 Ganz offen (kein Bedarf entschieden): Fragment-/Mechanik-Karte aus Karten-Runde 3.

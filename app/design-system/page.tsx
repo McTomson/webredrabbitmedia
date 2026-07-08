@@ -123,20 +123,6 @@ function Specimen({ label, children }: { label: string; children: React.ReactNod
   );
 }
 
-/* Line-Draw-Button (Kandidat 10) — feste Markup-Reihenfolge:
-   zwei Kappen-Linien, Text, zwei drow-Akzente. */
-function DrawBtn({ variant, label }: { variant: string; label: string }) {
-  return (
-    <a className={`rr-btn-draw rr-btn-draw--${variant}`} href="#">
-      <span className="rr-btn-draw__line" />
-      <span className="rr-btn-draw__line" />
-      <span className="rr-btn-draw__text">{label}</span>
-      <span className="rr-btn-draw__drow1" />
-      <span className="rr-btn-draw__drow2" />
-    </a>
-  );
-}
-
 /* Eck-Rahmen-Button (aufgenommen 13) — vier Eck-Winkel als <i>, dann der Text.
    Ruhe zeigt nur die Winkel, Hover schliesst sie zum Rahmen (oder --fill). */
 function FrameBtn({ variant, fill, label }: { variant: string; fill?: boolean; label: string }) {
@@ -200,6 +186,20 @@ function ToggleCell({
       </label>
       <p className="rr-meta">{label}</p>
     </div>
+  );
+}
+
+/* Kinetic-Headline (P1) — jedes Wort in Buchstaben-<span> zerlegt,
+   --i steuert die gestaffelte Transition-Delay beim Hover. */
+function KineticWord({ word, offset = 0 }: { word: string; offset?: number }) {
+  return (
+    <>
+      {word.split("").map((ch, idx) => (
+        <span key={idx} style={{ ["--i" as string]: offset + idx }}>
+          {ch}
+        </span>
+      ))}
+    </>
   );
 }
 
@@ -751,36 +751,6 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ---------------------------------------------------------- */}
-      {/* 10 · Buttons - Line-Draw (Kandidat) */}
-      {/* ---------------------------------------------------------- */}
-      <Section n="10" title="Buttons - Line-Draw">
-        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
-          Beim Hover spreizt sich die Schrift, eine abgerundete Linie zeichnet sich rund um die Pille
-          und kleine Akzente ziehen ein. Drei Farbthemen ueber <code>--line_color</code> /{" "}
-          <code>--back_color</code>, Markenrot inklusive. Zum Pruefen mit der Maus drueberfahren.
-        </p>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "56px 48px",
-            alignItems: "center",
-            background: "var(--rr-surface)",
-            border: "1px solid var(--rr-line)",
-            borderRadius: 16,
-            padding: "64px 40px",
-          }}
-        >
-          <DrawBtn variant="red" label="ANFRAGEN" />
-          <DrawBtn variant="navy" label="REFERENZEN" />
-          <DrawBtn variant="ink" label="KONTAKT" />
-        </div>
-        <p className="rr-meta" style={{ marginTop: 14 }}>
-          rr-btn-draw--red (Markenrot) · rr-btn-draw--navy · rr-btn-draw--ink
-        </p>
-      </Section>
-
-      {/* ---------------------------------------------------------- */}
       {/* 11 · Cards - Soft (Kandidat) */}
       {/* ---------------------------------------------------------- */}
       <Section n="11" title="Cards - Soft">
@@ -1131,6 +1101,258 @@ export default function DesignSystemPage() {
         </p>
       </Section>
 
+      {/* ---------------------------------------------------------- */}
+      {/* 18 · Scroll-Reveal (E5) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="18" title="Scroll-Reveal (rr-reveal / rr-stagger)">
+        <p className="rr-meta" style={{ marginBottom: 24, maxWidth: 720 }}>
+          Opacity 0 + <code>translateY(16px)</code> bis sichtbar, 700ms ease-out. CSS-only ueber{" "}
+          <code>animation-timeline: view()</code>; ohne Support einfach sichtbar, bei{" "}
+          <code>prefers-reduced-motion</code> immer sofort sichtbar. Zum Pruefen im Kasten scrollen.
+        </p>
+        <div style={dsScrollStage}>
+          <div className="rr-reveal">
+            <div className="rr-card-layer" style={{ width: "auto" }}>
+              <p className="rr-card-layer__eyebrow">rr-reveal</p>
+              <p className="rr-card-layer__title">Einzelnes Element blendet ein</p>
+            </div>
+          </div>
+          <div className="rr-stagger" style={{ display: "grid", gap: 16, marginTop: 32 }}>
+            <div className="rr-card-layer" style={{ width: "auto" }}>
+              <p className="rr-card-layer__title">rr-stagger · Kind 1</p>
+            </div>
+            <div className="rr-card-layer" style={{ width: "auto" }}>
+              <p className="rr-card-layer__title">rr-stagger · Kind 2</p>
+            </div>
+            <div className="rr-card-layer" style={{ width: "auto" }}>
+              <p className="rr-card-layer__title">rr-stagger · Kind 3</p>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 19 · Zitat / Testimonial (E6) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="19" title="Zitat / Testimonial (rr-quote)">
+        <p className="rr-meta" style={{ marginBottom: 24, maxWidth: 720 }}>
+          Ehrlich: 5,0 auf Google bei 3 Rezensionen. Echte Kundenzitate, keine erfundenen Zahlen.
+        </p>
+        <div className="rr-quote" style={{ marginBottom: 32 }}>
+          <p className="rr-quote__mark" aria-hidden="true">&rdquo;</p>
+          <p className="rr-quote__text">
+            Für unsere beiden Firmen wurden zwei Webseiten erstellt. Die Zusammenarbeit war äußerst
+            präzise, auf all unsere Wünsche wurde detailliert eingegangen, und wir sind mit den
+            Ergebnissen sehr zufrieden! Danke!
+          </p>
+          <div className="rr-quote__attr">
+            <span className="rr-quote__name">Rafael Danesh</span>
+            <span className="rr-quote__stars" aria-label="5 von 5 Sternen">★★★★★</span>
+            <span className="rr-quote__src">Google-Rezension</span>
+          </div>
+        </div>
+        <div className="rr-quote rr-quote--editorial">
+          <p className="rr-quote__mark" aria-hidden="true">&rdquo;</p>
+          <p className="rr-quote__text">
+            Red Rabbit hat meine Webseite erneuert. Ich habe jetzt ein Kontaktformular, Kunden
+            können Termine direkt über die Webseite bei mir buchen und es wird auch mit meinem
+            Kalender synchronisiert. ... Habe im ersten Monat nach der Umstellung einige neue
+            Kundenanfragen bekommen und bin sehr zufrieden mit der Leistung.
+          </p>
+          <div className="rr-quote__attr">
+            <span className="rr-quote__name">Dmitry Pashlov</span>
+            <span className="rr-quote__stars" aria-label="5 von 5 Sternen">★★★★★</span>
+            <span className="rr-quote__src">Google-Rezension</span>
+          </div>
+        </div>
+        <p className="rr-meta" style={{ marginTop: 18 }}>
+          Drittes Zitat (Rene Rohrer, &bdquo;100 Prozent Empfehlung&ldquo;) steht bereit fuer eine
+          dritte Einsatzstelle (z. B. Referenzen-Seite), rr-quote / rr-quote--editorial.
+        </p>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 20 · Tags (E7) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="20" title="Tags (rr-tag)">
+        <p className="rr-meta" style={{ marginBottom: 24, maxWidth: 720 }}>
+          Outline-Basis, semantische Modifier ueber Tokens. Fuer Branche, Region oder Status.
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+          <span className="rr-tag">Handwerk</span>
+          <span className="rr-tag">Gastronomie</span>
+          <span className="rr-tag rr-tag--red">Neu</span>
+          <span className="rr-tag rr-tag--navy">Referenz</span>
+          <span className="rr-tag rr-tag--ok">Live</span>
+          <span className="rr-tag rr-tag--warn">In Arbeit</span>
+        </div>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 21 · Referenz-Tabelle (E8) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="21" title="Referenz-Tabelle (rr-reftable)">
+        <p className="rr-meta" style={{ marginBottom: 24, maxWidth: 720 }}>
+          Hairline-Tabelle statt Karten-Grid, wenn viele Referenzen kompakt gelistet werden sollen.
+        </p>
+        <table className="rr-reftable">
+          <thead>
+            <tr>
+              <th scope="col">Kunde</th>
+              <th scope="col">Branche</th>
+              <th scope="col">Jahr</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ["Kunde 1", "Kosmetik", "2025"],
+              ["Kunde 2", "Handwerk", "2025"],
+              ["Kunde 3", "Heizung & Sanitaer", "2026"],
+              ["Kunde 4", "Immobilien", "2026"],
+              ["Kunde 5", "Gastronomie", "2026"],
+            ].map(([name, branche, year]) => (
+              <tr key={name}>
+                <td><span className="rr-reftable__name">{name}</span></td>
+                <td><span className="rr-reftable__branche">{branche}</span></td>
+                <td><span className="rr-reftable__year">{year}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 22 · Prosa (E9) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="22" title="Prosa (rr-prose)">
+        <p className="rr-meta" style={{ marginBottom: 24, maxWidth: 720 }}>
+          Fliesstext-Regeln fuer Artikel/Blog: max-width 68ch, rote Link-Unterstreichung, rote
+          Quadrat-Marker bei Listen, rote tabular-nums-Ziffern bei nummerierten Listen, schmales
+          Zitat mit kleinem roten Anfuehrungszeichen.
+        </p>
+        <div className="rr-prose">
+          <p>
+            Eine gute Website ist kein Kunstprojekt, sondern ein Werkzeug. Sie soll laden, ohne dass
+            man wartet, und Vertrauen aufbauen, ohne dass man es merkt. Mehr dazu in unserem{" "}
+            <a href="#">Leitfaden fuer den Mittelstand</a>.
+          </p>
+          <ul>
+            <li>Klar strukturiert statt ueberladen</li>
+            <li>Schnell auf dem Handy, nicht nur am Schreibtisch</li>
+            <li>Fixpreis, keine Ueberraschungen</li>
+          </ul>
+          <ol>
+            <li>Kurzes Erstgespraech</li>
+            <li>Fixangebot schriftlich</li>
+            <li>Umsetzung, Anzahlung erst bei Zusage</li>
+          </ol>
+          <blockquote>
+            Ich bin von der Firma begeistert, vor allem von der Umsetzung.
+          </blockquote>
+        </div>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 23 · Premium-Layer — Typografie (P1, P2, P5) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="23" title="Premium-Layer — Kinetic, Outline, Blocktext">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          Drei typografische Signatur-Effekte. Sparsam einsetzen, nicht kombinieren.
+        </p>
+        <div style={{ display: "grid", gap: 40 }}>
+          <div>
+            <p style={dsSubhead}>P1 · Kinetic-Headline (rr-kinetic) — Hover fuer Weight-Morph</p>
+            <p className="rr-kinetic">
+              <KineticWord word="HANDWERK" />
+            </p>
+          </div>
+          <div style={{ background: "var(--rr-navy)", padding: "40px 32px" }}>
+            <p style={{ ...dsSubhead, color: "rgba(255,255,255,0.6)" }}>
+              P2 · Outline-Word (rr-outline-word--ondark) — Hover/Fokus fuellt Off-White
+            </p>
+            <a href="#" className="rr-outline-word rr-outline-word--ondark" style={{ fontSize: "clamp(40px, 6vw, 72px)" }}>
+              SICHTBAR
+            </a>
+          </div>
+          <div>
+            <p style={dsSubhead}>P5 · Block-Text (rr-blocktext) — harte Farbbloecke, max. 1x pro Seite</p>
+            <p className="rr-blocktext">Fair. Schnell. Sichtbar.</p>
+          </div>
+        </div>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 24 · Premium-Layer — Shatter & Draw-Line (P3, P4) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="24" title="Premium-Layer — Shatter &amp; Draw-Line">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          P3: Fragment-Bild setzt sich beim Scrollen zusammen (Referenzen/Case-Details, sparsam).
+          P4: rote Linie waechst mit dem Scroll-Fortschritt.
+        </p>
+        <div style={{ display: "grid", gap: 32, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+          <div>
+            <p style={dsSubhead}>P3 · rr-shatter (Duoton-Platzhalter [PROJEKT-FOTO])</p>
+            <div
+              className="rr-shatter"
+              style={{ ["--rr-shatter-img" as string]: "linear-gradient(135deg, var(--rr-world-1-bg), var(--rr-navy))" }}
+            >
+              <div className="rr-shatter__frag" />
+              <div className="rr-shatter__frag" />
+              <div className="rr-shatter__frag" />
+              <div className="rr-shatter__frag" />
+              <div className="rr-shatter__frag" />
+              <div className="rr-shatter__frag" />
+              <div className="rr-shatter__frag" />
+              <div className="rr-shatter__frag" />
+              <div className="rr-shatter__frag" />
+            </div>
+          </div>
+          <div>
+            <p style={dsSubhead}>P4 · rr-drawline (im Kasten scrollen)</p>
+            <div style={dsScrollStage}>
+              <p className="rr-body" style={{ marginBottom: 24 }}>Referenzen</p>
+              <div className="rr-drawline" />
+              <p className="rr-meta" style={{ marginTop: 200 }}>Ende des Scroll-Bereichs.</p>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 25 · Premium-Layer — Magnetic Button (P6) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="25" title="Premium-Layer — Magnetic Button">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          Max. 8px Verschiebung Richtung Cursor, ease-out zurueck. Nur <code>pointer: fine</code>,
+          nur 1-2 Haupt-CTAs pro Seite. Zum Pruefen mit der Maus ueber den Button fahren (Desktop).
+        </p>
+        <a href="#" className="rr-btn-sweep rr-btn-sweep--red rr-magnetic" data-rr-magnetic>
+          Jetzt anfragen
+        </a>
+      </Section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* 26 · Premium-Layer — Bild-Duoton &amp; Grain (P7) */}
+      {/* ---------------------------------------------------------- */}
+      <Section n="26" title="Premium-Layer — Bild-Duoton &amp; Grain">
+        <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 720 }}>
+          Bild-Standard fuer Cases/Ueber-uns: Graustufen-Foto + Farb-Overlay, dazu optional feines
+          Grain-Rauschen. Platzhalter statt echtem Foto.
+        </p>
+        <div style={{ display: "grid", gap: 24, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+          <div className="rr-img-duo rr-img-duo--teal" style={{ aspectRatio: "4 / 3" }}>
+            <div className="rr-img-duo__ph" style={{ background: "linear-gradient(135deg, #cfd3d8, #8a8f98)" }} />
+          </div>
+          <div className="rr-img-duo rr-img-duo--navy" style={{ aspectRatio: "4 / 3" }}>
+            <div className="rr-img-duo__ph" style={{ background: "linear-gradient(135deg, #cfd3d8, #8a8f98)" }} />
+          </div>
+          <div className="rr-grain" style={{ aspectRatio: "4 / 3", background: "var(--rr-surface)", border: "1px solid var(--rr-line)" }} />
+        </div>
+        <p className="rr-meta" style={{ marginTop: 18 }}>
+          rr-img-duo--teal · rr-img-duo--navy · rr-grain (drittes Feld, ohne Bild, zeigt nur das Rauschen)
+        </p>
+      </Section>
+
       <footer className="rr-section" style={{ paddingTop: 20 }}>
         <div className="rr-wrap">
           <hr className="rr-hairline" />
@@ -1142,6 +1364,7 @@ export default function DesignSystemPage() {
       </footer>
 
       <style>{DS_CSS}</style>
+      <script dangerouslySetInnerHTML={{ __html: MAGNETIC_JS }} />
     </div>
   );
 }
@@ -1266,6 +1489,42 @@ const dsBuildCard: React.CSSProperties = {
   borderRadius: 16,
   padding: 20,
 };
+
+/* Scroll-Container fuer die rr-reveal/rr-stagger/rr-drawline-Demos:
+   animation-timeline: view() braucht keinen echten Seiten-Scroll,
+   ein eigener scrollbarer Kasten reicht (nur zur Vorschau hier). */
+const dsScrollStage: React.CSSProperties = {
+  height: 260,
+  overflowY: "auto",
+  border: "1px solid var(--rr-line)",
+  padding: 24,
+  background: "var(--rr-paper)",
+};
+
+/* P6 · Magnetic Button — max 8px Richtung Cursor, ease-out zurueck,
+   nur pointer:fine, respektiert prefers-reduced-motion. */
+const MAGNETIC_JS = `
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine = window.matchMedia("(pointer: fine)").matches;
+  if (reduced || !fine) return;
+  var els = document.querySelectorAll("[data-rr-magnetic]");
+  els.forEach(function (el) {
+    el.addEventListener("mousemove", function (e) {
+      var r = el.getBoundingClientRect();
+      var x = e.clientX - (r.left + r.width / 2);
+      var y = e.clientY - (r.top + r.height / 2);
+      var max = 8;
+      var tx = Math.max(-max, Math.min(max, x * 0.3));
+      var ty = Math.max(-max, Math.min(max, y * 0.3));
+      el.style.transform = "translate(" + tx + "px," + ty + "px)";
+    });
+    el.addEventListener("mouseleave", function () {
+      el.style.transform = "translate(0,0)";
+    });
+  });
+})();
+`;
 
 const DS_CSS = `
 .rr .ds-logo-lg { height: 120px; width: auto; display: block; }
