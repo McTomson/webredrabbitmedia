@@ -111,8 +111,13 @@ export interface WordLayout {
  * Sans Bold). Klarer Wort-Abstand zwischen "red" und "rabbit" (sonst liest es sich
  * als ein Wort "redrabbit" — ausdruecklich abgelehnt). Zentrierung ueber die echte
  * Ink-Bounding-Box (zwei Paesse), damit die Marke exakt mittig sitzt.
+ *
+ * letterFill steuert die Buchstaben-Fuellfarbe je Verwendungsort (Tomson 07.07.):
+ * Default WORD_INK fuer den Hero (Tinte auf Hell), der Footer uebergibt #ffffff
+ * (Weiss auf Navy). Der rote i-Punkt bleibt IMMER Markenrot — er leuchtet auf
+ * beiden Untergruenden.
  */
-export function buildWordLayout(fontFamily: string, F: number, dpr: number): WordLayout | null {
+export function buildWordLayout(fontFamily: string, F: number, dpr: number, letterFill: string = WORD_INK): WordLayout | null {
   const mcv = document.createElement("canvas");
   const mctx = mcv.getContext("2d")!;
   mctx.font = `600 100px ${fontFamily}`;
@@ -158,13 +163,13 @@ export function buildWordLayout(fontFamily: string, F: number, dpr: number): Wor
     // durch die Glyphen -> haessliche Splitter + Haarlinien-Sporne beim Burst.
     // Jeder Buchstabe ist EINE saubere Glyphe (ein Voll-Feld-Clip) in Tinte.
     // AUSNAHME i (Variante C+F 07.07.): zwei Teile am selben Buchstaben-Index —
-    // Punkt (rot, oberes Clip-Rechteck) + Stamm (Tinte, unteres) -> der rote
+    // Punkt (rot, oberes Clip-Rechteck) + Stamm (letterFill, unteres) -> der rote
     // Punkt fliegt im Morph als eigenes kleines Teil mit (zitiert das Hasen-Auge).
     if (ch === "i") {
-      if (!emit("i", [[0, 0, 120, I_SPLIT]], DOT_RED)) return null;              // Punkt = rot
-      if (!emit("i", [[0, I_SPLIT, 120, 140 - I_SPLIT]], WORD_INK)) return null; // Stamm = Tinte
+      if (!emit("i", [[0, 0, 120, I_SPLIT]], DOT_RED)) return null;                // Punkt = rot (immer)
+      if (!emit("i", [[0, I_SPLIT, 120, 140 - I_SPLIT]], letterFill)) return null; // Stamm = letterFill
     } else {
-      if (!emit(ch, [[0, 0, 120, 140]], WORD_INK)) return null;
+      if (!emit(ch, [[0, 0, 120, 140]], letterFill)) return null;
     }
     adv += advOf(ch);
     li++;

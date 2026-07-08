@@ -78,13 +78,14 @@ export default function FooterReassembly() {
       // Breite koppeln, sonst clippt overflow:hidden die Randbuchstaben (Fix 06.07.:
       // 13vw-Floor 88px ergab ~491px @390px vs. 342px Container). F fuellt die Breite
       // bis max 210px (Desktop-Kappung); Wort-Vorschub bei 100px messen = gleiche
-      // Metrik wie buildWordLayout (SPACE_EM 0.9), Ink-BBox ist etwas schmaler -> safe.
+      // Metrik wie buildWordLayout (Gewicht 600, SPACE_EM 0.18 seit Variante C
+      // 07.07.), Ink-BBox ist etwas schmaler -> safe.
       const HPAD = 24, SAFE = 20; // .rr-foot-word padding + Sicherheitsrand pro Seite
       const avail = window.innerWidth - 2 * (HPAD + SAFE);
       const mc = document.createElement("canvas").getContext("2d")!;
-      mc.font = `700 100px ${fam}`;
+      mc.font = `600 100px ${fam}`;
       const adv100 = [..."red rabbit"].reduce(
-        (s, ch) => s + (ch === " " ? 0.9 * 100 : mc.measureText(ch).width), 0
+        (s, ch) => s + (ch === " " ? 0.18 * 100 : mc.measureText(ch).width), 0
       );
       // Wunschgroesse unveraendert (all-turtles-Massstab), aber nie breiter als der
       // Platz: Ffit ist die Breite, bei der die Marke exakt passt -> min() greift nur
@@ -92,8 +93,10 @@ export default function FooterReassembly() {
       const desiredF = Math.min(128, Math.max(56, window.innerWidth * 0.092)); // Tomson 06.07.: kleiner (war 13vw/210)
       const Ffit = adv100 > 0 ? (avail / adv100) * 100 : desiredF;
       const F = Math.min(desiredF, Ffit);
-      const l = buildWordLayout(fam, F, window.devicePixelRatio || 1);
-      if (!l || l.pieces.length < 10) return false;
+      // Weisse Buchstaben auf dem Navy-Footer (Variante C 07.07.: Default WORD_INK
+      // waere Tinte-auf-Navy = fast unsichtbar). Der rote i-Punkt bleibt fix rot.
+      const l = buildWordLayout(fam, F, window.devicePixelRatio || 1, "#ffffff");
+      if (!l || l.pieces.length < 6) return false; // ganze Buchstaben = 9 Teile (war 18 Fragmente)
       layout = l;
       box.style.width = `${l.boxW}px`;
       box.style.height = `${l.boxH}px`;
@@ -265,7 +268,9 @@ const FOOT_CSS = `
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: clamp(72px, 15vh, 168px) 24px clamp(48px, 9vh, 104px);
+  /* Luxus-Abstaende (Tomson 07.07.): die Riesen-Wortmarke soll frei schweben,
+     nicht eingeklemmt. Mehr Luft oben/unten; mobil proportional kleiner (Floor). */
+  padding: clamp(110px, 20vh, 240px) 24px clamp(80px, 14vh, 170px);
 }
 .rr .rr-foot-inner {
   max-width: var(--rr-max);
@@ -276,7 +281,7 @@ const FOOT_CSS = `
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
   gap: clamp(36px, 4vw, 72px);
-  padding-top: clamp(48px, 7vh, 88px);
+  padding-top: clamp(64px, 9vh, 120px);
   border-top: 1px solid rgba(255,255,255,0.12);
 }
 .rr .rr-foot-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
