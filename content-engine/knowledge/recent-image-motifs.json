@@ -1,5 +1,6 @@
 {
   "heroes": [
+    "A friendly Austrian small-business owner, a woman in her mid-forties, holding her smartphone up in one hand while ticking off items on a small paper checklist with a pen in the other hand, calmly verifying her company website against a list of quality criteria, proud and focused expression, upper body only, soft natural daylight on her face and hands, no text, no logos",
     "A friendly Austrian web consultant, a woman in her early thirties, holding up two printed website homepage mockups side by side, one in each hand, looking at the viewer with an open helpful expression as if inviting a comparison between two options, upper body only, soft natural daylight on her face and hands, no text, no logos",
     "A small-business owner in their late forties looking thoughtfully at the wristwatch on their slightly raised wrist while cradling a slim folder of project documents against their chest with the other arm, quietly weighing how much of their own time a website project will demand, calm and focused expression, foreground subject only, soft natural daylight on face and hands, no text, no logos",
     "Close-up of two hands turning over a small blank hanging wooden shop-door sign placard with no lettering on it, the deliberate gesture of flipping a shop from closed to open, symbolizing a website going live like unlocking a business for the first time, foreground subject only, soft natural light on the hands and sign, no text rendering, no logos",
@@ -10,11 +11,9 @@
     "A steaming plate of Wiener Schnitzel with a slice of lemon being photographed from above by a smartphone held in two hands, the phone screen showing the dish framed for a restaurant website, warm appetizing food in sharp focus, foreground subject only, no text",
     "A close-up of a frustrated developer's hands gripping the sides of a laptop displaying a completely blank white screen with a tiny spinning loading indicator in the center, the screen glow reflecting in the worried eyes barely visible at the top edge of the frame, conveying the agony of a slow broken website, foreground subject only, no text",
     "Close-up of two hands carefully assembling a small structure from four smooth wooden building blocks, placing the final block on top to complete it - the precise, deliberate gesture symbolizing building something step by step in the correct order, soft warm natural lighting on the hands and blocks, foreground subject only, no text",
-    "A confident female web project manager standing and holding up a printed project timeline with a clear Gantt-style bar sequence, pointing at the phases with one finger, calm professional expression, foreground subject only",
-    "A clean top-down still-life arrangement of a rolled-out architectural blueprint, a small wooden house model sitting on it, and a tablet beside them displaying a tidy website wireframe with grey placeholder blocks - the objects overlapping to symbolize building a website step by step like a house, no text or logos"
+    "A confident female web project manager standing and holding up a printed project timeline with a clear Gantt-style bar sequence, pointing at the phases with one finger, calm professional expression, foreground subject only"
   ],
   "layouts": [
-    "keypoints",
     "comparison",
     "keypoints",
     "comparison",
@@ -25,7 +24,8 @@
     "keypoints",
     "comparison",
     "keypoints",
-    "comparison"
+    "comparison",
+    "keypoints"
   ],
-  "colorCursor": 1
+  "colorCursor": 2
 }
