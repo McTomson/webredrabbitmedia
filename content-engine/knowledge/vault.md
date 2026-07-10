@@ -1553,3 +1553,30 @@ quelle: https://www.statistik.at/fileadmin/announcement/2025/10/20251016IKTU2025
 quelle_name: Statistik Austria: IKT-Einsatz in Unternehmen 2025 - Fast alle Unternehmen sind online praesent (PDF)
 geprueft_am: 2026-07-10
 recheck_nach: 2027-01-06
+
+## t38-2026-07-10-173
+cluster: 1
+keywords: eine, landingpage, wann, wird, benötigt
+aussage: Eine Landingpage ist eine eigenständige Seite mit genau EINEM Ziel (ein Formular / ein Call-to-Action) und lässt bewusst die globale Navigation weg, um Ablenkungen und 'Exit-Ramps' zu entfernen — im Gegensatz zur Homepage/Website, die informiert und mehrere Wege anbietet.
+quelle: https://blog.hubspot.com/marketing/landing-page-best-practices
+quelle_name: HubSpot Blog - Landing Page Best Practices
+geprueft_am: 2026-07-10
+recheck_nach: 2027-01-06
+
+## t38-2026-07-10-174
+cluster: 1
+keywords: eine, landingpage, wann, wird, benötigt
+aussage: Die 'Nutzererfahrung mit der Landingpage' (Landing Page Experience) ist laut Google einer der drei Bausteine des Google-Ads-Qualitätsfaktors und misst, wie relevant und hilfreich die Zielseite für Nutzer ist, die auf die Anzeige klicken — bewertet u. a. nach Nützlichkeit/Relevanz der Inhalte, nutzerfreundlicher Navigation und Erwartungserfüllung. Das ist der offizielle Grund, warum bezahlte Kampagnen eine dedizierte Landingpage statt der Startseite brauchen.
+quelle: https://support.google.com/google-ads/answer/6167118?hl=de
+quelle_name: Google Ads-Hilfe - Qualitätsfaktor für Suchkampagnen
+geprueft_am: 2026-07-10
+recheck_nach: 2027-01-06
+
+## t38-2026-07-10-175
+cluster: 1
+keywords: eine, landingpage, wann, wird, benötigt
+aussage: Die mittlere (Median-)Conversion-Rate von Landingpages liegt über alle Branchen bei 6,6 %, basierend auf realen Daten von über 41.000 Landingpages und 57 Mio. Conversions; nach Branche schwankt der Median zwischen 3,8 % (SaaS) und über 12 %. Das zeigt, warum fokussierte Landingpages messbar besser konvertieren als allgemeine Website-Seiten.
+quelle: https://unbounce.com/landing-pages/whats-a-good-conversion-rate/
+quelle_name: Unbounce - Conversion Benchmark Report
+geprueft_am: 2026-07-10
+recheck_nach: 2027-01-06
