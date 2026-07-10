@@ -1508,3 +1508,48 @@ quelle: https://web.redrabbit.media/tipps/herold-webseite-vs-agentur-vergleich
 quelle_name: Red Rabbit Media - Herold-Webseite vs. Agentur-Vergleich
 geprueft_am: 2026-07-08
 recheck_nach: 2027-01-04
+
+## t37-2026-07-10-168
+cluster: 1
+keywords: hebt, sich, eine, website, optisch, inhaltlich, konkurrenz
+aussage: Nutzer bilden sich ihr erstes aesthetisches Urteil ueber eine Website in rund 50 Millisekunden; als besonders ansprechend gelten dabei Seiten mit niedriger visueller Komplexitaet (aufgeraeumt statt ueberladen) und hoher Prototypikalitaet (vertraut fuer ihre Kategorie). Optische Differenzierung heisst also nicht 'mehr Effekte', sondern klare, konventionsnahe Gestaltung, die sofort Vertrauen ausloest.
+quelle: https://research.google.com/pubs/archive/38315.pdf
+quelle_name: Google Research / University of Basel: The Role of Visual Complexity and Prototypicality Regarding First Impression of Websites (PDF, research.google)
+geprueft_am: 2026-07-10
+recheck_nach: 2027-01-06
+
+## t37-2026-07-10-169
+cluster: 1
+keywords: hebt, sich, eine, website, optisch, inhaltlich, konkurrenz
+aussage: Laut der Stanford Web Credibility Study bewerten 46,1 % der Nutzer die Glaubwuerdigkeit einer Website zumindest teilweise anhand des optischen Gesamtdesigns (Layout, Typografie, Schriftgroesse, Farbschema); Tippfehler schaden der Glaubwuerdigkeit etwa so stark wie rechtliche oder finanzielle Probleme des Unternehmens. Design und saubere Inhalte sind damit direkte Vertrauensfaktoren, nicht Kosmetik.
+quelle: https://credibility.stanford.edu/pdf/Stanford-MakovskyWebCredStudy2002-prelim.pdf
+quelle_name: Stanford-Makovsky Web Credibility Study (Stanford Persuasive Technology Lab, PDF)
+geprueft_am: 2026-07-10
+recheck_nach: 2027-01-06
+
+## t37-2026-07-10-170
+cluster: 1
+keywords: hebt, sich, eine, website, optisch, inhaltlich, konkurrenz
+aussage: Google-Analysen zeigen: Die Absprungwahrscheinlichkeit steigt um 32 %, wenn die Ladezeit von 1 auf 3 Sekunden waechst. Technische Performance (Core Web Vitals) ist damit ein messbarer Wettbewerbsvorteil, den ein optisch schoenes, aber langsames Konkurrenzprodukt nicht bietet.
+quelle: https://www.seobility.net/en/blog/core-web-vitals/
+quelle_name: Seobility, Core Web Vitals (zitiert Google-Studie)
+geprueft_am: 2026-07-10
+recheck_nach: 2027-01-06
+
+## t37-2026-07-10-171
+cluster: 1
+keywords: hebt, sich, eine, website, optisch, inhaltlich, konkurrenz
+aussage: Google belohnt in seinen offiziellen Richtlinien 'people-first', originalen Content mit nachweisbarer Erfahrung, Expertise, Autoritaet und Vertrauen (E-E-A-T, Vertrauen ist der wichtigste Faktor). Inhalte, die nur wiederholen, was ohnehin schon ueberall steht, werden abgewertet. Inhaltliche Differenzierung entsteht also durch eigene Erfahrung, Daten und Substanz statt durch nachgeahmte Standardtexte.
+quelle: https://developers.google.com/search/docs/fundamentals/creating-helpful-content
+quelle_name: Google Search Central: Creating Helpful, Reliable, People-First Content
+geprueft_am: 2026-07-10
+recheck_nach: 2027-01-06
+
+## t37-2026-07-10-172
+cluster: 1
+keywords: hebt, sich, eine, website, optisch, inhaltlich, konkurrenz
+aussage: 92 % aller oesterreichischen Unternehmen (ab 10 Beschaeftigten) haben 2025 eine eigene Website. Eine Website an sich ist damit kein Unterscheidungsmerkmal mehr; die Abhebung von der Konkurrenz muss ueber Gestaltungsqualitaet, Geschwindigkeit und Inhalt erfolgen.
+quelle: https://www.statistik.at/fileadmin/announcement/2025/10/20251016IKTU2025.pdf
+quelle_name: Statistik Austria: IKT-Einsatz in Unternehmen 2025 - Fast alle Unternehmen sind online praesent (PDF)
+geprueft_am: 2026-07-10
+recheck_nach: 2027-01-06
