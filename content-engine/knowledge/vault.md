@@ -1580,3 +1580,48 @@ quelle: https://unbounce.com/landing-pages/whats-a-good-conversion-rate/
 quelle_name: Unbounce - Conversion Benchmark Report
 geprueft_am: 2026-07-10
 recheck_nach: 2027-01-06
+
+## t39-2026-07-12-176
+cluster: 1
+keywords: wird, erfolg, einer, neuen, website, messbar, gemacht
+aussage: Google Search Console misst Website-Sichtbarkeit ueber vier zentrale Kennzahlen im Leistungsbericht: Impressionen (wie oft ein Link in den Google-Suchergebnissen erschienen ist), Klicks, durchschnittliche Position und CTR (Klickrate = Klicks/Impressionen). Das ist die offizielle, kostenlose Basis-Messgroesse fuer organische Sichtbarkeit einer neuen Website.
+quelle: https://support.google.com/webmasters/answer/7042828?hl=de
+quelle_name: Google Search Console Hilfe - Was sind Impressionen, Position und Klicks?
+geprueft_am: 2026-07-12
+recheck_nach: 2027-01-08
+
+## t39-2026-07-12-177
+cluster: 1
+keywords: wird, erfolg, einer, neuen, website, messbar, gemacht
+aussage: Google definiert eine Conversion (Zielabschluss) als aus einem Analytics-Event abgeleitete, konsistente Messgroesse fuer wichtige Nutzeraktionen (z.B. Kontaktformular, Anruf-Klick, Terminbuchung) - der zentrale KPI, um zu pruefen, ob eine Website tatsaechlich Anfragen/Kunden generiert statt nur Besucher zaehlt.
+quelle: https://support.google.com/analytics/answer/9356034?hl=de
+quelle_name: [GA4] Conversion - Google Analytics Hilfe
+geprueft_am: 2026-07-12
+recheck_nach: 2027-01-08
+
+## t39-2026-07-12-178
+cluster: 1
+keywords: wird, erfolg, einer, neuen, website, messbar, gemacht
+aussage: Die globale durchschnittliche Website-Conversion-Rate liegt 2026 branchenuebergreifend bei etwa 2-3% (Mittelwert ca. 2,35%); die besten 10% der Websites erreichen 11,45% oder mehr. Das liefert einen konkreten Vergleichsmassstab, ab wann eine neue Website als 'erfolgreich' gelten kann.
+quelle: https://greetnow.com/blog/website-conversion-rate-statistics
+quelle_name: Website Conversion Rate Statistics 2026 - GreetNow
+geprueft_am: 2026-07-12
+recheck_nach: 2027-01-08
+
+## t39-2026-07-12-179
+cluster: 1
+keywords: wird, erfolg, einer, neuen, website, messbar, gemacht
+aussage: Google nennt explizit drei technische Kern-KPIs fuer den Sucherfolg (Core Web Vitals): LCP unter 2,5 Sekunden, INP unter 200 ms, CLS unter 0,1 - diese technische Performance-Messung ist neben Traffic- und Conversion-Zahlen ein offizieller Erfolgsfaktor fuer neue Websites.
+quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
+quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
+geprueft_am: 2026-07-12
+recheck_nach: 2027-01-08
+
+## t39-2026-07-12-180
+cluster: 1
+keywords: wird, erfolg, einer, neuen, website, messbar, gemacht
+aussage: Zwischen mobilem und Desktop-Traffic besteht eine deutliche Conversion-Luecke: Desktop-Nutzer konvertieren im Schnitt mit rund 5,06%, mobile Nutzer nur mit rund 2,49% - obwohl Mobile ueber 60% des gesamten Website-Traffics ausmacht. Erfolgsmessung einer neuen Website muss deshalb nach Geraet aufgeschluesselt werden.
+quelle: https://greetnow.com/blog/website-conversion-rate-statistics
+quelle_name: Website Conversion Rate Statistics 2026 - GreetNow
+geprueft_am: 2026-07-12
+recheck_nach: 2027-01-08
