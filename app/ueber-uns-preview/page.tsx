@@ -24,43 +24,16 @@ export const metadata: Metadata = {
  */
 export default function UeberUnsPreviewPage() {
   return (
-    <div className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}>
+    <div className={`rr uup-page ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}>
       <RelaunchMenu />
 
       <main>
-        {/* 1 · AUFTAKT — Wort-Zerfall + Serif-Reveal */}
+        {/* 1 · AUFTAKT (K95-Muster) — randabschneidender Titel + echter Intro-
+            Text im Hero (Tomson 12.07.), danach Buchstaben-Zerfall. Die fruehere
+            separate Intro-Sektion ist in den Hero gewandert. */}
         <AboutHero />
 
-        {/* 2 · INTRO-PROSA */}
-        <section className="rr-section uup-intro">
-          <div className="rr-wrap">
-            <Reveal>
-              <p className="rr-eyebrow">Über Red Rabbit Media</p>
-              <p className="uup-intro__lede">
-                Wir holen Betriebe aus der digitalen Unsichtbarkeit. Persönlich,
-                transparent, ohne Risiko.
-              </p>
-            </Reveal>
-            <Reveal className="rr-prose" stagger>
-              <p>
-                Red Rabbit Media ist eine Webdesign-Agentur aus Österreich. Wir bauen
-                Websites für den Mittelstand, für Handwerk, Gastronomie, Ärzte,
-                Kanzleien und Dienstleister, die online endlich gefunden werden wollen.
-                Kein Agentur-Sprech, keine Meeting-Marathons, keine intransparenten
-                Stundensätze.
-              </p>
-              <p>
-                Anti-Agentur heißt: Du siehst zuerst das Ergebnis. Den Entwurf bekommst
-                du ohne Vorkasse, eine Anzahlung fällt erst an, wenn du zusagst. Feste
-                Preise statt Überraschungen, ehrliche Empfehlungen statt Verkaufsshow.
-                Wir arbeiten schnell, sagen dir klar, was Sinn ergibt und was nicht, und
-                liefern eine Seite, die zu deinem Betrieb passt.
-              </p>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* 3 · FIGUREN-SZENE — Hase */}
+        {/* 3 · FIGUREN-SZENE — Hase setzt sich aus Fragmenten zusammen */}
         <AboutRabbit />
 
         {/* 4 · HALTUNGS-ANKER */}

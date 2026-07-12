@@ -62,7 +62,6 @@ export default function HaltungAnchor() {
             <li key={s} className="uup-haltung__item">
               <span className="uup-haltung__num" aria-hidden="true" />
               <p className="uup-haltung__stmt">{s}</p>
-              <div className="uup-haltung__rule" aria-hidden="true" />
             </li>
           ))}
         </ul>

@@ -1,9 +1,21 @@
 /* ============================================================
    /ueber-uns-preview — seiten-eigenes CSS (Standard-Unterseiten-Blaupause)
+   Umbau 12.07. nach Tomson-Feedback + QA (K95-Muster).
    Nur Tokens aus styleguide.css (.rr-Scope), keine harten Werte ausser
    dem bekannten Navy-Literal. Alles Bewegte laeuft ueber transform/opacity.
    Prefix uup- = "ueber-uns-preview". Aendert NICHT styleguide.css.
    ============================================================ */
+
+/* ---- Legacy-Chrome-Isolation ----
+   Der alte Site-Header/-Footer (components/Header.tsx / Footer.tsx) wird vom
+   Root-Layout als DIREKTES body-Kind gerendert (verifiziert im DOM 12.07.:
+   body > header.fixed..., body > footer.bg-gray-900...). Die Pfad-Logik dort
+   ist fremder Code (dirty) -> Ausblendung hier, streng gescoped: greift NUR,
+   solange unsere Seite (.uup-page) im DOM steht. Andere Routen unberuehrt. */
+body:has(.uup-page) > header,
+body:has(.uup-page) > footer {
+  display: none !important;
+}
 
 /* Screenreader-only (h1-Text bleibt echter, zusammenhaengender SSR-Text) */
 .rr .uup-sr {
@@ -43,79 +55,94 @@
 .rr .uup-reveal-stagger.is-in > *:nth-child(4) { transition-delay: 270ms; }
 
 /* ============================================================
-   1 · AUFTAKT — Wort steht, zerfaellt, Serif-Zeile blendet ein
+   1 · AUFTAKT (K95-Muster) — randabschneidender Titel, Intro-Text,
+   danach Zerfall nach oben/aussen. Off-White-Grund.
    ============================================================ */
 .rr .uup-hero-track {
   position: relative;
-  height: 200vh;
+  height: 320vh;
 }
 .rr .uup-hero-sticky {
   position: sticky;
   top: 0;
   height: 100vh;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: #f6f5f1;
 }
-.rr .uup-hero-stage {
-  position: relative;
-  width: 100%;
-  max-width: var(--rr-max);
-  padding: 0 var(--rr-gutter);
-  text-align: center;
-}
+/* Titel: bewusst BREITER als der Viewport (27vw nowrap), zentriert ->
+   beide Enden werden vom overflow:hidden angeschnitten (K95/Logo-Anschnitt). */
 .rr .uup-hero-word {
+  position: absolute;
+  top: 34vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-family: var(--rr-font-display);
   font-weight: 700;
-  font-size: clamp(66px, 15vw, 224px);
+  font-size: 27vw;
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: var(--rr-ink);
   margin: 0;
-}
-.rr .uup-hero-letters {
-  display: inline-block;
   white-space: nowrap;
 }
+.rr .uup-hero-letters { display: inline-block; white-space: nowrap; }
 .rr .uup-hero-letter {
   display: inline-block;
-  will-change: transform;
+  will-change: transform, opacity;
 }
-.rr .uup-hero-letter--space { width: 0.28em; }
-.rr .uup-hero-dot { color: var(--rr-red); }
-.rr .uup-hero-serif {
+.rr .uup-hero-letter--space { width: 0.24em; }
+/* Roter Punkt-Akzent: eigenstaendiges Element (der Schlusspunkt eines
+   angeschnittenen Titels laege ausserhalb des Viewports). */
+.rr .uup-hero-dot {
+  position: absolute;
+  right: 9vw;
+  top: 44vh;
+  width: clamp(18px, 2.6vw, 44px);
+  height: clamp(18px, 2.6vw, 44px);
+  border-radius: 50%;
+  background: var(--rr-red);
+  will-change: transform, opacity;
+}
+/* Intro-Zone unten: hier fliegt NIE ein Buchstabe hin (Exclusion-Zone). */
+.rr .uup-hero-intro {
+  position: absolute;
+  left: var(--rr-gutter);
+  right: var(--rr-gutter);
+  bottom: 9vh;
+  max-width: 660px;
+}
+.rr .uup-hero-lede {
   font-family: var(--rr-font-serif);
   font-weight: 500;
-  font-size: var(--rr-fs-claim);
+  font-size: clamp(24px, 2.6vw, 38px);
   line-height: 1.15;
   letter-spacing: -0.01em;
   color: var(--rr-ink);
-  margin: clamp(28px, 4vh, 56px) auto 0;
-  max-width: 16em;
+  margin: 0 0 18px;
   opacity: 0;
   will-change: transform, opacity;
 }
-/* reduzierte Bewegung: alles ruhig sichtbar */
-.rr .uup-hero-reduced .uup-hero-serif { opacity: 1; }
-
-/* ============================================================
-   2 · INTRO-PROSA
-   ============================================================ */
-.rr .uup-intro .rr-eyebrow { margin-bottom: 20px; }
-.rr .uup-intro__lede {
-  font-family: var(--rr-font-serif);
-  font-weight: 500;
-  font-size: var(--rr-fs-sub);
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+.rr .uup-hero-p {
+  font-family: var(--rr-font-ui);
+  font-size: clamp(15px, 1.25vw, 18px);
+  line-height: 1.55;
   color: var(--rr-ink);
-  max-width: 20ch;
-  margin: 0 0 clamp(28px, 4vw, 48px);
+  max-width: 60ch;
+  margin: 0 0 14px;
+  opacity: 0;
+  will-change: transform, opacity;
 }
+/* reduzierte Bewegung: alles ruhig sichtbar, kein langer Track */
+.rr .uup-hero-reduced { height: auto; }
+.rr .uup-hero-reduced .uup-hero-sticky {
+  position: relative;
+  height: 100vh;
+}
+.rr .uup-hero-reduced .uup-hero-lede,
+.rr .uup-hero-reduced .uup-hero-p { opacity: 1; }
 
 /* ============================================================
-   3 · FIGUREN-SZENE — Hase im Weissraum, Text daneben
+   3 · FIGUREN-SZENE — Hase setzt sich aus Fragmenten zusammen
    ============================================================ */
 .rr .uup-rabbit__grid {
   display: grid;
@@ -129,17 +156,31 @@
   max-width: 340px;
   will-change: transform;
 }
-.rr .uup-rabbit__mark svg {
+.rr .uup-rabbit__mark > svg {
   display: block;
   width: 100%;
   height: auto;
 }
-.rr .uup-rabbit__text h2 {
-  margin: 0 0 22px;
+.rr .uup-rabbit__frags {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 174 / 267;
 }
+.rr .uup-rabbit__frag {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+.rr .uup-rabbit__frag svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.rr .uup-rabbit__text h2 { margin: 0 0 22px; }
 
 /* ============================================================
    4 · HALTUNGS-ANKER — Outline-Riesenwort fuellt sich rot
+   (rote Unterstriche entfernt, Tomson 12.07.)
    ============================================================ */
 .rr .uup-haltung {
   position: relative;
@@ -211,17 +252,13 @@
   color: var(--rr-ink);
   margin: 0;
 }
-.rr .uup-haltung__rule {
-  height: 2px;
-  width: 44px;
-  background: var(--rr-red);
-  margin-top: 18px;
-}
 
 /* ============================================================
    5 · FARBWELT-PANEL (Teal Testimonial) — nutzt .rr-quote
    ============================================================ */
 .rr .uup-quote__panel { max-width: 980px; margin: 0 auto; }
+/* Kontrast-Fix (QA 12.07.): Quellenangabe auf Teal heller. */
+.rr .uup-quote__panel .rr-quote__src { color: rgba(246, 245, 241, 0.85); }
 
 /* ============================================================
    6 · ABSCHLUSS-CTA — Navy-Band
@@ -277,6 +314,10 @@
    MOBILE
    ============================================================ */
 @media (max-width: 900px) {
+  .rr .uup-hero-track { height: 260vh; }
+  .rr .uup-hero-word { top: 26vh; }
+  .rr .uup-hero-dot { top: 33vh; }
+  .rr .uup-hero-intro { bottom: 7vh; }
   .rr .uup-rabbit__grid {
     grid-template-columns: 1fr;
     gap: clamp(24px, 8vw, 48px);
@@ -286,14 +327,13 @@
     grid-template-columns: 1fr;
     gap: 28px;
     max-width: 440px;
-    text-align: left;
   }
   .rr .uup-haltung__item { text-align: center; }
-  .rr .uup-haltung__rule { margin-left: auto; margin-right: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rr .uup-hero-serif { opacity: 1; }
+  .rr .uup-hero-lede,
+  .rr .uup-hero-p { opacity: 1 !important; transform: none !important; }
   .rr .uup-haltung__word--fill { clip-path: inset(0 0 0 0); }
   .rr .uup-reveal,
   .rr .uup-reveal-stagger > * { opacity: 1 !important; transform: none !important; transition: none !important; }
