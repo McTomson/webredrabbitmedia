@@ -1,71 +1,65 @@
-# Naechste Session — relaunch / Design-System — 2026-07-07
+# Naechste Session — relaunch / Unterseiten-Design — Stand 2026-07-12
 
 ## Arbeitsregeln (verbindlich)
-- Lies ZUERST alles Relevante: diesen Handoff, DESIGN.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
-- NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.
-- Erst einen Plan machen (TodoWrite), dann ausfuehren.
-- Skills + parallele Sub-Agenten nutzen wo es hilft. Fuer lange autonome Laeufe den `autonomous-runner` Agent verwenden.
-- Autonom handeln, voller Zugriff inkl. Browser — ohne fuer jeden Schritt nachzufragen (Grenze: kein Botschutz-Umgehen, keine Account-Anlage, nichts Destruktives ohne Deckung).
-- Laufend testen. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
-- Immer meine ehrliche Design-Empfehlung dazusagen (Thomas will das explizit) + Design-Skills nutzen.
+- Lies ZUERST alles Relevante: diesen Handoff, DESIGN.md (§15!), MEMORY.md. Nicht loslegen ohne Kontext.
+- NIE raten — immer verifizieren. Bei Unsicherheit fragen oder fail-closed.
+- KOMMANDANT-MODUS (Tomson-Dauerregel): Hauptagent briefet/kontrolliert NUR; Arbeit an parallele
+  Sub-Agenten (Haiku=Fleissarbeit, Sonnet=Lesen/Recherche/Browser/QA, Opus=Bau/Design). Ergebnisse
+  gegen das Briefing pruefen, was nicht passt geht ZURUECK an den Agenten bis es stimmt. Nach jeder
+  Umsetzung eine eigene QA-Runde (frische Augen). Erst dann Tomson zeigen.
+- Design-Optionen IMMER visuell zeigen (lokale HTML-Artifacts via `open <datei>`), ehrliche Empfehlung dazu.
+- Ownership: Hero-Strang besitzt components/relaunch/*, lib/relaunch/*, HomeMorph, RabbitMark, fonts.ts,
+  relaunch-preview, preise-preview. Im Working Tree liegen dessen UNCOMMITTED Aenderungen — NIE anfassen/stagen.
+  Einzeln adden, nie `git add -A`.
+- Commits enden mit: Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>. Alles nur LOKAL, nicht pushen.
+- Dev-Server: `npm run dev -- --port 9000` (haengt gelegentlich: Prozess killen + neu starten, Log pruefen).
 
-## Kontext
-Fortsetzung des **Design-System-Ausbaus** fuer web.redrabbit.media, Element fuer Element mit Thomas.
-Ich bin die **Design-System-Session** (Branch `relaunch`). Paralleler **Hero/Morph-Strang** laeuft separat
-(`NEXT_SESSION_relaunch.md`). Ownership laut `PARALLEL_design-system_2026-07-05.md`:
-- **Mir gehoeren NUR:** `app/styleguide/styleguide.css`, `app/design-system/page.tsx`, `DESIGN.md`.
-- Hero besitzt `components/relaunch/*`, `lib/relaunch/morph/*`, `HomeMorph.tsx`, `RabbitMark.tsx`, `fonts.ts`,
-  `relaunch-preview`. **NIE anfassen/committen. Nur meine 3 Dateien stagen.**
-- Commit-Ende: `Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`.
-- **Alle Design-System-Commits sind nur LOKAL, NICHT gepusht.** Letzte: `877543f` (FAQ) ← `75f2e4e` (Dropdown)
-  ← `58edc85` (Formular-Karten) ← `863c839` (Karten).
-- Dev-Server: `npm run dev -- --port 9000` → Abnahme-Seite `http://localhost:9000/design-system`.
+## WO WIR STEHEN
+Design-System ist FERTIG ENTSCHIEDEN und umgesetzt (Commit 5ac321c, DESIGN.md §8-§15):
+Eckig-Gesetz, eine Button-Sprache (sweep=Primaer, frame=Sekundaer, eckige Solid), Schatten-Rollen,
+rr-reveal, Testimonial (echte Reviews: 5,0 / 3 Rezensionen), Tags, Reftable, Prose, Premium-Layer P1-P7
+(Kinetik, Outline-Fill, Bild-Zerlegung, Drawline, Blocktext, Magnetic, Duotone+Grain), P8 Cursor abgelehnt.
+3-Welten-Konzept fuer Spezialseiten + Flow-Video-Specs stehen in DESIGN.md §15.
+Stilname: "Kinetische Typo-Collage" (alles Typografie, Scroll=Zeitachse, Flaechen, eckig, Rot einziger Akzent).
 
-## Der Arbeits-Loop (bewaehrt)
-1. Neues Element → **3–5 Vorschlaege** als lokales HTML-Artifact, mit `open <datei>` in Thomas' Browser zeigen
-   (er findet publizierte Artifacts nicht; `open` ist zuverlaessig).
-   Artifact-Bau: `printf '<!doctype html>...<meta charset="utf-8">...' > x.html` **(charset PFLICHT, sonst Umlaut-Mojibake)**
-   → `head -n 280 scratchpad/buttons-vergleich.html >> x.html` (Font-Head DM Sans/Crimson/Instrument + Tokens)
-   → `_snippet.html`-Body anhaengen. Verifizieren via `agent-browser open ... && screenshot --full`.
-2. Thomas entscheidet → in `styleguide.css` (`.rr`-Scope, Tokens) + `page.tsx` (neue `<Section>`) + `DESIGN.md`
-   (nummerierter Abschnitt) einbauen. `tsc --noEmit` + `eslint <datei>` gruen. Commit nur meiner 3 Dateien.
+## WAS SCHIEFGING (WICHTIGSTE INFO)
+Die ersten ECHTEN Unterseiten-Umsetzungen (/ueber-uns-preview, Commits 7778aaf + 43a7558) hat Tomson
+BEIDE ALS KATASTROPHE VERWORFEN — trotz technisch gruener QA. Die Route + Dateien
+(app/ueber-uns-preview/**, components/subpages/**) bleiben im Repo als ABGELEHNTER Entwurf: NICHT als
+Vorlage verwenden, NICHT weiterpolieren ohne neue Richtungs-Abnahme. Die HTML-Boards davor
+(scratchpad/erlebnis-board.html, aufbau-board.html, hero-board-v3.html) fand er BESSER als die Umsetzung.
+Lektion: die Uebersetzung Board->Repo verlor die Qualitaet (Politur, Timing, Raumgefuehl).
 
-## STIL-ANKER (WICHTIG — Thomas-Korrektur 07.07: „orientier dich am SEITENSTIL, nicht am Button")
-Echte Seite (`relaunch-preview`) = **Farbwelt-Panels**, gemessen/verifiziert (nicht raten):
-- Tokens: `--rr-world-1-bg #1d8c98` (Teal), `--rr-world-2-bg #2d2d2d` (Anthrazit), `--rr-world-3-bg #0a8aba` (Blau).
-  Off-White Text `#f6f5f1`. Navy `--rr-navy #1c2837`. Rot `#f12032` = einziger Akzent.
-- Riesige **DM Sans**-Headlines (bis 120px), **Crimson Pro** fuer Serif-Statement-Momente, kleine rote Eyebrows.
-  Alles eckig (radius 0), reichlich Weissraum.
+## WIE ES WEITERGEHEN SOLL (Empfehlung)
+1. NICHT sofort wieder bauen. Erst mit Tomson die Ziel-Optik festnageln: Referenzen LIVE zeigen
+   (k95.it/studio war die recherchierte Blaupause: angeschnittener Riesen-Titel + Fragment-Assembly;
+   charmerstudio.com/studio fuer den ruhigen Mittelteil) und fragen, was GENAU er davon will.
+2. Dann ein STANDBILD/Comp der Seite abnehmen lassen (statisch, pixelgenau, im scratchpad),
+   erst nach Standbild-Freigabe animieren (dieselbe Lehre wie beim Klick-Gate-Hero am 07.07).
+3. Erst danach Repo-Umsetzung, mit QA + Kommandant-Kontrolle gegen das abgenommene Standbild.
 
-## ERLEDIGT & im System (Details DESIGN.md §8–§14)
-- **Buttons** `rr-btn-sweep` + `rr-btn-frame` (§8, Sektion 13)
-- **Karten** `rr-card-slide/-layer/-focus-row/-book` (§10, Sektion 15, `863c839`)
-- **Formular-Karten** `rr-formcard-neu` (Neumorph ECKIG, Submit `rr-btn-frame--red--fill`) + `rr-formcard-split` (§11, Sektion 16, `58edc85`)
-- **Dropdown** `rr-select` jetzt eckig=Standard + `rr-select-frame` (Eck-Rahmen schliesst vollen roten Rahmen ohne Luecken)=Akzent (§12, Sektion 04c, `75f2e4e`)
-- **FAQ** `rr-faq--panel` / `--editorial` / `--chat` (natives `<details>` + grid-rows-Reveal) (§13, Sektion 17, `877543f`)
-- **Verworfen** (getestet, Prototypen in scratchpad, NICHT ins System): animiertes Faecher-System + durchblaetterbarer
-  Karten-Stapel (aus Thomas-React-Vorlagen adaptiert) — nicht scannbar fuer lange FAQ.
-- **Entscheidungs-Status:** DESIGN.md §14.
+## Einigungen die BLEIBEN (von Tomson bestaetigt)
+- Off-White ist die Buehne der Standard-Unterseiten, Farbwelt-Panels nur als je EIN Akzent pro Seite.
+- Echter Intro-Text frueh auf der Seite (SEO: SSR-Text, h1).
+- Scroll-Kopplung (vor/zurueck) ueberall, wie die Hauptseite.
+- Figuren: NUR die echten Assets (lib/relaunch/morph/at-shapes-comp*.json, kuenstlerische Typo-Collagen)
+  thematisch passend einsetzen; selbstgebaute Ersatz-Figuren wirken als Stilbruch (Tomson-Urteil).
+- Punkt-Reise-Konzept (roter Punkt = Reise des Besuchers, faellt von der Schrift, wandert NUR beim
+  Scrollen, ruht an 4-5 Stationen, landet im CTA) ist als Idee ANGENOMMEN, Umsetzung offen.
+- Seiten-Zuteilung: Standard = Ueber uns, Kontakt, FAQ + 4 Leistungs-Detailseiten (Tipps/Artikel eigen);
+  Spezial = Leistungen-Uebersicht (Teal), Referenzen (Anthrazit, phantom.land-Kugel + Bild-Zerlegung),
+  Preise (Blau, Paket-Snap, evtl. HORIZONTAL wie rabenrifaie.com — Tomson AKTIV erinnern!).
+  Flow-Videos NUR fuer die 3 Spezialseiten (Specs in DESIGN.md §15).
 
-## OFFEN — HIER WEITERMACHEN
-1. **Zahlen-/Stat-Boxen: 5 Vorschlaege SIND GEZEIGT, noch NICHT entschieden.** Artifact `scratchpad/stats.html`
-   (A Panel-Band / B Editorial-Split / C Bento / D Hairline-Reihe / E Ticker-Bar, mit Count-up). Meine Empfehlung:
-   **A · Panel-Band** (Startseite), B fuer narrative Stellen. → Thomas' Entscheidung + **echte Zahlen** einholen
-   (315+ Kunden = Platzhalter! nur 790 € und 9 Bundeslaender sind real; Kundenzahl + Reaktionszeit muss Thomas
-   liefern — **erfundene Zahlen verboten**, Rating-Ehrlichkeit-Regel). Dann als `rr-stats` einbauen.
-2. **Danach:** Testimonial/Zitat (**nur echte Google-Reviews mit Namen**), Badges/Tags, Kunden-Logo-Leiste.
-3. **Ganz offen:** Fragment-/Mechanik-Karte (Zahnraeder) aus Karten-Runde 3 — geparkt.
+## Nuetzliche Recherche-Ergebnisse (liegen im Verlauf/Scratchpad)
+- Awwwards-About-Blaupause: k95.it/studio (Screenshots in Session-Scratchpad aboutus/).
+- Legacy-Header-Mechanik: components/Header.tsx:34 + Footer.tsx:19 = Pathname-Blockliste;
+  /ueber-uns-preview ist NICHT drin; Workaround body:has(.uup-page) in ueber-uns.css existiert.
+- Morph-Wiederverwendung: grammar.ts/sampleTimeline/atTimeline importierbar; neue Figuren = Datenarbeit
+  ohne Workflow (nicht empfohlen); buildWordLayout kann beliebige Woerter fragmentieren.
 
-## Merken / Trigger
-- **PREISSEITE:** Sobald wir zur Preisseite kommen, Thomas AKTIV erinnern: er will sie evtl. **horizontal
-  (seitwaerts scrollen)** wie `https://www.rabenrifaie.com/`. (Memory `project_redrabbit_preisseite_horizontal`.)
-- **Push offen:** Thomas fragen, ob `relaunch` gepusht werden soll (`git push -u origin relaunch`) fuer die
-  Vercel-Preview. Bisher alles nur lokal.
-- **Kontext/Kompakt:** Auto-Kompaktierung feuert bei ~96,7 % (1M-Modell). Nicht abschaltbar; selbst steuern mit
-  `/compact` bzw. `/clear`, `/context` zeigt den Stand. Thomas will den Zeitpunkt selbst bestimmen.
-
-## Fallstricke
-- `/design-system` **resetet Scroll auf 0** (Morph-Route) → agent-browser Viewport-/Element-Screenshots oft leer.
-  Verifizieren via `tsc` + DOM-Check (`agent-browser eval`) + Computed-Style + notfalls Standalone-Mini-Render.
-- CSS-Custom-Property als Inline-Style in JSX: `style={{ ["--tx" as string]: "150px" }}` (tsc-sauber).
-- Native `<details>` in der Server-Component ist ok (KEINE Event-Handler an Server-Component-Props → sonst 500).
+## Offen ausserdem
+- Stat-Boxen final einbauen (entschieden A Panel-Band sinngemaess; echte Zahlen: 5,0/3 Rezensionen,
+  790 Euro, 9 Bundeslaender; Kundenzahl "315+" weiter UNBESTAETIGT).
+- Badges/Logo-Leiste sind im System (Commit 5ac321c), Kunden-Namen als Platzhalter.
+- Push-Frage (git push -u origin relaunch) weiter offen.
