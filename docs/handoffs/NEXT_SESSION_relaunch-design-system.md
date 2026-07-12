@@ -63,3 +63,8 @@ Lektion: die Uebersetzung Board->Repo verlor die Qualitaet (Politur, Timing, Rau
   790 Euro, 9 Bundeslaender; Kundenzahl "315+" weiter UNBESTAETIGT).
 - Badges/Logo-Leiste sind im System (Commit 5ac321c), Kunden-Namen als Platzhalter.
 - Push-Frage (git push -u origin relaunch) weiter offen.
+
+## Nachtrag: Re-QA-Befunde zum verworfenen Entwurf (fuer die Ursachen-Analyse)
+- Hase-"Assembly" wirkte laut QA wie normales Scroll-Reveal, NICHT wie Fragmente die zusammenfinden — deckt sich mit Tomsons Ablehnung.
+- Seite crashte im automatisierten Chrome 3x zu about:blank bei langen Scroll-/Resize-Sequenzen — Stabilitaet der rAF-/Sticky-Konstruktion pruefen, bevor je wieder etwas davon verwendet wird.
+- Mobile 390px: scrollWidth 518 > clientWidth (ueberlaufende Hero-Buchstaben ungeclippt); funktional kein Querscroll (body overflow-x hidden), aber unsauber.
