@@ -1625,3 +1625,48 @@ quelle: https://greetnow.com/blog/website-conversion-rate-statistics
 quelle_name: Website Conversion Rate Statistics 2026 - GreetNow
 geprueft_am: 2026-07-12
 recheck_nach: 2027-01-08
+
+## t40-2026-07-13-181
+cluster: 1
+keywords: eine, gute, conversion, rate, websites
+aussage: Laut First Page Sage (Report 'B2B Conversion Rates By Industry 2026', Kundendaten aus 25 B2B-Branchen) liegen die durchschnittlichen Website-Conversion-Rates (Besucher zu Lead) in den meisten B2B-Branchen zwischen ca. 1 % und 3,5 % — z. B. B2B SaaS 1,1 %, Biotech 1,8 %, Manufacturing 2,2 %, Oil & Gas 2,5 %. Werte ueber 3 % sind im B2B bereits ueberdurchschnittlich.
+quelle: https://firstpagesage.com/reports/b2b-conversion-rates-by-industry-fc
+quelle_name: First Page Sage - B2B Conversion Rates By Industry 2026
+geprueft_am: 2026-07-13
+recheck_nach: 2027-01-09
+
+## t40-2026-07-13-182
+cluster: 1
+keywords: eine, gute, conversion, rate, websites
+aussage: Der Ruler-Analytics-Benchmark-Report 2026 (ueber 5 Mio. getrackte Conversions in 13 Branchen, Conversions = Formular + Anruf + Live-Chat) zeigt eine enorme Branchenspreizung der durchschnittlichen Conversion-Rates von 1,9 % (Travel) bis 7,9 % (Legal, Automotive); B2B-lastige Segmente wie B2B Tech (ca. 1,5 %) und B2B eCommerce (ca. 1,7-2,1 %) liegen je nach Kanal am unteren Ende, B2B Services bei ca. 2,4-3,4 %. Branchenfremde Vergleiche sind daher irrefuehrend.
+quelle: https://www.ruleranalytics.com/blog/insight/conversion-rate-by-industry
+quelle_name: Ruler Analytics - Conversion Rate Benchmarks 2026
+geprueft_am: 2026-07-13
+recheck_nach: 2027-01-09
+
+## t40-2026-07-13-183
+cluster: 1
+keywords: eine, gute, conversion, rate, websites
+aussage: Als realistischer Benchmark fuer KMU-Websites in Oesterreich gilt eine Conversion-Rate von 2-5 % (Besucher zu Anfrage/Anruf); darunter ist meist Usability der groesste Hebel.
+quelle: https://webdesignland.at/website-usability-optimieren-kmu-oesterreich/
+quelle_name: Webdesignland - Website Usability KMU 2026
+geprueft_am: 2026-07-13
+recheck_nach: 2027-01-09
+
+## t40-2026-07-13-184
+cluster: 1
+keywords: eine, gute, conversion, rate, websites
+aussage: Die mittlere (Median-)Conversion-Rate fokussierter Landingpages liegt ueber alle Branchen bei 6,6 % (Basis: ueber 41.000 Landingpages, 57 Mio. Conversions), im SaaS-Segment bei 3,8 % — deutlich hoeher als ganze B2B-Websites, weil eine Landingpage nur ein Ziel und eine CTA hat. Der Vergleich Website-CR vs. Landingpage-CR ist also ein Aepfel-Birnen-Vergleich.
+quelle: https://unbounce.com/landing-pages/whats-a-good-conversion-rate/
+quelle_name: Unbounce - Conversion Benchmark Report
+geprueft_am: 2026-07-13
+recheck_nach: 2027-01-09
+
+## t40-2026-07-13-185
+cluster: 1
+keywords: eine, gute, conversion, rate, websites
+aussage: Eine Deloitte-Studie im Auftrag von Google (37 grosse europaeische und US-Markensites, ueber 30 Mio. Sessions) zeigte: schon 0,1 Sekunden schnellere mobile Ladezeit steigerte im Retail die Conversion-Rate um 8,4 % und den Bestellwert um 9,2 % — Ladezeit ist damit einer der messbarsten Hebel, um eine unterdurchschnittliche B2B-Conversion-Rate anzuheben.
+quelle: https://web.dev/case-studies/milliseconds-make-millions
+quelle_name: Deloitte / Google - Milliseconds Make Millions (web.dev Case Study)
+geprueft_am: 2026-07-13
+recheck_nach: 2027-01-09
