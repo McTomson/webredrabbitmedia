@@ -1670,3 +1670,48 @@ quelle: https://web.dev/case-studies/milliseconds-make-millions
 quelle_name: Deloitte / Google - Milliseconds Make Millions (web.dev Case Study)
 geprueft_am: 2026-07-13
 recheck_nach: 2027-01-09
+
+## t41-2026-07-14-186
+cluster: 1
+keywords: warum, verlassen, besucher, eine, website, nach, wenigen, sekunden
+aussage: Die Absprungwahrscheinlichkeit steigt mit der Ladezeit steil an: um 32 %, wenn die Seite statt 1 Sekunde 3 Sekunden laedt, und um 90 %, wenn sie 5 Sekunden braucht (Google/SOASTA-Analyse von 100 Mio. Seitenaufrufen).
+quelle: https://www.thinkwithgoogle.com/_qs/documents/2453/64237_mobile-page-speed-new-industry-benchmarks_D2QxHYw.pdf
+quelle_name: Think with Google - Milliseconds earn millions / Page load time benchmarks (Google/SOASTA 2017)
+geprueft_am: 2026-07-14
+recheck_nach: 2027-01-10
+
+## t41-2026-07-14-187
+cluster: 1
+keywords: warum, verlassen, besucher, eine, website, nach, wenigen, sekunden
+aussage: Nutzer verlassen Webseiten haeufig schon innerhalb von 10-20 Sekunden; nur wer sein Nutzenversprechen (Value Proposition) innerhalb der ersten 10 Sekunden klar kommuniziert, haelt Besucher laenger. Ueberlebt eine Seite die ersten 30 Sekunden, bleibt der Besucher oft mehrere Minuten.
+quelle: https://www.nngroup.com/articles/how-long-do-users-stay-on-web-pages/
+quelle_name: Nielsen Norman Group - How Long Do Users Stay on Web Pages? (Jakob Nielsen)
+geprueft_am: 2026-07-14
+recheck_nach: 2027-01-10
+
+## t41-2026-07-14-188
+cluster: 1
+keywords: warum, verlassen, besucher, eine, website, nach, wenigen, sekunden
+aussage: Der erste optische Eindruck entsteht in rund 50 Millisekunden (1/20 Sekunde): In drei Experimenten bewerteten Testpersonen die visuelle Attraktivitaet von Webseiten nach nur 50 ms, und dieses Urteil korrelierte hoch mit spaeteren, laengeren Betrachtungen - der erste Eindruck bleibt also haengen und entscheidet oft ueber Bleiben oder Gehen.
+quelle: https://doi.org/10.1080/01449290500330448
+quelle_name: Lindgaard, Fernandes, Dudek & Brown (2006): Attention web designers: You have 50 milliseconds to make a good first impression! (Behaviour & Information Technology 25/2)
+geprueft_am: 2026-07-14
+recheck_nach: 2027-01-10
+
+## t41-2026-07-14-189
+cluster: 1
+keywords: warum, verlassen, besucher, eine, website, nach, wenigen, sekunden
+aussage: Nach etwa 10 Sekunden ist die durchschnittliche Aufmerksamkeitsspanne erschoepft; wartet der Nutzer laenger, wandern die Gedanken ab und er verlaesst die Seite oft, statt den Ladevorgang abzuwarten. 10 Sekunden ist zugleich die Zeit, die Nutzer typischerweise einer Seite einraeumen, bevor sie sie als 'zu schlecht' abstempeln.
+quelle: https://www.nngroup.com/articles/powers-of-10-time-scales-in-ux/
+quelle_name: Nielsen Norman Group - Powers of 10: Time Scales in User Experience
+geprueft_am: 2026-07-14
+recheck_nach: 2027-01-10
+
+## t41-2026-07-14-190
+cluster: 1
+keywords: warum, verlassen, besucher, eine, website, nach, wenigen, sekunden
+aussage: In Oesterreich nutzten 2024 rund 94,9 % der 16- bis 74-Jaehrigen das Internet (bei den 16- bis 44-Jaehrigen nahezu 100 %) - der Grossteil davon mobil, was schnelle, sofort verstaendliche Seiten fuer den AT-Markt geschaeftskritisch macht.
+quelle: https://www.statistik.at/fileadmin/publications/IKT-Einsatz-in-Haushalten-2024.pdf
+quelle_name: Statistik Austria - IKT-Einsatz in Haushalten 2024
+geprueft_am: 2026-07-14
+recheck_nach: 2027-01-10
