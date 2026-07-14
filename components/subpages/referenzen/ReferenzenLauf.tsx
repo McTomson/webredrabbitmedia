@@ -21,9 +21,10 @@ import { useEffect, useRef, useState } from "react";
  * den naechstgelegenen geladenen.
  *
  * Die sieben Projekt-Karten sind echtes SSR-HTML (absolute im Track, ueber dem
- * Canvas), erscheinen im Tunnel-Abschnitt und blenden per CSS Scroll-Driven
- * Animation (animation-timeline: view()) ein/aus. Ohne view()-Support sind sie
- * statisch sichtbar (kein JS noetig).
+ * Canvas) und fliegen im Tunnel-Abschnitt per CSS Scroll-Driven Animation
+ * (animation-timeline: view()) DURCH die Kamera: klein/unscharf aus der
+ * Bildmitte -> scharfer Lese-Moment mit Seiten-Drift -> gross/unscharf am
+ * Viewport-Rand vorbei. Ohne view()-Support sind sie statisch sichtbar.
  *
  * prefers-reduced-motion: kein Scrub — statisches Frame-0-Bild, Karten und
  * Abschluss als normal gestapelte Sektionen.
@@ -40,8 +41,12 @@ type Card = {
   href: string;
   name: string;
   cat: string;
-  top: string; // vertikale Position im Track (Desktop/Mobile teilen sich den Wert)
-  side: "left" | "right";
+  top: string; // vertikale Position im Track = Zeitachse (Desktop/Mobile teilen sich den Wert)
+  side: "left" | "right"; // Drift-Richtung im Lese-Moment (steckt im Vektor, nicht in der Grundposition)
+  exitX: string; // Exit-Vektor: Karte fliegt an der Kamera vorbei Richtung Viewport-Rand/Ecke
+  exitY: string;
+  rs: string; // animation-range Start/Ende, pro Karte leicht variiert (Unregelmaessigkeit)
+  re: string;
 };
 
 const KONTAKT = "/relaunch-preview/kontakt";
@@ -53,18 +58,36 @@ const KONTAKT = "/relaunch-preview/kontakt";
 // sichtbar. Erste Karte top 450vh -> Eintritt bei Scroll 350vh = Progress 0.50
 // (Frame ~68, klar im Tunnel). Letzte Karte top 655vh -> komplett durchgelaufen
 // (~45vh Kartenhoehe) bei Scroll ~700vh = exakt Track-Ende.
+// Fly-Through (Thomas-Runde 2, Referenz ashleybrookecs.com/work): Karte startet
+// klein/unscharf nahe Bildmitte, waechst zum Lese-Moment mit Seiten-Drift,
+// fliegt dann gross/unscharf an der Kamera vorbei. Exit-Vektoren bewusst
+// UNREGELMAESSIG (links oben / links / rechts / rechts oben), ebenso die
+// animation-range (rs/re) pro Karte.
 const CARDS: Card[] = [
-  { slug: "thermewarten", href: "https://thermewarten.at", name: "Thermewarten", cat: "Thermenwartung Wien", top: "450vh", side: "left" },
-  { slug: "lashesbydanesh", href: "https://lashesbydanesh.at", name: "LashesbyDanesh", cat: "Beauty-Studio", top: "485vh", side: "right" },
-  { slug: "la-morra", href: "https://pizza-4.vercel.app", name: "Ristorante La Morra", cat: "Gastronomie", top: "520vh", side: "left" },
-  { slug: "almtal-invest", href: "https://almtal-invest.vercel.app", name: "Almtal Invest", cat: "Immobilien-Investment", top: "555vh", side: "right" },
-  { slug: "rero-heizsysteme", href: "https://heating-systems.at", name: "ReRo Heizsysteme", cat: "Heizungstechnik", top: "590vh", side: "left" },
-  { slug: "k2-dach-bau", href: "https://k2-dream-builder.vercel.app", name: "K2 Dach & Bau", cat: "Dach & Bau", top: "625vh", side: "right" },
-  { slug: "global-insights", href: "https://ruderes-insights.at", name: "Global Insights", cat: "Beratung", top: "655vh", side: "left" },
+  { slug: "thermewarten", href: "https://thermewarten.at", name: "Thermewarten", cat: "Thermenwartung Wien", top: "450vh", side: "left", exitX: "-130vw", exitY: "-45vh", rs: "2%", re: "94%" },
+  { slug: "lashesbydanesh", href: "https://lashesbydanesh.at", name: "LashesbyDanesh", cat: "Beauty-Studio", top: "485vh", side: "right", exitX: "135vw", exitY: "-12vh", rs: "5%", re: "97%" },
+  { slug: "la-morra", href: "https://pizza-4.vercel.app", name: "Ristorante La Morra", cat: "Gastronomie", top: "520vh", side: "left", exitX: "-140vw", exitY: "-8vh", rs: "0%", re: "90%" },
+  { slug: "almtal-invest", href: "https://almtal-invest.vercel.app", name: "Almtal Invest", cat: "Immobilien-Investment", top: "555vh", side: "right", exitX: "125vw", exitY: "-50vh", rs: "7%", re: "99%" },
+  { slug: "rero-heizsysteme", href: "https://heating-systems.at", name: "ReRo Heizsysteme", cat: "Heizungstechnik", top: "590vh", side: "left", exitX: "-120vw", exitY: "-28vh", rs: "3%", re: "95%" },
+  { slug: "k2-dach-bau", href: "https://k2-dream-builder.vercel.app", name: "K2 Dach & Bau", cat: "Dach & Bau", top: "625vh", side: "right", exitX: "140vw", exitY: "-38vh", rs: "1%", re: "93%" },
+  { slug: "global-insights", href: "https://ruderes-insights.at", name: "Global Insights", cat: "Beratung", top: "655vh", side: "left", exitX: "-128vw", exitY: "-18vh", rs: "6%", re: "96%" },
 ];
 
 const FRAME_COUNT = 125;
 const LAST = FRAME_COUNT - 1;
+
+// Native Frame-Groesse der Desktop-Quelle (bei 1080p-Assets NUR hier aendern;
+// die Zeichenlogik liest die echte Bitmap-Groesse, die Konstanten dienen dem
+// Poster-Cap und den width/height-Attributen).
+const FRAME_W = 1280;
+const FRAME_H = 720;
+// Schaerfe-Deckel: ein Frame darf maximal ~1.1x seiner nativen Pixelgroesse
+// (in GERAETEpixeln) gezeichnet werden — mehr Upscale = Matsch (Schaerfe-Regel
+// aus UNTERSEITEN_STIL §0, auf Canvas uebertragen).
+const MAX_UPSCALE = 1.1;
+// Alpha-Feder am Rand des scharfen Vordergrund-Layers (GERAETEpixel): das
+// scharfe Bild federt weich in den Blur-Hintergrund aus statt hart zu kanten.
+const FEATHER = 48;
 
 // Story-Beats der Quell-Sequenz: der Hase SITZT lange (Frames 0-19), erst ab
 // Frame 20 laeuft er los. Ein lineares Mapping erzeugt eine tote Zone nach dem
@@ -143,7 +166,7 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
-  const img0Ref = useRef<HTMLImageElement>(null);
+  const posterRef = useRef<HTMLDivElement>(null);
 
   const [mounted, setMounted] = useState(false);
   const [reduced, setReduced] = useState(false);
@@ -235,19 +258,113 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
       return -1;
     };
 
+    // ctx.filter-Support einmal testen (aeltere Safari: no-op -> Hintergrund
+    // wird dann scharf cover gezeichnet, kein Schaden).
+    ctx.filter = "blur(1px)";
+    const canFilter = ctx.filter === "blur(1px)";
+    ctx.filter = "none";
+
+    // Feder-Pipeline (einmal pro Groesse angelegt, bei Resize neu gebaut):
+    // Offscreen-Canvas fuer den scharfen Frame + gecachte Gradient-Maske
+    // (alpha 1 innen -> 0 aussen, FEATHER Geraetepixel an allen 4 Kanten).
+    // Pro Frame nur: clear + drawImage + destination-in mit der Maske.
+    let off: HTMLCanvasElement | null = null;
+    let offCtx: CanvasRenderingContext2D | null = null;
+    let maskC: HTMLCanvasElement | null = null;
+    let featherW = 0;
+    let featherH = 0;
+
+    const ensureFeather = (w: number, h: number): boolean => {
+      if (off && offCtx && maskC && featherW === w && featherH === h) return true;
+      off = document.createElement("canvas");
+      off.width = w;
+      off.height = h;
+      offCtx = off.getContext("2d");
+      if (!offCtx) return false;
+
+      maskC = document.createElement("canvas");
+      maskC.width = w;
+      maskC.height = h;
+      const mctx = maskC.getContext("2d");
+      if (!mctx) return false;
+
+      const fx = Math.min(FEATHER, w / 4); // Guard fuer sehr kleine Flaechen
+      const fy = Math.min(FEATHER, h / 4);
+      // Horizontaler Verlauf: transparent -> opak -> opak -> transparent ...
+      const gx = mctx.createLinearGradient(0, 0, w, 0);
+      gx.addColorStop(0, "rgba(0,0,0,0)");
+      gx.addColorStop(fx / w, "rgba(0,0,0,1)");
+      gx.addColorStop(1 - fx / w, "rgba(0,0,0,1)");
+      gx.addColorStop(1, "rgba(0,0,0,0)");
+      mctx.fillStyle = gx;
+      mctx.fillRect(0, 0, w, h);
+      // ... vertikal multipliziert (destination-in) -> Feder an allen 4 Kanten.
+      const gy = mctx.createLinearGradient(0, 0, 0, h);
+      gy.addColorStop(0, "rgba(0,0,0,0)");
+      gy.addColorStop(fy / h, "rgba(0,0,0,1)");
+      gy.addColorStop(1 - fy / h, "rgba(0,0,0,1)");
+      gy.addColorStop(1, "rgba(0,0,0,0)");
+      mctx.globalCompositeOperation = "destination-in";
+      mctx.fillStyle = gy;
+      mctx.fillRect(0, 0, w, h);
+      mctx.globalCompositeOperation = "source-over";
+
+      featherW = w;
+      featherH = h;
+      return true;
+    };
+
+    // Zwei-Ebenen-Zeichnung (Thomas-Runde 2, "pixelt / Hase zu gross"):
+    // 1) HINTERGRUND: derselbe Frame cover-fit ueber den ganzen Canvas, stark
+    //    geblurrt (28px) als Fuellung — kein hartes Letterbox.
+    // 2) VORDERGRUND: Frame zentriert mit hartem Upscale-Deckel: er darf
+    //    maximal MAX_UPSCALE (1.1x) seiner nativen Pixelgroesse in Geraete-
+    //    pixeln gezeichnet werden -> auf grossen Screens wird der Hase kleiner
+    //    UND bleibt scharf. scale = min(coverScale, 1.1). Der Rand federt per
+    //    Offscreen-Alpha-Maske weich in den Blur-Hintergrund aus (keine Kante).
+    //    (Bei 1080p-Assets waechst der scharfe Bereich automatisch mit, weil
+    //    f.w/f.h aus der echten Bitmap kommen.)
     const draw = (i: number) => {
       const idx = nearest(i);
       if (idx < 0) return;
       const f = frames[idx]!;
       const cw = canvas.width;
       const ch = canvas.height;
-      const scale = Math.max(cw / f.w, ch / f.h);
-      const dw = f.w * scale;
-      const dh = f.h * scale;
+      const cover = Math.max(cw / f.w, ch / f.h);
       ctx.clearRect(0, 0, cw, ch);
-      ctx.drawImage(f.img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
-      if (!hidPoster && img0Ref.current) {
-        img0Ref.current.style.opacity = "0";
+
+      const fgScale = Math.min(cover, MAX_UPSCALE);
+      const dw = Math.round(f.w * fgScale);
+      const dh = Math.round(f.h * fgScale);
+
+      if (fgScale < cover) {
+        // Frame fuellt den Canvas nicht -> geblurrte Cover-Kopie dahinter.
+        const bs = cover * 1.06; // leicht ueberzeichnen, damit Blur-Raender nicht einbluten
+        const bw = f.w * bs;
+        const bh = f.h * bs;
+        if (canFilter) ctx.filter = "blur(28px)";
+        ctx.drawImage(f.img, (cw - bw) / 2, (ch - bh) / 2, bw, bh);
+        if (canFilter) ctx.filter = "none";
+
+        // Scharfer Layer mit Alpha-Feder via Offscreen.
+        if (ensureFeather(dw, dh) && off && offCtx && maskC) {
+          offCtx.clearRect(0, 0, dw, dh);
+          offCtx.drawImage(f.img, 0, 0, dw, dh);
+          offCtx.globalCompositeOperation = "destination-in";
+          offCtx.drawImage(maskC, 0, 0);
+          offCtx.globalCompositeOperation = "source-over";
+          ctx.drawImage(off, (cw - dw) / 2, (ch - dh) / 2);
+        } else {
+          // Fallback ohne Offscreen: direkt zeichnen (harte Kante, aber Bild da).
+          ctx.drawImage(f.img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+        }
+      } else {
+        // Frame fuellt den Canvas komplett -> keine Kante, keine Feder noetig.
+        ctx.drawImage(f.img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+      }
+
+      if (!hidPoster && posterRef.current) {
+        posterRef.current.style.opacity = "0";
         hidPoster = true;
       }
     };
@@ -318,7 +435,7 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
         <section className="rf-static-hero" aria-labelledby="rf-h1">
           <picture className="rf-static-poster">
             <source media="(max-width: 767px)" srcSet="/relaunch/referenzen/frames/m/f-000.webp" />
-            <img src="/relaunch/referenzen/frames/d/f-000.webp" alt="Roter Hase, der den Besucher ansieht" width={1280} height={720} />
+            <img src="/relaunch/referenzen/frames/d/f-000.webp" alt="Roter Hase, der den Besucher ansieht" width={FRAME_W} height={FRAME_H} />
           </picture>
           <div className="rf-hero-text rf-static-herotext">
             <p className="rf-kicker">(Referenzen)</p>
@@ -342,23 +459,42 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
   }
 
   return (
-    <div className="rf-shell">
+    <div
+      className="rf-shell"
+      style={{
+        ["--rf-capw" as string]: `${FRAME_W * MAX_UPSCALE}px`,
+        ["--rf-caph" as string]: `${FRAME_H * MAX_UPSCALE}px`,
+      }}
+    >
       <style>{RF_CSS}</style>
 
       <div className="rf-track" ref={trackRef}>
         <div className="rf-stage">
-          {/* Frame 0 als LCP-Poster, bis der Canvas den ersten Frame zeichnet. */}
-          <picture className="rf-poster">
-            <source media="(max-width: 767px)" srcSet="/relaunch/referenzen/frames/m/f-000.webp" />
+          {/* Frame 0 als LCP-Poster, bis der Canvas den ersten Frame zeichnet.
+              Gleicher Look wie die Canvas-Zeichnung: geblurrte Cover-Kopie
+              hinten, scharfes contain-Bild mit Upscale-Deckel davor — sonst
+              springt es bei der Canvas-Uebernahme. */}
+          <div className="rf-poster" ref={posterRef}>
             <img
-              ref={img0Ref}
+              className="rf-poster__bg"
               src="/relaunch/referenzen/frames/d/f-000.webp"
-              alt="Roter Hase, der den Besucher ansieht"
-              width={1280}
-              height={720}
-              fetchPriority="high"
+              alt=""
+              aria-hidden="true"
+              width={FRAME_W}
+              height={FRAME_H}
             />
-          </picture>
+            <picture>
+              <source media="(max-width: 767px)" srcSet="/relaunch/referenzen/frames/m/f-000.webp" />
+              <img
+                className="rf-poster__fg"
+                src="/relaunch/referenzen/frames/d/f-000.webp"
+                alt="Roter Hase, der den Besucher ansieht"
+                width={FRAME_W}
+                height={FRAME_H}
+                fetchPriority="high"
+              />
+            </picture>
+          </div>
 
           <canvas ref={canvasRef} className="rf-canvas" aria-hidden="true" />
 
@@ -375,7 +511,13 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
               key={c.slug}
               className="rf-card"
               data-side={c.side}
-              style={{ ["--rf-top" as string]: c.top }}
+              style={{
+                ["--rf-top" as string]: c.top,
+                ["--rf-exit-x" as string]: c.exitX,
+                ["--rf-exit-y" as string]: c.exitY,
+                ["--rf-rs" as string]: c.rs,
+                ["--rf-re" as string]: c.re,
+              }}
             >
               <CardLink c={c} />
             </div>
@@ -400,12 +542,46 @@ const RF_CSS = `
   background: #ffffff; /* passt zu Frame 0 (heller Studiogrund), kein Flash */
   z-index: 1;
 }
-.rf-poster, .rf-poster img,
-.rf-canvas {
+.rf-poster, .rf-canvas {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
 }
-.rf-poster img { object-fit: cover; object-position: center; transition: opacity .3s var(--rr-ease); z-index: 1; }
+.rf-poster { z-index: 1; overflow: hidden; transition: opacity .3s var(--rr-ease); }
+/* Geblurrte Cover-Kopie als Fuellung (Look = Canvas-Hintergrund-Ebene) */
+.rf-poster__bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  filter: blur(28px); transform: scale(1.06);
+}
+/* Scharfes Vordergrund-Bild: contain + Upscale-Deckel wie im Canvas-draw().
+   Cap = FRAME_W * 1.1 GERAETEpixel -> in CSS-Pixeln je nach dpr geteilt. */
+.rf-poster__fg {
+  position: absolute; inset: 0; margin: auto;
+  width: auto; height: auto;
+  max-width: min(100%, var(--rf-capw, 1408px));
+  max-height: min(100%, var(--rf-caph, 792px));
+  /* Rand-Feder wie im Canvas-draw(): weich in den Blur-Hintergrund ausblenden */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent),
+    linear-gradient(to bottom, transparent, black 48px, black calc(100% - 48px), transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent),
+    linear-gradient(to bottom, transparent, black 48px, black calc(100% - 48px), transparent);
+  mask-composite: intersect;
+}
+@media (min-resolution: 1.5dppx) {
+  .rf-poster__fg {
+    max-width: min(100%, calc(var(--rf-capw, 1408px) / 2));
+    max-height: min(100%, calc(var(--rf-caph, 792px) / 2));
+  }
+}
+@media (min-resolution: 2.5dppx) {
+  .rf-poster__fg {
+    max-width: min(100%, calc(var(--rf-capw, 1408px) / 3));
+    max-height: min(100%, calc(var(--rf-caph, 792px) / 3));
+  }
+}
 .rf-canvas { display: block; z-index: 2; }
 
 /* ---- Hero-Layer (H1 + Kicker) ueber der Buehne ---- */
@@ -426,15 +602,21 @@ const RF_CSS = `
   color: var(--rr-navy); margin: 0; text-wrap: balance;
 }
 
-/* ============ Karten ============ */
+/* ============ Karten (Fly-Through mit Tiefe) ============
+   Grundposition: MITTIG im Track (Start nahe Bildmitte, wie weit hinten im
+   Tunnel). Die Seiten-Zugehoerigkeit steckt im Drift-/Exit-Vektor, nicht in
+   der Position. */
 .rf-cards { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
 .rf-card {
   position: absolute; top: var(--rf-top);
+  left: 50%;
   width: clamp(300px, 31vw, 400px);
+  margin-left: calc(clamp(300px, 31vw, 400px) / -2);
   pointer-events: none;
 }
-.rf-card[data-side="left"] { left: clamp(20px, 6vw, 96px); }
-.rf-card[data-side="right"] { right: clamp(20px, 6vw, 96px); }
+/* Lese-Moment-Drift: links ODER rechts aus der Mitte */
+.rf-card[data-side="left"]  { --rf-drift-x: -16vw; }
+.rf-card[data-side="right"] { --rf-drift-x: 16vw; }
 
 .rf-card__inner {
   display: block; pointer-events: auto;
@@ -442,10 +624,9 @@ const RF_CSS = `
   text-decoration: none;
   box-shadow: var(--rr-shadow-layer, 0 2px 4px rgba(28,40,55,.26), 0 7px 13px -3px rgba(28,40,55,.18));
   border: 1px solid var(--rr-line);
-  /* ohne view()-Support: statisch sichtbar */
+  /* ohne view()-Support: statisch sichtbar (kein Fly-Through, keine Regression) */
   opacity: 1;
-  transition: box-shadow .4s var(--rr-ease), transform .4s var(--rr-ease);
-  will-change: opacity, transform;
+  transition: box-shadow .4s var(--rr-ease);
 }
 .rf-card__inner:hover { box-shadow: 0 18px 44px rgba(28,40,55,.28); }
 .rf-card__inner:focus-visible {
@@ -482,20 +663,48 @@ const RF_CSS = `
   letter-spacing: -0.01em; color: var(--rr-ink);
 }
 
-/* Scroll-Driven Ein-/Ausblenden + Aufwaerts-Drift (nur mit Support) */
+/* Scroll-Driven Fly-Through (nur mit view()-Support):
+   klein + unscharf nahe Bildmitte -> waechst scharf in den Lese-Moment mit
+   Seiten-Drift -> fliegt gross + unscharf an der Kamera vorbei Richtung
+   Rand/Ecke (Vektor + range pro Karte via Custom Props, unregelmaessig). */
 @supports (animation-timeline: view()) {
   .rf-track .rf-card__inner {
     opacity: 0;
-    animation: rf-card-cycle linear both;
+    animation: rf-fly linear both;
     animation-timeline: view();
-    animation-range: entry 4% exit 96%;
+    animation-range: entry var(--rf-rs, 0%) exit var(--rf-re, 96%);
+    will-change: transform, opacity, filter;
   }
 }
-@keyframes rf-card-cycle {
-  0%   { opacity: 0; transform: translateY(48px); }
-  20%  { opacity: 1; transform: translateY(0); }
-  74%  { opacity: 1; transform: translateY(-6px); }
-  100% { opacity: 0; transform: translateY(-34px); }
+@keyframes rf-fly {
+  0% {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translate3d(0, 4vh, 0) scale(0.22);
+  }
+  14% {
+    opacity: 0.6;
+    filter: blur(3px);
+  }
+  38% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translate3d(var(--rf-drift-x, 0px), 0, 0) scale(0.95);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translate3d(calc(var(--rf-drift-x, 0px) * 1.35), -1vh, 0) scale(1.12);
+  }
+  84% {
+    opacity: 0.45;
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translate3d(var(--rf-exit-x, -130vw), var(--rf-exit-y, -30vh), 0) scale(2.6);
+  }
 }
 
 /* ============ Abschluss-Sektion (normaler Flow, weiss) ============ */
@@ -535,12 +744,12 @@ const RF_CSS = `
     max-width: none;
   }
   .rf-card {
-    left: 50%; right: auto;
-    transform: translateX(-50%);
     width: min(420px, 86vw);
+    margin-left: calc(min(420px, 86vw) / -2);
   }
-  .rf-card[data-side="left"],
-  .rf-card[data-side="right"] { left: 50%; right: auto; }
+  /* Mobile: weniger Seiten-Drift, sonst schiebt der Lese-Moment aus dem Bild */
+  .rf-card[data-side="left"]  { --rf-drift-x: -5vw; }
+  .rf-card[data-side="right"] { --rf-drift-x: 5vw; }
 }
 
 /* ============ Reduced-Motion: statisch gestapelt ============ */
@@ -566,7 +775,8 @@ const RF_CSS = `
 @media (prefers-reduced-motion: reduce) {
   .rf-card__inner, .rf-close__stmt {
     opacity: 1 !important; transform: none !important; animation: none !important;
+    filter: none !important;
   }
-  .rf-poster img { transition: none; }
+  .rf-poster { transition: none; }
 }
 `;

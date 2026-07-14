@@ -15,8 +15,8 @@ import "@/components/relaunch/subpages.css";
  * Grund, RelaunchMenu oben, FooterReassembly unten. Die Scrub-/Frame-Engine liegt
  * in der Client-Komponente ReferenzenLauf; H1 und Karten sind echtes SSR-HTML.
  *
- * Copy-Varianten ueber ?v=1|2|3 (Default 1) — der Dirigent zeigt sie Thomas
- * gerendert.
+ * Copy-Varianten ueber ?v=1|2|3 (Default 3, Thomas-Wahl) — der Dirigent zeigt
+ * sie Thomas gerendert.
  */
 
 const CANONICAL = "https://web.redrabbit.media/relaunch-preview/referenzen";
@@ -37,9 +37,11 @@ export const metadata: Metadata = {
   },
 };
 
-// Drei Copy-Varianten (Thomas-Vorgabe). Echte Umlaute. Das Schluss-Statement
-// wird in der Client-Komponente an der letzten Interpunktion in einen roten
-// Punkt gesplittet (einziger Akzent).
+// Drei Copy-Varianten. Echte Umlaute. Das Schluss-Statement wird in der
+// Client-Komponente an der letzten Interpunktion in einen roten Punkt
+// gesplittet (einziger Akzent).
+// DEFAULT = V3 "Komm mit. Wir zeigen dir was." (Thomas-Wahl, Feedback-Runde 2).
+// ?v=1 / ?v=2 bleiben als Vergleichsvarianten erreichbar.
 const COPY: Record<1 | 2 | 3, Copy> = {
   1: {
     h1: "Wie tief geht der Hasenbau?",
@@ -64,7 +66,7 @@ export default async function ReferenzenPreviewPage({
   searchParams: Promise<{ v?: string }>;
 }) {
   const sp = await searchParams;
-  const variant: 1 | 2 | 3 = sp.v === "2" ? 2 : sp.v === "3" ? 3 : 1;
+  const variant: 1 | 2 | 3 = sp.v === "1" ? 1 : sp.v === "2" ? 2 : 3;
 
   return (
     <div
