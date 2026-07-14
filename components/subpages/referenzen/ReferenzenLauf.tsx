@@ -10,21 +10,25 @@ import { useEffect, useRef, useState } from "react";
 /**
  * ReferenzenLauf — der scroll-gescrubte "Hasen-Lauf".
  *
- * Eine lange Scroll-Strecke (rf-track 800vh) mit einer sticky 100dvh-Buehne,
+ * Eine lange Scroll-Strecke (rf-track 1150vh) mit einer sticky 100dvh-Buehne,
  * auf der ein <canvas> eine 125-Frame-WebP-Sequenz cover-fit zeichnet. Der
- * Scroll-Fortschritt (0..1) treibt einen Ziel-Frame; ein rAF-Loop daempft den
- * aktuellen Frame weich hinterher (current += (target-current)*0.14) -> fluessig
- * wie ein Computerspiel, kein hartes Mapping. Frame 0 liegt zusaetzlich als
+ * Scroll-Fortschritt (0..1) wird im rAF-Loop gedaempft (pS += (p - pS) * 0.14)
+ * und treibt Frame UND Karten -> ein gemeinsamer Raum mit EINER Traegheit,
+ * fluessig wie ein Computerspiel. Frame 0 liegt zusaetzlich als
  * fetchpriority=high-<img> hinter dem Canvas (sofortiges LCP), bis der Canvas
  * uebernimmt. Frames werden in Wellen geladen (jeder 8., dann jeder 4., dann
  * alle) — Grob-Scrub ist sofort moeglich; noch nicht geladene Frames zeichnen
  * den naechstgelegenen geladenen.
  *
- * Die sieben Projekt-Karten sind echtes SSR-HTML (absolute im Track, ueber dem
- * Canvas) und fliegen im Tunnel-Abschnitt per CSS Scroll-Driven Animation
- * (animation-timeline: view()) DURCH die Kamera: klein/unscharf aus der
- * Bildmitte -> scharfer Lese-Moment mit Seiten-Drift -> gross/unscharf am
- * Viewport-Rand vorbei. Ohne view()-Support sind sie statisch sichtbar.
+ * Die sieben Projekt-Karten sind echtes SSR-HTML und leben AUF der Sticky-
+ * Buehne (gleiche Ebene wie der Canvas, z-index darueber): sie entstehen
+ * winzig links/rechts neben dem Hasen, wachsen mit dem gedaempften Progress
+ * in den scharfen Lese-Moment und ziehen dann gross an der Kamera vorbei.
+ * Pro Karte ein Progress-Fenster [t0,t1]; Kurven werden per JS direkt als
+ * style gesetzt (KEIN animation-timeline: view() — Buehnen-fixe Elemente
+ * haben kein eigenes Scroll-Fenster). Kein Von-unten-Einscrollen mehr.
+ * Optik zitiert rr-card-layer (DESIGN.md §10): Off-White-Flaeche, gestapelte
+ * Schatten, roter Innen-Balken unten, eckig.
  *
  * prefers-reduced-motion: kein Scrub — statisches Frame-0-Bild, Karten und
  * Abschluss als normal gestapelte Sektionen.
@@ -41,53 +45,41 @@ type Card = {
   href: string;
   name: string;
   cat: string;
-  top: string; // vertikale Position im Track = Zeitachse (Desktop/Mobile teilen sich den Wert)
-  side: "left" | "right"; // Drift-Richtung im Lese-Moment (steckt im Vektor, nicht in der Grundposition)
-  exitX: string; // Exit-Vektor: Karte fliegt an der Kamera vorbei Richtung Viewport-Rand/Ecke
-  exitY: string;
-  rs: string; // animation-range Start/Ende, pro Karte leicht variiert (Unregelmaessigkeit)
-  re: string;
+  side: "left" | "right"; // Seiten-Slot neben dem Hasen
+  cx: number; // Basis-X in % der Buehne (links ~32, rechts ~68, leicht variiert)
+  cy: number; // Basis-Y in % (~50, leicht variiert)
+  t0: number; // Progress-Fenster im Track (Tunnel-Bereich ~0.42-0.98)
+  t1: number;
+  exitX: number; // Exit-Vektor (vw): an der Kamera vorbei Richtung Rand/Ecke
+  exitY: number; // (vh)
 };
 
 const KONTAKT = "/relaunch-preview/kontakt";
 
 // Reihenfolge/Daten laut Spec. K2 bewusst als VORLETZTE Position (Position 6).
-// Karten-Positionen (Thomas-QA 14.07.): Karten erst, wenn der Hase IM Bau ist.
-// Track = 800vh -> 700vh scrollbar. Tunnel (Frame 60) liegt mit der piecewise
-// Progress->Frame-Map bei Progress ~0.43; eine Karte wird ~100vh vor ihrem top
-// sichtbar. Erste Karte top 450vh -> Eintritt bei Scroll 350vh = Progress 0.50
-// (Frame ~68, klar im Tunnel). Letzte Karte top 655vh -> komplett durchgelaufen
-// (~45vh Kartenhoehe) bei Scroll ~700vh = exakt Track-Ende.
-// Fly-Through (Thomas-Runde 2, Referenz ashleybrookecs.com/work): Karte startet
-// klein/unscharf nahe Bildmitte, waechst zum Lese-Moment mit Seiten-Drift,
-// fliegt dann gross/unscharf an der Kamera vorbei. Exit-Vektoren bewusst
-// UNREGELMAESSIG (links oben / links / rechts / rechts oben), ebenso die
-// animation-range (rs/re) pro Karte.
+// Fenster (Thomas-Runde 3): 7 Karten gestaffelt im Tunnel-Bereich, t0 von
+// 0.42 bis 0.815 (Schritt ~0.065, leicht unregelmaessig), Fensterlaenge je
+// 0.16 -> Overlap benachbarter Karten gewollt, letzte endet bei 0.975.
+// Exit-Vektoren bewusst UNREGELMAESSIG (links oben / links / rechts /
+// rechts oben). Basis-Slots nahe Bildmitte neben dem Hasen, leicht variiert.
 const CARDS: Card[] = [
-  { slug: "thermewarten", href: "https://thermewarten.at", name: "Thermewarten", cat: "Thermenwartung Wien", top: "450vh", side: "left", exitX: "-130vw", exitY: "-45vh", rs: "2%", re: "94%" },
-  { slug: "lashesbydanesh", href: "https://lashesbydanesh.at", name: "LashesbyDanesh", cat: "Beauty-Studio", top: "485vh", side: "right", exitX: "135vw", exitY: "-12vh", rs: "5%", re: "97%" },
-  { slug: "la-morra", href: "https://pizza-4.vercel.app", name: "Ristorante La Morra", cat: "Gastronomie", top: "520vh", side: "left", exitX: "-140vw", exitY: "-8vh", rs: "0%", re: "90%" },
-  { slug: "almtal-invest", href: "https://almtal-invest.vercel.app", name: "Almtal Invest", cat: "Immobilien-Investment", top: "555vh", side: "right", exitX: "125vw", exitY: "-50vh", rs: "7%", re: "99%" },
-  { slug: "rero-heizsysteme", href: "https://heating-systems.at", name: "ReRo Heizsysteme", cat: "Heizungstechnik", top: "590vh", side: "left", exitX: "-120vw", exitY: "-28vh", rs: "3%", re: "95%" },
-  { slug: "k2-dach-bau", href: "https://k2-dream-builder.vercel.app", name: "K2 Dach & Bau", cat: "Dach & Bau", top: "625vh", side: "right", exitX: "140vw", exitY: "-38vh", rs: "1%", re: "93%" },
-  { slug: "global-insights", href: "https://ruderes-insights.at", name: "Global Insights", cat: "Beratung", top: "655vh", side: "left", exitX: "-128vw", exitY: "-18vh", rs: "6%", re: "96%" },
+  { slug: "thermewarten", href: "https://thermewarten.at", name: "Thermewarten", cat: "Thermenwartung Wien", side: "left", cx: 31, cy: 48, t0: 0.42, t1: 0.58, exitX: -130, exitY: -45 },
+  { slug: "lashesbydanesh", href: "https://lashesbydanesh.at", name: "LashesbyDanesh", cat: "Beauty-Studio", side: "right", cx: 69, cy: 52, t0: 0.49, t1: 0.65, exitX: 135, exitY: -12 },
+  { slug: "la-morra", href: "https://pizza-4.vercel.app", name: "Ristorante La Morra", cat: "Gastronomie", side: "left", cx: 33, cy: 50, t0: 0.55, t1: 0.71, exitX: -140, exitY: -8 },
+  { slug: "almtal-invest", href: "https://almtal-invest.vercel.app", name: "Almtal Invest", cat: "Immobilien-Investment", side: "right", cx: 67, cy: 47, t0: 0.62, t1: 0.78, exitX: 125, exitY: -50 },
+  { slug: "rero-heizsysteme", href: "https://heating-systems.at", name: "ReRo Heizsysteme", cat: "Heizungstechnik", side: "left", cx: 30, cy: 53, t0: 0.68, t1: 0.84, exitX: -120, exitY: -28 },
+  { slug: "k2-dach-bau", href: "https://k2-dream-builder.vercel.app", name: "K2 Dach & Bau", cat: "Dach & Bau", side: "right", cx: 68, cy: 49, t0: 0.745, t1: 0.905, exitX: 140, exitY: -38 },
+  { slug: "global-insights", href: "https://ruderes-insights.at", name: "Global Insights", cat: "Beratung", side: "left", cx: 32, cy: 51, t0: 0.815, t1: 0.975, exitX: -128, exitY: -18 },
 ];
 
 const FRAME_COUNT = 125;
 const LAST = FRAME_COUNT - 1;
 
-// Native Frame-Groesse der Desktop-Quelle (bei 1080p-Assets NUR hier aendern;
-// die Zeichenlogik liest die echte Bitmap-Groesse, die Konstanten dienen dem
-// Poster-Cap und den width/height-Attributen).
-const FRAME_W = 1280;
-const FRAME_H = 720;
-// Schaerfe-Deckel: ein Frame darf maximal ~1.1x seiner nativen Pixelgroesse
-// (in GERAETEpixeln) gezeichnet werden — mehr Upscale = Matsch (Schaerfe-Regel
-// aus UNTERSEITEN_STIL §0, auf Canvas uebertragen).
-const MAX_UPSCALE = 1.1;
-// Alpha-Feder am Rand des scharfen Vordergrund-Layers (GERAETEpixel): das
-// scharfe Bild federt weich in den Blur-Hintergrund aus statt hart zu kanten.
-const FEATHER = 48;
+// Native Frame-Groesse der Desktop-Quelle. Die neuen AI-upgescalten Frames
+// kommen in 1920x1080; die Zeichenlogik liest ohnehin die echte Bitmap-
+// Groesse, die Konstanten dienen nur den Poster-width/height-Attributen.
+const FRAME_W = 1920;
+const FRAME_H = 1080;
 
 // Story-Beats der Quell-Sequenz: der Hase SITZT lange (Frames 0-19), erst ab
 // Frame 20 laeuft er los. Ein lineares Mapping erzeugt eine tote Zone nach dem
@@ -99,6 +91,19 @@ const mapProgressToFrame = (p: number): number =>
   p <= P_SIT
     ? (p / P_SIT) * SIT_LAST
     : SIT_LAST + ((p - P_SIT) / (1 - P_SIT)) * (LAST - SIT_LAST);
+
+// Stueckweise lineare Kurve: stops = [[p, wert], ...], p aufsteigend.
+const pl = (p: number, stops: [number, number][]): number => {
+  if (p <= stops[0][0]) return stops[0][1];
+  for (let i = 1; i < stops.length; i++) {
+    if (p <= stops[i][0]) {
+      const [p0, v0] = stops[i - 1];
+      const [p1, v1] = stops[i];
+      return v0 + ((p - p0) / (p1 - p0)) * (v1 - v0);
+    }
+  }
+  return stops[stops.length - 1][1];
+};
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="square" strokeLinejoin="miter" aria-hidden="true">
@@ -166,7 +171,8 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
-  const posterRef = useRef<HTMLDivElement>(null);
+  const posterRef = useRef<HTMLImageElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const [mounted, setMounted] = useState(false);
   const [reduced, setReduced] = useState(false);
@@ -180,7 +186,7 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
     return () => mq.removeEventListener?.("change", onChange);
   }, []);
 
-  // Scrub-/Frame-Engine. Laeuft nur ohne reduced-motion.
+  // Scrub-/Frame-/Karten-Engine. Laeuft nur ohne reduced-motion.
   useEffect(() => {
     if (!mounted || reduced) return;
     const canvas = canvasRef.current;
@@ -200,8 +206,7 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
     let dpr = 1;
     let needsRedraw = true;
     let lastDrawn = -1;
-    let current = 0;
-    let target = 0;
+    let pS = 0; // gedaempfter Progress (treibt Frame UND Karten)
     let hidPoster = false;
 
     const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
@@ -211,6 +216,10 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.max(1, Math.round(canvas.clientWidth * dpr));
       canvas.height = Math.max(1, Math.round(canvas.clientHeight * dpr));
+      // Groessenaenderung resettet den 2D-Kontext-State -> Smoothing hier
+      // (nach JEDEM Resize) neu setzen, nicht nur einmal beim Mount.
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
       needsRedraw = true;
     };
 
@@ -258,116 +267,65 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
       return -1;
     };
 
-    // ctx.filter-Support einmal testen (aeltere Safari: no-op -> Hintergrund
-    // wird dann scharf cover gezeichnet, kein Schaden).
-    ctx.filter = "blur(1px)";
-    const canFilter = ctx.filter === "blur(1px)";
-    ctx.filter = "none";
-
-    // Feder-Pipeline (einmal pro Groesse angelegt, bei Resize neu gebaut):
-    // Offscreen-Canvas fuer den scharfen Frame + gecachte Gradient-Maske
-    // (alpha 1 innen -> 0 aussen, FEATHER Geraetepixel an allen 4 Kanten).
-    // Pro Frame nur: clear + drawImage + destination-in mit der Maske.
-    let off: HTMLCanvasElement | null = null;
-    let offCtx: CanvasRenderingContext2D | null = null;
-    let maskC: HTMLCanvasElement | null = null;
-    let featherW = 0;
-    let featherH = 0;
-
-    const ensureFeather = (w: number, h: number): boolean => {
-      if (off && offCtx && maskC && featherW === w && featherH === h) return true;
-      off = document.createElement("canvas");
-      off.width = w;
-      off.height = h;
-      offCtx = off.getContext("2d");
-      if (!offCtx) return false;
-
-      maskC = document.createElement("canvas");
-      maskC.width = w;
-      maskC.height = h;
-      const mctx = maskC.getContext("2d");
-      if (!mctx) return false;
-
-      const fx = Math.min(FEATHER, w / 4); // Guard fuer sehr kleine Flaechen
-      const fy = Math.min(FEATHER, h / 4);
-      // Horizontaler Verlauf: transparent -> opak -> opak -> transparent ...
-      const gx = mctx.createLinearGradient(0, 0, w, 0);
-      gx.addColorStop(0, "rgba(0,0,0,0)");
-      gx.addColorStop(fx / w, "rgba(0,0,0,1)");
-      gx.addColorStop(1 - fx / w, "rgba(0,0,0,1)");
-      gx.addColorStop(1, "rgba(0,0,0,0)");
-      mctx.fillStyle = gx;
-      mctx.fillRect(0, 0, w, h);
-      // ... vertikal multipliziert (destination-in) -> Feder an allen 4 Kanten.
-      const gy = mctx.createLinearGradient(0, 0, 0, h);
-      gy.addColorStop(0, "rgba(0,0,0,0)");
-      gy.addColorStop(fy / h, "rgba(0,0,0,1)");
-      gy.addColorStop(1 - fy / h, "rgba(0,0,0,1)");
-      gy.addColorStop(1, "rgba(0,0,0,0)");
-      mctx.globalCompositeOperation = "destination-in";
-      mctx.fillStyle = gy;
-      mctx.fillRect(0, 0, w, h);
-      mctx.globalCompositeOperation = "source-over";
-
-      featherW = w;
-      featherH = h;
-      return true;
-    };
-
-    // Zwei-Ebenen-Zeichnung (Thomas-Runde 2, "pixelt / Hase zu gross"):
-    // 1) HINTERGRUND: derselbe Frame cover-fit ueber den ganzen Canvas, stark
-    //    geblurrt (28px) als Fuellung — kein hartes Letterbox.
-    // 2) VORDERGRUND: Frame zentriert mit hartem Upscale-Deckel: er darf
-    //    maximal MAX_UPSCALE (1.1x) seiner nativen Pixelgroesse in Geraete-
-    //    pixeln gezeichnet werden -> auf grossen Screens wird der Hase kleiner
-    //    UND bleibt scharf. scale = min(coverScale, 1.1). Der Rand federt per
-    //    Offscreen-Alpha-Maske weich in den Blur-Hintergrund aus (keine Kante).
-    //    (Bei 1080p-Assets waechst der scharfe Bereich automatisch mit, weil
-    //    f.w/f.h aus der echten Bitmap kommen.)
+    // Einfacher cover-fit ueber den ganzen Canvas (Vollbild). Die Schaerfe
+    // kommt aus den AI-upgescalten 1920er-Frames + imageSmoothingQuality
+    // "high" — kein Cap/Blur-Backdrop/Feder-Kruecke mehr (Thomas-Runde 3).
     const draw = (i: number) => {
       const idx = nearest(i);
       if (idx < 0) return;
       const f = frames[idx]!;
       const cw = canvas.width;
       const ch = canvas.height;
-      const cover = Math.max(cw / f.w, ch / f.h);
+      const scale = Math.max(cw / f.w, ch / f.h);
+      const dw = f.w * scale;
+      const dh = f.h * scale;
       ctx.clearRect(0, 0, cw, ch);
-
-      const fgScale = Math.min(cover, MAX_UPSCALE);
-      const dw = Math.round(f.w * fgScale);
-      const dh = Math.round(f.h * fgScale);
-
-      if (fgScale < cover) {
-        // Frame fuellt den Canvas nicht -> geblurrte Cover-Kopie dahinter.
-        const bs = cover * 1.06; // leicht ueberzeichnen, damit Blur-Raender nicht einbluten
-        const bw = f.w * bs;
-        const bh = f.h * bs;
-        if (canFilter) ctx.filter = "blur(28px)";
-        ctx.drawImage(f.img, (cw - bw) / 2, (ch - bh) / 2, bw, bh);
-        if (canFilter) ctx.filter = "none";
-
-        // Scharfer Layer mit Alpha-Feder via Offscreen.
-        if (ensureFeather(dw, dh) && off && offCtx && maskC) {
-          offCtx.clearRect(0, 0, dw, dh);
-          offCtx.drawImage(f.img, 0, 0, dw, dh);
-          offCtx.globalCompositeOperation = "destination-in";
-          offCtx.drawImage(maskC, 0, 0);
-          offCtx.globalCompositeOperation = "source-over";
-          ctx.drawImage(off, (cw - dw) / 2, (ch - dh) / 2);
-        } else {
-          // Fallback ohne Offscreen: direkt zeichnen (harte Kante, aber Bild da).
-          ctx.drawImage(f.img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
-        }
-      } else {
-        // Frame fuellt den Canvas komplett -> keine Kante, keine Feder noetig.
-        ctx.drawImage(f.img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
-      }
-
+      ctx.drawImage(f.img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
       if (!hidPoster && posterRef.current) {
         posterRef.current.style.opacity = "0";
         hidPoster = true;
       }
     };
+
+    // Karten-Fly-Through auf der Buehne, getrieben vom gedaempften Progress.
+    // Lokales p' = clamp((pS - t0)/(t1 - t0)) pro Karte. Kurven (stueckweise
+    // linear): winzig neben dem Hasen entstehen -> Lese-Moment (~0.55-0.75,
+    // scale 0.9-1.0, scharf) -> gross an der Kamera vorbei (Exit-Vektor).
+    const updateCards = (p: number) => {
+      for (let i = 0; i < CARDS.length; i++) {
+        const el = cardRefs.current[i];
+        if (!el) continue;
+        const c = CARDS[i];
+        const lp = clamp01((p - c.t0) / (c.t1 - c.t0));
+        if (lp <= 0 || lp >= 1) {
+          if (el.style.visibility !== "hidden") {
+            el.style.visibility = "hidden";
+            el.style.pointerEvents = "none";
+          }
+          continue;
+        }
+        const drift = (c.side === "left" ? -1 : 1) * (isMobile ? 3 : 4); // vw, leicht nach aussen
+        const scale = pl(lp, [[0, 0.06], [0.55, 0.9], [0.75, 1.0], [1, 2.4]]);
+        const opacity = pl(lp, [[0, 0], [0.12, 1], [0.85, 1], [1, 0]]);
+        const blur = pl(lp, [[0, 6], [0.45, 0], [0.75, 0], [1, 6]]);
+        const tx = pl(lp, [[0, 0], [0.55, drift * 0.6], [0.75, drift], [1, c.exitX]]);
+        const ty = pl(lp, [[0, 2], [0.75, 0], [1, c.exitY]]);
+        el.style.visibility = "visible";
+        el.style.opacity = opacity.toFixed(3);
+        el.style.transform = `translate(-50%, -50%) translate3d(${tx.toFixed(2)}vw, ${ty.toFixed(2)}vh, 0) scale(${scale.toFixed(4)})`;
+        el.style.filter = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : "";
+        // Klickbar nur im grossen, scharfen Lese-Fenster.
+        el.style.pointerEvents = lp > 0.3 && lp < 0.85 ? "auto" : "none";
+      }
+    };
+
+    // Mobile: die Seiten-Slots (32%/68%) wuerden die fast bildbreite Karte
+    // aus der Buehne schieben -> Basis mittig, Seite bleibt im Drift/Exit.
+    if (isMobile) {
+      for (const el of cardRefs.current) {
+        if (el) el.style.left = "50%";
+      }
+    }
 
     resize();
     window.addEventListener("resize", resize);
@@ -398,19 +356,22 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
       const scrollable = rect.height - window.innerHeight;
       const p = scrollable > 0 ? clamp01(-rect.top / scrollable) : 0;
 
-      target = mapProgressToFrame(p);
-      current += (target - current) * 0.14;
-      if (Math.abs(target - current) < 0.02) current = target;
+      // Daempfung auf dem Progress selbst: Frame und Karten teilen sich
+      // exakt dieselbe Traegheit -> wirkt wie EIN Raum.
+      pS += (p - pS) * 0.14;
+      if (Math.abs(p - pS) < 0.0002) pS = p;
 
-      const frame = Math.round(current);
+      const frame = Math.round(mapProgressToFrame(pS));
       if (frame !== lastDrawn || needsRedraw) {
         draw(frame);
         lastDrawn = frame;
         needsRedraw = false;
       }
 
+      updateCards(pS);
+
       if (heroRef.current) {
-        heroRef.current.style.opacity = String(1 - clamp01(p / 0.06));
+        heroRef.current.style.opacity = String(1 - clamp01(pS / 0.06));
       }
       raf = requestAnimationFrame(loop);
     };
@@ -446,7 +407,7 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
         <section className="rf-static-cards" aria-label="Projekte">
           <div className="rr-wrap rr-narrow rf-static-grid">
             {CARDS.map((c) => (
-              <div key={c.slug} className="rf-card rf-card--static">
+              <div key={c.slug} className="rf-scard rf-card--static">
                 <CardLink c={c} />
               </div>
             ))}
@@ -459,42 +420,23 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
   }
 
   return (
-    <div
-      className="rf-shell"
-      style={{
-        ["--rf-capw" as string]: `${FRAME_W * MAX_UPSCALE}px`,
-        ["--rf-caph" as string]: `${FRAME_H * MAX_UPSCALE}px`,
-      }}
-    >
+    <div className="rf-shell">
       <style>{RF_CSS}</style>
 
       <div className="rf-track" ref={trackRef}>
         <div className="rf-stage">
-          {/* Frame 0 als LCP-Poster, bis der Canvas den ersten Frame zeichnet.
-              Gleicher Look wie die Canvas-Zeichnung: geblurrte Cover-Kopie
-              hinten, scharfes contain-Bild mit Upscale-Deckel davor — sonst
-              springt es bei der Canvas-Uebernahme. */}
-          <div className="rf-poster" ref={posterRef}>
+          {/* Frame 0 als LCP-Poster, bis der Canvas den ersten Frame zeichnet. */}
+          <picture className="rf-poster">
+            <source media="(max-width: 767px)" srcSet="/relaunch/referenzen/frames/m/f-000.webp" />
             <img
-              className="rf-poster__bg"
+              ref={posterRef}
               src="/relaunch/referenzen/frames/d/f-000.webp"
-              alt=""
-              aria-hidden="true"
+              alt="Roter Hase, der den Besucher ansieht"
               width={FRAME_W}
               height={FRAME_H}
+              fetchPriority="high"
             />
-            <picture>
-              <source media="(max-width: 767px)" srcSet="/relaunch/referenzen/frames/m/f-000.webp" />
-              <img
-                className="rf-poster__fg"
-                src="/relaunch/referenzen/frames/d/f-000.webp"
-                alt="Roter Hase, der den Besucher ansieht"
-                width={FRAME_W}
-                height={FRAME_H}
-                fetchPriority="high"
-              />
-            </picture>
-          </div>
+          </picture>
 
           <canvas ref={canvasRef} className="rf-canvas" aria-hidden="true" />
 
@@ -502,26 +444,26 @@ export default function ReferenzenLauf({ copy }: { copy: Copy }) {
             <p className="rf-kicker">(Referenzen)</p>
             <h1 className="rf-h1">{copy.h1}</h1>
           </div>
-        </div>
 
-        {/* Karten: echtes SSR-HTML, absolute im Track, ueber dem Canvas. */}
-        <div className="rf-cards" aria-label="Projekte">
-          {CARDS.map((c) => (
-            <div
-              key={c.slug}
-              className="rf-card"
-              data-side={c.side}
-              style={{
-                ["--rf-top" as string]: c.top,
-                ["--rf-exit-x" as string]: c.exitX,
-                ["--rf-exit-y" as string]: c.exitY,
-                ["--rf-rs" as string]: c.rs,
-                ["--rf-re" as string]: c.re,
-              }}
-            >
-              <CardLink c={c} />
-            </div>
-          ))}
+          {/* Karten: echtes SSR-HTML AUF der Buehne (ueber dem Canvas).
+              Position/Groesse/Unschaerfe setzt der rAF-Loop aus dem
+              gedaempften Progress; ohne JS bleiben sie unsichtbar, die
+              Links stehen trotzdem im server-gerenderten DOM (SEO). */}
+          <div className="rf-scards" aria-label="Projekte">
+            {CARDS.map((c, i) => (
+              <div
+                key={c.slug}
+                className="rf-scard"
+                data-side={c.side}
+                style={{ left: `${c.cx}%`, top: `${c.cy}%` }}
+                ref={(el) => {
+                  cardRefs.current[i] = el;
+                }}
+              >
+                <CardLink c={c} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -534,7 +476,8 @@ const RF_CSS = `
 .rf-shell { position: relative; overflow-x: clip; background: #ffffff; }
 
 /* ============ Scroll-Track + sticky Buehne ============ */
-.rf-track { position: relative; height: 800vh; }
+/* 1150vh (Thomas-Runde 3): mehr Scrollweg pro Frame -> ruhigerer Lauf. */
+.rf-track { position: relative; height: 1150vh; }
 .rf-stage {
   position: sticky; top: 0;
   height: 100vh; height: 100dvh;
@@ -542,46 +485,12 @@ const RF_CSS = `
   background: #ffffff; /* passt zu Frame 0 (heller Studiogrund), kein Flash */
   z-index: 1;
 }
-.rf-poster, .rf-canvas {
+.rf-poster, .rf-poster img,
+.rf-canvas {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
 }
-.rf-poster { z-index: 1; overflow: hidden; transition: opacity .3s var(--rr-ease); }
-/* Geblurrte Cover-Kopie als Fuellung (Look = Canvas-Hintergrund-Ebene) */
-.rf-poster__bg {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: center;
-  filter: blur(28px); transform: scale(1.06);
-}
-/* Scharfes Vordergrund-Bild: contain + Upscale-Deckel wie im Canvas-draw().
-   Cap = FRAME_W * 1.1 GERAETEpixel -> in CSS-Pixeln je nach dpr geteilt. */
-.rf-poster__fg {
-  position: absolute; inset: 0; margin: auto;
-  width: auto; height: auto;
-  max-width: min(100%, var(--rf-capw, 1408px));
-  max-height: min(100%, var(--rf-caph, 792px));
-  /* Rand-Feder wie im Canvas-draw(): weich in den Blur-Hintergrund ausblenden */
-  -webkit-mask-image:
-    linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent),
-    linear-gradient(to bottom, transparent, black 48px, black calc(100% - 48px), transparent);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent),
-    linear-gradient(to bottom, transparent, black 48px, black calc(100% - 48px), transparent);
-  mask-composite: intersect;
-}
-@media (min-resolution: 1.5dppx) {
-  .rf-poster__fg {
-    max-width: min(100%, calc(var(--rf-capw, 1408px) / 2));
-    max-height: min(100%, calc(var(--rf-caph, 792px) / 2));
-  }
-}
-@media (min-resolution: 2.5dppx) {
-  .rf-poster__fg {
-    max-width: min(100%, calc(var(--rf-capw, 1408px) / 3));
-    max-height: min(100%, calc(var(--rf-caph, 792px) / 3));
-  }
-}
+.rf-poster img { object-fit: cover; object-position: center; transition: opacity .3s var(--rr-ease); z-index: 1; }
 .rf-canvas { display: block; z-index: 2; }
 
 /* ---- Hero-Layer (H1 + Kicker) ueber der Buehne ---- */
@@ -602,33 +511,35 @@ const RF_CSS = `
   color: var(--rr-navy); margin: 0; text-wrap: balance;
 }
 
-/* ============ Karten (Fly-Through mit Tiefe) ============
-   Grundposition: MITTIG im Track (Start nahe Bildmitte, wie weit hinten im
-   Tunnel). Die Seiten-Zugehoerigkeit steckt im Drift-/Exit-Vektor, nicht in
-   der Position. */
-.rf-cards { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
-.rf-card {
-  position: absolute; top: var(--rf-top);
-  left: 50%;
+/* ============ Karten AUF der Buehne (JS-Fly-Through) ============ */
+.rf-scards { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.rf-scard {
+  position: absolute;
   width: clamp(300px, 31vw, 400px);
-  margin-left: calc(clamp(300px, 31vw, 400px) / -2);
+  transform: translate(-50%, -50%);
+  /* Ohne JS unsichtbar (Links bleiben im SSR-DOM); der rAF-Loop schaltet
+     sichtbar und setzt transform/opacity/filter pro Tick. */
+  visibility: hidden;
   pointer-events: none;
+  will-change: transform, opacity, filter;
 }
-/* Lese-Moment-Drift: links ODER rechts aus der Mitte */
-.rf-card[data-side="left"]  { --rf-drift-x: -16vw; }
-.rf-card[data-side="right"] { --rf-drift-x: 16vw; }
 
+/* ---- Karten-Optik: zitiert rr-card-layer (DESIGN.md §10 / styleguide.css)
+   — Off-White-Flaeche (--rr-surface), gestapelte Schatten (--rr-shadow-layer),
+   roter Innen-Balken unten, eckig, DM-Sans-Eyebrow in Rot. Eigene rf-Klassen,
+   styleguide.css bleibt unangetastet. ---- */
 .rf-card__inner {
-  display: block; pointer-events: auto;
-  background: #ffffff; color: var(--rr-ink);
+  display: block; pointer-events: inherit;
+  background: var(--rr-surface);
+  color: var(--rr-ink);
   text-decoration: none;
-  box-shadow: var(--rr-shadow-layer, 0 2px 4px rgba(28,40,55,.26), 0 7px 13px -3px rgba(28,40,55,.18));
-  border: 1px solid var(--rr-line);
-  /* ohne view()-Support: statisch sichtbar (kein Fly-Through, keine Regression) */
-  opacity: 1;
+  border-radius: 0;
+  box-shadow: var(--rr-shadow-layer, rgba(28,40,55,.26) 0 2px 4px, rgba(28,40,55,.18) 0 7px 13px -3px), var(--rr-red) 0 -3px 0 inset;
   transition: box-shadow .4s var(--rr-ease);
 }
-.rf-card__inner:hover { box-shadow: 0 18px 44px rgba(28,40,55,.28); }
+.rf-card__inner:hover {
+  box-shadow: 0 18px 44px rgba(28,40,55,.28), var(--rr-red) 0 -3px 0 inset;
+}
 .rf-card__inner:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px var(--rr-paper), 0 0 0 4.5px var(--rr-red);
@@ -644,67 +555,23 @@ const RF_CSS = `
   position: absolute; top: 0; right: 0;
   display: grid; place-items: center;
   width: 40px; height: 40px;
-  background: #ffffff; color: var(--rr-ink);
+  background: var(--rr-surface); color: var(--rr-ink);
   transition: background .3s var(--rr-ease), color .3s var(--rr-ease);
 }
 .rf-card__inner:hover .rf-card__arrow { background: var(--rr-red); color: #fff; }
 
 .rf-card__meta {
-  display: flex; flex-direction: column; gap: 6px;
-  padding: 16px 18px 18px;
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 18px 20px 21px; /* etwas Luft ueber dem roten Innen-Balken */
 }
 .rf-card__cat {
-  font-family: var(--rr-font-ui); font-size: 12px; font-weight: 650;
+  font-family: var(--rr-font-display); font-weight: 700; font-size: 11px;
   letter-spacing: 0.14em; text-transform: uppercase; color: var(--rr-red);
 }
 .rf-card__name {
   font-family: var(--rr-font-display); font-weight: 700;
-  font-size: clamp(19px, 1.5vw, 23px); line-height: 1.1;
+  font-size: clamp(19px, 1.4vw, 21px); line-height: 1.15;
   letter-spacing: -0.01em; color: var(--rr-ink);
-}
-
-/* Scroll-Driven Fly-Through (nur mit view()-Support):
-   klein + unscharf nahe Bildmitte -> waechst scharf in den Lese-Moment mit
-   Seiten-Drift -> fliegt gross + unscharf an der Kamera vorbei Richtung
-   Rand/Ecke (Vektor + range pro Karte via Custom Props, unregelmaessig). */
-@supports (animation-timeline: view()) {
-  .rf-track .rf-card__inner {
-    opacity: 0;
-    animation: rf-fly linear both;
-    animation-timeline: view();
-    animation-range: entry var(--rf-rs, 0%) exit var(--rf-re, 96%);
-    will-change: transform, opacity, filter;
-  }
-}
-@keyframes rf-fly {
-  0% {
-    opacity: 0;
-    filter: blur(5px);
-    transform: translate3d(0, 4vh, 0) scale(0.22);
-  }
-  14% {
-    opacity: 0.6;
-    filter: blur(3px);
-  }
-  38% {
-    opacity: 1;
-    filter: blur(0px);
-    transform: translate3d(var(--rf-drift-x, 0px), 0, 0) scale(0.95);
-  }
-  60% {
-    opacity: 1;
-    filter: blur(0px);
-    transform: translate3d(calc(var(--rf-drift-x, 0px) * 1.35), -1vh, 0) scale(1.12);
-  }
-  84% {
-    opacity: 0.45;
-    filter: blur(4px);
-  }
-  100% {
-    opacity: 0;
-    filter: blur(8px);
-    transform: translate3d(var(--rf-exit-x, -130vw), var(--rf-exit-y, -30vh), 0) scale(2.6);
-  }
 }
 
 /* ============ Abschluss-Sektion (normaler Flow, weiss) ============ */
@@ -743,13 +610,7 @@ const RF_CSS = `
     left: var(--rr-gutter); right: var(--rr-gutter);
     max-width: none;
   }
-  .rf-card {
-    width: min(420px, 86vw);
-    margin-left: calc(min(420px, 86vw) / -2);
-  }
-  /* Mobile: weniger Seiten-Drift, sonst schiebt der Lese-Moment aus dem Bild */
-  .rf-card[data-side="left"]  { --rf-drift-x: -5vw; }
-  .rf-card[data-side="right"] { --rf-drift-x: 5vw; }
+  .rf-scard { width: min(420px, 86vw); }
 }
 
 /* ============ Reduced-Motion: statisch gestapelt ============ */
@@ -766,8 +627,14 @@ const RF_CSS = `
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(22px, 3vw, 40px);
 }
-.rf-card--static { position: static; width: 100%; transform: none; }
-.rf-card--static .rf-card__inner { opacity: 1 !important; transform: none !important; animation: none !important; }
+.rf-card--static {
+  position: static; width: 100%; transform: none;
+  visibility: visible; pointer-events: auto; will-change: auto;
+}
+.rf-card--static .rf-card__inner {
+  opacity: 1 !important; transform: none !important; animation: none !important;
+  pointer-events: auto;
+}
 @media (max-width: 767px) {
   .rf-static-grid { grid-template-columns: 1fr; }
 }
@@ -777,6 +644,6 @@ const RF_CSS = `
     opacity: 1 !important; transform: none !important; animation: none !important;
     filter: none !important;
   }
-  .rf-poster { transition: none; }
+  .rf-poster img { transition: none; }
 }
 `;
