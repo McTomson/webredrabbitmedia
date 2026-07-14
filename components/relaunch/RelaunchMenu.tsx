@@ -21,7 +21,7 @@ type NavItem = { label: string; href: string };
 const NAV_ITEMS: NavItem[] = [
   { label: "Start", href: "/relaunch-preview" },
   { label: "Leistungen", href: "/leistungen" },
-  { label: "Referenzen", href: "/referenzen-preview" },
+  { label: "Referenzen", href: "/relaunch-preview/referenzen" },
   { label: "Preise", href: "/preise" },
   { label: "FAQ", href: "/faq" },
   { label: "Über uns", href: "/ueber-uns" },
