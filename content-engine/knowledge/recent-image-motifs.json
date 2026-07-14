@@ -1,5 +1,6 @@
 {
   "heroes": [
+    "A friendly Austrian man in his mid-forties holding his smartphone slightly lowered and turned away, his thumb resting on the screen edge mid-swipe as if closing the page, glancing off to the side with a politely unconvinced 'this isn't for me' expression - the split-second decision to leave a website - upper body only, soft natural daylight on his face and hands, no text, no logos",
     "A friendly Austrian business owner, a man in his late thirties, holding a tablet that shows a simple rising bar chart and pointing at the highest bar with his index finger, a genuinely pleased and relieved expression as if seeing real proof his new website is working, upper body only, soft natural daylight on his face and hands, no text, no logos",
     "A friendly Austrian marketing consultant, a man in his mid-thirties, holding up a single printed web page in one hand and pointing with his other hand at the one large button on it, gesturing as if to say 'only this one action', confident and focused expression, upper body only, soft natural daylight on his face and hands, no text, no logos",
     "A friendly Austrian woman in her early thirties, holding her smartphone in both hands and looking at its screen with a spontaneous, freshly-formed reaction on her face - the split-second gut judgement of a first impression, eyebrows slightly raised as if instantly deciding whether something appeals to her, upper body only, soft natural daylight on her face and hands, no text, no logos",
@@ -10,11 +11,9 @@
     "Close-up of two hands holding up a printed website homepage mockup that has several hand-drawn red correction circles and arrows marked on it, a red felt-tip pen tucked between the fingers ready for the next round of edits, foreground subject only, no text rendering, no logos",
     "A close-up of a wall calendar with six consecutive weeks marked off by hand with a red felt-tip pen, small sticky notes labeled with project phases pinned across the weeks, a pen resting on the current week, symbolizing the realistic six-week timeline of building a website, foreground subject only, no text rendering, no logos",
     "A split scene close-up: on one side a stressed small-business owner's hands typing on a cheap laptop surrounded by crumpled paper notes and an empty coffee cup, on the other side the same hands relaxed holding a clean printed cost-comparison sheet with a calculator and a pen, symbolizing the true cost difference between DIY website builders and a professional agency, foreground subject only, no text, no logos",
-    "A neat top-down arrangement of ten small numbered paper cards laid out in two tidy rows on a clean surface, each card hand-labeled with a website section like Home, Leistung, Über uns, Kontakt, a fountain pen resting beside them, symbolizing a 10-page website structure planned out, foreground subject only, no text rendering",
-    "A steaming plate of Wiener Schnitzel with a slice of lemon being photographed from above by a smartphone held in two hands, the phone screen showing the dish framed for a restaurant website, warm appetizing food in sharp focus, foreground subject only, no text"
+    "A neat top-down arrangement of ten small numbered paper cards laid out in two tidy rows on a clean surface, each card hand-labeled with a website section like Home, Leistung, Über uns, Kontakt, a fountain pen resting beside them, symbolizing a 10-page website structure planned out, foreground subject only, no text rendering"
   ],
   "layouts": [
-    "keypoints",
     "comparison",
     "keypoints",
     "comparison",
@@ -25,7 +24,8 @@
     "keypoints",
     "comparison",
     "keypoints",
-    "comparison"
+    "comparison",
+    "keypoints"
   ],
-  "colorCursor": 5
+  "colorCursor": 6
 }
