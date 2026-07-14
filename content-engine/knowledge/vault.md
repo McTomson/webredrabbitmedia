@@ -1715,3 +1715,57 @@ quelle: https://www.statistik.at/fileadmin/publications/IKT-Einsatz-in-Haushalte
 quelle_name: Statistik Austria - IKT-Einsatz in Haushalten 2024
 geprueft_am: 2026-07-14
 recheck_nach: 2027-01-10
+
+## t42-2026-07-14-191
+cluster: 1
+keywords: wird, vertrauen, autorität, über, webdesign, aufgebaut
+aussage: Laut der Stanford Web Credibility Research (Fogg et al., über 2.600 Teilnehmer) beurteilen rund 75 % der Nutzer die Glaubwürdigkeit einer Website primär über die Präsentation: 46,1 % nannten das visuelle Design (Layout, Typografie, Farben), weitere 28,5 % das Informationsdesign/die Struktur — nicht Inhalt oder Reputation.
+quelle: https://pmc.ncbi.nlm.nih.gov/articles/PMC4863498/
+quelle_name: Selejan et al., 'Credibility judgments in web page design - a brief review', Journal of Medicine and Life (peer-reviewed Review der Stanford-Befunde)
+geprueft_am: 2026-07-14
+recheck_nach: 2027-01-10
+
+## t42-2026-07-14-192
+cluster: 1
+keywords: wird, vertrauen, autorität, über, webdesign, aufgebaut
+aussage: Das Stanford Persuasive Technology Lab hat aus Studien mit über 4.500 Teilnehmern 10 Web-Credibility-Guidelines abgeleitet; dazu zählen professionelles, zweckangemessenes Design ('people quickly evaluate a site by visual design alone'), leicht überprüfbare Fakten, sichtbare echte Menschen/Organisation, vollständige Kontaktdaten, aktuelle Inhalte und Fehlerfreiheit.
+quelle: https://credibility.stanford.edu/guidelines/index.html
+quelle_name: Stanford Web Credibility Project - Guidelines
+geprueft_am: 2026-07-14
+recheck_nach: 2027-01-10
+
+## t42-2026-07-14-193
+cluster: 1
+keywords: wird, vertrauen, autorität, über, webdesign, aufgebaut
+aussage: Nutzer bilden ihr Urteil über die visuelle Attraktivität einer Webseite innerhalb von ca. 50 Millisekunden — dieser erste Eindruck ist über die Zeit stabil und prägt die weitere Bewertung (Halo-Effekt). Zusätzlich zeigt die Forschung einen 'amelioration effect': identischer Inhalt wurde bei hochwertigerer ästhetischer Aufbereitung in 90 % der Fälle als glaubwürdiger eingestuft.
+quelle: https://www.tandfonline.com/doi/abs/10.1080/01449290500330448
+quelle_name: Lindgaard et al., 'Attention web designers: You have 50 milliseconds to make a good first impression!', Behaviour & Information Technology 25(2)
+geprueft_am: 2026-07-14
+recheck_nach: 2027-01-10
+
+## t42-2026-07-14-194
+cluster: 1
+keywords: wird, vertrauen, autorität, über, webdesign, aufgebaut
+aussage: In Österreich ist ein korrektes, leicht auffindbares Impressum gesetzliche Pflicht und zugleich ein hartes Vertrauenssignal: je nach Unternehmen greifen Informationspflichten nach §5 ECG, §14 UGB bzw. §63 GewO sowie die Offenlegungspflicht nach §25 Mediengesetz — sie gelten auch für Social-Media-Auftritte und Apps. (Rechtsthema: Hinweis 'keine Rechtsberatung' im Artikel setzen.)
+quelle: https://www.wko.at/internetrecht/website-impressum
+quelle_name: WKO - Das korrekte Website-Impressum
+geprueft_am: 2026-07-14
+recheck_nach: 2027-01-10
+
+## t42-2026-07-14-195
+cluster: 1
+keywords: wird, vertrauen, autorität, über, webdesign, aufgebaut
+aussage: Seit 28.6.2025 verpflichtet das österreichische Barrierefreiheitsgesetz (BaFG, Umsetzung der EU-Richtlinie 2019/882) B2C-Dienstleistungen im E-Commerce — u.a. Webshops und Online-Terminbuchungstools — zur Barrierefreiheit; auch bestehende Webshops mussten zum Stichtag umgestellt sein, inkl. Konformitätserklärung nach §14 Abs 2 BaFG. Barrierefreiheit ist damit in AT nicht nur UX-Qualität, sondern nachweisbare Rechtskonformität und Autoritätssignal.
+quelle: https://www.wko.at/internetrecht/barrierefreiheitsgesetz-e-commerce
+quelle_name: WKO - Barrierefreiheitsgesetz im E-Commerce
+geprueft_am: 2026-07-14
+recheck_nach: 2027-01-10
+
+## t42-2026-07-14-196
+cluster: 1
+keywords: wird, vertrauen, autorität, über, webdesign, aufgebaut
+aussage: In Österreich kostet eine professionelle Website 2026 zwischen 790 € (Landingpage) und über 15.000 € (komplexe Portale); entscheidend für den Wert sind technisches Fundament (Next.js), SEO-Strategie, Content-Qualität und die Einhaltung rechtlicher Standards wie DSGVO und Barrierefreiheit — genau die Faktoren, die Vertrauen sichtbar machen.
+quelle: https://web.redrabbit.media/tipps/was-kostet-eine-website
+quelle_name: Red Rabbit Media - Was kostet eine Website 2026? (Wissens-Vault, verifiziert)
+geprueft_am: 2026-07-14
+recheck_nach: 2027-01-10
