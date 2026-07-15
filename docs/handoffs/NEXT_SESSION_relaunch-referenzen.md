@@ -1,4 +1,15 @@
-# Naechste Session — Referenzen-Hasenlauf (15.07.2026)
+# Naechste Session — Referenzen (15.07.2026, Abend)
+
+## AKTUELLER STAND: Sphaeren-Galerie GEBAUT + COMMITTET (9b3c717)
+Thomas hat entschieden: phantom.land-Nachbau statt Hasen-Lauf. UMGESETZT und fertig QA-getestet:
+- components/relaunch/SphereGallery.tsx komplett neu (Ring-Layout 3x12, Screenshot-Texturen mit gebackenen DM-Sans-Labels, zeitbasierte Daempfung, Hover-Weisskarte, Klick-Zoom+Whiteout+Panel, Mobile-WebGL mit pan-y, Fallback-Grid).
+- /relaunch-preview/referenzen = neue Seite (SSR H1 "Komm mit. Wir zeigen dir was." + Scrim, SEO-Liste aus SPHERE_PROJECTS, CTA zu /relaunch-preview/kontakt). Alte /referenzen-preview redirectet nur noch.
+- review-it gelaufen: docs/reviews/referenzen-sphere-2026-07-15.md; neue Lessons L-referenzen-03 (rAF-Drosselung -> zeitbasierte Daempfung) + L-referenzen-04 (Textur-Rebuild vs. Hover) in docs/lessons.md.
+- OFFEN: Thomas-Feedback zur Galerie; danach Feintuning (deferred: Tuning-Konstanten elevieren, inert-Fokus-Falle). Upscale-Batch GESTOPPT bei 81/125 (Hasen-Material bleibt fuer Easter Egg/404, siehe unten).
+- QA-Falle: gedrosselte Hintergrund-Tabs (L-referenzen-03) — vor Browser-QA Tab aktivieren!
+
+---
+# Historie: Referenzen-Hasenlauf (15.07.2026, frueher)
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md (Memory `project_referenzen_hasenlauf`!), betroffene Dateien. Nicht loslegen ohne Kontext.
