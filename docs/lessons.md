@@ -19,6 +19,18 @@
 **Why**: Fuehrt zu falschen "Scrub kaputt"-Diagnosen. (QA referenzen 14.07.2026; Lenis-Variante schon frueher in LESSONS_LEARNED.md)
 **Check**: QA-Scrolling mit echten Wheel-Events (computer scroll), danach 1-2s warten, dann messen.
 
+### L-referenzen-03 — rAF-Animationen zeitbasiert daempfen, nie per Frame
+**When**: Jede rAF-Loop mit Lerp/Damping (WebGL, Canvas, Scroll-Nachlauf).
+**Pattern to avoid**: `wert += (ziel - wert) * 0.08` pro Frame — Chrome drosselt rAF in inaktiven Tabs/verdeckten Fenstern auf ~1fps, die Transition kriecht dann minutenlang (wirkt wie "haengt"); QA-Screenshots zeigen eingefrorene Zwischenzustaende.
+**Why**: Sphaeren-Galerie 15.07.2026: Whiteout kehrte nach Panel-Schliessen scheinbar nie zurueck — war reine Tab-Drosselung, kein Bug.
+**Check**: Daempfungen als `1 - Math.exp(-k * dt)` mit dt-Clamp; bei QA pruefen ob der getestete Tab AKTIV ist (Hintergrund-Tab = gedrosselt, Screenshots gehen trotzdem).
+
+### L-referenzen-04 — Async-Textur-Rebuild darf Interaktionszustand nicht ueberschreiben
+**When**: WebGL/Canvas-Komponenten, die Texturen nach Bild-Load neu backen.
+**Pattern to avoid**: Beim Rebuild stumpf die Default-Variante zuweisen (`map = normal`), obwohl der Zustand (hovered/selected) gerade eine andere Variante zeigt.
+**Why**: Logic-Review 15.07.2026: Kachel blieb nach Screenshot-Nachladen dauerhaft dunkel trotz Hover.
+**Check**: Rebuild-Callbacks muessen den aktuellen Interaktionszustand beruecksichtigen (`map = i === hovered ? hover : normal`).
+
 ## Accepted Tradeoffs
 
 ### T-referenzen-01 — Karten-vh-Werte gegen Desktop-Timing getunt

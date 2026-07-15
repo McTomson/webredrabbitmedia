@@ -32,24 +32,30 @@ export const BASE_PROJECTS: Project[] = [
   { name: "web.redrabbit.media", line: LINES[0], href: "https://web.redrabbit.media" },
 ];
 
-// Case-Farbwelten fuer die Kacheln (rotierend, aus dem Design-System).
-// Text-/Akzentfarbe je Flaeche fuer ausreichenden Kontrast mitgefuehrt.
-export type TileColor = { bg: string; text: string; accent: string };
+// ------------------------------------------------------------
+// Sphaeren-Galerie (phantom.land-Look, 15.07.): die 7 Projekte
+// mit vorhandenen Screenshot-Karten unter public/relaunch/referenzen/cards/.
+// Namen/Kategorien/Links == freigegebener Stand der Hasen-Seite (ReferenzenLauf).
+// ------------------------------------------------------------
 
-export const TILE_COLORS: TileColor[] = [
-  { bg: "#1d8c98", text: "#f6f5f1", accent: "#fcfbc9" }, // --rr-world-1-bg (at-Tuerkis)
-  { bg: "#2d2d2d", text: "#f6f5f1", accent: "#f35b09" }, // --rr-world-2-bg (at-Anthrazit)
-  { bg: "#0a8aba", text: "#f6f5f1", accent: "#f2dc71" }, // --rr-world-3-bg (at-Blau)
-  { bg: "#f4f4f2", text: "#23262e", accent: "#f12032" }, // --rr-surface
+export type SphereProject = {
+  slug: string;
+  name: string;
+  cat: string;
+  href: string;
+  img: string; // public-Pfad zum Screenshot (960px breit, WebP)
+};
+
+export const SPHERE_PROJECTS: SphereProject[] = [
+  { slug: "thermewarten", name: "Thermewarten", cat: "Thermenwartung Wien", href: "https://thermewarten.at", img: "/relaunch/referenzen/cards/thermewarten.webp" },
+  { slug: "lashesbydanesh", name: "LashesbyDanesh", cat: "Beauty-Studio", href: "https://lashesbydanesh.at", img: "/relaunch/referenzen/cards/lashesbydanesh.webp" },
+  { slug: "la-morra", name: "Ristorante La Morra", cat: "Gastronomie", href: "https://pizza-4.vercel.app", img: "/relaunch/referenzen/cards/la-morra.webp" },
+  { slug: "almtal-invest", name: "Almtal Invest", cat: "Immobilien-Investment", href: "https://almtal-invest.vercel.app", img: "/relaunch/referenzen/cards/almtal-invest.webp" },
+  { slug: "rero-heizsysteme", name: "ReRo Heizsysteme", cat: "Heizungstechnik", href: "https://heating-systems.at", img: "/relaunch/referenzen/cards/rero-heizsysteme.webp" },
+  { slug: "k2-dach-bau", name: "K2 Dach & Bau", cat: "Dach & Bau", href: "https://k2-dream-builder.vercel.app", img: "/relaunch/referenzen/cards/k2-dach-bau.webp" },
+  { slug: "global-insights", name: "Global Insights", cat: "Beratung", href: "https://ruderes-insights.at", img: "/relaunch/referenzen/cards/global-insights.webp" },
 ];
 
-export type Tile = Project & { colorIndex: number };
-
-export const TILE_COUNT = 40;
-
-// Basis-Liste bis TILE_COUNT wiederholen (ausdruecklich erlaubt),
-// Farbwelt rotiert unabhaengig vom Projekt.
-export const TILES: Tile[] = Array.from({ length: TILE_COUNT }, (_, i) => {
-  const base = BASE_PROJECTS[i % BASE_PROJECTS.length];
-  return { ...base, colorIndex: i % TILE_COLORS.length };
-});
+// Die fruehere Farbkachel-Vorstufe (TILE_COLORS/TILES, P2b) wurde am 15.07.2026
+// durch SPHERE_PROJECTS mit echten Screenshots ersetzt und entfernt
+// (Simplify-Review: tote Exporte). Historie: git log lib/relaunch/projects.ts.
