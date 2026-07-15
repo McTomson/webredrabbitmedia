@@ -1,6 +1,9 @@
 # Naechste Session — Referenzen (15.07.2026, Abend)
 
-## AKTUELLER STAND: Sphaeren-Galerie GEBAUT + COMMITTET (9b3c717)
+## NEUESTER STAND (15.07. Vormittag, Commit 856e6c2): 1:1-Raster statt Kugel
+Thomas verwarf die Kugel-Optik -> Bundle-Analyse des Originals -> SphereGallery.tsx erneut neu: FLACHES Einheitszellen-Raster (Kachel 0.998, Haarlinien-Gaps), 2-Achsen-Pannen mit Wrap, Barrel-Distortion+Vignette als Post-Pass (Ortho-Kamera + RenderTarget + eigener Shader), analytisches Picking, Hover-Weisskarte per Opacity-Fade, Fokus mit Pan-Restore. Entscheidungen: NUR Galerie (keine phantom-Chrome), Klick = Whiteout+Panel. Zweiter Logic-Review: 2 Bugs gefixt (Hochformat-Wrap-Luecke, Pan-Restore). QA Desktop+Mobile gruen. WARNUNG: :9000 kann transient 503/404 CSS liefern (geteilter .next, Parallel-Session) — NICHT neu starten, kurz warten oder eigener Port. OFFEN: Thomas-Abnahme.
+
+## Aelterer Stand: Sphaeren-Galerie (VERWORFEN, Commit 9b3c717)
 Thomas hat entschieden: phantom.land-Nachbau statt Hasen-Lauf. UMGESETZT und fertig QA-getestet:
 - components/relaunch/SphereGallery.tsx komplett neu (Ring-Layout 3x12, Screenshot-Texturen mit gebackenen DM-Sans-Labels, zeitbasierte Daempfung, Hover-Weisskarte, Klick-Zoom+Whiteout+Panel, Mobile-WebGL mit pan-y, Fallback-Grid).
 - /relaunch-preview/referenzen = neue Seite (SSR H1 "Komm mit. Wir zeigen dir was." + Scrim, SEO-Liste aus SPHERE_PROJECTS, CTA zu /relaunch-preview/kontakt). Alte /referenzen-preview redirectet nur noch.
