@@ -44,16 +44,17 @@ export type SphereProject = {
   cat: string;
   href: string;
   img: string; // public-Pfad zum Screenshot (960px breit, WebP)
+  img2?: string; // zweite Ansicht (Unterseite/Sektion) — verdoppelt die Kachel-Vielfalt
 };
 
 export const SPHERE_PROJECTS: SphereProject[] = [
-  { slug: "thermewarten", name: "Thermewarten", cat: "Thermenwartung Wien", href: "https://thermewarten.at", img: "/relaunch/referenzen/cards/thermewarten.webp" },
-  { slug: "lashesbydanesh", name: "LashesbyDanesh", cat: "Beauty-Studio", href: "https://lashesbydanesh.at", img: "/relaunch/referenzen/cards/lashesbydanesh.webp" },
-  { slug: "la-morra", name: "Ristorante La Morra", cat: "Gastronomie", href: "https://pizza-4.vercel.app", img: "/relaunch/referenzen/cards/la-morra.webp" },
-  { slug: "almtal-invest", name: "Almtal Invest", cat: "Immobilien-Investment", href: "https://almtal-invest.vercel.app", img: "/relaunch/referenzen/cards/almtal-invest.webp" },
-  { slug: "rero-heizsysteme", name: "ReRo Heizsysteme", cat: "Heizungstechnik", href: "https://heating-systems.at", img: "/relaunch/referenzen/cards/rero-heizsysteme.webp" },
-  { slug: "k2-dach-bau", name: "K2 Dach & Bau", cat: "Dach & Bau", href: "https://k2-dream-builder.vercel.app", img: "/relaunch/referenzen/cards/k2-dach-bau.webp" },
-  { slug: "global-insights", name: "Global Insights", cat: "Beratung", href: "https://ruderes-insights.at", img: "/relaunch/referenzen/cards/global-insights.webp" },
+  { slug: "thermewarten", name: "Thermewarten", cat: "Thermenwartung Wien", href: "https://thermewarten.at", img: "/relaunch/referenzen/cards/thermewarten.webp", img2: "/relaunch/referenzen/cards/thermewarten-2.webp" },
+  { slug: "lashesbydanesh", name: "LashesbyDanesh", cat: "Beauty-Studio", href: "https://lashesbydanesh.at", img: "/relaunch/referenzen/cards/lashesbydanesh.webp", img2: "/relaunch/referenzen/cards/lashesbydanesh-2.webp" },
+  { slug: "la-morra", name: "Ristorante La Morra", cat: "Gastronomie", href: "https://pizza-4.vercel.app", img: "/relaunch/referenzen/cards/la-morra.webp", img2: "/relaunch/referenzen/cards/la-morra-2.webp" },
+  { slug: "almtal-invest", name: "Almtal Invest", cat: "Immobilien-Investment", href: "https://almtal-invest.vercel.app", img: "/relaunch/referenzen/cards/almtal-invest.webp", img2: "/relaunch/referenzen/cards/almtal-invest-2.webp" },
+  { slug: "rero-heizsysteme", name: "ReRo Heizsysteme", cat: "Heizungstechnik", href: "https://heating-systems.at", img: "/relaunch/referenzen/cards/rero-heizsysteme.webp", img2: "/relaunch/referenzen/cards/rero-heizsysteme-2.webp" },
+  { slug: "k2-dach-bau", name: "K2 Dach & Bau", cat: "Dach & Bau", href: "https://k2-dream-builder.vercel.app", img: "/relaunch/referenzen/cards/k2-dach-bau.webp", img2: "/relaunch/referenzen/cards/k2-dach-bau-2.webp" },
+  { slug: "global-insights", name: "Global Insights", cat: "Beratung", href: "https://ruderes-insights.at", img: "/relaunch/referenzen/cards/global-insights.webp", img2: "/relaunch/referenzen/cards/global-insights-2.webp" },
 ];
 
 // Die fruehere Farbkachel-Vorstufe (TILE_COLORS/TILES, P2b) wurde am 15.07.2026

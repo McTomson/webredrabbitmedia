@@ -189,6 +189,7 @@ void main() {
 type Cell = {
   base: THREE.Vector2; // Rasterposition (Zellenmitte, Welt-Einheiten)
   project: SphereProject;
+  imgUrl: string; // gewaehlte Bild-Variante (img oder img2)
   num: string;
   mesh: THREE.Mesh; // dunkle Normal-Variante
   hoverMesh: THREE.Mesh; // weisse Hover-Variante (Opacity-Fade)
@@ -324,18 +325,20 @@ export default function SphereGallery() {
         hoverMesh.position.z = 0.01;
         gridScene.add(mesh);
         gridScene.add(hoverMesh);
-        cells.push({ base, project, num, mesh, hoverMesh, mat, hoverMat });
+        // Ungerade Reihen zeigen die zweite Ansicht des Projekts (mehr Vielfalt).
+        const imgUrl = row % 2 === 1 && project.img2 ? project.img2 : project.img;
+        cells.push({ base, project, imgUrl, num, mesh, hoverMesh, mat, hoverMat });
       }
     }
 
-    // Screenshots laden und beide Varianten neu backen.
+    // Screenshots laden und beide Texturvarianten der betroffenen Zellen backen.
     let disposed = false;
-    const rebuild = (p: SphereProject, img: HTMLImageElement) => {
+    const rebuild = (imgUrl: string, img: HTMLImageElement) => {
       if (disposed) return;
       cells.forEach((cell, i) => {
-        if (cell.project.slug !== p.slug) return;
-        const nt = makeTexture(drawCell(p, cell.num, img, fonts, false));
-        const ht = makeTexture(drawCell(p, cell.num, img, fonts, true));
+        if (cell.imgUrl !== imgUrl) return;
+        const nt = makeTexture(drawCell(cell.project, cell.num, img, fonts, false));
+        const ht = makeTexture(drawCell(cell.project, cell.num, img, fonts, true));
         normalTex[i].dispose();
         hoverTex[i].dispose();
         normalTex[i] = nt;
@@ -347,10 +350,11 @@ export default function SphereGallery() {
       });
     };
     const startLoading = () => {
-      SPHERE_PROJECTS.forEach((p) => {
+      const urls = [...new Set(cells.map((cell) => cell.imgUrl))];
+      urls.forEach((url) => {
         const img = new Image();
-        img.onload = () => rebuild(p, img);
-        img.src = p.img;
+        img.onload = () => rebuild(url, img);
+        img.src = url;
       });
     };
     if (document.fonts?.ready) {
