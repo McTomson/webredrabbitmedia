@@ -1,181 +1,232 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import * as THREE from "three";
 import { SPHERE_PROJECTS, type SphereProject } from "@/lib/relaunch/projects";
 
 // ============================================================
-// SphereGallery — 1:1-Nachbau der phantom.land-Galerie
-// (Thomas-Auftrag 15.07.2026, Architektur per Bundle-Analyse
-// des Originals verifiziert):
-//   - FLACHES Raster aus Einheitszellen (Kachel = 0.998 der
-//     Zelle -> Haarlinien-Abstaende), NICHT eine echte Kugel.
-//   - Unendliches Drag-Pannen in beide Achsen (Wrap modulo
-//     Rasterausdehnung), Traegheit zeitbasiert gedaempft.
-//   - Die Kruemmung entsteht als Post-Processing: Barrel-
-//     Distortion (Basis 0.88 + Staerke*r^2) + Vignette ueber
-//     dem fertigen Bild — Kacheln bleiben rechteckig.
-//   - Labels klein im dunklen Zellrand (Name / Nr / Kategorie /
-//     Pill), Hover blendet die weisse Karten-Variante weich ein.
-//   - Klick: Whiteout + Info-Panel (Uebergangsloesung bis es
-//     Projekt-Unterseiten gibt).
-// Mobile bekommt ebenfalls WebGL (touchAction pan-y, DPR-Cap);
-// Fallback-Grid nur ohne WebGL oder bei reduced-motion.
+// SphereGallery — 1:1-Nachbau der phantom.land-Galerie.
+// Alle Kennwerte stammen aus der vermessenen Original-Spec
+// (scratchpad/phantom-spec.md, Quellen: Produktions-Chunk,
+// Original-CSS, Codrops-Case-Study, Frame-Vermessung):
+//   - Quadratische Zellen, Pitch ~281 CSS-px (Bildschirmmitte),
+//     Fuge 0.002 Welt-Einheiten, unendlich gewrappt.
+//   - Kruemmung = Postprocessing-Barrel: (0.88 + d*r^2)*uv mit
+//     d = -0.07 * aspect; Vignette 0.6/0.6 (woertliche Formel).
+//   - Medium max. 70% der Zelle, zentriert, wechselnde Formate.
+//   - Hover = weichgezeichnete Durchschnittsfarbe des EIGENEN
+//     Mediums als Zellgrund (x0.7), Intensitaet gedaempft 5/s;
+//     Labels 0.8 -> 1.0. Keine Zell-Skalierung.
+//   - Drag 1:1 + Release-Decay 4/s; Grab-Zoom (Kamera weicht
+//     0.4s zurueck); Ambient-Drift pointer*0.07; Intro =
+//     Zoom-in aus der Tiefe, Kruemmung erst danach (1s).
+//   - Klick: kurzer Whiteout (DOM) -> Projekt-Unterseite.
+// Abweichungen vom Original (bewusst, Thomas 15.07.):
+//   Zellgrund NAVY (--rr-navy) statt Schwarz, Fugen fast schwarz;
+//   unsere Schrift statt Mono; Video-Loops nur auf einem Teil
+//   der Zellen; kein Sound/Filter.
 // ============================================================
 
-// Szenengrund BEWUSST nachtschwarz statt --rr-dark (Thomas 15.07.: die
-// Abstaende beim Original sind dunkler, dadurch leuchten die Kacheln) —
-// gilt nur fuer die WebGL-Szene; DOM-Sektionen behalten das Token.
-const BG_DARK = "#0c0d10";
-// Fokus-Whiteout: bewusste WebGL-Ausnahme, KEIN Off-White-Token — absichtlich
-// einen Hauch grauer als --rr-surface, damit weisse Hover-Karten noch tragen.
-const BG_LIGHT = "#e9e8e5";
+const CELL_BG = "#1c2837"; // --rr-navy (Thomas: Navy statt Schwarz)
+const GAP_BG = "#0b1017"; // Fugen/Szenengrund: fast schwarz, Navy-Stich
+const INK_MAIN = "#f6f5f1";
+const INK_SOFT = "#c3c8d0";
 
-const GRID_COLS = 7; // 7 Projekte -> jede Spalte ein anderes Projekt
-const GRID_ROWS = 7; // 49 Zellen, Projekt = (col + row) % 7 (diagonal versetzt)
-const CELL_H = 1.0; // QUADRATISCHE Zellen wie beim Original
-const CELL_PX = 200; // Zellgroesse in CSS-Pixeln, fix wie beim Original (~190-200px)
-const TILE_FRACTION = 0.998; // Kachel fuellt 99.8% der Zelle (Haarlinien-Gap)
-const FOCUS_MS = 700;
+// Raster (Spec §1): quadratische Zellen, ~281 px Pitch in der Mitte.
+const CELL_PX = 281;
+const TILE_FRACTION = 0.998; // Fuge 0.002 Welt-Einheiten
+const GRID_COLS = 7;
+const GRID_ROWS = 7;
 
-// Distortion-Basis wie beim Original: Faktor = 0.88 + k * r^2.
+// Distortion (Spec §4, woertlich): factor = 0.88 + d * r^2, d = -0.07*aspect.
 const DISTORTION_BASE = 0.88;
-const DISTORTION_K = 0.11; // Grundkruemmung (visuell gegen Original abgeglichen)
-const OVERSCAN = 1.12; // Szene groesser rendern, damit der Shader nie ins Leere sampelt
+const DISTORTION_FACTOR = -0.07;
+const VIG_OFFSET = 0.6;
+const VIG_DARK = 0.6;
 
-function makeCubicBezier(x1: number, y1: number, x2: number, y2: number) {
-  const cx = 3 * x1;
-  const bx = 3 * (x2 - x1) - cx;
-  const ax = 1 - cx - bx;
-  const cy = 3 * y1;
-  const by = 3 * (y2 - y1) - cy;
-  const ay = 1 - cy - by;
-  const sampleX = (t: number) => ((ax * t + bx) * t + cx) * t;
-  const sampleY = (t: number) => ((ay * t + by) * t + cy) * t;
-  const solveX = (x: number) => {
-    let t = x;
-    for (let i = 0; i < 6; i++) {
-      const xEst = sampleX(t) - x;
-      const d = (3 * ax * t + 2 * bx) * t + cx;
-      if (Math.abs(d) < 1e-6) break;
-      t -= xEst / d;
-    }
-    return t;
-  };
-  return (x: number) => sampleY(solveX(Math.min(1, Math.max(0, x))));
+// Bewegung (Spec §5): Release-Decay 4/s, Hover-Damp 5/s, Grab-Zoom 0.832
+// (Kamera-z 3.43 -> 3.83 bei Grid-Abstand 1.98 => Skalierung 1.98/2.38).
+const RELEASE_DECAY = 4;
+const HOVER_DAMP = 5;
+const GRAB_ZOOM = 0.832;
+const GRAB_MS = 400;
+const DRIFT = 0.07;
+
+// Medium max. 70% der Zelle (Spec §2, MEDIA_ZOOM 0.7); Formate wechseln
+// wie beim Original (breit / Hochformat-"Phone" / Quadrat, gemessen §2).
+type ContentStyle = { w: number; h: number; crop: "top" | "center" };
+const STYLE_WIDE: ContentStyle = { w: 0.7, h: 0.7 * (620 / 960), crop: "top" };
+const STYLE_PHONE: ContentStyle = { w: 0.4, h: 0.7, crop: "top" };
+const STYLE_SQUARE: ContentStyle = { w: 0.65, h: 0.65, crop: "center" };
+const CONTENT_STYLES = [STYLE_WIDE, STYLE_PHONE, STYLE_SQUARE];
+const STYLE_VIDEO: ContentStyle = { w: 0.7, h: 0.7 * (400 / 640), crop: "top" };
+
+function easeOutPow2(t: number) {
+  return 1 - (1 - t) * (1 - t);
 }
-const EASE = makeCubicBezier(0.6, 0, 0.4, 1);
+function easeInOutPow3(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
 
-// ---- Zell-Textur ---------------------------------------------
-// Canvas 1024x1024 (quadratische Zelle wie Original): Haarlinien-Rand,
-// Bild schwebt mittig mit viel dunklem Raum (~70% Zellbreite), kleine
-// Labels an den Zellkanten oben/unten.
-const TEX_W = 1024;
-const TEX_H = 1024;
-const IMG_W = 720; // ~70% der Zelle
-const IMG_H = 465; // 960x620-Screenshots im Seitenverhaeltnis
-const IMG_X = (TEX_W - IMG_W) / 2;
-const IMG_Y = (TEX_H - IMG_H) / 2 - 16; // minimal ueber Mitte (Original-Anmutung)
+// ---- Zellgrund-Textur (Navy + Labels an den Ecken) -------------
+// Spec §3: Labels INNERHALB der Zelle, Inset ~12% horizontal / ~9%
+// vertikal, ~10.9px-Aequivalent uppercase, Grundopacity 0.8 (Hover 1.0).
+// Pro Projekt geteilt; Hover-Variante bekommt den Media-Farbwash.
+const TEX = 1024;
+const PAD_X = Math.round(TEX * 0.12);
+const PAD_Y = Math.round(TEX * 0.09);
+// 10.9 px am Schirm bei 281px-Zelle -> 10.9 * (1024/281) = ~40px Textur.
+const FONT_PX = 40;
 
-type Fonts = { ui: string; display: string };
+type Fonts = { ui: string };
 
-function drawCell(
+function drawCellBg(
   p: SphereProject,
   num: string,
-  img: HTMLImageElement | null,
   fonts: Fonts,
-  hover: boolean
+  washColor: string | null
 ): HTMLCanvasElement {
   const c = document.createElement("canvas");
-  c.width = TEX_W;
-  c.height = TEX_H;
+  c.width = TEX;
+  c.height = TEX;
   const ctx = c.getContext("2d")!;
 
-  ctx.fillStyle = hover ? "#f4f4f2" : BG_DARK;
-  ctx.fillRect(0, 0, TEX_W, TEX_H);
-
-  // Haarlinien an den Zellkanten (ergibt im Raster durchlaufende Linien).
-  if (!hover) {
-    ctx.strokeStyle = "rgba(246,245,241,0.14)";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(1, 1, TEX_W - 2, TEX_H - 2);
+  ctx.fillStyle = CELL_BG;
+  ctx.fillRect(0, 0, TEX, TEX);
+  if (washColor) {
+    // Hover-Wash: Durchschnittsfarbe des Mediums, x0.7 (CELL_BLUR_OPACITY).
+    ctx.globalAlpha = 0.7;
+    ctx.fillStyle = washColor;
+    ctx.fillRect(0, 0, TEX, TEX);
+    ctx.globalAlpha = 1;
   }
 
-  // Screenshot hell und randlos in die Bildzone (cover-crop von oben links).
-  if (img && img.naturalWidth > 0) {
-    const targetRatio = IMG_W / IMG_H;
-    const srcRatio = img.naturalWidth / img.naturalHeight;
-    let sw = img.naturalWidth;
-    let sh = img.naturalHeight;
-    if (srcRatio > targetRatio) sw = sh * targetRatio;
-    else sh = sw / targetRatio;
-    ctx.drawImage(img, 0, 0, sw, sh, IMG_X, IMG_Y, IMG_W, IMG_H);
-  } else {
-    ctx.fillStyle = hover ? "#e4e4e0" : "#1d1f26";
-    ctx.fillRect(IMG_X, IMG_Y, IMG_W, IMG_H);
-  }
+  // Fuge: hauchduenne fast-schwarze Kante (0.002 Welt = ~0.5px Schirm).
+  ctx.strokeStyle = GAP_BG;
+  ctx.lineWidth = 2;
+  ctx.strokeRect(1, 1, TEX - 2, TEX - 2);
 
-  const inkMain = hover ? "#23262e" : "#f6f5f1";
-  const inkSoft = hover ? "#5a5e68" : "#9a9da6";
+  const labelAlpha = washColor ? 1 : 0.8; // INACTIVE_LABEL_OPACITY 0.8
+  ctx.globalAlpha = labelAlpha;
   ctx.textBaseline = "alphabetic";
   try {
-    // Original nutzt weit gesperrte Mono-Labels; letterSpacing kann fehlen.
     (ctx as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = "3px";
   } catch {
     /* noop */
   }
 
-  // Oben links: Projektname. Oben rechts: laufende Nummer.
-  ctx.fillStyle = inkMain;
-  // Label-Groessen: Zelle rendert mit ~200 CSS-px -> Faktor ~0.2; 38px in der
-  // Textur entsprechen also ~7.5px am Schirm (Mini-Labels wie im Original).
-  const pad = 34;
-  ctx.font = `600 38px ${fonts.ui}`;
-  ctx.fillText(p.name.toUpperCase(), pad, 64);
-  ctx.fillStyle = inkSoft;
-  ctx.font = `500 36px ${fonts.ui}`;
-  ctx.fillText(num, TEX_W - pad - ctx.measureText(num).width, 64);
+  // Oben links: Projektname. Oben rechts: Website-Name (Thomas: Symmetrie).
+  ctx.fillStyle = INK_MAIN;
+  ctx.font = `600 ${FONT_PX}px ${fonts.ui}`;
+  ctx.fillText(p.name.toUpperCase(), PAD_X, PAD_Y + FONT_PX * 0.8);
+  ctx.fillStyle = INK_SOFT;
+  const dom = p.domain.toUpperCase();
+  // Langer Domain-Name darf nicht in den Projektnamen laufen: Schrift
+  // schrittweise verkleinern, bis er passt (Symmetrie-Slot bleibt immer da).
+  const nameW = ctx.measureText(p.name.toUpperCase()).width;
+  const maxDomW = TEX - 2 * PAD_X - nameW - 40;
+  let domFont = Math.round(FONT_PX * 0.85);
+  let domShown = dom;
+  ctx.font = `500 ${domFont}px ${fonts.ui}`;
+  while (ctx.measureText(domShown).width > maxDomW && domFont > 26) {
+    domFont -= 2;
+    ctx.font = `500 ${domFont}px ${fonts.ui}`;
+  }
+  if (ctx.measureText(domShown).width > maxDomW) {
+    // Vercel-Hostnames sind zu lang fuer den Slot: Suffix weglassen
+    // (Anzeige-Kuerzel, kein Domain-Claim), notfalls mit Ellipse kappen.
+    domShown = domShown.replace(/\.VERCEL\.APP$/, "");
+    const afterStrip = domShown;
+    while (ctx.measureText(domShown + "…").width > maxDomW && domShown.length > 4) {
+      domShown = domShown.slice(0, -1);
+    }
+    if (domShown !== afterStrip) domShown += "…";
+  }
+  ctx.fillText(domShown, TEX - PAD_X - ctx.measureText(domShown).width, PAD_Y + FONT_PX * 0.8);
 
-  // Unten links: Kategorie. Unten rechts: WEBSITE-Pill (rund wie Original —
-  // bewusste 1:1-Ausnahme vom Eckig-Gesetz, lebt nur in der WebGL-Szene).
-  const rowBase = TEX_H - 44;
-  ctx.fillStyle = inkSoft;
-  ctx.font = `500 34px ${fonts.ui}`;
-  ctx.fillText(p.cat.toUpperCase(), pad, rowBase);
-  const pill = "WEBSITE";
-  ctx.font = `500 32px ${fonts.ui}`;
-  const pw = ctx.measureText(pill).width + 48;
-  const px = TEX_W - pad - pw;
-  const py = TEX_H - 96;
-  ctx.strokeStyle = hover ? "#c9cbd1" : "#3a3d46";
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.roundRect(px, py, pw, 64, 32);
-  ctx.stroke();
-  ctx.fillStyle = inkSoft;
-  ctx.fillText(pill, px + 24, py + 44);
+  // Unten links: Tag-Pills (Spec §3: Kapseln ~15px hoch, 1px helle Border,
+  // Fuellung rgba(255,255,255,0.05); runde Pills = bewusste 1:1-Ausnahme
+  // vom Eckig-Gesetz, lebt nur in der WebGL-Szene).
+  const pillH = Math.round(15 * (TEX / CELL_PX)); // ~55px Textur
+  const pillFont = Math.round(FONT_PX * 0.72);
+  const pillY = TEX - PAD_Y - pillH;
+  ctx.font = `500 ${pillFont}px ${fonts.ui}`;
+  let px = PAD_X;
+  for (const tag of p.tags.slice(0, 3)) {
+    const tw = ctx.measureText(tag).width;
+    const pw = tw + Math.round(pillH * 0.9);
+    ctx.fillStyle = "rgba(255,255,255,0.05)";
+    ctx.beginPath();
+    ctx.roundRect(px, pillY, pw, pillH, pillH / 2);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,0.35)";
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+    ctx.fillStyle = INK_SOFT;
+    ctx.fillText(tag, px + Math.round(pillH * 0.45), pillY + pillH * 0.68);
+    px += pw + Math.round(pillH * 0.4);
+  }
 
+  // Unten rechts: laufende Nummer (Jahr-Slot des Originals).
+  ctx.fillStyle = INK_SOFT;
+  ctx.font = `500 ${Math.round(FONT_PX * 0.85)}px ${fonts.ui}`;
+  ctx.fillText(num, TEX - PAD_X - ctx.measureText(num).width, pillY + pillH * 0.68);
+
+  ctx.globalAlpha = 1;
   return c;
 }
 
-// Fragment-Shader des Nachbearbeitungs-Passes: Standard-Barrel-Distortion
-// (eigene Implementierung der bekannten Formel) + Vignette.
+// Durchschnittsfarbe des Medium-Zentrums (Spec §6: BLUR_ZOOM 20 sampelt
+// einen winzigen Zentrumsbereich -> praktisch die Durchschnittsfarbe).
+function averageCenterColor(img: HTMLImageElement): string {
+  const c = document.createElement("canvas");
+  c.width = 1;
+  c.height = 1;
+  const ctx = c.getContext("2d", { willReadFrequently: true })!;
+  const cw = img.naturalWidth * 0.5;
+  const ch = img.naturalHeight * 0.5;
+  ctx.drawImage(img, (img.naturalWidth - cw) / 2, (img.naturalHeight - ch) / 2, cw, ch, 0, 0, 1, 1);
+  const d = ctx.getImageData(0, 0, 1, 1).data;
+  return `rgb(${d[0]},${d[1]},${d[2]})`;
+}
+
+// Content-Canvas: Screenshot ins Stil-Format croppen (cover).
+function drawContent(img: HTMLImageElement, style: ContentStyle): HTMLCanvasElement {
+  const cw = 768;
+  const ch = Math.round((cw * style.h) / style.w);
+  const c = document.createElement("canvas");
+  c.width = cw;
+  c.height = ch;
+  const ctx = c.getContext("2d")!;
+  const targetRatio = cw / ch;
+  const srcRatio = img.naturalWidth / img.naturalHeight;
+  let sw = img.naturalWidth;
+  let sh = img.naturalHeight;
+  if (srcRatio > targetRatio) sw = sh * targetRatio;
+  else sh = sw / targetRatio;
+  const sy = style.crop === "top" ? 0 : (img.naturalHeight - sh) / 2;
+  const sx = (img.naturalWidth - sw) / 2;
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
+  return c;
+}
+
+// Post-Pass: woertliche Original-Formeln (Spec §4).
 const POST_FRAG = `
 uniform sampler2D tScene;
-uniform vec2 uK;
+uniform vec2 uDistortion;
 uniform float uVigOffset;
 uniform float uVigDark;
 varying vec2 vUv;
 void main() {
   vec2 m = 2.0 * (vUv - 0.5);
-  float r2 = dot(m, m);
-  vec2 factor = vec2(${DISTORTION_BASE}) + uK * r2;
-  // Durch OVERSCAN teilen: die Szene ist groesser gerendert, das Sampling
-  // bleibt so garantiert innerhalb der Textur (keine Rand-Schmierer).
-  vec2 uv = 0.5 + 0.5 * m * factor / ${OVERSCAN};
-  vec4 col = texture2D(tScene, uv);
-  float vig = smoothstep(0.0, uVigOffset, 1.0 - length(m) * uVigDark * 0.5);
-  gl_FragColor = vec4(col.rgb * mix(1.0, vig, 0.85), 1.0);
+  vec2 uv = (${DISTORTION_BASE} + uDistortion * dot(m, m)) * m * 0.5 + 0.5;
+  vec4 col = (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0)
+    ? vec4(0.0, 0.0, 0.0, 1.0)
+    : texture2D(tScene, uv);
+  float dist = distance(vUv, vec2(0.5));
+  col.rgb *= smoothstep(0.8, uVigOffset * 0.799, (uVigDark + uVigOffset) * dist);
+  gl_FragColor = vec4(col.rgb, 1.0);
 }
 `;
 const POST_VERT = `
@@ -187,23 +238,24 @@ void main() {
 `;
 
 type Cell = {
-  base: THREE.Vector2; // Rasterposition (Zellenmitte, Welt-Einheiten)
+  base: THREE.Vector2;
   project: SphereProject;
-  imgUrl: string; // gewaehlte Bild-Variante (img oder img2)
-  num: string;
-  mesh: THREE.Mesh; // dunkle Normal-Variante
-  hoverMesh: THREE.Mesh; // weisse Hover-Variante (Opacity-Fade)
-  mat: THREE.MeshBasicMaterial;
-  hoverMat: THREE.MeshBasicMaterial;
+  imgUrl: string;
+  style: ContentStyle;
+  isVideo: boolean;
+  bgMesh: THREE.Mesh;
+  tintMesh: THREE.Mesh;
+  contentMesh: THREE.Mesh;
+  bgMat: THREE.MeshBasicMaterial;
+  tintMat: THREE.MeshBasicMaterial;
+  contentMat: THREE.MeshBasicMaterial;
 };
 
-type Focused = { project: SphereProject } | null;
-
 export default function SphereGallery() {
+  const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<"pending" | "canvas" | "fallback">("pending");
-  const [selected, setSelected] = useState<Focused>(null);
-  const focusApi = useRef<{ unfocus: () => void } | null>(null);
+  const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -232,10 +284,7 @@ export default function SphereGallery() {
       container.removeChild(probe);
       return fam;
     };
-    const fonts: Fonts = {
-      ui: probeFont("--rr-font-ui", "sans-serif"),
-      display: probeFont("--font-dmsans", "sans-serif"),
-    };
+    const fonts: Fonts = { ui: probeFont("--rr-font-ui", "sans-serif") };
 
     // ---- Renderer + zwei Szenen (Raster -> RenderTarget -> Distortion) ----
     const dpr = Math.min(window.devicePixelRatio, 2);
@@ -250,11 +299,8 @@ export default function SphereGallery() {
     renderer.domElement.style.touchAction = small ? "pan-y" : "none";
 
     const gridScene = new THREE.Scene();
-    const bgColor = new THREE.Color(BG_DARK);
-    gridScene.background = bgColor;
-    const bgTarget = new THREE.Color(BG_DARK);
+    gridScene.background = new THREE.Color(GAP_BG);
 
-    // Orthografische Kamera: 1 Welt-Einheit = 1 Zellbreite; Overscan fuer den Shader.
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.set(0, 0, 5);
 
@@ -267,9 +313,9 @@ export default function SphereGallery() {
     const postMat = new THREE.ShaderMaterial({
       uniforms: {
         tScene: { value: rt.texture },
-        uK: { value: new THREE.Vector2(DISTORTION_K, DISTORTION_K) },
-        uVigOffset: { value: 0.6 },
-        uVigDark: { value: 0.6 },
+        uDistortion: { value: new THREE.Vector2(0, 0) }, // Intro: flach
+        uVigOffset: { value: VIG_OFFSET },
+        uVigDark: { value: VIG_DARK },
       },
       vertexShader: POST_VERT,
       fragmentShader: POST_FRAG,
@@ -279,14 +325,6 @@ export default function SphereGallery() {
     const postQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat);
     postScene.add(postQuad);
 
-    // ---- Zellen ----
-    const EXTENT_X = GRID_COLS; // Wrap-Ausdehnung
-    const EXTENT_Y = GRID_ROWS * CELL_H;
-    const tileGeo = new THREE.PlaneGeometry(TILE_FRACTION, TILE_FRACTION * CELL_H);
-    const cells: Cell[] = [];
-    const normalTex: THREE.CanvasTexture[] = [];
-    const hoverTex: THREE.CanvasTexture[] = [];
-
     const makeTexture = (canvas: HTMLCanvasElement) => {
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
@@ -295,145 +333,199 @@ export default function SphereGallery() {
       return tex;
     };
 
+    // ---- Geteilte Grund-Texturen ----
+    // Normal: pro Projekt. Hover-Wash: pro Bild-Variante (das Original
+    // nimmt die Durchschnittsfarbe des EIGENEN Mediums); bis das Bild da
+    // ist, dient die gesampelte Markenfarbe aus projects.ts als Fallback.
+    const bgTexOf = new Map<string, THREE.CanvasTexture>();
+    const tintTexOf = new Map<string, THREE.CanvasTexture>(); // key: imgUrl
+    const numOf = (p: SphereProject) =>
+      String(SPHERE_PROJECTS.indexOf(p) + 1).padStart(2, "0");
+    const bakeBg = () => {
+      for (const p of SPHERE_PROJECTS) {
+        bgTexOf.get(p.slug)?.dispose();
+        bgTexOf.set(p.slug, makeTexture(drawCellBg(p, numOf(p), fonts, null)));
+        for (const url of [p.img, p.img2].filter(Boolean) as string[]) {
+          tintTexOf.get(url)?.dispose();
+          tintTexOf.set(url, makeTexture(drawCellBg(p, numOf(p), fonts, p.hoverColor)));
+        }
+      }
+    };
+    bakeBg();
+
+    // ---- Video-Loops: ein <video> + eine Textur pro Projekt ----
+    const videoOf = new Map<string, { el: HTMLVideoElement; tex: THREE.VideoTexture }>();
+    for (const p of SPHERE_PROJECTS) {
+      if (!p.loop) continue;
+      const el = document.createElement("video");
+      el.src = p.loop;
+      el.muted = true;
+      el.loop = true;
+      el.playsInline = true;
+      el.preload = "metadata";
+      const tex = new THREE.VideoTexture(el);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      videoOf.set(p.slug, { el, tex });
+    }
+
+    // ---- Zellen ----
+    const EXTENT_X = GRID_COLS;
+    const EXTENT_Y = GRID_ROWS;
+    const bgGeo = new THREE.PlaneGeometry(TILE_FRACTION, TILE_FRACTION);
+    const geoDisposables: THREE.BufferGeometry[] = [bgGeo];
+    const cells: Cell[] = [];
+
     for (let row = 0; row < GRID_ROWS; row++) {
       for (let col = 0; col < GRID_COLS; col++) {
-        const i = cells.length;
-        const project = SPHERE_PROJECTS[(col + row) % SPHERE_PROJECTS.length];
-        const num = String(((col + row) % SPHERE_PROJECTS.length) + 1).padStart(2, "0");
+        const pIdx = (col + row) % SPHERE_PROJECTS.length;
+        const project = SPHERE_PROJECTS[pIdx];
         const base = new THREE.Vector2(
-          (col - (GRID_COLS - 1) / 2) * 1,
-          (row - (GRID_ROWS - 1) / 2) * CELL_H
+          col - (GRID_COLS - 1) / 2,
+          row - (GRID_ROWS - 1) / 2
         );
-        const nt = makeTexture(drawCell(project, num, null, fonts, false));
-        const ht = makeTexture(drawCell(project, num, null, fonts, true));
-        normalTex[i] = nt;
-        hoverTex[i] = ht;
-        const mat = new THREE.MeshBasicMaterial({
-          map: nt,
-          transparent: true,
-          opacity: 0,
-          toneMapped: false,
-        });
-        const hoverMat = new THREE.MeshBasicMaterial({
-          map: ht,
-          transparent: true,
-          opacity: 0,
-          toneMapped: false,
-        });
-        const mesh = new THREE.Mesh(tileGeo, mat);
-        const hoverMesh = new THREE.Mesh(tileGeo, hoverMat);
-        hoverMesh.position.z = 0.01;
-        gridScene.add(mesh);
-        gridScene.add(hoverMesh);
-        // Ungerade Reihen zeigen die zweite Ansicht des Projekts (mehr Vielfalt).
         const imgUrl = row % 2 === 1 && project.img2 ? project.img2 : project.img;
-        cells.push({ base, project, imgUrl, num, mesh, hoverMesh, mat, hoverMat });
+        // Video nur auf einem Teil der Zellen (Thomas: "nicht alle bewegen
+        // sich"), immer im breiten Format.
+        const isVideo = !!project.loop && (row + 2 * col) % 3 === 0;
+        const style = isVideo
+          ? STYLE_VIDEO
+          : CONTENT_STYLES[(col * 3 + row * 2 + pIdx) % CONTENT_STYLES.length];
+
+        const bgMat = new THREE.MeshBasicMaterial({
+          map: bgTexOf.get(project.slug)!,
+          transparent: true,
+          opacity: 0,
+          toneMapped: false,
+        });
+        const tintMat = new THREE.MeshBasicMaterial({
+          map: tintTexOf.get(imgUrl)!,
+          transparent: true,
+          opacity: 0,
+          toneMapped: false,
+        });
+        const contentMat = new THREE.MeshBasicMaterial({
+          color: new THREE.Color("#26364a"),
+          transparent: true,
+          opacity: 0,
+          toneMapped: false,
+        });
+
+        const bgMesh = new THREE.Mesh(bgGeo, bgMat);
+        const tintMesh = new THREE.Mesh(bgGeo, tintMat);
+        const contentGeo = new THREE.PlaneGeometry(style.w, style.h);
+        geoDisposables.push(contentGeo);
+        const contentMesh = new THREE.Mesh(contentGeo, contentMat);
+
+        gridScene.add(bgMesh, tintMesh, contentMesh);
+        cells.push({
+          base,
+          project,
+          imgUrl,
+          style,
+          isVideo,
+          bgMesh,
+          tintMesh,
+          contentMesh,
+          bgMat,
+          tintMat,
+          contentMat,
+        });
       }
     }
 
-    // Screenshots laden und beide Texturvarianten der betroffenen Zellen backen.
+    // ---- Content laden ----
     let disposed = false;
-    const rebuild = (imgUrl: string, img: HTMLImageElement) => {
+    const contentTexCache = new Map<string, THREE.CanvasTexture>();
+    const applyContent = (url: string, img: HTMLImageElement) => {
       if (disposed) return;
-      cells.forEach((cell, i) => {
-        if (cell.imgUrl !== imgUrl) return;
-        const nt = makeTexture(drawCell(cell.project, cell.num, img, fonts, false));
-        const ht = makeTexture(drawCell(cell.project, cell.num, img, fonts, true));
-        normalTex[i].dispose();
-        hoverTex[i].dispose();
-        normalTex[i] = nt;
-        hoverTex[i] = ht;
-        cell.mat.map = nt;
-        cell.hoverMat.map = ht;
-        cell.mat.needsUpdate = true;
-        cell.hoverMat.needsUpdate = true;
-      });
+      // Hover-Wash jetzt aus dem echten Medium backen (Original-Verhalten).
+      const project = SPHERE_PROJECTS.find((p) => p.img === url || p.img2 === url);
+      if (project) {
+        const wash = averageCenterColor(img);
+        tintTexOf.get(url)?.dispose();
+        const tex = makeTexture(drawCellBg(project, numOf(project), fonts, wash));
+        tintTexOf.set(url, tex);
+      }
+      for (const cell of cells) {
+        if (cell.imgUrl !== url) continue;
+        cell.tintMat.map = tintTexOf.get(url)!;
+        cell.tintMat.needsUpdate = true;
+        if (cell.isVideo) continue;
+        const key = `${url}|${cell.style.w}x${cell.style.h}|${cell.style.crop}`;
+        let tex = contentTexCache.get(key);
+        if (!tex) {
+          tex = makeTexture(drawContent(img, cell.style));
+          contentTexCache.set(key, tex);
+        }
+        cell.contentMat.map = tex;
+        cell.contentMat.color.set("#ffffff");
+        cell.contentMat.needsUpdate = true;
+      }
     };
     const startLoading = () => {
-      const urls = [...new Set(cells.map((cell) => cell.imgUrl))];
+      const urls = [...new Set(cells.map((c) => c.imgUrl))];
       urls.forEach((url) => {
         const img = new Image();
-        img.onload = () => rebuild(url, img);
+        img.onload = () => applyContent(url, img);
         img.src = url;
       });
+      for (const cell of cells) {
+        if (!cell.isVideo) continue;
+        const v = videoOf.get(cell.project.slug);
+        if (!v) continue;
+        cell.contentMat.map = v.tex;
+        cell.contentMat.color.set("#ffffff");
+        cell.contentMat.needsUpdate = true;
+      }
     };
     if (document.fonts?.ready) {
       document.fonts.ready.then(() => {
         if (disposed) return;
         fonts.ui = probeFont("--rr-font-ui", "sans-serif");
-        fonts.display = probeFont("--font-dmsans", "sans-serif");
+        bakeBg();
+        cells.forEach((cell) => {
+          cell.bgMat.map = bgTexOf.get(cell.project.slug)!;
+          cell.tintMat.map = tintTexOf.get(cell.imgUrl)!;
+          cell.bgMat.needsUpdate = true;
+          cell.tintMat.needsUpdate = true;
+        });
         startLoading();
       });
     } else {
       startLoading();
     }
 
-    // ---- Pan-Zustand (unendliches Wrap in beide Achsen) ----
-    const offset = new THREE.Vector2(0.55, 0.4); // Intro faehrt auf (0,0)
+    // ---- Pan-Zustand ----
+    const offset = new THREE.Vector2(0, 0);
     const targetOffset = new THREE.Vector2(0, 0);
     const vel = new THREE.Vector2(0, 0);
-    let unitsPerPx = 1 / 400; // im resize() gesetzt
-    let viewHalfH = 1; // sichtbare halbe Hoehe in Welt-Einheiten (resize)
-    const introT0 = performance.now();
-    let introDone = false;
+    const drift = new THREE.Vector2(0, 0); // Ambient-Drift (pointer*0.07)
+    const driftTarget = new THREE.Vector2(0, 0);
+    let unitsPerPx = 1 / 400;
+    let navigating = false;
 
     const wrap = (v: number, extent: number) =>
       ((((v + extent / 2) % extent) + extent) % extent) - extent / 2;
 
-    // ---- Fokus (Whiteout + Panel) ----
-    let focusState: "none" | "in" | "out" = "none";
-    let focusStart = 0;
-    let focusedIndex = -1;
-    let zoom = 1;
-    let zoomFrom = 1;
-    let zoomTo = 1;
-    const focusOffsetFrom = new THREE.Vector2();
-    const focusOffsetTo = new THREE.Vector2();
-    const preFocusOffset = new THREE.Vector2(); // Pan-Zustand vor dem Klick
-
     const cellScreenPos = (cell: Cell) =>
-      new THREE.Vector2(wrap(cell.base.x + offset.x, EXTENT_X), wrap(cell.base.y + offset.y, EXTENT_Y));
-
-    const focus = (i: number) => {
-      focusedIndex = i;
-      focusState = "in";
-      focusStart = performance.now();
-      const pos = cellScreenPos(cells[i]);
-      // Offset so verschieben, dass die Kachel leicht oberhalb der Mitte sitzt
-      // (Panel unten verdeckt sie nicht); Zoom leicht rein.
-      preFocusOffset.copy(offset);
-      focusOffsetFrom.copy(offset);
-      zoomFrom = zoom;
-      zoomTo = small ? 1.9 : 2.3;
-      // Kachel sitzt nach dem Zoom im oberen Drittel (Panel unten bleibt frei).
-      focusOffsetTo.set(
-        offset.x - pos.x,
-        offset.y - pos.y + 0.42 * (viewHalfH / zoomTo)
+      new THREE.Vector2(
+        wrap(cell.base.x + offset.x + drift.x, EXTENT_X),
+        wrap(cell.base.y + offset.y + drift.y, EXTENT_Y)
       );
-      bgTarget.set(BG_LIGHT);
-      cells.forEach((cell, j) => {
-        cell.mesh.userData.dim = j === i ? 1 : 0.25;
-      });
-    };
-    const unfocus = () => {
-      if (focusedIndex < 0) return;
-      focusState = "out";
-      focusStart = performance.now();
-      focusOffsetFrom.copy(offset);
-      focusOffsetTo.copy(preFocusOffset); // Explorations-Zustand wiederherstellen
-      zoomFrom = zoom;
-      zoomTo = 1;
-      bgTarget.set(BG_DARK);
-      cells.forEach((cell) => {
-        cell.mesh.userData.dim = 1;
-      });
-    };
-    focusApi.current = { unfocus };
 
-    // ---- Pointer: Drag-Pan, analytisches Hover/Klick-Picking ----
-    // Der Distortion-Shader mappt Ausgabe-UV -> Quell-UV mit derselben Formel;
-    // fuer Picking wenden wir sie auf die Zeigerposition an und rechnen dann
-    // orthografisch in Weltkoordinaten um (kein Raycaster noetig).
+    // ---- Zoom-Phasen: Intro (aus der Tiefe) + Grab-Zoom ----
+    // Intro (Spec §8): Grid faehrt aus z -2.75 heran (ortho: zoom 0.32 -> 1,
+    // 0.7s power3.inOut) + Opacity 0 -> 1 (0.4s); Kruemmung erst DANACH
+    // (0 -> -0.07*aspect in 1s power2.out).
+    const introT0 = performance.now();
+    const INTRO_ZOOM_MS = 700;
+    const INTRO_CURVE_DELAY = 700;
+    const INTRO_CURVE_MS = 1000;
+    let grabT = 0; // 0..1 Anteil Grab-Zoom
+    let grabbing = false;
+    let aspectNow = 1.6;
+
+    // ---- Pointer ----
     let hovered = -1;
     let dragging = false;
     let downOnCanvas = false;
@@ -442,6 +534,8 @@ export default function SphereGallery() {
     let lastY = 0;
     let pointerUv: THREE.Vector2 | null = null;
 
+    const currentDistortion = () => (postMat.uniforms.uDistortion.value as THREE.Vector2).x;
+
     const toSceneUv = (clientX: number, clientY: number) => {
       const rect = renderer.domElement.getBoundingClientRect();
       const u = (clientX - rect.left) / rect.width;
@@ -449,22 +543,23 @@ export default function SphereGallery() {
       const mx = 2 * (u - 0.5);
       const my = 2 * (v - 0.5);
       const r2 = mx * mx + my * my;
-      const k = postMat.uniforms.uK.value as THREE.Vector2;
-      return new THREE.Vector2(
-        0.5 + (0.5 * mx * (DISTORTION_BASE + k.x * r2)) / OVERSCAN,
-        0.5 + (0.5 * my * (DISTORTION_BASE + k.y * r2)) / OVERSCAN
-      );
+      const d = currentDistortion();
+      const f = DISTORTION_BASE + d * r2;
+      return new THREE.Vector2(0.5 + 0.5 * mx * f, 0.5 + 0.5 * my * f);
     };
 
     const pickCell = (): number => {
       if (!pointerUv) return -1;
       const worldX = camera.left + pointerUv.x * (camera.right - camera.left);
       const worldY = camera.top + pointerUv.y * (camera.bottom - camera.top);
+      // camera.top/bottom sind invertiert zur UV-y-Richtung; die Vorzeichen
+      // heben sich mit der Shader-Formel exakt auf (dokumentiert im Review
+      // der Vorversion) — Werte hier unveraendert uebernehmen.
       for (let i = 0; i < cells.length; i++) {
         const pos = cellScreenPos(cells[i]);
         if (
-          Math.abs(worldX - pos.x) <= (TILE_FRACTION / 2) &&
-          Math.abs(worldY - pos.y) <= (TILE_FRACTION * CELL_H) / 2
+          Math.abs(worldX - pos.x) <= TILE_FRACTION / 2 &&
+          Math.abs(worldY - pos.y) <= TILE_FRACTION / 2
         ) {
           return i;
         }
@@ -473,9 +568,9 @@ export default function SphereGallery() {
     };
 
     const onPointerDown = (e: PointerEvent) => {
-      if (focusState !== "none" || focusedIndex >= 0) return;
-      introDone = true;
+      if (navigating) return;
       dragging = true;
+      grabbing = true;
       downOnCanvas = true;
       moved = 0;
       lastX = e.clientX;
@@ -486,6 +581,11 @@ export default function SphereGallery() {
     };
     const onPointerMove = (e: PointerEvent) => {
       pointerUv = toSceneUv(e.clientX, e.clientY);
+      const rect = renderer.domElement.getBoundingClientRect();
+      driftTarget.set(
+        ((e.clientX - rect.left) / rect.width - 0.5) * DRIFT,
+        -((e.clientY - rect.top) / rect.height - 0.5) * DRIFT
+      );
       if (dragging) {
         const dx = e.clientX - lastX;
         const dy = e.clientY - lastY;
@@ -498,6 +598,7 @@ export default function SphereGallery() {
       }
     };
     const endDrag = (e: PointerEvent) => {
+      grabbing = false;
       if (!dragging) return;
       dragging = false;
       try {
@@ -508,42 +609,56 @@ export default function SphereGallery() {
       renderer.domElement.style.cursor = hovered >= 0 ? "pointer" : "grab";
     };
     const onPointerUp = (e: PointerEvent) => {
-      const wasClick = downOnCanvas && moved <= 8;
+      const wasClick = downOnCanvas && moved <= 3; // Drag-Schwelle 3px (Spec §5)
       downOnCanvas = false;
       endDrag(e);
-      if (focusedIndex >= 0) return;
+      if (navigating) return;
       if (wasClick) {
         pointerUv = toSceneUv(e.clientX, e.clientY);
         const i = pickCell();
         if (i >= 0) {
-          hovered = -1;
-          focus(i);
-          setSelected({ project: cells[i].project });
+          navigating = true;
+          setLeaving(true);
+          const slug = cells[i].project.slug;
+          window.setTimeout(() => {
+            router.push(`/relaunch-preview/referenzen/${slug}`);
+          }, 420);
         }
       }
+    };
+
+    // Wheel pannt das Raster (das Original hat keinen nativen Scroll).
+    const onWheel = (e: WheelEvent) => {
+      if (navigating) return;
+      e.preventDefault();
+      const f = unitsPerPx * 0.9;
+      targetOffset.x -= e.deltaX * f;
+      targetOffset.y += e.deltaY * f;
+      vel.set(-e.deltaX * f * 0.25, e.deltaY * f * 0.25);
     };
 
     renderer.domElement.addEventListener("pointerdown", onPointerDown);
     renderer.domElement.addEventListener("pointermove", onPointerMove);
     renderer.domElement.addEventListener("pointerup", onPointerUp);
     renderer.domElement.addEventListener("pointercancel", endDrag);
+    renderer.domElement.addEventListener("wheel", onWheel, { passive: false });
 
     // ---- Resize ----
+    let viewHalfH = 1;
     const resize = () => {
       const w = container.clientWidth;
       const h = container.clientHeight;
       if (w === 0 || h === 0) return;
       renderer.setSize(w, h, false);
       rt.setSize(Math.round(w * dpr), Math.round(h * dpr));
-      // Zellgroesse fix in CSS-Pixeln (wie Original) -> sichtbare Spaltenzahl
-      // ergibt sich aus der Fensterbreite. Sichtbare Hoehe darf die Raster-
-      // Ausdehnung nie ueberschreiten (sonst nackte Baender): auf extremen
-      // Hochformaten zoomen wir rein statt Luecken zu zeigen.
-      const visibleCols = Math.max(1.6, w / CELL_PX);
-      // OVERSCAN/BASE kompensiert die Zoom-Wirkung des Shaders, damit eine
-      // Zelle in Bildschirmmitte tatsaechlich ~CELL_PX breit erscheint.
-      let halfW = (visibleCols / 2) * (OVERSCAN / DISTORTION_BASE);
-      const maxHalfH = (GRID_ROWS * CELL_H) * 0.475;
+      aspectNow = w / h;
+      // Zellpitch fix ~CELL_PX in der Bildschirmmitte. Der Shader
+      // vergroessert das Zentrum um 1/0.88 -> Kamera kompensiert.
+      const visibleCols = Math.max(1.4, w / CELL_PX);
+      let halfW = visibleCols / 2 / DISTORTION_BASE;
+      // Sichtbare Hoehe darf die Rasterausdehnung nie ueberschreiten
+      // (sonst nackte Wrap-Baender auf extremen Hochformaten).
+      const maxHalfH = EXTENT_Y * 0.475;
       if (halfW * (h / w) > maxHalfH) halfW = maxHalfH / (h / w);
       const halfH = halfW * (h / w);
       viewHalfH = halfH;
@@ -552,10 +667,7 @@ export default function SphereGallery() {
       camera.top = halfH;
       camera.bottom = -halfH;
       camera.updateProjectionMatrix();
-      unitsPerPx = ((2 * halfW) / w) * (DISTORTION_BASE / OVERSCAN);
-      // Distortion aspektkorrigiert (breite Screens kruemmen horizontal staerker).
-      const k = postMat.uniforms.uK.value as THREE.Vector2;
-      k.set(DISTORTION_K, DISTORTION_K * (w / h) * 0.75);
+      unitsPerPx = ((2 * halfW) / w) * DISTORTION_BASE;
     };
     const ro = new ResizeObserver(resize);
     ro.observe(container);
@@ -570,6 +682,7 @@ export default function SphereGallery() {
           last = performance.now();
           loop();
         }
+        if (!visible) videoOf.forEach((v) => v.el.pause());
       },
       { threshold: 0.01 }
     );
@@ -578,7 +691,8 @@ export default function SphereGallery() {
     // ---- Render-Loop (alle Daempfungen zeitbasiert, L-referenzen-03) ----
     let raf = 0;
     let last = performance.now();
-    const appearT0 = performance.now();
+    let zoom = 0.32;
+    let videoTick = 0;
     const loop = () => {
       raf = 0;
       if (!visible) return;
@@ -587,75 +701,84 @@ export default function SphereGallery() {
       last = now;
       const damp = (k: number) => 1 - Math.exp(-k * dt);
 
-      if (focusState !== "none") {
-        const t = Math.min(1, (now - focusStart) / FOCUS_MS);
-        const e = EASE(t);
-        offset.lerpVectors(focusOffsetFrom, focusOffsetTo, e);
-        targetOffset.copy(offset);
-        zoom = zoomFrom + (zoomTo - zoomFrom) * e;
-        if (t >= 1) {
-          if (focusState === "out") focusedIndex = -1;
-          focusState = "none";
-        }
-      } else if (focusedIndex < 0) {
-        // Intro: sanft auf (0,0) fahren.
-        if (!introDone) {
-          const t = Math.min(1, (now - introT0) / 1600);
-          offset.set(0.55 * (1 - EASE(t)), 0.4 * (1 - EASE(t)));
-          targetOffset.copy(offset);
-          if (t >= 1) introDone = true;
-        } else {
-          if (!dragging) {
-            targetOffset.x += vel.x * 60 * dt;
-            targetOffset.y += vel.y * 60 * dt;
-            const decay = Math.exp(-4.2 * dt);
-            vel.multiplyScalar(decay);
-            if (vel.lengthSq() < 1e-10) vel.set(0, 0);
-          }
-          const d = damp(5.5);
-          offset.x += (targetOffset.x - offset.x) * d;
-          offset.y += (targetOffset.y - offset.y) * d;
-        }
+      // Traegheit: Drag 1:1 (in onPointerMove), Release-Decay 4/s (Spec §5).
+      if (!dragging) {
+        targetOffset.x += vel.x * 60 * dt;
+        targetOffset.y += vel.y * 60 * dt;
+        const decay = Math.exp(-RELEASE_DECAY * dt);
+        vel.multiplyScalar(decay);
+        if (vel.lengthSq() < 1e-10) vel.set(0, 0);
+      }
+      const d = damp(5.5);
+      offset.x += (targetOffset.x - offset.x) * d;
+      offset.y += (targetOffset.y - offset.y) * d;
+      drift.x += (driftTarget.x - drift.x) * damp(3);
+      drift.y += (driftTarget.y - drift.y) * damp(3);
 
-        // Hover nur ausserhalb von Drag/Fokus.
-        if (!dragging) {
-          const hi = pickCell();
-          if (hi !== hovered) {
-            hovered = hi;
-            renderer.domElement.style.cursor = hi >= 0 ? "pointer" : "grab";
-          }
+      // Hover nur ausserhalb von Drag (Touch: pointermove feuert kaum
+      // ausserhalb des Drags -> praktisch uebersprungen wie im Original).
+      if (!dragging && !navigating) {
+        const hi = pickCell();
+        if (hi !== hovered) {
+          hovered = hi;
+          renderer.domElement.style.cursor = hi >= 0 ? "pointer" : "grab";
         }
       }
 
+      // Intro-Choreografie (Spec §8).
+      const tIntro = now - introT0;
+      const zIntro = 0.32 + 0.68 * easeInOutPow3(Math.min(1, tIntro / INTRO_ZOOM_MS));
+      const appeared = Math.min(1, tIntro / 400);
+      const curveT = easeOutPow2(
+        Math.min(1, Math.max(0, (tIntro - INTRO_CURVE_DELAY) / INTRO_CURVE_MS))
+      );
+      const dist = postMat.uniforms.uDistortion.value as THREE.Vector2;
+      const dTargetVal = DISTORTION_FACTOR * aspectNow * curveT;
+      dist.set(dTargetVal, dTargetVal);
+
+      // Grab-Zoom (Spec §5): 1 -> 0.832 in 0.4s, zurueck in 0.4s.
+      grabT = Math.min(1, Math.max(0, grabT + (grabbing ? dt * 1000 / GRAB_MS : -dt * 1000 / GRAB_MS)));
+      const grabZoom = 1 + (GRAB_ZOOM - 1) * easeOutPow2(grabT);
+      zoom = zIntro * grabZoom;
       camera.zoom = zoom;
       camera.updateProjectionMatrix();
-      bgColor.lerp(bgTarget, damp(5));
 
-      // Zellen positionieren (Wrap) + Intro-Fade + Hover-/Dim-Faden.
-      const dOp = damp(9);
-      const appeared = Math.min(1, (now - appearT0) / 900);
+      // Zellen positionieren (Wrap) + Fades (Hover-Damp 5/s, Spec §6).
+      const dHover = damp(HOVER_DAMP);
+      const dAppear = damp(9);
       for (let i = 0; i < cells.length; i++) {
         const cell = cells[i];
-        const x = wrap(cell.base.x + offset.x, EXTENT_X);
-        const y = wrap(cell.base.y + offset.y, EXTENT_Y);
-        cell.mesh.position.set(x, y, 0);
-        cell.hoverMesh.position.set(x, y, 0.01);
-        const dim = (cell.mesh.userData.dim as number | undefined) ?? 1;
-        const isHover = i === hovered && focusedIndex < 0 && focusState === "none";
-        const baseOp = appeared * dim;
-        cell.mat.opacity += (baseOp - cell.mat.opacity) * dOp;
-        cell.hoverMat.opacity += ((isHover ? appeared : 0) - cell.hoverMat.opacity) * dOp;
+        const x = wrap(cell.base.x + offset.x + drift.x, EXTENT_X);
+        const y = wrap(cell.base.y + offset.y + drift.y, EXTENT_Y);
+        cell.bgMesh.position.set(x, y, 0);
+        cell.tintMesh.position.set(x, y, 0.005);
+        cell.contentMesh.position.set(x, y, 0.01);
+        const isHover = i === hovered;
+        cell.bgMat.opacity += (appeared - cell.bgMat.opacity) * dAppear;
+        cell.tintMat.opacity += ((isHover ? appeared : 0) - cell.tintMat.opacity) * dHover;
+        cell.contentMat.opacity += (appeared - cell.contentMat.opacity) * dAppear;
       }
 
-      // Distortion + Zoom atmen leicht mit der Pan-Geschwindigkeit (wie
-      // Original: beim Ziehen zoomt die Ansicht etwas raus, mehr Zellen sichtbar).
-      const speed = Math.min(0.4, vel.length() * 60);
-      const k = postMat.uniforms.uK.value as THREE.Vector2;
-      const kBase = DISTORTION_K + speed * 0.18;
-      k.x += (kBase - k.x) * damp(6);
-      if (focusState === "none" && focusedIndex < 0) {
-        const restZoom = 1 - Math.min(0.1, speed * 0.3);
-        zoom += (restZoom - zoom) * damp(4);
+      // Videos: nur nahe der Bildmitte spielen (Original-Verhalten).
+      videoTick += dt;
+      if (videoTick > 0.25) {
+        videoTick = 0;
+        const playRadius = Math.max(viewHalfH, 1.4);
+        const shouldPlay = new Set<string>();
+        for (const cell of cells) {
+          if (!cell.isVideo) continue;
+          const pos = cellScreenPos(cell);
+          if (Math.abs(pos.x) < playRadius * aspectNow && Math.abs(pos.y) < playRadius) {
+            shouldPlay.add(cell.project.slug);
+          }
+        }
+        videoOf.forEach((v, slug) => {
+          if (shouldPlay.has(slug)) {
+            if (v.el.paused) v.el.play().catch(() => undefined);
+          } else if (!v.el.paused) {
+            v.el.pause();
+          }
+        });
       }
 
       renderer.setRenderTarget(rt);
@@ -677,16 +800,24 @@ export default function SphereGallery() {
       renderer.domElement.removeEventListener("pointermove", onPointerMove);
       renderer.domElement.removeEventListener("pointerup", onPointerUp);
       renderer.domElement.removeEventListener("pointercancel", endDrag);
-      focusApi.current = null;
-      tileGeo.dispose();
+      renderer.domElement.removeEventListener("wheel", onWheel);
       postQuad.geometry.dispose();
       postMat.dispose();
       rt.dispose();
-      normalTex.forEach((t) => t.dispose());
-      hoverTex.forEach((t) => t.dispose());
+      geoDisposables.forEach((g) => g.dispose());
+      bgTexOf.forEach((t) => t.dispose());
+      tintTexOf.forEach((t) => t.dispose());
+      contentTexCache.forEach((t) => t.dispose());
+      videoOf.forEach((v) => {
+        v.el.pause();
+        v.el.removeAttribute("src");
+        v.el.load();
+        v.tex.dispose();
+      });
       cells.forEach((cell) => {
-        cell.mat.dispose();
-        cell.hoverMat.dispose();
+        cell.bgMat.dispose();
+        cell.tintMat.dispose();
+        cell.contentMat.dispose();
       });
       renderer.dispose();
       renderer.forceContextLoss();
@@ -694,22 +825,7 @@ export default function SphereGallery() {
         container.removeChild(renderer.domElement);
       }
     };
-  }, [mode]);
-
-  const closeOverlay = () => {
-    focusApi.current?.unfocus();
-    setSelected(null);
-  };
-
-  // Escape schliesst das Projekt-Panel (a11y).
-  useEffect(() => {
-    if (!selected) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeOverlay();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [selected]);
+  }, [mode, router]);
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
@@ -719,12 +835,13 @@ export default function SphereGallery() {
         <div
           ref={containerRef}
           aria-hidden="true"
-          style={{ position: "absolute", inset: 0, overflow: "hidden", background: BG_DARK }}
+          style={{ position: "absolute", inset: 0, overflow: "hidden", background: GAP_BG }}
         />
       )}
 
-      {mode === "canvas" && !selected && (
+      {mode === "canvas" && (
         <div
+          className="rf-gal-meta"
           style={{
             position: "absolute",
             left: "var(--rr-gutter)",
@@ -733,82 +850,25 @@ export default function SphereGallery() {
           }}
         >
           <p className="rr-meta" style={{ color: "#c7c9cf" }}>
-            Ziehen zum Umschauen · Kachel antippen fuer Details
+            Ziehen zum Umschauen · Kachel antippen für das Projekt
           </p>
         </div>
       )}
 
-      {selected && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Referenz ${selected.project.name}`}
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "center",
-            padding: "var(--rr-gutter)",
-            paddingBottom: 48,
-            pointerEvents: "none",
-          }}
-        >
-          <div
-            style={{
-              position: "relative",
-              maxWidth: 460,
-              width: "100%",
-              background: "var(--rr-paper)",
-              borderRadius: 0,
-              padding: "32px 32px 28px",
-              boxShadow: "0 24px 80px rgba(0,0,0,0.30), #f12032 0 -3px 0 inset",
-              pointerEvents: "auto",
-            }}
-          >
-            <button
-              type="button"
-              autoFocus
-              onClick={closeOverlay}
-              aria-label="Schliessen"
-              style={{
-                position: "absolute",
-                top: 14,
-                right: 14,
-                width: 38,
-                height: 38,
-                padding: 0,
-                background: "var(--rr-surface)",
-                color: "var(--rr-ink)",
-                border: "1.5px solid var(--rr-line)",
-                borderRadius: 0,
-                cursor: "pointer",
-                fontSize: 18,
-                lineHeight: 1,
-              }}
-            >
-              &#215;
-            </button>
-            <p className="rr-eyebrow" style={{ marginBottom: 12 }}>
-              {selected.project.cat}
-            </p>
-            <p className="rr-claim" style={{ marginBottom: 10 }}>
-              {selected.project.name}
-            </p>
-            <p className="rr-body" style={{ color: "var(--rr-ink-soft)", marginBottom: 22 }}>
-              Live gebaut von Red Rabbit — schau es dir direkt an.
-            </p>
-            <a
-              className="rr-link"
-              href={selected.project.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Website ansehen
-            </a>
-          </div>
-        </div>
-      )}
+      {/* Whiteout-Uebergang beim Klick (DOM statt WebGL: bleibt auch
+          waehrend der Navigation zuverlaessig sichtbar) */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "#f6f5f1",
+          opacity: leaving ? 1 : 0,
+          pointerEvents: "none",
+          transition: "opacity 0.42s ease",
+          zIndex: 4,
+        }}
+      />
     </div>
   );
 }
@@ -821,7 +881,7 @@ function FallbackGrid() {
         position: "absolute",
         inset: 0,
         overflowY: "auto",
-        background: "var(--rr-dark)",
+        background: "var(--rr-navy)",
         padding: "var(--rr-gutter)",
       }}
     >
@@ -837,9 +897,7 @@ function FallbackGrid() {
         {SPHERE_PROJECTS.map((p) => (
           <a
             key={p.slug}
-            href={p.href}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={`/relaunch-preview/referenzen/${p.slug}`}
             style={{ textDecoration: "none", color: "#f6f5f1" }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -848,14 +906,7 @@ function FallbackGrid() {
               alt={`Website ${p.name}`}
               style={{ display: "block", width: "100%", aspectRatio: "960/620", objectFit: "cover" }}
             />
-            <span
-              style={{
-                display: "block",
-                marginTop: 10,
-                fontSize: 15,
-                fontWeight: 700,
-              }}
-            >
+            <span style={{ display: "block", marginTop: 10, fontSize: 15, fontWeight: 700 }}>
               {p.name}
             </span>
             <span style={{ display: "block", fontSize: 12.5, opacity: 0.7, marginTop: 3 }}>

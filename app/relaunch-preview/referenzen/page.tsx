@@ -4,6 +4,7 @@ import { crimson, dmsans, grotesk } from "@/lib/relaunch/fonts";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import SphereGallery from "@/components/relaunch/SphereGallery";
+import GalleryChrome from "@/components/relaunch/GalleryChrome";
 import { SPHERE_PROJECTS } from "@/lib/relaunch/projects";
 import "../../styleguide/styleguide.css";
 import "@/components/relaunch/subpages.css";
@@ -47,42 +48,53 @@ export default function ReferenzenPreviewPage() {
     >
       <RelaunchMenu />
 
-      {/* Buehne: viewportfuellende Sphaeren-Galerie, H1 als SSR-Overlay */}
-      <section style={{ position: "relative", height: "100dvh", background: "var(--rr-dark)" }}>
+      {/* Buehne: viewportfuellende Galerie. H1 wie der Original-Claim als
+          kleiner Textblock oben Mitte (SSR, SEO), Chrome = Logo/Let's talk/Nav. */}
+      <section style={{ position: "relative", height: "100dvh", background: "var(--rr-navy)" }}>
+        <SphereGallery />
         <div
           style={{
             position: "absolute",
-            top: "calc(var(--rr-gutter) + 64px)",
-            left: "var(--rr-gutter)",
-            right: "var(--rr-gutter)",
-            zIndex: 2,
+            top: "clamp(20px, 2.6vw, 38px)",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 3,
             pointerEvents: "none",
+            textAlign: "left",
+            width: "min(340px, 42vw)",
           }}
+          className="rf-gal-claim"
         >
-          {/* Scrim: haelt die H1 lesbar, wenn helle Kacheln dahinter vorbeiziehen */}
-          <div
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              inset: "-48px -64px -56px -64px",
-              background:
-                "radial-gradient(ellipse 110% 100% at 20% 40%, rgba(13,14,18,0.72), rgba(13,14,18,0) 68%)",
-            }}
-          />
-          <p
-            className="rr-eyebrow-lg"
-            style={{ position: "relative", color: "#f6f5f1", marginBottom: 10 }}
-          >
-            Referenzen
-          </p>
           <h1
-            className="rr-statement"
-            style={{ position: "relative", color: "#f6f5f1", maxWidth: "16ch" }}
+            style={{
+              color: "#f6f5f1",
+              fontSize: "clamp(10.5px, 0.85vw, 13px)",
+              fontWeight: 600,
+              letterSpacing: "0.14em",
+              lineHeight: 1.55,
+              textTransform: "uppercase",
+              textShadow: "0 1px 8px rgba(0,0,0,0.5)",
+            }}
           >
-            Komm mit. Wir zeigen dir was.
+            Referenzen: Websites von Red Rabbit Media für Betriebe aus Österreich.
           </h1>
         </div>
-        <SphereGallery />
+        <GalleryChrome />
+        {/* Mobile-Anpassungen der Galerie-Buehne: Claim + Hinweistext weichen
+            dem Chrome, Nav-Buttons werden kompakt (sonst Ueberlauf auf 390px). */}
+        <style>{`
+          @media (max-width: 700px) {
+            .rf-gal-claim { display: none; }
+          }
+          @media (max-width: 600px) {
+            .rf-gal-meta { display: none; }
+            .rr .rf-gal-nav { gap: 6px; }
+            .rr .rf-gal-nav .rr-btn {
+              padding: 10px 14px;
+              font-size: 13.5px;
+            }
+          }
+        `}</style>
       </section>
 
       {/* Crawlbare, server-gerenderte Projektliste (SEO-Unterbau) */}
