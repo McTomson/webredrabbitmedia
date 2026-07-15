@@ -1,4 +1,28 @@
-# Review — Referenzen Sphaeren-Galerie (phantom.land-Nachbau), 15.07.2026
+# Review — Referenzen phantom.land-Galerie, 15.07.2026
+
+## NACHTRAG Vormittag 15.07.: Umbau Kugel -> flaches Raster (1:1-Nachbau)
+Thomas fand die Kugel-Version optisch zu weit weg vom Original. Bundle-Analyse
+von phantom.land ergab die echte Architektur: flaches Einheitszellen-Raster
+(Kachel = 0.998 der Zelle), unendliches 2-Achsen-Pannen, Barrel-Distortion
+(0.88 + k*r^2) + Vignette als Post-Pass. SphereGallery.tsx entsprechend neu
+geschrieben (Ortho-Kamera + RenderTarget + eigener Distortion-Shader,
+analytisches Picking durch die Shader-Formel, Hover als zweites Mesh mit
+Opacity-Fade). Zweiter Logic-Review (Sonnet) fand 2 echte Bugs, beide gefixt:
+1. CRITICAL: EXTENT_Y (5*0.72) kleiner als sichtbare Kamerahoehe auf
+   Hochformat -> leere Baender. Fix: GRID_ROWS 7 + resize()-Klemme (auf
+   extremen Hochformaten weniger Spalten sichtbar statt Luecken).
+2. MAJOR: unfocus() stellte den Pan-Zustand von vor dem Klick nicht wieder
+   her (View driftete pro Klick). Fix: preFocusOffset sichern/restaurieren.
+Zusaetzlich bestaetigt: Picking-Vorzeichen heben sich exakt auf (dokumentiert),
+RT-Groesse mit dpr manuell = korrektes three-Pattern, Cleanup vollstaendig.
+QA: Desktop (Drag 2-Achsen, Hover-Weisskarte, Klick-Zoom+Whiteout+Panel,
+Escape mit exakter Positions-Wiederherstellung, Szene-Screenshots gegen
+Original verglichen) + Mobile 390x844x3 frischer Load (voll gefuellt).
+QA-Vorfall: Dev-Server :9000 lieferte zeitweise 503/404 fuer CSS-Assets
+(geteilter .next-Cache, Parallel-Session); frischer Compile heilte es.
+
+---
+# Historie: Review der Kugel-Version (gleicher Tag, frueher)
 
 **Scope**: uncommitted — components/relaunch/SphereGallery.tsx (Neufassung), lib/relaunch/projects.ts, app/relaunch-preview/referenzen/page.tsx, app/referenzen-preview/page.tsx
 **Reviewer**: review-it, 3 parallele Agenten (Logic / Security / Simplify, Sonnet)

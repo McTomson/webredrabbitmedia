@@ -5,20 +5,24 @@ import * as THREE from "three";
 import { SPHERE_PROJECTS, type SphereProject } from "@/lib/relaunch/projects";
 
 // ============================================================
-// SphereGallery — Betrachter im Inneren einer Kugel aus echten
-// Projekt-Screenshots (phantom.land-Look, Umbau 15.07.2026).
-// Drei Breitengrad-Ringe mit festen Spalten (gerade Spalten in
-// der Mitte, kruemmen zum Rand weg), Drag mit Traegheit, Hover
-// legt eine weisse Meta-Karte hinter die Kachel, Klick zoomt
-// heran und hellt die Szene auf (Projekt-Panel).
-// Vanilla three.js (kein react-three-fiber, kleineres Bundle).
-// Mobile bekommt ebenfalls WebGL (weniger Kacheln, DPR-Cap);
-// Fallback nur ohne WebGL oder bei reduced-motion.
+// SphereGallery — 1:1-Nachbau der phantom.land-Galerie
+// (Thomas-Auftrag 15.07.2026, Architektur per Bundle-Analyse
+// des Originals verifiziert):
+//   - FLACHES Raster aus Einheitszellen (Kachel = 0.998 der
+//     Zelle -> Haarlinien-Abstaende), NICHT eine echte Kugel.
+//   - Unendliches Drag-Pannen in beide Achsen (Wrap modulo
+//     Rasterausdehnung), Traegheit zeitbasiert gedaempft.
+//   - Die Kruemmung entsteht als Post-Processing: Barrel-
+//     Distortion (Basis 0.88 + Staerke*r^2) + Vignette ueber
+//     dem fertigen Bild — Kacheln bleiben rechteckig.
+//   - Labels klein im dunklen Zellrand (Name / Nr / Kategorie /
+//     Pill), Hover blendet die weisse Karten-Variante weich ein.
+//   - Klick: Whiteout + Info-Panel (Uebergangsloesung bis es
+//     Projekt-Unterseiten gibt).
+// Mobile bekommt ebenfalls WebGL (touchAction pan-y, DPR-Cap);
+// Fallback-Grid nur ohne WebGL oder bei reduced-motion.
 // ============================================================
 
-const SPHERE_RADIUS = 14;
-const FOCUS_MS = 700; // Kamera-Zoom-Dauer
-const PITCH_LIMIT = 0.62; // Ringe enden bei ~0.46 rad — nie ins Leere kippen
 // Szenengrund == Design-Token --rr-dark (#17181d). Als Literal, weil die
 // Kachel-Texturen (Canvas 2D) denselben Wert brauchen, bevor CSS verfuegbar
 // ist — bei Token-Aenderung hier mitziehen.
@@ -26,13 +30,18 @@ const BG_DARK = "#17181d";
 // Fokus-Whiteout: bewusste WebGL-Ausnahme, KEIN Off-White-Token — absichtlich
 // einen Hauch grauer als --rr-surface, damit weisse Hover-Karten noch tragen.
 const BG_LIGHT = "#e9e8e5";
-const IDLE_YAW = 0.0011; // sanfte Eigendrehung bis zur ersten Interaktion
 
-// Kachel-Layout: 16:10-Screenshots + Label-Zeilen oben/unten.
-const TILE_W = 6.0;
-const TILE_H = 4.6; // inkl. Label-Zonen in der Textur
+const GRID_COLS = 7; // 7 Projekte -> jede Spalte ein anderes Projekt
+const GRID_ROWS = 7; // 49 Zellen, Projekt = (col + row) % 7 (diagonal versetzt)
+const CELL_H = 0.72; // Zellhoehe in Welt-Einheiten (Breite = 1), wie Original
+const TILE_FRACTION = 0.998; // Kachel fuellt 99.8% der Zelle (Haarlinien-Gap)
+const FOCUS_MS = 700;
 
-// Master-Easing cubic-bezier(.6,0,.4,1) fuer diskrete Uebergaenge.
+// Distortion-Basis wie beim Original: Faktor = 0.88 + k * r^2.
+const DISTORTION_BASE = 0.88;
+const DISTORTION_K = 0.11; // Grundkruemmung (visuell gegen Original abgeglichen)
+const OVERSCAN = 1.12; // Szene groesser rendern, damit der Shader nie ins Leere sampelt
+
 function makeCubicBezier(x1: number, y1: number, x2: number, y2: number) {
   const cx = 3 * x1;
   const bx = 3 * (x2 - x1) - cx;
@@ -56,46 +65,21 @@ function makeCubicBezier(x1: number, y1: number, x2: number, y2: number) {
 }
 const EASE = makeCubicBezier(0.6, 0, 0.4, 1);
 
-// Ring-Layout: Reihen auf festen Breitengraden, Spalten gleichmaessig
-// um 360 Grad, ungerade Reihen um eine halbe Spalte versetzt.
-type TileSlot = { position: THREE.Vector3; project: SphereProject; index: number };
-
-function ringLayout(cols: number, projects: SphereProject[]): TileSlot[] {
-  const rows = [-0.38, 0, 0.38]; // Breitengrade (rad) — dicht wie beim Original
-  const slots: TileSlot[] = [];
-  let n = 0;
-  rows.forEach((phi, r) => {
-    const y = SPHERE_RADIUS * Math.sin(phi);
-    const ringR = SPHERE_RADIUS * Math.cos(phi);
-    const offset = r % 2 === 1 ? 0 : Math.PI / cols; // Versatz halbe Spalte
-    for (let c = 0; c < cols; c++) {
-      const theta = (c / cols) * Math.PI * 2 + offset;
-      slots.push({
-        position: new THREE.Vector3(Math.sin(theta) * ringR, y, Math.cos(theta) * ringR),
-        project: projects[n % projects.length],
-        index: n,
-      });
-      n++;
-    }
-  });
-  return slots;
-}
-
-// ---- Kachel-Texturen ----------------------------------------
-// Canvas 768x564: Label-Zeile oben (Name links, Nr. rechts),
-// Screenshot-Flaeche 768x440 (cover-crop), Chips-Zeile unten.
-// Normal: Labels hell auf Szenen-Dunkel (schweben im Raum).
-// Hover: weisse Karte hinter allem, Labels in Ink.
-const TEX_W = 768;
-const TEX_H = 564;
-const IMG_Y = 56;
-const IMG_H = 440;
+// ---- Zell-Textur ---------------------------------------------
+// Canvas 1024x736 (Zell-Aspekt 0.72): Haarlinien-Rand, helles
+// randnahes Bild, kleine Mono-Labels im dunklen Zellrand.
+const TEX_W = 1024;
+const TEX_H = 736;
+const IMG_X = 30;
+const IMG_W = TEX_W - 2 * IMG_X;
+const IMG_Y = 62;
+const IMG_H = 622; // 960x620-Screenshots -> 964px breit waeren 622px hoch
 
 type Fonts = { ui: string; display: string };
 
-function drawTile(
+function drawCell(
   p: SphereProject,
-  index: number,
+  num: string,
   img: HTMLImageElement | null,
   fonts: Fonts,
   hover: boolean
@@ -105,84 +89,114 @@ function drawTile(
   c.height = TEX_H;
   const ctx = c.getContext("2d")!;
 
-  if (hover) {
-    ctx.fillStyle = "#f4f4f2";
-    ctx.fillRect(0, 0, TEX_W, TEX_H);
-  } else {
-    ctx.fillStyle = BG_DARK;
-    ctx.fillRect(0, 0, TEX_W, TEX_H);
+  ctx.fillStyle = hover ? "#f4f4f2" : BG_DARK;
+  ctx.fillRect(0, 0, TEX_W, TEX_H);
+
+  // Haarlinien an den Zellkanten (ergibt im Raster durchlaufende Linien).
+  if (!hover) {
+    ctx.strokeStyle = "rgba(246,245,241,0.14)";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(1, 1, TEX_W - 2, TEX_H - 2);
   }
 
-  // Screenshot cover-croppen (Quelle 960x620-ish -> 768x440)
+  // Screenshot hell und randlos in die Bildzone (cover-crop von oben links).
   if (img && img.naturalWidth > 0) {
-    const targetRatio = TEX_W / IMG_H;
+    const targetRatio = IMG_W / IMG_H;
     const srcRatio = img.naturalWidth / img.naturalHeight;
-    let sx = 0;
-    let sy = 0;
     let sw = img.naturalWidth;
     let sh = img.naturalHeight;
-    if (srcRatio > targetRatio) {
-      sw = sh * targetRatio;
-      sx = 0; // links anschneiden vermeiden: Websites sind links-ausgerichtet
-    } else {
-      sh = sw / targetRatio;
-      sy = 0; // oben behalten (Header/Hero ist der Wiedererkennungswert)
-    }
-    ctx.drawImage(img, sx, sy, sw, sh, 0, IMG_Y, TEX_W, IMG_H);
-    if (!hover) {
-      // leicht abdunkeln, damit Rot/Weiss der Labels traegt und die
-      // Szene ruhig bleibt (phantom laesst Bilder ebenfalls gedimmt)
-      ctx.fillStyle = "rgba(13,14,18,0.16)";
-      ctx.fillRect(0, IMG_Y, TEX_W, IMG_H);
-    }
+    if (srcRatio > targetRatio) sw = sh * targetRatio;
+    else sh = sw / targetRatio;
+    ctx.drawImage(img, 0, 0, sw, sh, IMG_X, IMG_Y, IMG_W, IMG_H);
   } else {
-    ctx.fillStyle = hover ? "#e4e4e0" : "#181a20";
-    ctx.fillRect(0, IMG_Y, TEX_W, IMG_H);
+    ctx.fillStyle = hover ? "#e4e4e0" : "#1d1f26";
+    ctx.fillRect(IMG_X, IMG_Y, IMG_W, IMG_H);
   }
 
   const inkMain = hover ? "#23262e" : "#f6f5f1";
   const inkSoft = hover ? "#5a5e68" : "#9a9da6";
-
-  // Label-Zeile oben: Name links, laufende Nummer rechts
   ctx.textBaseline = "alphabetic";
-  ctx.fillStyle = inkMain;
-  ctx.font = `700 30px ${fonts.display}`;
-  ctx.fillText(p.name.toUpperCase(), 4, 38);
-  ctx.fillStyle = inkSoft;
-  ctx.font = `500 24px ${fonts.ui}`;
-  const num = String((index % SPHERE_PROJECTS.length) + 1).padStart(2, "0");
-  ctx.fillText(num, TEX_W - ctx.measureText(num).width - 4, 38);
+  try {
+    // Original nutzt weit gesperrte Mono-Labels; letterSpacing kann fehlen.
+    (ctx as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = "3px";
+  } catch {
+    /* noop */
+  }
 
-  // Chips-Zeile unten: Kategorie + WEBSITE
-  const chipY = IMG_Y + IMG_H + 14;
-  let chipX = 4;
-  const chips = [p.cat.toUpperCase(), "WEBSITE"];
-  ctx.font = `600 20px ${fonts.ui}`;
-  chips.forEach((label) => {
-    const w = ctx.measureText(label).width + 24;
-    ctx.strokeStyle = hover ? "#c9cbd1" : "#3a3d46";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(chipX, chipY, w, 36);
-    ctx.fillStyle = inkSoft;
-    ctx.fillText(label, chipX + 12, chipY + 25);
-    chipX += w + 12;
-  });
+  // Oben links: Projektname. Oben rechts: laufende Nummer.
+  ctx.fillStyle = inkMain;
+  ctx.font = `600 23px ${fonts.ui}`;
+  ctx.fillText(p.name.toUpperCase(), IMG_X, 42);
+  ctx.fillStyle = inkSoft;
+  ctx.font = `500 22px ${fonts.ui}`;
+  ctx.fillText(num, TEX_W - IMG_X - ctx.measureText(num).width, 42);
+
+  // Unten links: Kategorie. Unten rechts: WEBSITE-Pill (rund wie Original —
+  // bewusste 1:1-Ausnahme vom Eckig-Gesetz, lebt nur in der WebGL-Szene).
+  const rowBase = TEX_H - 26;
+  ctx.fillStyle = inkSoft;
+  ctx.font = `500 21px ${fonts.ui}`;
+  ctx.fillText(p.cat.toUpperCase(), IMG_X, rowBase);
+  const pill = "WEBSITE";
+  ctx.font = `500 19px ${fonts.ui}`;
+  const pw = ctx.measureText(pill).width + 30;
+  const px = TEX_W - IMG_X - pw;
+  const py = TEX_H - 48;
+  ctx.strokeStyle = hover ? "#c9cbd1" : "#3a3d46";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(px, py, pw, 30, 15);
+  ctx.stroke();
+  ctx.fillStyle = inkSoft;
+  ctx.fillText(pill, px + 15, py + 21);
 
   return c;
 }
+
+// Fragment-Shader des Nachbearbeitungs-Passes: Standard-Barrel-Distortion
+// (eigene Implementierung der bekannten Formel) + Vignette.
+const POST_FRAG = `
+uniform sampler2D tScene;
+uniform vec2 uK;
+uniform float uVigOffset;
+uniform float uVigDark;
+varying vec2 vUv;
+void main() {
+  vec2 m = 2.0 * (vUv - 0.5);
+  float r2 = dot(m, m);
+  vec2 factor = vec2(${DISTORTION_BASE}) + uK * r2;
+  vec2 uv = 0.5 + 0.5 * m * factor;
+  vec4 col = texture2D(tScene, uv);
+  float vig = smoothstep(0.0, uVigOffset, 1.0 - length(m) * uVigDark * 0.5);
+  gl_FragColor = vec4(col.rgb * mix(1.0, vig, 0.85), 1.0);
+}
+`;
+const POST_VERT = `
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = vec4(position.xy, 0.0, 1.0);
+}
+`;
+
+type Cell = {
+  base: THREE.Vector2; // Rasterposition (Zellenmitte, Welt-Einheiten)
+  project: SphereProject;
+  num: string;
+  mesh: THREE.Mesh; // dunkle Normal-Variante
+  hoverMesh: THREE.Mesh; // weisse Hover-Variante (Opacity-Fade)
+  mat: THREE.MeshBasicMaterial;
+  hoverMat: THREE.MeshBasicMaterial;
+};
 
 type Focused = { project: SphereProject } | null;
 
 export default function SphereGallery() {
   const containerRef = useRef<HTMLDivElement>(null);
-  // "pending" bis Faehigkeit geklaert (SSR-sicher), dann canvas | fallback.
   const [mode, setMode] = useState<"pending" | "canvas" | "fallback">("pending");
   const [selected, setSelected] = useState<Focused>(null);
-
-  // Ref auf die three-Steuerung, damit der Close-Button entfokussieren kann.
   const focusApi = useRef<{ unfocus: () => void } | null>(null);
 
-  // Faehigkeit pruefen (nur Client). Mobile bekommt ebenfalls Canvas.
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let webgl = false;
@@ -201,9 +215,8 @@ export default function SphereGallery() {
     if (!container) return;
 
     const small = window.matchMedia("(max-width: 767px)").matches;
-    const COLS = small ? 9 : 12;
+    const VISIBLE_COLS = small ? 1.8 : 3.3; // Zellbreiten im Viewport (wie Original)
 
-    // Aufgeloeste Schriften fuer die Canvas-Texturen ermitteln.
     const probeFont = (cssVar: string, fallback: string) => {
       const probe = document.createElement("span");
       probe.style.fontFamily = `var(${cssVar})`;
@@ -217,36 +230,55 @@ export default function SphereGallery() {
       display: probeFont("--font-dmsans", "sans-serif"),
     };
 
-    const scene = new THREE.Scene();
-    const bgColor = new THREE.Color(BG_DARK);
-    scene.background = bgColor;
-    const bgTarget = new THREE.Color(BG_DARK);
-
-    const camera = new THREE.PerspectiveCamera(small ? 74 : 66, 1, 0.1, 100);
-    camera.position.set(0, 0, 0);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: !small, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, small ? 1.75 : 2));
+    // ---- Renderer + zwei Szenen (Raster -> RenderTarget -> Distortion) ----
+    const dpr = Math.min(window.devicePixelRatio, 2);
+    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
+    renderer.setPixelRatio(dpr);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(renderer.domElement);
     renderer.domElement.style.display = "block";
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
     renderer.domElement.style.cursor = "grab";
-    // Mobile: vertikales Wischen scrollt die Seite weiter (sonst saesse man
-    // im 100dvh-Canvas fest), horizontales Wischen rotiert die Kugel.
     renderer.domElement.style.touchAction = small ? "pan-y" : "none";
 
-    // ---- Kacheln erzeugen ----
-    const slots = ringLayout(COLS, SPHERE_PROJECTS);
-    const geo = new THREE.PlaneGeometry(TILE_W, TILE_H);
-    const meshes: THREE.Mesh[] = [];
-    const materials: THREE.MeshBasicMaterial[] = [];
+    const gridScene = new THREE.Scene();
+    const bgColor = new THREE.Color(BG_DARK);
+    gridScene.background = bgColor;
+    const bgTarget = new THREE.Color(BG_DARK);
+
+    // Orthografische Kamera: 1 Welt-Einheit = 1 Zellbreite; Overscan fuer den Shader.
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+    camera.position.set(0, 0, 5);
+
+    const rt = new THREE.WebGLRenderTarget(2, 2, {
+      samples: 4,
+      colorSpace: THREE.SRGBColorSpace,
+    });
+    const postScene = new THREE.Scene();
+    const postCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const postMat = new THREE.ShaderMaterial({
+      uniforms: {
+        tScene: { value: rt.texture },
+        uK: { value: new THREE.Vector2(DISTORTION_K, DISTORTION_K) },
+        uVigOffset: { value: 0.6 },
+        uVigDark: { value: 0.6 },
+      },
+      vertexShader: POST_VERT,
+      fragmentShader: POST_FRAG,
+      depthTest: false,
+      depthWrite: false,
+    });
+    const postQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat);
+    postScene.add(postQuad);
+
+    // ---- Zellen ----
+    const EXTENT_X = GRID_COLS; // Wrap-Ausdehnung
+    const EXTENT_Y = GRID_ROWS * CELL_H;
+    const tileGeo = new THREE.PlaneGeometry(TILE_FRACTION, TILE_FRACTION * CELL_H);
+    const cells: Cell[] = [];
     const normalTex: THREE.CanvasTexture[] = [];
-    const hoverTex: (THREE.CanvasTexture | null)[] = [];
-    const targetScale: number[] = [];
-    const targetOpacity: number[] = [];
-    const appearAt: number[] = [];
+    const hoverTex: THREE.CanvasTexture[] = [];
 
     const makeTexture = (canvas: HTMLCanvasElement) => {
       const tex = new THREE.CanvasTexture(canvas);
@@ -256,63 +288,65 @@ export default function SphereGallery() {
       return tex;
     };
 
-    const t0 = performance.now();
-    slots.forEach((slot, i) => {
-      const mat = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0,
-        toneMapped: false,
-      });
-      const tex = makeTexture(drawTile(slot.project, i, null, fonts, false));
-      mat.map = tex;
-      normalTex[i] = tex;
-      hoverTex[i] = null;
-      materials[i] = mat;
-      const mesh = new THREE.Mesh(geo, mat);
-      mesh.position.copy(slot.position);
-      mesh.lookAt(0, 0, 0); // +Z -> zur Kugel-Mitte (Kachel schaut zur Kamera)
-      mesh.userData.index = i;
-      scene.add(mesh);
-      meshes.push(mesh);
-      targetScale[i] = 1;
-      targetOpacity[i] = 1;
-      // Intro: Spaltenweise einblenden
-      appearAt[i] = t0 + 120 + (i % COLS) * 55 + Math.floor(i / COLS) * 90;
-    });
-
-    // Screenshots laden, dann beide Texturvarianten pro Projekt backen
-    // und auf alle Kacheln des Projekts verteilen.
-    let disposed = false;
-    const images = new Map<string, HTMLImageElement>();
-    const rebuildProject = (p: SphereProject) => {
-      if (disposed) return;
-      const img = images.get(p.slug) ?? null;
-      slots.forEach((slot, i) => {
-        if (slot.project.slug !== p.slug) return;
-        const nt = makeTexture(drawTile(p, i, img, fonts, false));
-        const ht = makeTexture(drawTile(p, i, img, fonts, true));
-        normalTex[i].dispose();
+    for (let row = 0; row < GRID_ROWS; row++) {
+      for (let col = 0; col < GRID_COLS; col++) {
+        const i = cells.length;
+        const project = SPHERE_PROJECTS[(col + row) % SPHERE_PROJECTS.length];
+        const num = String(((col + row) % SPHERE_PROJECTS.length) + 1).padStart(2, "0");
+        const base = new THREE.Vector2(
+          (col - (GRID_COLS - 1) / 2) * 1,
+          (row - (GRID_ROWS - 1) / 2) * CELL_H
+        );
+        const nt = makeTexture(drawCell(project, num, null, fonts, false));
+        const ht = makeTexture(drawCell(project, num, null, fonts, true));
         normalTex[i] = nt;
-        hoverTex[i]?.dispose();
         hoverTex[i] = ht;
-        // Gehoverte Kachel behaelt die Hover-Variante (sonst faellt sie beim
-        // Nachladen des Screenshots sichtbar auf die Normal-Textur zurueck).
-        materials[i].map = i === hovered ? ht : nt;
-        materials[i].needsUpdate = true;
+        const mat = new THREE.MeshBasicMaterial({
+          map: nt,
+          transparent: true,
+          opacity: 0,
+          toneMapped: false,
+        });
+        const hoverMat = new THREE.MeshBasicMaterial({
+          map: ht,
+          transparent: true,
+          opacity: 0,
+          toneMapped: false,
+        });
+        const mesh = new THREE.Mesh(tileGeo, mat);
+        const hoverMesh = new THREE.Mesh(tileGeo, hoverMat);
+        hoverMesh.position.z = 0.01;
+        gridScene.add(mesh);
+        gridScene.add(hoverMesh);
+        cells.push({ base, project, num, mesh, hoverMesh, mat, hoverMat });
+      }
+    }
+
+    // Screenshots laden und beide Varianten neu backen.
+    let disposed = false;
+    const rebuild = (p: SphereProject, img: HTMLImageElement) => {
+      if (disposed) return;
+      cells.forEach((cell, i) => {
+        if (cell.project.slug !== p.slug) return;
+        const nt = makeTexture(drawCell(p, cell.num, img, fonts, false));
+        const ht = makeTexture(drawCell(p, cell.num, img, fonts, true));
+        normalTex[i].dispose();
+        hoverTex[i].dispose();
+        normalTex[i] = nt;
+        hoverTex[i] = ht;
+        cell.mat.map = nt;
+        cell.hoverMat.map = ht;
+        cell.mat.needsUpdate = true;
+        cell.hoverMat.needsUpdate = true;
       });
     };
     const startLoading = () => {
       SPHERE_PROJECTS.forEach((p) => {
         const img = new Image();
-        img.onload = () => {
-          images.set(p.slug, img);
-          rebuildProject(p);
-        };
+        img.onload = () => rebuild(p, img);
         img.src = p.img;
       });
     };
-    // Erst Schrift abwarten (sonst backen wir mit Ersatzfont), dann Bilder.
     if (document.fonts?.ready) {
       document.fonts.ready.then(() => {
         if (disposed) return;
@@ -324,118 +358,128 @@ export default function SphereGallery() {
       startLoading();
     }
 
-    // ---- Blickrichtung (Yaw/Pitch) mit Traegheit ----
-    let yaw = 0;
-    let pitch = 0;
-    let targetYaw = 0;
-    let targetPitch = 0;
-    let velYaw = 0;
-    let velPitch = 0;
-    let interacted = false;
+    // ---- Pan-Zustand (unendliches Wrap in beide Achsen) ----
+    const offset = new THREE.Vector2(0.55, 0.4); // Intro faehrt auf (0,0)
+    const targetOffset = new THREE.Vector2(0, 0);
+    const vel = new THREE.Vector2(0, 0);
+    let unitsPerPx = 1 / 400; // im resize() gesetzt
+    const introT0 = performance.now();
+    let introDone = false;
 
-    // ---- Fokus-Tween (Kamera-Zoom auf Kachel) ----
+    const wrap = (v: number, extent: number) =>
+      ((((v + extent / 2) % extent) + extent) % extent) - extent / 2;
+
+    // ---- Fokus (Whiteout + Panel) ----
     let focusState: "none" | "in" | "out" = "none";
     let focusStart = 0;
-    const camFrom = new THREE.Vector3();
-    const camTo = new THREE.Vector3();
-    const lookTarget = new THREE.Vector3();
     let focusedIndex = -1;
+    let zoom = 1;
+    let zoomFrom = 1;
+    let zoomTo = 1;
+    const focusOffsetFrom = new THREE.Vector2();
+    const focusOffsetTo = new THREE.Vector2();
+    const preFocusOffset = new THREE.Vector2(); // Pan-Zustand vor dem Klick
 
-    const applyLook = () => {
-      const dir = new THREE.Vector3(
-        Math.cos(pitch) * Math.sin(yaw),
-        Math.sin(pitch),
-        Math.cos(pitch) * Math.cos(yaw)
-      );
-      camera.lookAt(dir.add(camera.position));
-    };
+    const cellScreenPos = (cell: Cell) =>
+      new THREE.Vector2(wrap(cell.base.x + offset.x, EXTENT_X), wrap(cell.base.y + offset.y, EXTENT_Y));
 
     const focus = (i: number) => {
       focusedIndex = i;
       focusState = "in";
       focusStart = performance.now();
-      camFrom.copy(camera.position);
-      camTo.copy(slots[i].position).multiplyScalar(0.45);
-      // Blickpunkt unter die Kachel legen -> Kachel erscheint in der oberen
-      // Bildschirmhaelfte, das Info-Panel unten verdeckt sie nicht.
-      lookTarget.copy(slots[i].position);
-      lookTarget.y -= 2.6;
+      const pos = cellScreenPos(cells[i]);
+      // Offset so verschieben, dass die Kachel leicht oberhalb der Mitte sitzt
+      // (Panel unten verdeckt sie nicht); Zoom leicht rein.
+      preFocusOffset.copy(offset);
+      focusOffsetFrom.copy(offset);
+      focusOffsetTo.set(offset.x - pos.x, offset.y - pos.y + (small ? 0.16 : 0.1));
+      zoomFrom = zoom;
+      zoomTo = small ? 1.15 : 1.35;
       bgTarget.set(BG_LIGHT);
-      meshes.forEach((_, j) => {
-        targetOpacity[j] = j === i ? 1 : 0.22;
+      cells.forEach((cell, j) => {
+        cell.mesh.userData.dim = j === i ? 1 : 0.25;
       });
     };
     const unfocus = () => {
       if (focusedIndex < 0) return;
       focusState = "out";
       focusStart = performance.now();
-      camFrom.copy(camera.position);
-      camTo.set(0, 0, 0);
-      lookTarget.copy(slots[focusedIndex].position);
+      focusOffsetFrom.copy(offset);
+      focusOffsetTo.copy(preFocusOffset); // Explorations-Zustand wiederherstellen
+      zoomFrom = zoom;
+      zoomTo = 1;
       bgTarget.set(BG_DARK);
-      meshes.forEach((_, j) => {
-        targetOpacity[j] = 1;
+      cells.forEach((cell) => {
+        cell.mesh.userData.dim = 1;
       });
     };
     focusApi.current = { unfocus };
 
-    // ---- Pointer-Interaktion ----
-    const ndc = new THREE.Vector2(2, 2); // ausserhalb, bis erste Bewegung
-    const raycaster = new THREE.Raycaster();
+    // ---- Pointer: Drag-Pan, analytisches Hover/Klick-Picking ----
+    // Der Distortion-Shader mappt Ausgabe-UV -> Quell-UV mit derselben Formel;
+    // fuer Picking wenden wir sie auf die Zeigerposition an und rechnen dann
+    // orthografisch in Weltkoordinaten um (kein Raycaster noetig).
+    let hovered = -1;
     let dragging = false;
-    let downOnCanvas = false; // pointerup ohne pointerdown auf dem Canvas ist kein Klick
+    let downOnCanvas = false;
     let moved = 0;
     let lastX = 0;
     let lastY = 0;
-    let hovered = -1;
+    let pointerUv: THREE.Vector2 | null = null;
 
-    const setNdc = (e: PointerEvent) => {
+    const toSceneUv = (clientX: number, clientY: number) => {
       const rect = renderer.domElement.getBoundingClientRect();
-      ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      ndc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      const u = (clientX - rect.left) / rect.width;
+      const v = (clientY - rect.top) / rect.height;
+      const mx = 2 * (u - 0.5);
+      const my = 2 * (v - 0.5);
+      const r2 = mx * mx + my * my;
+      const k = postMat.uniforms.uK.value as THREE.Vector2;
+      return new THREE.Vector2(
+        0.5 + 0.5 * mx * (DISTORTION_BASE + k.x * r2),
+        0.5 + 0.5 * my * (DISTORTION_BASE + k.y * r2)
+      );
     };
 
-    const setHover = (hi: number) => {
-      if (hi === hovered) return;
-      if (hovered >= 0 && hoverTex[hovered]) {
-        materials[hovered].map = normalTex[hovered];
-        materials[hovered].needsUpdate = true;
+    const pickCell = (): number => {
+      if (!pointerUv) return -1;
+      const worldX = camera.left + pointerUv.x * (camera.right - camera.left);
+      const worldY = camera.top + pointerUv.y * (camera.bottom - camera.top);
+      for (let i = 0; i < cells.length; i++) {
+        const pos = cellScreenPos(cells[i]);
+        if (
+          Math.abs(worldX - pos.x) <= (TILE_FRACTION / 2) &&
+          Math.abs(worldY - pos.y) <= (TILE_FRACTION * CELL_H) / 2
+        ) {
+          return i;
+        }
       }
-      hovered = hi;
-      if (hovered >= 0 && hoverTex[hovered]) {
-        materials[hovered].map = hoverTex[hovered];
-        materials[hovered].needsUpdate = true;
-      }
-      renderer.domElement.style.cursor = hovered >= 0 ? "pointer" : "grab";
+      return -1;
     };
 
     const onPointerDown = (e: PointerEvent) => {
       if (focusState !== "none" || focusedIndex >= 0) return;
-      interacted = true;
+      introDone = true;
       dragging = true;
       downOnCanvas = true;
       moved = 0;
       lastX = e.clientX;
       lastY = e.clientY;
-      velYaw = 0;
-      velPitch = 0;
+      vel.set(0, 0);
       renderer.domElement.setPointerCapture(e.pointerId);
       renderer.domElement.style.cursor = "grabbing";
     };
     const onPointerMove = (e: PointerEvent) => {
-      setNdc(e);
+      pointerUv = toSceneUv(e.clientX, e.clientY);
       if (dragging) {
         const dx = e.clientX - lastX;
         const dy = e.clientY - lastY;
         lastX = e.clientX;
         lastY = e.clientY;
         moved += Math.abs(dx) + Math.abs(dy);
-        const k = small ? 0.0042 : 0.0032;
-        velYaw = -dx * k;
-        velPitch = -dy * k;
-        targetYaw += velYaw;
-        targetPitch += velPitch;
-        targetPitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, targetPitch));
+        vel.set(dx * unitsPerPx, -dy * unitsPerPx);
+        targetOffset.x += vel.x;
+        targetOffset.y += vel.y;
       }
     };
     const endDrag = (e: PointerEvent) => {
@@ -454,15 +498,12 @@ export default function SphereGallery() {
       endDrag(e);
       if (focusedIndex >= 0) return;
       if (wasClick) {
-        // Klick -> Kachel treffen?
-        setNdc(e);
-        raycaster.setFromCamera(ndc, camera);
-        const hit = raycaster.intersectObjects(meshes, false)[0];
-        if (hit) {
-          const i = (hit.object as THREE.Mesh).userData.index as number;
-          setHover(-1);
+        pointerUv = toSceneUv(e.clientX, e.clientY);
+        const i = pickCell();
+        if (i >= 0) {
+          hovered = -1;
           focus(i);
-          setSelected({ project: slots[i].project });
+          setSelected({ project: cells[i].project });
         }
       }
     };
@@ -478,33 +519,49 @@ export default function SphereGallery() {
       const h = container.clientHeight;
       if (w === 0 || h === 0) return;
       renderer.setSize(w, h, false);
-      camera.aspect = w / h;
+      rt.setSize(Math.round(w * dpr), Math.round(h * dpr));
+      // Sichtbare Hoehe darf die Raster-Ausdehnung nie ueberschreiten (sonst
+      // naekte Baender oben/unten): auf extremen Hochformaten zoomen wir rein
+      // (weniger Spalten sichtbar) statt Luecken zu zeigen.
+      let halfW = (VISIBLE_COLS / 2) * OVERSCAN;
+      const maxHalfH = (GRID_ROWS * CELL_H) * 0.475;
+      if (halfW * (h / w) > maxHalfH) halfW = maxHalfH / (h / w);
+      const halfH = halfW * (h / w);
+      camera.left = -halfW;
+      camera.right = halfW;
+      camera.top = halfH;
+      camera.bottom = -halfH;
       camera.updateProjectionMatrix();
+      unitsPerPx = (VISIBLE_COLS * OVERSCAN) / w;
+      // Distortion aspektkorrigiert (breite Screens kruemmen horizontal staerker).
+      const k = postMat.uniforms.uK.value as THREE.Vector2;
+      k.set(DISTORTION_K, DISTORTION_K * (w / h) * 0.75);
     };
     const ro = new ResizeObserver(resize);
     ro.observe(container);
     resize();
 
-    // ---- Sichtbarkeit: RAF pausieren wenn nicht im Viewport ----
+    // ---- Sichtbarkeit ----
     let visible = true;
     const io = new IntersectionObserver(
       (entries) => {
         visible = entries[0]?.isIntersecting ?? true;
-        if (visible && raf === 0) loop();
+        if (visible && raf === 0) {
+          last = performance.now();
+          loop();
+        }
       },
       { threshold: 0.01 }
     );
     io.observe(container);
 
-    // ---- Render-Loop ----
-    // Alle Daempfungen zeitbasiert (exponentiell mit dt), damit das Verhalten
-    // unabhaengig von der Framerate ist — Chrome drosselt rAF in verdeckten
-    // Fenstern massiv, per-Frame-Lerps wuerden dann minutenlang kriechen.
+    // ---- Render-Loop (alle Daempfungen zeitbasiert, L-referenzen-03) ----
     let raf = 0;
     let last = performance.now();
+    const appearT0 = performance.now();
     const loop = () => {
       raf = 0;
-      if (!visible) return; // pausiert bis IntersectionObserver reaktiviert
+      if (!visible) return;
       const now = performance.now();
       const dt = Math.min(0.1, (now - last) / 1000);
       last = now;
@@ -513,63 +570,73 @@ export default function SphereGallery() {
       if (focusState !== "none") {
         const t = Math.min(1, (now - focusStart) / FOCUS_MS);
         const e = EASE(t);
-        camera.position.lerpVectors(camFrom, camTo, e);
-        camera.lookAt(lookTarget);
+        offset.lerpVectors(focusOffsetFrom, focusOffsetTo, e);
+        targetOffset.copy(offset);
+        zoom = zoomFrom + (zoomTo - zoomFrom) * e;
         if (t >= 1) {
-          if (focusState === "out") {
-            // Freies Umschauen fortsetzen, ausgerichtet auf die Kachel (kein Sprung).
-            const d = slots[focusedIndex].position.clone().normalize();
-            yaw = targetYaw = Math.atan2(d.x, d.z);
-            pitch = targetPitch = Math.asin(Math.max(-1, Math.min(1, d.y)));
-            focusedIndex = -1;
-            camera.position.set(0, 0, 0);
-          }
+          if (focusState === "out") focusedIndex = -1;
           focusState = "none";
         }
       } else if (focusedIndex < 0) {
-        // Sanfte Eigendrehung bis zur ersten Interaktion.
-        if (!interacted) targetYaw += IDLE_YAW * 60 * dt;
-        // Traegheit: Ziel laeuft mit abklingender Geschwindigkeit weiter.
-        if (!dragging) {
-          targetYaw += velYaw * 60 * dt;
-          targetPitch += velPitch * 60 * dt;
-          targetPitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, targetPitch));
-          const decay = Math.exp(-5 * dt); // entspricht 0.92/Frame bei 60fps
-          velYaw *= decay;
-          velPitch *= decay;
-          if (Math.abs(velYaw) < 1e-5) velYaw = 0;
-          if (Math.abs(velPitch) < 1e-5) velPitch = 0;
+        // Intro: sanft auf (0,0) fahren.
+        if (!introDone) {
+          const t = Math.min(1, (now - introT0) / 1600);
+          offset.set(0.55 * (1 - EASE(t)), 0.4 * (1 - EASE(t)));
+          targetOffset.copy(offset);
+          if (t >= 1) introDone = true;
+        } else {
+          if (!dragging) {
+            targetOffset.x += vel.x * 60 * dt;
+            targetOffset.y += vel.y * 60 * dt;
+            const decay = Math.exp(-4.2 * dt);
+            vel.multiplyScalar(decay);
+            if (vel.lengthSq() < 1e-10) vel.set(0, 0);
+          }
+          const d = damp(5.5);
+          offset.x += (targetOffset.x - offset.x) * d;
+          offset.y += (targetOffset.y - offset.y) * d;
         }
-        // Sanftes Nachlaufen (Lenis-Gefuehl), zeitbasiert.
-        const dLook = damp(3.7); // entspricht DAMPING 0.06/Frame bei 60fps
-        yaw += (targetYaw - yaw) * dLook;
-        pitch += (targetPitch - pitch) * dLook;
-        applyLook();
 
-        // Hover (nur ohne aktives Drag).
+        // Hover nur ausserhalb von Drag/Fokus.
         if (!dragging) {
-          raycaster.setFromCamera(ndc, camera);
-          const hit = raycaster.intersectObjects(meshes, false)[0];
-          setHover(hit ? ((hit.object as THREE.Mesh).userData.index as number) : -1);
+          const hi = pickCell();
+          if (hi !== hovered) {
+            hovered = hi;
+            renderer.domElement.style.cursor = hi >= 0 ? "pointer" : "grab";
+          }
         }
       }
 
-      // Hintergrund weich Richtung Ziel (Whiteout bei Fokus).
+      camera.zoom = zoom;
+      camera.updateProjectionMatrix();
       bgColor.lerp(bgTarget, damp(5));
 
-      // Scale/Opacity weich interpolieren (Intro, Hover, Fokus-Dimmen).
-      const dScale = damp(7.7);
-      const dOpacity = damp(6.3);
-      for (let i = 0; i < meshes.length; i++) {
-        const appeared = now >= appearAt[i];
-        const ts = (i === hovered && focusedIndex < 0 ? 1.05 : 1) * (appeared ? 1 : 0.6);
-        const to = appeared ? targetOpacity[i] : 0;
-        const s = meshes[i].scale.x + (ts - meshes[i].scale.x) * dScale;
-        meshes[i].scale.setScalar(s);
-        materials[i].opacity += (to - materials[i].opacity) * dOpacity;
+      // Zellen positionieren (Wrap) + Intro-Fade + Hover-/Dim-Faden.
+      const dOp = damp(9);
+      const appeared = Math.min(1, (now - appearT0) / 900);
+      for (let i = 0; i < cells.length; i++) {
+        const cell = cells[i];
+        const x = wrap(cell.base.x + offset.x, EXTENT_X);
+        const y = wrap(cell.base.y + offset.y, EXTENT_Y);
+        cell.mesh.position.set(x, y, 0);
+        cell.hoverMesh.position.set(x, y, 0.01);
+        const dim = (cell.mesh.userData.dim as number | undefined) ?? 1;
+        const isHover = i === hovered && focusedIndex < 0 && focusState === "none";
+        const baseOp = appeared * dim;
+        cell.mat.opacity += (baseOp - cell.mat.opacity) * dOp;
+        cell.hoverMat.opacity += ((isHover ? appeared : 0) - cell.hoverMat.opacity) * dOp;
       }
 
-      renderer.render(scene, camera);
+      // Distortion atmet leicht mit der Pan-Geschwindigkeit (wie Original).
+      const speed = Math.min(0.4, vel.length() * 60);
+      const k = postMat.uniforms.uK.value as THREE.Vector2;
+      const kBase = DISTORTION_K + speed * 0.18;
+      k.x += (kBase - k.x) * damp(6);
+
+      renderer.setRenderTarget(rt);
+      renderer.render(gridScene, camera);
+      renderer.setRenderTarget(null);
+      renderer.render(postScene, postCam);
       raf = requestAnimationFrame(loop);
     };
     loop();
@@ -586,10 +653,16 @@ export default function SphereGallery() {
       renderer.domElement.removeEventListener("pointerup", onPointerUp);
       renderer.domElement.removeEventListener("pointercancel", endDrag);
       focusApi.current = null;
-      geo.dispose();
+      tileGeo.dispose();
+      postQuad.geometry.dispose();
+      postMat.dispose();
+      rt.dispose();
       normalTex.forEach((t) => t.dispose());
-      hoverTex.forEach((t) => t?.dispose());
-      materials.forEach((m) => m.dispose());
+      hoverTex.forEach((t) => t.dispose());
+      cells.forEach((cell) => {
+        cell.mat.dispose();
+        cell.hoverMat.dispose();
+      });
       renderer.dispose();
       renderer.forceContextLoss();
       if (renderer.domElement.parentNode === container) {
