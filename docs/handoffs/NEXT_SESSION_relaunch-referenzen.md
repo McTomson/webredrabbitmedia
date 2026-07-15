@@ -1,6 +1,36 @@
-# Naechste Session — Referenzen phantom.land-Feinschliff (Stand 15.07.2026 Nachmittag)
+# Naechste Session — Referenzen phantom.land (Stand 16.07.2026)
 
-## AUFTRAG DER NAECHSTEN SESSION (Thomas, Session-Ende 15.07.)
+## AKTUELLER STAND (16.07., Iteration 2 KOMPLETT umgesetzt)
+Die 65%-Version wurde auf Basis einer VERMESSENEN Original-Spec komplett neu
+gebaut (Spec: scratchpad/phantom-spec.md — Chunk-Analyse, Original-CSS,
+Codrops, Frame-Vermessung; Agent-Reports in dieser Datei unten referenziert):
+- Quadratische Zellen (CELL_PX 260, nach Thomas "eine Spur kleiner"), Navy-Grund,
+  sichtbare feine Rasterlinien, KEINE Nummern (Thomas 16.07.).
+- Woertliche Original-Formeln: Barrel (0.88 + d*r^2, d=-0.07*aspect), Vignette
+  0.6/0.6, Release-Decay 4/s, Hover-Damp 5/s, Grab-Zoom 0.832/0.4s, Ambient-
+  Drift 0.07, Intro-Zoom aus der Tiefe + Kruemmung erst danach (1s).
+- Hover = Blur-VERLAUF des eigenen Mediums (8x8-Downscale hochskaliert, x0.7)
+  wie das Original — Thomas' "Farben vom Bild + Verlauf" Wunsch.
+- 7 Video-Loops (public/relaunch/referenzen/loops/, 1MB gesamt, Playwright-
+  Aufnahme ohne Cookie-Banner) auf ~1/3 der Zellen, Play nur nahe Mitte.
+- 3 INFO-Zellen im Raster (Hooks: "Gefunden werden", "Erst sehen, dann zahlen",
+  "Der naechste bist du") -> Klick oeffnet DESIGN.md-Panel (Paper, Layer-
+  Schatten, roter Innen-Balken, Sweep-CTA).
+- Chrome: Logo ROT oben links, Nav + Let's talk = rr-btn-frame (aktive Seite
+  rot + geschlossener Rahmen), Let's-talk-Overlay mit Paper-Karten;
+  TELEFONNUMMER NIE IM KLARTEXT, nur "Anrufen"-Button (Dauerregel, Memory
+  feedback_telefonnummer_nur_anruf_button).
+- Klick Projekt-Zelle -> Whiteout -> Stub-Unterseite /referenzen/<slug>
+  (Case-Studies = eigener Folgeauftrag).
+- review-it: CRITICAL (Picking ohne camera.zoom) + 2 MAJOR gefixt —
+  docs/reviews/referenzen-phantom-2026-07-16.md, Lessons L-referenzen-05/-06.
+- QA Desktop 1460x898 + Mobile 390x844x3 gruen (Screenshots im Session-
+  Scratchpad qa/). OFFEN: Thomas-Abnahme der Iteration 2.
+- BEKANNT/FREMD: Hydration-Mismatch aus RelaunchMenu (useId) — Dev-Overlay
+  "1 Issue" auf allen relaunch-preview-Seiten, gehoert der Parallel-Session.
+
+---
+# Historie: AUFTRAG Iteration 2 (Thomas, Session-Ende 15.07.)
 Thomas' Verdikt zur aktuellen Galerie: "~65% nachgebaut, nicht identisch, leider auch nicht gut." Ziel: den Nachbau auf Original-Niveau bringen. VORGEHEN: ZUERST einen rigorosen Seite-an-Seite-Vergleich machen (beide Seiten in echten Tabs, gleiche Viewports, Screenshots Ruhe/Drag/Hover/Klick, Thomas' Handy-Fotos einbeziehen) und die Abweichungen als Liste VOR dem Coden festhalten — nicht wieder inkrementell raten. Bekannte/vermutete Luecken aus dieser Session (unverifiziert, pruefen!):
 - Zell-Inhalte: Original hat VIDEO-Thumbnails (bewegte Inhalte in den Kacheln) + stark variierende Bild-Aspekte/Groessen pro Zelle; wir haben 14 statische, gleichformatige Screenshots. Groesster Charakter-Unterschied.
 - Typografie der Labels: Original nutzt eine gesperrte MONO-Schrift fuer die Mini-Labels; wir nutzen Instrument Sans. Wirkt anders.

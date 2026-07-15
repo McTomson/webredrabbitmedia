@@ -5,21 +5,66 @@ import Link from "next/link";
 import { RabbitMark } from "@/components/relaunch/RabbitMark";
 
 // ============================================================
-// GalleryChrome — DOM-Overlay der Referenzen-Galerie
-// (phantom.land-Anmutung, aber in unserem Stil / Eckig-Gesetz):
-//   - Logo (Hasenkopf) oben links, weiss auf dunkler Buehne
-//   - "Let's talk"-Button oben rechts (links neben dem Burger-
-//     Menue des RelaunchMenu, das fix oben rechts sitzt)
-//   - Nav-Buttons mittig unten (unsere ondark-Buttonklassen,
-//     KEINE Pillen-Form — Thomas 15.07.: bestehende Buttons)
-//   - Let's-talk-Overlay: 3 Karten wie beim Original, Inhalte
-//     verifiziert von der Live-Site (office@redrabbit.media,
-//     +43 676 9000 955 — Impressum web.redrabbit.media 15.07.)
+// GalleryChrome — DOM-Overlay der Referenzen-Galerie.
+// Umsetzung nach DESIGN.md (Thomas 16.07.):
+//   - Logo (Hasenkopf) oben links in MARKENROT
+//   - Buttons = rr-btn-frame (Eck-Rahmen, DESIGN.md §8) fuer
+//     Let's talk + Nav; CTAs in den Karten = rr-btn-sweep--red
+//     (Primaer-CTA-Rolle). Zwei Effekt-Stile, mehr nicht.
+//   - Let's-talk-Overlay: durchsichtiger Blur-Grund bleibt,
+//     Karten sind PAPER-Karten im rr-card-layer-Duktus
+//     (Layer-Schatten + roter Innen-Balken, rote Eyebrows).
+//   - Telefonnummer NIE im Klartext — nur "Anrufen"-Button
+//     mit tel:-Link (Thomas-Dauerregel, Memory).
 // ============================================================
 
 const EMAIL = "office@redrabbit.media";
-const PHONE_DISPLAY = "+43 676 9000 955";
-const PHONE_TEL = "+436769000955";
+const PHONE_TEL = "+436769000955"; // nur im tel:-Link, nie sichtbar
+
+// Eck-Rahmen-Button (DESIGN.md §8): vier <i class="c1..c4"> + Label.
+// `tone` steuert die Farbe ueber die CSS-Var --c.
+function FrameBtn({
+  href,
+  onClick,
+  children,
+  tone = "#f6f5f1",
+  current = false,
+}: {
+  href?: string;
+  onClick?: () => void;
+  children: React.ReactNode;
+  tone?: string;
+  current?: boolean;
+}) {
+  const cls = `rr-btn-frame rf-frame${current ? " rf-frame--current" : ""}`;
+  const style = { "--c": tone } as React.CSSProperties;
+  const inner = (
+    <>
+      <i className="c1" />
+      <i className="c2" />
+      <i className="c3" />
+      <i className="c4" />
+      <span className="rr-btn-frame__t">{children}</span>
+    </>
+  );
+  if (href) {
+    return (
+      <Link
+        className={cls}
+        style={style}
+        href={href}
+        aria-current={current ? "page" : undefined}
+      >
+        {inner}
+      </Link>
+    );
+  }
+  return (
+    <button type="button" className={cls} style={style} onClick={onClick}>
+      {inner}
+    </button>
+  );
+}
 
 export default function GalleryChrome() {
   const [talkOpen, setTalkOpen] = useState(false);
@@ -35,7 +80,7 @@ export default function GalleryChrome() {
 
   return (
     <>
-      {/* Logo oben links */}
+      {/* Logo oben links — Markenrot (Thomas 16.07.) */}
       <Link
         href="/relaunch-preview"
         aria-label="Zur Startseite"
@@ -48,25 +93,22 @@ export default function GalleryChrome() {
           lineHeight: 0,
         }}
       >
-        <RabbitMark color="#f6f5f1" className="rf-gal-logo" />
+        <RabbitMark className="rf-gal-logo" />
       </Link>
 
       {/* Let's talk oben rechts, links neben dem Burger des RelaunchMenu */}
-      <button
-        type="button"
-        className="rr-btn rr-btn--ondark"
-        onClick={() => setTalkOpen(true)}
+      <div
         style={{
           position: "absolute",
           top: "clamp(18px, 2.4vw, 34px)",
-          right: "calc(clamp(18px, 2.4vw, 40px) + 72px)",
+          right: "calc(clamp(18px, 2.4vw, 40px) + 64px)",
           zIndex: 5,
         }}
       >
-        Let&#8217;s talk
-      </button>
+        <FrameBtn onClick={() => setTalkOpen(true)}>Let&#8217;s talk</FrameBtn>
+      </div>
 
-      {/* Nav-Buttons mittig unten */}
+      {/* Nav mittig unten: Eck-Rahmen-Buttons, aktive Seite rot markiert */}
       <nav
         className="rf-gal-nav"
         aria-label="Galerie-Navigation"
@@ -77,21 +119,18 @@ export default function GalleryChrome() {
           transform: "translateX(-50%)",
           zIndex: 5,
           display: "flex",
-          gap: 10,
+          gap: 14,
         }}
       >
-        <Link className="rr-btn rr-btn--ondark-ghost" href="/relaunch-preview">
-          Start
-        </Link>
-        <span className="rr-btn rr-btn--ondark" aria-current="page" style={{ cursor: "default" }}>
+        <FrameBtn href="/relaunch-preview">Start</FrameBtn>
+        <FrameBtn href="/relaunch-preview/referenzen" tone="var(--rr-red)" current>
           Referenzen
-        </span>
-        <Link className="rr-btn rr-btn--ondark-ghost" href="/relaunch-preview/kontakt">
-          Kontakt
-        </Link>
+        </FrameBtn>
+        <FrameBtn href="/relaunch-preview/kontakt">Kontakt</FrameBtn>
       </nav>
 
-      {/* Let's-talk-Overlay: 3 Karten wie das Original, in unserem Stil */}
+      {/* Let's-talk-Overlay: Blur-Grund (bleibt), Karten neu im
+          DESIGN.md-Stil (Paper, Layer-Schatten, roter Innen-Balken). */}
       {talkOpen && (
         <div
           role="dialog"
@@ -101,7 +140,7 @@ export default function GalleryChrome() {
             position: "fixed",
             inset: 0,
             zIndex: 1002,
-            background: "rgba(12, 14, 20, 0.78)",
+            background: "rgba(12, 14, 20, 0.72)",
             backdropFilter: "blur(18px)",
             WebkitBackdropFilter: "blur(18px)",
             overflowY: "auto",
@@ -114,26 +153,16 @@ export default function GalleryChrome() {
             autoFocus
             onClick={() => setTalkOpen(false)}
             aria-label="Schliessen"
-            style={{
-              position: "fixed",
-              top: "clamp(18px, 2.4vw, 34px)",
-              right: "clamp(18px, 2.4vw, 40px)",
-              width: 44,
-              height: 44,
-              padding: 0,
-              background: "transparent",
-              color: "#f6f5f1",
-              border: "1.5px solid rgba(246,245,241,0.4)",
-              cursor: "pointer",
-              fontSize: 20,
-              lineHeight: 1,
-            }}
+            className="rf-talk-close"
           >
             &#215;
           </button>
 
           <div style={{ maxWidth: 1180, margin: "0 auto" }}>
-            <p className="rr-eyebrow-lg" style={{ color: "#c7c9cf", marginBottom: 14 }}>
+            <p
+              className="rr-eyebrow-lg"
+              style={{ color: "var(--rr-red)", marginBottom: 14 }}
+            >
               Let&#8217;s talk
             </p>
             <p
@@ -146,39 +175,35 @@ export default function GalleryChrome() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-                gap: 20,
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: 24,
               }}
             >
               <TalkCard eyebrow="Zusammenarbeit" line="Ich will eine Website von euch.">
                 <Link
+                  className="rr-btn-sweep rr-btn-sweep--red"
                   href="/relaunch-preview/kontakt"
-                  aria-label="Zum Kontaktformular"
-                  className="rf-talk-arrow"
                 >
-                  &#8594;
+                  Projekt anfragen
                 </Link>
               </TalkCard>
 
               <TalkCard eyebrow="Team" line="Ich will bei euch mitbauen.">
                 <a
+                  className="rr-btn-sweep rr-btn-sweep--navy"
                   href={`mailto:${EMAIL}?subject=Team%20Red%20Rabbit`}
-                  aria-label="E-Mail ans Team schreiben"
-                  className="rf-talk-arrow"
                 >
-                  &#8594;
+                  E-Mail schreiben
                 </a>
               </TalkCard>
 
               <TalkCard eyebrow="Sonst was" line="Einfach Hallo sagen.">
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-                  <a className="rf-talk-chip" href={`mailto:${EMAIL}`}>
-                    <span>E-Mail</span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
+                  <a className="rf-talk-mail" href={`mailto:${EMAIL}`}>
                     {EMAIL}
                   </a>
-                  <a className="rf-talk-chip" href={`tel:${PHONE_TEL}`}>
-                    <span>Telefon</span>
-                    {PHONE_DISPLAY}
+                  <a className="rr-btn-sweep rr-btn-sweep--red" href={`tel:${PHONE_TEL}`}>
+                    Anrufen
                   </a>
                 </div>
               </TalkCard>
@@ -187,13 +212,16 @@ export default function GalleryChrome() {
             <p style={{ marginTop: 40 }}>
               <Link
                 href="/datenschutz"
-                style={{ color: "#c7c9cf", fontSize: 14, textDecorationColor: "rgba(246,245,241,0.4)" }}
+                style={{
+                  color: "#c7c9cf",
+                  fontSize: 14,
+                  textDecorationColor: "rgba(246,245,241,0.4)",
+                }}
               >
                 Datenschutz
               </Link>
             </p>
           </div>
-
         </div>
       )}
 
@@ -203,45 +231,78 @@ export default function GalleryChrome() {
           height: auto;
           filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
         }
-            .rf-talk-arrow {
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              width: 52px;
-              height: 52px;
-              border: 1.5px solid rgba(246, 245, 241, 0.45);
-              color: #f6f5f1;
-              font-size: 22px;
-              text-decoration: none;
-              transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-            }
-            .rf-talk-arrow:hover {
-              background: var(--rr-red);
-              border-color: var(--rr-red);
-              color: #fff;
-            }
-            .rf-talk-chip {
-              display: inline-flex;
-              flex-direction: column;
-              gap: 4px;
-              padding: 10px 14px;
-              border: 1.5px solid rgba(246, 245, 241, 0.3);
-              background: rgba(246, 245, 241, 0.08);
-              color: #f6f5f1;
-              font-size: 13.5px;
-              text-decoration: none;
-              transition: border-color 0.25s ease, background 0.25s ease;
-            }
-            .rf-talk-chip span {
-              font-size: 11px;
-              letter-spacing: 0.14em;
-              text-transform: uppercase;
-              color: #c7c9cf;
-            }
-            .rf-talk-chip:hover {
-              border-color: rgba(246, 245, 241, 0.7);
-              background: rgba(246, 245, 241, 0.14);
-            }
+        /* Eck-Rahmen-Buttons kompakt fuer die Galerie-Buehne */
+        .rr .rf-frame {
+          padding: 13px 22px;
+          font-size: 14.5px;
+          background: rgba(11, 16, 23, 0.35);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+        }
+        /* Aktive Seite: Rahmen dauerhaft geschlossen */
+        .rr .rf-frame--current i {
+          width: 50%;
+          height: 50%;
+        }
+        .rf-talk-close {
+          position: fixed;
+          top: clamp(18px, 2.4vw, 34px);
+          right: clamp(18px, 2.4vw, 40px);
+          width: 44px;
+          height: 44px;
+          padding: 0;
+          background: transparent;
+          color: #f6f5f1;
+          border: 1.5px solid rgba(246, 245, 241, 0.4);
+          cursor: pointer;
+          font-size: 20px;
+          line-height: 1;
+        }
+        .rf-talk-close:hover {
+          background: var(--rr-red);
+          border-color: var(--rr-red);
+        }
+        /* Paper-Karten im rr-card-layer-Duktus (DESIGN.md §10) */
+        .rf-talk-card {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          min-height: 300px;
+          padding: 30px 30px 28px;
+          background: var(--rr-paper);
+          box-shadow:
+            rgba(5, 8, 12, 0.45) 0 24px 80px,
+            var(--rr-red) 0 -3px 0 inset;
+        }
+        .rf-talk-mail {
+          color: var(--rr-ink);
+          font-size: 15px;
+          font-weight: 600;
+          text-decoration: underline;
+          text-decoration-color: color-mix(in srgb, var(--rr-red) 55%, transparent);
+          text-underline-offset: 4px;
+        }
+        .rf-talk-mail:hover {
+          color: var(--rr-red);
+        }
+        /* Mobile: Claim + Hinweistext weichen, Nav wird kompakt */
+        @media (max-width: 700px) {
+          .rf-gal-claim {
+            display: none;
+          }
+        }
+        @media (max-width: 600px) {
+          .rf-gal-meta {
+            display: none;
+          }
+          .rr .rf-gal-nav {
+            gap: 8px;
+          }
+          .rr .rf-frame {
+            padding: 11px 14px;
+            font-size: 12.5px;
+          }
+        }
       `}</style>
     </>
   );
@@ -257,35 +318,14 @@ function TalkCard({
   children: React.ReactNode;
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        minHeight: 300,
-        padding: "26px 26px 24px",
-        border: "1px solid rgba(246, 245, 241, 0.22)",
-        background: "rgba(18, 21, 30, 0.55)",
-      }}
-    >
+    <div className="rf-talk-card">
       <div>
-        <p
-          className="rr-eyebrow"
-          style={{ color: "#c7c9cf", marginBottom: 18, display: "flex", alignItems: "center", gap: 8 }}
-        >
-          <span
-            aria-hidden="true"
-            style={{
-              width: 7,
-              height: 7,
-              borderRadius: "50%",
-              background: "var(--rr-red)",
-              display: "inline-block",
-            }}
-          />
+        <p className="rr-eyebrow" style={{ color: "var(--rr-red)", marginBottom: 18 }}>
           {eyebrow}
         </p>
-        <p className="rr-claim" style={{ color: "#f6f5f1", maxWidth: "14ch" }}>{line}</p>
+        <p className="rr-claim" style={{ maxWidth: "14ch" }}>
+          {line}
+        </p>
       </div>
       <div style={{ marginTop: 28 }}>{children}</div>
     </div>

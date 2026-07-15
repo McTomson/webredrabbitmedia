@@ -45,3 +45,14 @@
 **Impact**: Beim Live-Gang des Relaunch muessen robots-Flags der /relaunch-preview/*-Seiten auf index umgestellt und Projekt-Unterseiten /referenzen/<slug> gebaut werden (Karten-Links dann von extern auf intern umstellen).
 **Check**: Bei Review von Launch-Commits pruefen, ob noindex-Flags und externe Karten-Links noch Uebergangszustand sind.
 **Source**: Review referenzen-hasenlauf 14.07.2026 / Memory project_referenzen_hasenlauf.
+
+### L-referenzen-05 — Ortho-Picking muss camera.zoom einrechnen
+**When**: Analytisches Picking (Screen-UV -> Weltkoordinaten) mit THREE.OrthographicCamera, wenn camera.zoom animiert wird (Intro-, Grab-, Fokus-Zoom).
+**Pattern to avoid**: Weltkoordinaten nur aus camera.left/right/top/bottom rechnen — updateProjectionMatrix() skaliert den sichtbaren Frustum zusaetzlich durch zoom.
+**Why**: Klicks waehrend des Intro-Zooms trafen die falsche/keine Zelle (CRITICAL, Review c399f0c).
+**Check**: Jede pick/unproject-Formel gegen camera.zoom testen (Klick in der ersten Sekunde nach Mount).
+
+### L-referenzen-06 — setTimeout-Navigation im Effect-Cleanup canceln
+**When**: Verzoegertes router.push (Transition-Whiteout) aus einem useEffect-Scope.
+**Pattern to avoid**: Timeout-ID nicht speichern — nach Unmount feuert push trotzdem und ueberschreibt die vom Nutzer gewaehlte Navigation.
+**Check**: Jeder window.setTimeout mit Navigation braucht clearTimeout im Cleanup.

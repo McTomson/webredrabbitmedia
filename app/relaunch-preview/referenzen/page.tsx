@@ -80,21 +80,6 @@ export default function ReferenzenPreviewPage() {
           </h1>
         </div>
         <GalleryChrome />
-        {/* Mobile-Anpassungen der Galerie-Buehne: Claim + Hinweistext weichen
-            dem Chrome, Nav-Buttons werden kompakt (sonst Ueberlauf auf 390px). */}
-        <style>{`
-          @media (max-width: 700px) {
-            .rf-gal-claim { display: none; }
-          }
-          @media (max-width: 600px) {
-            .rf-gal-meta { display: none; }
-            .rr .rf-gal-nav { gap: 6px; }
-            .rr .rf-gal-nav .rr-btn {
-              padding: 10px 14px;
-              font-size: 13.5px;
-            }
-          }
-        `}</style>
       </section>
 
       {/* Crawlbare, server-gerenderte Projektliste (SEO-Unterbau) */}
