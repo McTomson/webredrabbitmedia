@@ -1,4 +1,19 @@
-# Naechste Session — Referenzen (15.07.2026, Abend)
+# Naechste Session — Referenzen phantom.land-Feinschliff (Stand 15.07.2026 Nachmittag)
+
+## AUFTRAG DER NAECHSTEN SESSION (Thomas, Session-Ende 15.07.)
+Thomas' Verdikt zur aktuellen Galerie: "~65% nachgebaut, nicht identisch, leider auch nicht gut." Ziel: den Nachbau auf Original-Niveau bringen. VORGEHEN: ZUERST einen rigorosen Seite-an-Seite-Vergleich machen (beide Seiten in echten Tabs, gleiche Viewports, Screenshots Ruhe/Drag/Hover/Klick, Thomas' Handy-Fotos einbeziehen) und die Abweichungen als Liste VOR dem Coden festhalten — nicht wieder inkrementell raten. Bekannte/vermutete Luecken aus dieser Session (unverifiziert, pruefen!):
+- Zell-Inhalte: Original hat VIDEO-Thumbnails (bewegte Inhalte in den Kacheln) + stark variierende Bild-Aspekte/Groessen pro Zelle; wir haben 14 statische, gleichformatige Screenshots. Groesster Charakter-Unterschied.
+- Typografie der Labels: Original nutzt eine gesperrte MONO-Schrift fuer die Mini-Labels; wir nutzen Instrument Sans. Wirkt anders.
+- Hover: Original faehrt eine praezise weisse Info-Karte mit Client-Logo/Metadaten ein (eigene Geometrie hinter der Kachel, groesser als die Zelle); wir tauschen nur die Textur.
+- Klick: Original = fliessende Seiten-Transition in eine Projektseite; wir = Panel. (Projekt-Unterseiten sind ohnehin geplanter Folgeauftrag.)
+- Intro: Original hat eine markante Lade-/Zoom-Choreografie; unser Intro ist nur ein kurzer Pan.
+- Easing/Gefuehl: Traegheit/Damping-Werte nur nach Augenmass; im Vergleich nachjustieren (Original: velocity.lerp 0.8 beim Drag / 0.1 Ausklang, Codrops).
+- Rasterlinien: beim Original wirken die Linien durchgaengig/feiner; unsere Haarlinien sind Zellrand-Strokes.
+- Referenz-Material: Codrops-Case-Study "phantom.land Invisible Forces" (Tympanus, 30.06.2025) + heruntergeladene Original-Chunks in /private/tmp/claude-501/-Users-McTomson/88c91c1c-c546-471d-91bb-d6e4bbb299f2/scratchpad/phantom-research/ (page-4f1246a9fd8e67db.js enthaelt Grid+DistortionShader; Scratchpad verschwindet evtl. — bei Bedarf neu laden, Anleitung: chunks aus phantom.land-HTML greppen).
+- Handy-Test-Link (Bypass-Token, zeigt letzten Push auf relaunch): https://webredrabbitmedia-git-relaunch-toms-projects-17d37f0b.vercel.app/relaunch-preview/referenzen?x-vercel-protection-bypass=FN1Y9wwlp0uuSQ6UUTwSXi9wHvRpLtGm&x-vercel-set-bypass-cookie=true
+
+---
+# Historie (15.07.2026, Abend zuvor)
 
 ## NEUESTER STAND (15.07. Vormittag, Commit 856e6c2): 1:1-Raster statt Kugel
 Thomas verwarf die Kugel-Optik -> Bundle-Analyse des Originals -> SphereGallery.tsx erneut neu: FLACHES Einheitszellen-Raster (Kachel 0.998, Haarlinien-Gaps), 2-Achsen-Pannen mit Wrap, Barrel-Distortion+Vignette als Post-Pass (Ortho-Kamera + RenderTarget + eigener Shader), analytisches Picking, Hover-Weisskarte per Opacity-Fade, Fokus mit Pan-Restore. Entscheidungen: NUR Galerie (keine phantom-Chrome), Klick = Whiteout+Panel. Zweiter Logic-Review: 2 Bugs gefixt (Hochformat-Wrap-Luecke, Pan-Restore). QA Desktop+Mobile gruen. WARNUNG: :9000 kann transient 503/404 CSS liefern (geteilter .next, Parallel-Session) — NICHT neu starten, kurz warten oder eigener Port. OFFEN: Thomas-Abnahme.
