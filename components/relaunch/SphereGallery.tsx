@@ -23,17 +23,18 @@ import { SPHERE_PROJECTS, type SphereProject } from "@/lib/relaunch/projects";
 // Fallback-Grid nur ohne WebGL oder bei reduced-motion.
 // ============================================================
 
-// Szenengrund == Design-Token --rr-dark (#17181d). Als Literal, weil die
-// Kachel-Texturen (Canvas 2D) denselben Wert brauchen, bevor CSS verfuegbar
-// ist — bei Token-Aenderung hier mitziehen.
-const BG_DARK = "#17181d";
+// Szenengrund BEWUSST nachtschwarz statt --rr-dark (Thomas 15.07.: die
+// Abstaende beim Original sind dunkler, dadurch leuchten die Kacheln) —
+// gilt nur fuer die WebGL-Szene; DOM-Sektionen behalten das Token.
+const BG_DARK = "#0c0d10";
 // Fokus-Whiteout: bewusste WebGL-Ausnahme, KEIN Off-White-Token — absichtlich
 // einen Hauch grauer als --rr-surface, damit weisse Hover-Karten noch tragen.
 const BG_LIGHT = "#e9e8e5";
 
 const GRID_COLS = 7; // 7 Projekte -> jede Spalte ein anderes Projekt
 const GRID_ROWS = 7; // 49 Zellen, Projekt = (col + row) % 7 (diagonal versetzt)
-const CELL_H = 0.72; // Zellhoehe in Welt-Einheiten (Breite = 1), wie Original
+const CELL_H = 1.0; // QUADRATISCHE Zellen wie beim Original
+const CELL_PX = 200; // Zellgroesse in CSS-Pixeln, fix wie beim Original (~190-200px)
 const TILE_FRACTION = 0.998; // Kachel fuellt 99.8% der Zelle (Haarlinien-Gap)
 const FOCUS_MS = 700;
 
@@ -66,14 +67,15 @@ function makeCubicBezier(x1: number, y1: number, x2: number, y2: number) {
 const EASE = makeCubicBezier(0.6, 0, 0.4, 1);
 
 // ---- Zell-Textur ---------------------------------------------
-// Canvas 1024x736 (Zell-Aspekt 0.72): Haarlinien-Rand, helles
-// randnahes Bild, kleine Mono-Labels im dunklen Zellrand.
+// Canvas 1024x1024 (quadratische Zelle wie Original): Haarlinien-Rand,
+// Bild schwebt mittig mit viel dunklem Raum (~70% Zellbreite), kleine
+// Labels an den Zellkanten oben/unten.
 const TEX_W = 1024;
-const TEX_H = 736;
-const IMG_X = 30;
-const IMG_W = TEX_W - 2 * IMG_X;
-const IMG_Y = 62;
-const IMG_H = 622; // 960x620-Screenshots -> 964px breit waeren 622px hoch
+const TEX_H = 1024;
+const IMG_W = 720; // ~70% der Zelle
+const IMG_H = 465; // 960x620-Screenshots im Seitenverhaeltnis
+const IMG_X = (TEX_W - IMG_W) / 2;
+const IMG_Y = (TEX_H - IMG_H) / 2 - 16; // minimal ueber Mitte (Original-Anmutung)
 
 type Fonts = { ui: string; display: string };
 
@@ -125,30 +127,33 @@ function drawCell(
 
   // Oben links: Projektname. Oben rechts: laufende Nummer.
   ctx.fillStyle = inkMain;
-  ctx.font = `600 23px ${fonts.ui}`;
-  ctx.fillText(p.name.toUpperCase(), IMG_X, 42);
+  // Label-Groessen: Zelle rendert mit ~200 CSS-px -> Faktor ~0.2; 38px in der
+  // Textur entsprechen also ~7.5px am Schirm (Mini-Labels wie im Original).
+  const pad = 34;
+  ctx.font = `600 38px ${fonts.ui}`;
+  ctx.fillText(p.name.toUpperCase(), pad, 64);
   ctx.fillStyle = inkSoft;
-  ctx.font = `500 22px ${fonts.ui}`;
-  ctx.fillText(num, TEX_W - IMG_X - ctx.measureText(num).width, 42);
+  ctx.font = `500 36px ${fonts.ui}`;
+  ctx.fillText(num, TEX_W - pad - ctx.measureText(num).width, 64);
 
   // Unten links: Kategorie. Unten rechts: WEBSITE-Pill (rund wie Original —
   // bewusste 1:1-Ausnahme vom Eckig-Gesetz, lebt nur in der WebGL-Szene).
-  const rowBase = TEX_H - 26;
+  const rowBase = TEX_H - 44;
   ctx.fillStyle = inkSoft;
-  ctx.font = `500 21px ${fonts.ui}`;
-  ctx.fillText(p.cat.toUpperCase(), IMG_X, rowBase);
+  ctx.font = `500 34px ${fonts.ui}`;
+  ctx.fillText(p.cat.toUpperCase(), pad, rowBase);
   const pill = "WEBSITE";
-  ctx.font = `500 19px ${fonts.ui}`;
-  const pw = ctx.measureText(pill).width + 30;
-  const px = TEX_W - IMG_X - pw;
-  const py = TEX_H - 48;
+  ctx.font = `500 32px ${fonts.ui}`;
+  const pw = ctx.measureText(pill).width + 48;
+  const px = TEX_W - pad - pw;
+  const py = TEX_H - 96;
   ctx.strokeStyle = hover ? "#c9cbd1" : "#3a3d46";
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 3;
   ctx.beginPath();
-  ctx.roundRect(px, py, pw, 30, 15);
+  ctx.roundRect(px, py, pw, 64, 32);
   ctx.stroke();
   ctx.fillStyle = inkSoft;
-  ctx.fillText(pill, px + 15, py + 21);
+  ctx.fillText(pill, px + 24, py + 44);
 
   return c;
 }
@@ -165,7 +170,9 @@ void main() {
   vec2 m = 2.0 * (vUv - 0.5);
   float r2 = dot(m, m);
   vec2 factor = vec2(${DISTORTION_BASE}) + uK * r2;
-  vec2 uv = 0.5 + 0.5 * m * factor;
+  // Durch OVERSCAN teilen: die Szene ist groesser gerendert, das Sampling
+  // bleibt so garantiert innerhalb der Textur (keine Rand-Schmierer).
+  vec2 uv = 0.5 + 0.5 * m * factor / ${OVERSCAN};
   vec4 col = texture2D(tScene, uv);
   float vig = smoothstep(0.0, uVigOffset, 1.0 - length(m) * uVigDark * 0.5);
   gl_FragColor = vec4(col.rgb * mix(1.0, vig, 0.85), 1.0);
@@ -215,7 +222,6 @@ export default function SphereGallery() {
     if (!container) return;
 
     const small = window.matchMedia("(max-width: 767px)").matches;
-    const VISIBLE_COLS = small ? 1.8 : 3.3; // Zellbreiten im Viewport (wie Original)
 
     const probeFont = (cssVar: string, fallback: string) => {
       const probe = document.createElement("span");
@@ -363,6 +369,7 @@ export default function SphereGallery() {
     const targetOffset = new THREE.Vector2(0, 0);
     const vel = new THREE.Vector2(0, 0);
     let unitsPerPx = 1 / 400; // im resize() gesetzt
+    let viewHalfH = 1; // sichtbare halbe Hoehe in Welt-Einheiten (resize)
     const introT0 = performance.now();
     let introDone = false;
 
@@ -392,9 +399,13 @@ export default function SphereGallery() {
       // (Panel unten verdeckt sie nicht); Zoom leicht rein.
       preFocusOffset.copy(offset);
       focusOffsetFrom.copy(offset);
-      focusOffsetTo.set(offset.x - pos.x, offset.y - pos.y + (small ? 0.16 : 0.1));
       zoomFrom = zoom;
-      zoomTo = small ? 1.15 : 1.35;
+      zoomTo = small ? 1.9 : 2.3;
+      // Kachel sitzt nach dem Zoom im oberen Drittel (Panel unten bleibt frei).
+      focusOffsetTo.set(
+        offset.x - pos.x,
+        offset.y - pos.y + 0.42 * (viewHalfH / zoomTo)
+      );
       bgTarget.set(BG_LIGHT);
       cells.forEach((cell, j) => {
         cell.mesh.userData.dim = j === i ? 1 : 0.25;
@@ -436,8 +447,8 @@ export default function SphereGallery() {
       const r2 = mx * mx + my * my;
       const k = postMat.uniforms.uK.value as THREE.Vector2;
       return new THREE.Vector2(
-        0.5 + 0.5 * mx * (DISTORTION_BASE + k.x * r2),
-        0.5 + 0.5 * my * (DISTORTION_BASE + k.y * r2)
+        0.5 + (0.5 * mx * (DISTORTION_BASE + k.x * r2)) / OVERSCAN,
+        0.5 + (0.5 * my * (DISTORTION_BASE + k.y * r2)) / OVERSCAN
       );
     };
 
@@ -520,19 +531,24 @@ export default function SphereGallery() {
       if (w === 0 || h === 0) return;
       renderer.setSize(w, h, false);
       rt.setSize(Math.round(w * dpr), Math.round(h * dpr));
-      // Sichtbare Hoehe darf die Raster-Ausdehnung nie ueberschreiten (sonst
-      // naekte Baender oben/unten): auf extremen Hochformaten zoomen wir rein
-      // (weniger Spalten sichtbar) statt Luecken zu zeigen.
-      let halfW = (VISIBLE_COLS / 2) * OVERSCAN;
+      // Zellgroesse fix in CSS-Pixeln (wie Original) -> sichtbare Spaltenzahl
+      // ergibt sich aus der Fensterbreite. Sichtbare Hoehe darf die Raster-
+      // Ausdehnung nie ueberschreiten (sonst nackte Baender): auf extremen
+      // Hochformaten zoomen wir rein statt Luecken zu zeigen.
+      const visibleCols = Math.max(1.6, w / CELL_PX);
+      // OVERSCAN/BASE kompensiert die Zoom-Wirkung des Shaders, damit eine
+      // Zelle in Bildschirmmitte tatsaechlich ~CELL_PX breit erscheint.
+      let halfW = (visibleCols / 2) * (OVERSCAN / DISTORTION_BASE);
       const maxHalfH = (GRID_ROWS * CELL_H) * 0.475;
       if (halfW * (h / w) > maxHalfH) halfW = maxHalfH / (h / w);
       const halfH = halfW * (h / w);
+      viewHalfH = halfH;
       camera.left = -halfW;
       camera.right = halfW;
       camera.top = halfH;
       camera.bottom = -halfH;
       camera.updateProjectionMatrix();
-      unitsPerPx = (VISIBLE_COLS * OVERSCAN) / w;
+      unitsPerPx = ((2 * halfW) / w) * (DISTORTION_BASE / OVERSCAN);
       // Distortion aspektkorrigiert (breite Screens kruemmen horizontal staerker).
       const k = postMat.uniforms.uK.value as THREE.Vector2;
       k.set(DISTORTION_K, DISTORTION_K * (w / h) * 0.75);
@@ -627,11 +643,16 @@ export default function SphereGallery() {
         cell.hoverMat.opacity += ((isHover ? appeared : 0) - cell.hoverMat.opacity) * dOp;
       }
 
-      // Distortion atmet leicht mit der Pan-Geschwindigkeit (wie Original).
+      // Distortion + Zoom atmen leicht mit der Pan-Geschwindigkeit (wie
+      // Original: beim Ziehen zoomt die Ansicht etwas raus, mehr Zellen sichtbar).
       const speed = Math.min(0.4, vel.length() * 60);
       const k = postMat.uniforms.uK.value as THREE.Vector2;
       const kBase = DISTORTION_K + speed * 0.18;
       k.x += (kBase - k.x) * damp(6);
+      if (focusState === "none" && focusedIndex < 0) {
+        const restZoom = 1 - Math.min(0.1, speed * 0.3);
+        zoom += (restZoom - zoom) * damp(4);
+      }
 
       renderer.setRenderTarget(rt);
       renderer.render(gridScene, camera);
