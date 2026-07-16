@@ -24,6 +24,8 @@
     };
   }
   const easeInOut=bezier(0.5,0,0.5,1);
+  const easeMorph=bezier(0.6,0,0.4,1);
+  const GOLDEN=Math.PI*(3-Math.sqrt(5));
 
   /* ================================================================ */
   /* Haupt-Szene: Elemente (nur Hero — kein Kopf, keine Story)         */
@@ -35,14 +37,23 @@
   const autobtn=sticky.querySelector("[data-auto]");
   const blobsGroup=sticky.querySelector(".blobs");
 
+  /* Buchstaben-Scatter wie ueber-uns/faq (Thomas 16.07.: "die Buchstaben sollen
+     sich auch wieder verteilen"): pro Buchstabe eine feste Streu-Richtung. */
+  const letterEls=[...htitle.querySelectorAll(".ltr:not(.sp)")];
+  letterEls.forEach((el,k)=>{
+    const ang=k*GOLDEN+0.7;
+    el._dx=Math.cos(ang); el._dy=Math.sin(ang);
+    el._dist=0.95+((k*37)%5)/5*0.5;
+    el._rot=((k%2)?1:-1)*(70+k*28);
+  });
+
   /* ---- Phasen der Hero-Szene (Fortschritt P: 0..1 ueber scene-main) ----
-     Ohne Statements/FAQ ist die Strecke kurz: ganz oben malen, dann steigt der
-     Titel auf und schrumpft mittig, haelt kurz und blendet weich aus — danach
-     folgt (server-gerendert) der redaktionelle Index. KEIN Buchstaben-Scatter,
-     keine roten Fragmente: sauberer Uebergang ins weisse Register. */
+     Ganz oben malen, dann steigt der Titel auf und schrumpft mittig, danach
+     zerstreuen sich die Buchstaben (wie ueber-uns/faq), bevor der server-
+     gerenderte redaktionelle Index folgt. */
   const P_REVEAL=0.09;                 /* Paint-Reveal + voller Anschnitt nur ganz oben */
   const P_SHRINK1=0.52;                /* Titel steigt auf und schrumpft mittig */
-  const P_HOLD_END=0.80;               /* danach: weiches Ausblenden nach oben */
+  const P_SCAT0=0.52, P_SCAT1=0.92;    /* Buchstaben fliegen raus */
 
   /* ---- Maske + Mal-Zone (Blobs nur OBERHALB der Titel-Oberkante) ---- */
   function fitMask(){
@@ -221,21 +232,29 @@
   /* ================================================================ */
   let lastPainting=true;
   function applyMain(Pm){
-    // Titel: Anschnitt (Basislinie) -> Aufstieg+Schrumpf -> Halten -> weiches Ausblenden
-    let s, ty, op=1;
+    // Titel: Anschnitt (Basislinie) -> Aufstieg+Schrumpf -> klein mittig
+    let s, ty;
     if(Pm<=P_REVEAL){ s=1; ty=tyCut; }
     else if(Pm<=P_SHRINK1){
       const r=easeInOut((Pm-P_REVEAL)/(P_SHRINK1-P_REVEAL));
       s=lerp(1,sT,r);
       ty=lerp(tyCut,tyCenter(sT),r);
     } else { s=sT; ty=tyCenter(sT); }
-    if(Pm>P_HOLD_END){
-      const f=easeInOut(clamp((Pm-P_HOLD_END)/(1-P_HOLD_END),0,1));
-      op=1-f;
-      ty=ty - f*window.innerHeight*0.10;
-    }
     htitle.style.transform="translateY("+ty.toFixed(1)+"px) scale("+s.toFixed(4)+")";
-    htitle.style.opacity=op.toFixed(3);
+
+    // Buchstaben fliegen RAUS (wie ueber-uns/faq)
+    const sc=clamp((Pm-P_SCAT0)/(P_SCAT1-P_SCAT0),0,1);
+    const R=Math.max(window.innerWidth,window.innerHeight)*0.9;
+    if(sc<=0){
+      for(const el of letterEls){ el.style.transform="none"; }
+    } else {
+      const e=easeMorph(sc);
+      for(const el of letterEls){
+        const tx=el._dx*el._dist*R*e/s;
+        const tyl=el._dy*el._dist*R*e/s;
+        el.style.transform="translate("+tx.toFixed(1)+"px,"+tyl.toFixed(1)+"px) rotate("+(el._rot*e).toFixed(1)+"deg)";
+      }
+    }
 
     // Reveal-Fade + Interaktion (viewport-fix; faded beim Verlassen des Heros)
     const fade=clamp((Pm-P_REVEAL)/0.07,0,1);

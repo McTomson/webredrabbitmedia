@@ -81,6 +81,9 @@
   }
   .ltr{display:inline-block;will-change:transform,opacity;transform-origin:center center}
   .ltr.sp{width:.16em}
+  /* Roter Schlusspunkt im Hero-Titel (wie Hauptseiten-Headlines, Tomson 16.07.) */
+  .hero-title .ltr.dot{color:var(--red)}
+
 
   .cursor-dot{
     position:absolute;left:0;top:0;z-index:6;
