@@ -1769,3 +1769,30 @@ quelle: https://web.redrabbit.media/tipps/was-kostet-eine-website
 quelle_name: Red Rabbit Media - Was kostet eine Website 2026? (Wissens-Vault, verifiziert)
 geprueft_am: 2026-07-14
 recheck_nach: 2027-01-10
+
+## t43-2026-07-16-197
+cluster: 1
+keywords: lassen, sich, prozesse, über, unternehmenswebsite, automatisieren
+aussage: 30 % der österreichischen Unternehmen (ab 10 Beschäftigten) nutzen 2025 KI-Technologien — mehr als eine Verdreifachung seit 2021 (9 %) und deutlich über dem EU-Schnitt von 20 %. Häufigste Anwendungsform ist generative KI: 73 % der KI-nutzenden Unternehmen setzen auf Texterkennung/-verarbeitung, 51 % auf Sprachgenerierung. 56 % implementieren KI über den Kauf fertiger kommerzieller Software, über 20 % über externe Dienstleister — Automatisierung läuft also überwiegend über eingekaufte Tools, nicht Eigenentwicklung.
+quelle: https://www.statistik.at/fileadmin/announcement/2026/06/20260624IKTU2025.pdf
+quelle_name: Statistik Austria - Pressemitteilung 'Österreichs Unternehmen beim Einsatz von künstlicher Intelligenz im EU-Spitzenfeld' (IKT-Einsatz in Unternehmen 2025)
+geprueft_am: 2026-07-16
+recheck_nach: 2027-01-12
+
+## t43-2026-07-16-198
+cluster: 1
+keywords: lassen, sich, prozesse, über, unternehmenswebsite, automatisieren
+aussage: Seit 1. Jänner 2014 müssen Vertragspartner von Bundesdienststellen in Österreich Rechnungen ausschließlich in strukturierter elektronischer Form (e-Rechnung) einbringen — Papier- und reine PDF-Rechnungen werden nicht akzeptiert. Voraussetzung ist die Registrierung im Unternehmensserviceportal (USP); die Einbringung läuft über e-Rechnung.gv.at. Wer mit der öffentlichen Hand Geschäfte macht, hat den ersten automatisierten Rechnungsprozess damit faktisch verpflichtend. (Rechtsthema: Hinweis 'keine Rechtsberatung' im Artikel setzen.)
+quelle: https://www.usp.gv.at/themen/steuern-finanzen/umsatzsteuer-ueberblick/weitere-informationen-zur-umsatzsteuer/vorsteuerabzug-und-rechnung/e-rechnung-an-die-oeffentliche-verwaltung.html
+quelle_name: Unternehmensserviceportal (USP) - e-Rechnung an die öffentliche Verwaltung
+geprueft_am: 2026-07-16
+recheck_nach: 2027-01-12
+
+## t43-2026-07-16-199
+cluster: 1
+keywords: lassen, sich, prozesse, über, unternehmenswebsite, automatisieren
+aussage: 50 % der Deutschen haben schon mindestens einmal einen Arzttermin online vereinbart (2019: 26 %); 33 % buchten direkt über die Praxis-Homepage bzw. ein Online-Formular. 88 % stimmen zu, dass Praxen telefonisch oft schwer erreichbar sind, und 27 % wählen Praxen gezielt danach aus, ob Online-Terminbuchung angeboten wird — Online-Terminvereinbarung über die eigene Website ist damit ein messbarer Wettbewerbsfaktor (repräsentative Bitkom-Befragung, n=1.007, DACH-Referenz).
+quelle: https://www.bitkom.org/Presse/Presseinformation/Haelfte-vereinbart-Arzttermine-online
+quelle_name: Bitkom e.V. - Presseinformation 'Die Hälfte vereinbart Arzttermine online'
+geprueft_am: 2026-07-16
+recheck_nach: 2027-01-12
