@@ -203,8 +203,9 @@ export default function TippsTunnel({ posts }: { posts: TunnelPost[] }) {
 
   const laid = useMemo(() => layout(filtered), [filtered]);
 
-  // Wurzelhoehe skaliert mit der Kartenzahl (Spec-Startwert n*60vh).
-  const rootHeight = Math.max(120, laid.length * 60);
+  // Wurzelhoehe skaliert mit der Kartenzahl. 110vh pro Karte (Thomas 17.07.:
+  // 60vh war deutlich zu schnell — mehr Scrollweg pro Karte = ruhigeres Tempo).
+  const rootHeight = Math.max(220, laid.length * 110);
 
   useEffect(() => {
     setMounted(true);
@@ -386,7 +387,8 @@ export default function TippsTunnel({ posts }: { posts: TunnelPost[] }) {
       const lead = LEAD_VH * vh;
       const scrollable = rootH - vh - lead;
       const p = scrollable > 0 ? clamp01((window.scrollY - rootTopAbs - lead) / scrollable) : 0;
-      pS += (p - pS) * 0.1;
+      // Weicherer Scrub (Thomas 17.07.: zu schnell/zu hart) — traegeres Nachziehen.
+      pS += (p - pS) * 0.065;
       if (Math.abs(p - pS) < 0.0002) pS = p;
 
       const lay = layoutRef.current;
