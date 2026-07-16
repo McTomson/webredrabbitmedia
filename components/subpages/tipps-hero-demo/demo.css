@@ -41,10 +41,13 @@
   }
 
   /* ================= HAUPT-SZENE: HERO (Titel + Malen) ================= */
-  /* 160vh statt 200vh: kuerzt den Hero-Auslauf, damit der Karten-Tunnel direkt
+  /* 240vh (Thomas 17.07.): Buchstaben-Scatter war deutlich zu schnell — mehr
+     Scrollweg = ruhigeres Zerfliegen. Der Karten-Tunnel haengt per
+     HERO_OVERLAP_VH/LEAD_VH in TippsTunnel.tsx an dieser Hoehe — IMMER
+     gemeinsam aendern. Alter Kommentar: kuerzt den Hero-Auslauf, damit der Tunnel direkt
      an das Buchstaben-Scatter anschliesst (kein totes weisses Stueck). Der
      Scatter laeuft weiter ueber die 60vh Pin-Strecke, nur straffer. */
-  .scene-main{position:relative;height:160vh}
+  .scene-main{position:relative;height:240vh}
   .main-sticky{
     position:sticky;top:0;height:100vh;height:100dvh;
     overflow:hidden;isolation:isolate;

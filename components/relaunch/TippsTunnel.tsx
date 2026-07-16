@@ -65,11 +65,11 @@ const blurOf = (z: number): number =>
 // Viewport-Positionen (nichts schiebt sich von unten ins Bild). Waehrend der
 // Scatter-Phase blendet der Hero seine Deckflaechen aus (demo.engine.jstext)
 // und die erste Karte waechst sichtbar HINTER den fliegenden Buchstaben.
-const HERO_OVERLAP_VH = 160;
+const HERO_OVERLAP_VH = 240;
 // Timeline-Totzone: t=0 des Tunnels liegt am Scatter-Beginn des Heros.
-// Hero-Pin = 60vh Scroll, Scatter ab Pm=0.52 -> Lead = 0.52*0.6 = 0.312
-// Viewport-Hoehen.
-const LEAD_VH = 0.312;
+// Hero-Pin = 140vh Scroll (scene 240vh), Scatter ab Pm=0.52 ->
+// Lead = 0.52*1.4 = 0.728 Viewport-Hoehen.
+const LEAD_VH = 0.728;
 
 // Deterministischer Zufall (mulberry32) — seeded per Index, damit SSR und CSR
 // exakt dieselben Positionen erzeugen (kein Hydration-Sprung, kein Math.random
@@ -205,7 +205,7 @@ export default function TippsTunnel({ posts }: { posts: TunnelPost[] }) {
 
   // Wurzelhoehe skaliert mit der Kartenzahl. 110vh pro Karte (Thomas 17.07.:
   // 60vh war deutlich zu schnell — mehr Scrollweg pro Karte = ruhigeres Tempo).
-  const rootHeight = Math.max(220, laid.length * 110);
+  const rootHeight = Math.max(270, laid.length * 135);
 
   useEffect(() => {
     setMounted(true);
@@ -569,7 +569,7 @@ const CSS = `
    die Buehne ist ab scrollY=0 gepinnt (feste Karten-Positionen, nichts kommt
    von unten) und liegt im Stacking UNTER dem Hero-Sticky (z-index 3), dessen
    Flaechen die Engine beim Buchstaben-Scatter transparent faded. */
-.rrtn-root{ position:relative; margin-top:-160vh; }
+.rrtn-root{ position:relative; margin-top:-240vh; }
 .rrtn-stage{
   position:sticky; top:0;
   height:100vh; height:100dvh;
