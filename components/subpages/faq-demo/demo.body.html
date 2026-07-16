@@ -1,0 +1,221 @@
+
+<div class="demobar">
+  <span class="dot"></span>
+  Red Rabbit · FAQ — Gesamtvorschau
+  <span class="sep">·</span>
+  <em>Hero + Malen + Haltung + 14 Antworten, eine Scroll-Strecke</em>
+</div>
+
+<!-- ============ HAUPT-SZENE (Hero: Titel + Malen in EINEM Sticky) ============ -->
+<section class="scene-main" id="sceneMain">
+  <!-- data-active startet auf 0: die Deck-Maske (mask:url(#mask-v1)) greift erst,
+       wenn die Engine bootet. Beim HTML-Streaming ist das masksvg (steht weiter
+       unten) sonst noch nicht geparst -> leere Maske -> weisses Deck unsichtbar
+       -> navy layer-base blitzt beim Laden auf. -->
+  <div class="main-sticky painting" id="mainSticky" data-active="0" style="--mask:url(#mask-v1)">
+    <div class="layer-base">
+      <div class="reveal-msg">Frag alles.<br>Wir antworten<br>ohne Sternchen.</div>
+    </div>
+    <div class="layer-deck">
+      <div class="hero-title" id="htitle" role="heading" aria-level="1" aria-label="FAQ"><span class="ltr" data-l="0" aria-hidden="true">F</span><span class="ltr" data-l="1" aria-hidden="true">A</span><span class="ltr" data-l="2" aria-hidden="true">Q</span></div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <span class="hint" id="hint">Maus über das Bild bewegen</span>
+    <button class="autobtn" data-auto>Auto abspielen</button>
+
+    <svg class="masksvg" aria-hidden="true">
+      <defs>
+        <filter id="gooey-v1">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
+          <feColorMatrix in="blur" type="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -9" result="goo"/>
+        </filter>
+        <clipPath id="paintclip"><rect id="paintRect" x="0" y="0" width="100" height="100"/></clipPath>
+        <mask id="mask-v1">
+          <rect class="mrect" width="100%" height="100%" fill="#fff"/>
+          <g class="blobs" filter="url(#gooey-v1)"></g>
+        </mask>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ SEKTION 4 : HALTUNGS-STATEMENTS (Intro/Statement-Moment) ============ -->
+<section class="scene-belief" id="sceneBelief">
+  <div class="belief-sticky">
+    <div class="belief-backing" aria-hidden="true"></div>
+    <div class="b-label">(Ehrlich gesagt)</div>
+    <div class="stmt" data-s="0">Die meisten FAQ-Seiten beantworten Fragen, die niemand stellt<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="1">Wir haben die gesammelt, die du dir vor der Zusammenarbeit wirklich stellst<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="2">Keine Ausweichmanöver, kein Marketing-Sprech, kein Kleingedrucktes<span style="color:var(--red)">.</span></div>
+    <div class="stmt pointe" data-s="3">Also, was willst du wissen<span style="color:var(--red)">?</span><span class="pointe-cta"><a class="rr-btn-sweep rr-btn-sweep--red" id="bCta" href="#sceneFaq">Zu den Antworten</a></span></div>
+  </div>
+</section>
+
+<!-- ============ SEKTION 6 : FAQ (zweispaltig, 3 Themengruppen) ============ -->
+<section class="scene-faq" id="sceneFaq">
+  <div class="faq-wrap">
+    <div class="faq-grid">
+    <div class="faq-left">
+      <div class="f-label">(FAQ)</div>
+      <h2 class="faq-heading">Fragen? Hier die ehrlichen Antworten<span class="fdot">.</span></h2>
+    </div>
+    <div class="faq-right">
+
+      <div class="faq-group">
+        <div class="faq-group-label">(Preis &amp; Ablauf)</div>
+        <details class="faq-item">
+          <summary>Was kostet eine Website bei euch?<span class="pm"></span></summary>
+          <p class="faq-a">Wir arbeiten mit drei klaren Paketen: Starter ab 950 Euro, Business ab 2.900 Euro und Premium ab 4.900 Euro. Was genau du brauchst, besprechen wir vorher und halten es fest, ohne versteckte Kosten.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Muss ich in Vorkasse gehen?<span class="pm"></span></summary>
+          <p class="faq-a">Nein. Du siehst zuerst einen echten Entwurf, ganz ohne Vorkasse. Eine Anzahlung fällt erst an, wenn dir der Vorschlag gefällt und du den Auftrag erteilst. Bis dahin liegt das Risiko bei uns.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Wie lange dauert es, bis meine Website fertig ist?<span class="pm"></span></summary>
+          <p class="faq-a">Einen ersten Entwurf bekommst du in der Regel innerhalb von rund einer Woche. Wie lange die fertige Seite dauert, hängt vom Umfang ab. Wir nennen dir vorher einen realistischen Zeitrahmen.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Wie läuft die Zusammenarbeit ab?<span class="pm"></span></summary>
+          <p class="faq-a">Kurz gesagt: Wir sprechen über deinen Betrieb und dein Ziel, du bekommst einen Entwurf ohne Vorkasse, wir passen ihn an, bis er passt, und gehen dann live. Ein Ansprechpartner begleitet dich durch den ganzen Weg.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Bekomme ich eine individuelle Seite oder einen Baukasten?<span class="pm"></span></summary>
+          <p class="faq-a">Eine individuell gebaute Seite. Wir verwenden keine fertigen Baukasten-Vorlagen, sondern gestalten Aufbau, Text und Design für deinen Betrieb.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Gibt es eine Förderung?<span class="pm"></span></summary>
+          <p class="faq-a">Für österreichische Kleinbetriebe kann die KMU.DIGITAL-Förderung einen Teil der Kosten übernehmen. Wir prüfen mit dir, ob das für dein Projekt in Frage kommt.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Muss ich einen Wartungsvertrag abschließen?<span class="pm"></span></summary>
+          <p class="faq-a">Nein. Unser Wartungs- und Optimierungs-Abo ist freiwillig, ohne Mindestlaufzeit und jederzeit kündbar. Du kannst deine Seite auch selbst pflegen oder die Betreuung uns überlassen.</p>
+        </details>
+      </div>
+
+      <div class="faq-group">
+        <div class="faq-group-label">(Sichtbarkeit &amp; Google)</div>
+        <details class="faq-item">
+          <summary>Wie lange dauert es, bis ich bei Google gefunden werde?<span class="pm"></span></summary>
+          <p class="faq-a">SEO wirkt langfristig. Erste Bewegungen sind oft nach einigen Wochen sichtbar, stabile Rankings brauchen meist mehrere Monate. Wer schnelle Garantien verspricht, ist unseriös.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Könnt ihr Platz 1 bei Google garantieren?<span class="pm"></span></summary>
+          <p class="faq-a">Nein, und das kann niemand seriös. Wir bauen eine starke technische Basis, guten Inhalt und die richtigen Signale. Über die Platzierung entscheidet am Ende Google.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Was bedeutet KI-Sichtbarkeit?<span class="pm"></span></summary>
+          <p class="faq-a">Immer mehr Menschen fragen ChatGPT, Gemini oder Perplexity statt Google. KI-Sichtbarkeit heißt, dass dein Betrieb in diesen Antworten vorkommt. Wir bauen deine Seite so auf, dass sie auch von KI-Systemen gut verstanden wird.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Bekomme ich ein Dashboard?<span class="pm"></span></summary>
+          <p class="faq-a">Ab dem Business-Paket ist ein Dashboard gratis dabei. Es zeigt dir in Klartext, wie sichtbar du bist und wie viele Anfragen über die Seite reinkommen.</p>
+        </details>
+      </div>
+
+      <div class="faq-group">
+        <div class="faq-group-label">(Das Kleingedruckte)</div>
+        <details class="faq-item">
+          <summary>Gehört die Website danach mir?<span class="pm"></span></summary>
+          <p class="faq-a">Ja. Deine Inhalte, deine Domain und dein Auftritt gehören dir. Wir binden dich nicht mit künstlichen Hürden an uns, sondern wollen dich mit Leistung halten. Die genauen Punkte hält dein Angebot fest.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Wie ist das mit Hosting und Domain?<span class="pm"></span></summary>
+          <p class="faq-a">Wir kümmern uns um das Hosting und die Domain oder nutzen deine bestehende, ganz wie es für dich passt. Wir klären das vor dem Start und halten die Details im Angebot fest.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Für wen seid ihr NICHT die richtige Wahl?<span class="pm"></span></summary>
+          <p class="faq-a">Wenn du das Billigste vom Billigen suchst und Sichtbarkeit egal ist, passen wir nicht. Wir arbeiten mit Betrieben, die ihren Auftritt ernst nehmen und echte Anfragen wollen, nicht nur eine Seite zum Abhaken.</p>
+        </details>
+      </div>
+
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEKTION 7 : SCHLUSS-CTA ============ -->
+<section class="scene-cta" id="sceneCta">
+  <div class="cta-inner" id="ctaInner">
+    <div class="cta-label">(Der nächste Schritt)</div>
+    <h2 class="cta-h">Frage nicht dabei<span style="color:var(--red)">?</span></h2>
+    <p class="cta-p">Dann stell sie uns direkt. Zwei Minuten, kein Fachchinesisch, und es meldet sich die Person, die dein Projekt nachher auch wirklich macht. Kein Verkaufsanruf, versprochen.</p>
+    <a class="cta-btn" href="/relaunch-preview/kontakt"><span>Frag uns direkt</span></a>
+    <p class="cta-direct">Lieber sofort? <a href="mailto:office@redrabbit.media">office@redrabbit.media</a></p>
+  </div>
+</section>
+
+<!-- ============ FOOTER (Nachbau FooterReassembly.tsx / Footer.tsx) ============ -->
+<footer class="rr-foot" id="rrFoot">
+  <div class="rr-foot-word" id="rrFootWord">
+    <p class="rr-foot-mark" id="rrFootMark"><span class="rr-foot-wordw"><span class="rr-foot-l" style="--i:0">r</span><span class="rr-foot-l" style="--i:1">e</span><span class="rr-foot-l" style="--i:2">d</span></span><span class="rr-foot-wordw"><span class="rr-foot-l" style="--i:3">r</span><span class="rr-foot-l" style="--i:4">a</span><span class="rr-foot-l" style="--i:5">b</span><span class="rr-foot-l" style="--i:6">b</span><span class="rr-foot-l" style="--i:7">i</span><span class="rr-foot-l" style="--i:8">t</span></span></p>
+  </div>
+  <div class="rr-foot-inner">
+    <div class="rr-foot-cols">
+      <div class="rr-foot-brand">
+        <svg class="rr-foot-logo" viewBox="0 0 174 267" preserveAspectRatio="xMidYMid meet" aria-label="Red Rabbit" role="img">
+          <g transform="translate(0,267) scale(0.1,-0.1)">
+            <path fill="#F12032" fill-rule="evenodd" d="M0 1335 l0 -1335 503 0 c626 1 693 8 877 98 172 84 290 230 337 417 24 98 24 325 -1 415 -60 222 -232 402 -431 451 -28 6 -52 13 -54 15 -2 1 81 112 183 246 139 182 194 262 218 318 31 72 33 80 33 210 0 164 -15 220 -90 330 -42 62 -153 170 -175 170 -3 0 -179 -272 -390 -605 -212 -332 -388 -604 -392 -605 -5 0 -8 156 -8 346 0 387 -3 414 -68 539 -51 99 -163 208 -263 258 -76 37 -184 66 -246 67 l-33 0 0 -1335z m1036 -308 c276 -140 177 -553 -131 -551 -144 1 -254 94 -286 243 -21 97 33 225 119 285 90 62 204 71 298 23z"/>
+          </g>
+        </svg>
+        <p class="rr-foot-brandname">Red Rabbit Media</p>
+        <p class="rr-foot-tag">Die faire Anti-Agentur für den österreichischen Mittelstand.</p>
+      </div>
+      <nav class="rr-foot-col" aria-label="Navigation">
+        <h3 class="rr-foot-head">Navigation</h3>
+        <ul class="rr-foot-list">
+          <li><a class="rr-foot-link" href="/relaunch-preview">Start</a></li>
+          <li><a class="rr-foot-link" href="/leistungen">Leistungen</a></li>
+          <li><a class="rr-foot-link" href="/relaunch-preview/referenzen">Referenzen</a></li>
+          <li><a class="rr-foot-link" href="/preise">Preise</a></li>
+          <li><a class="rr-foot-link" href="/relaunch-preview/tipps">Tipps</a></li>
+          <li><a class="rr-foot-link" href="/relaunch-preview/faq">FAQ</a></li>
+          <li><a class="rr-foot-link" href="/relaunch-preview/ueber-uns">Über uns</a></li>
+          <li><a class="rr-foot-link" href="/relaunch-preview/kontakt">Kontakt</a></li>
+        </ul>
+      </nav>
+      <nav class="rr-foot-col" aria-label="Regionen">
+        <h3 class="rr-foot-head">Regionen</h3>
+        <ul class="rr-foot-list rr-foot-list--regions">
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-wien">Wien</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-niederoesterreich">Niederösterreich</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-oberoesterreich">Oberösterreich</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-steiermark">Steiermark</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-kaernten">Kärnten</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-salzburg">Salzburg</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-tirol">Tirol</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-vorarlberg">Vorarlberg</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-burgenland">Burgenland</a></li>
+        </ul>
+      </nav>
+      <div class="rr-foot-col">
+        <h3 class="rr-foot-head">Kontakt</h3>
+        <address class="rr-foot-contact">
+          <span class="rr-foot-strong">Red Rabbit GmbH</span>
+          <span>Grabnergasse 8/8, 1060 Wien</span>
+          <a class="rr-foot-link" href="mailto:office@redrabbit.media">office@redrabbit.media</a>
+          <a class="rr-foot-link" href="tel:+436769000955">Anrufen</a>
+          <span class="rr-foot-social">
+            <a class="rr-foot-link" href="https://www.instagram.com/redrabbit.media/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a class="rr-foot-link" href="https://www.linkedin.com/in/thomasuhlir/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          </span>
+        </address>
+      </div>
+    </div>
+    <hr class="rr-foot-rule">
+    <div class="rr-foot-bottom">
+      <nav class="rr-foot-legal" aria-label="Rechtliches">
+        <a class="rr-foot-link rr-foot-link--sm" href="/relaunch-preview/impressum">Impressum</a>
+        <a class="rr-foot-link rr-foot-link--sm" href="/relaunch-preview/datenschutz">Datenschutz</a>
+        <a class="rr-foot-link rr-foot-link--sm" href="/relaunch-preview/agb">AGB</a>
+        <a class="rr-foot-link rr-foot-link--sm" href="/relaunch-preview/cookie-einstellungen">Cookie-Einstellungen</a>
+      </nav>
+      <div class="rr-foot-copy">
+        <span>&copy; 2026 Red Rabbit GmbH. Alle Rechte vorbehalten.</span>
+        <span class="rr-foot-madein">Gebaut in Wien.</span>
+      </div>
+    </div>
+  </div>
+</footer>

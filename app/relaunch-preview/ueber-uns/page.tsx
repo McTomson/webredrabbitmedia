@@ -2,6 +2,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Metadata } from 'next';
 import UeberUnsDemoClient from '@/components/subpages/UeberUnsDemoClient';
+import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
+import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
+import '@/app/styleguide/styleguide.css';
 
 // Rohteile der 1:1 portierten Demo (scratchpad/ueber-uns-gesamt-demo.html).
 // Werden beim Build (Static Generation) eingelesen und inline gebacken.
@@ -30,6 +33,15 @@ export default function UeberUnsPage() {
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
       />
+      {/* Hamburger-Menue der Hauptseite. Wrapper liefert NUR die .rr-Font-Variablen
+          fuer das styled-jsx-gekapselte Menue; der Demo-Inhalt bleibt bewusst
+          AUSSERHALB des .rr-Scopes (keine Style-Leaks in demo.css). */}
+      <div
+        className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}
+        style={{ background: 'transparent' }}
+      >
+        <RelaunchMenu />
+      </div>
       <UeberUnsDemoClient css={css} html={html} js={js} />
     </>
   );

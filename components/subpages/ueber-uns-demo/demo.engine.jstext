@@ -641,6 +641,9 @@
   /* ================================================================ */
   function inView(rect){ return rect.bottom>-window.innerHeight*0.5 && rect.top<window.innerHeight*1.5; }
   function tick(now){
+    /* Teardown-Guard: nach Soft-Navigation (App Router) ist die Szene aus dem
+       Dokument entfernt -> Loop beenden statt ewig gegen detached DOM laufen. */
+    if(!sceneMain.isConnected){ return; }
     const vh=window.innerHeight;
     const mr=sceneMain.getBoundingClientRect();
     if(inView(mr)){
@@ -703,6 +706,7 @@
     if(autobtn) autobtn.addEventListener("click",()=>runAuto(autobtn));
     if(noHover){
       const autoLoop=()=>{
+        if(!sceneMain.isConnected){ return; }
         if(painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.3){ runAuto(autobtn); }
         setTimeout(autoLoop,9000);
       };
@@ -720,12 +724,14 @@
   }
 
   let rz;
-  window.addEventListener("resize",()=>{
+  const onRz=()=>{
+    if(!sceneMain.isConnected){ window.removeEventListener("resize",onRz); return; }
     clearTimeout(rz);
     rz=setTimeout(()=>{
       computeShifts(); fitMask(); placeUeDots(); measureStory(); measureHeadStarts(); measureStmts();
     },150);
-  });
+  };
+  window.addEventListener("resize",onRz);
 
   // Schluss-CTA: sanftes Scroll-Reveal
   const ctaInner=document.getElementById("ctaInner");

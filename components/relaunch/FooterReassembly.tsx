@@ -24,14 +24,17 @@ import { buildReassembly, sample, clamp01, type Keyframe } from "@/lib/relaunch/
 
 const NAVY = "var(--rr-navy, #1C2837)";
 
+// Leistungen/Preise zeigen bewusst noch auf die alten Live-Seiten,
+// bis es Relaunch-Versionen gibt (Tomson 16.07.).
 const NAV = [
   { label: "Start", href: "/relaunch-preview" },
   { label: "Leistungen", href: "/leistungen" },
-  { label: "Referenzen", href: "/referenzen-preview" },
+  { label: "Referenzen", href: "/relaunch-preview/referenzen" },
   { label: "Preise", href: "/preise" },
-  { label: "FAQ", href: "/faq" },
-  { label: "Über uns", href: "/ueber-uns" },
-  { label: "Kontakt", href: "/kontakt" },
+  { label: "Tipps", href: "/relaunch-preview/tipps" },
+  { label: "FAQ", href: "/relaunch-preview/faq" },
+  { label: "Über uns", href: "/relaunch-preview/ueber-uns" },
+  { label: "Kontakt", href: "/relaunch-preview/kontakt" },
 ];
 
 const REGIONEN = [
@@ -47,10 +50,10 @@ const REGIONEN = [
 ];
 
 const LEGAL = [
-  { label: "Impressum", href: "/impressum" },
-  { label: "Datenschutz", href: "/datenschutz" },
-  { label: "AGB", href: "/agb" },
-  { label: "Cookie-Einstellungen", href: "/cookie-einstellungen" },
+  { label: "Impressum", href: "/relaunch-preview/impressum" },
+  { label: "Datenschutz", href: "/relaunch-preview/datenschutz" },
+  { label: "AGB", href: "/relaunch-preview/agb" },
+  { label: "Cookie-Einstellungen", href: "/relaunch-preview/cookie-einstellungen" },
 ];
 
 export default function FooterReassembly() {
@@ -233,7 +236,7 @@ export default function FooterReassembly() {
               <span className="rr-foot-strong">Red Rabbit GmbH</span>
               <span>Grabnergasse 8/8, 1060 Wien</span>
               <a className="rr-foot-link" href="mailto:office@redrabbit.media">office@redrabbit.media</a>
-              <a className="rr-foot-link" href="tel:+436769000955">+43 676 9000 955</a>
+              <a className="rr-foot-link" href="tel:+436769000955">Anrufen</a>
               <span className="rr-foot-social">
                 <a className="rr-foot-link" href="https://www.instagram.com/redrabbit.media/" target="_blank" rel="noopener noreferrer">Instagram</a>
                 <a className="rr-foot-link" href="https://www.linkedin.com/in/thomasuhlir/" target="_blank" rel="noopener noreferrer">LinkedIn</a>

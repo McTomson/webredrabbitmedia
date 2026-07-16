@@ -1,0 +1,406 @@
+  :root{
+    --offwhite:#ffffff;
+    --ink:#23262e;
+    --ink-soft:#6a6e78;
+    --navy:#1c2837;
+    --anthra:#2d2d2d;
+    --blue:#0a72a0;
+    --red:#f12032;
+    --red-deep:#c81222;
+    --line:#e4e4e0;
+    --hairline:rgba(246,245,241,.18);
+    --ease:cubic-bezier(.6,0,.4,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:auto}
+  html,body{
+    background:var(--offwhite);color:var(--ink);
+    font-family:"Instrument Sans",system-ui,sans-serif;
+    overflow-x:clip;
+  }
+  body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+  /* ---------- Slim Kontextleiste (auf der Live-Seite ausgeblendet) ---------- */
+  .demobar{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    display:flex;align-items:center;gap:.6rem;
+    padding:.42rem 1rem;
+    background:rgba(28,40,55,.9);color:var(--offwhite);
+    font-family:"DM Sans",sans-serif;
+    font-size:.68rem;font-weight:700;letter-spacing:.05em;
+    backdrop-filter:saturate(1.2) blur(6px);
+    user-select:none;-webkit-user-select:none;pointer-events:none;
+  }
+  .demobar .dot{width:7px;height:7px;background:var(--red);display:inline-block}
+  .demobar em{font-style:normal;opacity:.55;font-weight:500}
+
+  /* ================= HAUPT-SZENE: HERO (Titel + Malen) ================= */
+  .scene-main{position:relative;height:300vh}
+  .main-sticky{
+    position:sticky;top:0;height:100vh;height:100dvh;
+    overflow:hidden;isolation:isolate;
+    user-select:none;-webkit-user-select:none;
+  }
+  .main-sticky.painting{cursor:none}
+  .main-sticky ::selection{background:rgba(241,32,50,.25)}
+
+  /* Ebene B (Reveal): Navy + versteckte Botschaft — viewport-fix im Sticky */
+  .layer-base{
+    position:absolute;inset:0;z-index:1;
+    background:var(--navy);color:var(--offwhite);
+    display:flex;align-items:center;justify-content:center;
+    padding:0 6vw;pointer-events:none;
+  }
+  .reveal-msg{
+    font-family:"DM Sans",sans-serif;
+    font-weight:800;text-transform:uppercase;text-align:center;
+    font-size:clamp(2rem,6vw,6rem);line-height:.98;letter-spacing:-.01em;
+    max-width:15em;text-wrap:balance;
+    transform:translateY(-9vh);
+  }
+
+  /* Ebene A (Deck): Off-White + Titel */
+  .layer-deck{
+    position:absolute;inset:0;z-index:2;
+    background:var(--offwhite);
+    display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+    pointer-events:none;
+  }
+  .hero-title{
+    font-family:"DM Sans",sans-serif;
+    font-weight:700;color:var(--ink);
+    font-size:22vw;line-height:.8;white-space:nowrap;letter-spacing:-.03em;
+    position:relative;will-change:transform;
+    transform-origin:50% 50%;
+  }
+  .ltr{display:inline-block;will-change:transform,opacity;transform-origin:center center}
+  .ltr.sp{width:.16em}
+
+  .cursor-dot{
+    position:absolute;left:0;top:0;z-index:6;
+    width:19px;height:19px;border-radius:50%;
+    background:var(--red);pointer-events:none;opacity:0;
+    will-change:transform,opacity;
+  }
+  .masksvg{position:absolute;width:0;height:0;pointer-events:none}
+  .main-sticky[data-active="1"] .layer-deck{
+    -webkit-mask:var(--mask);mask:var(--mask);
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  }
+  .autobtn{
+    position:absolute;right:1rem;bottom:calc(16.5vw + 1.6rem);z-index:7;pointer-events:auto;
+    background:var(--red);color:#fff;border:none;font-family:"DM Sans",sans-serif;
+    font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+    padding:.55rem .9rem;cursor:pointer;border-radius:0;
+    transition:opacity .3s;
+  }
+  .autobtn:disabled{opacity:.5;cursor:default}
+  .hint{
+    position:absolute;left:1rem;bottom:calc(16.5vw + 7.5rem);z-index:5;
+    font-family:"DM Sans",sans-serif;
+    font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--offwhite);opacity:.55;pointer-events:none;
+    mix-blend-mode:difference;transition:opacity .4s;
+  }
+
+  /* ================= SEKTION 4 : HALTUNGS-STATEMENTS (Intro/Statement-Moment) ============ */
+  /* C4: ueberlappender Uebergang — die Statement-Sektion wird per negativem Margin
+     ueber das noch zerstreuende Titelwort gezogen und blendet dort langsam ein. */
+  .scene-belief{position:relative;height:440vh;background:transparent;margin-top:-130vh;z-index:4}
+  .belief-sticky{
+    position:sticky;top:0;height:100vh;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    user-select:none;-webkit-user-select:none;
+  }
+  .belief-backing{
+    position:absolute;left:0;right:0;top:50%;
+    height:58vh;transform:translateY(-50%);
+    background:var(--offwhite);z-index:0;pointer-events:none;
+  }
+  .b-label{
+    position:absolute;top:9vh;left:50%;transform:translateX(-50%);
+    font-family:"DM Sans",sans-serif;
+    font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--red);font-weight:700;white-space:nowrap;
+  }
+  .stmt{
+    position:absolute;left:50%;top:50%;
+    width:min(90vw,900px);
+    font-family:"Crimson Pro",Georgia,serif;font-weight:500;
+    font-size:clamp(24px,3vw,42px);line-height:1.2;
+    letter-spacing:-.01em;color:var(--navy);
+    text-align:center;text-wrap:balance;
+    will-change:transform,opacity;
+    transform:translate(-50%,-50%);
+  }
+  .stmt.pointe{
+    font-family:"DM Sans",sans-serif;font-weight:700;
+    font-size:clamp(1.9rem,4vw,3.5rem);line-height:1.12;
+    letter-spacing:-.02em;color:var(--ink);
+  }
+  .stmt.pointe .pointe-cta{
+    position:absolute;top:100%;left:50%;
+    transform:translateX(-50%);
+    margin-top:clamp(2.2rem,6vh,4.5rem);
+    white-space:nowrap;
+  }
+  .stmt.pointe .rr-btn-sweep{
+    display:inline-block;
+    will-change:transform,opacity;
+  }
+  /* ---- Echter Design-System-Button: rr-btn-sweep (DESIGN.md) ---- */
+  .rr-btn-sweep{
+    --c:var(--red);
+    position:relative;z-index:1;display:inline-block;text-align:center;
+    min-width:150px;font-family:"Instrument Sans",system-ui,sans-serif;
+    font-size:18px;font-weight:700;line-height:1.2;padding:15px 32px;
+    color:var(--ink);text-decoration:none;background:transparent;border:none;
+    border-radius:0;cursor:pointer;overflow:hidden;
+    transition:color .4s var(--ease),box-shadow .35s var(--ease);
+    will-change:transform,opacity;
+  }
+  .rr-btn-sweep::before{
+    content:"";position:absolute;top:0;left:0;width:5px;height:100%;z-index:-1;
+    background:var(--c);transition:width .4s var(--ease);
+  }
+  .rr-btn-sweep:hover::before{width:100%}
+  .rr-btn-sweep:hover{color:#fff;box-shadow:0 10px 26px rgba(241,32,50,.34)}
+  .rr-btn-sweep:active::before{background:var(--red-deep)}
+  .rr-btn-sweep:focus-visible{outline:none;box-shadow:0 0 0 2px var(--offwhite),0 0 0 4.5px var(--c)}
+  .rr-btn-sweep--red{--c:var(--red)}
+
+  /* ================= SEKTION 6 : FAQ (zweispaltig, gruppiert) ============ */
+  .scene-faq{background:var(--offwhite);padding:16vh 6vw 12vh}
+  .faq-wrap{max-width:1180px;margin:0 auto}
+  .faq-grid{
+    display:grid;grid-template-columns:minmax(260px,0.82fr) 1.18fr;
+    gap:clamp(2.5rem,6vw,6.5rem);align-items:start;
+  }
+  .faq-left{position:sticky;top:14vh}
+  .f-label{
+    font-family:"DM Sans",sans-serif;
+    font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--red);font-weight:700;margin-bottom:1.4rem;
+    user-select:none;-webkit-user-select:none;
+  }
+  .faq-heading{
+    font-family:"DM Sans",sans-serif;font-weight:700;
+    font-size:clamp(2.2rem,4.4vw,4rem);line-height:1.02;letter-spacing:-.03em;
+    color:var(--ink);text-wrap:balance;margin:0;
+  }
+  .faq-heading .fdot{color:var(--red)}
+  .faq-right{min-width:0}
+  /* Gruppen-Zwischenlabel (Klammer-Label) je Themengruppe */
+  .faq-group + .faq-group{margin-top:clamp(2.6rem,5vh,4.4rem)}
+  .faq-group-label{
+    font-family:"DM Sans",sans-serif;
+    font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--red);font-weight:700;margin:0 0 .6rem;
+    user-select:none;-webkit-user-select:none;
+  }
+  /* C10: Scroll-Enthuellung — pro Frage faehrt eine Hairline von links nach rechts ein */
+  .faq-item{position:relative;border-bottom:none;border-radius:0}
+  .faq-item::after{
+    content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
+    background:rgba(35,38,46,.22);
+    transform:scaleX(0);transform-origin:left center;
+    transition:transform .8s var(--ease);
+  }
+  .faq-item.revealed::after{transform:scaleX(1)}
+  .faq-group:first-of-type .faq-item:first-of-type::before{
+    content:"";position:absolute;left:0;top:0;height:1px;width:100%;
+    background:rgba(35,38,46,.22);
+    transform:scaleX(0);transform-origin:left center;
+    transition:transform .8s var(--ease);
+  }
+  .faq-group:first-of-type .faq-item:first-of-type.revealed::before{transform:scaleX(1)}
+  .faq-item summary{
+    display:flex;justify-content:space-between;align-items:center;gap:1.2rem;
+    padding:1.35rem 0;cursor:pointer;list-style:none;
+    font-family:"DM Sans",sans-serif;font-weight:600;
+    font-size:clamp(17px,1.4vw,20px);letter-spacing:-.01em;color:var(--ink);
+    user-select:none;-webkit-user-select:none;
+    opacity:0;transform:translateX(-14px);
+    transition:opacity .6s var(--ease),transform .6s var(--ease);
+  }
+  .faq-item.revealed summary{opacity:1;transform:none}
+  .faq-item summary::-webkit-details-marker{display:none}
+  .pm{position:relative;width:14px;height:14px;flex:none}
+  .pm::before{content:"";position:absolute;left:0;top:6px;width:14px;height:2px;background:var(--ink)}
+  .pm::after{content:"";position:absolute;left:6px;top:0;width:2px;height:14px;background:var(--ink);transition:transform .22s ease}
+  .faq-item[open] .pm::after{transform:scaleY(0)}
+  .faq-a{
+    font-family:"Instrument Sans",sans-serif;
+    font-size:1.02rem;line-height:1.62;color:var(--ink);opacity:.85;
+    padding:0 2.4rem 1.5rem 0;max-width:62ch;
+  }
+
+  /* ================= SEKTION 7 : SCHLUSS-CTA ================= */
+  .scene-cta{
+    background:var(--offwhite);
+    padding:22vh 6vw 20vh;text-align:center;
+  }
+  .cta-inner{
+    max-width:640px;margin:0 auto;
+    opacity:0;transform:translateY(28px);
+    transition:opacity .7s ease,transform .7s ease;
+  }
+  .cta-inner.on{opacity:1;transform:none}
+  .cta-label{
+    font-family:"DM Sans",sans-serif;
+    font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--red);font-weight:700;margin-bottom:1.4rem;
+    user-select:none;-webkit-user-select:none;
+  }
+  .cta-h{
+    font-family:"DM Sans",sans-serif;font-weight:700;
+    font-size:clamp(2.6rem,6vw,5rem);line-height:1;
+    letter-spacing:-.03em;color:var(--ink);margin-bottom:1.6rem;
+  }
+  .cta-p{
+    font-family:"Instrument Sans",sans-serif;
+    font-size:clamp(1rem,1.25vw,1.15rem);line-height:1.6;color:var(--ink);
+    opacity:.8;max-width:44ch;margin:0 auto 2.6rem;
+  }
+  .cta-btn{
+    display:inline-block;
+    font-family:"Instrument Sans",system-ui,sans-serif;font-weight:600;
+    font-size:1rem;letter-spacing:.02em;
+    color:#fff;background:var(--red);
+    border:none;border-radius:0;box-shadow:none;
+    padding:1.05rem 2.4rem;cursor:pointer;
+    position:relative;overflow:hidden;text-decoration:none;
+  }
+  .cta-btn::before{
+    content:"";position:absolute;inset:0;
+    background:rgba(0,0,0,.24);
+    transform:translateX(-101%);
+    transition:transform .35s cubic-bezier(.5,0,.3,1);
+  }
+  .cta-btn:hover::before{transform:translateX(0)}
+  .cta-btn span{position:relative;pointer-events:none}
+  .cta-direct{
+    margin-top:2.2rem;font-family:"Instrument Sans",sans-serif;
+    font-size:.95rem;color:var(--ink);opacity:.75;
+  }
+  .cta-direct a{color:var(--red);text-decoration:none;font-weight:600}
+
+  /* ================= FOOTER (Nachbau der echten Fusszeile) ================= */
+  .rr-foot{
+    background:var(--navy);color:#fff;position:relative;overflow:hidden;
+    padding:0;
+  }
+  .rr-foot-word{
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+    padding:clamp(96px,17vh,210px) 24px clamp(72px,13vh,160px);
+  }
+  .rr-foot-mark{
+    margin:0;font-family:"DM Sans",sans-serif;font-weight:700;color:var(--red);
+    font-size:clamp(58px,12.5vw,200px);line-height:.9;letter-spacing:-.02em;
+    text-align:center;display:flex;flex-wrap:wrap;justify-content:center;
+    column-gap:.28em;
+  }
+  .rr-foot-mark .rr-foot-l{
+    display:inline-block;opacity:0;
+    transform:translateY(58px) rotate(7deg) scale(.9);
+    transition:transform .8s var(--ease),opacity .5s var(--ease);
+    transition-delay:calc(var(--i,0) * 55ms);
+    will-change:transform,opacity;
+  }
+  .rr-foot-mark .rr-foot-sp{display:inline-block;width:.28em}
+  .rr-foot.in .rr-foot-mark .rr-foot-l{opacity:1;transform:none}
+  .rr-foot-inner{max-width:1680px;margin:0 auto;padding:0 clamp(20px,4.6vw,72px) clamp(40px,6vh,72px)}
+  .rr-foot-cols{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;
+    gap:clamp(36px,4vw,72px);padding-top:clamp(64px,9vh,120px);
+    border-top:1px solid rgba(255,255,255,.12);
+  }
+  .rr-foot-brand{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+  .rr-foot-logo{height:48px;width:auto;display:block}
+  .rr-foot-brandname{
+    font-family:"DM Sans",sans-serif;font-size:24px;font-weight:700;
+    letter-spacing:-.01em;color:#fff;margin:2px 0 0;
+  }
+  .rr-foot-tag{
+    font-family:"Instrument Sans",sans-serif;font-size:15px;line-height:1.55;
+    color:rgba(255,255,255,.70);max-width:30ch;margin:0;
+  }
+  .rr-foot-head{
+    font-family:"Instrument Sans",sans-serif;font-size:12px;font-weight:600;
+    letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.50);
+    margin:0 0 18px;
+  }
+  .rr-foot-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+  .rr-foot-list--regions{gap:9px}
+  .rr-foot-link{
+    font-family:"Instrument Sans",sans-serif;font-size:16px;font-weight:500;
+    color:rgba(255,255,255,.72);text-decoration:none;
+    transition:color .2s var(--ease);
+  }
+  .rr-foot-link:hover{color:#ff5f6d}
+  .rr-foot-link:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+  .rr-foot-link--sm{font-size:14.5px;color:rgba(255,255,255,.62)}
+  .rr-foot-contact{font-style:normal;display:flex;flex-direction:column;gap:11px}
+  .rr-foot-contact>span,.rr-foot-contact>a{
+    font-family:"Instrument Sans",sans-serif;font-size:16px;line-height:1.4;
+    color:rgba(255,255,255,.72);
+  }
+  .rr-foot-strong{color:#fff;font-weight:600}
+  .rr-foot-social{display:flex;gap:20px;margin-top:4px}
+  .rr-foot-rule{border:0;border-top:1px solid rgba(255,255,255,.12);margin:clamp(40px,6vh,72px) 0 26px}
+  .rr-foot-bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px 32px}
+  .rr-foot-legal{display:flex;flex-wrap:wrap;gap:12px 26px}
+  .rr-foot-copy{
+    display:flex;flex-wrap:wrap;gap:6px 18px;
+    font-family:"Instrument Sans",sans-serif;font-size:13.5px;color:rgba(255,255,255,.45);
+  }
+  .rr-foot-madein{color:rgba(255,255,255,.62)}
+  @media (max-width:900px){
+    .rr-foot-cols{grid-template-columns:1fr 1fr;gap:40px 32px}
+    .rr-foot-brand{grid-column:1 / -1}
+  }
+  @media (max-width:560px){
+    .rr-foot-cols{grid-template-columns:1fr}
+    .rr-foot-bottom{flex-direction:column;align-items:flex-start}
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width:768px){
+    .hero-title{font-size:30vw}
+    .reveal-msg{font-size:clamp(1.6rem,7.6vw,3rem)}
+    .autobtn{bottom:calc(28vw + 1.4rem)}
+    .hint{bottom:calc(28vw + 6rem)}
+    .stmt.pointe{font-size:7.6vw}
+    /* FAQ auf Mobile sauber untereinander (Label+Heading oben, Liste darunter) */
+    .faq-grid{grid-template-columns:1fr;gap:2rem}
+    .faq-left{position:static;top:auto}
+  }
+
+  /* ---------- Reduced Motion: alles statisch ---------- */
+  @media (prefers-reduced-motion:reduce){
+    .cursor-dot,.autobtn,.hint{display:none}
+    .scene-main{height:auto}
+    .main-sticky{position:static;height:auto;overflow:visible;cursor:auto}
+    .layer-base{display:none}
+    .layer-deck{
+      position:static;-webkit-mask:none!important;mask:none!important;
+      padding:16vh 0 4vh;justify-content:center;
+    }
+    .hero-title{font-size:14vw;transform:none!important}
+    .ltr{transform:none!important;opacity:1!important}
+    .scene-belief{height:auto;margin-top:0}
+    .belief-sticky{position:static;height:auto;overflow:visible;display:block;padding:10vh 0 6vh}
+    .belief-backing{display:none}
+    .b-label{position:static;transform:none;text-align:center;margin-bottom:5vh}
+    .stmt{position:static;transform:none!important;opacity:1!important;margin:0 auto 6vh}
+    .cta-inner{opacity:1!important;transform:none!important;transition:none}
+    .rr-foot-mark span{opacity:1!important;transform:none!important}
+    .faq-item summary{opacity:1!important;transform:none!important}
+    .faq-item::after,.faq-item::before{transform:scaleX(1)!important}
+  }
+
+/* --- Vorschau-Chrome der Standalone-Demo ausblenden -----------------------
+   demobar, hint, autobtn und cursor-dot gehoeren nicht auf die Live-Seite.
+   Per display:none ausblenden statt aus dem HTML loeschen, damit die
+   Engine-Referenz auf .autobtn gueltig bleibt (if(autobtn)-Guards). */
+.demobar, .hint, .autobtn, .cursor-dot { display: none !important; }

@@ -49,8 +49,9 @@ export default function PageShell({
             <p className="rr-display-2" style={{ color: "#fff", maxWidth: 900 }}>{ctaTitle}</p>
             <div className="rr-cta-actions">
               <Link className="rr-btn rr-btn--ondark" href="/kontakt">Projekt anfragen</Link>
+              {/* Regel (Tomson): Nummer nie im Klartext, nur Anruf-Button mit tel:-Link. */}
               <a className="rr-link" href="tel:+436769000955" style={{ color: "#fff" }}>
-                +43 676 9000 955
+                Anrufen
               </a>
             </div>
           </div>

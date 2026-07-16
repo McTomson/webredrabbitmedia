@@ -69,7 +69,15 @@ export default function UeberUnsDemoClient({
       if (++tries < 120) raf = requestAnimationFrame(find);
     };
     find();
-    return () => { cancelled = true; cancelAnimationFrame(raf); };
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+      /* Script-Tag beim Unmount entfernen (Soft-Navigation): die Engine beendet
+         ihre Loops selbst ueber den isConnected-Guard; ohne remove() stapeln
+         sich tote <script>-Knoten im body. booted bleibt true (StrictMode-
+         Doppel-Effekt darf die Engine nicht erneut booten). */
+      document.querySelector('script[data-ueber-uns-engine]')?.remove();
+    };
   }, [js]);
 
   return (

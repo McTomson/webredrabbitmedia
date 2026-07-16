@@ -3,6 +3,14 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { compileMDX } from 'next-mdx-remote/rsc';
 import { getPostBySlug, getRelatedPosts } from '@/lib/blog/posts';
+import { SimpleAudioPlayer } from '@/components/blog/content/SimpleAudioPlayer';
+import { VideoEmbed } from '@/components/blog/content/VideoEmbed';
+import HeroldComparisonTable from '@/components/HeroldComparisonTable';
+import RegionComparisonTable from '@/components/RegionComparisonTable';
+import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
+import FooterReassembly from '@/components/relaunch/FooterReassembly';
+import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
+import '@/app/styleguide/styleguide.css';
 import '@/components/subpages/tipps-preview.css';
 
 /**
@@ -38,14 +46,25 @@ export default async function TippsArticlePreview({ params }: Props) {
   const { content } = await compileMDX({
     source: post.content,
     options: { parseFrontmatter: false },
-    // Bewusst KEIN altes Tailwind-Mapping: Standard-Tags, gestylt via .rrt-body.
-    components: {},
+    // Standard-Tags bewusst OHNE altes Tailwind-Mapping (gestylt via .rrt-body).
+    // Die vier Custom-Tags aus den MDX-Quellen MUESSEN aber uebergeben werden,
+    // sonst wirft compileMDX zur Laufzeit (13 Artikel nutzen SimpleAudioPlayer,
+    // 11 VideoEmbed, je 1 die Vergleichstabellen — Link-Sweep 16.07.).
+    components: { SimpleAudioPlayer, VideoEmbed, HeroldComparisonTable, RegionComparisonTable },
   });
 
   const related = await getRelatedPosts(slug, 3);
+  const rrFonts = `rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`;
 
   return (
-    <div className="rrt">
+    <>
+      {/* Hamburger-Menue der Hauptseite. Bewusst AUSSERHALB von .rrt (dessen
+          Universal-Reset wuerde sonst mit den Menue-/Footer-Styles ringen);
+          der .rr-Wrapper liefert nur die Font-Variablen. */}
+      <div className={rrFonts} style={{ background: 'transparent' }}>
+        <RelaunchMenu />
+      </div>
+      <div className="rrt">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       <link
@@ -153,6 +172,12 @@ export default async function TippsArticlePreview({ params }: Props) {
           <Link className="rrt-btn" href="/relaunch-preview/kontakt">Zum Kontakt</Link>
         </section>
       </div>
-    </div>
+      </div>
+
+      {/* Footer der Hauptseite (self-contained Styles, .rr nur fuer Font-Variablen). */}
+      <div className={rrFonts} style={{ background: 'transparent' }}>
+        <FooterReassembly />
+      </div>
+    </>
   );
 }

@@ -1,7 +1,21 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/blog/posts';
+import TippsHeroClient from '@/components/subpages/TippsHeroClient';
+import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
+import FooterReassembly from '@/components/relaunch/FooterReassembly';
+import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
+import '@/app/styleguide/styleguide.css';
 import '@/components/subpages/tipps-preview.css';
+
+// Rohteile des Tipps-Hero (Template = ueber-uns/faq-Hero ohne Skulptur, nur
+// Titel-Anschnitt + Malen). WICHTIG: Reads muessen IN der Komponente passieren
+// (pro Request), nicht auf Modulebene — Next watched fs-Reads nicht, Edits an
+// demo.* waeren im Dev-Server sonst unsichtbar bis zum Neustart (Lesson 14.07.).
+const HERO_DIR = path.join(process.cwd(), 'components/subpages/tipps-hero-demo');
+const readHero = (f: string) => fs.readFileSync(path.join(HERO_DIR, f), 'utf8');
 
 /**
  * TIPPS-Uebersicht im Relaunch-Look (Preview, noindex) — redaktioneller
@@ -34,9 +48,17 @@ export default async function TippsPreviewPage() {
   let n = 0;
   const num = () => String(++n).padStart(2, '0');
 
+  const rrFonts = `rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`;
+
+  // Hero-Rohteile pro Request lesen (siehe Kommentar oben).
+  const heroCss = readHero('demo.css');
+  const heroHtml = readHero('demo.body.html');
+  const heroJs = readHero('demo.engine.jstext');
+
   return (
-    <div className="rrt">
-      {/* Fonts wie die Template-Seiten */}
+    <>
+      {/* Fonts wie die Template-Seiten (global, damit auch der Hero ausserhalb
+          .rrt DM Sans / Crimson bekommt). */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       <link
@@ -44,19 +66,26 @@ export default async function TippsPreviewPage() {
         href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=Instrument+Sans:wght@400;500;600&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
       />
 
-      <div className="rrt-wrap">
-        <header className="rrt-top">
-          <Link className="rrt-mark" href="/relaunch-preview">red rabbit</Link>
-          <Link className="rrt-back" href="/relaunch-preview/kontakt">Projekt anfragen</Link>
-        </header>
+      {/* Hamburger-Menue der Hauptseite. Bewusst AUSSERHALB von .rrt (dessen
+          Universal-Reset wuerde sonst mit den Menue-/Footer-Styles ringen);
+          der .rr-Wrapper liefert nur die Font-Variablen. */}
+      <div className={rrFonts} style={{ background: 'transparent' }}>
+        <RelaunchMenu />
+      </div>
 
-        <section className="rrt-hero">
+      {/* HERO: angeschnittenes "Tipps" + Malen (Template-Hero ohne Skulptur).
+          Ersetzt den alten statischen rrt-hero-Textblock. Der Satz lebt als
+          reveal-msg unter der Farbe ("Das sagt dir sonst keiner gratis.") und
+          als Intro-Zeile im Index weiter. */}
+      <TippsHeroClient css={heroCss} html={heroHtml} js={heroJs} />
+
+      <div className="rrt">
+      <div className="rrt-wrap">
+        {/* Kompakte Intro-Bruecke Hero -> Index (uebernimmt die alte rrt-hero-Zeile). */}
+        <section className="rrt-intro">
           <span className="rrt-label">(Red Rabbit Wissen)</span>
-          <h1>
-            Lies das, bevor du eine Agentur <em>bezahlst.</em>
-          </h1>
           <p>
-            Keine Content-M&uuml;llhalde, kein Marketing-Geschw&auml;tz: {posts.length} ehrliche
+            Keine Content-Müllhalde, kein Marketing-Geschwätz: {posts.length} ehrliche
             Antworten auf die Fragen, die dich sonst Geld kosten<span className="rrt-dot">.</span>
           </p>
         </section>
@@ -99,6 +128,13 @@ export default async function TippsPreviewPage() {
           <Link className="rrt-btn" href="/relaunch-preview/kontakt">Zum Kontakt</Link>
         </section>
       </div>
-    </div>
+
+      </div>
+
+      {/* Footer der Hauptseite (self-contained Styles, .rr nur fuer Font-Variablen). */}
+      <div className={rrFonts} style={{ background: 'transparent' }}>
+        <FooterReassembly />
+      </div>
+    </>
   );
 }

@@ -1,0 +1,170 @@
+/* ============================================================
+   RECHTSSEITEN im Relaunch-Look (Preview) — Impressum,
+   Datenschutz, AGB, Cookie-Einstellungen. Gleiche Sprache wie
+   die Template-Seiten: DM Sans (Headlines), Crimson Pro
+   (Lesetext), Instrument Sans (Meta), Weiss + Ink + Rot,
+   Hairlines statt Karten-Schatten.
+   Alle Klassen rrl-* (scoped, kollidiert nicht mit Live-CSS
+   und nicht mit .rr / .rrt).
+   ============================================================ */
+.rrl {
+  --rrl-paper: #ffffff;
+  --rrl-ink: #23262e;
+  --rrl-ink-soft: #6a6e78;
+  --rrl-navy: #1c2837;
+  --rrl-red: #f12032;
+  --rrl-line: #e4e4e0;
+  background: var(--rrl-paper);
+  color: var(--rrl-ink);
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.rrl * { margin: 0; padding: 0; box-sizing: border-box; }
+.rrl a { color: inherit; text-decoration: none; }
+
+.rrl-wrap { max-width: 1080px; margin: 0 auto; padding: 0 5vw 12vh; }
+
+/* ---------- Klammer-Label (wie auf allen Bereichen) ---------- */
+.rrl-label {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--rrl-red);
+}
+
+/* ---------- Kopfbereich ---------- */
+.rrl-head { padding: 16vh 0 5vh; border-bottom: 2px solid var(--rrl-ink); }
+.rrl-head h1 {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: clamp(2.4rem, 6vw, 5rem); line-height: 1.0;
+  letter-spacing: -0.03em; margin: 1.3rem 0 1.4rem; max-width: 20ch;
+}
+.rrl-dot { color: var(--rrl-red); }
+.rrl-head p {
+  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
+  font-size: clamp(1.2rem, 1.8vw, 1.45rem); line-height: 1.45;
+  max-width: 46ch; color: var(--rrl-ink);
+}
+
+/* ---------- Rechtstext ---------- */
+.rrl-body { padding: 5vh 0 2vh; max-width: 72ch; }
+.rrl-body section { padding: 0.4rem 0 0.6rem; }
+.rrl-body section + section h2 { border-top: 1px solid var(--rrl-line); }
+.rrl-body h2 {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem); letter-spacing: -0.02em;
+  line-height: 1.15; margin: 0 0 1.2rem; padding-top: 2.8rem;
+}
+.rrl-body h3 {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 1.1rem; letter-spacing: -0.01em; margin: 2rem 0 0.7rem;
+}
+.rrl-body h4 {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 1rem; letter-spacing: -0.01em; margin: 1.6rem 0 0.6rem;
+}
+.rrl-body p {
+  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
+  font-size: 1.18rem; line-height: 1.62; margin: 0 0 1.2rem;
+}
+.rrl-body a { color: var(--rrl-red); border-bottom: 1px solid currentColor; }
+.rrl-body strong { font-weight: 700; }
+.rrl-body ul, .rrl-body ol { margin: 0 0 1.4rem 1.2rem; }
+.rrl-body li {
+  font-family: "Crimson Pro", Georgia, serif; font-size: 1.14rem;
+  line-height: 1.55; margin-bottom: 0.5rem; padding-left: 0.3rem;
+}
+.rrl-body ul li::marker { content: "— "; color: var(--rrl-red); }
+.rrl-body ul ul { margin-top: 0.5rem; margin-bottom: 0.6rem; }
+
+/* Tabellen (Speicherdauer etc.) */
+.rrl-body table {
+  width: 100%; border-collapse: collapse; margin: 0.4rem 0 1.6rem;
+  font-family: "Instrument Sans", sans-serif; font-size: 0.98rem;
+}
+.rrl-body th {
+  text-align: left; font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.7rem 0.8rem 0.7rem 0; border-bottom: 2px solid var(--rrl-ink);
+}
+.rrl-body td {
+  padding: 0.75rem 0.8rem 0.75rem 0;
+  border-bottom: 1px solid var(--rrl-line); line-height: 1.45;
+}
+
+/* Info-Kaesten (Tool-Angaben in der Datenschutzerklaerung) */
+.rrl-tool {
+  border: 1px solid var(--rrl-line); border-left: 3px solid var(--rrl-red);
+  padding: 1.4rem 1.6rem; margin: 0 0 1.4rem;
+}
+.rrl-tool h4 { margin-top: 0; }
+.rrl-tool p { font-size: 1.05rem; margin-bottom: 0.8rem; }
+.rrl-tool ul { margin-bottom: 0.6rem; }
+.rrl-tool li { font-size: 1.05rem; }
+
+/* ---------- Cookie-Einstellungen: Toggles + Buttons ---------- */
+.rrl-consent-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 1.5rem;
+}
+.rrl-consent-row h2 { flex: 1; }
+.rrl-badge {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--rrl-ink-soft); white-space: nowrap;
+  border: 1px solid var(--rrl-line); padding: 0.45rem 0.8rem;
+}
+.rrl-switch { position: relative; display: inline-flex; align-items: center; cursor: pointer; align-self: center; }
+.rrl-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.rrl-switch-track {
+  width: 3.4rem; height: 1.75rem; background: var(--rrl-line);
+  border-radius: 999px; position: relative; transition: background 0.2s;
+}
+.rrl-switch-track::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: calc(1.75rem - 4px); height: calc(1.75rem - 4px);
+  background: #fff; border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(35, 38, 46, 0.25);
+  transition: transform 0.2s ease;
+}
+.rrl-switch input:checked + .rrl-switch-track { background: var(--rrl-red); }
+.rrl-switch input:checked + .rrl-switch-track::after { transform: translateX(1.65rem); }
+.rrl-switch input:focus-visible + .rrl-switch-track { outline: 2px solid var(--rrl-navy); outline-offset: 2px; }
+
+.rrl-actions {
+  display: flex; flex-wrap: wrap; gap: 0.9rem;
+  margin: 3rem 0 1.6rem; padding-top: 2.4rem;
+  border-top: 2px solid var(--rrl-ink);
+}
+.rrl-btn {
+  display: inline-block; cursor: pointer;
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 1rem 1.9rem; border: 1px solid var(--rrl-ink);
+  background: transparent; color: var(--rrl-ink);
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.rrl-btn:hover { background: var(--rrl-ink); color: #fff; }
+.rrl-btn--primary { background: var(--rrl-red); border-color: var(--rrl-red); color: #fff; }
+.rrl-btn--primary:hover { background: var(--rrl-navy); border-color: var(--rrl-navy); transform: translateY(-2px); }
+.rrl-btn--dark { background: var(--rrl-navy); border-color: var(--rrl-navy); color: #fff; }
+.rrl-btn--dark:hover { background: var(--rrl-ink); border-color: var(--rrl-ink); }
+
+.rrl-saved {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--rrl-red); margin: 0 0 1.2rem;
+}
+.rrl-footnote {
+  font-family: "Instrument Sans", sans-serif; font-size: 0.92rem;
+  color: var(--rrl-ink-soft); line-height: 1.55; max-width: 60ch;
+}
+.rrl-footnote a { color: var(--rrl-red); border-bottom: 1px solid currentColor; }
+
+/* Mobil */
+@media (max-width: 640px) {
+  .rrl-head { padding-top: 14vh; }
+  .rrl-consent-row { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+  .rrl-actions { flex-direction: column; }
+  .rrl-btn { text-align: center; }
+  .rrl-tool { padding: 1.1rem 1.1rem; }
+}

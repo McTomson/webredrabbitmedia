@@ -18,19 +18,22 @@ import Link from "next/link";
 
 type NavItem = { label: string; href: string };
 
+// Leistungen/Preise zeigen bewusst noch auf die alten Live-Seiten,
+// bis es Relaunch-Versionen gibt (Tomson 16.07.).
 const NAV_ITEMS: NavItem[] = [
   { label: "Start", href: "/relaunch-preview" },
   { label: "Leistungen", href: "/leistungen" },
   { label: "Referenzen", href: "/relaunch-preview/referenzen" },
   { label: "Preise", href: "/preise" },
-  { label: "FAQ", href: "/faq" },
-  { label: "Über uns", href: "/ueber-uns" },
-  { label: "Kontakt", href: "/kontakt" },
+  { label: "Tipps", href: "/relaunch-preview/tipps" },
+  { label: "FAQ", href: "/relaunch-preview/faq" },
+  { label: "Über uns", href: "/relaunch-preview/ueber-uns" },
+  { label: "Kontakt", href: "/relaunch-preview/kontakt" },
 ];
 
 const CONTACTS: { label: string; href: string; external?: boolean }[] = [
   { label: "office@redrabbit.media", href: "mailto:office@redrabbit.media" },
-  { label: "+43 676 9000 955", href: "tel:+436769000955" },
+  { label: "Anrufen", href: "tel:+436769000955" },
   { label: "Instagram", href: "https://www.instagram.com/redrabbit.media/", external: true },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/thomasuhlir/", external: true },
 ];
@@ -163,7 +166,7 @@ export default function RelaunchMenu() {
           </nav>
 
           <div className="rrmenu-foot" style={itemDelay(NAV_ITEMS.length)}>
-            <Link href="/kontakt" className="rrmenu-cta" onClick={close}>
+            <Link href="/relaunch-preview/kontakt" className="rrmenu-cta" onClick={close}>
               Projekt anfragen
               <span className="rrmenu-cta-arrow" aria-hidden="true">→</span>
             </Link>

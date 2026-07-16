@@ -29,6 +29,11 @@
   display: flex; justify-content: space-between; align-items: center;
   padding: 1.4rem 0 0;
 }
+/* Der fixe Hamburger (46px, right ~18px) liegt auf schmalen Screens sonst
+   ueber dem rechten Kopf-Link. */
+@media (max-width: 900px) {
+  .rrt-top { padding-right: 72px; }
+}
 .rrt-mark {
   font-family: "DM Sans", sans-serif; font-weight: 800;
   font-size: 1.05rem; letter-spacing: -0.02em; color: var(--rrt-red);
@@ -95,8 +100,10 @@
 .rrt-row:last-child { border-bottom: 1px solid var(--rrt-line); }
 .rrt-num {
   font-family: "DM Sans", sans-serif; font-weight: 800;
-  font-size: 0.8rem; letter-spacing: 0.06em; color: var(--rrt-red);
+  font-size: 0.8rem; letter-spacing: 0.06em; color: var(--rrt-ink-soft);
+  transition: color 0.22s;
 }
+.rrt-row:hover .rrt-num { color: var(--rrt-red); }
 .rrt-row h3 {
   font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
   font-size: clamp(1.15rem, 2vw, 1.55rem); line-height: 1.25;
@@ -132,6 +139,45 @@
   padding: 1rem 2.2rem; transition: background 0.2s, transform 0.2s;
 }
 .rrt-btn:hover { background: var(--rrt-navy); transform: translateY(-2px); }
+
+/* ---------- Intro-Bruecke Hero -> Index (ersetzt rrt-hero-Textblock) ---------- */
+.rrt-intro { padding: 8vh 0 2vh; }
+.rrt-intro .rrt-label { display: block; margin-bottom: 1.2rem; }
+.rrt-intro p {
+  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
+  font-size: clamp(1.35rem, 2.4vw, 2rem); line-height: 1.4;
+  max-width: 30ch; color: var(--rrt-ink);
+}
+.rrt-intro p .rrt-dot { color: var(--rrt-red); }
+
+/* ---------- Scroll-Reveal-Staffelung des Index ----------
+   Nur aktiv, wenn die Engine .rrt[data-reveal] setzt (JS lebt).
+   Faellt JS aus, bleibt alles sofort sichtbar (fail-open, SEO/LLM
+   verlieren nichts). prefers-reduced-motion: Engine setzt data-reveal
+   erst gar nicht -> statisch. */
+.rrt[data-reveal] .rrt-lead,
+.rrt[data-reveal] .rrt-row,
+.rrt[data-reveal] .rrt-section > .rrt-label {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.7s cubic-bezier(0.6, 0, 0.4, 1),
+              transform 0.7s cubic-bezier(0.6, 0, 0.4, 1);
+}
+.rrt[data-reveal] .rrt-lead.is-in,
+.rrt[data-reveal] .rrt-row.is-in,
+.rrt[data-reveal] .rrt-section > .rrt-label.is-in {
+  opacity: 1; transform: none;
+}
+/* Hairline zeichnet sich pro Reihe von links nach rechts ein. */
+.rrt[data-reveal] .rrt-row { border-top-color: transparent; }
+.rrt[data-reveal] .rrt-row::before {
+  content: ""; position: absolute; left: 0; top: 0; height: 1px; width: 100%;
+  background: var(--rrt-line);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.6, 0, 0.4, 1);
+}
+.rrt[data-reveal] .rrt-row.is-in::before { transform: scaleX(1); }
+.rrt[data-reveal] .rrt-row:last-child { border-bottom-color: transparent; }
+.rrt[data-reveal] .rrt-row.is-in:last-child { border-bottom-color: var(--rrt-line); }
 
 /* ============================================================
    ARTIKEL-TEMPLATE
