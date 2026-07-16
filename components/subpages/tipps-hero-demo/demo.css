@@ -41,13 +41,27 @@
   }
 
   /* ================= HAUPT-SZENE: HERO (Titel + Malen) ================= */
-  .scene-main{position:relative;height:200vh}
+  /* 160vh statt 200vh: kuerzt den Hero-Auslauf, damit der Karten-Tunnel direkt
+     an das Buchstaben-Scatter anschliesst (kein totes weisses Stueck). Der
+     Scatter laeuft weiter ueber die 60vh Pin-Strecke, nur straffer. */
+  .scene-main{position:relative;height:160vh}
   .main-sticky{
     position:sticky;top:0;height:100vh;height:100dvh;
     overflow:hidden;isolation:isolate;
     user-select:none;-webkit-user-select:none;
+    /* Ueber dem Tipps-Karten-Tunnel (rrtn-stage z-index:1), der per negativem
+       Margin HINTER dem Hero liegt; eigener Grund transparent — die Deckung
+       kommt allein aus layer-base/layer-deck (die die Engine beim Scatter
+       transparent faded, damit die erste Karte durchscheint). */
+    z-index:3;background:transparent;
   }
   .main-sticky.painting{cursor:none}
+  /* Nach der Mal-Phase (painting-Klasse weg) darf der transparente Hero-Sticky
+     KEINE Zeiger-Events mehr schlucken — darunter liegt der Karten-Tunnel,
+     dessen Links sonst nicht klickbar sind. Waehrend des Malens bleibt der
+     Sticky interaktiv (Pointer-/Touch-Painting). */
+  .scene-main{pointer-events:none}
+  .main-sticky.painting{pointer-events:auto}
   .main-sticky ::selection{background:rgba(241,32,50,.25)}
 
   /* Ebene B (Reveal): Navy + versteckte Botschaft — viewport-fix im Sticky */

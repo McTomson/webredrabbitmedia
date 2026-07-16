@@ -2,6 +2,7 @@ type RabbitMarkProps = {
   className?: string;
   color?: string;
   title?: string;
+  style?: React.CSSProperties;
 };
 
 // Vectorized from public/images/logo.png (rabbit-head mark, cropped to its
@@ -11,11 +12,13 @@ export function RabbitMark({
   className = "",
   color = "#F12032",
   title = "Red Rabbit",
+  style,
 }: RabbitMarkProps) {
   return (
     <svg
       viewBox="0 0 174 267"
       className={className}
+      style={style}
       role="img"
       aria-label={title}
       preserveAspectRatio="xMidYMid meet"

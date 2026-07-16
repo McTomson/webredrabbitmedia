@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/blog/posts';
 import TippsHeroClient from '@/components/subpages/TippsHeroClient';
+import TippsTunnel from '@/components/relaunch/TippsTunnel';
+import { RabbitMark } from '@/components/relaunch/RabbitMark';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
@@ -18,10 +20,12 @@ const HERO_DIR = path.join(process.cwd(), 'components/subpages/tipps-hero-demo')
 const readHero = (f: string) => fs.readFileSync(path.join(HERO_DIR, f), 'utf8');
 
 /**
- * TIPPS-Uebersicht im Relaunch-Look (Preview, noindex) — redaktioneller
- * Register-Index statt Karten-Grid: neuester Artikel als Serif-Lead,
- * darunter nummerierte Reihen nach Themen gruppiert (Klammer-Labels wie
- * auf allen Bereichen). Kein Suchfeld, kein A-Z: 26 Artikel scannt man.
+ * TIPPS-Uebersicht im Relaunch-Look (Preview, noindex) — 3D-Karten-Tunnel
+ * (Vorbild ashleybrookecs.com/work): die Blogartikel-Karten fliegen beim
+ * Scrollen aus der Tiefe an den Betrachter vorbei (Komponente TippsTunnel).
+ * Hero (tipps-hero-demo) bleibt; Filter-/Suchleiste unten rechts. Die alte
+ * rrt-Register-/Lead-/CTA-Sektion entfaellt auf der Uebersicht (Artikel-
+ * Detailseiten unter [slug] nutzen rrt-* unveraendert weiter).
  */
 export const metadata: Metadata = {
   title: 'Tipps (Preview) · Red Rabbit Media',
@@ -30,23 +34,17 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const fmtDate = (iso: string) =>
-  new Date(iso).toLocaleDateString('de-AT', { day: 'numeric', month: 'long', year: 'numeric' });
-
 export default async function TippsPreviewPage() {
   const posts = (await getAllPosts()).filter((p) => p.status === 'published');
-  const [lead, ...rest] = posts;
-
-  // Nach Kategorie gruppieren, Reihenfolge = erste Nennung (posts sind datumssortiert).
-  const groups = new Map<string, typeof rest>();
-  for (const p of rest) {
-    const g = groups.get(p.category) ?? [];
-    g.push(p);
-    groups.set(p.category, g);
-  }
-
-  let n = 0;
-  const num = () => String(++n).padStart(2, '0');
+  const tunnelPosts = posts.map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    category: p.category,
+    readingTime: p.readingTime,
+    featuredImage: p.featuredImage,
+    excerpt: p.excerpt,
+    tags: p.tags,
+  }));
 
   const rrFonts = `rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`;
 
@@ -66,6 +64,25 @@ export default async function TippsPreviewPage() {
         href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=Instrument+Sans:wght@400;500;600&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
       />
 
+      {/* Rote Hasen-Marke oben links auf Weiss, Link zur Startseite (Muster wie
+          GalleryChrome auf der Referenzen-Seite). */}
+      <Link
+        href="/relaunch-preview"
+        aria-label="Zur Startseite"
+        style={{
+          position: 'absolute',
+          top: 'clamp(18px, 2.4vw, 34px)',
+          left: 'var(--rr-gutter, clamp(20px, 4vw, 64px))',
+          zIndex: 30,
+          display: 'block',
+          lineHeight: 0,
+        }}
+      >
+        {/* Wortmarke dezent: viewBox 174x267 (h/w ~1.53) -> width ~20px ergibt
+            ~31px Hoehe (Referenz GalleryChrome-Groesse). */}
+        <RabbitMark style={{ display: 'block', width: 'clamp(18px, 1.8vw, 21px)', height: 'auto' }} />
+      </Link>
+
       {/* Hamburger-Menue der Hauptseite. Bewusst AUSSERHALB von .rrt (dessen
           Universal-Reset wuerde sonst mit den Menue-/Footer-Styles ringen);
           der .rr-Wrapper liefert nur die Font-Variablen. */}
@@ -79,56 +96,10 @@ export default async function TippsPreviewPage() {
           als Intro-Zeile im Index weiter. */}
       <TippsHeroClient css={heroCss} html={heroHtml} js={heroJs} />
 
-      <div className="rrt">
-      <div className="rrt-wrap">
-        {/* Kompakte Intro-Bruecke Hero -> Index (uebernimmt die alte rrt-hero-Zeile). */}
-        <section className="rrt-intro">
-          <span className="rrt-label">(Red Rabbit Wissen)</span>
-          <p>
-            Keine Content-Müllhalde, kein Marketing-Geschwätz: {posts.length} ehrliche
-            Antworten auf die Fragen, die dich sonst Geld kosten<span className="rrt-dot">.</span>
-          </p>
-        </section>
-
-        {lead && (
-          <Link className="rrt-lead" href={`/relaunch-preview/tipps/${lead.slug}`}>
-            <div className="rrt-lead-kicker">
-              <span className="rrt-label">(Neu)</span>
-              <span className="rrt-meta">
-                {lead.category} &nbsp;&middot;&nbsp; {fmtDate(lead.publishedAt)} &nbsp;&middot;&nbsp; {lead.readingTime} Min
-              </span>
-            </div>
-            <h2>{lead.title}</h2>
-            <p className="rrt-lead-excerpt">{lead.excerpt}</p>
-          </Link>
-        )}
-
-        {[...groups.entries()].map(([category, items]) => (
-          <section className="rrt-section" key={category}>
-            <span className="rrt-label">({category})</span>
-            {items.map((p) => (
-              <Link className="rrt-row" href={`/relaunch-preview/tipps/${p.slug}`} key={p.slug}>
-                <span className="rrt-num">{num()}</span>
-                <h3>{p.title}</h3>
-                <span className="rrt-meta">{p.readingTime} Min</span>
-              </Link>
-            ))}
-          </section>
-        ))}
-
-        <section className="rrt-cta">
-          <span className="rrt-label">(Genug gelesen)</span>
-          <h2>
-            Wissen bringt dich weiter.<br />
-            Machen bringt dir Kunden<span>.</span>
-          </h2>
-          <p>
-            Erz&auml;hl uns in zwei Minuten, wo es bei dir hakt. Den Rest lesen dann wir.
-          </p>
-          <Link className="rrt-btn" href="/relaunch-preview/kontakt">Zum Kontakt</Link>
-        </section>
-      </div>
-
+      {/* 3D-Karten-Tunnel: die Artikel-Karten fliegen beim Scrollen aus der
+          Tiefe an der Kamera vorbei. Ersetzt das alte rrt-Register. */}
+      <div className={rrFonts} style={{ background: 'transparent' }}>
+        <TippsTunnel posts={tunnelPosts} />
       </div>
 
       {/* Footer der Hauptseite (self-contained Styles, .rr nur fuer Font-Variablen). */}

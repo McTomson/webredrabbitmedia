@@ -36,6 +36,8 @@
   const hint=document.getElementById("hint");
   const autobtn=sticky.querySelector("[data-auto]");
   const blobsGroup=sticky.querySelector(".blobs");
+  const layerBase=sticky.querySelector(".layer-base");
+  const layerDeck=sticky.querySelector(".layer-deck");
 
   /* Buchstaben-Scatter wie ueber-uns/faq (Thomas 16.07.: "die Buchstaben sollen
      sich auch wieder verteilen"): pro Buchstabe eine feste Streu-Richtung. */
@@ -53,7 +55,9 @@
      gerenderte redaktionelle Index folgt. */
   const P_REVEAL=0.09;                 /* Paint-Reveal + voller Anschnitt nur ganz oben */
   const P_SHRINK1=0.52;                /* Titel steigt auf und schrumpft mittig */
-  const P_SCAT0=0.52, P_SCAT1=0.92;    /* Buchstaben fliegen raus */
+  const P_SCAT0=0.52, P_SCAT1=0.985;   /* Buchstaben fliegen raus — bis fast ans
+     Szenen-Ende, damit das Scatter mit dem Eintreten des Karten-Tunnels
+     ueberlappt (Buchstaben fliegen raus, waehrend die erste Karte schon kommt) */
 
   /* ---- Maske + Mal-Zone (Blobs nur OBERHALB der Titel-Oberkante) ---- */
   function fitMask(){
@@ -246,15 +250,29 @@
     const sc=clamp((Pm-P_SCAT0)/(P_SCAT1-P_SCAT0),0,1);
     const R=Math.max(window.innerWidth,window.innerHeight)*0.9;
     if(sc<=0){
-      for(const el of letterEls){ el.style.transform="none"; }
+      for(const el of letterEls){ el.style.transform="none"; el.style.opacity="1"; }
     } else {
       const e=easeMorph(sc);
+      /* Am Scatter-Ende ausfaden: einzelne weit geworfene Buchstaben ragten
+         sonst nach dem Hero-Release noch in den Karten-Tunnel (Messbefund
+         16.07.). Reversibel. */
+      const lop=sc>0.9?Math.max(0,1-(sc-0.9)/0.1):1;
       for(const el of letterEls){
         const tx=el._dx*el._dist*R*e/s;
         const tyl=el._dy*el._dist*R*e/s;
         el.style.transform="translate("+tx.toFixed(1)+"px,"+tyl.toFixed(1)+"px) rotate("+(el._rot*e).toFixed(1)+"deg)";
+        el.style.opacity=lop.toFixed(3);
       }
     }
+
+    // Hero-Flaechen transparent schalten, sobald die Buchstaben zerfliegen:
+    // der Tipps-Karten-Tunnel liegt (per negativem Margin, z-index darunter)
+    // schon HINTER dem Hero-Sticky — durch die transparente Flaeche sieht man
+    // die erste Karte aus der Tiefe wachsen, waehrend die Buchstaben fliegen.
+    // Reversibel (Scroll zurueck -> Flaeche wieder deckend).
+    const hk=easeInOut(clamp((Pm-P_SCAT0)/0.15,0,1));
+    if(layerDeck){ layerDeck.style.backgroundColor="rgba(255,255,255,"+(1-hk).toFixed(3)+")"; }
+    if(layerBase){ layerBase.style.opacity=(1-hk).toFixed(3); }
 
     // Reveal-Fade + Interaktion (viewport-fix; faded beim Verlassen des Heros)
     const fade=clamp((Pm-P_REVEAL)/0.07,0,1);
