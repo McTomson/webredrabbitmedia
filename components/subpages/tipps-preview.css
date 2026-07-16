@@ -1,0 +1,272 @@
+/* ============================================================
+   TIPPS im Relaunch-Look (Preview) — redaktioneller Index +
+   Lese-Template. Gleiche Sprache wie die Template-Seiten:
+   DM Sans (Headlines), Crimson Pro (Lesetext), Instrument Sans
+   (Meta), Weiss + Ink + Rot, Hairlines statt Karten-Schatten.
+   Alle Klassen rrt-* (scoped, kollidiert nicht mit Live-CSS).
+   ============================================================ */
+.rrt {
+  --rrt-paper: #ffffff;
+  --rrt-ink: #23262e;
+  --rrt-ink-soft: #6a6e78;
+  --rrt-navy: #1c2837;
+  --rrt-red: #f12032;
+  --rrt-blue: #0a72a0;
+  --rrt-line: #e4e4e0;
+  background: var(--rrt-paper);
+  color: var(--rrt-ink);
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+.rrt * { margin: 0; padding: 0; box-sizing: border-box; }
+.rrt a { color: inherit; text-decoration: none; }
+
+.rrt-wrap { max-width: 1080px; margin: 0 auto; padding: 0 5vw; }
+
+/* ---------- Slim-Top: Wortmarke + Zurueck ---------- */
+.rrt-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.4rem 0 0;
+}
+.rrt-mark {
+  font-family: "DM Sans", sans-serif; font-weight: 800;
+  font-size: 1.05rem; letter-spacing: -0.02em; color: var(--rrt-red);
+}
+.rrt-back {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--rrt-ink); opacity: 0.65; transition: opacity 0.2s, color 0.2s;
+}
+.rrt-back:hover { opacity: 1; color: var(--rrt-red); }
+
+/* ---------- Klammer-Label (wie auf allen Bereichen) ---------- */
+.rrt-label {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--rrt-red);
+}
+
+/* ---------- Uebersicht: Hero ---------- */
+.rrt-hero { padding: 12vh 0 6vh; }
+.rrt-hero h1 {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: clamp(2.6rem, 7vw, 5.6rem); line-height: 0.98;
+  letter-spacing: -0.03em; margin: 1.4rem 0 2rem; max-width: 14ch;
+}
+.rrt-hero h1 em { font-style: normal; color: var(--rrt-red); }
+.rrt-hero p {
+  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
+  font-size: clamp(1.25rem, 1.9vw, 1.6rem); line-height: 1.45;
+  max-width: 46ch; color: var(--rrt-ink);
+}
+.rrt-hero p .rrt-dot { color: var(--rrt-red); }
+
+/* ---------- Lead-Artikel (neuester) ---------- */
+.rrt-lead {
+  display: block; border-top: 2px solid var(--rrt-ink);
+  padding: 2.4rem 0 2.6rem; margin-top: 4vh;
+}
+.rrt-lead-kicker { display: flex; gap: 1.2rem; align-items: baseline; margin-bottom: 1rem; }
+.rrt-meta {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--rrt-ink-soft);
+}
+.rrt-lead h2 {
+  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
+  font-size: clamp(1.9rem, 4.2vw, 3.4rem); line-height: 1.08;
+  letter-spacing: -0.01em; max-width: 22ch; transition: color 0.22s;
+}
+.rrt-lead:hover h2 { color: var(--rrt-red); }
+.rrt-lead-excerpt {
+  margin-top: 1.1rem; max-width: 62ch;
+  font-size: 1.02rem; line-height: 1.6; color: var(--rrt-ink-soft);
+}
+
+/* ---------- Themen-Sektion + Index-Reihen ---------- */
+.rrt-section { padding: 5vh 0 2vh; }
+.rrt-row {
+  display: grid; grid-template-columns: 3.4rem 1fr auto;
+  gap: 1.4rem; align-items: baseline;
+  padding: 1.35rem 0; border-top: 1px solid var(--rrt-line);
+  position: relative;
+}
+.rrt-row:last-child { border-bottom: 1px solid var(--rrt-line); }
+.rrt-num {
+  font-family: "DM Sans", sans-serif; font-weight: 800;
+  font-size: 0.8rem; letter-spacing: 0.06em; color: var(--rrt-red);
+}
+.rrt-row h3 {
+  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
+  font-size: clamp(1.15rem, 2vw, 1.55rem); line-height: 1.25;
+  letter-spacing: -0.005em; transition: transform 0.22s ease, color 0.22s;
+}
+.rrt-row:hover h3 { color: var(--rrt-red); transform: translateX(6px); }
+.rrt-row .rrt-meta { white-space: nowrap; }
+.rrt-row::after {
+  content: "→"; position: absolute; left: -1.8rem; top: 50%;
+  transform: translateY(-50%); color: var(--rrt-red);
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  opacity: 0; transition: opacity 0.2s, left 0.25s ease;
+}
+.rrt-row:hover::after { opacity: 1; left: -1.4rem; }
+.rrt-section .rrt-label { display: block; margin-bottom: 1.2rem; }
+
+/* ---------- Schluss-CTA ---------- */
+.rrt-cta { padding: 10vh 0 12vh; text-align: center; }
+.rrt-cta h2 {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: clamp(2rem, 4.6vw, 3.6rem); letter-spacing: -0.03em;
+  margin: 1.2rem 0 1rem;
+}
+.rrt-cta h2 span { color: var(--rrt-red); }
+.rrt-cta p {
+  font-family: "Crimson Pro", Georgia, serif; font-size: 1.2rem;
+  line-height: 1.5; max-width: 42ch; margin: 0 auto 2rem;
+}
+.rrt-btn {
+  display: inline-block; background: var(--rrt-red); color: #fff;
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 1rem 2.2rem; transition: background 0.2s, transform 0.2s;
+}
+.rrt-btn:hover { background: var(--rrt-navy); transform: translateY(-2px); }
+
+/* ============================================================
+   ARTIKEL-TEMPLATE
+   ============================================================ */
+.rrt-article-head { padding: 10vh 0 4vh; border-bottom: 2px solid var(--rrt-ink); }
+.rrt-article-head h1 {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: clamp(2rem, 5vw, 4rem); line-height: 1.02;
+  letter-spacing: -0.03em; margin: 1.3rem 0 1.6rem; max-width: 24ch;
+}
+.rrt-article-head h1 .rrt-dot { color: var(--rrt-red); }
+.rrt-byrow { display: flex; flex-wrap: wrap; gap: 1.6rem; align-items: baseline; }
+
+/* Schnellantwort — der SEO/KI-Block, editorial gerahmt */
+.rrt-snippet {
+  margin: 4.5vh 0 0; padding: 1.8rem 2rem;
+  border: 1px solid var(--rrt-line); border-left: 3px solid var(--rrt-red);
+}
+.rrt-snippet .rrt-label { display: block; margin-bottom: 0.8rem; }
+.rrt-snippet p {
+  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
+  font-size: 1.25rem; line-height: 1.5;
+}
+
+/* Lesetext */
+.rrt-body { padding: 5vh 0 2vh; max-width: 720px; }
+.rrt-body h2 {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem); letter-spacing: -0.02em;
+  line-height: 1.12; margin: 3.2rem 0 1.2rem; counter-increment: rrt-h2;
+}
+.rrt-body h2::before {
+  content: "(" counter(rrt-h2, decimal-leading-zero) ")";
+  display: block; margin-bottom: 0.5rem;
+  font-size: 0.72rem; letter-spacing: 0.28em; color: var(--rrt-red);
+}
+.rrt-body { counter-reset: rrt-h2; }
+.rrt-body h3 {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 1.15rem; letter-spacing: -0.01em; margin: 2.2rem 0 0.8rem;
+}
+.rrt-body p {
+  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
+  font-size: 1.22rem; line-height: 1.62; margin: 0 0 1.4rem;
+}
+.rrt-body a { color: var(--rrt-red); border-bottom: 1px solid currentColor; }
+.rrt-body strong { font-weight: 700; }
+.rrt-body ul, .rrt-body ol { margin: 0 0 1.6rem 1.2rem; }
+.rrt-body li {
+  font-family: "Crimson Pro", Georgia, serif; font-size: 1.18rem;
+  line-height: 1.55; margin-bottom: 0.55rem; padding-left: 0.3rem;
+}
+.rrt-body ul li::marker { content: "— "; color: var(--rrt-red); }
+.rrt-body ol li::marker { color: var(--rrt-red); font-weight: 700; }
+.rrt-body table {
+  width: 100%; border-collapse: collapse; margin: 0 0 1.8rem;
+  font-family: "Instrument Sans", sans-serif; font-size: 0.98rem;
+}
+.rrt-body th {
+  text-align: left; font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.7rem 0.8rem 0.7rem 0; border-bottom: 2px solid var(--rrt-ink);
+}
+.rrt-body td { padding: 0.75rem 0.8rem 0.75rem 0; border-bottom: 1px solid var(--rrt-line); line-height: 1.45; }
+.rrt-body img { max-width: 100%; height: auto; display: block; margin: 2rem 0; }
+.rrt-body blockquote {
+  border-left: 3px solid var(--rrt-red); padding-left: 1.4rem; margin: 2rem 0;
+}
+.rrt-body blockquote p { font-style: italic; }
+
+/* Das Wichtigste (Key Takeaways) */
+.rrt-takeaways { margin: 6vh 0; background: var(--rrt-navy); color: #f6f5f1; padding: 2.2rem 2.4rem; }
+.rrt-takeaways .rrt-label { color: #f6f5f1; opacity: 0.9; display: block; margin-bottom: 1.2rem; }
+.rrt-takeaways ol { list-style: none; counter-reset: rrt-tk; }
+.rrt-takeaways li {
+  counter-increment: rrt-tk; display: grid; grid-template-columns: 2.6rem 1fr;
+  gap: 0.6rem; font-family: "Crimson Pro", Georgia, serif;
+  font-size: 1.15rem; line-height: 1.5; padding: 0.65rem 0;
+  border-top: 1px solid rgba(246, 245, 241, 0.18);
+}
+.rrt-takeaways li::before {
+  content: counter(rrt-tk, decimal-leading-zero);
+  font-family: "DM Sans", sans-serif; font-weight: 800; font-size: 0.8rem;
+  color: var(--rrt-red); padding-top: 0.35rem;
+}
+
+/* Zahlen-Zeile (conclusionStats) */
+.rrt-stats { display: flex; flex-wrap: wrap; gap: 3rem; margin: 5vh 0; padding: 2rem 0; border-top: 1px solid var(--rrt-line); border-bottom: 1px solid var(--rrt-line); }
+.rrt-stat b {
+  display: block; font-family: "DM Sans", sans-serif; font-weight: 800;
+  font-size: clamp(1.8rem, 3.4vw, 2.8rem); letter-spacing: -0.03em; color: var(--rrt-red);
+}
+.rrt-stat span { font-family: "Instrument Sans", sans-serif; font-size: 0.85rem; color: var(--rrt-ink-soft); }
+
+/* FAQ (details, wie Template-Seiten) */
+.rrt-faq { margin: 6vh 0 0; }
+.rrt-faq .rrt-label { display: block; margin-bottom: 1rem; }
+.rrt-faq details { border-top: 1px solid var(--rrt-line); }
+.rrt-faq details:last-of-type { border-bottom: 1px solid var(--rrt-line); }
+.rrt-faq summary {
+  cursor: pointer; list-style: none; display: flex; justify-content: space-between;
+  align-items: baseline; gap: 1rem; padding: 1.1rem 0;
+  font-family: "DM Sans", sans-serif; font-weight: 700; font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+.rrt-faq summary::-webkit-details-marker { display: none; }
+.rrt-faq summary::after { content: "+"; color: var(--rrt-red); font-weight: 800; }
+.rrt-faq details[open] summary::after { content: "–"; }
+.rrt-faq details p {
+  font-family: "Crimson Pro", Georgia, serif; font-size: 1.15rem;
+  line-height: 1.55; padding: 0 0 1.3rem; max-width: 60ch;
+}
+
+/* Quellen + Byline */
+.rrt-sources { margin: 5vh 0 0; }
+.rrt-sources .rrt-label { display: block; margin-bottom: 0.8rem; }
+.rrt-sources a {
+  display: block; font-family: "Instrument Sans", sans-serif; font-size: 0.92rem;
+  color: var(--rrt-ink-soft); padding: 0.35rem 0; border-top: 1px solid var(--rrt-line);
+}
+.rrt-sources a:hover { color: var(--rrt-red); }
+.rrt-byline { margin: 6vh 0 0; display: flex; gap: 1rem; align-items: baseline; }
+.rrt-byline b { font-family: "DM Sans", sans-serif; font-weight: 700; }
+.rrt-byline span { color: var(--rrt-ink-soft); font-size: 0.9rem; }
+
+/* Weiterlesen */
+.rrt-related { margin: 8vh 0 0; padding-top: 2rem; border-top: 2px solid var(--rrt-ink); }
+
+/* Mobil */
+@media (max-width: 640px) {
+  .rrt-row { grid-template-columns: 2.4rem 1fr; }
+  .rrt-row .rrt-meta { display: none; }
+  .rrt-stats { gap: 1.6rem; }
+  .rrt-body { padding-right: 0; }
+  .rrt-snippet { padding: 1.4rem 1.2rem; }
+  .rrt-takeaways { padding: 1.6rem 1.3rem; }
+  .rrt-takeaways li { grid-template-columns: 2.2rem 1fr; }
+}

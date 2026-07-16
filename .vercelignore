@@ -11,3 +11,6 @@ server.log
 server_debug.log
 server_verification.log
 build_output.txt
+graphify-out
+scratchpad
+14_typing_*.png

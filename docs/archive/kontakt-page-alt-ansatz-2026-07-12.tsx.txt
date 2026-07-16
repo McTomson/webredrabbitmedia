@@ -1,0 +1,446 @@
+import type { Metadata } from "next";
+import { crimson, dmsans, grotesk } from "@/lib/relaunch/fonts";
+import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
+import FooterReassembly from "@/components/relaunch/FooterReassembly";
+import JsonLd from "@/components/JsonLd";
+import SubpageHero from "@/components/subpages/SubpageHero";
+import KontaktForm from "@/components/subpages/KontaktForm";
+import StepStack, { type Step } from "@/components/subpages/StepStack";
+import { REVIEWS } from "@/lib/reviews";
+import "../../styleguide/styleguide.css";
+import "@/components/relaunch/subpages.css";
+
+/**
+ * Kontakt-Seite im Relaunch-Design (Preview, noindex) — kohaerent zur Morph-
+ * Homepage: RelaunchMenu + FooterReassembly, DM-Sans-Display + Crimson-
+ * Statements, Navy/Rot, all-turtles-Weissraum. Hero = echter SubpageHero
+ * (Wort "Kontakt" -> Gluehbirne, Figur links / Text rechts). Alle echten
+ * Bausteine (rr-form, rr-card-soft, rr-quote, rr-faq--editorial) statt Nachbau.
+ *
+ * Platzhalter [[...]] sind bewusst sichtbar (rote Kursive) — offene Angaben,
+ * die Thomas final bestaetigt (Reaktionszeit, Preis, Dauer, Newsletter, Telefon).
+ */
+
+const CANONICAL = "https://web.redrabbit.media/relaunch-preview/kontakt";
+const META_DESC =
+  "Kontakt zu Red Rabbit Media: Erzaehl uns kurz von deinem Betrieb. Kein Verkaufsgespraech, " +
+  "fester Preis, Entwurf vor der ersten Zahlung. Websites, die bei Google und in der KI gefunden werden.";
+
+export const metadata: Metadata = {
+  title: "Kontakt (Preview) — Red Rabbit Media",
+  description: META_DESC,
+  robots: { index: false, follow: false },
+  alternates: { canonical: "/relaunch-preview/kontakt" },
+  openGraph: {
+    title: "Kontakt — Red Rabbit Media",
+    description: META_DESC,
+    type: "website",
+    url: CANONICAL,
+  },
+};
+
+/** Sichtbar markierter Platzhalter fuer noch offene Angaben. */
+function Ph({ children }: { children: React.ReactNode }) {
+  return <em style={{ fontStyle: "italic", color: "var(--rr-red)" }}>[[{children}]]</em>;
+}
+
+const STEPS: Step[] = [
+  {
+    eyebrow: "01",
+    label: "Erstgespräch",
+    body: "Wir hören uns kurz an, was du machst und was die Seite können soll. Fünfzehn Minuten am Telefon reichen meistens, kostet dich nichts und du musst dich zu nichts entscheiden.",
+  },
+  {
+    eyebrow: "02",
+    label: "Entwurf zum Fixpreis",
+    body: "Du bekommst einen klaren Fixpreis, keine Stundensatz-Lotterie. Dann bauen wir einen ersten Entwurf, und du siehst das Design, bevor du irgendetwas zahlst. Erst wenn es dir gefällt und du den Auftrag gibst, fällt eine Anzahlung an.",
+  },
+  {
+    eyebrow: "03",
+    label: "Live und wir bleiben dran",
+    body: "Wir schleifen so lange, bis es passt, dann geht die Seite online. Danach lassen wir sie nicht liegen: Wir kümmern uns weiter darum, dass du gefunden wirst und gefunden bleibst. Ohne Knebelvertrag, jederzeit kündbar.",
+  },
+];
+
+// FAQ: `a` = sichtbare Antwort (mit markierten Platzhaltern), `aLd` = Klartext
+// fuer die FAQPage-JSON-LD (Marker als lesbaren Wert eingesetzt, damit Markup und
+// strukturierte Daten nicht auseinanderlaufen). Route ist noindex, offene Preis-/
+// Dauer-Platzhalter sind bis zum Launch also unkritisch.
+const FAQ: { q: string; a: React.ReactNode; aLd: string }[] = [
+  {
+    q: "Was kostet eine Website bei euch?",
+    a: (
+      <>
+        Der Einstieg liegt bei <Ph>790 oder 950 bestätigen</Ph> Euro für einen schlanken One-Pager,
+        gedacht für alle, die klein anfangen wollen. Alles Größere bekommt einen festen Preis, den du
+        vor dem Start kennst. Keine Überraschung auf der Rechnung. Was für dich Sinn macht, sagen wir
+        dir ehrlich im Erstgespräch.
+      </>
+    ),
+    aLd: "Der Einstieg liegt bei 790 Euro für einen schlanken One-Pager, gedacht für alle, die klein anfangen wollen. Alles Größere bekommt einen festen Preis, den du vor dem Start kennst. Keine Überraschung auf der Rechnung. Was für dich Sinn macht, sagen wir dir ehrlich im Erstgespräch.",
+  },
+  {
+    q: "Muss ich in Vorkasse gehen?",
+    a: (
+      <>
+        Nein. Du siehst zuerst den Entwurf, und zwar ohne einen Cent zu zahlen. Eine Anzahlung fällt
+        erst an, wenn dir das Design gefällt und du den Auftrag gibst. Bis dahin trägst du kein Risiko,
+        das tragen wir.
+      </>
+    ),
+    aLd: "Nein. Du siehst zuerst den Entwurf, und zwar ohne einen Cent zu zahlen. Eine Anzahlung fällt erst an, wenn dir das Design gefällt und du den Auftrag gibst. Bis dahin trägst du kein Risiko, das tragen wir.",
+  },
+  {
+    q: "Gibt es versteckte Kosten?",
+    a: (
+      <>
+        Nein. Du bekommst einen Fixpreis, kein Stundensatz, der still vor sich hin läuft. Wenn später
+        etwas dazukommt, das du willst, sagen wir dir vorher, was es kostet. Punkt.
+      </>
+    ),
+    aLd: "Nein. Du bekommst einen Fixpreis, kein Stundensatz, der still vor sich hin läuft. Wenn später etwas dazukommt, das du willst, sagen wir dir vorher, was es kostet. Punkt.",
+  },
+  {
+    q: "Wie lange dauert das?",
+    a: (
+      <>
+        Den ersten Entwurf siehst du in der Regel innerhalb von <Ph>7 Tagen, final bestätigen</Ph>. Wie
+        schnell es dann live geht, hängt vor allem davon ab, wie flott du uns deine Inhalte und dein
+        Feedback gibst.
+      </>
+    ),
+    aLd: "Den ersten Entwurf siehst du in der Regel innerhalb von 7 Tagen. Wie schnell es dann live geht, hängt vor allem davon ab, wie flott du uns deine Inhalte und dein Feedback gibst.",
+  },
+  {
+    q: "Was muss ich selbst machen?",
+    a: (
+      <>
+        Wenig. Du erzählst uns, was du machst und schickst uns, was du hast (Logo, Fotos, Texte, falls
+        vorhanden). Den Rest nehmen wir dir ab, inklusive Texte und Bilder, wenn nichts da ist. Du musst
+        kein Technik-Mensch sein.
+      </>
+    ),
+    aLd: "Wenig. Du erzählst uns, was du machst und schickst uns, was du hast (Logo, Fotos, Texte, falls vorhanden). Den Rest nehmen wir dir ab, inklusive Texte und Bilder, wenn nichts da ist. Du musst kein Technik-Mensch sein.",
+  },
+  {
+    q: "Ich habe schon eine Website. Und jetzt?",
+    a: (
+      <>
+        Dann schau&apos;n wir sie uns an und sagen dir ehrlich, ob sich ein Relaunch lohnt oder ob wir nur
+        nachschärfen, was schon steht. Oft bringt es mehr, eine bestehende Seite endlich sichtbar zu
+        machen, als bei null anzufangen.
+      </>
+    ),
+    aLd: "Dann schau'n wir sie uns an und sagen dir ehrlich, ob sich ein Relaunch lohnt oder ob wir nur nachschärfen, was schon steht. Oft bringt es mehr, eine bestehende Seite endlich sichtbar zu machen, als bei null anzufangen.",
+  },
+];
+
+const TESTIMONIALS = [
+  {
+    text:
+      "Red Rabbit hat meine Webseite erneuert. Ich habe jetzt ein Kontaktformular, Kunden können Termine " +
+      "direkt über die Webseite bei mir buchen und es wird auch mit meinem Kalender synchronisiert. Habe im " +
+      "ersten Monat nach der Umstellung einige neue Kundenanfragen bekommen und bin sehr zufrieden mit der Leistung.",
+    name: "Dmitry Pashlov",
+    src: "Google-Rezension",
+  },
+  {
+    text:
+      "Für unsere beiden Firmen wurden zwei Webseiten erstellt. Die Zusammenarbeit war äußerst präzise, auf " +
+      "all unsere Wünsche wurde detailliert eingegangen, und wir sind mit den Ergebnissen sehr zufrieden! Danke!",
+    name: "Rafael Danesh",
+    src: "Google-Rezension",
+  },
+];
+
+// ---- JSON-LD -------------------------------------------------------------
+// (a) ContactPage + (c) LocalBusiness-Referenz auf den globalen Site-Knoten
+// (#localbusiness aus app/layout.tsx). Die aggregateRating (echtes Google-Rating
+// 5,0 aus REVIEWS.reviewCount=8) wird NUR dort emittiert und hier NICHT dupliziert
+// (kein Doppel-Rating). Fail-closed: hier haengen wir ausschliesslich die ZWEI
+// belegbaren, verbatim gezeigten Google-Reviews an denselben @id an — keine
+// erfundene Anzahl. (REVIEWS.reviewCount = ${8} bleibt die autoritative Aggregat-
+// Quelle im Layout.)
+const REVIEW_LD = TESTIMONIALS.map((t) => ({
+  "@type": "Review",
+  author: { "@type": "Person", name: t.name },
+  reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5", worstRating: "1" },
+  reviewBody: t.text,
+  publisher: { "@type": "Organization", name: "Google" },
+}));
+
+const CONTACT_LD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ContactPage",
+      "@id": `${CANONICAL}#contactpage`,
+      url: CANONICAL,
+      name: "Kontakt — Red Rabbit Media",
+      description: META_DESC,
+      inLanguage: "de-AT",
+      about: { "@id": "https://web.redrabbit.media/#localbusiness" },
+    },
+    {
+      // Referenziert / ergaenzt den globalen LocalBusiness-Knoten: Kontaktdaten
+      // + die zwei belegbaren Reviews. Kein aggregateRating hier (siehe oben).
+      "@type": ["Organization", "LocalBusiness"],
+      "@id": "https://web.redrabbit.media/#localbusiness",
+      name: "Red Rabbit GmbH",
+      url: "https://web.redrabbit.media",
+      email: "office@redrabbit.media",
+      telephone: "+43 676 9000 955",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Grabnergasse 8/8",
+        postalCode: "1060",
+        addressLocality: "Wien",
+        addressCountry: "AT",
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: "office@redrabbit.media",
+        telephone: "+43 676 9000 955",
+        areaServed: "AT",
+        availableLanguage: ["de"],
+      },
+      review: REVIEW_LD,
+    },
+  ],
+};
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${CANONICAL}#faq`,
+  mainEntity: FAQ.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.aLd },
+  })),
+};
+
+export default function KontaktPreviewPage() {
+  // Referenz auf REVIEWS, damit die Single-Source-of-Truth-Bindung explizit ist
+  // (Aggregat 5,0/8 lebt im Layout; hier nur die belegbaren Review-Items).
+  void REVIEWS;
+
+  return (
+    <div className={`rr kt ${dmsans.variable} ${crimson.variable} ${grotesk.variable}`} style={{ background: "#ffffff" }}>
+      <style>{KT_CSS}</style>
+      <JsonLd data={CONTACT_LD} />
+      <JsonLd data={FAQ_LD} />
+      <RelaunchMenu />
+
+      {/* 1) HERO — echter SubpageHero, Wort "Kontakt" -> Gluehbirne (comp 2),
+             Figur links / Text rechts. Statement = echte H1 (SSR). */}
+      <SubpageHero
+        word="Kontakt"
+        comp={2}
+        layout="split"
+        statementAs="h1"
+        eyebrow="Reden wir"
+        statement="Wie viele Kunden hast du diese Woche verloren, ohne es zu merken?"
+        subline="Kein Verkaufsgespräch, kein Aufwand. Erzähl uns kurz von deinem Betrieb, den Rest zeigen wir dir."
+      />
+
+      {/* 2) FORMULAR auf Weiss */}
+      <section className="rr-section kt-form" id="anfrage" aria-labelledby="kt-form-head">
+        <div className="rr-wrap rr-narrow kt-form-inner">
+          <div className="kt-form-intro rr-reveal">
+            <h2 id="kt-form-head" className="rr-claim kt-form-hook">
+              Schreib uns. Zwei Zeilen reichen, wir fragen den Rest.
+            </h2>
+            <p className="rr-body kt-form-note">
+              Du redest immer mit derselben Person, nicht mit einem Callcenter. Antwort kommt in der
+              Regel <Ph>Reaktionszeit, z.B. am selben Werktag</Ph>.
+            </p>
+          </div>
+          <div className="kt-form-card">
+            <KontaktForm id="kontakt-formular" />
+          </div>
+        </div>
+      </section>
+
+      {/* 3) SO LAEUFT DAS — Scroll-Karten-Stack (3x rr-card-soft) */}
+      <section className="rr-section kt-steps" aria-labelledby="kt-steps-head">
+        <div className="rr-wrap rr-narrow">
+          <div className="kt-steps-head rr-reveal">
+            <h2 id="kt-steps-head" className="rr-display-2 kt-steps-title">So einfach läuft das</h2>
+            <p className="rr-body-lg kt-steps-sub">
+              Kein Meeting-Marathon, keine Technik-Vorlesung. Drei Schritte, und du weißt genau, woran du bist.
+            </p>
+          </div>
+        </div>
+        <StepStack steps={STEPS} />
+      </section>
+
+      {/* 4) TESTIMONIALS — Teal-Panels, GOLDENE Sterne */}
+      <section className="rr-section kt-quotes" aria-labelledby="kt-quotes-head">
+        <div className="rr-wrap rr-narrow">
+          <div className="kt-quotes-intro rr-reveal">
+            <h2 id="kt-quotes-head" className="rr-claim kt-quotes-lead">
+              Wir haben keine dreihundert Bewertungen. Wir haben ein paar echte, und die stehen für sich.
+              Fünf von fünf Sternen auf Google.
+            </h2>
+          </div>
+          <div className="rr-grid rr-grid-2 kt-quotes-grid">
+            {TESTIMONIALS.map((t) => (
+              <figure key={t.name} className="rr-quote">
+                <p className="rr-quote__mark" aria-hidden="true">&ldquo;</p>
+                <blockquote className="rr-quote__text">{t.text}</blockquote>
+                <figcaption className="rr-quote__attr">
+                  <span className="rr-quote__name">{t.name}</span>
+                  <span className="rr-quote__stars" aria-label="5 von 5 Sternen">★★★★★</span>
+                  <span className="rr-quote__src">{t.src}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5) FAQ — zweispaltig: links sticky Label + Titel, rechts Editorial-Akkordeon */}
+      <section className="rr-section kt-faq" aria-labelledby="kt-faq-head">
+        <div className="rr-wrap rr-narrow">
+          <div className="kt-faq-grid">
+            <div className="kt-faq-aside">
+              <p className="rr-eyebrow-lg kt-faq-eyebrow">FAQ</p>
+              <h2 id="kt-faq-head" className="rr-display-2 kt-faq-title">
+                Bevor du schreibst<span className="kt-faq-dot">.</span>
+              </h2>
+            </div>
+            <div className="rr-faq rr-faq--editorial kt-faq-list">
+              {FAQ.map((f, i) => (
+                <details key={f.q} open={i === 0}>
+                  <summary>
+                    <span className="rr-faq__idx">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="rr-faq__q">{f.q}</span>
+                  </summary>
+                  <div className="rr-faq__answer">
+                    <div className="rr-faq__answer-in">
+                      <p>{f.a}</p>
+                    </div>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6) PASST GERADE NICHT — schlichte Zeile */}
+      <section className="rr-section kt-notyet" aria-label="Noch nicht bereit">
+        <div className="rr-wrap rr-narrow">
+          <p className="rr-body-lg kt-notyet-line rr-reveal">
+            Noch nicht so weit? Alles gut. Wir schicken ab und zu einen kurzen Tipp, wie du bei Google und
+            der KI besser gefunden wirst. Ehrlich hilfreich, kein Verkaufsgeschwafel.{" "}
+            <Ph>Newsletter-Anmeldung / Link zu den Tipps</Ph>
+          </p>
+        </div>
+      </section>
+
+      {/* 7) AUFLOESUNG + CTA — loest den Hero-Hook */}
+      <section className="rr-section kt-resolve" aria-labelledby="kt-resolve-head">
+        <div className="rr-wrap rr-narrow">
+          <div className="rr-reveal">
+            <p className="rr-eyebrow kt-resolve-eyebrow">
+              <span className="kt-dot" aria-hidden="true" /> Zurück zur Frage von oben
+            </p>
+            <h2 id="kt-resolve-head" className="rr-statement kt-resolve-stmt">
+              Die Kunden, die du diese Woche verloren hast, hast du nie gesehen. Sie haben nach deinem
+              Handwerk gesucht, bei Google oder inzwischen auch bei der KI, und sind bei jemand anderem
+              gelandet, weil der oben stand und du nicht. Kein Anruf, keine Anfrage, kein Zeichen. Deine
+              Arbeit war vielleicht besser. Nur wusste es keiner.
+            </h2>
+            <p className="rr-claim kt-resolve-turn">
+              Genau das drehen wir um. Wir bauen dir keine hübsche Seite, die keiner findet, sondern eine,
+              die dich sichtbar macht, dort wo deine Kunden suchen.
+            </p>
+            <p className="rr-body-lg kt-resolve-cta-line">
+              Dann lass die nächsten nicht auch noch woanders landen. Schreib uns, und wir zeigen dir, wie
+              deine Seite aussehen könnte.
+            </p>
+            <div className="kt-resolve-actions">
+              <a className="rr-btn-sweep rr-btn-sweep--red" href="#kontakt-formular">Anfrage abschicken</a>
+            </div>
+            <p className="rr-meta kt-resolve-direct">
+              Lieber direkt reden? <Ph>Telefonnummer</Ph> oder <Ph>Terminlink</Ph>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <FooterReassembly />
+    </div>
+  );
+}
+
+const KT_CSS = `
+.kt { --kt-ease: var(--rr-ease); }
+
+/* ---- 2) Formular ---- */
+.kt .kt-form { padding-top: clamp(40px, 8vh, 90px); }
+.kt .kt-form-inner { display: grid; grid-template-columns: 1fr; gap: clamp(30px, 5vh, 56px); }
+.kt .kt-form-hook { color: var(--rr-navy); max-width: 16em; }
+.kt .kt-form-note { margin-top: 16px; color: var(--rr-ink-soft); max-width: 44ch; }
+.kt .kt-form-card { max-width: 720px; }
+
+/* ---- 3) Steps ---- */
+.kt .kt-steps { padding-bottom: 0; }
+.kt .kt-steps-head { margin-bottom: clamp(8px, 2vh, 20px); }
+.kt .kt-steps-title { color: var(--rr-navy); }
+.kt .kt-steps-sub { margin-top: 18px; color: var(--rr-ink-soft); max-width: 40ch; }
+.kt .kt-stepstack__sticky { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; }
+/* Step-Karte: echte rr-card-soft, aber breiter + Textkoerper statt fixem 200x250. */
+.kt .kt-step {
+  width: min(600px, 88vw); height: auto; min-height: 236px;
+  padding: 34px 34px 32px; justify-content: center; gap: 10px;
+}
+.kt .kt-step .rr-card-soft__label { font-size: clamp(24px, 3vw, 30px); }
+.kt .kt-step__body {
+  font-family: var(--rr-font-ui); font-size: 16px; line-height: 1.62;
+  color: var(--rr-ink-soft); margin: 4px 0 0; max-width: 52ch;
+}
+.kt .kt-steps-static { display: grid; gap: 26px; justify-items: center; padding: 8vh 0 4vh; }
+.kt .kt-steps-static .kt-step { transform: none !important; opacity: 1 !important; }
+
+/* ---- 4) Testimonials ---- */
+.kt .kt-quotes-intro { margin-bottom: clamp(32px, 5vh, 60px); }
+.kt .kt-quotes-lead { color: var(--rr-navy); max-width: 24ch; }
+.kt .kt-quotes-grid { align-items: stretch; }
+.kt .kt-quotes-grid .rr-quote { height: 100%; }
+.kt .kt-quotes-grid .rr-quote__text { font-size: clamp(20px, 2.2vw, 27px); }
+/* GOLD statt Creme — Google-Gold, auf Tuerkis (#1d8c98) klar sichtbar. */
+.kt .rr-quote__stars { color: #f4b400; }
+
+/* ---- 5) FAQ zweispaltig ---- */
+.kt .kt-faq-grid { display: grid; grid-template-columns: 0.85fr 1.4fr; gap: clamp(32px, 5vw, 88px); align-items: start; }
+.kt .kt-faq-aside { position: sticky; top: clamp(96px, 14vh, 150px); }
+.kt .kt-faq-eyebrow { color: var(--rr-ink); margin-bottom: 18px; }
+.kt .kt-faq-title { color: var(--rr-navy); max-width: 8em; }
+.kt .kt-faq-dot { color: var(--rr-red); }
+.kt .kt-faq-list { margin: 0; }
+@media (max-width: 900px) {
+  .kt .kt-faq-grid { grid-template-columns: 1fr; gap: 28px; }
+  .kt .kt-faq-aside { position: static; }
+}
+
+/* ---- 6) Passt nicht ---- */
+.kt .kt-notyet { padding-top: clamp(40px, 6vh, 80px); padding-bottom: clamp(40px, 6vh, 80px); }
+.kt .kt-notyet-line { color: var(--rr-ink-soft); max-width: 62ch; }
+
+/* ---- 7) Aufloesung + CTA ---- */
+.kt .kt-resolve-eyebrow { display: inline-flex; align-items: center; gap: 12px; }
+.kt .kt-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--rr-red); box-shadow: 0 0 0 4px rgba(241,32,50,0.14); flex: 0 0 auto; }
+.kt .kt-resolve-stmt { color: var(--rr-navy); max-width: 20em; margin-top: 24px; font-size: clamp(26px, 3.4vw, 42px); }
+.kt .kt-resolve-turn { color: var(--rr-ink-soft); max-width: 30ch; margin-top: 32px; }
+.kt .kt-resolve-cta-line { color: var(--rr-ink); max-width: 44ch; margin-top: 36px; }
+.kt .kt-resolve-actions { margin-top: clamp(24px, 4vh, 40px); }
+.kt .kt-resolve-direct { margin-top: 20px; }
+
+@media (max-width: 640px) {
+  .kt .kt-form-card { max-width: none; }
+}
+`;

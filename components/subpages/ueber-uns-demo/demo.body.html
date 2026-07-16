@@ -1,0 +1,221 @@
+
+<div class="demobar">
+  <span class="dot"></span>
+  Red Rabbit · Über uns — Gesamtvorschau
+  <span class="sep">·</span>
+  <em>Hero + Kopf + Story + Haltung + Partner, eine Scroll-Strecke</em>
+</div>
+
+<!-- ============ HAUPT-SZENE (Hero + Uebergang + Story in EINEM Sticky) ============ -->
+<section class="scene-main" id="sceneMain">
+  <!-- data-active startet auf 0: die Deck-Maske (mask:url(#mask-v1)) greift erst,
+       wenn die Engine bootet. Beim HTML-Streaming ist das masksvg (steht weiter
+       unten) sonst noch nicht geparst -> leere Maske -> weisses Deck unsichtbar
+       -> navy layer-base blitzt beim Laden auf. -->
+  <div class="main-sticky painting" id="mainSticky" data-active="0" style="--mask:url(#mask-v1)">
+    <div class="layer-base">
+      <div class="reveal-msg">Gibt es die überhaupt:<br>eine Agentur<br>ohne Blabla?</div>
+    </div>
+    <div class="layer-deck">
+      <div class="hero-title" id="htitle" role="heading" aria-level="1" aria-label="Über uns"><span class="ltr ue" data-l="0" aria-hidden="true">U</span><span class="ltr" data-l="1" aria-hidden="true">b</span><span class="ltr" data-l="2" aria-hidden="true">e</span><span class="ltr" data-l="3" aria-hidden="true">r</span><span class="ltr sp" data-l="4" aria-hidden="true">&nbsp;</span><span class="ltr" data-l="5" aria-hidden="true">u</span><span class="ltr" data-l="6" aria-hidden="true">n</span><span class="ltr" data-l="7" aria-hidden="true">s</span></div>
+    </div>
+
+    <div class="story-grid">
+      <div class="head-col">
+        <svg id="headSvg" viewBox="120 110 770 910" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+      </div>
+      <div class="text-col">
+        <div class="text-window" id="textWindow">
+          <div class="text-move" id="textMove">
+            <div class="t-eyebrow">(Die Story)</div>
+            <p class="t-statement">Warum es Red&nbsp;Rabbit gibt.</p>
+            <p class="t-ch">Bevor es Red Rabbit gab, habe ich bei ReachLocal gearbeitet, einem amerikanischen, börsennotierten Konzern. Dort habe ich Webdesign und Google Advertising für große österreichische Immobilienunternehmen umgesetzt, zuletzt als Geschäftsführer der Wiener Niederlassung.</p>
+            <p class="t-ch">In dieser Zeit habe ich gesehen, wie viele Agenturen arbeiten, wenn der Kunde groß genug ist, um es sich nicht zu merken. Stundensätze, die niemand nachrechnen kann. Projekte, die sich ziehen, weil es sich lohnt, sie zu ziehen. Und am Ende eine Website, die zwar hübsch aussieht, aber niemand findet sie.</p>
+            <p class="t-ch">2019 habe ich mich selbstständig gemacht, weil ich es anders machen wollte. Fixpreis statt Stundenlohn. Der Entwurf zuerst, das Geld erst danach. Und eine Regel, die vielen Agenturen fremd ist: wir nehmen nicht jedes Projekt an. Wenn ich merke, dass wir jemandem nicht wirklich helfen können, sage ich das. Lieber weniger Projekte und die, die wir machen, richtig machen.</p>
+            <p class="t-close">Das ist keine Marketing-Zeile. Das ist der Grund, warum ich das hier mache.</p>
+            <div class="t-byline">Thomas Uhlir<span>Gründer</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <span class="hint" id="hint">Maus über das Bild bewegen</span>
+    <button class="autobtn" data-auto>Auto abspielen</button>
+
+    <svg class="masksvg" aria-hidden="true">
+      <defs>
+        <filter id="gooey-v1">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
+          <feColorMatrix in="blur" type="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -9" result="goo"/>
+        </filter>
+        <clipPath id="paintclip"><rect id="paintRect" x="0" y="0" width="100" height="100"/></clipPath>
+        <mask id="mask-v1">
+          <rect class="mrect" width="100%" height="100%" fill="#fff"/>
+          <g class="blobs" filter="url(#gooey-v1)"></g>
+        </mask>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ SEKTION 4 : HALTUNGS-STATEMENTS ============ -->
+<section class="scene-belief" id="sceneBelief">
+  <div class="belief-sticky">
+    <div class="belief-backing" aria-hidden="true"></div>
+    <div class="b-label">(Woran wir glauben)</div>
+    <div class="stmt" data-s="0">Wir wollen nicht die größte Agentur sein. Nur die, die zu dir passt<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="1">Eine Website ist nicht fertig, wenn sie online geht. Sondern wenn sie dir die ersten Kunden bringt<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="2">Vertrauen beginnt nicht mit einem Versprechen. Sondern mit dem ersten Schritt, den wir machen<span style="color:var(--red)">.</span></div>
+    <div class="stmt pointe" data-s="3">Wir machen den ersten Schritt. Machst du den zweiten<span style="color:var(--red)">?</span><span class="pointe-cta"><a class="rr-btn-sweep rr-btn-sweep--red" id="bCta" href="/relaunch-preview/kontakt">Den zweiten Schritt machen</a></span></div>
+  </div>
+</section>
+
+<!-- ============ SEKTION 5 : PARTNER / REFERENZEN ============ -->
+<section class="scene-partner" id="scenePartner">
+  <div class="p-head">
+    <div class="p-label">(Stationen und Projekte)</div>
+    <h2 class="p-title">Ausschnitt aus unserer Kundenliste</h2>
+    <div class="p-stats">Seit 2019 &nbsp;·&nbsp; 164+ Projekte &nbsp;·&nbsp; 5,0 auf Google &nbsp;·&nbsp; 9 Bundesländer</div>
+  </div>
+  <!-- Einheitliches 5x3-Raster: 13 uniforme Namenszellen + 1 hohe ">>"-Zelle (Kind 14),
+       die per grid-column:3 / grid-row:4 span 2 die rechte Spalte in Reihe 4+5 belegt.
+       Die 13 Namen fliessen (auto-flow) um die fest platzierte ">>"-Zelle herum:
+       Reihe4 = Therme, Lashes | Reihe5 = ReRo, K2 (rechts jeweils die hohe ">>"-Zelle).
+       DOM-Reihenfolge = POOL-Reihenfolge (siehe JS). -->
+  <div class="p-grid" id="pGrid">
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <a class="p-cell p-cta" href="#projekte" id="pCta" aria-label="Alle Projekte ansehen">
+      <svg class="p-chev" viewBox="0 0 128 64" aria-hidden="true"><g class="chevwrap" id="chevWrap"></g></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============ SEKTION 6 : FAQ ============ -->
+<section class="scene-faq" id="sceneFaq">
+  <div class="faq-wrap">
+    <div class="faq-grid">
+    <div class="faq-left">
+      <div class="f-label">(FAQ)</div>
+      <h2 class="faq-heading">Bevor du fragst<span class="fdot">.</span></h2>
+    </div>
+    <div class="faq-right">
+    <details class="faq-item">
+      <summary>Wer steht hinter Red Rabbit?<span class="pm"></span></summary>
+      <p class="faq-a">Ich, Thomas Uhlir. Ich habe Red Rabbit 2019 gegründet und bin die Person, mit der du redest, von der ersten Idee bis nach dem Launch. Für Grafik, Entwicklung, SEO und KI arbeite ich mit einem handverlesenen Netzwerk aus Spezialisten, die ich seit Jahren kenne.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Seit wann gibt es euch?<span class="pm"></span></summary>
+      <p class="faq-a">Seit 2019. In der Zeit sind über 164 Projekte entstanden, und auf Google stehen wir bei 5,0 Sternen.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Arbeitet ihr nur in Wien?<span class="pm"></span></summary>
+      <p class="faq-a">Nein. Unsere Kunden sitzen in 9 Bundesländern. Die meiste Arbeit passiert ohnehin remote, per Anruf oder Video, nicht im Meetingraum.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Warum nehmt ihr nicht jedes Projekt an?<span class="pm"></span></summary>
+      <p class="faq-a">Weil wir uns für jedes Projekt Zeit nehmen wollen. Wenn wir merken, dass wir jemandem nicht wirklich helfen können, sagen wir das lieber ehrlich, statt den Auftrag trotzdem anzunehmen. Zufriedenheit ist uns wichtiger als Menge.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Was heißt Entwurf ohne Vorkasse?<span class="pm"></span></summary>
+      <p class="faq-a">Du bekommst zuerst den Design-Entwurf zu sehen, bevor du einen Euro bezahlst. Gefällt er dir und sagst du zu, fällt eine Anzahlung an. Gefällt er dir nicht, hast du nichts verloren. Das Risiko liegt bei uns, nicht bei dir.</p>
+    </details>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEKTION 7 : SCHLUSS-CTA ============ -->
+<section class="scene-cta" id="sceneCta">
+  <div class="cta-inner" id="ctaInner">
+    <div class="cta-label">(Der zweite Schritt)</div>
+    <h2 class="cta-h">Reden wir.</h2>
+    <p class="cta-p">Du willst wissen, ob wir zu dir passen? Schreib mir kurz, worum es geht. Ich melde mich persönlich zurück.</p>
+    <a class="rr-btn-sweep rr-btn-sweep--red" href="#kontakt">Projekt anfragen</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER (Nachbau FooterReassembly.tsx / Footer.tsx) ============ -->
+<footer class="rr-foot" id="rrFoot">
+  <div class="rr-foot-word" id="rrFootWord">
+    <p class="rr-foot-mark" id="rrFootMark"><span class="rr-foot-wordw"><span class="rr-foot-l" style="--i:0">r</span><span class="rr-foot-l" style="--i:1">e</span><span class="rr-foot-l" style="--i:2">d</span></span><span class="rr-foot-wordw"><span class="rr-foot-l" style="--i:3">r</span><span class="rr-foot-l" style="--i:4">a</span><span class="rr-foot-l" style="--i:5">b</span><span class="rr-foot-l" style="--i:6">b</span><span class="rr-foot-l" style="--i:7">i</span><span class="rr-foot-l" style="--i:8">t</span></span></p>
+  </div>
+  <div class="rr-foot-inner">
+    <div class="rr-foot-cols">
+      <div class="rr-foot-brand">
+        <svg class="rr-foot-logo" viewBox="0 0 174 267" preserveAspectRatio="xMidYMid meet" aria-label="Red Rabbit" role="img">
+          <g transform="translate(0,267) scale(0.1,-0.1)">
+            <path fill="#F12032" fill-rule="evenodd" d="M0 1335 l0 -1335 503 0 c626 1 693 8 877 98 172 84 290 230 337 417 24 98 24 325 -1 415 -60 222 -232 402 -431 451 -28 6 -52 13 -54 15 -2 1 81 112 183 246 139 182 194 262 218 318 31 72 33 80 33 210 0 164 -15 220 -90 330 -42 62 -153 170 -175 170 -3 0 -179 -272 -390 -605 -212 -332 -388 -604 -392 -605 -5 0 -8 156 -8 346 0 387 -3 414 -68 539 -51 99 -163 208 -263 258 -76 37 -184 66 -246 67 l-33 0 0 -1335z m1036 -308 c276 -140 177 -553 -131 -551 -144 1 -254 94 -286 243 -21 97 33 225 119 285 90 62 204 71 298 23z"/>
+          </g>
+        </svg>
+        <p class="rr-foot-brandname">Red Rabbit Media</p>
+        <p class="rr-foot-tag">Die faire Anti-Agentur für den österreichischen Mittelstand.</p>
+      </div>
+      <nav class="rr-foot-col" aria-label="Navigation">
+        <h3 class="rr-foot-head">Navigation</h3>
+        <ul class="rr-foot-list">
+          <li><a class="rr-foot-link" href="/relaunch-preview">Start</a></li>
+          <li><a class="rr-foot-link" href="/leistungen">Leistungen</a></li>
+          <li><a class="rr-foot-link" href="/relaunch-preview/referenzen">Referenzen</a></li>
+          <li><a class="rr-foot-link" href="/preise">Preise</a></li>
+          <li><a class="rr-foot-link" href="/faq">FAQ</a></li>
+          <li><a class="rr-foot-link" href="/relaunch-preview/ueber-uns">Über uns</a></li>
+          <li><a class="rr-foot-link" href="/relaunch-preview/kontakt">Kontakt</a></li>
+        </ul>
+      </nav>
+      <nav class="rr-foot-col" aria-label="Regionen">
+        <h3 class="rr-foot-head">Regionen</h3>
+        <ul class="rr-foot-list rr-foot-list--regions">
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-wien">Wien</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-niederoesterreich">Niederösterreich</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-oberoesterreich">Oberösterreich</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-steiermark">Steiermark</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-kaernten">Kärnten</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-salzburg">Salzburg</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-tirol">Tirol</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-vorarlberg">Vorarlberg</a></li>
+          <li><a class="rr-foot-link rr-foot-link--sm" href="/webdesign-burgenland">Burgenland</a></li>
+        </ul>
+      </nav>
+      <div class="rr-foot-col">
+        <h3 class="rr-foot-head">Kontakt</h3>
+        <address class="rr-foot-contact">
+          <span class="rr-foot-strong">Red Rabbit GmbH</span>
+          <span>Grabnergasse 8/8, 1060 Wien</span>
+          <a class="rr-foot-link" href="mailto:office@redrabbit.media">office@redrabbit.media</a>
+          <a class="rr-foot-link" href="tel:+436769000955">+43 676 9000 955</a>
+          <span class="rr-foot-social">
+            <a class="rr-foot-link" href="https://www.instagram.com/redrabbit.media/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a class="rr-foot-link" href="https://www.linkedin.com/in/thomasuhlir/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          </span>
+        </address>
+      </div>
+    </div>
+    <hr class="rr-foot-rule">
+    <div class="rr-foot-bottom">
+      <nav class="rr-foot-legal" aria-label="Rechtliches">
+        <a class="rr-foot-link rr-foot-link--sm" href="/impressum">Impressum</a>
+        <a class="rr-foot-link rr-foot-link--sm" href="/datenschutz">Datenschutz</a>
+        <a class="rr-foot-link rr-foot-link--sm" href="/agb">AGB</a>
+        <a class="rr-foot-link rr-foot-link--sm" href="/cookie-einstellungen">Cookie-Einstellungen</a>
+      </nav>
+      <div class="rr-foot-copy">
+        <span>&copy; 2026 Red Rabbit GmbH. Alle Rechte vorbehalten.</span>
+        <span class="rr-foot-madein">Gebaut in Wien.</span>
+      </div>
+    </div>
+  </div>
+</footer>

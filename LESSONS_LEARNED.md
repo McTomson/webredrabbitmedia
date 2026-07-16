@@ -428,3 +428,55 @@ Update this file at the end of every session when a debugging lesson, setup issu
 - Diagnose-Rezept: rAF-Loop laeuft, aber MutationObserver auf style-Attribute zeigt 0 Mutationen = frueher Return in render(); `window.__uScroll` ist eine ZAHL (kein Funktionsaufruf), als QA-Override setzen.
 - Mobile-Fix (gleiche Session): (1) stage.ts — auf narrow (<900px) Kamera-Pan unterdruecken (nur Zoom), sonst schiebt der Desktop-Pan die zentrierte Figur aus dem 390px-Viewport und der Navy-Traveler entkoppelt; (2) HomeMorph.tsx — Szenen-Statements mobil sequenziell faden (0.15u-Totfenster), sonst Doppelbelichtung, weil mobil alle Texte an derselben Position ankern.
 - QA-Abnahme (agent-browser): Desktop 1440x900 pixelgleich zu vorher, Mobile 390x844 alle 5 Holds zentriert + ein Statement + kein H-Scroll, Konsole sauber.
+
+## 2026-07-14 — Ueber-uns-Port: placeUeDots-Crash killte den ganzen Boot
+- Symptom: /relaunch-preview/ueber-uns zeigt nur den statischen blauen Hero, keine Skulptur, keine Scroll-Show. Konsole: `IndexSizeError: getImageData source width 0` at placeUeDots (:97) at boot (:650).
+- Root Cause: In `components/subpages/ueber-uns-demo/demo.engine.jstext` misst `placeUeDots()` die Ue-Punkte per Canvas. `fs=parseFloat(getComputedStyle(htitle).fontSize)` wird in der Next-Einbettung (Font/Layout-Timing) NaN -> `cv.width=Math.ceil(m.width+pad*2+fs*0.2)` = NaN -> Canvas-Breite 0 -> `getImageData(0,0,0,H)` wirft. Der uncaught throw riss den GANZEN `boot()` mit, inkl. `requestAnimationFrame(tick)` -> Scroll-Maschine startet nie.
+- Fix: Guard `if(!isFinite(fs)||fs<=0){ htitle.style.transform=savedT; requestAnimationFrame(placeUeDots); return; }` + `cv.width/height = Math.max(2, Math.ceil(... isFinite? ...))`. Ue-Punkte sind kosmetisch -> Retry statt Crash.
+- Lehre: Kosmetische Sub-Routinen duerfen die kritische Init-Kette nie per Exception kappen. Bei portierten Standalone-Engines auf Font-/Layout-Timing-Annahmen achten (Standalone-HTML hat andere Font-Ready-Reihenfolge als Next mit `<link>`-Fonts).
+
+## 2026-07-14 — MorphSculpture-Scatter: Regressionen durch fehlendes Gating + Punkt-Hold
+- Beim Nachbau des Demo-Vollbild-Zerfalls in MorphSculpture zwei Fehler: (a) Opacity/Visibility-Gating entfernt -> Fragmente immer sichtbar, nur per Offscreen-Position "versteckt"; bei zu kleinem Rand lugen sie rein (gemessen: 9 Fragmente bei progress 0). (b) Halt nur bei EXAKT progress 0.55 statt Plateau -> beim Scrollen fast immer Mid-Assemble-Frame = dichte Ueberlappung ("zu viele Teile").
+- Fix: Gating zurueck (visibility:hidden wenn geparkt e==0 / ausgeflogen e==1); Halte-Plateau progress 0.5-0.6 (assembleT=clamp(p/0.5), dissolveT=clamp((p-0.6)/0.4)); Offscreen-Rand += max(w,h)*fromScale+160.
+- Lehre: Bei scroll-getriebener Fragment-Animation IMMER (1) geparkte Teile hart ausblenden (Offscreen-Position allein reicht nie sicher wegen Rotation/Scale), (2) den Halte-Zustand als BEREICH definieren, nicht als Punkt (die Engine liefert nie exakt einen Wert). Der gehaltene Slot ist deterministisch aus dem JSON -> Halt-Kopf ist per Konstruktion = Hauptseite; sichtbare "Dichte" kam aus Mid-Transition, nicht aus dem Halt.
+
+## 14.07.2026 (abends) — ueber-uns Doppel-Kopf + Stale-Dev-Server (Folgesession)
+
+- **Doppel-Renderer-Falle:** Beim Ersetzen einer Demo-Komponente durch einen echten
+  Renderer IMMER verifizieren, dass die alte Zeichnung wirklich AUS ist (computed style
+  im Browser pruefen), nicht nur einem Kommentar glauben. Hier rendeten #headSvg (Demo)
+  und MorphSculpture (Portal) gleichzeitig -> 350 statt 175 Fragmente, "unscharf/dicht".
+- **fs.readFileSync auf Modulebene = unsichtbare Edits:** Next.js watched keine fs-Reads.
+  Dateien, die eine Route per fs liest, werden bei Edits NICHT neu ausgeliefert, bis die
+  Route neu kompiliert/der Server neu gestartet wird. Ganze Fix-Runden der Vorsession
+  kamen so nie im Browser an ("ich sehe keine Veraenderung"). Fix: Reads in die
+  Server-Komponente verschieben (Dev: pro Request frisch; Prod: Build-Zeit wie vorher).
+- **Chrome-MCP-QA: Hintergrund-Tab friert rAF ein.** visibilityState=hidden -> Engine
+  steht, Scroll-Progress bleibt 0, QA-Messungen luegen. Tab vor Scroll-QA per osascript
+  aktivieren (Fenster + active tab index setzen).
+
+## 15.07.2026 (frueh) — ueber-uns Kopf: die drei ECHTEN Rest-Ursachen
+
+- **stage.ts `o`-Feld nie ignorieren:** Teile mit `op < displayFrames` sind Reveal-
+  Austauschpaare und am Halte-Zeitpunkt UNSICHTBAR (o=0). Jeder Renderer, der
+  stage.ts-Timelines nutzt, MUSS `st.o` anwenden oder solche Teile filtern —
+  MorphSculpture zeigte sonst 8 Phantom-Teile doppelt (comp5: 14,21,23,25,27,29,31,33).
+- **Scroll-Glaettung ist Teil des Looks:** Die Hauptseite wirkt fluessig, weil Lenis
+  (lerp 0.075) das u glaettet. Ein Renderer am rohen Scroll "teleportiert" bei
+  Radticks. Wiederverwendete Skulpturen brauchen eigene Fortschritts-Glaettung.
+- **"Identisch" maschinell beweisen, nicht per Auge:** Fragment-Signaturen (Center/
+  Groesse, centroid-normiert) via localStorage zwischen gleich-origin Seiten
+  vergleichen. Ergebnis hier: 167 vs 167 Teile, Median 0.08px.
+
+## 15.07.2026 (nachts) — ueber-uns: Reveal-am-Slot-Teile, Mask-Flash, Malen
+
+- **entryT==arriveT-Teile brauchen im Scatter ein synthetisches Flugfenster:** comp5 hat
+  8 Teile (13,20,22,24,26,28,30,32) mit entryT=arriveT=0 + ip>0 ("Reveal am Slot").
+  Im Scatter-Renderer sprangen sie beim kleinsten Fortschritt fix ins Bild und blieben.
+  Fix in MorphSculpture: e2=ip/displayFrames, a2=e2+0.35.
+- **SVG-Mask-Referenz + HTML-Streaming = Flash:** `mask:url(#id)` auf einem Element,
+  dessen mask-SVG WEITER UNTEN im HTML steht, rendert beim Streaming kurz mit leerer
+  Maske (Element unsichtbar, darunterliegende Ebene blitzt auf). Fix: Maske per
+  data-active-Attribut erst im Engine-Boot scharf schalten.
+- **Nicht zu grob fixen:** `.layer-base display:none` toetete das Mal-Feature
+  (Gooey-Reveal der versteckten Botschaft). Erst Mechanik verstehen, dann minimal fixen.

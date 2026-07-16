@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/relaunch/PageShell";
 import Faq from "@/components/relaunch/Faq";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "FAQ | Red Rabbit Media",
@@ -70,6 +71,20 @@ const faq = [
 
 export default function FaqPage() {
   return (
+    <>
+    {/* FAQPage-Schema: macht die Fragen fuer Google als Rich Result lesbar
+        (SEO-Zweck der Seite, Thomas 15.07.). Quelle = exakt das faq-Array. */}
+    <JsonLd
+      data={{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faq.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      }}
+    />
     <PageShell
       eyebrow="FAQ"
       title="Fragen? Hier die ehrlichen Antworten."
@@ -81,5 +96,6 @@ export default function FaqPage() {
         </div>
       </section>
     </PageShell>
+    </>
   );
 }
