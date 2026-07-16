@@ -4,6 +4,26 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-07-16 — Referenzen phantom.land Iteration 2 (Strang relaunch-referenzen)
+
+- Ortho-Picking (Screen-UV -> Welt) MUSS `camera.zoom` einrechnen — updateProjectionMatrix()
+  skaliert den Frustum zusaetzlich. Ohne /zoom treffen Klicks waehrend Intro-/Grab-Zoom die
+  falsche Zelle (war CRITICAL im review-it von `c399f0c`).
+- Verzoegertes `router.push` per setTimeout braucht `clearTimeout` im Effect-Cleanup, sonst
+  ueberschreibt es nach Unmount die vom Nutzer gewaehlte Navigation.
+- Nachbau-Auftraege: ZUERST das Original vermessen (Bundle-Chunks, Original-CSS, Case-Studies,
+  Frame-Vermessung eines Screencasts), DANN bauen — die Spec-first-Iteration traf sofort, die
+  visuelle Rate-Iteration davor endete bei "65%, nicht gut".
+- Kunden-Site-Video-Loops: Playwright `recordVideo` headless + rAF-Palindrom-Scroll + ffmpeg
+  (640w, crf~32, -an) liefert 7 Loops in ~1MB gesamt; Cookie-Banner vor Aufnahme per JS
+  entfernen und per Frame-Check verifizieren.
+- styled-jsx: `<style jsx>` darf nicht in verschachtelten Elementen liegen (Build-Error
+  "nested styled-jsx tag") — alle Regeln in EINEN Block auf oberster Ebene.
+- Dev-Overlay "1 Issue" auf relaunch-preview-Seiten = Hydration-Mismatch aus `RelaunchMenu`
+  (useId-abhaengige `aria-controls`/`id` SSR vs. Client) — fremder Strang, dort fixen.
+- Thomas-Dauerregel (auch hier dokumentiert): Telefonnummer nie im Klartext auf Websites,
+  nur "Anrufen"-Button mit `tel:`-Link.
+
 ## 2026-06-12 (Teil 3) — Slug-Renames: 4 Blindspots + Build-Langsamkeit ≠ Hang
 
 - **Slug = Dateiname** (posts.ts), aber jede .mdx hat ZUSÄTZLICH ein `slug:`-Frontmatter-Feld UND `queue.yaml` hat `slug:`-Felder. status.json trackt per numerischer ID (nicht Slug) — gut. Beim Rename ALLE drei konsistent halten + Cross-Cluster-Links in anderen .mdx.

@@ -6,6 +6,38 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-07-16 — Referenzen-Galerie: phantom.land Iteration 2 KOMPLETT (relaunch `721b884`)
+
+Strang "relaunch-referenzen" (Branch `relaunch`, committet + gepusht bis `721b884`; Handoff: `docs/handoffs/NEXT_SESSION_relaunch-referenzen.md`):
+
+- `/relaunch-preview/referenzen` ist jetzt der vollstaendige phantom.land-Nachbau auf Basis
+  einer VERMESSENEN Original-Spec (Bundle-Chunk + Original-CSS + Codrops + Frame-Vermessung).
+  Kern: `components/relaunch/SphereGallery.tsx` (einzige freigegebene WebGL-Signatur),
+  Chrome: `components/relaunch/GalleryChrome.tsx` (NEU), Daten: `lib/relaunch/projects.ts`
+  (SphereProject um domain/tags/hoverColor/loop erweitert).
+- Galerie: quadratische 260px-Zellen auf Navy (#1c2837), feine Rasterlinien, Barrel-Distortion
+  als Post-Pass (woertliche Original-Formel), Drag/Wheel-Endlos-Pan, Grab-Zoom, Intro-Zoom,
+  Hover = Blur-Verlauf des eigenen Screenshots (x0.7), max 3 Tag-Pills, KEINE Nummern.
+- 7 Scroll-Video-Loops der Kundenseiten unter `public/relaunch/referenzen/loops/` (~1MB gesamt,
+  Playwright-Aufnahme, Cookie-Banner entfernt) laufen auf ~1/3 der Zellen (nur nahe Bildmitte).
+- 3 Info-Zellen im Raster (Hooks: Gefunden werden / Erst sehen, dann zahlen / Der naechste bist
+  du) -> Klick oeffnet Paper-Panel im DESIGN.md-Stil. Inhalte NUR verifizierte Marken-Fakten.
+- Klick auf Projekt-Zelle -> Whiteout -> Stub-Unterseite `/relaunch-preview/referenzen/<slug>`
+  (NEU, alle 7; echte Case-Studies = eigener Folgeauftrag).
+- Let's-talk-Overlay: 3 Paper-Karten (Layer-Schatten + roter Innen-Balken), Kontaktdaten von
+  der Live-Site verifiziert. NEUE DAUERREGEL (Thomas): Telefonnummer NIE im Klartext auf
+  Websites — nur "Anrufen"-Button mit tel:-Link (auch fuer alle anderen Straenge!).
+- review-it gelaufen: 1 CRITICAL (Ortho-Picking ohne camera.zoom) + 2 MAJOR gefixt;
+  `docs/reviews/referenzen-phantom-2026-07-16.md`, Lessons L-referenzen-05/-06 in docs/lessons.md.
+- OFFEN: Thomas-Abnahme; vercel.app-Referenzlinks mittelfristig auf Kunden-Domains (Security-
+  Defer); Menue-Umbiegen auf neue Seiten erst wenn alle Parallel-Straenge committet sind.
+- FUER PARALLEL-SESSIONS WICHTIG: (a) Hydration-Mismatch kommt aus `RelaunchMenu` (useId-
+  abhaengige `aria-controls`/`id` differieren SSR vs. Client) — sichtbar als Dev-Overlay
+  "1 Issue" auf allen relaunch-preview-Seiten; gehoert dem Menue-/Basis-Strang, bitte dort
+  fixen. (b) Dieser Strang fasst NUR an: app/relaunch-preview/referenzen/**,
+  components/relaunch/SphereGallery.tsx + GalleryChrome.tsx, lib/relaunch/projects.ts,
+  public/relaunch/referenzen/**. (c) Dev-Server :9000 wurde NICHT neu gestartet.
+
 ## Stand 2026-06-15 — Brand Second Brain, SEO-Monitor-Dashboard, Option 3, Dmitri raus
 
 Cowork-Session (Claude). Branch `feat/seo-monitor-und-brand-second-brain` (Commit `4517d0e`) liegt lokal, **Push offen** (Sandbox ohne Git-Creds, GitHub-Connector 401). Push via `git push -u origin feat/seo-monitor-und-brand-second-brain` (Tomson) ODER GitHub-Connector neu verbinden.
