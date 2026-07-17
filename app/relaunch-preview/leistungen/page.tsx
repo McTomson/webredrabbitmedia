@@ -1,10 +1,7 @@
-import fs from 'node:fs';
-import path from 'node:path';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/blog/posts';
-import LeistungenHeroClient from '@/components/subpages/LeistungenHeroClient';
-import LeistungenStory from '@/components/relaunch/LeistungenStory';
+import TalosPage from '@/components/relaunch/talos/TalosPage';
 import { RabbitMark } from '@/components/relaunch/RabbitMark';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
@@ -12,25 +9,18 @@ import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 
-// Rohteile des Leistungen-Hero (Template = tipps/faq-Hero ohne Skulptur, nur
-// Titel-Anschnitt "Leistungen." + Malen). WICHTIG: Reads muessen IN der
-// Komponente passieren (pro Request), nicht auf Modulebene — Next watched
-// fs-Reads nicht, Edits an demo.* waeren im Dev-Server sonst unsichtbar bis
-// zum Neustart (Lesson 14.07., ueber-uns).
-const HERO_DIR = path.join(process.cwd(), 'components/subpages/leistungen-hero-demo');
-const readHero = (f: string) => fs.readFileSync(path.join(HERO_DIR, f), 'utf8');
-
 /**
- * Leistungs-Hub im Relaunch-Look (Preview, noindex): "Die Website, die ein Team
- * ist." Hero (leistungen-hero-demo) + LeistungenStory (self-contained Scroll-
- * Story mit Weiche/Assistent, Fundament + Zahnraeder-Skulptur, Team-Split-Screen,
- * Massarbeit, Beweis + Start). Chrome wie Tipps-Seite (RabbitMark, RelaunchMenu,
- * FooterReassembly). Alle Texte SSR (SEO/LLM lesen sie).
+ * Leistungen als TALOS-Scroll-Erlebnis (Preview, noindex). Server-Komponente:
+ * aller Kapitel-Text ist SSR (Crawler/LLM + Fallback ohne JS/WebGL lesen alles).
+ * Die 3D-Buehne (Three.js, eigenes Rendering, kein Spline-Player) laedt clientseitig
+ * und nur auf faehigen Geraeten; schwache Geraete / reduced-motion sehen Poster +
+ * normale Scroll-Reveals. Chrome wie die Tipps-Seite (RabbitMark, RelaunchMenu,
+ * FooterReassembly). Die alte LeistungenStory/Hero-Version bleibt ungenutzt im Repo.
  */
 export const metadata: Metadata = {
   title: 'Leistungen · Red Rabbit Media',
   description:
-    'Eine Website, die für dich arbeitet: Fundament mit Hosting, Pflege und Klartext-Zahlen, dazu digitale Kollegen, die schreiben und Anfragen annehmen. Individuell gebaut, kein Baukasten.',
+    'Deine Website bekommt einen Mitarbeiter: Talos passt auf, nimmt Anfragen an und sorgt für Sichtbarkeit. Fundament mit Hosting, Pflege und Klartext-Zahlen inklusive. Individuell gebaut, kein Baukasten.',
   robots: { index: false, follow: false },
 };
 
@@ -39,11 +29,6 @@ export default async function LeistungenPreviewPage() {
   const articleCount = posts.length;
 
   const rrFonts = `rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`;
-
-  // Hero-Rohteile pro Request lesen (siehe Kommentar oben).
-  const heroCss = readHero('demo.css');
-  const heroHtml = readHero('demo.body.html');
-  const heroJs = readHero('demo.engine.jstext');
 
   return (
     <>
@@ -102,8 +87,6 @@ export default async function LeistungenPreviewPage() {
         }}
       />
 
-      {/* Fonts wie die Template-Seiten (global, damit auch der Hero ausserhalb
-          .rrls DM Sans / Crimson bekommt). */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       <link
@@ -111,16 +94,16 @@ export default async function LeistungenPreviewPage() {
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
       />
 
-      {/* Rote Hasen-Marke oben links auf Weiss, Link zur Startseite (Muster wie
-          Tipps-Seite). */}
+      {/* Rote Hasen-Marke oben links (NICHT auf Talos' Brust — nur die kleine
+          UI-Wortmarke der Seite, Link zur Startseite). */}
       <Link
         href="/relaunch-preview"
         aria-label="Zur Startseite"
         style={{
-          position: 'absolute',
+          position: 'fixed',
           top: 'clamp(18px, 2.4vw, 34px)',
           left: 'var(--rr-gutter, clamp(20px, 4vw, 64px))',
-          zIndex: 30,
+          zIndex: 43,
           display: 'block',
           lineHeight: 0,
         }}
@@ -128,23 +111,18 @@ export default async function LeistungenPreviewPage() {
         <RabbitMark style={{ display: 'block', width: 'clamp(18px, 1.8vw, 21px)', height: 'auto' }} />
       </Link>
 
-      {/* Hamburger-Menue der Hauptseite. Der .rr-Wrapper liefert nur die
-          Font-Variablen. */}
+      {/* Hamburger-Menue der Hauptseite; .rr-Wrapper liefert nur Font-Variablen. */}
       <div className={rrFonts} style={{ background: 'transparent' }}>
         <RelaunchMenu />
       </div>
 
-      {/* HERO: angeschnittenes "Leistungen." + Malen (Template-Hero ohne Skulptur). */}
-      <LeistungenHeroClient css={heroCss} html={heroHtml} js={heroJs} />
-
-      {/* STORY: Weiche + Assistent, Fundament + Skulptur, Team, Massarbeit, Start.
-          Im .rr-Wrapper, damit die echten rr-*-Bauteile greifen. */}
+      {/* TALOS: Scroll-Praesentation (3D-Buehne + SSR-Kapiteltext). */}
       <div className={rrFonts} style={{ background: '#ffffff' }}>
-        <LeistungenStory articleCount={articleCount} />
+        <TalosPage articleCount={articleCount} />
       </div>
 
-      {/* Footer der Hauptseite (self-contained Styles, .rr nur fuer Font-Variablen). */}
-      <div className={rrFonts} style={{ background: 'transparent' }}>
+      {/* Footer der Hauptseite (opak, deckt die fixe Buehne beim Herunterscrollen). */}
+      <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
         <FooterReassembly />
       </div>
     </>
