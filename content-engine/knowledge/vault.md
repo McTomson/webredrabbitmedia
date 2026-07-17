@@ -1796,3 +1796,66 @@ quelle: https://www.bitkom.org/Presse/Presseinformation/Haelfte-vereinbart-Arztt
 quelle_name: Bitkom e.V. - Presseinformation 'Die Hälfte vereinbart Arzttermine online'
 geprueft_am: 2026-07-16
 recheck_nach: 2027-01-12
+
+## t44-2026-07-17-200
+cluster: 1
+keywords: kann, chatbot, website, qualifizierte, leads, sammeln
+aussage: 30 % der österreichischen Unternehmen setzen 2025 KI-Technologien ein — deutlich über dem EU-Schnitt von 20 %. Zugleich haben 77 % der Unternehmen ohne KI-Nutzung solche Technologien noch gar nicht in Erwägung gezogen.
+quelle: https://www.statistik.at/fileadmin/announcement/2026/06/20260624IKTU2025.pdf
+quelle_name: Statistik Austria - IKT-Einsatz in Unternehmen 2025 (Pressemitteilung)
+geprueft_am: 2026-07-17
+recheck_nach: 2027-01-13
+
+## t44-2026-07-17-201
+cluster: 1
+keywords: kann, chatbot, website, qualifizierte, leads, sammeln
+aussage: Laut der 5. DMVÖ B2B-Leadgenerierungsstudie (187 befragte Marketing-Verantwortliche österreichischer B2B-Unternehmen) sehen 68 % KI-gestützte Tools als wichtigste Zukunftsmaßnahme der nächsten drei Jahre, aber nur 29 % setzen sie heute regelmäßig oder systematisch ein; 66 % planen konkrete Investitionen in KI-Tools (+7 Prozentpunkte gegenüber 2025).
+quelle: https://www.dmvoe.at/b2b-leadgenerierung-studie-68-sehen-ki-tools-als-wichtigste-zukunftsmassnahme
+quelle_name: DMVÖ - B2B-Leadgenerierungsstudie 2026
+geprueft_am: 2026-07-17
+recheck_nach: 2027-01-13
+
+## t44-2026-07-17-202
+cluster: 1
+keywords: kann, chatbot, website, qualifizierte, leads, sammeln
+aussage: Der EU AI Act (Art. 50) verpflichtet Betreiber von Chatbots, Nutzer klar darüber zu informieren, dass sie mit einem KI-System interagieren; die Transparenzpflichten gelten ab August 2026 für alle betroffenen KI-Systeme, nicht nur Hochrisiko-Systeme.
+quelle: https://artificialintelligenceact.eu/de/transparency-rules-article-50
+quelle_name: EU Artificial Intelligence Act - Praktischer Leitfaden zu Artikel 50
+geprueft_am: 2026-07-17
+recheck_nach: 2027-01-13
+
+## t44-2026-07-17-203
+cluster: 1
+keywords: kann, chatbot, website, qualifizierte, leads, sammeln
+aussage: Sammelt ein Chatbot personenbezogene Daten (z. B. Name, E-Mail für Lead-Zwecke), verlangt die DSGVO eine ausdrückliche Einwilligung der Nutzer, transparente Information vor der Interaktion sowie einen Auftragsverarbeitungsvertrag (AVV) mit dem Chatbot-Anbieter.
+quelle: https://www.e-recht24.de/ki/11416-chatbots-dsgvo-konform-einsetzen.html
+quelle_name: eRecht24 - Chatbots DSGVO-konform einsetzen
+geprueft_am: 2026-07-17
+recheck_nach: 2027-01-13
+
+## t44-2026-07-17-204
+cluster: 1
+keywords: kann, chatbot, website, qualifizierte, leads, sammeln
+aussage: Die HBR-Studie von Oldroyd et al. (Audit von über 2.200 US-Unternehmen) zeigt, dass die meisten Firmen viel zu langsam auf Online-Leads reagieren — der zentrale Hebel, den ein Chatbot mit Sofort-Antwort rund um die Uhr adressiert: Wer Leads innerhalb der ersten Stunde kontaktiert, qualifiziert sie um ein Vielfaches wahrscheinlicher als bei späterer Reaktion.
+quelle: https://hbr.org/2011/03/the-short-life-of-online-sales-leads
+quelle_name: Harvard Business Review - The Short Life of Online Sales Leads
+geprueft_am: 2026-07-17
+recheck_nach: 2027-01-13
+
+## t44-2026-07-17-205
+cluster: 1
+keywords: kann, chatbot, website, qualifizierte, leads, sammeln
+aussage: B2B-Leadkosten liegen 2026 branchenüblich bei 110–300 € pro Lead via Google Ads bzw. 160–460 € via LinkedIn Ads — der Vergleichswert, gegen den sich ein Chatbot-Lead über die eigene Website amortisieren muss.
+quelle: https://lead-gene.com/de/blog/cout-par-lead-b2b-2026-benchmark
+quelle_name: Lead-Gene - B2B-Kosten pro Lead 2026 Benchmark
+geprueft_am: 2026-07-17
+recheck_nach: 2027-01-13
+
+## t44-2026-07-17-206
+cluster: 1
+keywords: kann, chatbot, website, qualifizierte, leads, sammeln
+aussage: Chatbot-Leads lassen sich direkt ins CRM übergeben: Der einfachste offizielle Weg bei Salesforce ist Web-to-Lead (Limit 500 neue Leads pro 24 Stunden); für höhere Volumina oder mehr Kontrolle braucht es die REST-API.
+quelle: https://help.salesforce.com/s/articleView?id=sales.faq_leads_how_many_leads.htm&language=en_US&type=5
+quelle_name: Salesforce Help - How many leads can we capture from our website?
+geprueft_am: 2026-07-17
+recheck_nach: 2027-01-13
