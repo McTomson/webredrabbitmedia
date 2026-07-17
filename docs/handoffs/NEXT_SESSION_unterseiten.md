@@ -1,4 +1,4 @@
-# Naechste Session — Relaunch-Unterseiten (16.07.2026)
+# Naechste Session — Relaunch-Unterseiten (Stand 17.07.2026 frueh)
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, STATE.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
@@ -8,75 +8,88 @@
 - Autonom handeln, voller Zugriff inkl. Browser — ohne fuer jeden Schritt nachzufragen (Grenze: kein Botschutz-Umgehen, keine Account-Anlage, nichts Destruktives ohne Deckung).
 - Laufend testen + `review-it` bei groesseren Schritten. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
 - Bei langen Agenten-/Hintergrund-Laeufen ALLE 15 MIN Health-Check + Stichprobe (TaskList/BashOutput/Monitor). Bricht ein Tool ein → STOPP + fixen, keine kaputten Daten schreiben. Nicht endlos haengen.
+- GSD ist installiert (gsd-* Skills/Agents) — Thomas wuenscht GSD fuer groessere Pakete.
 
-## Stand dieser Session
+## Stand dieser Session (16./17.07., Commits ce02215..6b39451, alle LOKAL auf Branch relaunch, NICHT gepusht)
 
-### Erledigt + verifiziert (Commit 8d6ff82 auf Branch `relaunch`, LOKAL, nicht gepusht)
-- **/relaunch-preview/ueber-uns FERTIG + von Thomas abgenommen.** 5 Root Causes gefixt
-  (KANONISCH dokumentiert in Memory `reference_ueber_uns_template_rezept` + docs/SKULPTUREN_REUSE.md):
-  1. Demo-Kopf `#headSvg` war nie versteckt (Doppel-Renderer), 2. `fs.readFileSync` auf
-  Modulebene = stale Dev-Server, 3. stage.ts-`o`-Feld ignoriert (8 Phantom-Teile; Filter
-  `hold.o<=0.001` -> 167/175, maschinell bewiesen 0.08px Median), 4. kein Scroll-Lerp
-  (MorphSculpture lerpt jetzt selbst 0.09/Frame), 5. Reveal-am-Slot-Teile (entryT==arriveT)
-  sprangen fix ins Bild -> synthetisches Flugfenster e2=ip/dur.
-- **/relaunch-preview/kontakt NEU gebaut** (Template-Kopie `components/subpages/kontakt-demo/`
-  + `KontaktDemoClient` + MorphSculpture comp={1} Gluehbirne): Hook "Was passiert, wenn du
-  auf Absenden drueckst?" (Aufloesung erst unten), "(Keine Sorge)"-Statements, blaues
-  Typing-Grid "(Was hier nicht passiert)" (13x "Kein ..."), FAQ "Bevor du drueckst.",
-  Formular -> POST /api/contact (Payload wie KontaktForm.tsx, Honeypot `website`),
-  Mail/Tel-Zeile, kein Adress-Block (Grill-Entscheide Thomas 15.07.).
-- **Mobil (beide Template-Seiten):** 100dvh statt 100vh (Titel lag hinter Mobile-URL-Leiste),
-  Engine fittet Titel <768px exakt auf 96vw (generisch je Wort), VIS mobil 0.8,
-  fonts.ready-Nachmessung. **Malen am Handy:** passive touchmove-Listener (malen WAEHREND
-  scrollen) + Auto-Paint-Loop alle 9s solange oben. `const COMP5` in die IIFE verschoben
-  (Soft-Nav-Kollisionsschutz, Review-Fund).
-- **/relaunch-preview/tipps + /tipps/[slug] REDESIGN-PREVIEW** (rrt-*-scoped CSS,
-  `components/subpages/tipps-preview.css`): Register-Index (nummerierte Reihen nach
-  6 Themen, Serif-Lead "(Neu)") + Artikel-Template (Schnellantwort-Kasten, Crimson-Lesetext,
-  nummerierte H2s, Navy-Takeaways, Stats, FAQ, Quellen, Weiterlesen). Rendert echte
-  MDX-Artikel mit `components:{}` (bewusst OHNE altes Tailwind-Mapping).
-  Beispiel: /relaunch-preview/tipps/was-kostet-eine-website. **WARTET AUF THOMAS-REVIEW.**
-- **/faq:** FAQPage-JSON-LD ergaenzt (14 Fragen, im HTML verifiziert). Seite existierte schon.
-- **Rechtliches:** existiert komplett (impressum/datenschutz/agb/cookie-einstellungen, live).
-  Red Rabbit GmbH, Grabnergasse 8/8, FN 516936a — NICHT mit immo.red verwechseln (andere GmbH).
-- **Footer beider Template-Seiten:** alle #-Platzhalter verdrahtet (Nav, 9 Regionen,
-  Rechtliches, Social); ueber-uns bCta -> kontakt, pCta -> referenzen.
-- Vercel-Preview-Deploys laufen (`vercel deploy --yes`, NIE --prod). Letzter Stand:
-  https://webredrabbitmedia-95z5qgbei-toms-projects-17d37f0b.vercel.app
-  Deployment Protection AN -> Thomas loggt sich am Handy ein ODER lockert selbst
-  (Settings -> Deployment Protection). `.vercelignore` enthaelt graphify-out (108MB-Falle!).
-- 168 Tests gruen, tsc gruen.
+### Erledigt + verifiziert
+1. **Seiten-Netz komplett:** RelaunchMenu (Hamburger) + FooterReassembly auf ALLEN Relaunch-
+   Seiten (Start, ueber-uns, kontakt, referenzen, tipps + Artikel, faq, 4 Rechtsseiten).
+   Alle Links auf 200 gesweept. Leistungen/Preise zeigen bewusst noch auf die ALTEN
+   Live-Seiten (Thomas-Entscheid), FAQ auf die neue /relaunch-preview/faq.
+2. **NEU /relaunch-preview/faq:** Template ohne Skulptur, Pinsel-Hero "FAQ.", 14 Fragen
+   (wortgleich) in 3 Gruppen, FAQPage-JSON-LD. Von mir browser-verifiziert.
+3. **NEU Rechtsseiten** impressum/datenschutz/agb/cookie-einstellungen unter
+   /relaunch-preview/ (.rrl-Scope, Texte 1:1, Consent-Logik identisch: Key
+   `redrabbit-cookie-consent`).
+4. **Startseite:** Firmen-Block ersetzt durch KundenGrid (Typing-Grid der ueber-uns-
+   Kundenliste auf Weiss, rotes Chevron -> Referenzen), Typing live verifiziert.
+5. **Alle 4 Hero-Titel:** roter Schlusspunkt ("Tipps.", "FAQ.", "Kontakt.", "Ueber uns."),
+   Punkt fliegt beim Scatter mit.
+6. **TIPPS-UEBERSICHT = 3D-Karten-Tunnel** nach ashleybrookecs.com/work (Thomas' Wunsch,
+   1:1 bis auf Schrift/Farben): components/relaunch/TippsTunnel.tsx (ohne GSAP, eigener
+   rAF-Loop). Verbindliche Spec mit Original-Zahlen: docs/specs/TIPPS_TUNNEL_SPEC.md
+   (aus deren Script extrahiert; Thomas-Video per ffmpeg vermessen, Frames in der
+   alten Session-Scratchpad). Kern: Karten an festen seeded Positionen (abwechselnd
+   links/rechts), fliegen aus der Tiefe (z -3000 -> +1200), Blur tiefengesteuert mit
+   hartem Scharf-Fenster, 1 scharfe + max 1 blurry Karte gleichzeitig, Bilder in
+   NATUERLICHEM Format ohne Crop, weisser Info-Kasten schwebt eingerueckt IM Bild,
+   neueste Beitraege zuerst. Filter-/Suchleiste fix unten rechts (Navy, eckig,
+   Kategorien + Suchfeld mit selbsttippendem Platzhalter, filtert live mit Rebuild).
+   Hero-Overlap: Tunnel-Root margin-top:-240vh hinter dem Hero, Hero-Grund wird beim
+   Scatter transparent -> erste Karte waechst zwischen den fliegenden Buchstaben.
+7. **Tempo (letzter Thomas-Wunsch, umgesetzt):** Hero-Szene 240vh (Scatter 2.3x
+   langsamer), 135vh Scrollweg pro Karte, Scrub-Lerp 0.065. Pinsel unveraendert.
+   Regler: demo.css .scene-main Hoehe (+ HERO_OVERLAP_VH/LEAD_VH/Root-Margin in
+   TippsTunnel.tsx IMMER mitziehen!), rootHeight-Faktor, pS-Lerp.
+8. **Review-Fixes:** Engine-Teardown-Guards (isConnected) in allen 4 Demo-Engines +
+   Script-Cleanup in allen 4 Demo-Clients (booted-Ref im Cleanup NICHT zuruecksetzen —
+   StrictMode!); Telefonnummer ueberall hinter "Anrufen"-Button (Standing-Rule);
+   transparenter Hero-Sticky schluckte Karten-Klicks -> .scene-main pointer-events:none,
+   nur .painting interaktiv; 13 Artikel-500er gefixt (compileMDX braucht die 4 Custom-
+   Tags SimpleAudioPlayer/VideoEmbed/Herold-/RegionComparisonTable).
+9. 168/168 Tests + tsc gruen. Letzter Preview-Deploy:
+   https://webredrabbitmedia-2p67mp3uc-toms-projects-17d37f0b.vercel.app
 
-### Offen / UNKLAR
-- **Tipps-Review durch Thomas** (Design-Richtung Register-Index ok? Hero-Spruch?).
-  Bei Gefallen: echtes /tipps ersetzen (SEO-Metadata/JSON-LD der Live-Seite uebernehmen,
-  generateStaticParams, Podcast/Video/CTA-Embeds einzelner Artikel im neuen Stil mappen).
-- **Kontakt-Abnahme am Handy** durch Thomas (Malen + Formular echt testen).
-- **Preise-Seite:** Thomas-Entscheidung HORIZONTAL (Ref rabenrifaie.com, Memory
-  `project_redrabbit_preisseite_horizontal`) vs. vertikal im Template. Brief liegt:
-  brand/PREISE_SEITE_BRIEF.md. Skulptur-Kandidat comp3 (Chart).
-- **Leistungsseiten:** comp0 Zahnraeder (Webdesign), comp2 Dokument (Content) frei.
-- Parallel-Session Referenzen (Hasen-Lauf) laeuft separat — deren Dateien NICHT anfassen.
-- Uncommitted Reste fremder Straenge (DESIGN.md, Footer/Header/HomeMorph, brand/*,
-  preise-preview, subpage-hero-test, QA-PNGs im Root) bewusst NICHT committet.
+### Offen / naechste Pakete (Thomas 17.07.)
+1. **ARTIKEL-Detailseiten aufwerten (ZUERST, Thomas-Wunsch):** /relaunch-preview/tipps/[slug]
+   ist funktional, aber gegenueber den Live-Artikeln (app/tipps/[slug]/BlogPostClient.tsx)
+   fehlen: Sidebar (TOC, LeadCTA, MiniAbout, RelatedArticles), Breadcrumbs, SocialShare,
+   ContactForm-Sektion, Article-JSON-LD; und es fehlt ein Wow-Moment (Animations-Effekt
+   im neuen Stil — Vorschlag: Scroll-Progress + Reveal im Template-Vokabular). Ziel:
+   Feature-Paritaet mit Live + neuer Look. Quelle fuer Features: BlogPostClient.tsx +
+   mdx-components.tsx.
+2. **PREISE-Seite:** Brief liegt KOMPLETT in brand/PREISE_SEITE_BRIEF.md (autoritativ!
+   NUR 950 / 2.900 / ab 4.900 EUR verwenden, NIE 790; Entwurf-zuerst ohne Vorkasse =
+   Risiko-Umkehr; Ziel = Anfrage auf kostenlosen Entwurf). Thomas-Entscheidung offen:
+   HORIZONTAL scrollend (Ref rabenrifaie.com, Memory project_redrabbit_preisseite_horizontal)
+   vs. vertikal im Template. ERST GRILLEN. Skulptur-Kandidat comp3 (Chart).
+3. **LEISTUNGS-Seiten:** Live-Struktur = app/leistungen/{webdesign,seo,ki-sichtbarkeit,
+   dashboard}. Skulpturen reserviert: comp0 Zahnraeder (Webdesign), comp2 Dokument
+   (Content/SEO). Aufbau nach Template-Rezept (docs/SKULPTUREN_REUSE.md).
+4. Danach: /tipps + Unterseiten live umziehen (SEO-Metadata/JSON-LD der Live-Seiten
+   uebernehmen), Branch pushen NUR auf Thomas-Ansage.
+5. Uncommitted fremde Straenge (DESIGN.md, brand/*, Footer/Header, HomeMorph,
+   seo-monitor-log) NICHT anfassen/committen.
 
-### Naechste konkrete Schritte
-1. Thomas' Feedback zu Tipps + Kontakt einsammeln, Punkte fixen.
-2. Danach Preise-Seite (erst Grill: horizontal/vertikal, Pakete, Zahlen).
-3. Bei Abnahme: /tipps live umziehen; irgendwann Branch pushen (nur auf Thomas' Ansage).
-
-### Blocker / Risiken
-- Dev-Server auf :9000 haengt sich gelegentlich auf (curl-Timeout als Test; Neustart:
-  `kill <pid>; nohup npm run dev -- --port 9000 > /tmp/redrabbit-dev.log 2>&1 &`).
-- QA-Fallen: MCP-Hintergrund-Tab pausiert rAF (Tab per osascript aktivieren!);
-  Chrome merkt sich Zoom pro Origin (localhost:9000 stand auf 67% -> innerWidth luegt);
-  demo.*-Dateien werden pro Request gelesen (Fix ist drin), aber Engine-Aenderungen
-  brauchen Reload.
+### Blocker / Risiken / QA-Fallen
+- Dev-Server :9000 haengt gelegentlich (curl-Test; Neustart: kill + nohup npm run dev -- --port 9000).
+- Chrome-QA: Hintergrund-Tab pausiert rAF KOMPLETT (Tab aktivieren, sonst sehen Messungen
+  wie tote Loops aus — zweimal drauf reingefallen!); Zoom pro Origin; Fenster-Minimum
+  ~500px (echter 390px-Test nur am Handy); Thomas testet oft parallel im eigenen Tab —
+  IMMER eigenen Tab nehmen, seinen nicht anfassen.
+- Shell-Hook-Noise "claude native binary not installed" schluckt Output mancher Pipes —
+  git/vitest ggf. via python3 subprocess wrappen.
+- Agenten sterben am Session-Limit (0 Uhr Wien) — Dateizustand danach per grep verifizieren,
+  Arbeit ist meist schon auf Platte.
+- Vercel: NIE --prod; Deployment Protection an (Thomas loggt sich am Handy ein);
+  .vercelignore enthaelt graphify-out (108MB-Falle).
 
 ### Relevante Dateien/Befehle
+- Tunnel: components/relaunch/TippsTunnel.tsx + docs/specs/TIPPS_TUNNEL_SPEC.md +
+  components/subpages/tipps-hero-demo/ (Hero-Kopplung!).
 - Template-Rezept: docs/SKULPTUREN_REUSE.md, docs/UNTERSEITEN_STIL.md,
-  Memory `reference_ueber_uns_template_rezept` (KANONISCH).
-- Seiten: app/relaunch-preview/{ueber-uns,kontakt,tipps}/, components/subpages/
-  {ueber-uns-demo,kontakt-demo}/, MorphSculpture.tsx, *DemoClient.tsx, tipps-preview.css.
-- QA: /sculpture-test?comp=0..4 (Slider/window.__sculptProgress).
-- Deploy: `cd ~/dev/redrabbit && vercel deploy --yes` (Preview; NIE --prod ohne Thomas).
+  Memory reference_ueber_uns_template_rezept (KANONISCH) + project_relaunch_seiten_netz_2026_07_16.
+- Artikel-Features: app/tipps/[slug]/BlogPostClient.tsx, mdx-components.tsx,
+  app/relaunch-preview/tipps/[slug]/page.tsx, components/subpages/tipps-preview.css.
+- Deploy: vercel deploy --yes (Preview). Tests: npx vitest run. Graph: graphify query.
