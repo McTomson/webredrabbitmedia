@@ -18,11 +18,11 @@ import Link from "next/link";
 
 type NavItem = { label: string; href: string };
 
-// Leistungen/Preise zeigen bewusst noch auf die alten Live-Seiten,
-// bis es Relaunch-Versionen gibt (Tomson 16.07.).
+// Preise zeigt bewusst noch auf die alte Live-Seite, bis es eine Relaunch-
+// Version gibt (Tomson 16.07.). Leistungen zeigt auf die neue Preview-Seite.
 const NAV_ITEMS: NavItem[] = [
   { label: "Start", href: "/relaunch-preview" },
-  { label: "Leistungen", href: "/leistungen" },
+  { label: "Leistungen", href: "/relaunch-preview/leistungen" },
   { label: "Referenzen", href: "/relaunch-preview/referenzen" },
   { label: "Preise", href: "/preise" },
   { label: "Tipps", href: "/relaunch-preview/tipps" },

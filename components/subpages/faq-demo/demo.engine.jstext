@@ -244,6 +244,7 @@
     sticky.addEventListener("touchcancel",()=>{ mouse.has=false; dot.hide(); });
 
     function loop(now){
+      if(!sceneMain.isConnected){ return; }
       if(mouse.has&&painting){
         mouse.sx+=(mouse.x-mouse.sx)*0.16;
         mouse.sy+=(mouse.y-mouse.sy)*0.16;
