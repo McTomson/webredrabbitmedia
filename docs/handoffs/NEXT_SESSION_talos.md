@@ -101,7 +101,23 @@ Overlay, keine Abokosten):
 - LED-Punkt-Augen: eigenes Mesh unter Head? NICHT verifiziert — im Editor
   pruefen (fuer Blinzel-Regie).
 
-### Plan "dezent griechischer" (Thomas 18.07.: Original behalten, dezent!)
+### LOOK-ENTSCHEIDUNG (Thomas 18.07. spaet, VERBINDLICH)
+Talos bleibt WEISS (so wie der r3f-Export ihn rendert — Thomas gefaellt er so;
+Marmor-Assoziation ersetzt Bronze komplett, KEIN Umfaerben). Dazu:
+1. TUERKIS-LED-AUGEN (Option A): weiche Leuchtaugen im schwarzen Visier,
+   Farbton aus dem Tuerkis-Blau-Markenverlauf. Blinzeln, Cursor-Blickfolge,
+   Laecheln beim Gruss, Mitneigen bei Fragen. WICHTIG: Das ORIGINAL hat
+   bereits Punktmatrix-Augen (weisse Hexagon-Dots, Thomas-Screenshot 22:28) —
+   vermutlich die "video"-Layer im Head-Material, die unser Loader nicht
+   abspielt. Position also vorgezeichnet; wir bauen eigene tuerkise Augen
+   (Emissive-Flaechen/Dots vor dem Visier) in unserer Regie.
+2. GOLD-KAMMLINIE (Option B): EINE feine Goldlinie als Helmkamm-Buegel ueber
+   dem Kopf (griechischer Anker). Keine rote LED zusaetzlich (nicht beides).
+   Nie rote Augen (bedrohlich).
+Mockups/Begruendung: Artifact "Talos in Weiss: Look-Optionen"
+(claude.ai/code/artifact/7824b391-7881-4f1b-bdd6-5134036bed56).
+
+### Plan "dezent griechischer" (ueberholt durch Look-Entscheidung oben; Bronze-Teil OBSOLET)
 Alle Anpassungen auf einer KOPIE des Files (Spline speichert automatisch —
 Original nie direkt anfassen): Datei duplizieren als "NEXBOT - Talos".
 1. Bronze-Toenung statt Umbau: im Material-Layer-Stack den Color-Layer warm
