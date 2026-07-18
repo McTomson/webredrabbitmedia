@@ -1,0 +1,145 @@
+---
+title: "Wie wird die neue Website bei Google gefunden? Index 2026"
+slug: "wie-wird-die-neue-website-bei-google-gefunden"
+excerpt: "Online ist nicht gleich auffindbar. So durchläuft eine neue Website Crawling, Indexierung und Ausspielung bei Google, und mit diesen Schritten wird sie 2026 schneller gefunden."
+featuredSnippetTitle: "Wie wird die neue Website bei Google gefunden?"
+featuredSnippet: "Google findet eine neue Website in drei Stufen: Crawling, Indexierung und Ausspielung in den Suchergebnissen. Entdeckt wird sie über Links von bereits bekannten Seiten oder über eine eingereichte Sitemap. Am schnellsten geht es, wenn Sie die Website in der Google Search Console anmelden, dort eine Sitemap hinterlegen und wichtige URLs über die URL-Prüfung zum Crawlen einreichen."
+author: "Thomas Uhlir MBA"
+publishedAt: "2026-07-18"
+updatedAt: "2026-07-18"
+category: "Strategie & Kosten"
+tags: ["Google Indexierung", "Google Search Console", "SEO", "Website Launch", "Österreich"]
+featuredImage: "/images/blog/wie-wird-die-neue-website-bei-google-gefunden.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "Google Search Central - In-depth guide to how Google Search works"
+    url: "https://developers.google.com/search/docs/fundamentals/how-search-works"
+  - name: "Google Search Central - Ask Google to recrawl your URLs"
+    url: "https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl"
+  - name: "Google Search Central - Understanding Core Web Vitals and Google search results"
+    url: "https://developers.google.com/search/docs/appearance/core-web-vitals"
+  - name: "Google Search Central - Creating Helpful, Reliable, People-First Content"
+    url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content"
+  - name: "Google Search Central - Spam policies for Google web search"
+    url: "https://developers.google.com/search/docs/essentials/spam-policies"
+keyTakeaways:
+  - "Google findet neue Websites in drei Stufen: Crawling, Indexierung, Ausspielung. Entdeckt wird über Links von bekannten Seiten und über Sitemaps."
+  - "Die Google Search Console mit URL-Prüfung ist der schnellste offizielle Weg, neue Seiten aktiv anzustoßen."
+  - "Google garantiert keine Indexierung und akzeptiert keine Bezahlung für besseres Ranking. Platz-1-Garantien sind ein Warnsignal."
+  - "Gute Core Web Vitals (LCP unter 2,5 s, INP unter 200 ms, CLS unter 0,1) empfiehlt Google ausdrücklich für den Erfolg in der Suche."
+  - "Inhalte müssen für Menschen geschrieben sein und echten Mehrwert bieten. Massenhaft generierte Texte ohne Substanz verstoßen gegen die Spam-Richtlinien."
+conclusionStats:
+  - label: "Ladezeit-Ziel (LCP)"
+    value: "unter 2,5 Sekunden"
+  - label: "Reaktionszeit (INP)"
+    value: "unter 200 ms"
+  - label: "Layout-Stabilität (CLS)"
+    value: "unter 0,1"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Muss ich meine Website bei Google anmelden, damit sie gefunden wird?"
+    answer: "Nein. Die allermeisten Seiten im Google-Index wurden nie manuell angemeldet, der Googlebot findet sie über Links von bekannten Seiten und über Sitemaps von selbst. Die Anmeldung in der Google Search Console ist trotzdem sinnvoll, weil sie den Prozess beschleunigt und Ihnen zeigt, welche Seiten tatsächlich indexiert sind."
+  - question: "Wie lange dauert es, bis eine neue Website bei Google erscheint?"
+    answer: "Dafür gibt es keine garantierte Frist, Google sagt ausdrücklich keine Indexierung zu. Ohne aktives Zutun kann es dauern, bis der Googlebot die Seite über Links entdeckt. Mit eingerichteter Search Console, eingereichter Sitemap und der URL-Prüfung für die wichtigsten Seiten verkürzt sich der Weg deutlich."
+  - question: "Kann ich Google bezahlen, damit meine Website besser rankt?"
+    answer: "Nein. Google akzeptiert keine Bezahlung für häufigeres Crawling oder besseres Ranking in den unbezahlten Suchergebnissen. Kaufen können Sie nur Google Ads, also als Anzeigen gekennzeichnete Platzierungen oberhalb der Ergebnisse. Wer eine garantierte Top-Platzierung verkauft, arbeitet unseriös."
+  - question: "Was ist die Google Search Console und brauche ich sie?"
+    answer: "Die Google Search Console ist das kostenlose, offizielle Werkzeug von Google für Website-Betreiber. Sie zeigt, welche Seiten Google kennt, welche im Index sind und warum einzelne Seiten fehlen. Über die URL-Prüfung stoßen Sie das Crawlen neuer Seiten aktiv an. Für jede neue Website ist sie praktisch Pflicht."
+  - question: "Warum ist meine Website online, aber nicht bei Google zu finden?"
+    answer: "Weil online und auffindbar zwei verschiedene Dinge sind. Die Seite kann noch nicht gecrawlt, noch nicht indexiert oder für die gesuchten Begriffe schlicht nicht gut genug bewertet sein. Die Search Console zeigt, an welcher dieser Stufen es hakt, dann lässt sich gezielt nachbessern."
+hookCandidates:
+  - "findet google meine neue website?"
+  - "wann findet google die neue website?"
+  - "ist meine website bei google, oder?"
+---
+
+Stellen Sie sich vor, Sie eröffnen ein neues Geschäftslokal in einer Seitengasse im 7. Bezirk. Die Auslage ist eingeräumt, die Tür ist offen. Nur: Solange Ihr Lokal in keinem Stadtplan eingezeichnet ist und kein einziges Straßenschild darauf hinweist, geht niemand vorbei. Genau so geht es einer frisch gelaunchten Website. Sie ist online, technisch einwandfrei, aber Google weiß schlicht noch nicht, dass es sie gibt.
+
+Die gute Nachricht: Wie Google neue Websites findet, ist kein Geheimnis. Google selbst dokumentiert den Ablauf sehr genau in der [Search Central Dokumentation](https://developers.google.com/search/docs/fundamentals/how-search-works). Die schlechte Nachricht: Um diesen Ablauf ranken sich erstaunlich viele Mythen, von "man muss die Website bei Google anmelden, sonst passiert nichts" bis "für 99 Euro im Monat garantieren wir Ihnen Platz 1". Beides ist falsch, und das zweite ist sogar nachweislich unseriös. Schauen wir uns an, was wirklich passiert und was Sie konkret tun können.
+
+## Die kurze Antwort
+
+Google findet eine neue Website in drei Stufen: Crawling, Indexierung und Ausspielung in den Suchergebnissen. Entdeckt wird sie primär über Links von bereits bekannten Seiten oder über eine eingereichte Sitemap. Am schnellsten stoßen Sie den Prozess an, indem Sie die Website in der Google Search Console anmelden, dort eine Sitemap hinterlegen und die wichtigsten URLs über die URL-Prüfung zum Crawlen einreichen.
+
+![Der Weg einer neuen Website in den Google-Index 2026: Crawling, Indexierung und Ausspielung in den Suchergebnissen](/images/blog/wie-wird-die-neue-website-bei-google-gefunden.png)
+
+Das ist die Kurzfassung. Wer verstehen will, warum manche Websites zügig in den Suchergebnissen auftauchen und andere monatelang unsichtbar bleiben, muss sich die drei Stufen genauer ansehen.
+
+## Crawling, Indexierung, Ausspielung: So arbeitet Google wirklich
+
+Laut Google Search Central läuft die Suche in drei Stufen ab. In der ersten Stufe, dem Crawling, besucht der Googlebot Seiten im Web und liest deren Inhalte. Neue Seiten entdeckt er dabei vor allem auf zwei Wegen: über Links von Seiten, die Google bereits kennt, und über Sitemaps, die Website-Betreiber einreichen. Google betont ausdrücklich, dass die allermeisten Seiten im Index nicht manuell angemeldet wurden, sondern automatisch vom Googlebot gefunden werden.
+
+In der zweiten Stufe, der Indexierung, verarbeitet Google die gecrawlten Inhalte und legt sie im Index ab, einer gigantischen Datenbank aller bekannten Seiten. Erst in der dritten Stufe, der Ausspielung, entscheidet Google bei jeder einzelnen Suchanfrage, welche Seiten aus dem Index in welcher Reihenfolge angezeigt werden.
+
+Für Ihre neue Website heißt das: Sie kann an jeder dieser drei Stufen hängenbleiben. Eine Seite, die nie gecrawlt wurde, kann nicht indexiert werden. Eine Seite, die nicht im Index ist, kann nicht in den Suchergebnissen erscheinen. Und eine Seite im Index kann trotzdem weit hinten landen, wenn Google sie für die konkrete Suchanfrage nicht für die beste Antwort hält. Wer also fragt "warum findet man mich nicht bei Google?", muss zuerst klären, an welcher Stufe es hakt. Das ist wie beim Arzt: Ohne Diagnose keine sinnvolle Behandlung.
+
+Ein Praxisbeispiel: Eine Tischlerei aus Graz launcht im Jänner ihre neue Website. Die alte Domain hatte ein paar Einträge in Branchenverzeichnissen, die neue Website verlinkt niemand. Ohne aktives Zutun kann es dauern, bis der Googlebot zufällig über einen dieser alten Links stolpert. Mit einer eingereichten Sitemap und der Search Console verkürzt sich dieser Weg deutlich, weil Google direkt gesagt bekommt, wo es etwas Neues zu holen gibt.
+
+## Schritt für Schritt: Was Sie nach dem Launch konkret tun
+
+Damit aus der Theorie ein Ergebnis wird, hier der Ablauf, den wir bei jedem Launch durchgehen. Er ist Teil dessen, [was direkt nach dem Launch der Website passiert](/tipps/was-passiert-direkt-nach-dem-launch-der-website), und Sie können ihn eins zu eins übernehmen.
+
+**Schritt 1: Google Search Console einrichten.** Das ist das kostenlose, offizielle Werkzeug von Google für Website-Betreiber. Sie bestätigen dort, dass Ihnen die Domain gehört, und bekommen dafür direkten Einblick, welche Seiten Google kennt und welche davon tatsächlich im Index gelandet sind. Ohne Search Console fliegen Sie blind.
+
+**Schritt 2: Sitemap einreichen.** Die Sitemap ist eine Datei, die alle Seiten Ihrer Website auflistet, quasi das Inhaltsverzeichnis für den Googlebot. Moderne Systeme erzeugen sie automatisch. In der Search Console hinterlegen Sie die Adresse dieser Datei, und Google weiß ab sofort, welche Seiten existieren, ohne sie erst über Links entdecken zu müssen.
+
+**Schritt 3: Wichtige URLs zur Prüfung einreichen.** Google bietet in der Search Console die [URL-Prüfung](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl) an, mit der Sie Google aktiv bitten können, einzelne URLs zu crawlen oder neu zu crawlen. Das ist laut Google der schnellste offizielle Weg, eine neue Seite anzustoßen, statt nur zu warten. Für die Startseite und die wichtigsten Unterseiten sollten Sie das direkt nach dem Launch machen.
+
+**Schritt 4: Erste echte Links aufbauen.** Weil Google neue Seiten primär über Links von bekannten Seiten entdeckt, helfen ein paar solide Verweise enorm. Für ein österreichisches Unternehmen sind das naheliegende Kandidaten: der Eintrag im WKO-Firmen A-Z, das Google Unternehmensprofil, Branchenverzeichnisse, Partnerfirmen, Lieferanten. Kein Linkkauf und keine Tricks, einfach die Stellen, an denen Ihr Unternehmen ohnehin genannt werden sollte.
+
+**Schritt 5: Kontrollieren, nicht raten.** Nach ein paar Tagen sehen Sie in der Search Console, welche Seiten indexiert wurden. Fehlt etwas Wichtiges, zeigt Ihnen die URL-Prüfung meistens auch, warum. Ab da raten Sie nicht mehr, Sie sehen es schwarz auf weiß.
+
+## Warum Ihnen niemand Platz 1 garantieren kann
+
+Jetzt kommt der Teil, den unseriöse Anbieter gerne verschweigen. Google garantiert ausdrücklich nicht, dass eine Seite gecrawlt, indexiert oder ausgespielt wird. Das steht wörtlich so in der offiziellen Dokumentation, und zwar selbst für Seiten, die alle Richtlinien der Search Essentials erfüllen. Und noch deutlicher: Google akzeptiert keine Bezahlung für häufigeres Crawling oder besseres Ranking. Wer Ihnen das Gegenteil verspricht, liegt laut Google schlicht falsch. Deutlicher geht es kaum, oder?
+
+Was heißt das für Sie in der Praxis? Wenn Ihnen eine Agentur am Telefon "garantierte Top-Platzierung bei Google" verkauft, haben Sie ein verlässliches Ausschlusskriterium gefunden. Seriöse Arbeit an der Sichtbarkeit besteht darin, alle Faktoren zu optimieren, die Google nachweislich wichtig sind, und dann laufend zu messen und nachzuschärfen. Eine Garantie auf ein Ergebnis, das ein fremder Konzern per Algorithmus entscheidet, kann niemand abgeben. Das ist keine Schwäche ehrlicher Anbieter, sondern schlicht die Realität des Systems.
+
+Übrigens gilt das auch in die andere Richtung: Google Ads, also bezahlte Anzeigen, beeinflussen die unbezahlten Suchergebnisse nicht. Anzeigen kaufen Sichtbarkeit oberhalb der Ergebnisse, aber keinen besseren Platz in den Ergebnissen selbst.
+
+## Technik entscheidet mit: Die Core Web Vitals
+
+Gefunden werden ist das eine, gut dastehen das andere. Google empfiehlt Website-Betreibern ausdrücklich gute [Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals) für den Erfolg in der Google-Suche. Dahinter stecken drei messbare Werte: Der Hauptinhalt einer Seite soll in unter 2,5 Sekunden laden (LCP), die Seite soll auf Eingaben in unter 200 Millisekunden reagieren (INP), und das Layout soll beim Laden stabil bleiben, mit einem Verschiebungswert unter 0,1 (CLS).
+
+Warum erwähne ich das in einem Artikel über Auffindbarkeit? Weil Technik damit offiziell Teil der Auffindbarkeit ist. Eine Website, die auf einem durchschnittlichen Handy im Mobilfunknetz zäh lädt, hat es doppelt schwer: bei Google und bei den Menschen, die nach drei Sekunden Warten wieder wegtippen. Wie stark sich Ladezeit direkt auf den Umsatz auswirkt, haben wir in einem eigenen Artikel aufgeschlüsselt: [Warum die Ladezeit entscheidend für den Umsatz ist](/tipps/warum-ist-die-ladezeit-pagespeed-entscheidend-fuer-den-umsatz).
+
+Hier zahlt sich die Technologie-Entscheidung vom Anfang aus. Eine sauber gebaute, statisch generierte Website erreicht diese Werte fast von selbst, während überladene Baukasten-Seiten und Plugin-schwere Systeme oft schon an den 2,5 Sekunden scheitern. Prüfen können Sie das übrigens selbst und kostenlos, etwa mit Googles PageSpeed Insights. Machen Sie das ruhig einmal mit Ihrer aktuellen Website. Das Ergebnis überrascht viele.
+
+## Inhalte, die Google zeigen will: people-first statt Keyword-Friedhof
+
+Die dritte Zutat neben Entdeckbarkeit und Technik sind die Inhalte selbst. Google bewertet Inhalte nach dem ["people-first"-Prinzip](https://developers.google.com/search/docs/fundamentals/creating-helpful-content): Texte sollen primär für Menschen geschrieben sein und nachweisbare Erfahrung aus erster Hand zeigen. Wer nur fremde Inhalte zusammenfasst, ohne eigenen Mehrwert, wird als "search-engine-first" eingestuft und entsprechend abgewertet.
+
+Interessant ist dabei Googles Haltung zu KI-Texten, weil die Frage 2026 in fast jedem Projekt auftaucht. Google penalisiert Inhalte nicht danach, ob sie von Mensch oder Maschine stammen, sondern nach Wert und Absicht. Massenhaft generierte Seiten ohne Mehrwert fallen unter "Scaled content abuse" und verstoßen gegen die [Spam-Richtlinien](https://developers.google.com/search/docs/essentials/spam-policies). Zehn austauschbare Standorttexte für zehn Bezirke, alle nach demselben Muster, bringen Ihnen also nichts außer Risiko. Eine ehrliche Seite, die zeigt, was Ihr Betrieb wirklich kann, mit echten Projekten und ehrlichen Antworten auf die Fragen, die Kunden wirklich stellen, ist der Inhalt, den Google zeigen will.
+
+Und noch etwas gehört zur Ehrlichkeit dazu: Sichtbarkeit ist kein Zustand, den man einmal kauft und dann besitzt. Eine Website ist irgendwann fertig gebaut, die Arbeit an der Sichtbarkeit ist es nicht.
+
+> "Eine Website steht, wenn sie einmal steht. Aber SEO und Google Ads sind eine andere Geschichte, die müssen Sie immer wieder kontrollieren und nachjustieren." — Thomas Uhlir MBA, Geschäftsführer Red Rabbit Media
+
+Genau deshalb halte ich [pauschale Wartungsabos für eine statische Firmenwebsite](/tipps/website-wartungsvertrag-sinnvoll) für unnötig, laufende Betreuung von SEO oder Kampagnen dagegen für sinnvoll investiertes Geld. Der Unterschied liegt darin, ob wirklich laufend gearbeitet wird oder nur eine Pauschale verrechnet wird.
+
+## Häufige Irrtümer, die Zeit und Geld kosten
+
+**Irrtum 1: "Ich muss meine Website bei Google anmelden, sonst wird sie nie gefunden."** Falsch. Die allermeisten Seiten im Index wurden nie manuell angemeldet, der Googlebot findet sie über Links und Sitemaps von selbst. Die Anmeldung in der Search Console beschleunigt den Prozess und gibt Ihnen Kontrolle, Pflicht ist sie nicht.
+
+**Irrtum 2: "Online ist gleich sichtbar."** Der Launch macht die Website erreichbar, nicht auffindbar. Zwischen "die Seite existiert" und "die Seite erscheint bei relevanten Suchanfragen" liegen Crawling, Indexierung und die Bewertung gegen alle Mitbewerber, die zum selben Thema ranken wollen.
+
+**Irrtum 3: "Für Geld geht das schneller."** Nein. Google akzeptiert keine Bezahlung für Crawling oder Ranking. Was Sie kaufen können, sind Anzeigen, und die sind als Anzeigen gekennzeichnet.
+
+**Irrtum 4: "Einmal oben, immer oben."** Die Ausspielung wird bei jeder Suchanfrage neu entschieden. Mitbewerber schreiben bessere Inhalte, Google dreht laufend an der Bewertung. Ihre Position wandert also, ob Sie hinschauen oder nicht. Wer nicht regelmäßig kontrolliert, merkt das erst, wenn die Anfragen ausbleiben.
+
+**Irrtum 5: "Hauptsache viele Texte."** Masse ohne Mehrwert ist seit den Spam-Richtlinien wirkungslos und obendrein ein aktives Risiko, Stichwort "Scaled content abuse". Lieber acht Seiten mit Substanz als achtzig aus dem Textgenerator.
+
+## Was heißt das jetzt für Ihre neue Website?
+
+Wenn Sie nur eine Sache aus diesem Artikel mitnehmen, dann diese: Auffindbarkeit ist kein Zufall und keine Zauberei, sondern ein dokumentierter Prozess mit klaren Stellschrauben. Search Console einrichten, Sitemap einreichen, wichtige URLs zur Prüfung geben, saubere Technik mit guten Core Web Vitals, Inhalte mit echtem Mehrwert und danach regelmäßige Kontrolle statt Hoffnung. Wer diese Punkte abarbeitet, hat alles getan, was Google offiziell empfiehlt. Mehr kann Ihnen ehrlicherweise niemand versprechen, und wer mehr verspricht, verdient Ihr Misstrauen.
+
+**Key Takeaways:**
+
+- Google findet neue Websites in drei Stufen: Crawling, Indexierung, Ausspielung. Entdeckt wird über Links von bekannten Seiten und über Sitemaps.
+- Die Google Search Console mit URL-Prüfung ist der schnellste offizielle Weg, neue Seiten aktiv anzustoßen.
+- Google garantiert keine Indexierung und akzeptiert keine Bezahlung für besseres Ranking. "Platz-1-Garantien" sind ein Warnsignal.
+- Gute Core Web Vitals (LCP unter 2,5 s, INP unter 200 ms, CLS unter 0,1) empfiehlt Google ausdrücklich für den Erfolg in der Suche.
+- Inhalte müssen für Menschen geschrieben sein und echten Mehrwert bieten. Massenhaft generierte Texte ohne Substanz verstoßen gegen die Spam-Richtlinien.
+
+Sie haben gerade eine neue Website gelauncht oder planen eine, und wollen nicht darauf hoffen, dass Google sie irgendwann von selbst bemerkt? Dann [melden Sie sich bei uns](/kontakt). Wir richten die technische Basis sauber ein, von der Search Console bis zu den Core Web Vitals, und sagen Ihnen ehrlich, wo laufende Betreuung Sinn ergibt und wo nicht.

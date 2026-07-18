@@ -1859,3 +1859,39 @@ quelle: https://help.salesforce.com/s/articleView?id=sales.faq_leads_how_many_le
 quelle_name: Salesforce Help - How many leads can we capture from our website?
 geprueft_am: 2026-07-17
 recheck_nach: 2027-01-13
+
+## t45-2026-07-18-207
+cluster: 1
+keywords: wird, neue, website, google, gefunden
+aussage: Google findet neue Websites in drei Stufen (Crawling, Indexierung, Ausspielung) und entdeckt neue Seiten primär über Links von bereits bekannten Seiten oder über eine eingereichte Sitemap — die allermeisten Seiten im Index werden nicht manuell angemeldet, sondern automatisch von Googlebot gefunden.
+quelle: https://developers.google.com/search/docs/fundamentals/how-search-works
+quelle_name: Google Search Central - In-depth guide to how Google Search works
+geprueft_am: 2026-07-18
+recheck_nach: 2027-01-14
+
+## t45-2026-07-18-208
+cluster: 1
+keywords: wird, neue, website, google, gefunden
+aussage: Google garantiert ausdrücklich NICHT, dass eine Seite gecrawlt, indexiert oder ausgespielt wird — selbst wenn sie alle Search-Essentials-Richtlinien erfüllt. Und: Google akzeptiert keine Bezahlung für häufigeres Crawling oder besseres Ranking; wer das verspricht, liegt laut Google falsch.
+quelle: https://developers.google.com/search/docs/fundamentals/how-search-works
+quelle_name: Google Search Central - In-depth guide to how Google Search works
+geprueft_am: 2026-07-18
+recheck_nach: 2027-01-14
+
+## t45-2026-07-18-209
+cluster: 1
+keywords: wird, neue, website, google, gefunden
+aussage: Über die Google Search Console kann man Google aktiv bitten, einzelne URLs (neu) zu crawlen (URL-Prüfung / 'Ask Google to recrawl your URLs') — der schnellste offizielle Weg, eine neue Website oder Seite bei Google anzustoßen, statt nur zu warten.
+quelle: https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl
+quelle_name: Google Search Central - Ask Google to recrawl your URLs
+geprueft_am: 2026-07-18
+recheck_nach: 2027-01-14
+
+## t45-2026-07-18-210
+cluster: 1
+keywords: wird, neue, website, google, gefunden
+aussage: Google empfiehlt Website-Betreibern ausdrücklich gute Core Web Vitals für den Erfolg in der Google-Suche: LCP (Ladezeit des Hauptinhalts) unter 2,5 Sekunden, INP (Reaktionszeit) unter 200 ms, CLS (visuelle Stabilität) unter 0,1 — Technik ist damit Teil der Auffindbarkeit.
+quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
+quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
+geprueft_am: 2026-07-18
+recheck_nach: 2027-01-14
