@@ -73,15 +73,70 @@ Materialien/Texturen fallen weg; der Look lebt in Splines Material-System.
    Workaround fuer Mails an Thomas: POST /api/ops-alert mit ADMIN_API_TOKEN
    aus .env.local (Muster in scripts/content-engine/trigger/run-daily.sh).
 
+### RECHERCHE 18.07. ABENDS (im Spline-Account verifiziert, Browser)
+DER WEG IST GEFUNDEN — Option 1b: react-three-fiber-CODE-EXPORT, auf dem
+FREE-Plan verfuegbar, OHNE Spline-Engine (= kein Player, kein Wasserzeichen-
+Overlay, keine Abokosten):
+- Export > Code Export > Dropdown "react-three-fiber" > "Update Code Export"
+  erzeugt ~32k Zeichen JSX: `useSpline('https://prod.spline.design/
+  bN7MTDW-zSkVIOxf/scene.splinecode')` liefert nodes+materials in UNSEREN
+  eigenen R3F-Canvas. Package: @splinetool/r3f-spline (+ @splinetool/loader).
+  Damit passt das Original 1:1 in unsere bestehende TalosStage-Regie
+  (Keyframes/Kamera/IdleDriver bleiben, nur Modell+Material-Quelle tauschen).
+- Hinweis im Dialog: "This export doesn't use the Spline engine. Some visual
+  differences might be noticeable." => ERSTER BAUSCHRITT: Side-by-side-
+  Fidelity-Check r3f-Export vs. Editor (Matcap/Rainbow-Layer sind die
+  Risikokandidaten). Fallback wenn zu anders: Viewer-Embed (Badge) / Starter.
+- Self-Hosted-ZIP-Export existiert ebenfalls (self-contained, kein CDN-Fetch)
+  — pruefen ob wir scene.splinecode selbst hosten koennen (Vercel public/),
+  sonst haengt die Seite an prod.spline.design.
+- Szenen-Struktur (wichtig fuer Regie): Bot > Top part (Head, Neck,
+  Hand Instance, Hand, Body) + Bottom. Head hat Event "Look At" (Editor-only,
+  kommt im r3f-Export NICHT mit — Cursor-Gaze machen wir selbst, hatten wir
+  in v1 schon). Materialien: 3 Slots (Head, Parts, Body). Head-Material =
+  Layer-Stack Rainbow 50 + Matcap 60 + Lighting 100 + Color — Look lebt in
+  diesen Layern.
+- GLTF-Export-Dialog bestaetigt schriftlich: nur Geometry, ALLE Material-
+  Layer/Texturen/Animationen gehen verloren (Ursache des v1-Flops).
+- LED-Punkt-Augen: eigenes Mesh unter Head? NICHT verifiziert — im Editor
+  pruefen (fuer Blinzel-Regie).
+
+### Plan "dezent griechischer" (Thomas 18.07.: Original behalten, dezent!)
+Alle Anpassungen auf einer KOPIE des Files (Spline speichert automatisch —
+Original nie direkt anfassen): Datei duplizieren als "NEXBOT - Talos".
+1. Bronze-Toenung statt Umbau: im Material-Layer-Stack den Color-Layer warm
+   toenen (Head dezent bronze-chrom, Body-Carbon dunkelbronze), Matcap/
+   Rainbow-Layer BEHALTEN — so bleibt die Detailqualitaet des Originals.
+2. Schmaler Helmkamm (Crest) aus Primitiven auf dem Head-Pivot; optional
+   feines Maeander-Band (griech. Schluesselmuster) als Image-Textur-Layer
+   auf Schulter/Brustlinie. KEIN Hasen-Logo. Freundlich, kein Waechter.
+3. r3f-Export zieht die Aenderungen der Kopie ueber deren eigene
+   scene.splinecode-URL.
+
+### Bewegungs-Konzept (laeuft in UNSEREM r3f-Rig, nicht in Spline)
+Nodes sind benannt und einzeln transformierbar (Head, Neck, Hand, ...):
+- Hero: Gruss-Geste (Arm heben + Winken, wie v1), danach Cursor-Blickfolge
+  (Head-Yaw/Pitch, port von v1).
+- Kapitel: Kamera-/Yaw-Keyframes wie v1; Frag-Talos: Kopfneigung zur Frage.
+- Immer: dezente Idle-Atmung (Sinus auf Brust/Schultern), gelegentliches
+  Augen-Pulsieren (falls Augen-Mesh existiert, sonst Emissive im Head-Layer).
+- Abschluss: leichte Verbeugung + Winken. Reduced-Motion: statische Pose.
+
 ### Naechste konkrete Schritte
-1. Mit Thomas den Weg entscheiden (Embed vs. Polieren vs. Vorrendern) inkl.
-   12-USD-Frage. Danach VOR dem Bau pruefen: Kann der Viewer-Embed extern
-   gesteuert werden (Scroll->Kamera) oder muss die Regie in den Spline-Editor?
-2. Look-Anpassung im Editor (Bronze? Oder Original-Schwarz-Chrom lassen?
-   Thomas fragen — sein Referenzbild war Bronze-Hoplit, das ORIGINAL ist
-   schwarz-chrom; "etwas anpassen" praezisieren).
-3. Seite umbauen: .tal-stage-Inhalt tauschen, Rest (Kapitel/Assistent/SSR/
-   Gate) wiederverwenden. QA-Programm wie in TALOS_SEITE_SPEC.md.
+WEG IST ENTSCHIEDEN (Thomas 18.07. abends): Original-NEXBOT verwenden,
+dezent griechischer machen, Bewegungen ueber unser Rig. Sketchfab-Alternativen
+hat er verworfen ("zu kindisch oder zu gefaehrlich"). 12-USD-Frage ist mit dem
+r3f-Export vermutlich obsolet (kein Spline-Player im Spiel) — offen lassen bis
+Fidelity-Check bestanden.
+1. FIDELITY-CHECK ZUERST: r3f-Export (siehe RECHERCHE-Abschnitt) in eine
+   Test-Route haengen und side-by-side gegen den Editor-Look screenshotten.
+   Besteht er, ist der Weg 0-Euro und wasserzeichenfrei. Faellt er durch:
+   Viewer-Embed (Badge) zeigen und 12-USD-Frage an Thomas.
+2. Datei-KOPIE "NEXBOT - Talos" anlegen, dann Plan "dezent griechischer"
+   umsetzen (Bronze-Toenung der Layer, Helmkamm, optional Maeander-Band).
+3. Seite umbauen: .tal-stage-Inhalt tauschen (r3f-Szene statt talos.glb),
+   Bewegungs-Konzept (siehe oben) auf die benannten Nodes legen. Rest
+   (Kapitel/Assistent/SSR/Gate) wiederverwenden. QA wie TALOS_SEITE_SPEC.md.
 4. Danach weiter im Unterseiten-Strang: Preise-Seite (brand/PREISE_SEITE_BRIEF.md,
    NUR 950/2900/ab-4900), Artikel-Detailseiten, Modul-Detailseiten Welle 2.
 

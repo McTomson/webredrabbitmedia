@@ -1,5 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Talos: @splinetool/loader ist gegen three 0.149 gebaut (Haupt-App: 0.185).
+  // Alle three-Importe AUS @splinetool-Paketen werden auf das isolierte Paket
+  // `three-spline` (npm-Alias auf three@0.149) umgeleitet; die Haupt-App
+  // bleibt unberuehrt.
+  webpack: (
+    config: { plugins: unknown[] },
+    { webpack }: { webpack: { NormalModuleReplacementPlugin: new (re: RegExp, fn: (res: { request: string; contextInfo?: { issuer?: string } }) => void) => unknown } }
+  ) => {
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(/^three($|\/)/, (resource) => {
+        if ((resource.contextInfo?.issuer ?? '').includes('@splinetool')) {
+          resource.request = resource.request.replace(/^three/, 'three-spline')
+        }
+      })
+    )
+    return config
+  },
   // SSR + ISR Hybrid für beste SEO-Performance
   output: 'standalone',
 
@@ -188,7 +205,7 @@ const nextConfig = {
           // Content Security Policy (CSP) - Optimized for GTM
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://tagmanager.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://tagmanager.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://prod.spline.design https://unpkg.com; worker-src 'self' blob:; frame-src https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self';",
           },
         ],
       },
