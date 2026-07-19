@@ -145,11 +145,6 @@ export const TALOS_SECTIONS: TalosSection[] = [
     subline:
       "Feste Preise statt Stundensatz-Ratespiel. Den Entwurf siehst du zuerst, gezahlt wird erst, wenn er dir gefällt.",
     says: ["Bis gleich. Ich freu mich, wenn wir zusammen loslegen."],
-    bullets: [
-      { title: "950 Euro", body: "Der Einstieg, eine starke Seite für deinen Betrieb." },
-      { title: "2.900 Euro", body: "Die beliebteste Wahl, mit mehr Umfang und Selbstlauf." },
-      { title: "ab 4.900 Euro", body: "Das Flaggschiff, wenn es richtig was können soll." },
-    ],
     cam: CLOSE_BACK,
     cardSide: "center",
   },

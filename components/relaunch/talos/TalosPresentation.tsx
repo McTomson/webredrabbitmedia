@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import * as THREE from "three-spline";
 import SplineLoader from "@splinetool/loader";
+import { RabbitMark } from "@/components/relaunch/RabbitMark";
 import { buildTalosRig, type TalosRig } from "./talosRig";
 import { createTalosMotion, type TalosMotion } from "./talosMotion";
 import { TALOS_SECTIONS, type CamKey } from "./talosSections";
@@ -290,31 +291,33 @@ export default function TalosPresentation() {
       <div className="tp-stage" aria-hidden="true" ref={hostRef} />
       {no3d && <div className="tp-poster" aria-hidden="true" />}
 
+      {/* Rote Hasen-Marke oben links: erscheint erst, wenn man den Hero verlaesst
+          (Thomas-Wunsch: Logo taucht nach etwas Scrollen auf). Link zur Startseite. */}
+      <Link
+        href="/relaunch-preview"
+        aria-label="Zur Startseite"
+        className={`tp-mark${active > 0 ? " is-shown" : ""}`}
+        tabIndex={active > 0 ? 0 : -1}
+      >
+        <RabbitMark style={{ display: "block", width: "clamp(19px,1.9vw,23px)", height: "auto" }} />
+      </Link>
+
       {/* Progress-Linie oben */}
       <div className="tp-progress" aria-hidden="true">
         <span className="tp-progress-bar" ref={progressRef} />
       </div>
 
-      {/* Kapitel-Punkte rechts (Desktop) */}
-      <nav className="tp-dots" aria-label="Stationen">
-        {TALOS_SECTIONS.map((s, i) => (
-          <button
-            key={s.id}
-            type="button"
-            className={`tp-dot${i === active ? " is-active" : ""}`}
-            aria-label={`Zu ${s.label}`}
-            aria-current={i === active ? "true" : undefined}
-            onClick={() => scrollToId(s.id)}
-          >
-            <span className="tp-dot-label">{s.label}</span>
-          </button>
-        ))}
-      </nav>
-
-      {/* Anrufen fix */}
-      <a href={`tel:${PHONE_TEL}`} className="tp-call">
-        Anrufen
-      </a>
+      {/* Scroll-Hinweis: nur im Hero, verschwindet beim ersten Scrollen. */}
+      <button
+        type="button"
+        className={`tp-scrollcue${active === 0 ? " is-shown" : ""}`}
+        aria-label="Weiter zu: Wer ist Talos"
+        tabIndex={active === 0 ? 0 : -1}
+        onClick={() => scrollToId(TALOS_SECTIONS[1].id)}
+      >
+        <span className="tp-scrollcue-label">Scroll weiter</span>
+        <span className="tp-scrollcue-arrow" aria-hidden="true" />
+      </button>
 
       {/* Stationen */}
       {TALOS_SECTIONS.map((s, i) => (
@@ -362,9 +365,14 @@ export default function TalosPresentation() {
                 <Link href="/relaunch-preview/kontakt" className="tp-btn tp-btn--red">
                   Kostenlosen Entwurf anfragen
                 </Link>
-                <a href={`tel:${PHONE_TEL}`} className="tp-btn tp-btn--ghost">
-                  Anrufen
-                </a>
+                <div className="tp-actions-row">
+                  <a href={`tel:${PHONE_TEL}`} className="tp-btn tp-btn--ghost">
+                    Anrufen
+                  </a>
+                  <Link href="/preise" className="tp-btn tp-btn--ghost">
+                    Preise ansehen
+                  </Link>
+                </div>
                 <p className="tp-note">Lieber schreiben? Ein Satz genügt, wir melden uns.</p>
               </div>
             )}
@@ -378,8 +386,8 @@ export default function TalosPresentation() {
 }
 
 const CSS = `
-.tp-root{ position:relative; color:#23262e; background:#ffffff; overflow-x:clip;
-  font-family:var(--font-grotesk),"Instrument Sans",system-ui,sans-serif; }
+.tp-root{ position:relative; color:var(--rr-ink,#23262e); background:#ffffff; overflow-x:clip;
+  font-family:var(--rr-font-ui,var(--font-grotesk),"Instrument Sans",system-ui,sans-serif); }
 .tp-root *{ box-sizing:border-box; }
 
 .tp-stage{ position:fixed; inset:0; z-index:0; pointer-events:none; }
@@ -395,69 +403,78 @@ const CSS = `
 .tp-card-left{ justify-content:flex-start; }
 .tp-card-center{ justify-content:center; }
 
-/* Glass-Card: EckIG (border-radius 0, Eckig-Gesetz), heller Panel-Grund. */
-.tp-card{ width:min(430px,86vw);
-  background:rgba(255,255,255,.72); backdrop-filter:blur(7px) saturate(1.3);
-  -webkit-backdrop-filter:blur(7px) saturate(1.3);
-  border:1px solid rgba(35,38,46,.08); box-shadow:0 24px 60px rgba(20,30,45,.10);
-  padding:clamp(24px,3vw,38px); }
-.tp-card-center .tp-card{ width:min(520px,90vw); text-align:center; }
-.tp-card--hero{ width:min(540px,90vw); background:rgba(255,255,255,.66); }
+/* Haus-Panel: solide + opak (kein Glas/Blur), eckig, Haarlinie + roter Top-Akzent,
+   flacher Layer-Schatten. Werte aus styleguide.css (--rr-surface/--rr-line/--rr-shadow-layer). */
+.tp-card{ width:min(440px,86vw);
+  background:var(--rr-surface,#f4f4f2);
+  border:1px solid var(--rr-line,#e4e4e0); border-top:3px solid var(--rr-red,#f12032);
+  box-shadow:var(--rr-shadow-layer,rgba(28,40,55,.26) 0 2px 4px,rgba(28,40,55,.18) 0 7px 13px -3px);
+  padding:clamp(26px,3vw,40px); }
+.tp-card-center .tp-card{ width:min(540px,90vw); text-align:center; }
+.tp-card--hero{ width:min(560px,90vw); background:var(--rr-paper,#ffffff); }
 
-.tp-eyebrow{ font-size:.8rem; font-weight:650; letter-spacing:.18em; text-transform:uppercase;
-  color:#23262e; margin:0 0 14px; }
-.tp-headline{ font-family:var(--font-dmsans),"DM Sans",sans-serif; font-weight:700;
-  font-size:clamp(1.5rem,3vw,2.4rem); line-height:1.08; letter-spacing:-.015em; color:#23262e; margin:0; }
-.tp-card--hero .tp-headline{ font-size:clamp(1.8rem,4vw,3.1rem); }
-.tp-subline{ font-size:1rem; line-height:1.55; color:#5a5e68; margin:16px 0 0; }
+/* rote Eyebrow, Haus-Wert (13px / 0.18em / --rr-red) */
+.tp-eyebrow{ font-family:var(--rr-font-ui,inherit); font-size:13px; font-weight:650; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--rr-red,#f12032); margin:0 0 16px; }
+/* DM-Sans-Headline auf Haus-Skala (letter-spacing -.018em, line-height 1.02) */
+.tp-headline{ font-family:var(--rr-font-display,var(--font-dmsans),"DM Sans",sans-serif); font-weight:700;
+  font-size:clamp(1.55rem,3vw,2.5rem); line-height:1.04; letter-spacing:-.018em;
+  color:var(--rr-ink,#23262e); margin:0; text-wrap:balance; }
+.tp-card--hero .tp-headline{ font-size:clamp(1.9rem,4.2vw,3.2rem); }
+.tp-subline{ font-size:clamp(1rem,1.1vw,1.06rem); line-height:1.5; color:var(--rr-ink-soft,#5a5e68); margin:18px 0 0; }
 
-.tp-says{ margin-top:22px; display:flex; flex-direction:column; gap:12px; }
-.tp-say{ font-family:var(--font-crimson),"Crimson Pro",Georgia,serif;
-  font-size:clamp(1.1rem,1.7vw,1.35rem); line-height:1.28; color:#23262e; margin:0;
-  padding-left:14px; border-left:2px solid #39c2d7; }
+/* Talos-Stimme: Crimson, tuerkiser Rand = Augenfarbe (offene Entscheidung Thomas) */
+.tp-says{ margin-top:24px; display:flex; flex-direction:column; gap:12px; }
+.tp-say{ font-family:var(--rr-font-serif,var(--font-crimson),"Crimson Pro",Georgia,serif); font-weight:500;
+  font-size:clamp(1.12rem,1.7vw,1.35rem); line-height:1.24; color:var(--rr-ink,#23262e); margin:0;
+  padding-left:15px; border-left:2px solid #39c2d7; }
 
-.tp-bullets{ list-style:none; margin:22px 0 0; padding:0; display:flex; flex-direction:column; gap:14px; }
+.tp-bullets{ list-style:none; margin:24px 0 0; padding:0; display:flex; flex-direction:column; gap:16px; }
 .tp-bullet{ display:flex; flex-direction:column; gap:3px; }
-.tp-bullet-title{ font-family:var(--font-dmsans),"DM Sans",sans-serif; font-weight:700;
-  font-size:1.02rem; color:#23262e; }
-.tp-bullet-body{ font-size:.94rem; line-height:1.5; color:#5a5e68; }
+.tp-bullet-title{ font-family:var(--rr-font-display,var(--font-dmsans),"DM Sans",sans-serif); font-weight:700;
+  font-size:1.02rem; letter-spacing:-.01em; color:var(--rr-ink,#23262e); }
+.tp-bullet-body{ font-size:.95rem; line-height:1.5; color:var(--rr-ink-soft,#5a5e68); }
 
-.tp-actions{ margin-top:26px; display:flex; flex-direction:column; gap:14px; align-items:flex-start; }
+.tp-actions{ margin-top:28px; display:flex; flex-direction:column; gap:14px; align-items:flex-start; }
+.tp-actions-row{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
 .tp-card-center .tp-actions{ align-items:center; }
+.tp-card-center .tp-actions-row{ justify-content:center; }
 .tp-btn{ display:inline-flex; align-items:center; justify-content:center; font-weight:600; font-size:1rem;
   padding:14px 26px; border:1px solid transparent; text-decoration:none; cursor:pointer;
-  transition:transform .2s var(--rr-ease,cubic-bezier(.6,0,.4,1)), background .2s, color .2s; }
-.tp-btn:hover{ transform:translateY(-2px); }
-.tp-btn:focus-visible{ outline:2px solid #f12032; outline-offset:3px; }
-.tp-btn--red{ background:#f12032; color:#fff; }
-.tp-btn--ghost{ background:transparent; color:#23262e; border-color:rgba(35,38,46,.3); }
-.tp-note{ font-size:.9rem; color:#5a5e68; margin:0; }
+  box-shadow:var(--rr-shadow-btn,0 1px 2px rgba(28,40,55,.10),0 2px 8px rgba(28,40,55,.06));
+  transition:transform .2s var(--rr-ease,cubic-bezier(.6,0,.4,1)), background .2s, color .2s, box-shadow .2s; }
+.tp-btn:hover{ transform:translateY(-2px); box-shadow:var(--rr-shadow-btn-hover,0 4px 14px rgba(28,40,55,.14),0 2px 6px rgba(28,40,55,.08)); }
+.tp-btn:focus-visible{ outline:2px solid var(--rr-red,#f12032); outline-offset:3px; }
+.tp-btn--red{ background:var(--rr-red,#f12032); color:#fff; }
+.tp-btn--red:hover{ background:var(--rr-red-deep,#c81222); }
+.tp-btn--ghost{ background:transparent; color:var(--rr-ink,#23262e); border-color:var(--rr-line,#e4e4e0); box-shadow:none; }
+.tp-btn--ghost:hover{ border-color:var(--rr-ink,#23262e); }
+.tp-note{ font-size:.9rem; color:var(--rr-ink-soft,#5a5e68); margin:0; }
 
 /* Progress-Linie */
 .tp-progress{ position:fixed; left:0; top:0; width:100%; height:3px; z-index:41; background:rgba(35,38,46,.06); }
 .tp-progress-bar{ display:block; width:100%; height:100%; background:#f12032; transform:scaleX(0); transform-origin:0 50%; }
 
-/* Kapitel-Punkte rechts */
-.tp-dots{ position:fixed; right:clamp(14px,2vw,28px); top:50%; transform:translateY(-50%); z-index:40;
-  display:none; flex-direction:column; gap:16px; }
-.tp-dot{ position:relative; width:12px; height:12px; padding:0; cursor:pointer; background:none; border:none; }
-.tp-dot::after{ content:""; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-  width:8px; height:8px; background:#c7c7c2;
-  transition:background .3s var(--rr-ease,cubic-bezier(.6,0,.4,1)), transform .3s var(--rr-ease,cubic-bezier(.6,0,.4,1)); }
-.tp-dot.is-active::after{ background:#f12032; transform:translate(-50%,-50%) scale(1.4); }
-.tp-dot:focus-visible{ outline:2px solid #f12032; outline-offset:3px; }
-.tp-dot-label{ position:absolute; right:20px; top:50%; transform:translateY(-50%); white-space:nowrap;
-  opacity:0; pointer-events:none; font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:#23262e;
-  transition:opacity .25s var(--rr-ease,cubic-bezier(.6,0,.4,1)); }
-.tp-dot:hover .tp-dot-label,.tp-dot.is-active .tp-dot-label{ opacity:1; }
-@media (min-width:960px){ .tp-dots{ display:flex; } }
+/* Rote Hasen-Marke oben links (scroll-reaktiv) */
+.tp-mark{ position:fixed; top:clamp(18px,2.4vw,34px); left:var(--rr-gutter,clamp(20px,4vw,64px));
+  z-index:43; display:block; line-height:0; opacity:0; transform:translateY(-8px); pointer-events:none;
+  transition:opacity .5s var(--rr-ease,cubic-bezier(.6,0,.4,1)), transform .5s var(--rr-ease,cubic-bezier(.6,0,.4,1)); }
+.tp-mark.is-shown{ opacity:1; transform:none; pointer-events:auto; }
+.tp-mark:focus-visible{ outline:2px solid #f12032; outline-offset:4px; }
 
-/* Anrufen fix */
-.tp-call{ position:fixed; left:clamp(16px,3vw,40px); bottom:clamp(16px,3vh,32px); z-index:42;
-  display:inline-flex; align-items:center; padding:11px 20px; font-weight:600; font-size:.92rem;
-  background:#23262e; color:#fff; text-decoration:none; transition:background .2s, transform .2s; }
-.tp-call:hover{ background:#f12032; transform:translateY(-2px); }
-.tp-call:focus-visible{ outline:2px solid #f12032; outline-offset:3px; }
+/* Scroll-Hinweis (nur Hero) */
+.tp-scrollcue{ position:fixed; left:50%; bottom:clamp(18px,3vh,34px); transform:translateX(-50%) translateY(6px);
+  z-index:42; display:inline-flex; flex-direction:column; align-items:center; gap:8px;
+  background:none; border:none; padding:6px 10px; cursor:pointer; color:#5a5e68;
+  opacity:0; pointer-events:none;
+  transition:opacity .5s var(--rr-ease,cubic-bezier(.6,0,.4,1)), transform .5s var(--rr-ease,cubic-bezier(.6,0,.4,1)); }
+.tp-scrollcue.is-shown{ opacity:1; transform:translateX(-50%); pointer-events:auto; }
+.tp-scrollcue-label{ font-size:.72rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; }
+.tp-scrollcue-arrow{ width:11px; height:11px; border-right:2px solid currentColor; border-bottom:2px solid currentColor;
+  transform:rotate(45deg); animation:tp-cuebob 1.8s var(--rr-ease,cubic-bezier(.6,0,.4,1)) infinite; }
+.tp-scrollcue:hover{ color:#f12032; }
+.tp-scrollcue:focus-visible{ outline:2px solid #f12032; outline-offset:4px; }
+@keyframes tp-cuebob{ 0%,100%{ transform:rotate(45deg) translate(0,0); } 50%{ transform:rotate(45deg) translate(3px,3px); } }
 
 .tp-loading{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); margin:0;
   font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:#8a9098; z-index:1; }
@@ -467,14 +484,15 @@ const CSS = `
   transition:opacity .7s var(--rr-ease,cubic-bezier(.6,0,.4,1)), transform .7s var(--rr-ease,cubic-bezier(.6,0,.4,1)); }
 .tp-root[data-reveal="on"] .tp-reveal.is-in{ opacity:1; transform:none; }
 
-/* Mobile: Card mittig, Talos dahinter */
+/* Mobile: Card mittig, Talos dahinter. Card bleibt solide/opak (Lesbarkeit). */
 @media (max-width:820px){
   .tp-section{ justify-content:center; padding-top:clamp(80px,14vh,120px); padding-bottom:clamp(80px,14vh,120px); }
-  .tp-card{ background:rgba(255,255,255,.82); }
+  .tp-card{ background:var(--rr-paper,#ffffff); }
 }
 
 @media (prefers-reduced-motion:reduce){
   .tp-root[data-reveal="on"] .tp-reveal{ opacity:1 !important; transform:none !important; transition:none; }
   .tp-btn:hover,.tp-call:hover{ transform:none; }
+  .tp-scrollcue-arrow{ animation:none; }
 }
 `;
