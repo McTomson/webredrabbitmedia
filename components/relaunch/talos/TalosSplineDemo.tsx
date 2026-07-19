@@ -122,6 +122,19 @@ export default function TalosSplineDemo() {
       )?.parent;
       if (livePivot) livePivot.userData.lock = rad;
     };
+    // QA-Hook: Kamera setzen (Kino-Einstellungen testen).
+    (window as unknown as Record<string, unknown>).__setCam = (
+      px: number, py: number, pz: number,
+      tx: number, ty: number, tz: number,
+      fov?: number
+    ) => {
+      camera.position.set(px, py, pz);
+      camera.lookAt(tx, ty, tz);
+      if (typeof fov === "number") {
+        camera.fov = fov;
+        camera.updateProjectionMatrix();
+      }
+    };
     renderer.domElement.addEventListener("pointerdown", onDown);
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
