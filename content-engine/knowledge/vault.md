@@ -1895,3 +1895,30 @@ quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
 quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
 geprueft_am: 2026-07-18
 recheck_nach: 2027-01-14
+
+## t46-2026-07-19-211
+cluster: 1
+keywords: funktioniert, suchmaschinenoptimierung, komplett, neue, websites
+aussage: Das Crawling einer neu eingereichten URL kann laut Google 'anywhere from a few days to a few weeks' dauern; mehrfaches Einreichen derselben URL beschleunigt nichts. Für frisch gelaunchte Websites empfiehlt Google ausdrücklich das Einreichen einer Sitemap über die Search Console, für einzelne URLs das URL-Inspection-Tool.
+quelle: https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl
+quelle_name: Google Search Central - Ask Google to recrawl your URLs
+geprueft_am: 2026-07-19
+recheck_nach: 2027-01-15
+
+## t46-2026-07-19-212
+cluster: 1
+keywords: funktioniert, suchmaschinenoptimierung, komplett, neue, websites
+aussage: Google indexiert und rankt Websites primär nach ihrer Mobilversion ('Google uses the mobile version of a site's content, crawled with the smartphone agent, for indexing and ranking'); Google empfiehlt dafür ausdrücklich Responsive Web Design — für neue Websites ist mobile Optimierung also von Tag 1 an Ranking-Grundlage, kein Nice-to-have.
+quelle: https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing
+quelle_name: Google Search Central - Mobile-first Indexing Best Practices
+geprueft_am: 2026-07-19
+recheck_nach: 2027-01-15
+
+## t46-2026-07-19-213
+cluster: 1
+keywords: funktioniert, suchmaschinenoptimierung, komplett, neue, websites
+aussage: Für lokale Sichtbarkeit (Google Maps / Local Pack) bewertet Google Unternehmensprofile nach Relevanz, Entfernung und Bekanntheit; Unternehmen mit vollständigen, korrekten Profildaten erscheinen laut Google mit höherer Wahrscheinlichkeit in lokalen Suchergebnissen — für neue KMU-Websites in Österreich ist ein verifiziertes Google-Unternehmensprofil daher einer der schnellsten SEO-Hebel.
+quelle: https://support.google.com/business/answer/7091?hl=en
+quelle_name: Google Business Profile Help - Tips to improve your local ranking on Google
+geprueft_am: 2026-07-19
+recheck_nach: 2027-01-15
