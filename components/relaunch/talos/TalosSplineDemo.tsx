@@ -9,12 +9,15 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three-spline";
 import SplineLoader from "@splinetool/loader";
+import { buildTalosRig, TALOS_COLORS, type TalosRig } from "./talosRig";
 
 const SCENE_URL = "https://prod.spline.design/bN7MTDW-zSkVIOxf/scene.splinecode";
 
 export default function TalosSplineDemo() {
   const hostRef = useRef<HTMLDivElement>(null);
+  const rigRef = useRef<TalosRig | null>(null);
   const [status, setStatus] = useState<"laedt" | "bereit" | "fehler">("laedt");
+  const [eyeVariant, setEyeVariant] = useState<"tuerkis" | "weiss">("tuerkis");
 
   useEffect(() => {
     const host = hostRef.current;
@@ -47,6 +50,7 @@ export default function TalosSplineDemo() {
     scene.add(pivot);
 
     let disposed = false;
+    let rig: TalosRig | null = null;
     const loader = new SplineLoader() as unknown as {
       load: (url: string, ok: (s: unknown) => void, p?: unknown, err?: (e: unknown) => void) => void;
     };
@@ -55,7 +59,11 @@ export default function TalosSplineDemo() {
       (splineScene) => {
         if (disposed) return;
         pivot.add(splineScene as never);
+        rig = buildTalosRig(THREE, splineScene);
+        rigRef.current = rig;
         (window as unknown as Record<string, unknown>).__talosScene = splineScene;
+        (window as unknown as Record<string, unknown>).__THREE = THREE;
+        (window as unknown as Record<string, unknown>).__talos = rig;
         setStatus("bereit");
       },
       undefined,
@@ -86,6 +94,13 @@ export default function TalosSplineDemo() {
         auto = true;
       }, 4000);
     };
+    // QA-Hook: Ansicht fixieren (Screenshots), schaltet den Turntable ab.
+    (window as unknown as Record<string, unknown>).__setYaw = (rad: number) => {
+      auto = false;
+      dragging = false;
+      targetY = rad;
+      pivot.rotation.y = rad;
+    };
     renderer.domElement.addEventListener("pointerdown", onDown);
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
@@ -98,15 +113,34 @@ export default function TalosSplineDemo() {
     window.addEventListener("resize", onResize);
 
     const clock = new THREE.Clock();
+    // Blinzeln: alle paar Sekunden kurz zu und wieder auf.
+    let nextBlinkAt = 3;
+    let blinkPhase = -1; // -1 = kein Blinzeln aktiv, sonst 0..1
     renderer.setAnimationLoop(() => {
       const delta = clock.getDelta();
+      const t = clock.elapsedTime;
       if (auto) targetY += delta * 0.25;
       pivot.rotation.y += (targetY - pivot.rotation.y) * (1 - Math.pow(0.001, delta));
+      if (rig) {
+        if (blinkPhase < 0 && t >= nextBlinkAt) blinkPhase = 0;
+        if (blinkPhase >= 0) {
+          blinkPhase += delta / 0.28; // Blinzeldauer ~280ms
+          if (blinkPhase >= 1) {
+            blinkPhase = -1;
+            nextBlinkAt = t + 2.5 + Math.sin(t * 7.13) * 1.5 + 2; // 3..6s Abstand
+            rig.setEyeOpen(1);
+          } else {
+            rig.setEyeOpen(Math.abs(1 - blinkPhase * 2)); // zu und wieder auf
+          }
+        }
+      }
       renderer.render(scene, camera);
     });
 
     return () => {
       disposed = true;
+      rigRef.current?.dispose();
+      rigRef.current = null;
       renderer.setAnimationLoop(null);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("pointermove", onMove);
@@ -120,6 +154,43 @@ export default function TalosSplineDemo() {
   return (
     <div style={{ position: "fixed", inset: 0, background: "#e3e3e3" }}>
       <div ref={hostRef} style={{ position: "absolute", inset: 0, touchAction: "pan-y" }} />
+      <div
+        style={{
+          position: "fixed",
+          top: 16,
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+          gap: 8,
+          fontFamily: "system-ui, sans-serif",
+        }}
+      >
+        {(["tuerkis", "weiss"] as const).map((variant) => (
+          <button
+            key={variant}
+            type="button"
+            onClick={() => {
+              setEyeVariant(variant);
+              rigRef.current?.setEyeColor(
+                variant === "weiss" ? TALOS_COLORS.eyeWhite : TALOS_COLORS.eye
+              );
+            }}
+            style={{
+              padding: "8px 14px",
+              fontSize: 12,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              border: "1px solid #b9bdc2",
+              borderRadius: 999,
+              cursor: "pointer",
+              background: eyeVariant === variant ? "#23262e" : "rgba(255,255,255,0.7)",
+              color: eyeVariant === variant ? "#f4f4f2" : "#3a3f46",
+            }}
+          >
+            Augen {variant === "tuerkis" ? "Tuerkis" : "Weiss"}
+          </button>
+        ))}
+      </div>
       <p
         style={{
           position: "fixed",
