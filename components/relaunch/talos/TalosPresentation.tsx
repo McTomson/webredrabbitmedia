@@ -95,6 +95,34 @@ export default function TalosPresentation() {
     let motion: TalosMotion | null = null;
     let flyStart = 0;
     let flyDone = reduced;
+    let greeted = false;
+
+    const onResize = () => {
+      camera.aspect = host.clientWidth / host.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(host.clientWidth, host.clientHeight);
+    };
+    window.addEventListener("resize", onResize);
+
+    const onGaze = (e: PointerEvent) => {
+      motion?.setPointer((e.clientX / window.innerWidth) * 2 - 1, -((e.clientY / window.innerHeight) * 2 - 1));
+    };
+    window.addEventListener("pointermove", onGaze);
+
+    const clock = new THREE.Clock();
+
+    // Gemeinsamer Teardown: sowohl bei Unmount ALS AUCH bei Ladefehler
+    // (sonst laeuft der Renderloop weiter, waehrend die Buehne aus dem DOM faellt).
+    let torn = false;
+    const teardown = () => {
+      if (torn) return;
+      torn = true;
+      renderer.setAnimationLoop(null);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("pointermove", onGaze);
+      renderer.dispose();
+      if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
+    };
 
     const loader = new SplineLoader() as unknown as {
       load: (u: string, ok: (s: unknown) => void, p?: unknown, e?: (e: unknown) => void) => void;
@@ -114,7 +142,7 @@ export default function TalosPresentation() {
           pivot.rotation.y = hero.yaw;
         } else {
           setFlightPose(0);
-          flyStart = clock.getElapsedTime();
+          flyStart = clock.getElapsedTime(); // Auftakt startet erst beim Laden
         }
         (window as unknown as Record<string, unknown>).__talosScene = splineScene;
         (window as unknown as Record<string, unknown>).__talos = rig;
@@ -123,36 +151,23 @@ export default function TalosPresentation() {
       },
       undefined,
       () => {
+        teardown();
         setNo3d(true);
         setStatus("bereit");
       },
     );
 
-    const onResize = () => {
-      camera.aspect = host.clientWidth / host.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(host.clientWidth, host.clientHeight);
-    };
-    window.addEventListener("resize", onResize);
-
-    const onGaze = (e: PointerEvent) => {
-      motion?.setPointer((e.clientX / window.innerWidth) * 2 - 1, -((e.clientY / window.innerHeight) * 2 - 1));
-    };
-    window.addEventListener("pointermove", onGaze);
-
     const T_FLIGHT = 2.6;
     const T_DIP = 0.45;
-    let greeted = false;
-
     const targetPos = new THREE.Vector3();
     const targetTgt = new THREE.Vector3();
 
-    const clock = new THREE.Clock();
     renderer.setAnimationLoop(() => {
       const delta = clock.getDelta();
       const now = clock.getElapsedTime();
 
-      if (!flyDone) {
+      if (!flyDone && rig) {
+        // Fly-in laeuft erst, wenn die Szene wirklich geladen ist.
         const t = now - flyStart;
         if (t < T_FLIGHT) {
           setFlightPose(t / T_FLIGHT);
@@ -168,7 +183,7 @@ export default function TalosPresentation() {
           }
           flyDone = true;
         }
-      } else {
+      } else if (flyDone) {
         // Kino-Kamera Richtung aktive Station lerpen.
         const c = camTargetRef.current;
         targetPos.set(...c.pos);
@@ -191,11 +206,7 @@ export default function TalosPresentation() {
     return () => {
       disposed = true;
       rig?.dispose();
-      renderer.setAnimationLoop(null);
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("pointermove", onGaze);
-      renderer.dispose();
-      if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
+      teardown();
     };
   }, []);
 
@@ -266,19 +277,18 @@ export default function TalosPresentation() {
   }, []);
 
   const scrollToId = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById(id)?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
   };
 
   return (
     <div className="tp-root" ref={rootRef}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      {/* Fixe 3D-Buehne bzw. Poster-Fallback */}
-      {!no3d ? (
-        <div className="tp-stage" aria-hidden="true" ref={hostRef} />
-      ) : (
-        <div className="tp-poster" aria-hidden="true" />
-      )}
+      {/* Buehne bleibt immer gemountet (Teardown-/ref-Stabilitaet);
+          Poster liegt als Overlay drueber, wenn kein 3D. */}
+      <div className="tp-stage" aria-hidden="true" ref={hostRef} />
+      {no3d && <div className="tp-poster" aria-hidden="true" />}
 
       {/* Progress-Linie oben */}
       <div className="tp-progress" aria-hidden="true">
