@@ -19,24 +19,24 @@ export const TALOS_COLORS = {
   crestGold: 0xc9a04a,
 } as const;
 
-// Wabenmuster pro Auge (Honigwaben, hexagonal gepackt) wie das Original:
-// gerade Reihen auf Vielfachen von 1.6, ungerade Reihen um 0.8 versetzt.
-// Linsenfoermiger Umriss (Mitte am breitesten), viele KLEINE Punkte.
+// Wabenmuster pro Auge (Honigwaben, hexagonal gepackt) wie die Original-
+// Textur (Bild #144, 654x330): breites Oval ~1.5:1, versetzte Reihen.
+// Gerade Reihen auf Vielfachen von 2.0, ungerade um 1.0 versetzt.
 const EYE_ROWS: ReadonlyArray<{ y: number; xs: ReadonlyArray<number> }> = [
-  { y: 2.3, xs: [-3.2, -1.6, 0, 1.6, 3.2] },
-  { y: 1.15, xs: [-4.0, -2.4, -0.8, 0.8, 2.4, 4.0] },
-  { y: 0, xs: [-4.8, -3.2, -1.6, 0, 1.6, 3.2, 4.8] },
-  { y: -1.15, xs: [-4.0, -2.4, -0.8, 0.8, 2.4, 4.0] },
-  { y: -2.3, xs: [-3.2, -1.6, 0, 1.6, 3.2] },
+  { y: 3.4, xs: [-3, -1, 1, 3] },
+  { y: 1.7, xs: [-4, -2, 0, 2, 4] },
+  { y: 0, xs: [-5, -3, -1, 1, 3, 5] },
+  { y: -1.7, xs: [-4, -2, 0, 2, 4] },
+  { y: -3.4, xs: [-3, -1, 1, 3] },
 ];
 
-// Auge auf der vertikalen Gesichtsmitte (Proportionsregel). Kompakteres,
-// kleineres Auge -> Abstand Mitte-zu-Mitte auf ±10.5 (nicht zu nah, nicht
-// zu weit), kleine Punkte.
-const EYE_CENTER_Y = 50;
-const EYE_CENTER_X = 10.5;
+// Gegen das KORREKTE Original-Render (Bild #142) kalibriert: Augen sitzen
+// auf Visier-Mitte (hoeher als zuletzt), Abstand Mitte-zu-Mitte ±15.5
+// (zwischen "zu weit" ±19 und "zu nah" ±12.5).
+const EYE_CENTER_Y = 56;
+const EYE_CENTER_X = 15.5;
 const EYE_SCALE = 1.0;
-const DOT_RADIUS = 0.42;
+const DOT_RADIUS = 0.5;
 const DOT_SURFACE_OFFSET = 0.6;
 
 // Gold-Kammlinie verworfen (Thomas 19.07.: wirkte billig, die Augen tragen
