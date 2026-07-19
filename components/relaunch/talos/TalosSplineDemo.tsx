@@ -10,12 +10,14 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three-spline";
 import SplineLoader from "@splinetool/loader";
 import { buildTalosRig, TALOS_COLORS, type TalosRig } from "./talosRig";
+import { createTalosMotion, type TalosMotion } from "./talosMotion";
 
 const SCENE_URL = "https://prod.spline.design/bN7MTDW-zSkVIOxf/scene.splinecode";
 
 export default function TalosSplineDemo() {
   const hostRef = useRef<HTMLDivElement>(null);
   const rigRef = useRef<TalosRig | null>(null);
+  const motionRef = useRef<TalosMotion | null>(null);
   const [status, setStatus] = useState<"laedt" | "bereit" | "fehler">("laedt");
   const [eyeVariant, setEyeVariant] = useState<"tuerkis" | "weiss">("tuerkis");
   const [crestOn, setCrestOn] = useState(true);
@@ -52,6 +54,8 @@ export default function TalosSplineDemo() {
 
     let disposed = false;
     let rig: TalosRig | null = null;
+    let motion: TalosMotion | null = null;
+    let greetTimer = 0;
     const loader = new SplineLoader() as unknown as {
       load: (url: string, ok: (s: unknown) => void, p?: unknown, err?: (e: unknown) => void) => void;
     };
@@ -62,9 +66,19 @@ export default function TalosSplineDemo() {
         pivot.add(splineScene as never);
         rig = buildTalosRig(THREE, splineScene);
         rigRef.current = rig;
+        if (rig) {
+          motion = createTalosMotion(rig, splineScene);
+          motionRef.current = motion;
+          motion.setReducedMotion(
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          );
+          // Begruessung kurz nach dem Laden.
+          greetTimer = window.setTimeout(() => motion?.triggerGreeting(), 1200);
+        }
         (window as unknown as Record<string, unknown>).__talosScene = splineScene;
         (window as unknown as Record<string, unknown>).__THREE = THREE;
         (window as unknown as Record<string, unknown>).__talos = rig;
+        (window as unknown as Record<string, unknown>).__talosMotion = motion;
         setStatus("bereit");
       },
       undefined,
@@ -82,6 +96,8 @@ export default function TalosSplineDemo() {
     const onDown = (e: PointerEvent) => {
       dragging = true;
       auto = false;
+      delete pivot.userData.lock; // Nutzer-Drag hebt QA-Lock auf
+      targetY = pivot.rotation.y;
       lastX = e.clientX;
     };
     const onMove = (e: PointerEvent) => {
@@ -96,11 +112,15 @@ export default function TalosSplineDemo() {
       }, 4000);
     };
     // QA-Hook: Ansicht fixieren (Screenshots), schaltet den Turntable ab.
+    // Lock haengt am Pivot selbst (userData), damit er auch bei StrictMode-
+    // Doppelmount immer die LEBENDE Instanz trifft.
     (window as unknown as Record<string, unknown>).__setYaw = (rad: number) => {
-      auto = false;
-      dragging = false;
-      targetY = rad;
-      pivot.rotation.y = rad;
+      const livePivot = (
+        (window as unknown as Record<string, unknown>).__talosScene as
+          | { parent?: { userData: Record<string, unknown> } }
+          | undefined
+      )?.parent;
+      if (livePivot) livePivot.userData.lock = rad;
     };
     renderer.domElement.addEventListener("pointerdown", onDown);
     window.addEventListener("pointermove", onMove);
@@ -113,37 +133,39 @@ export default function TalosSplineDemo() {
     };
     window.addEventListener("resize", onResize);
 
+    // Blickfolge: Cursorposition normalisiert an die Regie melden.
+    const onGaze = (e: PointerEvent) => {
+      motion?.setPointer(
+        (e.clientX / window.innerWidth) * 2 - 1,
+        -((e.clientY / window.innerHeight) * 2 - 1)
+      );
+    };
+    window.addEventListener("pointermove", onGaze);
+
     const clock = new THREE.Clock();
-    // Blinzeln: alle paar Sekunden kurz zu und wieder auf.
-    let nextBlinkAt = 3;
-    let blinkPhase = -1; // -1 = kein Blinzeln aktiv, sonst 0..1
     renderer.setAnimationLoop(() => {
       const delta = clock.getDelta();
-      const t = clock.elapsedTime;
-      if (auto) targetY += delta * 0.25;
-      pivot.rotation.y += (targetY - pivot.rotation.y) * (1 - Math.pow(0.001, delta));
-      if (rig) {
-        if (blinkPhase < 0 && t >= nextBlinkAt) blinkPhase = 0;
-        if (blinkPhase >= 0) {
-          blinkPhase += delta / 0.28; // Blinzeldauer ~280ms
-          if (blinkPhase >= 1) {
-            blinkPhase = -1;
-            nextBlinkAt = t + 2.5 + Math.sin(t * 7.13) * 1.5 + 2; // 3..6s Abstand
-            rig.setEyeOpen(1);
-          } else {
-            rig.setEyeOpen(Math.abs(1 - blinkPhase * 2)); // zu und wieder auf
-          }
-        }
+      const lock = pivot.userData.lock as number | undefined;
+      if (typeof lock === "number") {
+        pivot.rotation.y = lock;
+        targetY = lock;
+      } else {
+        if (auto) targetY += delta * 0.25;
+        pivot.rotation.y += (targetY - pivot.rotation.y) * (1 - Math.pow(0.001, delta));
       }
+      motion?.update(delta);
       renderer.render(scene, camera);
     });
 
     return () => {
       disposed = true;
+      window.clearTimeout(greetTimer);
+      motionRef.current = null;
       rigRef.current?.dispose();
       rigRef.current = null;
       renderer.setAnimationLoop(null);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("pointermove", onGaze);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
       renderer.domElement.removeEventListener("pointerdown", onDown);
@@ -211,6 +233,40 @@ export default function TalosSplineDemo() {
           }}
         >
           Kamm {crestOn ? "An" : "Aus"}
+        </button>
+        <button
+          type="button"
+          onClick={() => motionRef.current?.triggerGreeting()}
+          style={{
+            padding: "8px 14px",
+            fontSize: 12,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            border: "1px solid #b9bdc2",
+            borderRadius: 999,
+            cursor: "pointer",
+            background: "rgba(255,255,255,0.7)",
+            color: "#3a3f46",
+          }}
+        >
+          Gruss
+        </button>
+        <button
+          type="button"
+          onClick={() => motionRef.current?.triggerBow()}
+          style={{
+            padding: "8px 14px",
+            fontSize: 12,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            border: "1px solid #b9bdc2",
+            borderRadius: 999,
+            cursor: "pointer",
+            background: "rgba(255,255,255,0.7)",
+            color: "#3a3f46",
+          }}
+        >
+          Verbeugung
         </button>
       </div>
       <p
