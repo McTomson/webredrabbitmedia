@@ -19,40 +19,28 @@ export const TALOS_COLORS = {
   crestGold: 0xc9a04a,
 } as const;
 
-// Punktmatrix pro Auge: gestaffelte Reihen wie das Hexagon-Muster des Originals.
+// Wabenmuster pro Auge (Honigwaben, hexagonal gepackt) wie das Original:
+// gerade Reihen auf Vielfachen von 1.6, ungerade Reihen um 0.8 versetzt.
+// Linsenfoermiger Umriss (Mitte am breitesten), viele KLEINE Punkte.
 const EYE_ROWS: ReadonlyArray<{ y: number; xs: ReadonlyArray<number> }> = [
-  { y: 6, xs: [-4.5, -1.5, 1.5, 4.5] },
-  { y: 3, xs: [-6, -3, 0, 3, 6] },
-  { y: 0, xs: [-7.5, -4.5, -1.5, 1.5, 4.5, 7.5] },
-  { y: -3, xs: [-6, -3, 0, 3, 6] },
-  { y: -6, xs: [-4.5, -1.5, 1.5, 4.5] },
+  { y: 2.3, xs: [-3.2, -1.6, 0, 1.6, 3.2] },
+  { y: 1.15, xs: [-4.0, -2.4, -0.8, 0.8, 2.4, 4.0] },
+  { y: 0, xs: [-4.8, -3.2, -1.6, 0, 1.6, 3.2, 4.8] },
+  { y: -1.15, xs: [-4.0, -2.4, -0.8, 0.8, 2.4, 4.0] },
+  { y: -2.3, xs: [-3.2, -1.6, 0, 1.6, 3.2] },
 ];
 
-const EYE_CENTER_Y = 53;
-const EYE_CENTER_X = 19;
-// Am Original vermessen (Editor-Screenshot 19.07.): Cluster-Breite ~1/3 der
-// halben Visierbreite -> Skalierung 0.75 gegenueber dem ersten Wurf.
-const EYE_SCALE = 0.75;
-const DOT_RADIUS = 0.95;
-const DOT_SURFACE_OFFSET = 0.8;
+// Auge auf der vertikalen Gesichtsmitte (Proportionsregel). Kompakteres,
+// kleineres Auge -> Abstand Mitte-zu-Mitte auf ±10.5 (nicht zu nah, nicht
+// zu weit), kleine Punkte.
+const EYE_CENTER_Y = 50;
+const EYE_CENTER_X = 10.5;
+const EYE_SCALE = 1.0;
+const DOT_RADIUS = 0.42;
+const DOT_SURFACE_OFFSET = 0.6;
 
-// Scheitelprofil fuer die Kammlinie (Head-Space, x=0). Bewusst ~2 unter der
-// Oberflaeche zentriert: die Linie liegt EINGELASSEN im Schaedel (Intarsie),
-// nicht aufgesetzt wie ein Draht ("billig", Thomas 19.07.).
-const CREST_PROFILE: ReadonlyArray<[number, number]> = [
-  [-44, 76],
-  [-40, 84],
-  [-30, 97.5],
-  [-20, 103.7],
-  [-10, 105.6],
-  [0, 105.5],
-  [10, 103.8],
-  [20, 100.6],
-  [30, 96.1],
-  [40, 82.6],
-  [44, 72],
-];
-const CREST_TUBE_RADIUS = 1.0;
+// Gold-Kammlinie verworfen (Thomas 19.07.: wirkte billig, die Augen tragen
+// den Charakter allein). Wenn sie je zurueckkommt: Git-Verlauf ab d45cfa5.
 
 export interface TalosRig {
   head: any;
@@ -63,13 +51,10 @@ export interface TalosRig {
   handLeft: any;
   handRight: any;
   eyesGroup: any;
-  crest: any;
   /** 0 = zu, 1 = offen. Skaliert die Augen-Reihen vertikal (Blinzeln). */
   setEyeOpen(open: number): void;
   /** Augenfarbe umschalten (Hex), z.B. Original-Weiss vs. Marken-Tuerkis. */
   setEyeColor(hex: number): void;
-  /** Gold-Kammlinie ein-/ausblenden (Design-Entscheidung offen). */
-  setCrestVisible(visible: boolean): void;
   dispose(): void;
 }
 
@@ -148,26 +133,6 @@ export function buildTalosRig(THREE: any, splineScene: any): TalosRig | null {
     }
   }
 
-  // --- Gold-Kammlinie: Tube entlang des vermessenen Scheitelprofils ---
-  const crestCurve = new THREE.CatmullRomCurve3(
-    CREST_PROFILE.map(([z, y]) => new THREE.Vector3(0, y, z))
-  );
-  const crestGeometry = new THREE.TubeGeometry(
-    crestCurve,
-    64,
-    CREST_TUBE_RADIUS,
-    10,
-    false
-  );
-  const crestMaterial = new THREE.MeshStandardMaterial({
-    color: TALOS_COLORS.crestGold,
-    metalness: 0.9,
-    roughness: 0.5, // gebuerstet statt glaenzend
-  });
-  const crest = new THREE.Mesh(crestGeometry, crestMaterial);
-  crest.name = "talosCrest";
-  rigGroup.add(crest);
-
   const setEyeOpen = (open: number) => {
     const clamped = Math.max(0, Math.min(1, open));
     for (const d of dots) {
@@ -184,16 +149,10 @@ export function buildTalosRig(THREE: any, splineScene: any): TalosRig | null {
     eyeMaterial.color.setHex(hex);
   };
 
-  const setCrestVisible = (visible: boolean) => {
-    crest.visible = visible;
-  };
-
   const dispose = () => {
     head.remove(rigGroup);
     dotGeometry.dispose();
-    crestGeometry.dispose();
     eyeMaterial.dispose();
-    crestMaterial.dispose();
   };
 
   return {
@@ -205,10 +164,8 @@ export function buildTalosRig(THREE: any, splineScene: any): TalosRig | null {
     handLeft,
     handRight,
     eyesGroup,
-    crest,
     setEyeOpen,
     setEyeColor,
-    setCrestVisible,
     dispose,
   };
 }
