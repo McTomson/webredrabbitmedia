@@ -18,6 +18,7 @@ export default function TalosSplineDemo() {
   const rigRef = useRef<TalosRig | null>(null);
   const [status, setStatus] = useState<"laedt" | "bereit" | "fehler">("laedt");
   const [eyeVariant, setEyeVariant] = useState<"tuerkis" | "weiss">("tuerkis");
+  const [crestOn, setCrestOn] = useState(true);
 
   useEffect(() => {
     const host = hostRef.current;
@@ -190,6 +191,27 @@ export default function TalosSplineDemo() {
             Augen {variant === "tuerkis" ? "Tuerkis" : "Weiss"}
           </button>
         ))}
+        <button
+          type="button"
+          onClick={() => {
+            const next = !crestOn;
+            setCrestOn(next);
+            rigRef.current?.setCrestVisible(next);
+          }}
+          style={{
+            padding: "8px 14px",
+            fontSize: 12,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            border: "1px solid #b9bdc2",
+            borderRadius: 999,
+            cursor: "pointer",
+            background: crestOn ? "#23262e" : "rgba(255,255,255,0.7)",
+            color: crestOn ? "#f4f4f2" : "#3a3f46",
+          }}
+        >
+          Kamm {crestOn ? "An" : "Aus"}
+        </button>
       </div>
       <p
         style={{

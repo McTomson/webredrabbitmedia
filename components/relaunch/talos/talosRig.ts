@@ -30,24 +30,29 @@ const EYE_ROWS: ReadonlyArray<{ y: number; xs: ReadonlyArray<number> }> = [
 
 const EYE_CENTER_Y = 53;
 const EYE_CENTER_X = 19;
-const DOT_RADIUS = 1.15;
+// Am Original vermessen (Editor-Screenshot 19.07.): Cluster-Breite ~1/3 der
+// halben Visierbreite -> Skalierung 0.75 gegenueber dem ersten Wurf.
+const EYE_SCALE = 0.75;
+const DOT_RADIUS = 0.95;
 const DOT_SURFACE_OFFSET = 0.8;
 
-// Scheitelprofil fuer die Kammlinie (Head-Space, x=0), leicht angehoben.
+// Scheitelprofil fuer die Kammlinie (Head-Space, x=0). Bewusst ~2 unter der
+// Oberflaeche zentriert: die Linie liegt EINGELASSEN im Schaedel (Intarsie),
+// nicht aufgesetzt wie ein Draht ("billig", Thomas 19.07.).
 const CREST_PROFILE: ReadonlyArray<[number, number]> = [
-  [-46, 76],
-  [-40, 87.5],
-  [-30, 101],
-  [-20, 107.2],
-  [-10, 109.1],
-  [0, 109],
-  [10, 107.3],
-  [20, 104.1],
-  [30, 99.6],
-  [40, 86.1],
-  [46, 74],
+  [-44, 76],
+  [-40, 84],
+  [-30, 97.5],
+  [-20, 103.7],
+  [-10, 105.6],
+  [0, 105.5],
+  [10, 103.8],
+  [20, 100.6],
+  [30, 96.1],
+  [40, 82.6],
+  [44, 72],
 ];
-const CREST_TUBE_RADIUS = 1.4;
+const CREST_TUBE_RADIUS = 1.0;
 
 export interface TalosRig {
   head: any;
@@ -63,6 +68,8 @@ export interface TalosRig {
   setEyeOpen(open: number): void;
   /** Augenfarbe umschalten (Hex), z.B. Original-Weiss vs. Marken-Tuerkis. */
   setEyeColor(hex: number): void;
+  /** Gold-Kammlinie ein-/ausblenden (Design-Entscheidung offen). */
+  setCrestVisible(visible: boolean): void;
   dispose(): void;
 }
 
@@ -112,8 +119,8 @@ export function buildTalosRig(THREE: any, splineScene: any): TalosRig | null {
   for (const side of [-1, 1]) {
     for (const row of EYE_ROWS) {
       for (const dx of row.xs) {
-        const x = side * EYE_CENTER_X + dx;
-        const y = EYE_CENTER_Y + row.y;
+        const x = side * EYE_CENTER_X + dx * EYE_SCALE;
+        const y = EYE_CENTER_Y + row.y * EYE_SCALE;
         const originWorld = head.localToWorld(new THREE.Vector3(x, y, 200));
         const dirWorld = head
           .localToWorld(new THREE.Vector3(x, y, 100))
@@ -154,8 +161,8 @@ export function buildTalosRig(THREE: any, splineScene: any): TalosRig | null {
   );
   const crestMaterial = new THREE.MeshStandardMaterial({
     color: TALOS_COLORS.crestGold,
-    metalness: 0.85,
-    roughness: 0.35,
+    metalness: 0.9,
+    roughness: 0.5, // gebuerstet statt glaenzend
   });
   const crest = new THREE.Mesh(crestGeometry, crestMaterial);
   crest.name = "talosCrest";
@@ -175,6 +182,10 @@ export function buildTalosRig(THREE: any, splineScene: any): TalosRig | null {
 
   const setEyeColor = (hex: number) => {
     eyeMaterial.color.setHex(hex);
+  };
+
+  const setCrestVisible = (visible: boolean) => {
+    crest.visible = visible;
   };
 
   const dispose = () => {
@@ -197,6 +208,7 @@ export function buildTalosRig(THREE: any, splineScene: any): TalosRig | null {
     crest,
     setEyeOpen,
     setEyeColor,
+    setCrestVisible,
     dispose,
   };
 }
