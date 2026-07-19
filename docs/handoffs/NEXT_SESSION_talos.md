@@ -1,164 +1,127 @@
-# Naechste Session — TALOS (Stand 18.07.2026)
+# Naechste Session — TALOS Leistungs-Praesentation (Stand 19.07.2026)
 
 ## Arbeitsregeln (verbindlich)
-- Lies ZUERST alles Relevante: diesen Handoff, STATE.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
-- NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.
-- Erst einen Plan machen (TodoWrite), dann ausfuehren.
-- Skills + parallele Sub-Agenten nutzen wo es hilft. Fuer lange autonome Laeufe den `autonomous-runner` Agent verwenden.
-- Autonom handeln, voller Zugriff inkl. Browser — ohne fuer jeden Schritt nachzufragen (Grenze: kein Botschutz-Umgehen, keine Account-Anlage, nichts Destruktives ohne Deckung).
-- Laufend testen + `review-it` bei groesseren Schritten. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
-- Bei langen Agenten-/Hintergrund-Laeufen ALLE 15 MIN Health-Check + Stichprobe (TaskList/BashOutput/Monitor). Bricht ein Tool ein → STOPP + fixen, keine kaputten Daten schreiben. Nicht endlos haengen.
+- Lies ZUERST alles Relevante: diesen Handoff, docs/specs/TALOS_COPY_2026-07.md,
+  docs/specs/TALOS_SEITE_SPEC.md, docs/strategie/LEISTUNGEN_ZUKUNFT_2026-07.md,
+  docs/DESIGN_SYSTEM.md, die betroffenen Dateien. Nicht loslegen ohne Kontext.
+- NIE raten — immer verifizieren (Code/Browser/Docs). Bei Unsicherheit: fragen
+  oder fail-closed, nie einen Wert erfinden. Gilt scharf fuer Copy/Preise.
+- Erst Plan (TodoWrite), dann ausfuehren. Station fuer Station vorgehen (Thomas-
+  Wunsch: pro Session eine Sache durchdenken + bauen, nicht alles auf einmal).
+- Fable = Dirigent: Bau/Recherche an passende Sub-Agenten delegieren (Copy = Opus,
+  Code/Extraktion/Review = Sonnet), Ergebnisse selbst gegen die harten Regeln
+  pruefen und QA + review-it selbst fahren. Multi-Agent hat diese Session gut
+  funktioniert (2 Bau-Agenten + review-it, alle Bugs gefunden).
+- Laufend testen (tsc + vitest 168/168) + review-it bei groesseren Schritten.
+  Nichts als "fertig" melden ohne verifiziertes Ergebnis.
+- QA im EIGENEN AKTIVEN Chrome-Tab (Hintergrund-Tab friert rAF/IO ein — osascript-
+  Aktivierung). ABER Thomas nicht dauernd den Fokus klauen: fuer Abnahme lieber
+  deployen (vercel deploy --yes, NIE --prod) und Link schicken.
+- Branch relaunch, LOKAL — nicht pushen ohne Ansage. Dev: npm run dev -- --port 9000.
+- Copy-Regeln: echte Umlaute (ä ö ü ß), kein Wort "KI" im sichtbaren Text,
+  Telefon nur als tel:-Link/"Anrufen"-Button (nie Klartext), Preise NUR
+  950 / 2.900 / ab 4.900 (nie 790), kein Gedankenstrich, keine KI-Tells.
+  Eckig-Gesetz: border-radius:0 fuer UI (Rund nur Umlaut-Punkte/roter Punkt/
+  Spinner/Toggle/Radio). Fremde Straenge (DESIGN.md, brand/*, Header/Footer,
+  HomeMorph, seo-monitor-log) nicht committen.
 
-## Stand dieser Session
+## Stand dieser Session (was gebaut ist)
+Talos-Praesentation als Scroll-Praesentation auf ISOLIERTER Route
+`/relaunch-preview/talos-intro` (Demo vor Umbau; NICHT die echte Leistungsseite).
+Commits lokal auf relaunch: bis `b64cd5c`. tsc + 168/168 vitest gruen.
+Live: https://webredrabbitmedia-70ch8hzbx-toms-projects-17d37f0b.vercel.app/relaunch-preview/talos-intro
 
-### THOMAS-URTEIL 18.07. (Ausgangspunkt der naechsten Session)
-Talos v1 ist ihm NICHT gut genug: Unser Eigen-Rendering (Grau-Export + Code-
-Materialien) wirkt flach/plastikhaft gegen das Spline-ORIGINAL (Chrom-Kopf mit
-LED-Punkt-Augen, Carbon-Texturen, echte Reflexionen) — "da sind Welten".
-Sein Wunsch: das Original (app.spline.design/file/be79bac1-4223-430e-85dd-19641de47ebe,
-liegt in SEINEM Spline-Account) direkt verwenden und leicht anpassen.
-URSACHE des Gaps (verifiziert): Free-GLTF-Export = NUR Geometrie, alle
-Materialien/Texturen fallen weg; der Look lebt in Splines Material-System.
+Dateien:
+- `components/relaunch/talos/TalosSplineDemo.tsx` — Fidelity-Demo (three-spline-
+  Buehne, Augen/Motion-Spielwiese, QA-Hooks __setYaw/__setCam). Route /talos-demo.
+- `components/relaunch/talos/talosRig.ts` — baut Augen (Honigwaben, kalibriert) +
+  Rig auf der geladenen Original-Szene. KEINE Gold-Kammlinie mehr (verworfen).
+- `components/relaunch/talos/talosMotion.ts` — Bewegungs-Regie (Gruss mit
+  Handflaeche-nach-vorn, Cursor-Blickfolge, Idle-Atmung, Verbeugung, Blinzeln).
+- `components/relaunch/talos/talosSections.ts` — Stationen: Copy + Kino-Kamera-
+  Keyframe pro Station + Card-Seite.
+- `components/relaunch/talos/TalosPresentation.tsx` — die Praesentation: fixe
+  three-spline-Buehne + Kamera-Choreografie pro Station + Snap-Sektionen +
+  eckige Glass-Cards + Fly-in-Auftakt. Route /talos-intro.
+- `components/relaunch/talos/TalosIntro.tsx` — aeltere Auftakt-Einzeldemo,
+  durch TalosPresentation abgeloest (ungenutzt, kann spaeter raus).
+- `docs/specs/TALOS_COPY_2026-07.md` — freigegebene message-first Copy (Bau-Vorlage).
+- ALT (noch in der ECHTEN Leistungsseite aktiv): `TalosPage.tsx` + `TalosStage.tsx`
+  + `talosController.ts` (r3f, graue talos.glb). Enthaelt den fertigen 5-Fragen-
+  Frag-Talos-Assistenten (Logik 1:1 wiederverwendbar!) und Reveals/Reduced-Motion.
 
-### Optionen fuer die naechste Session (mit Thomas entscheiden)
-1. SPLINE-EMBED (Empfehlung): Original-Szene einbetten (Public URL/Viewer),
-   Look 1:1, Anpassung im Editor (4 Material-Slots, logo-Objekt, Helm aus
-   Primitiven). Wasserzeichen weg = Starter 12 USD/Mon (Free = Wasserzeichen;
-   Preise im Account verifiziert 17.07.). Scroll-Regie: Spline-native
-   Scroll-Events ODER externe Steuerung (Variables/API = Professional-Feature,
-   pruefen!). Die gebaute Seite (Kapitel/Assistent/Gate) bleibt, nur die
-   .tal-stage wird getauscht.
-2. EIGEN-RENDERING AUFPOLIEREN: HDRI-Environment (drei <Environment>), Carbon-
-   Normal-Map, Clearcoat-Chrom-Kopf, LED-Dot-Augen-Textur. 0 Kosten/Wasserzeichen,
-   aber Material-Handwerk und erreicht das Original nur naeherungsweise.
-3. VORRENDERN: Original als Video/Frames (Video-Export = Professional 20 USD
-   oder Capture-Pipeline), exakter Look, verliert Interaktivitaet.
+### Technische Kernfakten (nicht neu entdecken)
+- Buehne laeuft auf `three-spline` (= three@0.149, isoliert per webpack
+  NormalModuleReplacementPlugin), Loader @splinetool/loader, Szene
+  prod.spline.design/bN7MTDW-zSkVIOxf/scene.splinecode. Kein Wasserzeichen, 0 Euro.
+- Visier hat KEINE UV-Koordinaten -> Original-Augen-Textur (Thomas lieferte sie:
+  ~/Downloads/Untitled Image.png, 654x330) NICHT mappbar; Augen per Raycast-Dots
+  nachgebaut, gegen Original-Render kalibriert (Abstand ±15.5, Honigwaben).
+- Nodes benannt/einzeln steuerbar (Head, Neck, arm1/elbow1/forearm1, Hand2, Body...).
+  Beine NOCH NICHT gerigged (fuer die Kniefall-Landung noetig).
+- QA-Hooks im Browser: window.__talos, __talosMotion, __setYaw(rad), __setCam(px,py,pz,tx,ty,tz,fov).
+- Kamera-Keyframes pro Station in talosSections.ts (HERO_CAM/LEFT_NEAR/... ).
+- review-it-Fixes drin: Fly-in an rig-Load gegated; gemeinsamer teardown() bei
+  Ladefehler UND Unmount; scrollToId reduced-motion-fest.
 
-### Erledigt + verifiziert (Commits lokal auf relaunch, NICHT gepusht)
-- `4b619a8` TALOS v1: /relaunch-preview/leistungen als 3D-Scroll-Praesentation.
-  components/relaunch/talos/{talosController.ts,TalosStage.tsx,TalosPage.tsx},
-  public/models/talos.glb (988 KB, dedup+weld+quantize, KEIN meshopt!),
-  Spec docs/specs/TALOS_SEITE_SPEC.md. 7 Kapitel SSR, Assistent als
-  Frag-Talos-Dialog, Capability-Gate + Poster-Fallback, Keyframe-Kamera,
-  Idle/Blinzeln/Gruss/Cursor-Gaze, Mood-Sphere. QA: tsc + 168/168 vitest,
-  Mobile 500px sauber, Soft-Nav leckfrei, ~52 fps Desktop.
-- `d05e733` (Vor-Version): Leistungs-Hub mit Paint-Hero + Weiche + Assistent +
-  Zahnraeder-Skulptur (Dateien ungenutzt im Repo: LeistungenStory.tsx,
-  leistungen-hero-demo/) — Fallback, falls Talos-Route verworfen wird.
-- Strategie: docs/strategie/LEISTUNGEN_ZUKUNFT_2026-07.md (ENTSCHEIDUNGEN-
-  Abschnitt: Hybrid-Modell, Basis-Dashboard inklusive, Module Content/Empfang/
-  Outreach, Preise OFFEN nie erfinden). Research im Session-Scratchpad weg —
-  Kern steckt in Doku + Memory.
-- Deploy: https://webredrabbitmedia-pqguhtogx-toms-projects-17d37f0b.vercel.app
-  Mail an Thomas via /api/ops-alert verschickt (ging an t.uhlir@immo.red —
-  Empfaenger dort serverseitig fix).
+## WICHTIGE RICHTUNG (Thomas 19.07. — leitend fuer die naechsten Sessions)
+1. **PRIORITAET: Der Kunde muss sofort und EINFACH checken, was wir machen
+   (Websites bauen).** Wir sind noch weit weg von einer coolen, informativen
+   Seite. Nicht in Roboter-Spektakel verlieren — Substanz + Klarheit zuerst.
+2. **Seiten-Chrome fehlt komplett** und muss rein (die Praesentation ist Teil der
+   echten Red-Rabbit-Seite unter /leistungen): Hamburger-Menue (RelaunchMenu),
+   Footer (FooterReassembly), und das Logo links oben soll nach etwas Scrollen
+   erscheinen (RabbitMark, rot). Muster: app/relaunch-preview/leistungen/page.tsx
+   und tipps/page.tsx. Einbau erst wenn die Praesentation abgenommen ist bzw.
+   beim Umbau in die echte Seite.
+3. **"2-Buttons"-Konzept wieder aufgreifen:** Thomas erinnert sich an ein Konzept
+   mit 2 Buttons (Details unklar) — vermutlich ein Einstieg wie "Los geht's" vs.
+   "Ich will mich umschauen", wo Talos Fragen stellt, um herauszufinden was der
+   Kunde braucht. NAECHSTE SESSION mit Thomas klaeren, welches Konzept genau.
+   Verwandt: der fertige 5-Fragen-Frag-Talos-Assistent (in TalosPage), der
+   verworfene Klick-Gate-Hero (docs/handoffs/klick-gate-attempt.patch), brand/.
+4. **Intro/Fly-in ist noch NICHT gut:** Talos "schwebt einfach nur senkrecht"
+   herein. Muss ueberarbeitet werden. Referenz-Choreografie zum Anschauen/
+   Adaptieren (spaeter): https://www.fuch.ai/ (Roboter dort). Ausserdem
+   gewuenscht (frueher): Superman-Landung — reinfliegen, in der Luft aufrichten,
+   runter, auf EIN Knie landen (kniend), dann aufstehen + winken, DANN erst die
+   Info-Card. Braucht Bein-Rigging.
+5. **Bewegungen sind noch sehr einfach** — spaeter verfeinern (an fuch.ai orientieren).
+6. Talos gehoert AUF die Leistungsseite (nicht Unterseite verstecken) — aber die
+   Botschaft "wir bauen Websites" muss ihn tragen, nicht umgekehrt.
 
-### Teuer erkaufte Lessons (NICHT neu entdecken)
-1. useGLTF-Komponente MUSS in explizitem <Suspense fallback={null}> stehen,
-   sonst stiller Remount-Loop (Modell unsichtbar, nur 2 Frames).
-2. NIE Geometrien eines scene.clone(true) disposen — geteilt mit useGLTF-Cache;
-   StrictMode-Doppel-Mount rendert danach leer. Nur eigene Materialien disposen.
-3. Hintergrund-Tab liefert KEINE IntersectionObserver-Callbacks -> 3D-Gate
-   feuert nie. QA-Tab IMMER aktivieren (osascript: active tab index + window
-   index 1 + activate). Dritte Begegnung mit der Falle in diesem Projekt.
-4. Browser-HTTP-Cache serviert altes GLB unter gleicher URL -> bei Asset-Tausch
-   ?v=-Cache-Bust an die Modell-URL.
-5. meshopt-komprimiertes GLB liess useGLTF ewig haengen (Decoder) -> quantize
-   reicht (native GLTFLoader-Unterstuetzung, kein WASM).
-6. Spline Free-Plan: GLTF nur Geometrie/grau; Web-Export mit Wasserzeichen;
-   Video-Export Professional; Code-Export Enterprise. Im Account verifiziert.
-7. Gmail-MCP-OAuth KAPUTT: Browser-Consent klappt (2x via Klick-Agent), aber
-   lokaler Token-Exchange scheitert ("try again from your terminal") ->
-   einmal interaktiv im Terminal neu einrichten (mcp-gmail account-switch).
-   Workaround fuer Mails an Thomas: POST /api/ops-alert mit ADMIN_API_TOKEN
-   aus .env.local (Muster in scripts/content-engine/trigger/run-daily.sh).
+## Naechste konkrete Schritte (mit Thomas Station fuer Station)
+1. Mit Thomas das "2-Buttons"/"umschauen"-Einstiegskonzept klaeren, DANN Hero/
+   Auftakt danach umbauen (message-first bleibt, aber evtl. mit Auswahl-Einstieg).
+2. Choreografie-Feintuning pro Station (Kamera zu nah/weit/hoch — Thomas' Auge).
+3. Frag-Talos-Assistent (5 Fragen) aus TalosPage in die Praesentation portieren
+   (Logik existiert, nur ins neue Layout/Glass-Card bringen).
+4. Fly-in ueberarbeiten (weg vom senkrechten Schweben; Richtung Kniefall-Landung /
+   fuch.ai-Stil). Beine riggen.
+5. Bewegungen verfeinern.
+6. Seiten-Chrome einbauen (Menue/Footer/Logo-nach-Scroll) — spaetestens beim
+   Umbau in die echte /leistungen-Seite (TalosPage/TalosStage/talosController
+   dann ersetzen; SSR-Text/noindex/Assistent behalten).
 
-### RECHERCHE 18.07. ABENDS (im Spline-Account verifiziert, Browser)
-DER WEG IST GEFUNDEN — Option 1b: react-three-fiber-CODE-EXPORT, auf dem
-FREE-Plan verfuegbar, OHNE Spline-Engine (= kein Player, kein Wasserzeichen-
-Overlay, keine Abokosten):
-- Export > Code Export > Dropdown "react-three-fiber" > "Update Code Export"
-  erzeugt ~32k Zeichen JSX: `useSpline('https://prod.spline.design/
-  bN7MTDW-zSkVIOxf/scene.splinecode')` liefert nodes+materials in UNSEREN
-  eigenen R3F-Canvas. Package: @splinetool/r3f-spline (+ @splinetool/loader).
-  Damit passt das Original 1:1 in unsere bestehende TalosStage-Regie
-  (Keyframes/Kamera/IdleDriver bleiben, nur Modell+Material-Quelle tauschen).
-- Hinweis im Dialog: "This export doesn't use the Spline engine. Some visual
-  differences might be noticeable." => ERSTER BAUSCHRITT: Side-by-side-
-  Fidelity-Check r3f-Export vs. Editor (Matcap/Rainbow-Layer sind die
-  Risikokandidaten). Fallback wenn zu anders: Viewer-Embed (Badge) / Starter.
-- Self-Hosted-ZIP-Export existiert ebenfalls (self-contained, kein CDN-Fetch)
-  — pruefen ob wir scene.splinecode selbst hosten koennen (Vercel public/),
-  sonst haengt die Seite an prod.spline.design.
-- Szenen-Struktur (wichtig fuer Regie): Bot > Top part (Head, Neck,
-  Hand Instance, Hand, Body) + Bottom. Head hat Event "Look At" (Editor-only,
-  kommt im r3f-Export NICHT mit — Cursor-Gaze machen wir selbst, hatten wir
-  in v1 schon). Materialien: 3 Slots (Head, Parts, Body). Head-Material =
-  Layer-Stack Rainbow 50 + Matcap 60 + Lighting 100 + Color — Look lebt in
-  diesen Layern.
-- GLTF-Export-Dialog bestaetigt schriftlich: nur Geometry, ALLE Material-
-  Layer/Texturen/Animationen gehen verloren (Ursache des v1-Flops).
-- LED-Punkt-Augen: eigenes Mesh unter Head? NICHT verifiziert — im Editor
-  pruefen (fuer Blinzel-Regie).
+## Offene Design-Entscheidungen (Thomas)
+- Tuerkiser Strich an Talos' Sprechzeilen (Augenfarbe als Stimme) behalten oder
+  Ink/Rot? (Ein-Rot-Prinzip vs. Talos-Identitaet.)
+- Tempo/Snap-Haerte (aktuell weiches proximity-Snapping).
+- Kamera-Framings pro Station (Werte in talosSections.ts leicht aenderbar).
 
-### LOOK-ENTSCHEIDUNG (Thomas 18.07. spaet, VERBINDLICH)
-Talos bleibt WEISS (so wie der r3f-Export ihn rendert — Thomas gefaellt er so;
-Marmor-Assoziation ersetzt Bronze komplett, KEIN Umfaerben). Dazu:
-1. TUERKIS-LED-AUGEN (Option A): weiche Leuchtaugen im schwarzen Visier,
-   Farbton aus dem Tuerkis-Blau-Markenverlauf. Blinzeln, Cursor-Blickfolge,
-   Laecheln beim Gruss, Mitneigen bei Fragen. WICHTIG: Das ORIGINAL hat
-   bereits Punktmatrix-Augen (weisse Hexagon-Dots, Thomas-Screenshot 22:28) —
-   vermutlich die "video"-Layer im Head-Material, die unser Loader nicht
-   abspielt. Position also vorgezeichnet; wir bauen eigene tuerkise Augen
-   (Emissive-Flaechen/Dots vor dem Visier) in unserer Regie.
-2. GOLD-KAMMLINIE (Option B): EINE feine Goldlinie als Helmkamm-Buegel ueber
-   dem Kopf (griechischer Anker). Keine rote LED zusaetzlich (nicht beides).
-   Nie rote Augen (bedrohlich).
-Mockups/Begruendung: Artifact "Talos in Weiss: Look-Optionen"
-(claude.ai/code/artifact/7824b391-7881-4f1b-bdd6-5134036bed56).
+## Lessons dieser Session
+- Multi-Agent-Orchestrierung + review-it hat sich bewaehrt: Opus fuer Copy
+  (fing Preis-/house.md-Fallen selbst ab), Sonnet fuer Design-Token-Extraktion
+  und Code-Review (fand 3 echte Bugs: Fly-in-Race, Zombie-Loop, reduced-motion).
+- Augen-Feintuning war zeitintensiv (viele Iterationen). Bei look-kritischen
+  3D-Details frueh die echte Referenz (Screenshot/Textur) vom Kunden holen und
+  Proportionen MESSEN statt schaetzen — hat am Ende schnell konvergiert.
+- Visier ohne UVs = keine Textur mappbar; alles per Raycast-Geometrie.
+- Fokus-Klau nervt Thomas: fuer Abnahmen deployen statt live im Browser zeigen.
 
-### Plan "dezent griechischer" (ueberholt durch Look-Entscheidung oben; Bronze-Teil OBSOLET)
-Alle Anpassungen auf einer KOPIE des Files (Spline speichert automatisch —
-Original nie direkt anfassen): Datei duplizieren als "NEXBOT - Talos".
-1. Bronze-Toenung statt Umbau: im Material-Layer-Stack den Color-Layer warm
-   toenen (Head dezent bronze-chrom, Body-Carbon dunkelbronze), Matcap/
-   Rainbow-Layer BEHALTEN — so bleibt die Detailqualitaet des Originals.
-2. Schmaler Helmkamm (Crest) aus Primitiven auf dem Head-Pivot; optional
-   feines Maeander-Band (griech. Schluesselmuster) als Image-Textur-Layer
-   auf Schulter/Brustlinie. KEIN Hasen-Logo. Freundlich, kein Waechter.
-3. r3f-Export zieht die Aenderungen der Kopie ueber deren eigene
-   scene.splinecode-URL.
-
-### Bewegungs-Konzept (laeuft in UNSEREM r3f-Rig, nicht in Spline)
-Nodes sind benannt und einzeln transformierbar (Head, Neck, Hand, ...):
-- Hero: Gruss-Geste (Arm heben + Winken, wie v1), danach Cursor-Blickfolge
-  (Head-Yaw/Pitch, port von v1).
-- Kapitel: Kamera-/Yaw-Keyframes wie v1; Frag-Talos: Kopfneigung zur Frage.
-- Immer: dezente Idle-Atmung (Sinus auf Brust/Schultern), gelegentliches
-  Augen-Pulsieren (falls Augen-Mesh existiert, sonst Emissive im Head-Layer).
-- Abschluss: leichte Verbeugung + Winken. Reduced-Motion: statische Pose.
-
-### Naechste konkrete Schritte
-WEG IST ENTSCHIEDEN (Thomas 18.07. abends): Original-NEXBOT verwenden,
-dezent griechischer machen, Bewegungen ueber unser Rig. Sketchfab-Alternativen
-hat er verworfen ("zu kindisch oder zu gefaehrlich"). 12-USD-Frage ist mit dem
-r3f-Export vermutlich obsolet (kein Spline-Player im Spiel) — offen lassen bis
-Fidelity-Check bestanden.
-1. FIDELITY-CHECK ZUERST: r3f-Export (siehe RECHERCHE-Abschnitt) in eine
-   Test-Route haengen und side-by-side gegen den Editor-Look screenshotten.
-   Besteht er, ist der Weg 0-Euro und wasserzeichenfrei. Faellt er durch:
-   Viewer-Embed (Badge) zeigen und 12-USD-Frage an Thomas.
-2. Datei-KOPIE "NEXBOT - Talos" anlegen, dann Plan "dezent griechischer"
-   umsetzen (Bronze-Toenung der Layer, Helmkamm, optional Maeander-Band).
-3. Seite umbauen: .tal-stage-Inhalt tauschen (r3f-Szene statt talos.glb),
-   Bewegungs-Konzept (siehe oben) auf die benannten Nodes legen. Rest
-   (Kapitel/Assistent/SSR/Gate) wiederverwenden. QA wie TALOS_SEITE_SPEC.md.
-4. Danach weiter im Unterseiten-Strang: Preise-Seite (brand/PREISE_SEITE_BRIEF.md,
-   NUR 950/2900/ab-4900), Artikel-Detailseiten, Modul-Detailseiten Welle 2.
-
-### Blocker / Risiken
-- NEXBOT-Lizenz "personal use" — vor Go-Live Modell-Tausch/Lizenz klaeren.
-- Spline-Bezahlfrage ist Thomas-Entscheidung (nie ohne ihn upgraden).
-- Dev-Server :9000 gelegentlich neu starten; Vercel NIE --prod; Branch nicht
-  pushen ohne Ansage; fremde Straenge (DESIGN.md, brand/*, Header/Footer,
-  HomeMorph, seo-monitor-log) NICHT committen.
+## Blocker / Risiken
+- NEXBOT "personal use"-Lizenz vor Go-Live klaeren (Modell-Tausch/Lizenz).
+- Spline-Bezahlfrage ist Thomas-Entscheidung (r3f-Weg ist 0 Euro, aber Fidelity-
+  Weg bleibt Free).
+- Dev-Server :9000 gelegentlich neu starten. tsc haengt gelegentlich (Dev-Server-
+  Konkurrenz) — im Hintergrund laufen lassen.
