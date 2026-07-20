@@ -6,6 +6,14 @@ import { RabbitMark } from '@/components/relaunch/RabbitMark';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import WebsiteDemoClient from '@/components/subpages/WebsiteDemoClient';
+import Fundament from '@/components/subpages/leistungen/website/v2/Fundament';
+import Diagnose from '@/components/subpages/leistungen/website/v2/Diagnose';
+import Ablauf from '@/components/subpages/leistungen/website/v2/Ablauf';
+import DreiStufen from '@/components/subpages/leistungen/website/v2/DreiStufen';
+import KollegeAnreisser from '@/components/subpages/leistungen/website/v2/KollegeAnreisser';
+import Testimonials from '@/components/subpages/leistungen/website/v2/Testimonials';
+import WebsiteFaq from '@/components/subpages/leistungen/website/WebsiteFaq';
+import SchlussCta from '@/components/subpages/leistungen/website/SchlussCta';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
@@ -99,12 +107,24 @@ export default function LeistungenWebsitePreviewPage() {
         <RelaunchMenu />
       </div>
 
-      {/* Volle geklonte Scroll-Strecke (ueber-uns/tipps-Malmechanik: Wort
-          "Website." + Wisch in EINER Szene, danach Story/Haltung/FAQ/CTA
-          bereits enthalten). Demo-Inhalt bleibt bewusst AUSSERHALB des
-          .rr-Font-Scopes (kein Style-Leak in demo.css), wie bei der
-          ueber-uns-Seite (app/relaunch-preview/ueber-uns/page.tsx). */}
+      {/* 1 · Hero = die ueber-uns-Malmechanik, aber hero-only (Wort "Website" +
+          Wisch + Zahnrad-Figur comp={0} + Story-Spalte). Demo-Inhalt bewusst
+          AUSSERHALB des .rr-Font-Scopes (kein Style-Leak in demo.css), wie bei
+          der ueber-uns-Seite. Story/Haltung/FAQ/CTA sind jetzt echte
+          React-Sektionen darunter (rr-*-Bauteile). */}
       <WebsiteDemoClient css={heroCss} html={heroHtml} js={heroJs} />
+
+      {/* 2-9 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope auf Weiss. */}
+      <div className={rrFonts} style={{ background: '#ffffff', position: 'relative', zIndex: 2 }}>
+        <Fundament />
+        <Diagnose />
+        <Ablauf />
+        <DreiStufen />
+        <KollegeAnreisser />
+        <Testimonials />
+        <WebsiteFaq />
+        <SchlussCta />
+      </div>
 
       <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
         <FooterReassembly />

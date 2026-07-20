@@ -1,0 +1,64 @@
+
+<div class="demobar">
+  <span class="dot"></span>
+  Red Rabbit · Website · Gesamtvorschau
+  <span class="sep">·</span>
+  <em>Nur der Hero, darunter dockt die Server-Seite an</em>
+</div>
+
+<!-- ============ HERO-SZENE (Wort + Wisch + Zahnrad + Story in EINEM Sticky) ============ -->
+<!-- Nur diese Szene bleibt in der Demo. Story/Haltung/Partner/FAQ/CTA sind jetzt echte
+     React-Sektionen in der page.tsx darunter (echte rr-*-Bauteile). Figur = Zahnrad
+     (MorphSculpture comp={0}), portalt vom WebsiteDemoClient in .main-sticky. -->
+<section class="scene-main" id="sceneMain">
+  <!-- data-active startet auf 0: die Deck-Maske (mask:url(#mask-v1)) greift erst,
+       wenn die Engine bootet. Beim HTML-Streaming ist das masksvg (steht weiter
+       unten) sonst noch nicht geparst -> leere Maske -> weisses Deck unsichtbar
+       -> navy layer-base blitzt beim Laden auf. -->
+  <div class="main-sticky painting" id="mainSticky" data-active="0" style="--mask:url(#mask-v1)">
+    <div class="layer-base">
+      <div class="reveal-msg">Schön kann fast jeder.<br>Die Frage ist:<br>ruft bei dir auch wer an?</div>
+    </div>
+    <div class="layer-deck">
+      <div class="hero-title" id="htitle" role="heading" aria-level="1" aria-label="Website"><span class="ltr" data-l="0" aria-hidden="true">W</span><span class="ltr" data-l="1" aria-hidden="true">e</span><span class="ltr" data-l="2" aria-hidden="true">b</span><span class="ltr" data-l="3" aria-hidden="true">s</span><span class="ltr" data-l="4" aria-hidden="true">i</span><span class="ltr" data-l="5" aria-hidden="true">t</span><span class="ltr" data-l="6" aria-hidden="true">e</span><span class="ltr dot" data-l="7" aria-hidden="true">.</span></div>
+    </div>
+
+    <div class="story-grid">
+      <div class="head-col">
+        <svg id="headSvg" viewBox="120 110 770 910" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+      </div>
+      <div class="text-col">
+        <div class="text-window" id="textWindow">
+          <div class="text-move" id="textMove">
+            <div class="t-eyebrow">DIE WEBSITE</div>
+            <p class="t-statement">Eine Website, die nicht nur dasteht, sondern was tut.</p>
+            <p class="t-ch">Die meiste Seite für den kleinen Betrieb kommt aus dem Baukasten. Du schiebst dir selbst ein paar Blöcke zurecht, klickst auf veröffentlichen und bist online. Nur: online sein ist halt das eine. Ob dich dann auch jemand findet und anruft, ist das andere.</p>
+            <p class="t-ch">Wir bauen deine Seite von Hand, auf deinen Betrieb. Keine Vorlage, die tausend andere auch haben. Und das Beste merken die meisten erst später: das ganze Fundament ist bei uns von Anfang an dabei. Schnelles Hosting, sauber am Handy, rechtssicher nach österreichischem Recht, ein Kontaktformular, das direkt bei dir landet, und Grund-SEO, damit dich die Leute aus deiner Gegend überhaupt finden.</p>
+            <p class="t-ch">Den Entwurf siehst du zuerst, entschieden wird erst danach. Und wenn die Seite live geht, gehört sie dir. Mit Domain, Texten und allen Zugängen. Kein Knebelvertrag, keine Miete, die im Hintergrund ewig weiterläuft.</p>
+            <p class="t-close">Und noch was: sie kommt nicht allein. Ein digitaler Kollege ist schon dabei.</p>
+            <div class="t-byline">Thomas Uhlir<span>Gründer</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <span class="hint" id="hint">Maus über das Bild bewegen</span>
+    <button class="autobtn" data-auto>Auto abspielen</button>
+
+    <svg class="masksvg" aria-hidden="true">
+      <defs>
+        <filter id="gooey-v1">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
+          <feColorMatrix in="blur" type="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -9" result="goo"/>
+        </filter>
+        <clipPath id="paintclip"><rect id="paintRect" x="0" y="0" width="100" height="100"/></clipPath>
+        <mask id="mask-v1">
+          <rect class="mrect" width="100%" height="100%" fill="#fff"/>
+          <g class="blobs" filter="url(#gooey-v1)"></g>
+        </mask>
+      </defs>
+    </svg>
+  </div>
+</section>
