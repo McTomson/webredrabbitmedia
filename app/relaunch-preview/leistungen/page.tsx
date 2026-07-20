@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { RabbitMark } from '@/components/relaunch/RabbitMark';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
-import LeistungenHeroClient from '@/components/subpages/LeistungenHeroClient';
+import LeistungenHero2Client from '@/components/subpages/LeistungenHero2Client';
 import JsonLd from '@/components/JsonLd';
 import BauMoment from '@/components/subpages/leistungen/BauMoment';
 import WasDuBekommst from '@/components/subpages/leistungen/WasDuBekommst';
@@ -52,7 +52,7 @@ export default function LeistungenPreviewPage() {
   // Hero = ueber-uns/tipps-Malmechanik (Wort "Leistungen." + Wisch in EINER
   // Szene), der bereits gebaute leistungen-hero-demo. Reads pro Request (Next
   // watched fs auf Modulebene nicht). Ersetzt den abgelehnten SubpageHero.
-  const heroDir = path.join(process.cwd(), 'components/subpages/leistungen-hero-demo');
+  const heroDir = path.join(process.cwd(), 'components/subpages/leistungen-hero2-demo');
   const heroCss = fs.readFileSync(path.join(heroDir, 'demo.css'), 'utf8');
   const heroHtml = fs.readFileSync(path.join(heroDir, 'demo.body.html'), 'utf8');
   const heroJs = fs.readFileSync(path.join(heroDir, 'demo.engine.jstext'), 'utf8');
@@ -155,14 +155,15 @@ export default function LeistungenPreviewPage() {
         <RelaunchMenu />
       </div>
 
-      {/* 1 · Hero — dieselbe Choreografie wie ueber-uns/kontakt: Wisch-Reveal
-          (Pinsel) -> Wort "Leistungen" steigt auf -> zersetzt sich in die
-          Zahnrad-Figur (comp1) -> Figur haelt links, Eyebrow/Statement/Subline
-          scrollen rechts durch. Der wiederverwendbare SubpageHero-Baustein (kein
-          Nachbau). .rr-Wrapper liefert Marken-Variablen/Fonts. Reines Produkt. */}
-      <div className={rrFonts} style={{ background: '#ffffff' }}>
-        <LeistungenHeroClient css={heroCss} html={heroHtml} js={heroJs} />
-      </div>
+      {/* 1 · Hero = die GEKLONTE ueber-uns-Szene (leistungen-hero2-demo), nicht
+          nachgebaut: Wort auf weissem Deck -> Wisch-Reveal legt die Botschaft frei
+          -> Wort schrumpft und zerfaellt -> ZAHNRAD setzt sich aus roten Fragmenten
+          zusammen -> Text scrollt daneben hoch. Alles in EINER Sticky-Szene.
+          Die Figur ist MorphSculpture comp={0} (at-shapes-comp1 = Zahnrad), NICHT
+          das Engine-SVG: #headSvg ist in demo.css hart ausgeblendet.
+          Demo-Inhalt bewusst AUSSERHALB des .rr-Scopes (Muster ueber-uns/kontakt,
+          keine Style-Leaks aus demo.css). */}
+      <LeistungenHero2Client css={heroCss} html={heroHtml} js={heroJs} comp={0} />
 
       {/* Sektionen 2-9, alles SSR-Text unter echten rr-*-Bauteilen. */}
       <div className={rrFonts} style={{ background: '#ffffff' }}>

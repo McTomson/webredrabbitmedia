@@ -5,6 +5,8 @@ Single Source of Truth fuer alles rund um **Marke, Positionierung, Identitaet, T
 ## Regel fuer jede Session
 Bevor du an Brand, Identitaet, Design-Richtung, Copy/Texten, Preis-Kommunikation oder FAQ von web.redrabbit.media arbeitest: **zuerst diesen Ordner lesen.** Neue Entscheidungen kommen in `decisions-log.md` (datiert, append-only). Tonalitaets-Regeln bleiben in `content-engine/voice/house.md` (nicht duplizieren, nur referenzieren).
 
+**Marketing-/Positionierungs-Skills automatisch nutzen (installiert 06.07.):** Bei Positionierung `product-marketing`, bei Preisen/Paketen `pricing`, bei Angebot/Risiko-Umkehr/Value-Framing `offers`, bei Seiten-Copy `copywriting`/`copy-editing`, bei „Seite konvertiert nicht" `cro`, bei Kaufpsychologie `marketing-psychology`, bei Zielgruppe/JTBD `customer-research`, bei Wettbewerb `competitor-profiling`, bei „welche Seiten braucht die Site"/IA `site-architecture`. Diese Skills liefern das WIE (Frameworks); die belegten Fakten/Entscheidungen dieses Ordners sind das WAS und haben Vorrang. Skills nicht nutzen, um festgezurrte `decisions-log.md`-Entscheidungen neu aufzurollen (nur bei echtem neuen Beleg).
+
 ## Arbeitsprinzip (Dauer, Entscheidung Tomson 2026-06-15) — gilt fuer JEDE Session
 - **Knallhart, ehrlich, unabhaengig.** Nicht zustimmen, wenn etwas nicht stimmt. 100% unabhaengige Wahrheit, auch wenn sie unbequem ist. Risiken und Schwaechen offen benennen, Vorschlaege ehrlich bewerten (was ist stark, was ist Bullshit), nicht beschoenigen.
 - **Die Marke ist nicht "lieb und nett".** Wer lieb und nett ist, faellt nicht auf und gewinnt nicht gegen harte Konkurrenz. Red-Rabbit-Ton + Strategie duerfen polarisieren, Kante haben, ein Feindbild benennen. Kein 08/15, kein Hochglanz-Bla-bla, kein Schulmaedchen-Stil.

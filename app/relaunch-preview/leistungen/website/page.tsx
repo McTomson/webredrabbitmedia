@@ -5,21 +5,8 @@ import Link from 'next/link';
 import { RabbitMark } from '@/components/relaunch/RabbitMark';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
-import WebsiteHeroClient from '@/components/subpages/WebsiteHeroClient';
+import WebsiteDemoClient from '@/components/subpages/WebsiteDemoClient';
 import JsonLd from '@/components/JsonLd';
-import WasEntsteht from '@/components/subpages/leistungen/website/WasEntsteht';
-import WieWirBauen from '@/components/subpages/leistungen/website/WieWirBauen';
-import WasInklusive from '@/components/subpages/leistungen/website/WasInklusive';
-import FacetteNeu from '@/components/subpages/leistungen/website/FacetteNeu';
-import FacetteRelaunch from '@/components/subpages/leistungen/website/FacetteRelaunch';
-import FacetteDesign from '@/components/subpages/leistungen/website/FacetteDesign';
-import SelbstOderMit from '@/components/subpages/leistungen/website/SelbstOderMit';
-import DeineSeite from '@/components/subpages/leistungen/website/DeineSeite';
-import NachDemLaunch from '@/components/subpages/leistungen/website/NachDemLaunch';
-import FuerWenNicht from '@/components/subpages/leistungen/website/FuerWenNicht';
-import SoArbeitenWir from '@/components/subpages/leistungen/website/SoArbeitenWir';
-import WebsiteFaq from '@/components/subpages/leistungen/website/WebsiteFaq';
-import SchlussCta from '@/components/subpages/leistungen/website/SchlussCta';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
@@ -51,17 +38,17 @@ export const metadata: Metadata = {
 export default function LeistungenWebsitePreviewPage() {
   const rrFonts = `rr ${dmsans.variable} ${crimson.variable} ${grotesk.variable}`;
 
-  // Hero = ueber-uns/tipps-Malmechanik (Wort "Website." + Wisch in EINER Szene),
-  // website-hero-demo (aus leistungen-hero-demo abgeleitet). Reads pro Request.
-  const heroDir = path.join(process.cwd(), 'components/subpages/website-hero-demo');
+  // Volle geklonte Scroll-Strecke (Hero + Story/Haltung/FAQ/CTA bereits
+  // enthalten) aus components/subpages/website-demo/. Reads pro Request
+  // (IN der Komponentenfunktion, nicht auf Modulebene) fuer Dev-Hot-Reload.
+  const heroDir = path.join(process.cwd(), 'components/subpages/website-demo');
   const heroCss = fs.readFileSync(path.join(heroDir, 'demo.css'), 'utf8');
   const heroHtml = fs.readFileSync(path.join(heroDir, 'demo.body.html'), 'utf8');
   const heroJs = fs.readFileSync(path.join(heroDir, 'demo.engine.jstext'), 'utf8');
 
   return (
     <>
-      {/* Organization + Service (Website) + FAQPage (kommt automatisch aus
-          der echten Faq-Komponente in WebsiteFaq) als JSON-LD. */}
+      {/* Organization + Service (Website) als JSON-LD. */}
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -112,28 +99,12 @@ export default function LeistungenWebsitePreviewPage() {
         <RelaunchMenu />
       </div>
 
-      {/* Hero = ueber-uns/tipps-Malmechanik (Wort "Website." + Wisch in EINER
-          Szene), website-hero-demo. Wort oben sofort sichtbar + freiwischbare
-          Botschaft. Ersetzt den abgelehnten SubpageHero. */}
-      <div className={rrFonts} style={{ background: '#ffffff' }}>
-        <WebsiteHeroClient css={heroCss} html={heroHtml} js={heroJs} />
-      </div>
-
-      <div className={rrFonts} style={{ background: '#ffffff' }}>
-        <WasEntsteht />
-        <WieWirBauen />
-        <WasInklusive />
-        <FacetteNeu />
-        <FacetteRelaunch />
-        <FacetteDesign />
-        <SelbstOderMit />
-        <DeineSeite />
-        <NachDemLaunch />
-        <FuerWenNicht />
-        <SoArbeitenWir />
-        <WebsiteFaq />
-        <SchlussCta />
-      </div>
+      {/* Volle geklonte Scroll-Strecke (ueber-uns/tipps-Malmechanik: Wort
+          "Website." + Wisch in EINER Szene, danach Story/Haltung/FAQ/CTA
+          bereits enthalten). Demo-Inhalt bleibt bewusst AUSSERHALB des
+          .rr-Font-Scopes (kein Style-Leak in demo.css), wie bei der
+          ueber-uns-Seite (app/relaunch-preview/ueber-uns/page.tsx). */}
+      <WebsiteDemoClient css={heroCss} html={heroHtml} js={heroJs} />
 
       <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
         <FooterReassembly />

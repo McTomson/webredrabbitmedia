@@ -6,6 +6,31 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-07-19 — fuch.ai Roboter-Choreografie aus Production-Code extrahiert (fuer TALOS)
+
+Referenz-Analyse fuer TALOS-Bewegung (Thomas will fuchs Bewegungs-Idee mit UNSERER TALOS-Figur nachbauen).
+
+- **KANONISCH:** `docs/specs/FUCHAI_CHOREOGRAFIE_2026-07.md` — vollstaendige, wertgenaue Spec aus dem
+  realen fuch.ai-Bundle (`main.js`) + GLB-Inspektion extrahiert. Enthaelt: Mood-Tabellen `XE` (3D-Koerper)
+  + `YE` (Augen/HUD) verbatim, Clip-Map `i7`, Pointer/Blick-Konstanten, Idle-Timings, Intro-Sequenz,
+  Nav-Trigger. Die Datei ist zum "Claude spaeter geben" gemacht.
+- **fuch-Technik (verifiziert):** react-three-fiber + drei + THREE.AnimationMixer, Zustand-Store, Framer
+  Motion (nur 2D-UI). KEIN Spline, KEIN CSS-Zauber, KEIN GSAP. Gerigter 24-Bone-Humanoid-GLB
+  (`mascot-anim.glb`, 20 Clips: walk/run/turn/wave/bow/dance/backflip/handstand …) + Mood-State-Machine.
+  Alles state-driven (aiState/mood -> useFrame-Damping), nicht Timeline-basiert.
+- **Kern-Trick "Aliveness":** Idle-Variant-Wechsel alle 7 s (45 %), idle<->idle2 alle 25–45 s, Blinzeln
+  2,4–6,4 s, Kopf/Koerper-Blick-Split (Kopf schnell ±35°/λ9, Koerper traege ab 0,42-Totzone/λ2.2).
+- **TALOS-Uebertragung (2 Wege, in Spec §8):** Weg A = Persoenlichkeits-Schicht (Mood + Blick + Leerlauf-
+  Zappeln + prozedurale Gesten) SOFORT auf bestehenden Spline-Rig portierbar — ABER TALOS hat nur EINEN
+  Arm gerigt, KEINE Beine, KEINE Clips -> kein Laufen/Tanzen/Backflip. Weg B = standard-gerigte Humanoid-
+  GLB (Mixamo-kompatibel) + Clip-Bibliothek -> fuchs System faellt fast 1:1 rein ("Welten"-Look), aber
+  Asset-/Rig-/Lizenz-Entscheidung. Empfehlung: Weg A als sichtbares Upgrade, Weg B nur bei bewusstem
+  Ganzkoerper-Akrobatik-Ziel.
+- Roh-Artefakte (nur read-only, NICHT ins Repo): fuch-Bundle + GLBs liegen im Session-Scratchpad.
+  Wir replizieren das SYSTEM, nicht das fremde Asset (NEXBOT/Charakter-Lizenz beachten).
+- OFFEN: Thomas will "ein Beispiel wie TALOS sich bewegen koennte" — Weg-A-Demo (isoliert, neue Route,
+  nicht-destruktiv) bauen + zeigen.
+
 ## Stand 2026-07-16 — Referenzen-Galerie: phantom.land Iteration 2 KOMPLETT (relaunch `721b884`)
 
 Strang "relaunch-referenzen" (Branch `relaunch`, committet + gepusht bis `721b884`; Handoff: `docs/handoffs/NEXT_SESSION_relaunch-referenzen.md`):

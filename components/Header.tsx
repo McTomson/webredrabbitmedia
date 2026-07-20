@@ -32,6 +32,7 @@ export default function Header({ onFormOpen }: HeaderProps) {
     // Relaunch-Seiten (neues Design-System) rendern ihr eigenes Chrome.
     if (pathname?.startsWith('/styleguide')) return null;
     if (pathname?.startsWith('/relaunch-preview')) return null;
+    if (pathname?.startsWith('/preise-preview')) return null;
     if (pathname?.startsWith('/referenzen-preview')) return null;
     if (pathname?.startsWith('/design-system')) return null;
 

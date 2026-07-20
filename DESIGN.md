@@ -50,7 +50,7 @@ All from `.rr` scope in `app/styleguide/styleguide.css` (verbatim):
 --rr-world-1-accent: #fcfbc9;  /* cream Eyebrow */
 --rr-world-2-bg: #2d2d2d;      /* at "carrot-dark" Anthrazit */
 --rr-world-2-accent: #f35b09;  /* Orange Eyebrow */
---rr-world-3-bg: #0a8aba;      /* at "sora"-Blau */
+--rr-world-3-bg: #0a8aba;      /* at "sora"-Blau — fuer Off-White-Text abgedunkelt, s. Update unten */
 --rr-world-3-accent: #f2dc71;  /* Gelb Eyebrow */
 
 /* Semantische Farben (Formular-/Statuszustaende; Tomson 2026-07-06) */
@@ -59,6 +59,15 @@ All from `.rr` scope in `app/styleguide/styleguide.css` (verbatim):
 --rr-error: var(--rr-red); --rr-error-ink: #b1101f; --rr-error-bg: #fdeaec;
 --rr-info: var(--rr-navy); --rr-info-bg: #edf0f3;
 ```
+
+**Blau-Farbwelt barrierefrei (2026-07-13):** Der bisherige Blau-Wert `#0a8aba` erreicht mit
+Off-White-Text (`#f6f5f1`) nur ca. **3,5:1** und liegt damit unter der WCAG-AA-Schwelle für
+normalen Text. Für alle Blau-Flächen mit Off-White-Text (z. B. das Über-uns-Partnerraster, künftige
+Blau-Panels) gilt ab jetzt der abgedunkelte, weiterhin klar als selbstbewusstes Blau lesende Wert
+**`#0a72a0`** — Off-White darauf misst **4,90:1** (≥ 4,5:1, im Browser gemessen). Blau wird **immer**
+mit diesem Wert verwendet, damit die Blau-Welt einheitlich und WCAG-konform ist (nicht mehr das alte,
+zu helle `#0a8aba`). `#0a72a0` ist bewusst kein Navy (`#1c2837` bleibt separat für dunkle Panels),
+sondern das barrierefreie Blau der Case-/Preis-Welt.
 
 **Semantic colors (locked 2026-07-06):** brand **red doubles as the error/danger signal** (red
 already means "attention", keeps the palette minimal and red special). Error text uses `--rr-error-ink`
