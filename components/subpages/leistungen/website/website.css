@@ -51,6 +51,52 @@
 @media (max-width: 760px) { .rr .lw-fund__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .rr .lw-fund__grid { grid-template-columns: 1fr; } }
 
+/* ---- Selbst mit Baukasten vs. mit uns (2-Spalten-Vergleich) ---- */
+.rr .lw-vergleich__title { max-width: 16em; margin: 20px 0 clamp(36px, 5vw, 56px); color: var(--rr-navy); }
+.rr .lw-vergleich__grid { align-items: stretch; }
+.rr .lw-vergleich__card {
+  width: 100%;
+  height: auto;
+  min-height: 260px;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.rr .lw-vergleich__label { margin: 2px 0 6px; }
+.rr .lw-vergleich__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.rr .lw-vergleich__item {
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--rr-ink-soft);
+  padding: 10px 0;
+  border-top: 1px solid var(--rr-line);
+}
+.rr .lw-vergleich__item:first-child { border-top: 0; padding-top: 0; }
+.rr .lw-vergleich__closing { margin-top: clamp(28px, 4vw, 40px); max-width: 620px; color: var(--rr-ink-soft); }
+
+/* ---- Sie gehoert dir (Eigentum + Unabhaengigkeit) ---- */
+.rr .lw-eigentum__title { max-width: 16em; margin: 20px 0 clamp(28px, 4vw, 40px); color: var(--rr-navy); }
+.rr .lw-eigentum__body { max-width: 660px; color: var(--rr-ink-soft); }
+
+/* ---- Nach dem Start bist du nicht allein (Support/Pflege) ---- */
+.rr .lw-launch__title { max-width: 15em; margin: 20px 0 clamp(24px, 3.5vw, 36px); color: var(--rr-navy); }
+.rr .lw-launch__body { max-width: 620px; color: var(--rr-ink-soft); margin-bottom: clamp(32px, 4vw, 48px); }
+.rr .lw-launch__grid { align-items: stretch; }
+.rr .lw-launch__card {
+  width: 100%;
+  height: auto;
+  min-height: 180px;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.rr .lw-launch__label { margin-top: 2px; }
+.rr .lw-launch__cardbody { color: var(--rr-ink-soft); }
+
+/* ---- So arbeiten wir (ehrlicher Satz + EIN Teal-Zitat) ---- */
+.rr .lw-arbeit__title { max-width: 16em; margin: 20px 0 clamp(20px, 3vw, 28px); color: var(--rr-navy); }
+.rr .lw-arbeit__body { max-width: 640px; color: var(--rr-ink-soft); margin-bottom: clamp(32px, 4vw, 48px); }
+.rr .lw-arbeit__quote { margin: 0; }
+.rr .lw-arbeit__quote .rr-quote__text { font-style: normal; font-family: var(--rr-font-display); }
+
 /* ---- 4 · Fuer wen sich das (noch) nicht lohnt ---- */
 .rr .lw-nicht { background: var(--rr-surface); }
 .rr .lw-nicht__title { max-width: 16em; margin: 20px 0 clamp(28px, 4vw, 40px); color: var(--rr-navy); }

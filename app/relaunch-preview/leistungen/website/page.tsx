@@ -1,17 +1,18 @@
-import fs from 'node:fs';
-import path from 'node:path';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { RabbitMark } from '@/components/relaunch/RabbitMark';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
-import PaintHeroClient from '@/components/subpages/PaintHeroClient';
-import { buildPaintHeroHtml } from '@/components/subpages/paintHeroHtml';
+import SubpageHero from '@/components/subpages/SubpageHero';
 import JsonLd from '@/components/JsonLd';
 import WasEntsteht from '@/components/subpages/leistungen/website/WasEntsteht';
 import WieWirBauen from '@/components/subpages/leistungen/website/WieWirBauen';
 import WasInklusive from '@/components/subpages/leistungen/website/WasInklusive';
+import SelbstOderMit from '@/components/subpages/leistungen/website/SelbstOderMit';
+import DeineSeite from '@/components/subpages/leistungen/website/DeineSeite';
+import NachDemLaunch from '@/components/subpages/leistungen/website/NachDemLaunch';
 import FuerWenNicht from '@/components/subpages/leistungen/website/FuerWenNicht';
+import SoArbeitenWir from '@/components/subpages/leistungen/website/SoArbeitenWir';
 import WebsiteFaq from '@/components/subpages/leistungen/website/WebsiteFaq';
 import SchlussCta from '@/components/subpages/leistungen/website/SchlussCta';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
@@ -44,12 +45,6 @@ export const metadata: Metadata = {
 
 export default function LeistungenWebsitePreviewPage() {
   const rrFonts = `rr ${dmsans.variable} ${crimson.variable} ${grotesk.variable}`;
-
-  // Paint-Hero (Wisch-Reveal) — dasselbe Template wie der Tipps-Hero.
-  const heroDir = path.join(process.cwd(), 'components/subpages/paint-hero');
-  const heroCss = fs.readFileSync(path.join(heroDir, 'demo.css'), 'utf8');
-  const heroJs = fs.readFileSync(path.join(heroDir, 'demo.engine.jstext'), 'utf8');
-  const heroHtml = buildPaintHeroHtml('Website.', ['Sie gehört dir.', 'Nicht uns.']);
 
   return (
     <>
@@ -105,15 +100,32 @@ export default function LeistungenWebsitePreviewPage() {
         <RelaunchMenu />
       </div>
 
-      {/* Hero — Paint-Hero (Wisch-Reveal + angeschnittenes Wort "Website"),
-          dasselbe Template wie der Tipps-Hero. Bewusst AUSSERHALB von .rr. */}
-      <PaintHeroClient css={heroCss} html={heroHtml} js={heroJs} />
+      {/* Hero — dieselbe Choreografie wie ueber-uns/kontakt: Wisch-Reveal (Pinsel)
+          -> Wort "Website" steigt auf -> zersetzt sich in die Zahnrad-Figur (comp1)
+          -> Figur haelt links, Eyebrow/Statement/Subline scrollen rechts durch.
+          Genau der SubpageHero-Baustein, den auch die anderen Unterseiten nutzen
+          (kein eigener Nachbau). .rr-Wrapper liefert die Marken-Variablen/Fonts. */}
+      <div className={rrFonts} style={{ background: '#ffffff' }}>
+        <SubpageHero
+          word="Website"
+          comp={1}
+          figureSide="left"
+          headline="Du hast eine Website. Warum ruft trotzdem keiner an?"
+          eyebrow="Webdesign"
+          statement="Deine Website gehört dir. Nicht uns."
+          subline="Individuell gebaut, zum Festpreis. Kein Baukasten, keine Knebelverträge, du bist an niemanden gebunden."
+        />
+      </div>
 
       <div className={rrFonts} style={{ background: '#ffffff' }}>
         <WasEntsteht />
         <WieWirBauen />
         <WasInklusive />
+        <SelbstOderMit />
+        <DeineSeite />
+        <NachDemLaunch />
         <FuerWenNicht />
+        <SoArbeitenWir />
         <WebsiteFaq />
         <SchlussCta />
       </div>

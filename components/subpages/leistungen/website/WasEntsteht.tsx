@@ -13,7 +13,8 @@ export default function WasEntsteht() {
           Mitarbeiter am Empfang.
         </h2>
         <p className="rr-body-lg lw-entsteht__body">
-          Neu bauen oder Relaunch, das entscheidet dein Ausgangspunkt. Hast du
+          Neu bauen oder Relaunch, also deine bestehende Seite von Grund auf
+          neu aufgebaut, das entscheidet dein Ausgangspunkt. Hast du
           noch keine Seite, fangen wir sauber bei null an. Hast du eine, die
           alt ist oder nichts bringt, bauen wir sie so um, dass sie wieder
           Anfragen holt. In beiden Fällen bekommst du kein Baukasten-Muster,

@@ -20,6 +20,22 @@ const FAQ_ITEMS: FaqItem[] = [
     q: "Wie lange dauert das?",
     a: "Den ersten Entwurf siehst du schnell, meist innerhalb weniger Tage. Danach feilen wir so lange, bis es passt. Ohne endlose Meetings, den großen Teil der Arbeit machen wir, nicht du.",
   },
+  {
+    q: "Gehört mir die Website am Ende wirklich?",
+    a: "Ja, ganz. Sobald die Seite live ist, gehört sie dir, mit Domain, Texten, Bildern und allem, was drinsteckt. Wir sitzen nicht auf deinem Zugang und halten dich nicht fest. Willst du irgendwann zu jemand anderem, nimmst du deine Seite einfach mit.",
+  },
+  {
+    q: "Muss ich mich um die Technik kümmern?",
+    a: "Nein. Hosting, Updates und Backups laufen bei uns im Hintergrund mit, ohne dass du etwas tun musst. Du sollst dich um deinen Betrieb kümmern, nicht um Server oder Zertifikate. Wenn mal etwas klemmt, meldest du dich und wir kümmern uns.",
+  },
+  {
+    q: "Kann ich selbst Texte und Bilder ändern?",
+    a: "Ja. Du bekommst einen einfachen Zugang, in dem du Texte und Bilder mit ein paar Klicks selbst tauschst, ganz ohne Technikwissen. Und wenn du lieber willst, dass wir das übernehmen, sagst du kurz Bescheid und wir ziehen es für dich nach.",
+  },
+  {
+    q: "Ist die Seite rechtlich sauber (Impressum, Datenschutz)?",
+    a: "Ja. Impressum und Datenschutzerklärung setzen wir nach österreichischem Recht auf, und die Seite ist so gebaut, dass sie die üblichen Vorgaben erfüllt. Du stehst also nicht mit einem Bein im Risiko, nur weil dir eine Pflichtangabe gefehlt hat.",
+  },
 ];
 
 export default function WebsiteFaq() {

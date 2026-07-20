@@ -1,7 +1,10 @@
+import Link from "next/link";
+
 /**
  * Sektion 7 — "Mehr als eine normale Website": kompakter Vergleich, Zeit
  * statt Geld (IA-Doc: keine Angeber-Vergleichstabelle). Nur echte rr-*-
- * Bausteine (rr-grid, rr-card, rr-check).
+ * Bausteine (rr-grid, rr-card, rr-check). Schliesst mit einem Wegweiser auf
+ * die Website-Unterseite (Produkt-Tiefe), damit der Hub nicht Sackgasse ist.
  */
 const NORMAL: string[] = [
   "Steht da und wartet, dass du selbst was tust.",
@@ -50,6 +53,11 @@ export default function MehrAlsWebsite() {
         <p className="rr-body lh-vergleich__closing">
           Kein Abo-Zwang, keine versteckten Stundensätze. Fang mit der
           Website an, hol dir mehr dazu, wenn du es brauchst.
+        </p>
+        <p className="lh-vergleich__more">
+          <Link href="/relaunch-preview/leistungen/website" className="rr-link">
+            Alles zur Website im Detail
+          </Link>
         </p>
       </div>
     </section>

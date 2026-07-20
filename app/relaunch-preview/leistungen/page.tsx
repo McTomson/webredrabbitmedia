@@ -1,12 +1,9 @@
-import fs from 'node:fs';
-import path from 'node:path';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { RabbitMark } from '@/components/relaunch/RabbitMark';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
-import PaintHeroClient from '@/components/subpages/PaintHeroClient';
-import { buildPaintHeroHtml } from '@/components/subpages/paintHeroHtml';
+import SubpageHero from '@/components/subpages/SubpageHero';
 import JsonLd from '@/components/JsonLd';
 import BauMoment from '@/components/subpages/leistungen/BauMoment';
 import WasDuBekommst from '@/components/subpages/leistungen/WasDuBekommst';
@@ -48,14 +45,6 @@ export const metadata: Metadata = {
 
 export default function LeistungenPreviewPage() {
   const rrFonts = `rr ${dmsans.variable} ${crimson.variable} ${grotesk.variable}`;
-
-  // Paint-Hero (Wisch-Reveal) — dasselbe Template wie der Tipps-Hero. Roh-CSS +
-  // Engine pro Request lesen (Next watched fs-Reads nicht auf Modulebene); das
-  // HTML mit Wort + Botschaft bauen.
-  const heroDir = path.join(process.cwd(), 'components/subpages/paint-hero');
-  const heroCss = fs.readFileSync(path.join(heroDir, 'demo.css'), 'utf8');
-  const heroJs = fs.readFileSync(path.join(heroDir, 'demo.engine.jstext'), 'utf8');
-  const heroHtml = buildPaintHeroHtml('Leistungen.', ['Deine Website', 'arbeitet.', 'Auch nachts.']);
 
   return (
     <>
@@ -155,10 +144,22 @@ export default function LeistungenPreviewPage() {
         <RelaunchMenu />
       </div>
 
-      {/* 1 · Hero — Paint-Hero (Wisch-Reveal + angeschnittenes Wort "Leistungen"),
-          dasselbe Template wie der Tipps-Hero. Bewusst AUSSERHALB von .rr (bringt
-          eigene, auf .scene-main gescopte Styles mit). Reines Produkt, kein "KI". */}
-      <PaintHeroClient css={heroCss} html={heroHtml} js={heroJs} />
+      {/* 1 · Hero — dieselbe Choreografie wie ueber-uns/kontakt: Wisch-Reveal
+          (Pinsel) -> Wort "Leistungen" steigt auf -> zersetzt sich in die
+          Zahnrad-Figur (comp1) -> Figur haelt links, Eyebrow/Statement/Subline
+          scrollen rechts durch. Der wiederverwendbare SubpageHero-Baustein (kein
+          Nachbau). .rr-Wrapper liefert Marken-Variablen/Fonts. Reines Produkt. */}
+      <div className={rrFonts} style={{ background: '#ffffff' }}>
+        <SubpageHero
+          word="Leistungen"
+          comp={1}
+          figureSide="left"
+          headline="Was macht deine Website, während du arbeitest?"
+          eyebrow="Alles aus einer Hand"
+          statement="Eine Website, die für dich arbeitet."
+          subline="Gebaut, gehostet, gepflegt. Und ein Helfer im Hintergrund, der mitdenkt, wenn du gerade keine Zeit hast."
+        />
+      </div>
 
       {/* Sektionen 2-9, alles SSR-Text unter echten rr-*-Bauteilen. */}
       <div className={rrFonts} style={{ background: '#ffffff' }}>
