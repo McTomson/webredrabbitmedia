@@ -1,0 +1,161 @@
+  /* ============================================================
+     LEISTUNGEN-HERO — nur die Hero-Szene des Unterseiten-Templates
+     (Titel-Anschnitt + Malen/Pinsel). Aus tipps-hero-demo/demo.css
+     uebernommen, aber OHNE Karten-Tunnel dahinter: der Hero laeuft
+     unten sauber in Weiss aus, darunter folgt die LeistungenStory
+     (eigene Client-Komponente, scoped .rrls-). Globale Regeln hier
+     bewusst schlank und story-vertraeglich (Grund #ffffff,
+     overflow-x clip).
+     ============================================================ */
+  :root{
+    --offwhite:#ffffff;
+    --ink:#23262e;
+    --ink-soft:#6a6e78;
+    --navy:#1c2837;
+    --anthra:#2d2d2d;
+    --blue:#0a72a0;
+    --red:#f12032;
+    --red-deep:#c81222;
+    --line:#e4e4e0;
+    --hairline:rgba(246,245,241,.18);
+    --ease:cubic-bezier(.6,0,.4,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:auto}
+  html,body{
+    background:var(--offwhite);color:var(--ink);
+    font-family:"Instrument Sans",system-ui,sans-serif;
+    overflow-x:clip;
+  }
+  body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+  /* ---------- Slim Kontextleiste (auf der Live-Seite ausgeblendet) ---------- */
+  .demobar{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    display:flex;align-items:center;gap:.6rem;
+    padding:.42rem 1rem;
+    background:rgba(28,40,55,.9);color:var(--offwhite);
+    font-family:"DM Sans",sans-serif;
+    font-size:.68rem;font-weight:700;letter-spacing:.05em;
+    backdrop-filter:saturate(1.2) blur(6px);
+    user-select:none;-webkit-user-select:none;pointer-events:none;
+  }
+
+  /* ================= HAUPT-SZENE: HERO (Titel + Malen) ================= */
+  /* 210vh: genug Pin-Strecke fuer Malen -> Aufstieg/Schrumpf -> Buchstaben-
+     Scatter (ruhiges Zerfliegen), aber ohne Karten-Tunnel-Overlap wie bei
+     Tipps. Der Hero laeuft am Szenen-Ende sauber in Weiss aus, direkt danach
+     dockt die LeistungenStory an (kein totes Riesen-Stueck). */
+  .scene-main{position:relative;height:210vh}
+  .main-sticky{
+    position:sticky;top:0;height:100vh;height:100dvh;
+    overflow:hidden;isolation:isolate;
+    user-select:none;-webkit-user-select:none;
+    /* Ueber dem Tipps-Karten-Tunnel (rrtn-stage z-index:1), der per negativem
+       Margin HINTER dem Hero liegt; eigener Grund transparent — die Deckung
+       kommt allein aus layer-base/layer-deck (die die Engine beim Scatter
+       transparent faded, damit die erste Karte durchscheint). */
+    z-index:3;background:transparent;
+  }
+  .main-sticky.painting{cursor:none}
+  /* Nach der Mal-Phase (painting-Klasse weg) darf der transparente Hero-Sticky
+     KEINE Zeiger-Events mehr schlucken — darunter liegt der Karten-Tunnel,
+     dessen Links sonst nicht klickbar sind. Waehrend des Malens bleibt der
+     Sticky interaktiv (Pointer-/Touch-Painting). */
+  .scene-main{pointer-events:none}
+  .main-sticky.painting{pointer-events:auto}
+  .main-sticky ::selection{background:rgba(241,32,50,.25)}
+
+  /* Ebene B (Reveal): Navy + versteckte Botschaft — viewport-fix im Sticky */
+  .layer-base{
+    position:absolute;inset:0;z-index:1;
+    background:var(--navy);color:var(--offwhite);
+    display:flex;align-items:center;justify-content:center;
+    padding:0 6vw;pointer-events:none;
+  }
+  .reveal-msg{
+    font-family:"DM Sans",sans-serif;
+    font-weight:800;text-transform:uppercase;text-align:center;
+    font-size:clamp(2rem,6vw,6rem);line-height:.98;letter-spacing:-.01em;
+    max-width:15em;text-wrap:balance;
+    transform:translateY(-9vh);
+  }
+
+  /* Ebene A (Deck): Off-White + Titel */
+  .layer-deck{
+    position:absolute;inset:0;z-index:2;
+    background:var(--offwhite);
+    display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+    pointer-events:none;
+  }
+  .hero-title{
+    font-family:"DM Sans",sans-serif;
+    font-weight:700;color:var(--ink);
+    /* 16vw statt 22vw: "Leistungen." ist ein langes Wort (11 Zeichen) und wuerde
+       bei 22vw seitlich ueber den Viewport hinauslaufen (nowrap). 16vw fittet
+       sauber mit Rand. Mobil fittet computeShifts den Titel ohnehin auf 96 %
+       der Viewportbreite. */
+    font-size:16vw;line-height:.8;white-space:nowrap;letter-spacing:-.03em;
+    position:relative;will-change:transform,opacity;
+    transform-origin:50% 50%;
+  }
+  .ltr{display:inline-block;will-change:transform,opacity;transform-origin:center center}
+  .ltr.sp{width:.16em}
+  /* Roter Schlusspunkt im Hero-Titel (wie Hauptseiten-Headlines, Tomson 16.07.) */
+  .hero-title .ltr.dot{color:var(--red)}
+
+
+  .cursor-dot{
+    position:absolute;left:0;top:0;z-index:6;
+    width:19px;height:19px;border-radius:50%;
+    background:var(--red);pointer-events:none;opacity:0;
+    will-change:transform,opacity;
+  }
+  .masksvg{position:absolute;width:0;height:0;pointer-events:none}
+  .main-sticky[data-active="1"] .layer-deck{
+    -webkit-mask:var(--mask);mask:var(--mask);
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  }
+  .autobtn{
+    position:absolute;right:1rem;bottom:calc(16.5vw + 1.6rem);z-index:7;pointer-events:auto;
+    background:var(--red);color:#fff;border:none;font-family:"DM Sans",sans-serif;
+    font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+    padding:.55rem .9rem;cursor:pointer;border-radius:0;
+    transition:opacity .3s;
+  }
+  .autobtn:disabled{opacity:.5;cursor:default}
+  .hint{
+    position:absolute;left:1rem;bottom:calc(16.5vw + 7.5rem);z-index:5;
+    font-family:"DM Sans",sans-serif;
+    font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--offwhite);opacity:.55;pointer-events:none;
+    mix-blend-mode:difference;transition:opacity .4s;
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width:768px){
+    .hero-title{font-size:30vw}
+    .reveal-msg{font-size:clamp(1.6rem,7.6vw,3rem)}
+    .autobtn{bottom:calc(28vw + 1.4rem)}
+    .hint{bottom:calc(28vw + 6rem)}
+  }
+
+  /* ---------- Reduced Motion: Hero statisch ---------- */
+  @media (prefers-reduced-motion:reduce){
+    .cursor-dot,.autobtn,.hint{display:none}
+    .scene-main{height:auto}
+    .main-sticky{position:static;height:auto;overflow:visible;cursor:auto}
+    .layer-base{display:none}
+    .layer-deck{
+      position:static;-webkit-mask:none!important;mask:none!important;
+      padding:16vh 0 6vh;justify-content:center;
+    }
+    .hero-title{font-size:14vw;transform:none!important;opacity:1!important}
+    .ltr{transform:none!important;opacity:1!important}
+  }
+
+/* --- Vorschau-Chrome der Standalone-Demo ausblenden -----------------------
+   demobar, hint, autobtn und cursor-dot gehoeren nicht auf die Live-Seite.
+   Per display:none ausblenden statt aus dem HTML loeschen, damit die
+   Engine-Referenz auf .autobtn/.hint gueltig bleibt (Guards greifen). */
+.demobar, .hint, .autobtn, .cursor-dot { display: none !important; }

@@ -1,9 +1,11 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { RabbitMark } from '@/components/relaunch/RabbitMark';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
-import SubpageHero from '@/components/subpages/SubpageHero';
+import WebsiteHeroClient from '@/components/subpages/WebsiteHeroClient';
 import JsonLd from '@/components/JsonLd';
 import WasEntsteht from '@/components/subpages/leistungen/website/WasEntsteht';
 import WieWirBauen from '@/components/subpages/leistungen/website/WieWirBauen';
@@ -48,6 +50,13 @@ export const metadata: Metadata = {
 
 export default function LeistungenWebsitePreviewPage() {
   const rrFonts = `rr ${dmsans.variable} ${crimson.variable} ${grotesk.variable}`;
+
+  // Hero = ueber-uns/tipps-Malmechanik (Wort "Website." + Wisch in EINER Szene),
+  // website-hero-demo (aus leistungen-hero-demo abgeleitet). Reads pro Request.
+  const heroDir = path.join(process.cwd(), 'components/subpages/website-hero-demo');
+  const heroCss = fs.readFileSync(path.join(heroDir, 'demo.css'), 'utf8');
+  const heroHtml = fs.readFileSync(path.join(heroDir, 'demo.body.html'), 'utf8');
+  const heroJs = fs.readFileSync(path.join(heroDir, 'demo.engine.jstext'), 'utf8');
 
   return (
     <>
@@ -103,21 +112,11 @@ export default function LeistungenWebsitePreviewPage() {
         <RelaunchMenu />
       </div>
 
-      {/* Hero — dieselbe Choreografie wie ueber-uns/kontakt: Wisch-Reveal (Pinsel)
-          -> Wort "Website" steigt auf -> zersetzt sich in die Zahnrad-Figur (comp1)
-          -> Figur haelt links, Eyebrow/Statement/Subline scrollen rechts durch.
-          Genau der SubpageHero-Baustein, den auch die anderen Unterseiten nutzen
-          (kein eigener Nachbau). .rr-Wrapper liefert die Marken-Variablen/Fonts. */}
+      {/* Hero = ueber-uns/tipps-Malmechanik (Wort "Website." + Wisch in EINER
+          Szene), website-hero-demo. Wort oben sofort sichtbar + freiwischbare
+          Botschaft. Ersetzt den abgelehnten SubpageHero. */}
       <div className={rrFonts} style={{ background: '#ffffff' }}>
-        <SubpageHero
-          word="Website"
-          comp={1}
-          figureSide="left"
-          headline="Du hast eine Website. Warum ruft trotzdem keiner an?"
-          eyebrow="Webdesign"
-          statement="Deine Website gehört dir. Nicht uns."
-          subline="Individuell gebaut, zum Festpreis. Kein Baukasten, keine Knebelverträge, du bist an niemanden gebunden."
-        />
+        <WebsiteHeroClient css={heroCss} html={heroHtml} js={heroJs} />
       </div>
 
       <div className={rrFonts} style={{ background: '#ffffff' }}>

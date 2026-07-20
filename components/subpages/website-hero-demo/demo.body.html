@@ -1,0 +1,36 @@
+
+<!-- ============ HAUPT-SZENE (Hero: Titel + Malen in EINEM Sticky) ============ -->
+<!-- Nur die Hero-Szene des Unterseiten-Templates. Darunter folgt (server-
+     gerendert in der Page) die LeistungenStory. Keine Statements, keine
+     Story, kein CTA, kein Footer in dieser Datei. Der Hero laeuft unten
+     sauber in Weiss aus (kein Karten-Tunnel dahinter wie bei Tipps). -->
+<section class="scene-main" id="sceneMain">
+  <!-- data-active startet auf 0: die Deck-Maske (mask:url(#mask-t1)) greift erst,
+       wenn die Engine bootet — sonst blitzt beim Laden die navy layer-base auf. -->
+  <div class="main-sticky painting" id="mainSticky" data-active="0" style="--mask:url(#mask-t1)">
+    <div class="layer-base">
+      <div class="reveal-msg">Sie gehört dir.<br>Nicht<br>uns.</div>
+    </div>
+    <div class="layer-deck">
+      <div class="hero-title" id="htitle" role="heading" aria-level="1" aria-label="Website"><span class="ltr" data-l="0" aria-hidden="true">W</span><span class="ltr" data-l="1" aria-hidden="true">e</span><span class="ltr" data-l="2" aria-hidden="true">b</span><span class="ltr" data-l="3" aria-hidden="true">s</span><span class="ltr" data-l="4" aria-hidden="true">i</span><span class="ltr" data-l="5" aria-hidden="true">t</span><span class="ltr" data-l="6" aria-hidden="true">e</span><span class="ltr dot" data-l="7" aria-hidden="true">.</span></div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <span class="hint" id="hint">Maus über das Bild bewegen</span>
+    <button class="autobtn" data-auto>Auto abspielen</button>
+
+    <svg class="masksvg" aria-hidden="true">
+      <defs>
+        <filter id="gooey-t1">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
+          <feColorMatrix in="blur" type="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -9" result="goo"/>
+        </filter>
+        <mask id="mask-t1">
+          <rect class="mrect" width="100%" height="100%" fill="#fff"/>
+          <g class="blobs" filter="url(#gooey-t1)"></g>
+        </mask>
+      </defs>
+    </svg>
+  </div>
+</section>

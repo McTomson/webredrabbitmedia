@@ -1,9 +1,11 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { RabbitMark } from '@/components/relaunch/RabbitMark';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
-import SubpageHero from '@/components/subpages/SubpageHero';
+import LeistungenHeroClient from '@/components/subpages/LeistungenHeroClient';
 import JsonLd from '@/components/JsonLd';
 import BauMoment from '@/components/subpages/leistungen/BauMoment';
 import WasDuBekommst from '@/components/subpages/leistungen/WasDuBekommst';
@@ -46,6 +48,14 @@ export const metadata: Metadata = {
 
 export default function LeistungenPreviewPage() {
   const rrFonts = `rr ${dmsans.variable} ${crimson.variable} ${grotesk.variable}`;
+
+  // Hero = ueber-uns/tipps-Malmechanik (Wort "Leistungen." + Wisch in EINER
+  // Szene), der bereits gebaute leistungen-hero-demo. Reads pro Request (Next
+  // watched fs auf Modulebene nicht). Ersetzt den abgelehnten SubpageHero.
+  const heroDir = path.join(process.cwd(), 'components/subpages/leistungen-hero-demo');
+  const heroCss = fs.readFileSync(path.join(heroDir, 'demo.css'), 'utf8');
+  const heroHtml = fs.readFileSync(path.join(heroDir, 'demo.body.html'), 'utf8');
+  const heroJs = fs.readFileSync(path.join(heroDir, 'demo.engine.jstext'), 'utf8');
 
   return (
     <>
@@ -151,15 +161,7 @@ export default function LeistungenPreviewPage() {
           scrollen rechts durch. Der wiederverwendbare SubpageHero-Baustein (kein
           Nachbau). .rr-Wrapper liefert Marken-Variablen/Fonts. Reines Produkt. */}
       <div className={rrFonts} style={{ background: '#ffffff' }}>
-        <SubpageHero
-          word="Leistungen"
-          comp={1}
-          figureSide="left"
-          headline="Was macht deine Website, während du arbeitest?"
-          eyebrow="Alles aus einer Hand"
-          statement="Eine Website, die für dich arbeitet."
-          subline="Gebaut, gehostet, gepflegt. Und ein Helfer im Hintergrund, der mitdenkt, wenn du gerade keine Zeit hast."
-        />
+        <LeistungenHeroClient css={heroCss} html={heroHtml} js={heroJs} />
       </div>
 
       {/* Sektionen 2-9, alles SSR-Text unter echten rr-*-Bauteilen. */}
