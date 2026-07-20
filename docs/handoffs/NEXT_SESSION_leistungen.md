@@ -1,116 +1,63 @@
-# Naechste Session — LEISTUNGEN-Strang (Stand 20.07.2026 spaet)
-
-## HERO-FINISH (das einzige offene, fokussiert bauen) — Weg B, Thomas 20.07. abgenommen
-Ziel: Hero wie ueber-uns (Wort auf Deck + Wisch + Wort zerbricht in KLEINE Fragmente ->
-FIGUR + Text scrollt) mit Figur = ZAHNRAD (comp1). Alles verifiziert:
-- **über-uns-FIGUR-Engine ist NICHT einbettbar:** sie laeuft nur als KOMPLETTE eigenstaendige
-  Seite. Hero-only rausgeloest -> Choreografie friert ein (data-active bleibt 0, kein
-  htitle-transform, KEIN Konsolen-Fehler; strukturell an das volle Seiten-Body gekoppelt).
-  Verifiziert am 20.07. Deshalb NICHT die ueber-uns-Engine hero-only einbetten.
-- **Einbettbare Hero-Engine = die schlanke (tipps/leistungen-hero-demo, 383 Zeilen):** laeuft
-  eingebettet (Wort steigt, Wisch, Buchstaben-Scatter, data-active=1), hat aber KEINE Figur.
-  Aktuell auf /leistungen (leistungen-hero-demo) + /website (website-hero-demo) verdrahtet.
-- **Weg B = Figur in die einbettbare Engine GRAFTEN:** aus der ueber-uns-Engine den Figur-Teil
-  uebernehmen (COMP5->P build ~Z.351-367, normalizeEntry, measureHeadStarts ~Z.385-401,
-  Assemble-Render ~Z.406-424 mit aA/Pm), headSvg in die demo.body.html, an den Scatter-
-  Fortschritt der schlanken Engine haengen (statt/zus. zum Buchstaben-Scatter).
-- **Zahnrad-Daten FERTIG gemappt:** scratchpad/gear_comp1.json (129 Fragmente, EYE=75,
-  VB={116,126,879,788}). Mapping aus lib/relaunch/morph/at-shapes-comp1.json ist reiner
-  Feld-Rename: x/y/rot/sx/sy=finale Figur, fromX->fx, fromY->fy, fromRot->fr, fromScale->fs,
-  entryT->e, arriveT->a (KEINE fx=x-Kruecke noetig, die Daten haben ihr eigenes from-Feld!).
-- **Klumpen-Problem (die eine Feinabstimmung):** in der ueber-uns-Engine rendert comp1 als
-  dichter roter Klumpen statt sauberem Zahnrad. SubpageHero zeigt comp1 ALS sauberes Zahnrad,
-  weil es jede Figur in EIGENER viewBox (-w/2..w/2) auf boxW=w*|sx|*k skaliert; die ueber-uns-
-  Engine rendert den Pfad in GETEILTER viewBox in Natur-Einheiten*sx. -> Fragment-Groesse/
-  Abstand-Verhaeltnis stimmt nicht. Fix: entweder pro Fragment eigene viewBox+box-Sizing wie
-  SubpageHero (buildFigureStatic in components/subpages/SubpageHero.tsx ist die Vorlage), oder
-  sx-Faktor empirisch angleichen. Standalone testen (Wegwerf-Route wie das geloeschte
-  /gear-test: UeberUnsDemoClient + components/subpages/leistungen-figure-demo).
-- **Referenz-Artefakte da:** components/subpages/leistungen-figure-demo/ = ueber-uns-Engine mit
-  eingesetzten Zahnrad-Daten (laeuft standalone als VOLLES body, Klumpen-Figur) — Beleg, dass
-  Daten + Pipeline stimmen, nur die Skalierung fehlt. Erst standalone das saubere Zahnrad
-  hinbekommen, DANN in die einbettbare Engine graften, DANN /leistungen + /website verdrahten.
-- Aktueller Seiten-Stand: /leistungen + /website zeigen die funktionierende Wort+Wisch-Version
-  (ohne Figur), Inhalt fertig+committet (3eea8cb). Hero-Wiring NICHT committet.
+# Naechste Session — Red Rabbit Relaunch: Leistungsseite REDESIGN (Stand 20.07.2026)
 
 ## Arbeitsregeln (verbindlich)
-- Lies ZUERST: diesen Handoff, docs/strategie/LEISTUNGEN_IA_2026-07.md, docs/UNTERSEITEN_STIL.md,
-  die betroffenen Dateien, und die Memory [[feedback_subpage_hero_ueberuns_mechanik_standard]].
-- NIE raten — immer verifizieren (Code/Browser). Bei Unsicherheit: EINE praezise Frage.
-  (Der Hero ist 4x gescheitert, jedes Mal weil "wie ueber-uns" mit einem Ersatz beantwortet
-  wurde statt den ECHTEN ueber-uns-Demo-Code zu lesen. Nicht nochmal.)
-- Laufend im Browser gegen /relaunch-preview/ueber-uns pruefen. tsc + vitest gruen halten.
-- Nur eigene Leistungs-Dateien anfassen/committen, Fremd-Straenge NIE. Lokal, nicht pushen.
-- WORKING TREE geteilt mit Fremd-Straengen (talos-choreo, preise-preview, subpages/SubpageHero
-  etc., PNGs). NUR Leistungs-Dateien.
+- Lies ZUERST alles Relevante: diesen Handoff, die unten genannten Doku-/Code-Dateien, die betroffenen Komponenten. Nicht loslegen ohne Kontext.
+- NIE raten — immer verifizieren (Code/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden. GILT VERSCHAERFT FUER PREISE (das "6 EUR" ist UNBESTAETIGT, siehe unten).
+- Erst einen Plan machen (TodoWrite), dann ausfuehren. Design-Optionen als gerendertes HTML/Artifact zeigen, nicht als Text-Essay.
+- Design-Skills nutzen (frontend-design + ui-ux-pro-max sind Projekt-Pflicht; dazu impeccable/emil-design-eng/design-taste). Bau/Recherche an Sonnet-Agenten, Copy an Opus. Jeden Agenten-Diff selbst gegen die Vorgabe pruefen.
+- Autonom, voller Zugriff inkl. Browser. Laufend gegen localhost:9000 testen (`npm run dev -- --port 9000`) + review-it bei groesseren Schritten. Nichts als "fertig" melden ohne browser-verifiziertes Ergebnis (Mobile + Desktop, kein horizontales Scrollen/Clipping).
+- Relaunch-Muster: committen LOKAL, NICHT pushen. Umlaute echt in User-Content, ASCII in Code/Commits/Pfaden. Kein Gedankenstrich, keine Emojis.
 
-## STAND
-- Inhaltlich FERTIG + browser-verifiziert + lokal committet (91477fd, 3eea8cb):
-  - Hub /relaunch-preview/leistungen: Produkt-zuerst. BauMoment -> WasDuBekommst (Fundament)
-    -> Scharnierzeile (Pivot) -> **WasSieKann** (Dashboard-Funktionen in Klartext, "du gibst
-    frei") -> TalosSlot (funktions-zuerst, Autonomie klargestellt, Talos als Gesicht danach)
-    -> Referenzen (1 Teal) -> MehrAlsWebsite -> FAQ -> CTA. Wegweiser-Link auf Website-Seite.
-  - Website /relaunch-preview/leistungen/website: Dach ueber alle Website-Leistungen.
-    WasEntsteht -> WieWirBauen -> WasInklusive -> **FacetteNeu/FacetteRelaunch/FacetteDesign**
-    -> SelbstOderMit -> DeineSeite -> NachDemLaunch -> FuerWenNicht -> SoArbeitenWir (1 Teal)
-    -> FAQ (7) -> CTA.
-  - Qualitaet: tsc gruen, 1 h1 je Seite, genau 1 Teal-Moment, kein sichtbares KI/AI, keine
-    em-dash, keine Preise, echte Umlaute, echte Rezension (Rafael Danesh) 1:1, Mobile ok,
-    reduced-motion ok. Code-Review 0 Findings. UX-Audit gelaufen (Produkt-zuerst umgesetzt).
-  - Deploy (mit NOCH ALTEM Hero): https://webredrabbitmedia-64i7mxalc-toms-projects-17d37f0b.vercel.app
+## GOAL
+Leistungsseite `app/relaunch-preview/leistungen/page.tsx` (localhost:9000/relaunch-preview/leistungen) neu gestalten. Thomas-Feedback (20.07): "nicht schlecht, aber die Abstaende dazwischen passen nicht, und der Text klingt nach KI-blabla, neu schreiben nach unseren Regeln". DREI Baustellen: (A) Hero-Spacing/Text-Cutoff fixen, (B) Copy komplett neu (Anti-KI, Red-Rabbit-Stimme), (C) Seiten-Aufbau so, dass ein Laie AN DER HAND GEFUEHRT wird und versteht: "oh, ich bekomme eine Website MIT einem Mitarbeiter/Agenten, und kann weitere dazubuchen, die Arbeit fuer mich machen. Cool." Leicht + vertraulich, aber fuehrend.
 
-## OFFEN = DER HERO (einziger offener Punkt, Thomas 20.07. abgelehnt)
-Thomas: "genau so der Aufbau wie bei ueber-uns, nur mit Zahnrad." + Dauer-Standard fuer ALLE
-neuen Seiten (Memory [[feedback_subpage_hero_ueberuns_mechanik_standard]]).
+## DER KERN (Positionierung — DAS ist das Besondere)
+Red Rabbit macht Websites (wie andere auch) ABER das Alleinstellungsmerkmal: der Kunde bekommt ein BACKEND mit AGENTEN. Nicht nur WordPress-Style Texte/Bilder aendern, sondern echte Mitarbeiter-Agenten je Bereich: einer ueberwacht dass alles laeuft, einer schreibt Blogbeitraege UND schaltet sie live, einer bearbeitet Anfragen + leitet weiter, usw. EIN Agent ist standardmaessig dabei; weitere kann der Kunde MONATLICH dazubuchen. Die Leistungsseite verkauft dieses monatliche Agenten-Abo.
+- KANONISCH: `docs/strategie/LEISTUNGEN_ZUKUNFT_2026-07.md` (§6 = verbindlich, nicht neu aufrollen) + `docs/strategie/LEISTUNGEN_IA_2026-07.md` (Struktur, "KORREKTUR 19.07 (spaet)" = aktuell bindender Flow) + `docs/specs/LEISTUNGEN_SEITE_SPEC.md` (Copy-Nichtverhandelbares).
+- Basis (im einmaligen Website-Preis inklusive, unsichtbar bepreist): Hosting, Dashboard mit Klartext-Analytics (Talos = "der mitarbeitende Teil"), Content-Editing light ("Mini-WordPress"), Uptime-Alarm, Speed-/SEO-Report + 1 inkludierter Agent.
+- Bezahlte Monats-Module (aktiv verkauft): "Der Schreiber" (Content: Artikel + Social, 1-Klick-Freigabe), "Der Empfang" (Terminbuchung + Anfragen + Auto-Follow-up; Chatbot bewusst NOCH NICHT drin), Outreach-B2B (nur auf Anfrage, TKG/UWG-Rechtscheck noetig; Technik = Pumukel). Vermerkt-nicht-aktiv: Ruf-/Sichtbarkeits-/Conversion-Mitarbeiter.
+- ⭐ LUECKE ZUM FIXEN: die aktuelle Seite (`components/subpages/leistungen/WasSieKann.tsx`, `TalosSlot.tsx`) zieht die Linie "1 Agent inklusive, mehr als bezahltes Monats-Add-on" NICHT explizit. Genau das muss das Redesign klarmachen (Thomas' Hauptwunsch).
 
-AKTUELL FALSCH: Beide Heroes nutzen `SubpageHero` (components/subpages/SubpageHero.tsx). Der
-rendert den Wisch (BrushReveal) als SEPARATES Band OBEN und das Wort->Zahnrad-Morph als
-EIGENE Scroll-Sektion darunter -> oben nur leeres Wisch-Band, Wort erst beim Scrollen. Das
-ist der abgelehnte Zustand.
+## DIE 3 WEBSITE-TYPEN + PREIS-REGEL (HART)
+3 Arten: One-Pager (Salespage), Business-Page (mehrere Seiten), "auf Anfrage". Doku: **Starter 950 EUR** (One-Pager), **Business 2.900 EUR** (Multi-Page, "beliebteste Wahl", Dashboard inkl.), **Premium ab 4.900 EUR** (umfangreich/custom), + **Custom-Zeile ohne Preis** (grosse/besondere Projekte, Shops, Sonderfunktionen individuell).
+- REGEL (woertlich Brief + Spec): "Preise/Zahlen sind autoritativ. Nur 950 / 2.900 / ab 4.900 verwenden. Nie 790." (ACHTUNG: `CLAUDE.md` nennt noch veraltet "790 Starter" — UEBERHOLT, ignorieren, 950 gilt.)
+- ⚠️ Thomas sagte "auf anfrage ba 6 euro glaub ich" — dieses "6 EUR" EXISTIERT NIRGENDS in der Doku (er war selbst unsicher). Koennte 6000, ein Monats-Modul-Preis, oder Verwechslung sein. NICHT erfinden, NICHT auf die Seite -> ZUERST Thomas fragen was "6 EUR" meint, bevor irgendeine Zahl ausser 950/2900/ab-4900 erscheint.
 
-RICHTIG = die ueber-uns-"painting"-Mechanik (EINE Sticky-Szene, alles zusammen):
-components/subpages/ueber-uns-demo/{demo.css, demo.body.html, demo.engine.jstext} + Wrapper
-UeberUnsDemoClient. Struktur (demo.body.html): main-sticky mit
-  - layer-deck = grosses WORT (weisses Deck, oben sofort sichtbar)
-  - layer-base = navy reveal-msg (Botschaft), per mask-v1 + gooey freigewischt (cursor-dot,
-    Hinweis "Maus ueber das Bild bewegen") -> Wort UND Wisch in DERSELBEN Ansicht
-  - dann Wort zerfaellt (Golden-Angle-Burst) -> FIGUR setzt sich zusammen, Text (eyebrow/
-    statement/story) scrollt seitlich.
+## COPY-REGELN (der "klingt nach KI"-Fix)
+- Site-Copy = DU-Anrede ("wir"=Agentur, "du"=Kunde), `docs/UNTERSEITEN_STIL.md` §6. (Blog dagegen = Sie, `content-engine/voice/house.md` — NICHT die Leistungsseiten-Stimme.)
+- HARTE VERBOTE ueberall: kein Gedankenstrich (–), kein "nicht nur… sondern auch", keine Dreierfiguren/rule-of-three, kein "in der heutigen schnelllebigen Welt", kein Buzzword-Hochglanz, keine makellos ausbalancierten Werbesaetze, keine Emojis, echte Umlaute. Wort "KI" NICHT sichtbar (Faehigkeit statt Technik framen). Telefonnummer nie im Klartext (nur Button + tel:).
+- Open-Loop-Hook: oben Neugier-Luecke aufreissen ("Moment, was?!"), bewusst offen, Aufloesung erst am Ende.
+- GUTE-Copy-Referenz (ueber-uns-Hero, `components/subpages/ueber-uns-demo/demo.body.html`): kurze konkrete Saetze, ein echter spezifischer Missstand statt abstrakter Behauptung, keine Adjektive die verkaufen. Beispiel: "Stundensaetze, die niemand nachrechnen kann. Projekte, die sich ziehen, weil es sich lohnt, sie zu ziehen. Und am Ende eine Website, die zwar huebsch aussieht, aber niemand findet sie." DAS ist die Latte.
 
-### Rezept (so bauen, NICHT neu erfinden)
-1. ZUERST anschauen wie **kontakt-demo** die Figur getauscht hat: kontakt nutzt dieselbe
-   ueber-uns-Szene, aber eine Gluehbirne statt Kopf. components/subpages/kontakt-demo/ vs
-   ueber-uns-demo diffen -> das ist der exakte Praezedenzfall fuer einen Figur-Wechsel.
-2. Pro Seite den Demo-Ordner kopieren: `website-hero-demo`, `leistungen-hero-demo`. Je einen
-   *DemoClient wie UeberUnsDemoClient/KontaktDemoClient. Server-Page liest demo.* pro Request
-   (fs.readFileSync IN der Komponente) und uebergibt an den Client. (Muster: ueber-uns/page.tsx,
-   kontakt/page.tsx.)
-3. Anpassen: Wort ("Website" / "Leistungen"), reveal-msg (Wisch-Botschaft), Text (eyebrow/
-   statement/story) — Copy mit Thomas/Opus, Hausregeln.
-4. FIGUR = ZAHNRAD (comp1). Die Engine baut die Figur aus einem inline Fragment-Array `COMP5`
-   (demo.engine.jstext, Zeile ~7), via `const P=COMP5.map(...)` (Z.351). comp5 = Kopf. Fuer
-   das Zahnrad die Fragmentdaten von **comp1** (lib/relaunch/morph/at-shapes-comp1.json,
-   comp1 = das Zahnrad, im Browser verifiziert) in das COMP5-Format bringen (Felder
-   d/x/y/rot/sx/sy/fx/fy/fr/fs/e/a). ACHTUNG: at-shapes-comp1.json hat ein ANDERES Schema
-   (x/y/rot/sx/sy/d + op/hidden, KEINE fx/fy/fr/fs/e/a) -> Mapping/Ableitung noetig (fx/fy =
-   Endposition, e/a = Ein-/Zusammenbau-Timing wie in subpageStage.ts synthetisiert). Am
-   saubersten: schauen woher ueber-uns COMP5 generiert wurde (Mess-Skript?) bzw. wie
-   kontakt-demo seine Figurdaten hat. K12 (Z.750) nutzt NUR 4 bespoke Zahnrad-Arm-Pfade fuers
-   ">>", NICHT die volle Figur — nicht verwechseln.
-5. Ausserdem comp5-spezifisch anpassen: `EYE=1` (Z.350, Navy-Fragment = groesstes
-   Seitenverhaeltnis; fuer comp1 neu bestimmen wie HomeMorph: max(W/H,H/W)) und `VB` (Z.340,
-   viewBox der Figur; fuer das Zahnrad passend setzen).
-6. `SubpageHero`-Einbindung aus beiden page.tsx entfernen (der .rr-Wrapper-Block mit
-   <SubpageHero ...>), durch den neuen *DemoClient ersetzen. SubpageHero selbst ist Fremd-
-   Strang, nicht loeschen.
-7. DEMO-first (Thomas-Regel demo-vor-umbau): ERST die Website-Seite bauen, im Browser gegen
-   /ueber-uns gegenpruefen, Thomas zeigen, DANN auf Leistungen uebertragen. Nicht blind fertig
-   melden.
+## HERO-FIX (praezise Stellen — siehe Memory relaunch-subpage-hero-kanonisch)
+Der Leistungs-Hero ist NICHT SubpageHero.tsx, sondern ein eigener Klon `components/subpages/leistungen-hero2-demo/{demo.css, demo.body.html, demo.engine.jstext}` (+ Wrapper `LeistungenHero2Client.tsx`, bootet nur + portalt die Zahnrad-Figur via MorphSculpture comp=0). Text-Cutoff-Ursache: Copy wurde verbatim (zu lang) in ein fixes maskiertes Fenster gekippt, das auf kurze ueber-uns-Absaetze getunt war. Fix an DREI Stellen gemeinsam:
+- Copy kuerzen/chunken: `demo.body.html` `.text-move`-Block (~L26-39).
+- Fenster/Masken/Margins: `demo.css` — `.text-window{height:78vh}` + mask-Stops (12%/86%) + `.t-eyebrow/.t-statement/.t-ch/.t-close` margins (~L132-162).
+- Scroll->Opacity-Math: `demo.engine.jstext` `measureStory`/`applyStoryText` (~L428-449).
+- NICHT im React-Wrapper suchen (keine Spacing-Logik). Klon-Ordner ist Leistungs-eigen -> retunen beruehrt ueber-uns nicht. Die 5 kanonischen Hero-Root-Causes leben in `MorphSculpture.tsx` (siehe Memory).
 
-## Relevante Befehle
-- Dev: `cd ~/dev/redrabbit && npm run dev -- --port 9000`  (NIE gleichzeitig `next build`!)
-- Browser-QA: agent-browser (`agent-browser set viewport 1440 900`, `... set media reduced-motion`,
-  `... set viewport 390 844` fuer Mobile). Hero real durchscrollen (KEINE __subMorphU-Hooks,
-  die taeuschen — Thomas scrollt real).
-- tsc: `npx tsc --noEmit`  ·  Tests: `npx vitest run`
-- Vorbild: /relaunch-preview/ueber-uns , /relaunch-preview/kontakt
+## WETTBEWERBER-IDEEN (neuzeitwerber.de — studieren, klauen erlaubt)
+URLs: /website-erstellen-lassen/, /ki-automatisierung/, /ki-website/, /ki-kundenservice/. Uebertragbar: (1) Selbst-Check-Liste ("hast du diese Symptome?") VOR dem Pitch = Verkauf als Diagnose; (2) Ehrlichkeits-Framing weit oben "nimmt dir Arbeit ab, ersetzt keine Menschen" (deckt sich mit unserer Spec-Regel, nur klarer); (3) konkrete ROI-Rechnung (Stunden gespart x Stundensatz) macht "spart Zeit" greifbar; (4) "fuer wen (noch) nicht"-Sektion (Ehrlichkeit, haben wir geplant aber nicht auf der Seite).
+
+## VORSCHLAG SEITEN-AUFBAU (Startpunkt, mit Thomas schaerfen)
+1. Hero (fix, s.o.): Hook "Eine Website, die fuer dich arbeitet" + eine Zeile, die die Neugier-Luecke aufreisst (was heisst "arbeitet"?).
+2. Aha-Moment: Website vs. "Website + Mitarbeiter" — passiv (steht nur da) vs. aktiv (erledigt Aufgaben). Kurz, bildlich.
+3. Was IMMER dabei ist (Basis): Website + Dashboard/Talos + 1 Agent inklusive. Klarmachen: schon mehr als WordPress.
+4. Die 3 Website-Typen (Starter/Business/Premium 950/2900/ab-4900 + Custom auf Anfrage), "beliebteste Wahl" markiert.
+5. Deine Mitarbeiter zum Dazubuchen (KERN!): Der Schreiber / Der Empfang / Outreach (+ "weitere auf Anfrage"). Je Modul: was es DIR abnimmt (nicht wie es technisch geht). Monatlich, skaliert.
+6. Selbst-Check ("brauchst du das?") + ROI-Gefuehl.
+7. So laeuft es ab (kurze Schritte) + "fuer wen (noch) nicht".
+8. FAQ (Link zur FAQ-Unterseite) + Referenzen (Link zur Referenzen-Seite) + CTA (Anrufen-Button/Formular).
+Scroll-Effekte erlaubt (auch horizontal zum Info-Trennen), solange sie fuehren statt ablenken.
+
+## Stand / Was liegt vor
+- WIP gesichert lokal (nicht gepusht): Commit `075b511` "wip(relaunch): Leistungsseite-Stand vor Redesign gesichert". Davor df1b859/3eea8cb/91477fd (Hero auf Klon-Engine + Zahnrad, Produkt-zuerst-Reframe).
+- UNTRACKED (bewusst nicht committet, ANSEHEN!): `14_typing_*.png` (8 Screenshots, vmtl. Junk), `app/preise-preview/` (evtl. echte neue Preis-Seite-Arbeit!), `app/relaunch-preview/leistungen-hero2/` (alternativer Hero-Versuch!).
+- Fruehere Hero-Fix-Versuche (SubpageHero Zwei-Sektionen) von Thomas abgelehnt; der aktuelle Klon-Ansatz loest die "zwei zerrissene Teile"-Beschwerde. OFFEN ist NUR noch: Copy-Laenge/Spacing + Copy-Qualitaet + Seiten-Aufbau.
+
+## ZUERST LESEN (Reihenfolge)
+1. Memory: relaunch-subpage-hero-kanonisch + reference_ueber_uns_template_rezept + feedback_ai_tells_schreibstil + feedback_copy_open_loop_hooks + project_redrabbit_leistungen_architektur_2026_07_17.
+2. Docs: `docs/strategie/LEISTUNGEN_IA_2026-07.md` + `docs/strategie/LEISTUNGEN_ZUKUNFT_2026-07.md` §6 + `docs/specs/LEISTUNGEN_SEITE_SPEC.md` + `docs/UNTERSEITEN_STIL.md` + `brand/README.md` + `brand/PREISE_SEITE_BRIEF.md`.
+3. Code: `app/relaunch-preview/leistungen/page.tsx`, `components/subpages/leistungen/*`, `components/subpages/leistungen-hero2-demo/*`, `components/subpages/MorphSculpture.tsx`.
+4. Wettbewerber-URLs oben.
+Dann Plan (TodoWrite), 1-2 offene Punkte mit Thomas klaeren (v.a. "6 EUR"?), dann bauen + browser-verifizieren.
