@@ -1,0 +1,77 @@
+/* ============================================================
+   LEISTUNGEN-HUB — Seiten-lokale Styles (lh-*)
+   Nur Layout/Spacing auf Basis der rr-*-Tokens aus styleguide.css /
+   components/relaunch/subpages.css — keine neuen Farben, kein neues
+   Easing. Alles unter .rr (siehe UNTERSEITEN_STIL.md §1, Ownership:
+   diese Datei ist NEU und gehoert zur Leistungen-Seite, styleguide.css
+   und subpages.css bleiben unberuehrt).
+   ============================================================ */
+
+/* ---- 2 · SLOT Bau-Moment (statischer Fallback) ---- */
+.rr .lh-baumoment__eyebrow { margin-bottom: 20px; }
+.rr .lh-baumoment__title { max-width: 14em; margin: 0 0 24px; color: var(--rr-navy); }
+.rr .lh-baumoment__body { max-width: 640px; color: var(--rr-ink-soft); }
+
+/* ---- 3 · Was du bekommst ---- */
+.rr .lh-bekommst__title { max-width: 14em; margin: 20px 0 clamp(36px, 5vw, 56px); color: var(--rr-navy); }
+.rr .lh-bekommst__grid { display: flex; flex-wrap: wrap; gap: clamp(16px, 2vw, 24px); }
+/* Karten brauchen hier zusaetzlich zum Label einen Fliesstext (Karte+Text aus
+   der Copy) -> Fixhoehe der globalen rr-card-soft aufheben, nur in dieser Sektion. */
+.rr .lh-bekommst__grid .rr-card-soft {
+  width: 240px;
+  height: auto;
+  min-height: 250px;
+  justify-content: flex-start;
+}
+.rr .lh-bekommst__grid .rr-card-soft__label { margin-bottom: 4px; }
+.rr .lh-bekommst__grid .rr-card-soft__text {
+  font-family: var(--rr-font-ui);
+  font-size: 14px;
+  line-height: 1.44;
+  color: var(--rr-ink-soft);
+  margin: 0;
+}
+
+/* ---- 4 · Scharnier-Zeile ---- */
+.rr .lh-scharnier { padding-top: clamp(56px, 8vw, 104px); padding-bottom: clamp(56px, 8vw, 104px); }
+.rr .lh-scharnier__text { max-width: 17em; margin: 0 auto; text-align: center; color: var(--rr-navy); }
+
+/* ---- 5 · SLOT Talos-Auftritt (statischer Fallback) ---- */
+.rr .lh-talos__title { max-width: 14em; margin: 20px 0 24px; color: var(--rr-navy); }
+.rr .lh-talos__proof { max-width: 620px; color: var(--rr-ink-soft); margin: 0 0 clamp(28px, 4vw, 40px); }
+
+/* ---- 6 · Referenzen ---- */
+.rr .lh-referenzen__title { max-width: 14em; margin: 20px 0 clamp(32px, 4vw, 48px); color: var(--rr-navy); }
+.rr .lh-referenzen__meta { margin: 20px 0 clamp(32px, 4vw, 48px); }
+.rr .lh-referenzen__quotes { display: flex; flex-direction: column; gap: clamp(20px, 3vw, 32px); }
+
+/* ---- 7 · Mehr als eine normale Website ---- */
+.rr .lh-vergleich__title { max-width: 15em; margin: 20px 0 clamp(36px, 5vw, 56px); color: var(--rr-navy); }
+.rr .lh-vergleich__grid { align-items: stretch; }
+.rr .lh-vergleich__closing { max-width: 46em; margin: clamp(24px, 4vw, 40px) 0 0; color: var(--rr-ink-soft); }
+
+/* ---- 8 · FAQ zweispaltig (Ink-Label links sticky, Akkordeon rechts) ---- */
+.rr .lh-faq__grid { display: grid; grid-template-columns: 280px 1fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+.rr .lh-faq__label { position: sticky; top: clamp(24px, 4vh, 64px); }
+.rr .lh-faq__heading { margin-top: 20px; color: var(--rr-navy); }
+.rr .lh-faq__dot { color: var(--rr-red); }
+.rr .lh-faq__priceLink { margin-top: clamp(20px, 3vw, 32px); }
+@media (max-width: 900px) {
+  .rr .lh-faq__grid { grid-template-columns: 1fr; }
+  .rr .lh-faq__label { position: static; margin-bottom: 24px; }
+}
+
+/* ---- 9 · Schluss-CTA (Navy-Band, wie ueber-uns-preview §6) ---- */
+.rr .lh-cta { background: var(--rr-navy); text-align: center; }
+.rr .lh-cta__eyebrow { color: rgba(246, 245, 241, 0.82); margin: 0 auto 16px; }
+.rr .lh-cta__title { color: #f6f5f1; max-width: 13em; margin: 0 auto; }
+.rr .lh-cta__subline { color: rgba(246, 245, 241, 0.75); max-width: 34em; margin: 16px auto 0; }
+.rr .lh-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: clamp(32px, 5vh, 48px); }
+/* rr-btn-sweep hat im Ruhezustand Ink-Text (fuer helle Flaechen); auf dem
+   Navy-Band den Text hell setzen (Kontrast-Fix, Muster aus ueber-uns-preview). */
+.rr .lh-cta .rr-btn-sweep { color: #f6f5f1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rr .lh-bekommst__grid > *,
+  .rr .lh-vergleich__grid > * { transition: none; }
+}

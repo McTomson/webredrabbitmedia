@@ -1,0 +1,127 @@
+/* ============================================================
+   LEISTUNGEN/TALOS — Seiten-lokale Styles (lt-*)
+   Ergaenzt die echten rr-*-Bauteile aus styleguide.css / subpages.css
+   nur um Layout/Spacing fuer diese eine Unterseite. Keine neuen Farben,
+   kein neues Easing (UNTERSEITEN_STIL.md §1: Ownership dieser Datei
+   liegt bei /leistungen/talos, styleguide.css bleibt unberuehrt).
+   ============================================================ */
+
+/* Wrapper fuer den SSR-Textkorpus: liegt im normalen Fluss NACH der
+   TalosPresentation, muss aber ueber deren fixer 3D-Buehne (tp-stage,
+   z-index:0) liegen, sonst faellt der Text dahinter. */
+.rr .lt-substance {
+  position: relative;
+  z-index: 1;
+  background: var(--rr-paper, #ffffff);
+}
+
+/* ---- 1 · Was Talos ist ---- */
+.rr .lt-wer__title { max-width: 15em; margin: 20px 0 24px; color: var(--rr-navy); }
+.rr .lt-wer__body { max-width: 680px; color: var(--rr-ink-soft); }
+
+/* ---- 2 · Das Fundament ---- */
+.rr .lt-fundament__title { max-width: 15em; margin: 20px 0 clamp(36px, 5vw, 56px); color: var(--rr-navy); }
+.rr .lt-fundament__outro,
+.rr .lt-module__outro,
+.rr .lt-arbeitstag__outro { max-width: 620px; margin-top: clamp(24px, 3vw, 36px); color: var(--rr-ink-soft); }
+
+/* Karten-Grid, das die echten rr-card-soft-Bauteile traegt. rr-card-soft ist
+   von Haus aus eine feste 200x250-Kachel (kurzes Label); hier tragen die
+   Karten zusaetzlich einen Fliesstext, darum wird nur Groesse/Ausrichtung
+   lokal angepasst (Farbe/Schatten/Typo bleiben die echten Klassen). */
+.rr .lt-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 2vw, 24px);
+}
+@media (max-width: 720px) {
+  .rr .lt-card-grid { grid-template-columns: 1fr; }
+}
+.rr .lt-card-grid .rr-card-soft {
+  width: 100%;
+  height: auto;
+  min-height: 180px;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.rr .lt-card-grid .rr-card-soft__body {
+  font-family: var(--rr-font-ui);
+  font-size: 15px;
+  line-height: 1.55;
+  margin: 0;
+  color: var(--rr-ink-soft);
+}
+.rr .rr-card-soft--red .rr-card-soft__body,
+.rr .rr-card-soft--navy .rr-card-soft__body { color: rgba(255, 255, 255, 0.82); }
+
+/* ---- 3 · Mietbare Module ---- */
+.rr .lt-module__title { max-width: 15em; margin: 20px 0 clamp(36px, 5vw, 56px); color: var(--rr-navy); }
+.rr .lt-module__note {
+  margin-top: clamp(20px, 2.6vw, 28px);
+  padding: 22px 24px;
+  border: 1px solid var(--rr-line);
+  max-width: 680px;
+}
+.rr .lt-module__note-label {
+  display: block;
+  font-family: var(--rr-font-ui);
+  font-weight: 650;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rr-ink);
+  margin: 0 0 8px;
+}
+.rr .lt-module__note-text { color: var(--rr-ink-soft); margin: 0; }
+
+/* ---- 4 · Ein normaler Arbeitstag (Zeitleiste) ---- */
+.rr .lt-arbeitstag__title { max-width: 15em; margin: 20px 0 clamp(32px, 4vw, 48px); color: var(--rr-navy); }
+.rr .lt-timeline { list-style: none; margin: 0; padding: 0; max-width: 680px; border-left: 2px solid var(--rr-line); }
+.rr .lt-timeline__item { position: relative; padding: 0 0 clamp(24px, 3vw, 34px) 28px; }
+.rr .lt-timeline__item:last-child { padding-bottom: 0; }
+.rr .lt-timeline__item::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--rr-red);
+}
+.rr .lt-timeline__time {
+  display: block;
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--rr-ink);
+  margin: 0 0 4px;
+}
+.rr .lt-timeline__text { color: var(--rr-ink-soft); margin: 0; }
+
+/* ---- 5 · Frag Talos ---- */
+.rr .lt-frag { background: #f4f4f2; }
+.rr .lt-frag__title { max-width: 15em; margin: 20px 0 14px; color: var(--rr-navy); }
+.rr .lt-frag__intro { max-width: 560px; color: var(--rr-ink-soft); }
+
+/* ---- 6 · FAQ zweispaltig (Muster aus components/subpages/leistungen/LeistungenFaq.tsx) ---- */
+.rr .lt-faq__grid { display: grid; grid-template-columns: 280px 1fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+.rr .lt-faq__label { position: sticky; top: clamp(24px, 4vh, 64px); }
+.rr .lt-faq__heading { margin-top: 20px; color: var(--rr-navy); }
+.rr .lt-faq__dot { color: var(--rr-red); }
+@media (max-width: 900px) {
+  .rr .lt-faq__grid { grid-template-columns: 1fr; }
+  .rr .lt-faq__label { position: static; margin-bottom: 24px; }
+}
+
+/* ---- 7 · Schluss-CTA (Navy-Band, Muster aus SchlussCta.tsx) ---- */
+.rr .lt-cta { background: var(--rr-navy); text-align: center; }
+.rr .lt-cta__title { color: #f6f5f1; max-width: 15em; margin: 0 auto; }
+.rr .lt-cta__sub { color: rgba(246, 245, 241, 0.78); max-width: 46em; margin: 18px auto 0; }
+.rr .lt-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: clamp(32px, 5vh, 48px); }
+.rr .lt-cta .rr-btn-sweep { color: #f6f5f1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rr .lt-card-grid .rr-card-soft { transition: none; }
+}

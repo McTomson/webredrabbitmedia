@@ -1,0 +1,83 @@
+/* ============================================================
+   LEISTUNGEN / WEBSITE ("Der Bau") — Seiten-lokale Styles (lw-*)
+   Nur Layout/Spacing auf Basis der rr-*-Tokens aus styleguide.css /
+   components/relaunch/subpages.css — keine neuen Farben, kein neues
+   Easing. Alles unter .rr (UNTERSEITEN_STIL.md §1). Diese Datei ist NEU
+   und gehoert ausschliesslich zu dieser Unterseite; styleguide.css und
+   subpages.css bleiben unberuehrt (Ownership).
+   ============================================================ */
+
+/* ---- 1 · Was entsteht ---- */
+.rr .lw-entsteht__title { max-width: 15em; margin: 20px 0 clamp(28px, 4vw, 40px); color: var(--rr-navy); }
+.rr .lw-entsteht__body { max-width: 640px; color: var(--rr-ink-soft); }
+
+/* ---- 2 · Wie wir bauen (3 Schritte) ---- */
+.rr .lw-bauen__title { max-width: 14em; margin: 20px 0 clamp(36px, 5vw, 56px); color: var(--rr-navy); }
+.rr .lw-bauen__grid { align-items: stretch; }
+.rr .lw-step {
+  width: 100%;
+  height: auto;
+  min-height: 220px;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.rr .lw-step__label { margin-top: 2px; }
+.rr .lw-step__body { color: var(--rr-ink-soft); }
+
+/* ---- 3 · Was inklusive ist (Fundament-Grid) ---- */
+.rr .lw-fund__title { max-width: 14em; margin: 20px 0 clamp(32px, 4vw, 48px); color: var(--rr-navy); }
+.rr .lw-fund__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 1.6vw, 20px);
+}
+.rr .lw-fund__card {
+  width: 100%;
+  height: auto;
+  min-height: 168px;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.rr .lw-fund__text {
+  font-family: var(--rr-font-display);
+  font-weight: 560;
+  font-size: 18px;
+  line-height: 1.28;
+  letter-spacing: -0.005em;
+  margin: 0;
+}
+.rr .lw-fund__closing { margin-top: clamp(28px, 4vw, 40px); max-width: 560px; color: var(--rr-ink-soft); }
+@media (max-width: 1180px) { .rr .lw-fund__grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 760px) { .rr .lw-fund__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .rr .lw-fund__grid { grid-template-columns: 1fr; } }
+
+/* ---- 4 · Fuer wen sich das (noch) nicht lohnt ---- */
+.rr .lw-nicht { background: var(--rr-surface); }
+.rr .lw-nicht__title { max-width: 16em; margin: 20px 0 clamp(28px, 4vw, 40px); color: var(--rr-navy); }
+.rr .lw-nicht__body { max-width: 660px; color: var(--rr-ink-soft); }
+
+/* ---- FAQ zweispaltig (Ink-Label links sticky, Akkordeon rechts) ---- */
+.rr .lw-faq__grid { display: grid; grid-template-columns: 280px 1fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+.rr .lw-faq__label { position: sticky; top: clamp(24px, 4vh, 64px); }
+.rr .lw-faq__heading { margin-top: 20px; color: var(--rr-navy); }
+.rr .lw-faq__dot { color: var(--rr-red); }
+@media (max-width: 900px) {
+  .rr .lw-faq__grid { grid-template-columns: 1fr; }
+  .rr .lw-faq__label { position: static; margin-bottom: 24px; }
+}
+
+/* ---- Schluss-CTA (Navy-Band) ---- */
+.rr .lw-cta { background: var(--rr-navy); text-align: center; }
+.rr .lw-cta__title { color: #f6f5f1; max-width: 15em; margin: 0 auto; }
+.rr .lw-cta__sub { color: rgba(246, 245, 241, 0.78); max-width: 480px; margin: 20px auto 0; }
+.rr .lw-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: clamp(32px, 5vh, 48px); }
+/* rr-btn-sweep hat im Ruhezustand Ink-Text (fuer helle Flaechen); auf dem
+   Navy-Band den Text hell setzen (Kontrast-Fix, Muster aus leistungen.css).
+   rr-btn-frame--red bleibt unveraendert Rot-auf-Navy (identisches Muster
+   wie im Hub-SchlussCta, dort mit dem Anrufen-Button erprobt). */
+.rr .lw-cta .rr-btn-sweep { color: #f6f5f1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rr .lw-fund__grid > *,
+  .rr .lw-bauen__grid > * { transition: none; }
+}
