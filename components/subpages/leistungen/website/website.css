@@ -51,6 +51,79 @@
 @media (max-width: 760px) { .rr .lw-fund__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .rr .lw-fund__grid { grid-template-columns: 1fr; } }
 
+/* ---- Facetten-Dach (spannt Neu / Relaunch / Gestaltung auf) ---- */
+.rr .lw-facetten-dach {
+  max-width: 640px;
+  margin: 0 0 clamp(44px, 6vw, 72px);
+  padding-bottom: clamp(28px, 4vw, 40px);
+  border-bottom: 1px solid var(--rr-line);
+  font-family: var(--rr-font-display);
+  font-weight: 560;
+  font-size: clamp(19px, 2vw, 22px);
+  line-height: 1.42;
+  letter-spacing: -0.006em;
+  color: var(--rr-navy);
+}
+
+/* ---- Facette · Neu bauen ---- */
+.rr .lw-neu__title { max-width: 15em; margin: 20px 0 clamp(28px, 4vw, 40px); color: var(--rr-navy); }
+.rr .lw-neu__body { max-width: 660px; color: var(--rr-ink-soft); }
+
+/* ---- Facette · Relaunch (Warnsignale + Beruhigung) ---- */
+.rr .lw-relaunch__title { max-width: 15em; margin: 20px 0 clamp(20px, 3vw, 28px); color: var(--rr-navy); }
+.rr .lw-relaunch__body { max-width: 640px; color: var(--rr-ink-soft); margin-bottom: clamp(24px, 3.5vw, 36px); }
+.rr .lw-relaunch__signals { list-style: none; margin: 0 0 clamp(36px, 5vw, 56px); padding: 0; max-width: 720px; }
+.rr .lw-relaunch__signal {
+  font-family: var(--rr-font-display);
+  font-weight: 540;
+  font-size: clamp(17px, 1.8vw, 19px);
+  line-height: 1.4;
+  color: var(--rr-navy);
+  padding: clamp(14px, 1.8vw, 18px) 0 clamp(14px, 1.8vw, 18px) 26px;
+  border-top: 1px solid var(--rr-line);
+  position: relative;
+}
+.rr .lw-relaunch__signal::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(clamp(14px, 1.8vw, 18px) + 0.62em);
+  width: 8px;
+  height: 8px;
+  background: var(--rr-red);
+}
+.rr .lw-relaunch__signal:last-child { border-bottom: 1px solid var(--rr-line); }
+.rr .lw-relaunch__ruhe {
+  background: var(--rr-surface);
+  padding: clamp(24px, 3.5vw, 40px);
+  max-width: 720px;
+}
+.rr .lw-relaunch__ruhe-eyebrow { margin: 0 0 14px; }
+.rr .lw-relaunch__ruhe-body { max-width: 620px; color: var(--rr-ink-soft); margin: 0; }
+
+/* ---- Facette · Gestaltung, die Anfragen bringt ---- */
+.rr .lw-design__title { max-width: 15em; margin: 20px 0 clamp(24px, 3.5vw, 36px); color: var(--rr-navy); }
+.rr .lw-design__body { max-width: 660px; color: var(--rr-ink-soft); margin-bottom: clamp(28px, 4vw, 40px); }
+.rr .lw-design__list { list-style: none; margin: 0; padding: 0; max-width: 640px; }
+.rr .lw-design__item {
+  font-size: clamp(16px, 1.7vw, 18px);
+  line-height: 1.45;
+  color: var(--rr-ink-soft);
+  padding: 12px 0 12px 26px;
+  border-top: 1px solid var(--rr-line);
+  position: relative;
+}
+.rr .lw-design__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(12px + 0.6em);
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--rr-red);
+}
+.rr .lw-design__item:last-child { border-bottom: 1px solid var(--rr-line); }
+
 /* ---- Selbst mit Baukasten vs. mit uns (2-Spalten-Vergleich) ---- */
 .rr .lw-vergleich__title { max-width: 16em; margin: 20px 0 clamp(36px, 5vw, 56px); color: var(--rr-navy); }
 .rr .lw-vergleich__grid { align-items: stretch; }

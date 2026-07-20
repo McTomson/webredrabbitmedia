@@ -8,6 +8,7 @@ import JsonLd from '@/components/JsonLd';
 import BauMoment from '@/components/subpages/leistungen/BauMoment';
 import WasDuBekommst from '@/components/subpages/leistungen/WasDuBekommst';
 import Scharnierzeile from '@/components/subpages/leistungen/Scharnierzeile';
+import WasSieKann from '@/components/subpages/leistungen/WasSieKann';
 import TalosSlot from '@/components/subpages/leistungen/TalosSlot';
 import Referenzen from '@/components/subpages/leistungen/Referenzen';
 import MehrAlsWebsite from '@/components/subpages/leistungen/MehrAlsWebsite';
@@ -172,10 +173,14 @@ export default function LeistungenPreviewPage() {
         {/* 3 · Was du bekommst */}
         <WasDuBekommst />
 
-        {/* 4 · Scharnier-Zeile — Talos wird konzeptionell eingefuehrt */}
+        {/* 4 · Scharnier-Zeile — Kipp-Punkt vom Bau zur mitarbeitenden Website */}
         <Scharnierzeile />
 
-        {/* 5 · SLOT: Talos-Auftritt */}
+        {/* 4b · Was sie zusaetzlich kann — Funktionen in Klartext (Produkt-zuerst,
+                Entscheidung 20.07.), BEVOR Talos als Gesicht kommt. */}
+        <WasSieKann />
+
+        {/* 5 · SLOT: Talos-Auftritt — Talos als Gesicht der Funktionen */}
         <TalosSlot />
 
         {/* 6 · Referenzen — EIN echter Teal-Quote-Moment, Gold-Sterne */}

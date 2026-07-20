@@ -12,16 +12,19 @@ export default function TalosSlot() {
     <section className="rr-section lh-talos">
       <div className="rr-wrap lht-grid">
         <div className="lht-copy">
-          <p className="rr-eyebrow-lg">Ein Beispiel aus einer ganz normalen Nacht</p>
+          <p className="rr-eyebrow-lg">So sieht das in echt aus</p>
           <h2 className="rr-statement lh-talos__title">
             Eine Anfrage kommt um 23 Uhr rein. Du schläfst.
           </h2>
           <p className="rr-body-lg lh-talos__proof">
-            Talos schreibt zurück, bleibt freundlich, hält den Kontakt warm und
-            legt dir die Anfrage sauber für den Morgen auf den Tisch. Du wachst
-            auf und der erste Kunde des Tages wartet schon, statt dass er beim
-            nächsten Betrieb anruft. Das passiert direkt auf deiner Website,
-            nicht in irgendeiner fremden App.
+            Deine Seite fängt sie auf, bestätigt dem Interessenten, dass seine
+            Nachricht angekommen ist, und legt dir eine fertige Antwort für den
+            Morgen bereit. Du liest drüber und gibst mit einem Klick frei.
+            Standardmäßig geht nichts in deinem Namen raus, das du nicht gesehen
+            hast. Willst du, dass sie mehr allein erledigt, stellst du das um,
+            aber das entscheidest du. Das freundliche Gesicht dahinter heißt
+            Talos, und das läuft direkt auf deiner Website, nicht in einer
+            fremden App.
           </p>
           <Link
             href="/relaunch-preview/leistungen/talos"

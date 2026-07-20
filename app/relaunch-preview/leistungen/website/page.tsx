@@ -8,6 +8,9 @@ import JsonLd from '@/components/JsonLd';
 import WasEntsteht from '@/components/subpages/leistungen/website/WasEntsteht';
 import WieWirBauen from '@/components/subpages/leistungen/website/WieWirBauen';
 import WasInklusive from '@/components/subpages/leistungen/website/WasInklusive';
+import FacetteNeu from '@/components/subpages/leistungen/website/FacetteNeu';
+import FacetteRelaunch from '@/components/subpages/leistungen/website/FacetteRelaunch';
+import FacetteDesign from '@/components/subpages/leistungen/website/FacetteDesign';
 import SelbstOderMit from '@/components/subpages/leistungen/website/SelbstOderMit';
 import DeineSeite from '@/components/subpages/leistungen/website/DeineSeite';
 import NachDemLaunch from '@/components/subpages/leistungen/website/NachDemLaunch';
@@ -121,6 +124,9 @@ export default function LeistungenWebsitePreviewPage() {
         <WasEntsteht />
         <WieWirBauen />
         <WasInklusive />
+        <FacetteNeu />
+        <FacetteRelaunch />
+        <FacetteDesign />
         <SelbstOderMit />
         <DeineSeite />
         <NachDemLaunch />

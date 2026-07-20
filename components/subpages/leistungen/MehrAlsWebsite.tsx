@@ -41,7 +41,7 @@ export default function MehrAlsWebsite() {
           </div>
           <div className="rr-card rr-card--surface">
             <p className="rr-eyebrow" style={{ marginBottom: 16 }}>
-              Deine Website mit Talos
+              Deine Website, die mitarbeitet
             </p>
             <ul className="rr-check">
               {MIT_TALOS.map((t) => (

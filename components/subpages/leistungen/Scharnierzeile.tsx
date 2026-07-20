@@ -11,8 +11,8 @@ export default function Scharnierzeile() {
     <section className="lh-scharnier">
       <div className="rr-wrap rr-narrow">
         <p className="rr-statement lh-scharnier__text">
-          Deine Seite kann mehr als andere Websites, weil Talos im
-          Hintergrund für dich mitarbeitet<span className="lh-scharnier__dot">.</span>
+          Und dann hört deine Seite auf, nur schön dazustehen, und fängt an,
+          für dich zu arbeiten<span className="lh-scharnier__dot">.</span>
         </p>
       </div>
 
