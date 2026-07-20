@@ -1922,3 +1922,66 @@ quelle: https://support.google.com/business/answer/7091?hl=en
 quelle_name: Google Business Profile Help - Tips to improve your local ranking on Google
 geprueft_am: 2026-07-19
 recheck_nach: 2027-01-15
+
+## t47-2026-07-20-214
+cluster: 1
+keywords: lange, dauert, maßnahmen, messbare, ergebnisse, liefern
+aussage: Google selbst schreibt in der offiziellen SEO Starter Guide, dass Änderungen an einer Website unterschiedlich schnell wirken: manche Änderungen zeigen sich in wenigen Stunden, andere können mehrere Monate brauchen, bis sie sich im Ranking niederschlagen; Google empfiehlt, mindestens einige Wochen zu warten, bevor man die Wirkung einer SEO-Maßnahme bewertet.
+quelle: https://developers.google.com/search/docs/fundamentals/seo-starter-guide
+quelle_name: Google Search Central - Search Engine Optimization (SEO) Starter Guide
+geprueft_am: 2026-07-20
+recheck_nach: 2027-01-16
+
+## t47-2026-07-20-215
+cluster: 1
+keywords: lange, dauert, maßnahmen, messbare, ergebnisse, liefern
+aussage: Zur Wirkung nach Core Updates stellt Google Search Central klar: 'some changes can take effect in a few days, but it could take several months for our systems to learn and confirm that the site as a whole is now producing helpful, reliable, people-first content in the long term.' Sichtbare Ranking-Verbesserungen ganzer Sites brauchen häufig Monate und teils den nächsten Core Update.
+quelle: https://developers.google.com/search/docs/appearance/core-updates
+quelle_name: Google Search Central - Google Search's Core Updates
+geprueft_am: 2026-07-20
+recheck_nach: 2027-01-16
+
+## t47-2026-07-20-216
+cluster: 1
+keywords: lange, dauert, maßnahmen, messbare, ergebnisse, liefern
+aussage: Als praktischer Richtwert für den DACH-Raum gilt: Erste sichtbare SEO-Ergebnisse (steigende Impressionen, kleinere Ranking-Verbesserungen) treten meist nach 3-6 Monaten auf, stabile und messbare Top-Positionen nach 6-12 Monaten - basierend auf Branchenstudien u.a. von Ahrefs (2024) und der oft zitierten Google-Aussage von Maile Ohye, wonach seriöse SEO in der Regel 4 bis 12 Monate bis zu ersten Ergebnissen benötigt.
+quelle: https://wolf-marketing.at/wissenswert/wie-lange-dauert-seo
+quelle_name: Wolf Marketing (AT) - Wie lange dauert SEO?
+geprueft_am: 2026-07-20
+recheck_nach: 2027-01-16
+
+## t47-2026-07-20-217
+cluster: 1
+keywords: lange, dauert, maßnahmen, messbare, ergebnisse, liefern
+aussage: Die Zeit bis zum SEO-Erfolg skaliert stark mit Unternehmensform und Wettbewerb: lokale EPU (z.B. 'Ernährungsberatung Graz') sehen erste Anfragen nach 3-6 Monaten, KMU mit regionalem Angebot (z.B. 'Bauunternehmen Linz') brauchen 4-8 Monate für Top-10-Rankings, DACH-weite Dienstleister 6-12 Monate für stabile Sichtbarkeit, E-Commerce mit starkem Wettbewerb 9-18 Monate für nachhaltigen organischen Traffic.
+quelle: https://wolf-marketing.at/wissenswert/wie-lange-dauert-seo
+quelle_name: Wolf Marketing (AT) - Realistische SEO-Zeiträume je nach Unternehmensform
+geprueft_am: 2026-07-20
+recheck_nach: 2027-01-16
+
+## t47-2026-07-20-218
+cluster: 1
+keywords: lange, dauert, maßnahmen, messbare, ergebnisse, liefern
+aussage: Aufteilung nach Maßnahmentyp: On-Page-Optimierung (Meta-Tags, Keywords, interne Verlinkung) zeigt Wirkung nach 1-3 Monaten, technisches SEO (Ladezeit, Struktur, Mobile) nach 3-6 Monaten, Backlink-Aufbau als langfristigste Disziplin nach 6-12 Monaten. Nachhaltige Erfolge entstehen erst durch das Zusammenspiel aller drei Ebenen.
+quelle: https://www.funntastic.de/de/blog/wie-lange-dauert-es-bis-google-seo-massnahmen-greifen
+quelle_name: Funntastic - Wie lange dauert SEO? Zeitrahmen & Faktoren
+geprueft_am: 2026-07-20
+recheck_nach: 2027-01-16
+
+## t47-2026-07-20-219
+cluster: 1
+keywords: lange, dauert, maßnahmen, messbare, ergebnisse, liefern
+aussage: John Mueller (Google Search Advocate) sagt in einem offiziellen YouTube-Video, dass die Indexierung einer neuen Seite zwischen einigen Stunden und mehreren Wochen dauern kann; relevante, gut verlinkte Inhalte sollten spätestens nach einer Woche im Index sein - technische Probleme können den Prozess allerdings verlängern. Indexierung ist jedoch nur die Voraussetzung; sie ist NICHT gleichbedeutend mit Ranking.
+quelle: https://www.seokratie.at/wie-lange-dauert-seo
+quelle_name: Seokratie AT - Wie lange dauert SEO?
+geprueft_am: 2026-07-20
+recheck_nach: 2027-01-16
+
+## t47-2026-07-20-220
+cluster: 1
+keywords: lange, dauert, maßnahmen, messbare, ergebnisse, liefern
+aussage: Zusätzlicher AT-Bezug: Google zeigt eine neue Website in Österreich nicht automatisch prominent an - laut oesterreichischer Webagentur-Praxis sind neue Domains 'für Google zunächst unsichtbar' und müssen sich Relevanz erst über Nutzersignale (Klicks, Verweildauer, Absprungrate) und externe Signale wie Backlinks/Shares erarbeiten. Ohne diese Impulse dauert der Aufbau spürbar länger als der Standard-Zeitrahmen von 6-12 Monaten.
+quelle: https://webdirwas.at/website-fuer-google-sichtbar-machen
+quelle_name: WEB DIR WAS (AT) - So machst du deine Website für Google sichtbar
+geprueft_am: 2026-07-20
+recheck_nach: 2027-01-16
