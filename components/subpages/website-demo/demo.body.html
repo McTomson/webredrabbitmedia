@@ -62,3 +62,19 @@
     </svg>
   </div>
 </section>
+
+<!-- ============ SEKTION 2 : BELIEF-BUMPER (Original ueber-uns-Mechanik) ============
+     Struktur 1:1 aus ueber-uns-demo (Engine erwartet EXAKT 4 .stmt, Index 3 = pointe,
+     B_CENTERS hardcoded; bCta MUSS existieren, applyBelief greift ungeguardet zu).
+     Nur die Texte sind neu (Thomas 21.07.: "wir koennen beides, schoen und sie
+     klingelt" + Mitarbeiter-oben-drauf-Info). -->
+<section class="scene-belief" id="sceneBelief">
+  <div class="belief-sticky">
+    <div class="belief-backing" aria-hidden="true"></div>
+    <div class="b-label">(Ehrlich gesagt)</div>
+    <div class="stmt" data-s="0">Es gibt Websites, die schön sind. Und Websites, die was bringen<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="1">Wir können beides. Schön und sie klingelt<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="2">Und oben drauf bekommst du einen Mitarbeiter, der Anfragen abfängt, während du arbeitest<span style="color:var(--red)">.</span></div>
+    <div class="stmt pointe" data-s="3">Deine soll auch klingeln<span style="color:var(--red)">?</span><span class="pointe-cta"><a class="rr-btn-sweep rr-btn-sweep--red" id="bCta" href="/relaunch-preview/kontakt">Hol dir den kostenlosen Entwurf</a></span></div>
+  </div>
+</section>

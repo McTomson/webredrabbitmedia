@@ -69,7 +69,7 @@
   .hero-title{
     font-family:"DM Sans",sans-serif;
     font-weight:700;color:var(--ink);
-    font-size:22vw;line-height:.8;white-space:nowrap;letter-spacing:-.03em;
+    font-size:19vw;line-height:.8;white-space:nowrap;letter-spacing:-.03em;
     position:relative;will-change:transform;
     transform-origin:50% 50%;
   }
@@ -178,8 +178,10 @@
      Einblend-Opacity der .belief-sticky, ist also waehrend der Kopf-Ueberlappung noch
      transparent. */
   .belief-backing{
-    position:absolute;left:0;right:0;top:50%;
-    height:58vh;transform:translateY(-50%);
+    /* Vollflaechig statt 58vh-Band: die Bandkante schien je nach Fensterhoehe/
+       DPI als Haarlinie durch (Thomas 21.07., "die Linie ist ein Bug"). Der
+       Gear-Durchschein-Effekt bleibt ueber die Einblend-Opacity der Sticky. */
+    position:absolute;inset:0;
     background:var(--offwhite);z-index:0;pointer-events:none;
   }
   .b-label{
@@ -598,7 +600,9 @@
    (Auto abspielen) und cursor-dot (Maus-Gimmick) gehoeren nicht auf die
    Live-Seite. Per display:none ausblenden statt aus dem HTML loeschen, damit
    die Engine-Referenz auf .autobtn gueltig bleibt (if(autobtn)-Guards). */
-.demobar, .hint, .autobtn, .cursor-dot { display: none !important; }
+.demobar, .hint, .autobtn { display: none !important; }
+/* .cursor-dot bleibt AN (Thomas 21.07.): beim Malen ist der Systemcursor per
+   .main-sticky.painting{cursor:none} aus, der rote Punkt ist der Pinsel. */
 
 /* Der Demo-Naeherungs-Kopf (#headSvg) ist durch das MorphSculpture-Portal
    ersetzt. Er MUSS aus, sonst rendern ZWEI Koepfe uebereinander (dicht,

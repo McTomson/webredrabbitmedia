@@ -6,12 +6,17 @@ import { RabbitMark } from '@/components/relaunch/RabbitMark';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import WebsiteDemoClient from '@/components/subpages/WebsiteDemoClient';
-import Fundament from '@/components/subpages/leistungen/website/v2/Fundament';
+import SoBauenWir from '@/components/subpages/leistungen/website/v2/SoBauenWir';
+// Fundament-Sektion = Variante A "Sticky-Ledger mit wanderndem Fokus"
+// (Thomas' Wahl 21.07. aus /fundament-varianten; ersetzt das Karten-Grid).
+import Fundament from '@/components/subpages/leistungen/website/v2/fundament-varianten/VarianteA';
+import ReferenzenTeaser from '@/components/subpages/leistungen/website/v2/ReferenzenTeaser';
 import Diagnose from '@/components/subpages/leistungen/website/v2/Diagnose';
 import Ablauf from '@/components/subpages/leistungen/website/v2/Ablauf';
 import DreiStufen from '@/components/subpages/leistungen/website/v2/DreiStufen';
 import KollegeAnreisser from '@/components/subpages/leistungen/website/v2/KollegeAnreisser';
-import Testimonials from '@/components/subpages/leistungen/website/v2/Testimonials';
+// "Was Kunden sagen" = die neue Hub-Sektion, 1:1 wiederverwendet (Thomas 21.07.).
+import KundenSagen from '@/components/subpages/leistungen/KundenSagen';
 import WebsiteFaq from '@/components/subpages/leistungen/website/WebsiteFaq';
 import SchlussCta from '@/components/subpages/leistungen/website/SchlussCta';
 import JsonLd from '@/components/JsonLd';
@@ -114,14 +119,20 @@ export default function LeistungenWebsitePreviewPage() {
           React-Sektionen darunter (rr-*-Bauteile). */}
       <WebsiteDemoClient css={heroCss} html={heroHtml} js={heroJs} />
 
-      {/* 2-9 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope auf Weiss. */}
+      {/* 2-11 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope auf Weiss.
+          Dramaturgie: nach dem Hero-Hook erst das WARUM (Handwerk + Bumper),
+          dann das Herzstueck Diagnose als Teal-Welt (die Hauptseite fuehrt mit
+          diesem Tuerkis hierher), dann die Fakten (Ablauf/Fundament/Stufen),
+          unten der Beweis-Block (Kollege navy, Testimonials teal, Referenzen). */}
       <div className={rrFonts} style={{ background: '#ffffff', position: 'relative', zIndex: 2 }}>
-        <Fundament />
+        <SoBauenWir />
         <Diagnose />
         <Ablauf />
+        <Fundament />
         <DreiStufen />
         <KollegeAnreisser />
-        <Testimonials />
+        <KundenSagen />
+        <ReferenzenTeaser />
         <WebsiteFaq />
         <SchlussCta />
       </div>

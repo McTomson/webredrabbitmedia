@@ -90,8 +90,14 @@ export default function WebsiteDemoClient({
           >
             {/* comp={0} = Zahnrad (at-shapes-comp1). Kein progress-Prop -> liest window.__sculptProgress
                 (von der Demo-Engine pro Frame gesetzt). Transparenter Grund, damit der
-                Pinsel-Reveal darunter sichtbar bleibt, solange der Kopf offscreen ist. */}
-            <MorphSculpture comp={0} style={{ background: 'transparent' }} />
+                Pinsel-Reveal darunter sichtbar bleibt, solange der Kopf offscreen ist.
+                Die Zahnrad-Komposition ist breiter gerahmt als der Kopf (comp4) und
+                wuerde an der Textspalte kleben; deshalb Figur-Ebene leicht nach links
+                und minimal kleiner, Text bleibt referenz-identisch zu ueber-uns. */}
+            <MorphSculpture
+              comp={0}
+              style={{ background: 'transparent', transform: 'translateX(-4vw) scale(0.92)' }}
+            />
           </div>,
           sticky,
         )}

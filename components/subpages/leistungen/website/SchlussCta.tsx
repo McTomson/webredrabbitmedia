@@ -16,16 +16,15 @@ export default function SchlussCta() {
           className="rr-eyebrow-lg"
           style={{ color: "rgba(246, 245, 241, 0.82)", marginBottom: 16 }}
         >
-          Der erste Entwurf
+          Bereit?
         </p>
         <p className="rr-display-2 lw-cta__title">
-          Deine ruft an<span style={{ color: "var(--rr-red)" }}>.</span>
+          Hol dir die Website, bei der das Telefon geht<span style={{ color: "var(--rr-red)" }}>.</span>
         </p>
         <p className="rr-body-lg lw-cta__sub">
-          Schön kann fast jede Seite. Aber eine, bei der auch wirklich das
-          Telefon geht, ist die Arbeit wert. Hol dir zuerst deinen Entwurf,
-          ohne Vorkasse. Gefällt er dir, reden wir weiter. Wenn nicht, hat es
-          dich nichts gekostet.
+          Der erste Schritt kostet dich nichts: Wir bauen dir einen echten
+          Entwurf, ohne Vorkasse. Gefällt er dir, reden wir weiter. Wenn
+          nicht, hat es dich keinen Cent gekostet.
         </p>
         <div className="lw-cta__actions">
           <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
