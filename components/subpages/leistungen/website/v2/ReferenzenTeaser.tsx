@@ -32,7 +32,7 @@ export default function ReferenzenTeaser() {
         }}
       >
         <div style={{ maxWidth: '58ch' }}>
-          <p className="rr-eyebrow-lg">SCHON GEBAUT</p>
+          <p className="wd-eyebrow">(SCHON GEBAUT)</p>
           <p
             id="wd-refs-title"
             style={{
