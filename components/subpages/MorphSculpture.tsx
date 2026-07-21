@@ -34,12 +34,18 @@ export default function MorphSculpture({
   progress,
   className,
   style,
+  navyPiece = true,
 }: {
   comp: number;
   /** 0..1. Wenn nicht gesetzt, liest die Komponente `window.__sculptProgress` (Default 0.55 = gehalten). */
   progress?: number;
   className?: string;
   style?: React.CSSProperties;
+  /** Das eine Navy-Akzent-Fragment (groesstes Seitenverhaeltnis) rendern? Beim Kopf
+      (comp 4) ist es das Auge und gehoert dazu; beim Zahnrad (comp 0) wirkt der lange
+      dunkle Balken wie eine Fremd-Linie (Thomas 21.07.) -> Seiten koennen es mit
+      navyPiece={false} abschalten. Default true = Verhalten unveraendert. */
+  navyPiece?: boolean;
 }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<number | undefined>(progress);
@@ -156,7 +162,7 @@ export default function MorphSculpture({
         if (hs.o <= 0.001) return;
 
         const jp = COMPS[p.scene].pieces[p.at];
-        const fill = p.at === navyIdxByScene[p.scene] ? "#1c2837" : "#F12032";
+        const fill = navyPiece && p.at === navyIdxByScene[p.scene] ? "#1c2837" : "#F12032";
         const el = document.createElement("div");
         el.innerHTML = `<svg width="100%" height="100%" viewBox="${-jp.w / 2} ${-jp.h / 2} ${jp.w} ${jp.h}" preserveAspectRatio="none" style="display:block;overflow:visible"><g transform="scale(${jp.sx < 0 ? -1 : 1} ${jp.sy < 0 ? -1 : 1})"><path d="${jp.d}" fill="${fill}"/></g></svg>`;
         el.style.cssText =
@@ -306,7 +312,7 @@ export default function MorphSculpture({
     };
     // comp/reduced sind die einzigen Build-relevanten Eingaben; progress laeuft
     // ueber progressRef (kein Re-Init pro Frame).
-  }, [comp, reduced]);
+  }, [comp, reduced, navyPiece]);
 
   return (
     <div

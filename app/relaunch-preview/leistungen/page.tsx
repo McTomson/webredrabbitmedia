@@ -6,14 +6,11 @@ import { RabbitMark } from '@/components/relaunch/RabbitMark';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import LeistungenHero2Client from '@/components/subpages/LeistungenHero2Client';
+import LeistungenUeberblick from '@/components/subpages/leistungen/LeistungenUeberblick';
 import JsonLd from '@/components/JsonLd';
-import BauMoment from '@/components/subpages/leistungen/BauMoment';
-import WasDuBekommst from '@/components/subpages/leistungen/WasDuBekommst';
 import Scharnierzeile from '@/components/subpages/leistungen/Scharnierzeile';
-import WasSieKann from '@/components/subpages/leistungen/WasSieKann';
 import TalosSlot from '@/components/subpages/leistungen/TalosSlot';
 import Referenzen from '@/components/subpages/leistungen/Referenzen';
-import MehrAlsWebsite from '@/components/subpages/leistungen/MehrAlsWebsite';
 import LeistungenFaq from '@/components/subpages/leistungen/LeistungenFaq';
 import SchlussCta from '@/components/subpages/leistungen/SchlussCta';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
@@ -22,27 +19,24 @@ import '@/components/relaunch/subpages.css';
 import '@/components/subpages/leistungen/leistungen.css';
 
 /**
- * Leistungen-Hub (Preview, noindex) — Server-Komponente nach dem autoritativen
- * 9-Sektionen-Fluss aus docs/strategie/LEISTUNGEN_IA_2026-07.md, Abschnitt
- * "KORREKTUR 19.07. (spaet)" (Zeilen 113-153, die verbindliche Fassung).
- * Kern-Regel: erst das Produkt (Website) beweisen, bis kein Zweifel bleibt,
- * DANN den Helfer (Talos) im GLEICHEN Rahmen einfuehren — Talos ist ein Verb
- * ("Website, die mitarbeitet"), kein zweiter Pfeiler.
- *
- * Zwei Sektionen sind bewusste SLOTs (Bau-Moment, Talos-Auftritt) mit
- * statischem SSR-Fallback-Text; Fable verdrahtet dort spaeter die echten
- * Bewegt-Komponenten. Kein Import auf Verdacht — die Komponenten existieren
- * noch nicht, ein Import haette tsc/Build gebrochen.
+ * Leistungen-Hub (Preview, noindex) — Server-Komponente. Aufbau nach dem
+ * Schnitt vom 21.07. (Thomas): Hero (ueber-uns-Klon mit Zahnrad-Figur) ->
+ * LeistungenUeberblick (6 Punkte, pixelperfektion-Raster, Kern-Botschaft
+ * "Kommandozentrale") -> Scharnierzeile -> TalosSlot (der eine Teal-Moment)
+ * -> Referenzen -> FAQ -> CTA -> Footer.
+ * BauMoment/WasDuBekommst/WasSieKann/MehrAlsWebsite sind bewusst RAUS —
+ * ihr Inhalt steckt verdichtet in den 6 Punkten (keine Dopplung).
+ * Kern-Regel bleibt: erst das Produkt (Website) beweisen, DANN der Helfer
+ * als Verb ("Website, die mitarbeitet"), kein zweiter Pfeiler.
  *
  * Chrome (RabbitMark/RelaunchMenu/FooterReassembly, Fonts, styleguide.css)
- * 1:1 aus dem bisherigen Muster dieser Seite / der Tipps-Seite uebernommen
- * (UNTERSEITEN_STIL.md §1). Fraunces ist ausgemustert (06.07.), nur noch
+ * 1:1 aus dem Muster der Tipps-Seite (UNTERSEITEN_STIL.md §1); nur noch
  * DM Sans / Crimson Pro / Instrument Sans.
  */
 export const metadata: Metadata = {
   title: 'Leistungen · Red Rabbit Media',
   description:
-    'Eine individuell gebaute Website mit Design, Hosting, mobiler Optimierung und rechtssicherer Umsetzung – und ein Helfer, der im Hintergrund mitarbeitet.',
+    'Eine individuell gebaute Website mit Design, Hosting und Kommandozentrale: ein Dashboard, in dem du alles selbst änderst, und Helfer, die im Hintergrund mitarbeiten.',
   robots: { index: false, follow: false },
 };
 
@@ -165,37 +159,33 @@ export default function LeistungenPreviewPage() {
           keine Style-Leaks aus demo.css). */}
       <LeistungenHero2Client css={heroCss} html={heroHtml} js={heroJs} comp={0} />
 
-      {/* Sektionen 2-9, alles SSR-Text unter echten rr-*-Bauteilen. */}
+      {/* 2 · Leistungs-Ueberblick — die 6 Punkte im vermessenen pixelperfektion-
+          Layout (Paar/Interlude/Paar/Einzel, versetzt), Marke Red Rabbit. Steht
+          direkt nach dem Hero als Ueberblick ueber die Gesamtleistung; die
+          Detailtiefe liegt auf den Unterseiten (Website, Agenten). */}
       <div className={rrFonts} style={{ background: '#ffffff' }}>
-        {/* 2 · Bau-Moment */}
-        <BauMoment
-          headline="Handwerk, kein Baukasten"
-          sub="Das bauen wir Stück für Stück für dich zusammen."
-        />
+        <LeistungenUeberblick />
+      </div>
 
-        {/* 3 · Was du bekommst */}
-        <WasDuBekommst />
-
-        {/* 4 · Scharnier-Zeile — Kipp-Punkt vom Bau zur mitarbeitenden Website */}
+      {/* Sektionen 3-7 (Schnitt Thomas 21.07.: BauMoment, WasDuBekommst,
+          WasSieKann und MehrAlsWebsite sind RAUS, ihr Inhalt steckt verdichtet
+          in den 6 Punkten des Ueberblicks. Eine Aussage pro Sektion, gleich-
+          maessiger Rhythmus): Scharnierzeile -> Talos (der eine Teal-Moment)
+          -> Referenzen -> FAQ -> CTA. */}
+      <div className={rrFonts} style={{ background: '#ffffff' }}>
+        {/* 3 · Scharnier-Zeile — Kipp-Punkt vom Bau zur mitarbeitenden Website */}
         <Scharnierzeile />
 
-        {/* 4b · Was sie zusaetzlich kann — Funktionen in Klartext (Produkt-zuerst,
-                Entscheidung 20.07.), BEVOR Talos als Gesicht kommt. */}
-        <WasSieKann />
-
-        {/* 5 · SLOT: Talos-Auftritt — Talos als Gesicht der Funktionen */}
+        {/* 4 · Talos-Auftritt — Talos als Gesicht der Helfer */}
         <TalosSlot />
 
-        {/* 6 · Referenzen — EIN echter Teal-Quote-Moment, Gold-Sterne */}
+        {/* 5 · Referenzen — EIN echter Teal-Quote-Moment, Gold-Sterne */}
         <Referenzen />
 
-        {/* 7 · Mehr als eine normale Website — Zeit statt Geld */}
-        <MehrAlsWebsite />
-
-        {/* 8 · FAQ zweispaltig */}
+        {/* 6 · FAQ zweispaltig */}
         <LeistungenFaq />
 
-        {/* 9 · Schluss-CTA — produktbezogen, Preise auf /preise */}
+        {/* 7 · Schluss-CTA — produktbezogen, Preise auf /preise */}
         <SchlussCta />
       </div>
 

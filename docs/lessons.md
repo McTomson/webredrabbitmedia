@@ -56,3 +56,21 @@
 **When**: Verzoegertes router.push (Transition-Whiteout) aus einem useEffect-Scope.
 **Pattern to avoid**: Timeout-ID nicht speichern — nach Unmount feuert push trotzdem und ueberschreibt die vom Nutzer gewaehlte Navigation.
 **Check**: Jeder window.setTimeout mit Navigation braucht clearTimeout im Cleanup.
+
+### L-leistungen-01 — Overlap-Sektionen ueber Scroll-Choreografien: transparent + hergeleitet
+**When**: Eine normale Sektion soll eine Sticky-Scroll-Szene ueberlappen (margin-top negativ), wie scene-belief auf ueber-uns.
+**Pattern to avoid**: Den Overlap-Wert 1:1 von einer anderen Seite kopieren UND der Sektion einen deckenden Hintergrund geben — ein weisser Block schneidet die noch laufende Choreografie (Story-Text, Figuren-Zerfall) hart ab.
+**Why**: Leistungen 21.07.: -130vh von ueber-uns uebernommen, Sektion weiss -> Zahnrad wurde horizontal gekappt statt zu zerfallen. ueber-uns funktioniert nur, weil belief TRANSPARENT ist.
+**Check**: margin aus den Phasen-Konstanten der Ziel-Szene herleiten (Overlap-Start = gewuenschtes Pm: margin = Pm*(H-100vh)+100vh-H) und die ueberlappende Sektion transparent halten, solange die Szene animiert.
+
+### L-leistungen-02 — window-globale Kopplungswerte bei Mount setzen, bei Unmount loeschen
+**When**: Engine und React-Komponente koppeln ueber eine window-Globale (z.B. __sculptProgress), und mehrere Seiten nutzen dieselbe Globale.
+**Pattern to avoid**: Nur schreiben, nie aufraeumen — bei Soft-Navigation liest die naechste Seite den Alt-Wert der vorigen (Figur flasht in fremder Pose), bis deren Engine (hinter fonts.ready) erstmals schreibt.
+**Why**: Logic-Review 21.07., LeistungenHero2Client.
+**Check**: Vor Engine-Boot Startwert setzen, im Effect-Cleanup `delete window.<global>`; beim Mount nie auf fremdes Aufraeumen verlassen.
+
+### T-leistungen-01 — Drei fast identische Demo-Clients
+**Date**: 2026-07-21
+**Reviewer-Finding was**: UeberUnsDemoClient / KontaktDemoClient / LeistungenHero2Client sind ~105 LOC nahezu identisch; gemeinsame Basis wuerde Duplikation halbieren.
+**User-Decision**: Bewusste Duplikation — kontakt/ueber-uns sind Fremd-Straenge (Arbeitsregel: nur eigene Strang-Dateien anfassen). Konsolidierung nur, wenn ein Strang ohnehin alle drei Seiten bearbeitet.
+**Don't re-flag**: Die Struktur-Duplikation der *DemoClient/*Hero2Client-Wrapper, solange die Fremd-Strang-Regel gilt.

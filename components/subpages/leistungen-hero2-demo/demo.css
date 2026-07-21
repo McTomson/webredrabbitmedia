@@ -1,0 +1,240 @@
+  :root{
+    --offwhite:#ffffff;
+    --ink:#23262e;
+    --ink-soft:#6a6e78;
+    --navy:#1c2837;
+    --anthra:#2d2d2d;
+    --blue:#0a72a0;   /* barrierefreie Blau-Farbwelt: Off-White #f6f5f1 darauf >= 4.5:1 (alt #0a8aba war ~3.5:1) */
+    --red:#f12032;
+    --red-deep:#c81222;
+    --line:#e4e4e0;
+    --hairline:rgba(246,245,241,.18);
+    --ease:cubic-bezier(.6,0,.4,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:auto}
+  html,body{
+    background:var(--offwhite);color:var(--ink);
+    font-family:"Instrument Sans",system-ui,sans-serif;
+    overflow-x:clip;
+  }
+  body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+  /* ---------- Slim Kontextleiste ---------- */
+  .demobar{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    display:flex;align-items:center;gap:.6rem;
+    padding:.42rem 1rem;
+    background:rgba(28,40,55,.9);color:var(--offwhite);
+    font-family:"DM Sans",sans-serif;
+    font-size:.68rem;font-weight:700;letter-spacing:.05em;
+    backdrop-filter:saturate(1.2) blur(6px);
+    user-select:none;-webkit-user-select:none;pointer-events:none;
+  }
+  .demobar .dot{width:7px;height:7px;background:var(--red);display:inline-block}
+  .demobar em{font-style:normal;opacity:.55;font-weight:500}
+
+  /* ================= HAUPT-SZENE: HERO + UEBERGANG + STORY ================= */
+  .scene-main{position:relative;height:1150vh}
+  .main-sticky{
+    position:sticky;top:0;height:100vh;height:100dvh;
+    overflow:hidden;isolation:isolate;
+    user-select:none;-webkit-user-select:none;
+  }
+  .main-sticky.painting{cursor:none}
+  .main-sticky ::selection{background:rgba(241,32,50,.25)}
+
+  /* Ebene B (Reveal): Navy + versteckte Botschaft — viewport-fix im Sticky */
+  .layer-base{
+    position:absolute;inset:0;z-index:1;
+    background:var(--navy);color:var(--offwhite);
+    display:flex;align-items:center;justify-content:center;
+    padding:0 6vw;pointer-events:none;
+  }
+  .reveal-msg{
+    font-family:"DM Sans",sans-serif;
+    font-weight:800;text-transform:uppercase;text-align:center;
+    font-size:clamp(2rem,6vw,6rem);line-height:.98;letter-spacing:-.01em;
+    max-width:15em;text-wrap:balance;
+    transform:translateY(-9vh);
+  }
+
+  /* Ebene A (Deck): Off-White + Titel */
+  .layer-deck{
+    position:absolute;inset:0;z-index:2;
+    background:var(--offwhite);
+    display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+    pointer-events:none;
+  }
+  .hero-title{
+    font-family:"DM Sans",sans-serif;
+    font-weight:700;color:var(--ink);
+    /* 16vw statt 22vw (ueber-uns): "Leistungen." hat 11 Zeichen und liefe bei 22vw
+       seitlich aus dem Viewport (nowrap). Der Wert ist nicht geschaetzt, sondern
+       aus leistungen-hero-demo/demo.css:98 uebernommen, wo dasselbe Wort steht.
+       Mobil fittet computeShifts den Titel ohnehin auf 96 % der Viewportbreite. */
+    font-size:16vw;line-height:.8;white-space:nowrap;letter-spacing:-.03em;
+    position:relative;will-change:transform;
+    transform-origin:50% 50%;
+  }
+  .ltr{display:inline-block;will-change:transform,opacity;transform-origin:center center}
+  .ltr.sp{width:.16em}
+  /* Roter Schlusspunkt im Hero-Titel (wie Hauptseiten-Headlines, Tomson 16.07.) */
+  .hero-title .ltr.dot{color:var(--red)}
+
+  .ue{position:relative}
+  .ue .udot{position:absolute;background:var(--red);border-radius:50%;pointer-events:none;will-change:transform}
+
+  .cursor-dot{
+    position:absolute;left:0;top:0;z-index:6;
+    width:19px;height:19px;border-radius:50%;
+    background:var(--red);pointer-events:none;opacity:0;
+    will-change:transform,opacity;
+  }
+  .masksvg{position:absolute;width:0;height:0;pointer-events:none}
+  .main-sticky[data-active="1"] .layer-deck{
+    -webkit-mask:var(--mask);mask:var(--mask);
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  }
+  .autobtn{
+    position:absolute;right:1rem;bottom:calc(16.5vw + 1.6rem);z-index:7;pointer-events:auto;
+    background:var(--red);color:#fff;border:none;font-family:"DM Sans",sans-serif;
+    font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+    padding:.55rem .9rem;cursor:pointer;border-radius:0;
+    transition:opacity .3s;
+  }
+  .autobtn:disabled{opacity:.5;cursor:default}
+  .hint{
+    position:absolute;left:1rem;bottom:calc(16.5vw + 7.5rem);z-index:5;
+    font-family:"DM Sans",sans-serif;
+    font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--offwhite);opacity:.55;pointer-events:none;
+    mix-blend-mode:difference;transition:opacity .4s;
+  }
+
+  /* Story-Ebene (Kopf links, Text-Fenster rechts) — ueber dem Deck */
+  .story-grid{
+    position:absolute;inset:0;z-index:3;
+    max-width:1240px;margin:0 auto;padding:0 4vw;
+    display:grid;grid-template-columns:44% 52%;gap:4%;
+    align-items:center;
+    pointer-events:none;
+  }
+  .head-col{
+    height:100%;display:flex;align-items:center;justify-content:center;
+    overflow:visible;
+  }
+  /* Demo-Naeherungs-Kopf dauerhaft ausgeblendet: die echte relaunch-preview-Skulptur
+     (MorphSculpture) wird als Vollbild-Ebene in .main-sticky portalt und rendert oben drueber. */
+  .head-col svg{width:100%;height:86vh;overflow:visible;display:block;opacity:0!important}
+
+  .text-col{position:relative;height:100%;display:flex;align-items:center;user-select:text;-webkit-user-select:text}
+  .text-window{
+    position:relative;width:100%;height:78vh;overflow:hidden;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 86%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 86%,transparent 100%);
+  }
+  .text-move{position:relative;width:100%;will-change:transform;transform:translateY(120vh)}
+  /* Hauptseiten-Format: Eyebrow-lg (Instrument Sans) + Serif-Statements (Crimson Pro) */
+  .t-eyebrow{
+    font-family:"Instrument Sans",sans-serif;
+    font-size:clamp(15px,1.69vw,33px);font-weight:500;
+    letter-spacing:.04em;text-transform:uppercase;
+    color:var(--ink);margin-bottom:1.2rem;
+    user-select:none;-webkit-user-select:none;
+  }
+  .t-statement{
+    font-family:"Crimson Pro",Georgia,serif;font-weight:500;
+    font-size:clamp(34px,4.46vw,92px);line-height:1.11;letter-spacing:-.01em;
+    color:var(--ink);text-wrap:balance;
+    margin-bottom:3rem;
+  }
+  .t-ch,.t-close{
+    font-family:"Crimson Pro",Georgia,serif;font-weight:500;
+    font-size:clamp(28px,3.3vw,47px);line-height:1.2;letter-spacing:-.01em;
+    color:var(--ink);max-width:22ch;
+    margin-bottom:2.6rem;
+  }
+            /* R6: grosse Ueberschrift ueber dem Raster (Referenz pixelperfektion) */
+  .p-title{
+    font-family:"DM Sans",sans-serif;font-weight:700;
+    font-size:clamp(2.1rem,5vw,4rem);line-height:1.02;letter-spacing:-.025em;
+    color:var(--offwhite);text-wrap:balance;max-width:16ch;
+    margin:0 0 1.5rem;
+  }
+  .p-stats{
+    font-family:"Instrument Sans",sans-serif;font-weight:400;
+    font-size:clamp(.95rem,1.15vw,1.1rem);letter-spacing:.04em;
+    color:var(--offwhite);opacity:.72;
+    user-select:none;-webkit-user-select:none;
+  }
+  .f-label{
+    font-family:"DM Sans",sans-serif;
+    font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--red);font-weight:700;margin-bottom:1.4rem;
+    user-select:none;-webkit-user-select:none;
+  }
+  .pm{position:relative;width:14px;height:14px;flex:none}
+  .pm::before{content:"";position:absolute;left:0;top:6px;width:14px;height:2px;background:var(--ink)}
+  .pm::after{content:"";position:absolute;left:6px;top:0;width:2px;height:14px;background:var(--ink);transition:transform .22s ease}
+
+  /* Schmaler Desktop (~1024): wie pixelperfektion Name auf ~22px runter, Zelle etwas
+     niedriger — 3 Spalten bleiben, Groesse/Anordnung bleibt harmonisch. */
+  @media (min-width:769px) and (max-width:1120px){
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width:768px){
+    .hero-title{font-size:30vw}
+    .reveal-msg{font-size:clamp(1.6rem,7.6vw,3rem)}
+    .autobtn{bottom:calc(28vw + 1.4rem)}
+    .hint{bottom:calc(28vw + 6rem)}
+    .story-grid{
+      grid-template-columns:1fr;grid-template-rows:44vh auto;gap:1rem;
+      align-content:center;padding:0 6vw;align-items:start;
+    }
+    .head-col{height:44vh}
+    .head-col svg{height:42vh}
+    .text-window{height:46vh}
+    .t-ch,.t-close{max-width:none}
+  }
+
+  /* ---------- Reduced Motion: alles statisch ---------- */
+  @media (prefers-reduced-motion:reduce){
+    .cursor-dot,.autobtn,.hint{display:none}
+    .scene-main{height:auto}
+    .main-sticky{position:static;height:auto;overflow:visible;cursor:auto}
+    .layer-base{display:none}
+    .layer-deck{
+      position:static;-webkit-mask:none!important;mask:none!important;
+      padding:16vh 0 4vh;justify-content:center;
+    }
+    .hero-title{font-size:14vw;transform:none!important}
+    .ltr{transform:none!important;opacity:1!important}
+    .story-grid{position:static;display:block;padding:6vh 6vw}
+    .head-col{height:70vh}
+    .head-col svg{opacity:1}
+    .text-col{height:auto}
+    .text-window{
+      height:auto;overflow:visible;
+      -webkit-mask:none!important;mask:none!important;
+    }
+    .text-move{transform:none!important}
+  }
+
+/* --- Vorschau-Chrome der Standalone-Demo ausblenden -----------------------
+   demobar (obere Gesamtvorschau-Leiste), hint (Maus-Hinweis), autobtn
+   (Auto abspielen) und cursor-dot (Maus-Gimmick) gehoeren nicht auf die
+   Live-Seite. Per display:none ausblenden statt aus dem HTML loeschen, damit
+   die Engine-Referenz auf .autobtn gueltig bleibt (if(autobtn)-Guards). */
+.demobar, .hint, .autobtn, .cursor-dot { display: none !important; }
+/* Der rote Cursor-Punkt ist oben ausgeblendet — dann muss die NATIVE Maus sichtbar
+   bleiben. Ohne dieses Override galt weiter .main-sticky.painting{cursor:none}
+   -> unsichtbare Maus beim Seiten-Start (Thomas 21.07.). */
+.main-sticky.painting { cursor: auto !important; }
+
+/* Der Demo-Naeherungs-Kopf (#headSvg) ist durch das MorphSculpture-Portal
+   ersetzt. Er MUSS aus, sonst rendern ZWEI Koepfe uebereinander (dicht,
+   unscharf, fremde Teile am Start). Die Engine setzt display/opacity inline
+   pro Frame — darum !important. */
+#headSvg { display: none !important; }

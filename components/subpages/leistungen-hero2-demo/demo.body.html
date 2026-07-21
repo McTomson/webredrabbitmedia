@@ -1,0 +1,71 @@
+
+
+<!-- ============ HAUPT-SZENE (Hero + Uebergang + Story in EINEM Sticky) ============ -->
+<section class="scene-main" id="sceneMain">
+  <!-- data-active startet auf 0: die Deck-Maske (mask:url(#mask-v1)) greift erst,
+       wenn die Engine bootet. Beim HTML-Streaming ist das masksvg (steht weiter
+       unten) sonst noch nicht geparst -> leere Maske -> weisses Deck unsichtbar
+       -> navy layer-base blitzt beim Laden auf. -->
+  <div class="main-sticky painting" id="mainSticky" data-active="0" style="--mask:url(#mask-v1)">
+    <div class="layer-base">
+      <div class="reveal-msg">Eine Website.<br>Oder ein<br>Team.</div>
+    </div>
+    <div class="layer-deck">
+      <!-- "Leistungen" hat kein Ue: der Span .ue entfaellt ersatzlos. placeUeDots()
+           faengt das selbst ab (demo.engine.jstext:82 `if(!ue) return "no-ue"`), udots
+           bleibt []. Der rote Akzent im Wort ist stattdessen der Schluss-Punkt
+           (.ltr.dot, demo.css:79 faerbt ihn rot) — Thomas 20.07. -->
+      <div class="hero-title" id="htitle" role="heading" aria-level="1" aria-label="Leistungen"><span class="ltr" data-l="0" aria-hidden="true">L</span><span class="ltr" data-l="1" aria-hidden="true">e</span><span class="ltr" data-l="2" aria-hidden="true">i</span><span class="ltr" data-l="3" aria-hidden="true">s</span><span class="ltr" data-l="4" aria-hidden="true">t</span><span class="ltr" data-l="5" aria-hidden="true">u</span><span class="ltr" data-l="6" aria-hidden="true">n</span><span class="ltr" data-l="7" aria-hidden="true">g</span><span class="ltr" data-l="8" aria-hidden="true">e</span><span class="ltr" data-l="9" aria-hidden="true">n</span><span class="ltr dot" data-l="10" aria-hidden="true">.</span></div>
+    </div>
+
+    <div class="story-grid">
+      <div class="head-col">
+        <svg id="headSvg" viewBox="120 110 770 910" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+      </div>
+      <div class="text-col">
+        <div class="text-window" id="textWindow">
+          <div class="text-move" id="textMove">
+            <!-- Copy 1:1 aus bereits abgenommener Website-Unterseiten-Copy uebernommen
+                 (Thomas 20.07. "Inhalte kannst du von der /leistungen/website Seite
+                 uebernehmen"). Quellen: WasEntsteht.tsx:16-23, WasInklusive.tsx:9-11 +
+                 40-41, SoArbeitenWir.tsx:25-26. Nur gekuerzt, kein Satz umformuliert. -->
+            <div class="t-eyebrow">(Alles aus einer Hand)</div>
+            <p class="t-statement">Eine Website, die für dich arbeitet.</p>
+            <p class="t-ch">Neu bauen oder Relaunch, also deine bestehende Seite von Grund auf neu aufgebaut, das entscheidet dein Ausgangspunkt. Hast du noch keine Seite, fangen wir sauber bei null an. Hast du eine, die alt ist oder nichts bringt, bauen wir sie so um, dass sie wieder Anfragen holt.</p>
+            <p class="t-ch">In beiden Fällen bekommst du kein Baukasten-Muster, sondern etwas, das nach dir aussieht. Schnell geladen, sauber am Handy, gefunden bei Google.</p>
+            <p class="t-ch">Individuelles Design, das zu deinem Betrieb passt. Hosting, schnell und stabil, du kümmerst dich um nichts. Optimiert fürs Handy, weil da deine Kunden suchen.</p>
+            <p class="t-ch">Du erzählst, was du brauchst, wir bauen den Entwurf, du entscheidest in Ruhe. Kein Fachchinesisch, kein Druck.</p>
+            <p class="t-close">Kein Extra-Paket, kein Kleingedrucktes. Das ist der Standard, nicht der Aufpreis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <span class="hint" id="hint">Maus über das Bild bewegen</span>
+    <button class="autobtn" data-auto>Auto abspielen</button>
+
+    <svg class="masksvg" aria-hidden="true">
+      <defs>
+        <filter id="gooey-v1">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
+          <feColorMatrix in="blur" type="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -9" result="goo"/>
+        </filter>
+        <clipPath id="paintclip"><rect id="paintRect" x="0" y="0" width="100" height="100"/></clipPath>
+        <mask id="mask-v1">
+          <rect class="mrect" width="100%" height="100%" fill="#fff"/>
+          <g class="blobs" filter="url(#gooey-v1)"></g>
+        </mask>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ENDE der uebernommenen ueber-uns-Strecke.
+     Alles ab hier (Haltungs-Statements, Partner, FAQ, Schluss-CTA, Footer der
+     ueber-uns-Seite) ist bewusst entfernt: auf der Leistungsseite folgen darunter
+     die bereits abgenommenen React-Sektionen (BauMoment ... SchlussCta) und der
+     echte FooterReassembly. Die zugehoerigen Engine-Bloecke wurden im selben Zug
+     aus demo.engine.jstext entfernt. -->
