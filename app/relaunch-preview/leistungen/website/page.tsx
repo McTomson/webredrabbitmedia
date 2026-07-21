@@ -13,8 +13,12 @@ import Fundament from '@/components/subpages/leistungen/website/v2/fundament-var
 import ReferenzenTeaser from '@/components/subpages/leistungen/website/v2/ReferenzenTeaser';
 import Diagnose from '@/components/subpages/leistungen/website/v2/Diagnose';
 import Ablauf from '@/components/subpages/leistungen/website/v2/Ablauf';
-import DreiStufen from '@/components/subpages/leistungen/website/v2/DreiStufen';
-import KollegeAnreisser from '@/components/subpages/leistungen/website/v2/KollegeAnreisser';
+// Drei Stufen = Variante B "Feature-Matrix mit Sticky-Stufe" (Thomas' Wahl
+// 21.07. aus /stufen-varianten; ersetzt die Editorial-Rows von DreiStufen).
+import DreiStufenMatrix from '@/components/subpages/leistungen/website/v2/DreiStufenMatrix';
+// Talos-Sektion = Dashboard-Variante A "Browser-Frame" mit Fixes (Thomas'
+// Wahl 21.07. aus /dashboard-varianten; ersetzt KollegeAnreisser).
+import TalosDashboard from '@/components/subpages/leistungen/website/v2/TalosDashboard';
 // "Was Kunden sagen" = die neue Hub-Sektion, 1:1 wiederverwendet (Thomas 21.07.).
 import KundenSagen from '@/components/subpages/leistungen/KundenSagen';
 import WebsiteFaq from '@/components/subpages/leistungen/website/WebsiteFaq';
@@ -129,8 +133,8 @@ export default function LeistungenWebsitePreviewPage() {
         <Diagnose />
         <Ablauf />
         <Fundament />
-        <DreiStufen />
-        <KollegeAnreisser />
+        <DreiStufenMatrix />
+        <TalosDashboard />
         <KundenSagen />
         <ReferenzenTeaser />
         <WebsiteFaq />

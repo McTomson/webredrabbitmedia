@@ -43,10 +43,26 @@ const smooth = (t: number) => {
 export interface TalosEntranceStageProps {
   /** Auftritt automatisch spielen, sobald sichtbar (default true). */
   autoplay?: boolean;
+  /**
+   * Opt-in: Klick (und Enter/Space) auf die Buehne loest die Wink-Choreografie
+   * ERNEUT aus (reuse von talosMotion.triggerGreeting, das waehrend eines
+   * laufenden Winkens ohnehin no-op ist). Default false -> Verhalten
+   * bit-identisch zu allen bestehenden Verwendungen.
+   */
+  waveOnClick?: boolean;
+  /**
+   * Optionale Kamera-Kadrierung (additiv; Default = bisherige Konstanten,
+   * Oberkoerper-Framing der Talos-Seite). Die Website-Dashboard-Sektion
+   * braucht den GANZEN Koerper inkl. Fuesse und uebergibt eigene Werte.
+   */
+  camPos?: [number, number, number];
+  camTgt?: [number, number, number];
+  camFov?: number;
 }
 
-export default function TalosEntranceStage({ autoplay = true }: TalosEntranceStageProps) {
+export default function TalosEntranceStage({ autoplay = true, waveOnClick = false, camPos, camTgt, camFov }: TalosEntranceStageProps) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
   const [no3d, setNo3d] = useState(false);
 
   useEffect(() => {
@@ -74,9 +90,9 @@ export default function TalosEntranceStage({ autoplay = true }: TalosEntranceSta
 
     const scene = new THREE.Scene(); // transparent (alpha), Seite liefert Grund
 
-    const camera = new THREE.PerspectiveCamera(CAM_FOV, host.clientWidth / host.clientHeight, 10, 100000);
-    camera.position.set(...CAM_POS);
-    camera.lookAt(new THREE.Vector3(...CAM_TGT));
+    const camera = new THREE.PerspectiveCamera(camFov ?? CAM_FOV, host.clientWidth / host.clientHeight, 10, 100000);
+    camera.position.set(...(camPos ?? CAM_POS));
+    camera.lookAt(new THREE.Vector3(...(camTgt ?? CAM_TGT)));
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.68));
     const key = new THREE.PointLight(0xffffff, 1.35, 4000, 1);
@@ -131,6 +147,23 @@ export default function TalosEntranceStage({ autoplay = true }: TalosEntranceSta
     };
     window.addEventListener("pointermove", onGaze);
 
+    // Opt-in: Klick/Tastatur auf der Buehne loest die Wink-Choreografie erneut
+    // aus. Reuse von motion.triggerGreeting (no-op waehrend ein Winken laeuft).
+    const wrap = wrapRef.current;
+    const onActivate = () => {
+      motion?.triggerGreeting();
+    };
+    const onKey = (ev: KeyboardEvent) => {
+      if (ev.key === "Enter" || ev.key === " " || ev.key === "Spacebar") {
+        ev.preventDefault();
+        onActivate();
+      }
+    };
+    if (waveOnClick && wrap) {
+      wrap.addEventListener("click", onActivate);
+      wrap.addEventListener("keydown", onKey);
+    }
+
     // Auftritt startet, sobald Sektion sichtbar UND Rig geladen.
     const io = new IntersectionObserver(
       (entries) => {
@@ -149,6 +182,10 @@ export default function TalosEntranceStage({ autoplay = true }: TalosEntranceSta
       window.removeEventListener("resize", onResize);
       window.visualViewport?.removeEventListener("resize", onResize);
       window.removeEventListener("pointermove", onGaze);
+      if (waveOnClick && wrap) {
+        wrap.removeEventListener("click", onActivate);
+        wrap.removeEventListener("keydown", onKey);
+      }
       renderer.dispose();
       if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
       delete (window as unknown as Record<string, unknown>).__talosEntrance;
@@ -187,6 +224,12 @@ export default function TalosEntranceStage({ autoplay = true }: TalosEntranceSta
       play: () => { if (loaded) { started = true; manualProg = null; } },
       replay: () => { ent = 0; waved = false; started = true; manualProg = null; },
       setProg: (p: number) => { manualProg = Math.max(0, Math.min(1, p)); started = true; },
+      // QA: erneutes Winken ausloesen bzw. pruefen, ob gerade gewinkt wird
+      // (nutzt fuer die Klick-Wink-Verifikation der Website-Leistungsseite).
+      wave: () => { motion?.triggerGreeting(); },
+      // QA: Kamera-Handle zum Live-Tuning der Kadrierung (nur Lesen/Justieren).
+      camera,
+      isWaving: () => motion?.isBusy() ?? false,
     };
 
     const clock = new THREE.Clock();
@@ -219,13 +262,22 @@ export default function TalosEntranceStage({ autoplay = true }: TalosEntranceSta
   }, [autoplay]);
 
   return (
-    <div className="tle-wrap">
+    <div
+      className={"tle-wrap" + (waveOnClick ? " tle-wrap--clickable" : "")}
+      ref={wrapRef}
+      {...(waveOnClick
+        ? { role: "button", tabIndex: 0, "aria-label": "Talos winken lassen" }
+        : {})}
+    >
       <div className="tle-canvas" aria-hidden="true" ref={hostRef} />
       {no3d && <div className="tle-poster" aria-hidden="true" />}
       <style
         dangerouslySetInnerHTML={{
           __html: `
 .tle-wrap{ position:relative; width:100%; height:100%; min-height:320px; overflow:hidden; }
+/* Klickbar trotz pointer-events:none am Slot-Wrapper (Nachkomme re-aktiviert). */
+.tle-wrap--clickable{ pointer-events:auto; cursor:pointer; }
+.tle-wrap--clickable:focus-visible{ outline:2px solid var(--rr-red, #f12032); outline-offset:3px; }
 .tle-canvas{ position:absolute; inset:0; }
 .tle-canvas canvas{ display:block; }
 .tle-poster{ position:absolute; inset:0;
