@@ -1,0 +1,203 @@
+/* KundenSagen — vermessen von finsight.framer.ai, Marke Red Rabbit.
+   Alle Farb-/Groessenwerte sind 1:1 aus der Vorlage übernommen, ausser wo
+   die Marke es verlangt (Navy statt Schwarz, DM Sans statt deren Font,
+   Akzentfarbe ueber --ks-accent statt hart verdrahtet). */
+
+.ks-section {
+  --ks-accent: #c94f5c;
+  width: 100%;
+  background: var(--rr-navy, #1c2837);
+  padding: 100px 30px;
+}
+
+.ks-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Titel + Zitat teilen sich EIN Text-Preset (Vorlage misst identische
+   Typografie fuer beide). */
+.ks-preset {
+  font-family: var(--font-dmsans), 'DM Sans', system-ui, sans-serif;
+  font-size: 42px;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  text-align: center;
+  margin: 0;
+}
+
+.ks-quote-block {
+  margin-top: 89px;
+  max-width: 1140px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.ks-stars {
+  margin: 0 0 16px;
+  font-size: 20px;
+  letter-spacing: 4px;
+}
+
+.ks-quote {
+  margin: 0;
+}
+
+/* Reihe: Pfeile links/rechts, dazwischen der Name/Rolle-Block (an die
+   aktive Kachel gebunden) + die Kachelreihe. */
+.ks-row-area {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  column-gap: 20px;
+  margin-top: 93px;
+}
+
+.ks-row-col {
+  position: relative;
+}
+
+/* Platz oberhalb der Kacheln fuer Name (24/600) + Rolle (18/300) + 61px
+   Abstand zur Reihe: Name+Rolle sind absolut positioniert (horizontal an
+   die aktive Kachel gebunden), die Kacheln bekommen daher den Platz per
+   padding-top reserviert. */
+.ks-tiles {
+  display: flex;
+  gap: 16px;
+  padding-top: 112px; /* ~ Name (24*1.2) + Rolle (18*1.2) + 61px Abstand */
+}
+
+.ks-attr {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(calc(-50% + var(--ks-attr-left, 0px)));
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ks-name {
+  margin: 0;
+  font-family: var(--font-dmsans), 'DM Sans', system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.ks-role {
+  margin: 0;
+  font-family: var(--font-dmsans), 'DM Sans', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  color: #d6d6d6;
+  line-height: 1.2;
+}
+
+.ks-tile {
+  width: 123px;
+  height: 123px;
+  border-radius: 19px;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-dmsans), 'DM Sans', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.45);
+  transform: translateY(0);
+  transition: none;
+}
+
+.ks-tile--active {
+  background: var(--ks-accent);
+  color: #ffffff;
+  transform: translateY(-30px);
+  transition: none;
+}
+
+.ks-arrow {
+  flex: 0 0 auto;
+  width: 50px;
+  height: 50px;
+  margin-top: 149px; /* zentriert auf Hoehe der inaktiven Kacheln (112 + (123-50)/2) */
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.ks-arrow:hover,
+.ks-arrow:focus-visible {
+  border-color: #ffffff;
+}
+
+.ks-tile:focus-visible,
+.ks-arrow:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Mobil (<768px): Titel/Zitat 28px, Kacheln 84x84, gap 10px; die
+   Name-Rolle-Bindung an die aktive Kachel entfaellt (zentriert). */
+@media (max-width: 768px) {
+  .ks-section {
+    padding: 64px 20px;
+  }
+
+  .ks-preset {
+    font-size: 28px;
+  }
+
+  .ks-quote-block {
+    margin-top: 48px;
+  }
+
+  .ks-row-area {
+    margin-top: 48px;
+  }
+
+  .ks-attr {
+    position: static;
+    transform: none;
+    margin-bottom: 24px;
+  }
+
+  .ks-row-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ks-tiles {
+    padding-top: 0;
+    gap: 10px;
+  }
+
+  .ks-tile {
+    width: 84px;
+    height: 84px;
+    border-radius: 14px;
+    font-size: 20px;
+  }
+
+  .ks-tile--active {
+    transform: translateY(-16px);
+  }
+
+  .ks-arrow {
+    margin-top: 17px; /* zentriert auf 84px-Kachelhoehe */
+  }
+}
