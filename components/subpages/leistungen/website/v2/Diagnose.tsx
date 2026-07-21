@@ -107,7 +107,7 @@ export default function Diagnose() {
     <section className="wd-diag" aria-labelledby="wd-diag-title">
       <div className="wd-diag__inner">
         <div className="wd-diag__head">
-          <p className="rr-eyebrow-lg wd-diag__eyebrow">WAS DU WIRKLICH BRAUCHST</p>
+          <p className="wd-eyebrow wd-eyebrow--cream">(WAS DU WIRKLICH BRAUCHST)</p>
           <h2 id="wd-diag-title" className="rr-statement wd-diag__statement">
             Sag uns, wer du bist. Wir sagen dir ehrlich, was du brauchst.
           </h2>
@@ -208,9 +208,6 @@ export default function Diagnose() {
         }
         .wd-diag__head {
           max-width: 760px;
-        }
-        .wd-diag__eyebrow {
-          color: var(--rr-world-1-accent, #fcfbc9);
         }
         .wd-diag__statement {
           color: #f6f5f1;

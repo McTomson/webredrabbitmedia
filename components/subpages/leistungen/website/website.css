@@ -200,3 +200,25 @@
   .rr .lw-fund__grid > *,
   .rr .lw-bauen__grid > * { transition: none; }
 }
+
+/* ---- Eyebrow-Stil vereinheitlicht (Thomas 21.07.): Klammern, rot, uppercase,
+   letterspaced — 1:1 der Stil der Belief-Szene im Hero (.b-label in
+   components/subpages/website-demo/demo.css). Ersetzt rr-eyebrow-lg auf
+   dieser Unterseite (rr-eyebrow-lg selbst bleibt unveraendert/Ownership,
+   das ist eine seiten-lokale Variante). Modifikatoren fuer dunkle/farbige
+   Untergruende, wo Rot den Kontrast nicht schafft. */
+.rr .wd-eyebrow {
+  font-family: var(--rr-font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--rr-red);
+  margin: 0;
+}
+/* Navy (Schluss-CTA): reines Markenrot faellt unter 4.5:1 auf #1c2837 (~3.55:1)
+   -> helleres Rot, geprueft ~5.5:1 (AA fuer Kleintext). */
+.rr .wd-eyebrow--ondark { color: #f77480; }
+/* Teal (Diagnose-Welt): Rot vibriert auf Teal und faellt im Kontrast durch
+   (~1.05:1) -> Creme-Akzent der Farbwelt uebernehmen, Struktur bleibt gleich. */
+.rr .wd-eyebrow--cream { color: var(--rr-world-1-accent, #fcfbc9); }

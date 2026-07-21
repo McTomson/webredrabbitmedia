@@ -109,7 +109,7 @@ export default function VarianteA() {
   return (
     <section className="lwa">
       <div className="lwa__wrap">
-        <p className="rr-eyebrow-lg">WAS DRINSTECKT</p>
+        <p className="wd-eyebrow">(WAS DRINSTECKT)</p>
         <h2 className="rr-statement lwa__h2">Das Fundament ist immer schon drin.</h2>
         <p className="rr-body-lg lwa__intro">
           Nicht als Zusatzpaket, nicht als Kleingedrucktes. Sondern als das,
@@ -254,14 +254,15 @@ export default function VarianteA() {
           color: var(--rr-navy);
         }
         .lwa__mark {
-          width: 0;
-          height: 12px;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
           background: var(--rr-red);
-          transition: width 0.42s var(--rr-ease);
-          transform: translateY(2px);
+          transform: translateY(2px) scale(0);
+          transition: transform 0.42s var(--rr-ease);
         }
         .lwa__row.is-active .lwa__mark {
-          width: 12px;
+          transform: translateY(2px) scale(1);
         }
         .lwa__num {
           font-family: var(--rr-font-serif);
@@ -390,7 +391,7 @@ export default function VarianteA() {
             transition: none;
           }
           .lwa__mark {
-            width: 12px;
+            transform: translateY(2px) scale(1);
             transition: none;
           }
           /* Ohne Observer (active=-1) wuerde die Leiste dauerhaft "01" zeigen. */

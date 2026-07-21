@@ -66,10 +66,10 @@ export default function KollegeAnreisser() {
         {/* Fenster-Inhalt: links Text + Panels, rechts Talos */}
         <div className="wd-kol__body">
           <div className="wd-kol__left">
-            <p className="rr-eyebrow-lg wd-kol__eyebrow">Nicht nur eine Seite</p>
+            <p className="wd-eyebrow wd-kol__eyebrow">(NICHT NUR EINE SEITE)</p>
 
             <h2 className="rr-statement wd-kol__title">
-              Zu einer gewoehnlichen Website bekommst du bei uns einen Helfer
+              Zu einer gewöhnlichen Website bekommst du bei uns einen Helfer
               dazu. Er heisst <span className="wd-kol__name">Talos</span>.
             </h2>
 
@@ -88,7 +88,7 @@ export default function KollegeAnreisser() {
               <span className="wd-kol__mark" aria-hidden="true" />
               <span className="wd-kol__cardhead">Benachrichtigung</span>
               <span className="wd-kol__cardline">
-                Formular geprueft: alles in Ordnung.
+                Formular geprüft: alles in Ordnung.
               </span>
             </div>
 
@@ -115,7 +115,7 @@ export default function KollegeAnreisser() {
                 Talos kann mehr lernen, wenn du willst
               </span>
               <ul className="wd-kol__skills">
-                <li>Blogbeitraege schreiben</li>
+                <li>Blogbeiträge schreiben</li>
                 <li>Kunden suchen und anschreiben</li>
                 <li>Auf Social Media posten</li>
                 <li>Und weitere Aufgaben</li>
@@ -138,7 +138,10 @@ export default function KollegeAnreisser() {
 
       <style jsx>{`
         .wd-kol {
-          padding: clamp(72px, 12vh, 148px)
+          /* Vereinheitlicht auf den Standard-Section-Rhythmus (Aufgabe 2,
+             21.07.): war zuvor clamp(72px,12vh,148px), deutlich knapper als
+             --rr-section-y (96-180px) aller anderen Sektionen der Seite. */
+          padding: var(--rr-section-y, clamp(96px, 12vw, 180px))
             var(--rr-gutter, clamp(20px, 4vw, 64px));
           background: var(--rr-surface, #f4f4f2);
         }
@@ -196,7 +199,6 @@ export default function KollegeAnreisser() {
         }
 
         .wd-kol__eyebrow {
-          color: var(--rr-ink-soft, #5a5e68);
           margin-bottom: 14px;
         }
         .wd-kol__title {

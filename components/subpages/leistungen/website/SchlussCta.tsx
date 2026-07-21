@@ -12,11 +12,8 @@ export default function SchlussCta() {
   return (
     <section className="rr-section lw-cta">
       <div className="rr-wrap rr-narrow">
-        <p
-          className="rr-eyebrow-lg"
-          style={{ color: "rgba(246, 245, 241, 0.82)", marginBottom: 16 }}
-        >
-          Bereit?
+        <p className="wd-eyebrow wd-eyebrow--ondark" style={{ marginBottom: 16 }}>
+          (Bereit?)
         </p>
         <p className="rr-display-2 lw-cta__title">
           Hol dir die Website, bei der das Telefon geht<span style={{ color: "var(--rr-red)" }}>.</span>

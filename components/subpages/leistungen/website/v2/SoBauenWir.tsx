@@ -33,7 +33,7 @@ export default function SoBauenWir() {
   return (
     <section className="wd-hand" aria-labelledby="wd-hand-title">
       <div className="wd-hand__inner rr-reveal">
-        <p className="rr-eyebrow-lg">SO BAUEN WIR</p>
+        <p className="wd-eyebrow">(SO BAUEN WIR)</p>
         <h2 id="wd-hand-title" className="rr-statement wd-hand__statement">
           Das hier ist kein Baukasten. Merkst du gerade selbst.
         </h2>
@@ -83,7 +83,7 @@ export default function SoBauenWir() {
           margin-top: clamp(32px, 4.5vw, 56px);
           display: flex;
           flex-direction: column;
-          gap: clamp(22px, 3vw, 36px);
+          gap: clamp(40px, 5.5vw, 64px);
         }
         .wd-hand__paar {
           display: grid;

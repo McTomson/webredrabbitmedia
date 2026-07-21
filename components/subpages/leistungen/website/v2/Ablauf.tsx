@@ -97,7 +97,7 @@ export default function Ablauf() {
   return (
     <section className="wd-abl" aria-labelledby="wd-abl-title">
       <div className="wd-abl__head">
-        <p className="rr-eyebrow-lg">SO LÄUFT DAS AB</p>
+        <p className="wd-eyebrow">(SO LÄUFT DAS AB)</p>
         <h2 id="wd-abl-title" className="rr-statement">
           Vier Schritte. Und du siehst deine Seite echt, bevor du dich festlegst.
         </h2>

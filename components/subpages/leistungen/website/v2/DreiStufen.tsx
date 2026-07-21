@@ -51,7 +51,7 @@ export default function DreiStufen() {
   return (
     <section className="rr-section">
       <div className="rr-wrap rr-narrow">
-        <p className="rr-eyebrow-lg rr-reveal">DREI STUFEN</p>
+        <p className="wd-eyebrow rr-reveal">(DREI STUFEN)</p>
         <h2
           className="rr-statement rr-reveal"
           style={{
@@ -72,12 +72,11 @@ export default function DreiStufen() {
               className={`dreistufen-row${s.featured ? " dreistufen-row--featured" : ""}`}
               style={ROW_LINK_BASE}
             >
-              {s.featured && <span className="dreistufen-row__tag">MEISTGEWÄHLT</span>}
-
               <span className="dreistufen-row__grid">
                 <span className={`dreistufen-row__name${s.featured ? " dreistufen-row__name--featured" : ""}`}>
                   {s.name}
                   {s.featured && <span className="dreistufen-row__dot" aria-hidden="true" />}
+                  {s.featured && <span className="dreistufen-row__tag">MEISTGEWÄHLT</span>}
                 </span>
 
                 <span className="dreistufen-row__body">
@@ -111,24 +110,31 @@ export default function DreiStufen() {
           margin: 0 auto;
         }
 
-        .dreistufen-row {
+        /* :global() auf allen Selektoren, die den <Link> (dreistufen-row)
+           selbst treffen: styled-jsx haengt seine Scope-Klasse NICHT an
+           className-Props von custom Components (next/link), wenn die
+           className ein Template-String ist (hier: der bedingte
+           "featured"-Zusatz). Ohne :global() traf keine dieser Regeln den
+           Link, darum hatte jede Row 0 Padding/0 Rand und die Zeilen klebten
+           aneinander (Thomas 21.07., Bug gefunden bei Aufgabe 4b). */
+        :global(.dreistufen-row) {
           border-top: 1px solid rgba(11, 31, 58, 0.12);
-          padding: clamp(28px, 4vw, 44px) 4px;
+          padding: clamp(32px, 5vw, 52px) 4px;
         }
-        .dreistufen-rows > .dreistufen-row:last-child {
+        .dreistufen-rows > :global(.dreistufen-row:last-child) {
           border-bottom: 1px solid rgba(11, 31, 58, 0.12);
         }
 
-        .dreistufen-row--featured {
+        :global(.dreistufen-row--featured) {
           border-top: 1px solid var(--rr-red);
           border-bottom: 1px solid var(--rr-red);
-          padding: clamp(40px, 6vw, 64px) 4px;
+          padding: clamp(44px, 7vw, 72px) 4px;
         }
-        .dreistufen-rows > .dreistufen-row--featured + .dreistufen-row {
+        .dreistufen-rows > :global(.dreistufen-row--featured + .dreistufen-row) {
           border-top: 1px solid var(--rr-red);
         }
 
-        .dreistufen-row::before {
+        :global(.dreistufen-row::before) {
           content: "";
           position: absolute;
           inset: 0;
@@ -139,7 +145,7 @@ export default function DreiStufen() {
           transition: transform 0.35s var(--rr-ease, ease);
         }
         @media (hover: hover) and (pointer: fine) {
-          .dreistufen-row:hover::before {
+          :global(.dreistufen-row:hover)::before {
             transform: scaleX(1);
           }
         }
@@ -155,7 +161,7 @@ export default function DreiStufen() {
           text-transform: uppercase;
           padding: 4px 10px;
           border-radius: 0;
-          margin-bottom: clamp(16px, 2vw, 24px);
+          transform: translateY(-2px);
         }
 
         .dreistufen-row__grid {
@@ -177,7 +183,7 @@ export default function DreiStufen() {
           align-items: center;
           gap: 14px;
         }
-        .dreistufen-row:hover .dreistufen-row__name {
+        :global(.dreistufen-row:hover) .dreistufen-row__name {
           opacity: 0.85;
         }
 
@@ -186,7 +192,7 @@ export default function DreiStufen() {
           color: var(--rr-navy);
           opacity: 1;
         }
-        .dreistufen-row:hover .dreistufen-row__name--featured {
+        :global(.dreistufen-row:hover) .dreistufen-row__name--featured {
           opacity: 1;
         }
 
@@ -243,6 +249,8 @@ export default function DreiStufen() {
           .dreistufen-row__name,
           .dreistufen-row__name--featured {
             font-size: clamp(2rem, 9vw, 2.8rem);
+            flex-wrap: wrap;
+            row-gap: 8px;
           }
         }
       `}</style>
