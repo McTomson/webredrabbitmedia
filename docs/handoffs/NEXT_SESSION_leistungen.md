@@ -1,5 +1,18 @@
 # Naechste Session — LEISTUNGEN-Strang (21.07.2026 abend)
 
+## IST-ZUSTAND FESTGEZURRT (21.07. spaetabend, Recovery-Session)
+- Hub /relaunch-preview/leistungen = LETZTER STAND, von Thomas als korrekt bestaetigt.
+  Committet bis 7c7932a. Browser-verifiziert (voller Scroll-Durchgang, Dev-Server 9000):
+  Hero-Choreo (Wort -> Burst -> Zahnrad-Assemblierung -> Textdurchlauf) sauber,
+  Kommandozentrale-Intro, 6-Punkte-Raster 01-06 mit gestaffeltem Reveal, Navy-
+  Scharnierzeile, Talos im Browser-Mockup (fliegt ein, steht), KundenSagen
+  (Danesh aktiv in gedaempftem Rot, RR-Kachel, Pfeile), FAQ + Preise-ansehen,
+  Schluss-CTA (3 Buttons), Footer. tsc gruen, 0 Konsolen-Fehler nach frischem Load.
+- Die parallel entstandene, zunaechst uncommittete Website-Unterseiten-Runde
+  (/leistungen/website: Belief-Bumper, SoBauenWir, Fundament VarianteA, Diagnose-
+  Quiz, Ablauf-Kreis-Kette, DreiStufen-Rows, Talos-Dashboard, KundenSagen-Reuse)
+  ist als WIP gesichert: Commit 5e33e38. Browser-QA dieser Unterseite steht noch aus.
+
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, docs/lessons.md,
   docs/reviews/leistungen-ueberblick-2026-07-21.md, betroffene Dateien. Nicht loslegen ohne Kontext.
