@@ -38,14 +38,92 @@ export default function TalosSlot() {
           </Link>
         </div>
 
-        <div className="lht-stage">
-          <TalosEntranceStage />
+        <div className="lht-browser">
+          <div className="lht-browser__bar">
+            <span className="lht-browser__dot lht-browser__dot--red" aria-hidden="true" />
+            <span className="lht-browser__dot" aria-hidden="true" />
+            <span className="lht-browser__dot" aria-hidden="true" />
+            <span className="lht-browser__addr" aria-hidden="true">deine-website.at</span>
+          </div>
+          <div className="lht-browser__page">
+            <div className="lht-browser__skeleton" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className="lht-stage">
+              <TalosEntranceStage />
+            </div>
+          </div>
         </div>
       </div>
 
       <style>{`
 .lht-grid { display: grid; grid-template-columns: 1fr; gap: clamp(24px, 5vh, 56px); align-items: center; }
-.lht-stage { position: relative; width: 100%; height: min(64vh, 560px); }
+
+/* ---- Browser-Mockup, in dem Talos "steht" ---- */
+.lht-browser {
+  position: relative;
+  width: 100%;
+  border-radius: 16px;
+  background: var(--rr-paper);
+  box-shadow: var(--rr-shadow-pop);
+  overflow: visible;
+}
+.lht-browser__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 14px;
+  background: var(--rr-navy);
+  border-radius: 16px 16px 0 0;
+}
+.lht-browser__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+  flex: none;
+}
+.lht-browser__dot--red { background: var(--rr-red); }
+.lht-browser__addr {
+  margin-left: 6px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--rr-font-ui);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+.lht-browser__page {
+  position: relative;
+  overflow: visible;
+  background: var(--rr-surface);
+  border-radius: 0 0 16px 16px;
+}
+.lht-browser__skeleton {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  display: grid;
+  gap: 10px;
+  z-index: 0;
+  pointer-events: none;
+}
+.lht-browser__skeleton span {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(28, 40, 55, 0.06);
+}
+.lht-browser__skeleton span:nth-child(1) { width: 120px; }
+.lht-browser__skeleton span:nth-child(2) { width: 84px; }
+.lht-browser__skeleton span:nth-child(3) { width: 100px; }
+
+.lht-stage { position: relative; width: 100%; height: min(64vh, 560px); z-index: 1; }
+
 @media (min-width: 900px) {
   .lht-grid { grid-template-columns: 1fr 40%; }
   .lht-stage { height: min(78vh, 700px); }

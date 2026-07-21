@@ -224,14 +224,12 @@
 
 /* --- Vorschau-Chrome der Standalone-Demo ausblenden -----------------------
    demobar (obere Gesamtvorschau-Leiste), hint (Maus-Hinweis), autobtn
-   (Auto abspielen) und cursor-dot (Maus-Gimmick) gehoeren nicht auf die
+   (Auto abspielen) gehoeren nicht auf die Live-Seite; der ROTE cursor-dot
+   BLEIBT als Mal-Cursor sichtbar (Thomas 21.07.: "roter Punkt der malt") und
    Live-Seite. Per display:none ausblenden statt aus dem HTML loeschen, damit
    die Engine-Referenz auf .autobtn gueltig bleibt (if(autobtn)-Guards). */
-.demobar, .hint, .autobtn, .cursor-dot { display: none !important; }
-/* Der rote Cursor-Punkt ist oben ausgeblendet — dann muss die NATIVE Maus sichtbar
-   bleiben. Ohne dieses Override galt weiter .main-sticky.painting{cursor:none}
-   -> unsichtbare Maus beim Seiten-Start (Thomas 21.07.). */
-.main-sticky.painting { cursor: auto !important; }
+.demobar, .hint, .autobtn { display: none !important; }
+
 
 /* Der Demo-Naeherungs-Kopf (#headSvg) ist durch das MorphSculpture-Portal
    ersetzt. Er MUSS aus, sonst rendern ZWEI Koepfe uebereinander (dicht,

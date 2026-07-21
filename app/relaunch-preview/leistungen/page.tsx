@@ -10,7 +10,7 @@ import LeistungenUeberblick from '@/components/subpages/leistungen/LeistungenUeb
 import JsonLd from '@/components/JsonLd';
 import Scharnierzeile from '@/components/subpages/leistungen/Scharnierzeile';
 import TalosSlot from '@/components/subpages/leistungen/TalosSlot';
-import Referenzen from '@/components/subpages/leistungen/Referenzen';
+import KundenSagen from '@/components/subpages/leistungen/KundenSagen';
 import LeistungenFaq from '@/components/subpages/leistungen/LeistungenFaq';
 import SchlussCta from '@/components/subpages/leistungen/SchlussCta';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
@@ -23,7 +23,7 @@ import '@/components/subpages/leistungen/leistungen.css';
  * Schnitt vom 21.07. (Thomas): Hero (ueber-uns-Klon mit Zahnrad-Figur) ->
  * LeistungenUeberblick (6 Punkte, pixelperfektion-Raster, Kern-Botschaft
  * "Kommandozentrale") -> Scharnierzeile -> TalosSlot (der eine Teal-Moment)
- * -> Referenzen -> FAQ -> CTA -> Footer.
+ * -> KundenSagen -> FAQ -> CTA -> Footer.
  * BauMoment/WasDuBekommst/WasSieKann/MehrAlsWebsite sind bewusst RAUS —
  * ihr Inhalt steckt verdichtet in den 6 Punkten (keine Dopplung).
  * Kern-Regel bleibt: erst das Produkt (Website) beweisen, DANN der Helfer
@@ -171,7 +171,7 @@ export default function LeistungenPreviewPage() {
           WasSieKann und MehrAlsWebsite sind RAUS, ihr Inhalt steckt verdichtet
           in den 6 Punkten des Ueberblicks. Eine Aussage pro Sektion, gleich-
           maessiger Rhythmus): Scharnierzeile -> Talos (der eine Teal-Moment)
-          -> Referenzen -> FAQ -> CTA. */}
+          -> KundenSagen -> FAQ -> CTA. */}
       <div className={rrFonts} style={{ background: '#ffffff' }}>
         {/* 3 · Scharnier-Zeile — Kipp-Punkt vom Bau zur mitarbeitenden Website */}
         <Scharnierzeile />
@@ -179,8 +179,9 @@ export default function LeistungenPreviewPage() {
         {/* 4 · Talos-Auftritt — Talos als Gesicht der Helfer */}
         <TalosSlot />
 
-        {/* 5 · Referenzen — EIN echter Teal-Quote-Moment, Gold-Sterne */}
-        <Referenzen />
+        {/* 5 · KundenSagen — vermessene finsight.framer.ai-Sektion, Navy-Grund,
+            echte Google-Rezensionen (Rafael Danesh, Rene Rohrer), Gold-Sterne */}
+        <KundenSagen />
 
         {/* 6 · FAQ zweispaltig */}
         <LeistungenFaq />

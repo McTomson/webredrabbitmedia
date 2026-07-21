@@ -33,39 +33,30 @@
   toter CSS 615->240 Zeilen, Gedankenstrich aus Meta-Description. 2 Haiku-Findings
   nach Verifikation verworfen (im Review-Log).
 
-## NAECHSTE AUFGABEN = Thomas-Feedback 21.07. abend (in dieser Reihenfolge)
-1. **Roter Mal-Punkt im Hero fehlt.** Die ueber-uns-Demo hatte einen roten Punkt als
-   Cursor beim Malen (.cursor-dot); der Chrome-Ausblende-Block in
-   leistungen-hero2-demo/demo.css versteckt ihn (display:none) — diese Session wurde
-   stattdessen cursor:auto gesetzt. Thomas will den ROTEN PUNKT ZURUECK: .cursor-dot
-   fuer diese Seite wieder aktivieren (nur .demobar/.hint/.autobtn versteckt lassen,
-   cursor:none im painting-Zustand wiederherstellen). Gegen /ueber-uns vergleichen
-   (dort ist er auch versteckt — NUR unsere Datei anfassen).
-2. **Duenne horizontale Linie auf Hoehe der Ueberblick-Karten entfernen** (Screenshot
-   Thomas: Hairline links+rechts neben Karte 01 ueber die volle Breite). Ursache im
-   Browser lokalisieren (Kandidaten: Rest der Demo-CSS? border irgendwo? mask-Kante?)
-   — NICHT raten, per DevTools/eval das Element finden, dann fixen.
-3. **TalosSlot interaktiv machen** ("So sieht das in echt aus" / Anfrage-23-Uhr-Karte):
-   rechts daneben eine Website-Darstellung (Mockup-Rahmen); Talos erscheint darin von
-   unsichtbar -> sichtbar, WINKT mit der rechten Hand, ist INTERAKTIV: Kopf folgt der
-   Maus, zwinkert, gerne 1-2 weitere kleine Reaktionen. Vorher pruefen, was es an
-   Talos-Assets/Renderern schon gibt (components/relaunch/talos/*, talos-choreo,
-   /leistungen/talos-Seite) — WIEDERVERWENDEN, nicht neu erfinden. Demo-vor-Umbau:
-   erst kleine Fidelity-Demo zeigen.
-4. **Referenzen-Sektion 1:1 wie finsight.framer.ai Testimonials** (Vorbild live
-   ansehen + vermessen wie beim pixelperfektion-Block!): Titel "Was unsere Kunden
-   sagen" mittig; beim Scrollen wandert der Titel nach oben und das Kundenzitat
-   erscheint gross darunter; darunter Avatar-Reihe, Klick auf Avatar wechselt das
-   Zitat (aktiver Avatar farbig/gross, Name+Rolle darueber), Pfeile links/rechts.
-   UNSERE Schrift; Farbe statt deren Blau: dezentes Rot ODER Grau ODER andere
-   Markenfarbe — Thomas ist unsicher ("Rot vielleicht zu aggressiv") -> 2-3 gerenderte
-   Farb-Varianten zeigen (Regel: Designfragen visuell). NUR echte Google-Reviews
-   verwenden (Rafael Danesh, Dmitry Pashlov, Rene Rohrer; kein erfundenes Rating).
-   Ersetzt die bisherige Referenzen-Sektion; Ein-Teal-Moment-Regel beachten (der
-   Teal-Moment lebt aktuell in Referenzen — wohin damit? Mit Thomas klaeren oder
-   TalosSlot als Teal-Traeger).
-5. Danach: Thomas-Abnahme Gesamtseite, dann /leistungen/website- und talos-Hero
-   nach demselben Klon-Rezept.
+## ERLEDIGT 21.07. spaetabend (Folgesession, alle 4 Feedback-Punkte, browser-verifiziert)
+1. Roter Mal-Punkt zurueck im Hero (.cursor-dot wieder aktiv, cursor:none beim Malen).
+2. "Linie" aufgeklaert: war die Ablauf-Timeline der WEBSITE-Unterseite mit kaputten
+   styled-jsx-Styles; 'use client'-Fix kam von der Parallel-Session, rendert jetzt
+   korrekt als Kreis-Kette. Hub hat keine Linie (dokumentweiter DOM-Scan leer).
+3. TalosSlot: Browser-Mockup-Rahmen (.lht-browser: Navy-Leiste, roter Punkt,
+   "deine-website.at"-Pille, Skeleton-Inhalt) um die bestehende TalosEntranceStage —
+   Figur erscheint, winkt, folgt Maus, blinzelt (kam gratis aus talosMotion).
+4. KundenSagen (ersetzt Referenzen): 1:1 nach vermessener finsight-Spec (42px-Preset,
+   Kacheln 123px/19px-Radius, aktiv farbig +30px hoch, Name an aktiver Kachel,
+   instant-Cut, zyklische Pfeile), Marken-Navy-Grund, Initialen-Kacheln.
+   AKZENT-ENTSCHEIDUNG Thomas 21.07.: gedaempftes Rot #c94f5c (= Default --ks-accent).
+   NUR 2 echte Reviews (Danesh, Rohrer) — Dmitry Pashlov ist TEAM, kein Kunde
+   (Code-Doku), dritte Kachel erst bei echter dritter Rezension.
+
+## OFFEN fuer naechste Session
+- Thomas-Abnahme der Gesamtseite (Hero -> 6 Punkte -> Scharnier -> Talos-Mockup ->
+  KundenSagen -> FAQ -> CTA).
+- Teal-Moment: alte Referenzen-Sektion war der eine Teal-Traeger, KundenSagen ist
+  Navy — mit Thomas klaeren, ob TalosSlot den Teal-Akzent uebernimmt.
+- Talos-Blickfolge reagiert auf die GANZE Seite (window.pointermove) — Begrenzung
+  auf den Mockup-Bereich braeuchte Eingriff in TalosEntranceStage (Talos-Strang).
+- Dritte echte Google-Rezension besorgen -> TESTIMONIALS-Array in KundenSagen.tsx.
+- Danach: /leistungen/website- + talos-Hero nach Klon-Rezept.
 
 ## Offen / Risiken
 - EXIF-Credit in punkt-04-website.jpg vor Live-Gang strippen (alle Stock-Bilder).
