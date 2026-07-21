@@ -38,6 +38,29 @@ Die Feedback-Runde vom 21.07. ist committet und im Browser komplett verifiziert
 - review-it (3 Agenten): GO, 0 CRITICAL/MAJOR; P1 ReferenzenTeaser-Eyebrow sofort gefixt;
   Rest dokumentiert in docs/reviews/website-feedback2-e15914a.md.
 
+## RUNDE 3 — PROMOTION + NEUE VARIANTEN (22.07. nachts, Commit 42dde8c LOKAL)
+Thomas' Wahl aus Runde 2: Stufen = VARIANTE B, Dashboard = VARIANTE A. Umgesetzt:
+- **DreiStufenMatrix.tsx** (Variante B, Sticky-Stufe + 2-Spalten-Merkmale, Daten-Import aus
+  stufen-varianten/VarianteA) ersetzt DreiStufen auf der Live-Seite; Hex->Tokens.
+- **TalosDashboard.tsx** (Variante A Browser-Frame) ersetzt KollegeAnreisser, mit Thomas'
+  Fixes: Klicks-Panel oben RECHTS (keine URL-Pill-Kollision, <900px im Fluss), Talos
+  bodenverankert weiter rechts, **Klick auf Talos -> winkt erneut**.
+- **TalosEntranceStage ADDITIV erweitert** (Default bit-identisch fuer alle Bestandsnutzer):
+  `waveOnClick` (Klick/Enter/Space -> triggerGreeting, role=button), `camPos/camTgt/camFov`
+  (optionale Kamera-Kadrierung), QA-Hooks `wave()`/`isWaving()`/`camera`.
+  WICHTIG: Default-Kamera rahmt nur den OBERKOERPER; fuer Ganzkoerper inkl. Fuesse braucht
+  es eigene Werte — TalosDashboard nutzt camPos=[30,190,1150], camTgt=[0,170,12]
+  (im Browser via __talosEntrance.camera getuned). Fuesse-Beschnitt war KEIN CSS-Problem.
+- **NEU /leistungen/website/ablauf-varianten** (A Editorial-Zahlen-Stack / B Sticky-Split
+  mit rotem Faden / C horizontales Prozess-Band) — Ersatz-Kandidaten fuer die Kreis-Kette.
+- **NEU /leistungen/website/diagnose-varianten** (A grosse Typo-Antworten / B Diagnose-
+  Bogen mit rotem Hand-Kreis + Stempel / C Split mit Live-Zusammenfassung) — gleiche
+  Quiz-Logik wie Bestand, alle 3 bis zum Ergebnis durchgeklickt.
+- QA: tsc gruen, vitest 168/168, Live-Seite browser-verifiziert. Alte Dateien
+  (DreiStufen/KollegeAnreisser) + alle Varianten-Routen bleiben liegen bis zur Abnahme.
+- NAECHSTER SCHRITT: Thomas waehlt Ablauf- und Diagnose-Variante, dann promoten
+  (dabei wieder Hex->var(--rr-*)); danach Varianten-Routen aufraeumen.
+
 ## Kleinigkeiten offen (bewusst NICHT gefixt, Thomas hat Stand so abgenommen)
 - ASCII-Umlaute in KollegeAnreisser-Copy: "gewoehnlichen", "Blogbeitraege", "geprueft" — Hausregel
   waere echte Umlaute; bei naechster Copy-Runde mitziehen.
