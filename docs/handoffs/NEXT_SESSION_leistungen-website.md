@@ -18,6 +18,26 @@ Die Feedback-Runde vom 21.07. ist committet und im Browser komplett verifiziert
   SchlussCta (neue Copy "Hol dir die Website, bei der das Telefon geht.").
 - Alte Dateien Fundament.tsx/Testimonials.tsx sind ersetzt, aber noch im Repo.
 
+## FEEDBACK-RUNDE 2 (21.07. abend, Commits e15914a + 7b21aba LOKAL, review-it GO)
+4 parallele Agenten (Fable orchestriert), alles browser-verifiziert, tsc gruen, vitest 168/168:
+- Eyebrow-Stil "(...)" rot/letterspaced (.wd-eyebrow in website.css) in ALLEN 9 Sektionen
+  (DOM-geprueft; Diagnose=cream-Modifikator auf Teal, CTA=helleres Rot auf Navy).
+- SoBauenWir-Paare mehr Luft; Sektions-Paddings auf var(--rr-section-y) vereinheitlicht.
+- Fundament-Ledger: roter PUNKT statt Quadrat.
+- DreiStufen: MEISTGEWÄHLT-Badge fix am Business-Namen; styled-jsx-:global-Fix (Row-Padding
+  griff vorher NIE — Scope-Klasse propagiert nicht in next/link).
+- KundenSagen (geteilt mit Hub!): weiss, Google-G+Sterne-Badge, Zitat 32px, Crossfade-Wechsel
+  (key-Animation, min-height gegen Jump), Avatare hellgrau + dezenter Rot-Filter (opacity .76)
+  auf aktiv, Logo-Slot (logo?-Feld) fuer spaeter, Pfeile auf Weiss.
+- NEU /leistungen/website/stufen-varianten (A Editorial-Accordion / B Sticky-Matrix /
+  C Stacked-Tiles; 8-10 aufklappbare Merkmale je Stufe, Daten geteilt aus VarianteA.tsx).
+- NEU /leistungen/website/dashboard-varianten (A Browser-Frame mit Talos halb drueber /
+  B Floating Panels mit Ganzkoerper-Talos / C dunkle Kommandozentrale, Talos schaut von oben).
+  THOMAS WAEHLT je eine Variante; beim Promoten Hex-Farben auf var(--rr-*) umstellen
+  (Review-Vormerkung) und nur 1 Talos-Instanz auf der Live-Seite.
+- review-it (3 Agenten): GO, 0 CRITICAL/MAJOR; P1 ReferenzenTeaser-Eyebrow sofort gefixt;
+  Rest dokumentiert in docs/reviews/website-feedback2-e15914a.md.
+
 ## Kleinigkeiten offen (bewusst NICHT gefixt, Thomas hat Stand so abgenommen)
 - ASCII-Umlaute in KollegeAnreisser-Copy: "gewoehnlichen", "Blogbeitraege", "geprueft" — Hausregel
   waere echte Umlaute; bei naechster Copy-Runde mitziehen.
