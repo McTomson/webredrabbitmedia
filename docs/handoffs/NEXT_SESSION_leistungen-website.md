@@ -1,4 +1,32 @@
-# Naechste Session — Leistungen/Website-Unterseite (2026-07-20)
+# Naechste Session — Leistungen/Website-Unterseite (2026-07-21, IST-ZUSTAND gesichert)
+
+## IST-ZUSTAND 21.07. (Commit 5e33e38 LOKAL, von Thomas abgenommen: "passt, von hier weiter")
+Die Feedback-Runde vom 21.07. ist committet und im Browser komplett verifiziert
+(localhost:9000, Hero bis Footer durchgescrollt, tsc gruen, keine Konsolen-Fehler):
+- **Hero:** Zahnrad via `<MorphSculpture comp={0} style={{transform:'translateX(-4vw) scale(0.92)'}}>`
+  (Figur klebte sonst an der Textspalte), Titel 19vw statt 22vw, roter Mal-Punkt (.cursor-dot) wieder AN,
+  Haarlinien-Bug gefixt (belief-backing vollflaechig `inset:0` statt 58vh-Band).
+- **NEU Belief-Bumper** direkt im Hero-Demo (`demo.body.html` #sceneBelief, originale ueber-uns-Push-
+  Mechanik, Engine hatte den Code schon): "schoen sind / was bringen" -> "Wir koennen beides. Schoen und
+  sie klingelt." -> Mitarbeiter-oben-drauf -> Pointe "Deine soll auch klingeln?" + Entwurf-CTA.
+- **Sektions-Reihenfolge NEU:** SoBauenWir (Handwerk-Kontrastpaare, ersetzt alten Bumper) -> Diagnose
+  (jetzt 3-Fragen-Quiz-Flow, Teal-Welt) -> Ablauf (4 Kreise, scroll-getrieben) -> Fundament =
+  **fundament-varianten/VarianteA** (Sticky-Ledger, Thomas' Wahl aus A/B/C; Vorschau-Seite
+  app/.../website/fundament-varianten existiert noch) -> DreiStufen (Editorial-Rows, Business-Held) ->
+  KollegeAnreisser (**Talos-Dashboard**: TalosEntranceStage rechts, rendert verifiziert; links UI-Panels)
+  -> KundenSagen (Hub-Sektion 1:1) -> ReferenzenTeaser (neu, schmaler Streifen) -> WebsiteFaq ->
+  SchlussCta (neue Copy "Hol dir die Website, bei der das Telefon geht.").
+- Alte Dateien Fundament.tsx/Testimonials.tsx sind ersetzt, aber noch im Repo.
+
+## Kleinigkeiten offen (bewusst NICHT gefixt, Thomas hat Stand so abgenommen)
+- ASCII-Umlaute in KollegeAnreisser-Copy: "gewoehnlichen", "Blogbeitraege", "geprueft" — Hausregel
+  waere echte Umlaute; bei naechster Copy-Runde mitziehen.
+- Talos-Buehne fuellt nur den oberen Teil der rechten Spalte (feste Zellhoehe), darunter Weissraum.
+- Varianten-Vorschau /leistungen/website/fundament-varianten nach finaler Abnahme entfernen.
+
+---
+
+# Aelterer Stand (2026-07-20)
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, STATE.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
