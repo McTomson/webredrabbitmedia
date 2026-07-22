@@ -1,4 +1,4 @@
-"use client"; // TEMP (QA-only, wird zurueckgesetzt) — Datei ist untracked WIP und blockiert sonst die Hydration
+"use client";
 
 import Link from 'next/link';
 

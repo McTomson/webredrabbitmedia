@@ -1,79 +1,70 @@
-# Naechste Session — LEISTUNGEN-Hub Feedback-Runde (22.07.2026)
+# Naechste Session — LEISTUNGEN-Strang (21.07.2026 abend)
 
 ## Arbeitsregeln (verbindlich)
-- Lies ZUERST alles Relevante: diesen Handoff, STATE.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
-- NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.
-- Erst einen Plan machen (TodoWrite), dann ausfuehren.
-- Skills + parallele Sub-Agenten nutzen wo es hilft. Fuer lange autonome Laeufe den `autonomous-runner` Agent verwenden.
-- Autonom handeln, voller Zugriff inkl. Browser — ohne fuer jeden Schritt nachzufragen (Grenze: kein Botschutz-Umgehen, keine Account-Anlage, nichts Destruktives ohne Deckung).
-- Laufend testen + `review-it` bei groesseren Schritten. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
-- Bei langen Agenten-/Hintergrund-Laeufen ALLE 15 MIN Health-Check + Stichprobe (TaskList/BashOutput/Monitor). Bricht ein Tool ein → STOPP + fixen, keine kaputten Daten schreiben. Nicht endlos haengen.
+- Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, docs/lessons.md,
+  docs/reviews/leistungen-ueberblick-2026-07-21.md, betroffene Dateien. Nicht loslegen ohne Kontext.
+- NIE raten — immer verifizieren (Code/Browser/vermessen). Bei Unsicherheit: fragen oder fail-closed.
+- Erst Plan (TodoWrite), dann ausfuehren.
+- **Arbeitsmodus (Thomas 21.07.): PARALLELE Sub-Agenten mit anderen LLMs (Sonnet baut,
+  fuer Copy ggf. Opus); die Hauptsession (Fable) ist DESIGN-LEAD + UEBERWACHER:
+  briefen, kontrollieren, korrigieren, QA — nicht alles selbst bauen (Token sparen).**
+- Laufend Browser-QA mit ECHTEM Scrollen (agent-browser), tsc + vitest gruen halten.
+  `review-it` nach groesseren Schritten.
+- Nur Leistungs-Strang-Dateien anfassen (Fremd-Straenge: website/v2, website-demo,
+  talos-choreo, SubpageHero, kontakt/ueber-uns-Demos = TABU). Commits lokal, nicht pushen.
+- Haus-Stimme: Du-Anrede, NIE Gedankenstrich, kein sichtbares "KI", keine Preise,
+  echte Umlaute im sichtbaren Content.
 
-## WICHTIGSTER KONTEXT: Thomas hat den Umbau NICHT abgenommen
-Session 22.07. hat den Hub auf die Website-Designregeln gebracht (Commit 6904727) —
-Thomas' Urteil danach: "leider nicht wirklich alles umgesetzt wie ich es wollte,
-die Linie ist immer noch da und der Rest passt auch noch nicht". Er will in der
-naechsten Session PUNKT FUER PUNKT durchgehen und einzeln ansagen, was zu tun ist.
-ALSO: NICHTS gross vorbauen — Session starten, Seite oeffnen, seine Ansagen einzeln
-umsetzen, jede Aenderung SOFORT mit ihm am Browser verifizieren bevor die naechste kommt.
+## Stand dieser Session (21.07., alles browser-verifiziert, lokal committet)
+- Hero = ueber-uns-Klon (leistungen-hero2-demo + LeistungenHero2Client), Zahnrad via
+  MorphSculpture comp={0} + navyPiece={false}. KERN-ERKENNTNIS: Figur kommt NICHT aus
+  der Engine (#headSvg ist per CSS aus), sondern aus MorphSculpture-Portal, getrieben
+  ueber window.__sculptProgress. NIE Fragmentdaten in die Engine mappen.
+- Seiten-Flow nach Schnitt: Hero -> LeistungenUeberblick (6 Punkte, pixelperfektion-
+  Raster vermessen: 1230er-Container, 553x450-Bilder, Paar/Interlude/Paar/Einzel,
+  rechte Spalte +100px, Reveal 0.6s gestaffelt) -> Scharnierzeile -> TalosSlot ->
+  Referenzen -> FAQ -> CTA. BauMoment/WasDuBekommst/WasSieKann/MehrAlsWebsite RAUS.
+- Copy-Kern: "Eine normale Website kriegst du ueberall. Unsere hat eine
+  Kommandozentrale." 6 Punkte in Haus-Stimme. Punkt 06 -> Link /leistungen/talos.
+- 6 Stimmungsbilder unter public/relaunch/leistungen/ (Unsplash/Pexels; 02+06 sind
+  die schwaechsten, spaeter durch echte Screens ersetzen).
+- Review (3 Agenten) + Fixes: Overlap -84vh transparent (exakt Zerfallsbeginn DIS0=0.92,
+  Herleitung in leistungen-ueberblick.css dokumentiert), __sculptProgress Reset/Delete,
+  toter CSS 615->240 Zeilen, Gedankenstrich aus Meta-Description. 2 Haiku-Findings
+  nach Verifikation verworfen (im Review-Log).
 
-## Stand dieser Session (Commit 6904727 lokal, tsc gruen, vitest nicht noetig)
-Umgesetzt auf /relaunch-preview/leistungen (Hub):
-- wd-eyebrow (Klammer-Stil) in geteilte Datei components/subpages/leistungen/wd-eyebrow.css
-  verschoben (aus website.css raus); Hub-Sektionen (Ueberblick, TalosSlot, FAQ, SchlussCta)
-  auf wd-eyebrow umgestellt (.lu-eyebrow entfernt).
-- Sektionsabstaende auf --rr-section-y-Rhythmus (Ausnahme bewusst: LeistungenUeberblick-
-  Anfang, an Hero-Zerfall-Mathe gekoppelt, -84vh — NICHT anfassen).
-- TalosSlot-Sektion auf Grau var(--rr-surface, #f4f4f2).
-- SchlussCta nach lw-cta-Muster (wd-eyebrow--ondark, display-2 + roter Punkt, 2 Buttons
-  sweep-red Entwurf + frame-red Anrufen; "Preise ansehen"-Button entfernt).
-- NEU ScrollBumper.tsx (eigenstaendige Stups-Mechanik: Satz steht, naechster schiebt von
-  unten; rAF + Rect-Progress; reduced-motion statisch) — ersetzt Scharnierzeile im Hub
-  mit 3 Saetzen (pointe "Rund um die Uhr. Mit Talos im Team."). Scharnierzeile.tsx existiert noch.
-- NEU ProduktTueren.tsx: Teal-Sektion (world-1-bg) "Eine Website. Und ein Mitarbeiter,
-  der schon drinsteckt." mit grosser Teal-Flaeche "Die Website" + eingebetteter Navy-Karte
-  "Talos, dein Mitarbeiter" (Router zu beiden Unterseiten; Hierarchie = Talos ist Teil,
-  kein zweites Produkt). Eingebaut zwischen TalosSlot und KundenSagen.
-- kunden-sagen.css: border-top/border-bottom der .ks-section ENTFERNT.
+## ERLEDIGT 21.07. spaetabend (Folgesession, alle 4 Feedback-Punkte, browser-verifiziert)
+1. Roter Mal-Punkt zurueck im Hero (.cursor-dot wieder aktiv, cursor:none beim Malen).
+2. "Linie" aufgeklaert: war die Ablauf-Timeline der WEBSITE-Unterseite mit kaputten
+   styled-jsx-Styles; 'use client'-Fix kam von der Parallel-Session, rendert jetzt
+   korrekt als Kreis-Kette. Hub hat keine Linie (dokumentweiter DOM-Scan leer).
+3. TalosSlot: Browser-Mockup-Rahmen (.lht-browser: Navy-Leiste, roter Punkt,
+   "deine-website.at"-Pille, Skeleton-Inhalt) um die bestehende TalosEntranceStage —
+   Figur erscheint, winkt, folgt Maus, blinzelt (kam gratis aus talosMotion).
+4. KundenSagen (ersetzt Referenzen): 1:1 nach vermessener finsight-Spec (42px-Preset,
+   Kacheln 123px/19px-Radius, aktiv farbig +30px hoch, Name an aktiver Kachel,
+   instant-Cut, zyklische Pfeile), Marken-Navy-Grund, Initialen-Kacheln.
+   AKZENT-ENTSCHEIDUNG Thomas 21.07.: gedaempftes Rot #c94f5c (= Default --ks-accent).
+   NUR 2 echte Reviews (Danesh, Rohrer) — Dmitry Pashlov ist TEAM, kein Kunde
+   (Code-Doku), dritte Kachel erst bei echter dritter Rezension.
 
-## OFFENE PROBLEME (Thomas' Feedback, noch NICHT geklaert)
-1. **DIE LINIE IST IMMER NOCH DA.** Die entfernten ks-section-Borders waren offenbar
-   nicht (die einzige) Quelle. NAECHSTER SCHRITT: mit Thomas klaeren WO genau er sie
-   sieht (Screenshot/Scrollposition), dann im DOM den Verursacher finden (Kandidaten:
-   ReferenzenTeaser hat borderTop/Bottom inline; LeistungenUeberblick-CSS; evtl.
-   Dev-Server-Cache/HMR — Seite hart neu laden bevor gefixt wird; evtl. schaute er
-   auf /leistungen/website statt Hub). Dokumentweiter Scan:
-   Array.from(document.querySelectorAll('*')).filter(el => {const s=getComputedStyle(el);
-   return [s.borderTopWidth,s.borderBottomWidth].some(w=>w==='1px');})
-2. Bumper-Copy, ProduktTueren-Look/-Texte, CTA-Umbau: alles von mir entworfen, Thomas
-   hat NICHTS davon abgenommen ("der Rest passt auch noch nicht"). Auf seine Ansagen warten.
-3. ProduktTueren.tsx hat in Zeile 1 ein TEMP "use client" (kam von Parallel-Session-QA,
-   Kommentar sagt "wird zurueckgesetzt") — bei Gelegenheit pruefen/entfernen (Komponente
-   war als Server-Komponente mit plain <style> gebaut).
-4. Offene inhaltliche Vorschlaege an Thomas (aus meiner Analyse, unbeantwortet):
-   Preis-Hinweis frueher (ohne Zahlen!), Founder-/Gesicht-Block vor KundenSagen,
-   FAQ-Ergaenzungen (Dauer, alte Seite/Domain), Zielgruppen-Wiedererkennung (Quiz-Teaser).
-   NICHT ungefragt bauen.
+## OFFEN fuer naechste Session
+- Thomas-Abnahme der Gesamtseite (Hero -> 6 Punkte -> Scharnier -> Talos-Mockup ->
+  KundenSagen -> FAQ -> CTA).
+- Teal-Moment: alte Referenzen-Sektion war der eine Teal-Traeger, KundenSagen ist
+  Navy — mit Thomas klaeren, ob TalosSlot den Teal-Akzent uebernimmt.
+- Talos-Blickfolge reagiert auf die GANZE Seite (window.pointermove) — Begrenzung
+  auf den Mockup-Bereich braeuchte Eingriff in TalosEntranceStage (Talos-Strang).
+- Dritte echte Google-Rezension besorgen -> TESTIMONIALS-Array in KundenSagen.tsx.
+- Danach: /leistungen/website- + talos-Hero nach Klon-Rezept.
 
-## Naechste konkrete Schritte
-1. Dev-Server pruefen/starten: cd ~/dev/redrabbit && npm run dev -- --port 9000
-2. Seite mit Thomas oeffnen (http://localhost:9000/relaunch-preview/leistungen), HART
-   neu laden (Cache), Linie lokalisieren und fixen — erst wenn ER sie weg sieht, weiter.
-3. Dann seine Punkte einzeln entgegennehmen, je Punkt: umsetzen -> Browser zeigen -> OK holen.
-4. Erst nach seiner Abnahme: Sammel-Commit(s) lokal, Handoff aktualisieren.
+## Offen / Risiken
+- EXIF-Credit in punkt-04-website.jpg vor Live-Gang strippen (alle Stock-Bilder).
+- Geparkte Idee (NICHT ungefragt bauen): Fragebogen "Finde raus, was du brauchst".
+- Vorbestehender Fremd-Fehler: website/v2/Ablauf.tsx styled-jsx ohne 'use client'.
+- Dev-Server: `npm run dev -- --port 9000` (nie parallel `next build`).
 
-## Blocker / Risiken
-- Working Tree geteilt mit Parallel-Straengen (Rechtsseiten, Talos-Seite, GalleryChrome
-  u.v.m. modified + viele untracked PNGs) — NUR eigene Hub-Dateien committen.
-- Nicht pushen (Relaunch-Strang bewusst lokal).
-- Lesson dieser Session: "Linie weg" wurde von mir als verifiziert gemeldet, Thomas sieht
-  sie trotzdem. Visuelle Fixes erst als erledigt melden, wenn Thomas sie auf SEINEM
-  Bildschirm bestaetigt hat (siehe Memory feedback_visuelle_fixes_thomas_bestaetigt).
-
-## Relevante Dateien/Befehle
-- Hub: app/relaunch-preview/leistungen/page.tsx; Sektionen unter components/subpages/leistungen/
-  (LeistungenUeberblick, ScrollBumper NEU, TalosSlot, ProduktTueren NEU, KundenSagen,
-  LeistungenFaq, SchlussCta, wd-eyebrow.css NEU, leistungen.css, kunden-sagen.css)
-- Vorbild: /relaunch-preview/leistungen/website (Regeln-Inventar siehe Session 22.07.,
-  Eyebrow website->wd-eyebrow.css, Buttons styleguide.css:746ff sweep/frame)
-- tsc: npx tsc --noEmit · Tests: npx vitest run · QA: agent-browser/Chrome, ECHTES Scrollen
+## Befehle/Vorbilder
+- Seite: http://localhost:9000/relaunch-preview/leistungen · Vorbild-Hero: /ueber-uns
+- Vorbild Aufgabe 4: https://finsight.framer.ai/ (Testimonial-Sektion)
+- tsc: `npx tsc --noEmit` · Tests: `npx vitest run` · QA: agent-browser, echtes Scrollen
