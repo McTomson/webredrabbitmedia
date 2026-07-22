@@ -107,19 +107,27 @@ export default function RelaunchMenu() {
     };
   }, [open]);
 
-  // Roter Punkt = Maus-Cursor im Overlay (Vorbild-Mechanik). Direktes
-  // transform statt State -> kein Re-Render pro Mousemove. Nur solange offen.
+  // Roter Punkt = DER Maus-Cursor der ganzen Seite (Thomas 22.07.: "immer
+  // nur der rote punkt ueberall und jederzeit, nicht beides"). RelaunchMenu
+  // haengt auf jeder Relaunch-Seite, darum lebt der Cursor hier. Direktes
+  // transform statt State -> kein Re-Render pro Mousemove.
   useEffect(() => {
-    if (!open) return;
     const dot = cursorRef.current;
     if (!dot) return;
     const onMove = (e: MouseEvent) => {
       dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
       dot.style.opacity = "1";
     };
+    const onLeave = () => {
+      dot.style.opacity = "0";
+    };
     window.addEventListener("mousemove", onMove, { passive: true });
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [open]);
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
 
   // Fokus in den Dialog schicken; beim Schliessen zurueck zum Trigger.
   useEffect(() => {
@@ -166,6 +174,9 @@ export default function RelaunchMenu() {
 
   return (
     <div className="rrmenu-root">
+      {/* Roter Punkt = seitenweiter Cursor (nur Desktop-Pointer) */}
+      <span ref={cursorRef} className="rrmenu-cursor" aria-hidden="true" />
+
       {/* ---- Fixierter Trigger (oben rechts) ---- */}
       <button
         ref={triggerRef}
@@ -195,9 +206,6 @@ export default function RelaunchMenu() {
           if (e.target === overlayRef.current) close();
         }}
       >
-        {/* Roter Punkt als Cursor (folgt der Maus, nur Desktop-Pointer) */}
-        <span ref={cursorRef} className="rrmenu-cursor" aria-hidden="true" />
-
         <div className="rrmenu-inner">
           {/* oben links: Logo + Wortmarke (auf hellem Grund in Ink) */}
           <div className="rrmenu-top">
@@ -352,19 +360,11 @@ export default function RelaunchMenu() {
           transition: opacity 320ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
           overflow: hidden;
         }
-        /* Roter Punkt ersetzt den Maus-Cursor (nur echte Zeiger-Geraete) */
-        @media (hover: hover) and (pointer: fine) {
-          .rrmenu-overlay,
-          .rrmenu-overlay :global(a),
-          .rrmenu-overlay :global(button) {
-            cursor: none;
-          }
-        }
         .rrmenu-cursor {
           position: fixed;
           left: 0;
           top: 0;
-          z-index: 1002;
+          z-index: 9999;
           width: 14px;
           height: 14px;
           border-radius: 50%;
@@ -618,6 +618,24 @@ export default function RelaunchMenu() {
           .rrmenu-overlay :global(.rrmenu-corners),
           .rrmenu-overlay :global(.rrmenu-dot) {
             transition-duration: 0.01ms;
+          }
+        }
+      `}</style>
+      {/* Seitenweit: System-Cursor aus, der rote Punkt ist der einzige Cursor
+          (nur echte Zeiger-Geraete; Touch bleibt unberuehrt). Global, weil
+          RelaunchMenu auf jeder Relaunch-Seite haengt. */}
+      <style jsx global>{`
+        @media (hover: hover) and (pointer: fine) {
+          html,
+          body,
+          a,
+          button,
+          input,
+          textarea,
+          select,
+          label,
+          [role="button"] {
+            cursor: none !important;
           }
         }
       `}</style>
