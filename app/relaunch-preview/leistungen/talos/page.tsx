@@ -5,6 +5,7 @@ import CornerLogo from '@/components/relaunch/CornerLogo';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import TalosDemoClient from '@/components/subpages/TalosDemoClient';
+import TalosCompanionStage from '@/components/relaunch/talos/TalosCompanionStage';
 import WerIstTalos from '@/components/subpages/leistungen/talos/v2/WerIstTalos';
 import InklusiveDashboard from '@/components/subpages/leistungen/talos/v2/InklusiveDashboard';
 import Faehigkeiten from '@/components/subpages/leistungen/talos/v2/Faehigkeiten';
@@ -12,6 +13,7 @@ import FreigabePrinzip from '@/components/subpages/leistungen/talos/v2/FreigabeP
 import Onboarding from '@/components/subpages/leistungen/talos/v2/Onboarding';
 import Kontrollraum from '@/components/subpages/leistungen/talos/v2/Kontrollraum';
 import Beweis from '@/components/subpages/leistungen/talos/v2/Beweis';
+import FragTalosAnmoderation from '@/components/subpages/leistungen/talos/v2/FragTalosAnmoderation';
 import TalosFaqV2 from '@/components/subpages/leistungen/talos/v2/TalosFaqV2';
 import TalosSchlussCta from '@/components/subpages/leistungen/talos/v2/TalosSchlussCta';
 import JsonLd from '@/components/JsonLd';
@@ -106,24 +108,39 @@ export default function TalosLeistungPreviewPage() {
         <RelaunchMenu />
       </div>
 
+      {/* Der seitenweite Companion-Talos (fixe 3D-Ebene): macht den Hero-Walk-in
+          und begleitet danach die Sektionen entlang der data-talos-station-Anker. */}
+      <TalosCompanionStage />
+
       {/* Hero-Strecke: Wort "Talos" + Wisch-Reveal + 3D-Walk-in + Story-Text +
           Beruhigungs-Bumper (Belief-Szene) — alles in der geklonten Demo. */}
       <TalosDemoClient css={heroCss} html={heroHtml} js={heroJs} />
 
-      {/* Inhalts-Sektionen, echte tl-*-Bauteile im .rr-Font-Scope auf Weiss. */}
+      {/* Inhalts-Sektionen, echte tl-*-Bauteile im .rr-Font-Scope auf Weiss.
+          data-talos-station-Wrapper = Halte-Punkte des Companions (anchor =
+          horizontale Position 0..1, size s/m/l/xl = Naehe/Groesse, gesture =
+          einmalige Geste beim Ankommen). Feintuning mit Thomas. */}
       <div className={rrFonts} style={{ background: '#ffffff', position: 'relative', zIndex: 2 }}>
-        <WerIstTalos />
+        <div data-talos-station data-talos-anchor="0.76" data-talos-size="xl">
+          <WerIstTalos />
+        </div>
         <InklusiveDashboard />
         <Faehigkeiten />
-        <FreigabePrinzip />
+        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-gesture="bow">
+          <FreigabePrinzip />
+        </div>
         <Onboarding />
-        <Kontrollraum />
+        <div data-talos-station data-talos-anchor="0.78" data-talos-size="m">
+          <Kontrollraum />
+        </div>
         <Beweis />
-        {/* FragTalos-Port (Assistent-Logik + 5 Fragen aus der alten Seite,
-            components/subpages/leistungen/talos/FragTalosSection.tsx) folgt
-            in Etappe 4 — bewusst noch nicht eingebaut. */}
+        <div data-talos-station data-talos-anchor="0.8" data-talos-size="s">
+          <FragTalosAnmoderation />
+        </div>
         <TalosFaqV2 />
-        <TalosSchlussCta />
+        <div data-talos-station data-talos-anchor="0.08" data-talos-size="m" data-talos-gesture="wave">
+          <TalosSchlussCta />
+        </div>
       </div>
 
       <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>

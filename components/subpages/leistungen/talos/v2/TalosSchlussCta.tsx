@@ -6,20 +6,26 @@ import Link from 'next/link';
  * holen" -> Kontakt, rr-btn-frame "Anrufen" tel:-Link, Nummer nie im
  * Klartext). Eigene .tl-cta-Klassen (1:1-Kopie von website.css .lw-cta) in
  * talos-v2.css, weil diese Seite website.css nicht mehr importiert.
+ * Copy aus Spec Sektion 11 (22.07.2026), Buttons unangetastet.
  */
 export default function TalosSchlussCta() {
   return (
     <section className="rr-section tl-cta">
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow wd-eyebrow--ondark" style={{ marginBottom: 32 }}>
-          Bereit?
+          Los geht&apos;s
         </p>
         <p className="rr-display-2 tl-cta__title">
-          Hol dir die Website, die mitarbeitet<span style={{ color: 'var(--rr-red)' }}>.</span>
+          Hol dir zuerst die Website. Talos ziehst du dazu, wann immer du
+          willst<span style={{ color: 'var(--rr-red)' }}>.</span>
         </p>
         <p className="rr-body-lg tl-cta__sub">
-          Du bekommst zuerst eine wunderschöne, für dich gebaute Website. Einen
-          digitalen Mitarbeiter nimmst du nur dazu, wenn du willst.
+          Fang mit einer Seite an, die von Tag eins für dich arbeitet. Den
+          Entwurf siehst du zuerst, ohne Vorkasse. Und wenn du später mehr
+          Arbeit abgeben willst, ist Talos schon da.
+        </p>
+        <p className="tl-says tl-says--ondark">
+          Bis gleich. Ich freu mich, wenn ich für dich loslegen darf.
         </p>
         <div className="tl-cta__actions">
           <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
