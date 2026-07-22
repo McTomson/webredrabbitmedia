@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { compileMDX } from 'next-mdx-remote/rsc';
-import { getPostBySlug, getRelatedPosts } from '@/lib/blog/posts';
+import { getAllPosts, getPostBySlug, getRelatedPosts } from '@/lib/blog/posts';
 import { SimpleAudioPlayer } from '@/components/blog/content/SimpleAudioPlayer';
 import { VideoEmbed } from '@/components/blog/content/VideoEmbed';
 import HeroldComparisonTable from '@/components/HeroldComparisonTable';
@@ -25,6 +25,19 @@ import '@/components/subpages/tipps-preview.css';
  */
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+/**
+ * Statisch vorrendern (wie /tipps/[slug]). WICHTIG: ohne SSG packt Vercels
+ * File-Tracing wegen des fs-Checks in ArticleImg den kompletten public/-
+ * Ordner (>1 GB Medien) in die Serverless-Funktion -> Deploy-Abbruch
+ * (250-MB-Limit, 22.07.). Statisch = fs laeuft zur Build-Zeit, keine Funktion.
+ */
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
