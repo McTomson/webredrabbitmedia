@@ -1985,3 +1985,39 @@ quelle: https://webdirwas.at/website-fuer-google-sichtbar-machen
 quelle_name: WEB DIR WAS (AT) - So machst du deine Website für Google sichtbar
 geprueft_am: 2026-07-20
 recheck_nach: 2027-01-16
+
+## t48-2026-07-22-221
+cluster: 1
+keywords: unterschied, zwischen, klassischem, generative, engine, optimization
+aussage: Google stellt offiziell klar: Fuer AI Overviews und AI Mode ist keine gesonderte Optimierung noetig — es gelten dieselben SEO-Grundlagen wie fuer die klassische Google-Suche. Eine Seite muss lediglich indexiert und snippet-faehig sein ('There are no additional technical requirements'). Die KI-Features nutzen dabei eine 'Query Fan-out'-Technik, die mehrere verwandte Suchanfragen zu Unterthemen ausfuehrt, um eine Antwort zu bilden.
+quelle: https://developers.google.com/search/docs/appearance/ai-features
+quelle_name: Google Search Central: AI Features and Your Website (offizielle Doku)
+geprueft_am: 2026-07-22
+recheck_nach: 2027-01-18
+
+## t48-2026-07-22-222
+cluster: 1
+keywords: unterschied, zwischen, klassischem, generative, engine, optimization
+aussage: Die Princeton-Studie 'GEO: Generative Engine Optimization' (Aggarwal et al., ACM KDD 2024, ~10.000 Test-Queries) hat gemessen, dass gezielte GEO-Taktiken die Sichtbarkeit in KI-Antworten um bis zu ca. 40 % steigern koennen — am staerksten wirkten Statistiken, Zitate von Experten und Quellenangaben, waehrend klassisches Keyword-Stuffing die Sichtbarkeit sogar senkte. Das ist der zentrale empirische Unterschied zu klassischem SEO: KI-Engines belohnen zitierfaehige, belegte Inhalte statt Keyword-Dichte.
+quelle: https://arxiv.org/abs/2311.09735
+quelle_name: arXiv: GEO: Generative Engine Optimization (KDD 2024)
+geprueft_am: 2026-07-22
+recheck_nach: 2027-01-18
+
+## t48-2026-07-22-223
+cluster: 1
+keywords: unterschied, zwischen, klassischem, generative, engine, optimization
+aussage: Laut Pew Research Center (Browsing-Daten von 900 US-Erwachsenen, Maerz 2025) klicken Nutzer bei Suchergebnisseiten MIT KI-Zusammenfassung nur in 8 % der Faelle auf einen klassischen Link, ohne KI-Zusammenfassung in 15 % — und nur ca. 1 % der Besuche fuehrten zu einem Klick auf eine im AI Overview zitierte Quelle. Rund 18 % aller untersuchten Google-Suchen erzeugten bereits ein AI Overview. (US-Daten; fuer AT/DACH als Trend-Indikator zu kennzeichnen.)
+quelle: https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/
+quelle_name: Pew Research Center: Google users are less likely to click on links when an AI summary appears
+geprueft_am: 2026-07-22
+recheck_nach: 2027-01-18
+
+## t48-2026-07-22-224
+cluster: 1
+keywords: unterschied, zwischen, klassischem, generative, engine, optimization
+aussage: In Oesterreich liegen die Kosten fuer eine professionelle Website-Optimierung 2026 zwischen 295 € fuer einfache Audits und ueber 5.000 € fuer umfassende Ueberarbeitungen; laufende Betreuung fuer KMU startet meist ab 500 € monatlich. Die Vorbereitung auf KI-Suchmaschinen (GEO) ist dabei neben technischem SEO und Core Web Vitals bereits fester Bestandteil moderner Optimierungspakete.
+quelle: https://web.redrabbit.media/tipps/website-optimierung-kosten
+quelle_name: Red Rabbit Media: Was kostet eine Website-Optimierung? [Preise & Strategien 2026]
+geprueft_am: 2026-07-22
+recheck_nach: 2027-01-18
