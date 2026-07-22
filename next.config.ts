@@ -22,6 +22,13 @@ const nextConfig = {
 
   // Performance Optimierungen
   outputFileTracingRoot: __dirname,
+  // Der fs-Bildcheck im Artikel-Template (ArticleImg) verleitet das Tracing,
+  // den kompletten public/-Ordner (>1 GB Medien) in die Route-Funktion zu
+  // packen -> Vercel-250-MB-Limit, Deploy-Abbruch (22.07.). Die Route ist
+  // SSG (dynamicParams=false), die Funktion braucht public/ nie.
+  outputFileTracingExcludes: {
+    '/relaunch-preview/tipps/[slug]': ['./public/**'],
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [320, 384, 420, 640, 750, 828, 1080, 1200, 1920],
