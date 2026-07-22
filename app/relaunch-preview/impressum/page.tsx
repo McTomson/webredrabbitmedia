@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
+import CornerLogo from "@/components/relaunch/CornerLogo";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import { crimson, dmsans, fraunces, grotesk } from "@/lib/relaunch/fonts";
 import "@/app/styleguide/styleguide.css";
@@ -24,6 +25,9 @@ export default function ImpressumPreviewPage() {
       >
         <RelaunchMenu />
       </div>
+
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil. */}
+      <CornerLogo />
 
       <div className="rrl">
         <link rel="preconnect" href="https://fonts.googleapis.com" />

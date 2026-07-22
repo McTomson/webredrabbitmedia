@@ -3,6 +3,7 @@ import path from 'node:path';
 import type { Metadata } from 'next';
 import UeberUnsDemoClient from '@/components/subpages/UeberUnsDemoClient';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
+import CornerLogo from '@/components/relaunch/CornerLogo';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 
@@ -42,6 +43,9 @@ export default function UeberUnsPage() {
       >
         <RelaunchMenu />
       </div>
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
+          blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
+      <CornerLogo />
       <UeberUnsDemoClient css={css} html={html} js={js} />
     </>
   );

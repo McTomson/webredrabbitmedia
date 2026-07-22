@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import TalosPresentation from "@/components/relaunch/talos/TalosPresentation";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
+import CornerLogo from "@/components/relaunch/CornerLogo";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import JsonLd from "@/components/JsonLd";
 import WasTalosIst from "@/components/subpages/leistungen/talos/WasTalosIst";
@@ -74,6 +75,11 @@ export default function TalosLeistungPage() {
       <div className={rrFonts} style={{ background: "transparent" }}>
         <RelaunchMenu />
       </div>
+
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
+          blendet erst nach etwas Scrollen ein. Der opake Footer (z-index 50)
+          deckt es beim Herunterscrollen wie zuvor das Talos-Chrome ab. */}
+      <CornerLogo />
 
       {/* Talos: Scroll-Praesentation (3D-Buehne + Stationen). */}
       <div className={rrFonts} style={{ background: "#ffffff" }}>

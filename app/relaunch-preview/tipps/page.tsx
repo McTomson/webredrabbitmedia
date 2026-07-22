@@ -1,11 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { getAllPosts } from '@/lib/blog/posts';
 import TippsHeroClient from '@/components/subpages/TippsHeroClient';
 import TippsTunnel from '@/components/relaunch/TippsTunnel';
-import { RabbitMark } from '@/components/relaunch/RabbitMark';
+import CornerLogo from '@/components/relaunch/CornerLogo';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
@@ -64,24 +63,9 @@ export default async function TippsPreviewPage() {
         href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=Instrument+Sans:wght@400;500;600&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
       />
 
-      {/* Rote Hasen-Marke oben links auf Weiss, Link zur Startseite (Muster wie
-          GalleryChrome auf der Referenzen-Seite). */}
-      <Link
-        href="/relaunch-preview"
-        aria-label="Zur Startseite"
-        style={{
-          position: 'absolute',
-          top: 'clamp(18px, 2.4vw, 34px)',
-          left: 'var(--rr-gutter, clamp(20px, 4vw, 64px))',
-          zIndex: 30,
-          display: 'block',
-          lineHeight: 0,
-        }}
-      >
-        {/* Wortmarke dezent: viewBox 174x267 (h/w ~1.53) -> width ~20px ergibt
-            ~31px Hoehe (Referenz GalleryChrome-Groesse). */}
-        <RabbitMark style={{ display: 'block', width: 'clamp(18px, 1.8vw, 21px)', height: 'auto' }} />
-      </Link>
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
+          blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
+      <CornerLogo />
 
       {/* Hamburger-Menue der Hauptseite. Bewusst AUSSERHALB von .rrt (dessen
           Universal-Reset wuerde sonst mit den Menue-/Footer-Styles ringen);

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog/posts";
-import { RabbitMark } from "@/components/relaunch/RabbitMark";
+import CornerLogo from "@/components/relaunch/CornerLogo";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import TalosHeroStage from "@/components/relaunch/talos/TalosHeroStage";
@@ -47,10 +47,9 @@ export default async function LeistungenHubPage() {
 
   return (
     <>
-      {/* Rote Hasen-Marke oben links, Link zur Startseite. */}
-      <Link href="/relaunch-preview" aria-label="Zur Startseite" className="lh-mark">
-        <RabbitMark style={{ display: "block", width: "clamp(19px,1.9vw,23px)", height: "auto" }} />
-      </Link>
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
+          blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
+      <CornerLogo />
 
       <div className={rrFonts} style={{ background: "transparent" }}>
         <RelaunchMenu />
@@ -348,11 +347,6 @@ const CSS = `
     animation-range:entry 0% cover 34%; }
 }
 @keyframes lh-rise{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:none; } }
-
-/* Logo oben links */
-.lh-mark{ position:fixed; top:clamp(18px,2.4vw,34px); left:var(--rr-gutter,clamp(20px,4vw,64px));
-  z-index:43; display:block; line-height:0; }
-.lh-mark:focus-visible{ outline:2px solid var(--rr-red,#f12032); outline-offset:4px; }
 
 @media (max-width:900px){
   .lh-hero{ grid-template-columns:1fr; }

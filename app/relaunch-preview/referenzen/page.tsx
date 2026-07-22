@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { crimson, dmsans, grotesk } from "@/lib/relaunch/fonts";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
+import CornerLogo from "@/components/relaunch/CornerLogo";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import SphereGallery from "@/components/relaunch/SphereGallery";
 import GalleryChrome from "@/components/relaunch/GalleryChrome";
@@ -47,6 +48,11 @@ export default function ReferenzenPreviewPage() {
       style={{ background: "#ffffff" }}
     >
       <RelaunchMenu />
+
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
+          blendet erst nach etwas Scrollen ein (ersetzt das fruehere
+          GalleryChrome-Logo, damit Groesse/Position seitenweit identisch sind). */}
+      <CornerLogo />
 
       {/* Buehne: viewportfuellende Galerie. H1 wie der Original-Claim als
           kleiner Textblock oben Mitte (SSR, SEO), Chrome = Logo/Let's talk/Nav. */}

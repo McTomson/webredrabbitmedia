@@ -11,7 +11,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import * as THREE from "three-spline";
 import SplineLoader from "@splinetool/loader";
-import { RabbitMark } from "@/components/relaunch/RabbitMark";
 import { buildTalosRig, type TalosRig } from "./talosRig";
 import { createTalosMotion, type TalosMotion } from "./talosMotion";
 import { TALOS_SECTIONS, type CamKey } from "./talosSections";
@@ -291,16 +290,9 @@ export default function TalosPresentation() {
       <div className="tp-stage" aria-hidden="true" ref={hostRef} />
       {no3d && <div className="tp-poster" aria-hidden="true" />}
 
-      {/* Rote Hasen-Marke oben links: erscheint erst, wenn man den Hero verlaesst
-          (Thomas-Wunsch: Logo taucht nach etwas Scrollen auf). Link zur Startseite. */}
-      <Link
-        href="/relaunch-preview"
-        aria-label="Zur Startseite"
-        className={`tp-mark${active > 0 ? " is-shown" : ""}`}
-        tabIndex={active > 0 ? 0 : -1}
-      >
-        <RabbitMark style={{ display: "block", width: "clamp(19px,1.9vw,23px)", height: "auto" }} />
-      </Link>
+      {/* Ecken-Logo wird jetzt seitenweit von <CornerLogo /> gerendert
+          (auf app/relaunch-preview/leistungen/talos + talos-intro), damit
+          Groesse/Position und das verzoegerte Einblenden ueberall gleich sind. */}
 
       {/* Progress-Linie oben */}
       <div className="tp-progress" aria-hidden="true">
@@ -454,13 +446,6 @@ const CSS = `
 /* Progress-Linie */
 .tp-progress{ position:fixed; left:0; top:0; width:100%; height:3px; z-index:41; background:rgba(35,38,46,.06); }
 .tp-progress-bar{ display:block; width:100%; height:100%; background:#f12032; transform:scaleX(0); transform-origin:0 50%; }
-
-/* Rote Hasen-Marke oben links (scroll-reaktiv) */
-.tp-mark{ position:fixed; top:clamp(18px,2.4vw,34px); left:var(--rr-gutter,clamp(20px,4vw,64px));
-  z-index:43; display:block; line-height:0; opacity:0; transform:translateY(-8px); pointer-events:none;
-  transition:opacity .5s var(--rr-ease,cubic-bezier(.6,0,.4,1)), transform .5s var(--rr-ease,cubic-bezier(.6,0,.4,1)); }
-.tp-mark.is-shown{ opacity:1; transform:none; pointer-events:auto; }
-.tp-mark:focus-visible{ outline:2px solid #f12032; outline-offset:4px; }
 
 /* Scroll-Hinweis (nur Hero) */
 .tp-scrollcue{ position:fixed; left:50%; bottom:clamp(18px,3vh,34px); transform:translateX(-50%) translateY(6px);

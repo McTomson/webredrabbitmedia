@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import TalosPresentation from "@/components/relaunch/talos/TalosPresentation";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
+import CornerLogo from "@/components/relaunch/CornerLogo";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import { crimson, dmsans, fraunces, grotesk } from "@/lib/relaunch/fonts";
 import "@/app/styleguide/styleguide.css";
@@ -23,6 +24,9 @@ export default function TalosIntroPage() {
       <div className={rrFonts} style={{ background: "transparent" }}>
         <RelaunchMenu />
       </div>
+
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil. */}
+      <CornerLogo />
 
       {/* Talos: Scroll-Praesentation (3D-Buehne + Stationen). */}
       <div className={rrFonts} style={{ background: "#ffffff" }}>

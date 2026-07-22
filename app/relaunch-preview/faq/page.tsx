@@ -3,6 +3,7 @@ import path from 'node:path';
 import type { Metadata } from 'next';
 import FaqDemoClient from '@/components/subpages/FaqDemoClient';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
+import CornerLogo from '@/components/relaunch/CornerLogo';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
@@ -118,6 +119,9 @@ export default function FaqPreviewPage() {
       >
         <RelaunchMenu />
       </div>
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
+          blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
+      <CornerLogo />
       <FaqDemoClient css={css} html={html} js={js} />
     </>
   );

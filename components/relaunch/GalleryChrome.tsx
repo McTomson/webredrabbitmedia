@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { RabbitMark } from "@/components/relaunch/RabbitMark";
 
 // ============================================================
 // GalleryChrome — DOM-Overlay der Referenzen-Galerie.
@@ -80,21 +79,9 @@ export default function GalleryChrome() {
 
   return (
     <>
-      {/* Logo oben links — Markenrot (Thomas 16.07.) */}
-      <Link
-        href="/relaunch-preview"
-        aria-label="Zur Startseite"
-        style={{
-          position: "absolute",
-          top: "clamp(18px, 2.4vw, 34px)",
-          left: "var(--rr-gutter)",
-          zIndex: 5,
-          display: "block",
-          lineHeight: 0,
-        }}
-      >
-        <RabbitMark className="rf-gal-logo" />
-      </Link>
+      {/* Ecken-Logo wird jetzt seitenweit von <CornerLogo /> gerendert
+          (app/relaunch-preview/referenzen/page.tsx), damit Groesse/Position
+          und das verzoegerte Einblenden auf allen Seiten identisch sind. */}
 
       {/* Let's talk oben rechts, links neben dem Burger des RelaunchMenu */}
       <div
@@ -226,11 +213,6 @@ export default function GalleryChrome() {
       )}
 
       <style jsx global>{`
-        .rf-gal-logo {
-          width: clamp(30px, 3vw, 40px);
-          height: auto;
-          filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
-        }
         /* Eck-Rahmen-Buttons kompakt fuer die Galerie-Buehne */
         .rr .rf-frame {
           padding: 13px 22px;
