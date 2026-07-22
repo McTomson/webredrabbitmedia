@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
+import { RabbitMark } from "@/components/relaunch/RabbitMark";
 
 /**
  * RelaunchMenu — Vollbild-Overlay-Menue fuer den Red-Rabbit-Relaunch.
@@ -31,12 +32,11 @@ const NAV_ITEMS: NavItem[] = [
   {
     label: "Leistungen",
     href: "/relaunch-preview/leistungen",
-    // Klick klappt auf statt zu navigieren. "Alle Leistungen" haelt die
-    // Hub-Seite erreichbar. Talos-Label ohne das Wort "KI" (Hausregel).
+    // Klick klappt auf statt zu navigieren (Thomas 22.07.: genau diese zwei
+    // Zeilen). Du-Anrede statt "Ihre" (Hausregel), kein Wort "KI".
     children: [
-      { label: "Website erstellen", href: "/relaunch-preview/leistungen/website" },
-      { label: "Dein digitaler Mitarbeiter · Talos", href: "/relaunch-preview/leistungen/talos" },
-      { label: "Alle Leistungen", href: "/relaunch-preview/leistungen" },
+      { label: "Deine Website", href: "/relaunch-preview/leistungen/website" },
+      { label: "Bei jeder Website dabei · Talos", href: "/relaunch-preview/leistungen/talos" },
     ],
   },
   { label: "Referenzen", href: "/relaunch-preview/referenzen" },
@@ -75,6 +75,7 @@ export default function RelaunchMenu() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLSpanElement>(null);
   const dialogId = useId();
   const subId = useId();
 
@@ -104,6 +105,20 @@ export default function RelaunchMenu() {
       document.body.style.paddingRight = prevPad;
       lenis?.start?.();
     };
+  }, [open]);
+
+  // Roter Punkt = Maus-Cursor im Overlay (Vorbild-Mechanik). Direktes
+  // transform statt State -> kein Re-Render pro Mousemove. Nur solange offen.
+  useEffect(() => {
+    if (!open) return;
+    const dot = cursorRef.current;
+    if (!dot) return;
+    const onMove = (e: MouseEvent) => {
+      dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+      dot.style.opacity = "1";
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
   }, [open]);
 
   // Fokus in den Dialog schicken; beim Schliessen zurueck zum Trigger.
@@ -180,11 +195,15 @@ export default function RelaunchMenu() {
           if (e.target === overlayRef.current) close();
         }}
       >
+        {/* Roter Punkt als Cursor (folgt der Maus, nur Desktop-Pointer) */}
+        <span ref={cursorRef} className="rrmenu-cursor" aria-hidden="true" />
+
         <div className="rrmenu-inner">
-          {/* oben links: Wortmarke (auf hellem Grund in Ink) */}
+          {/* oben links: Logo + Wortmarke (auf hellem Grund in Ink) */}
           <div className="rrmenu-top">
-            <span className="rrmenu-wordmark" aria-hidden={!open}>
-              Red Rabbit
+            <span className="rrmenu-brand" aria-hidden={!open}>
+              <RabbitMark className="rrmenu-mark" title="" />
+              <span className="rrmenu-wordmark">Red Rabbit</span>
             </span>
           </div>
 
@@ -204,7 +223,6 @@ export default function RelaunchMenu() {
                         aria-controls={subId}
                         onClick={() => setServicesOpen((v) => !v)}
                       >
-                        <span className="rrmenu-dot" aria-hidden="true" />
                         <span className="rrmenu-link-text">{item.label}</span>
                         <Reticle />
                       </button>
@@ -215,17 +233,14 @@ export default function RelaunchMenu() {
                       >
                         <div className="rrmenu-sub-inner">
                           <ul className="rrmenu-sublist">
-                            {item.children.map((sub, si) => (
+                            {item.children.map((sub) => (
                               <li key={sub.href}>
                                 <Link
                                   href={sub.href}
-                                  className={`rrmenu-sublink${
-                                    si === item.children!.length - 1 ? " rrmenu-sublink--muted" : ""
-                                  }`}
+                                  className="rrmenu-sublink"
                                   tabIndex={servicesOpen ? undefined : -1}
                                   onClick={close}
                                 >
-                                  <span className="rrmenu-dot rrmenu-dot--sm" aria-hidden="true" />
                                   <span className="rrmenu-sublink-text">{sub.label}</span>
                                   <Reticle />
                                 </Link>
@@ -245,7 +260,6 @@ export default function RelaunchMenu() {
                       data-menu-focus={i === 0 ? "" : undefined}
                       onClick={close}
                     >
-                      <span className="rrmenu-dot" aria-hidden="true" />
                       <span className="rrmenu-link-text">{item.label}</span>
                       <Reticle />
                     </Link>
@@ -331,19 +345,35 @@ export default function RelaunchMenu() {
           position: fixed;
           inset: 0;
           z-index: 1000;
-          /* Fallback fuer fehlenden backdrop-filter: fast opake Flaeche */
-          background: rgba(246, 245, 241, 0.985);
+          /* Deckend weiss (Thomas 22.07.: nicht durchsichtig) */
+          background: var(--rr-offwhite, #f6f5f1);
           display: flex;
           opacity: 0;
           transition: opacity 320ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
           overflow: hidden;
         }
-        @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-          .rrmenu-overlay {
-            background: rgba(246, 245, 241, 0.72);
-            -webkit-backdrop-filter: blur(16px);
-            backdrop-filter: blur(16px);
+        /* Roter Punkt ersetzt den Maus-Cursor (nur echte Zeiger-Geraete) */
+        @media (hover: hover) and (pointer: fine) {
+          .rrmenu-overlay,
+          .rrmenu-overlay :global(a),
+          .rrmenu-overlay :global(button) {
+            cursor: none;
           }
+        }
+        .rrmenu-cursor {
+          position: fixed;
+          left: 0;
+          top: 0;
+          z-index: 1002;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: var(--rr-red, #f12032);
+          pointer-events: none;
+          opacity: 0;
+        }
+        @media (hover: none), (pointer: coarse) {
+          .rrmenu-cursor { display: none; }
         }
         .rrmenu-overlay.is-open {
           opacity: 1;
@@ -361,9 +391,19 @@ export default function RelaunchMenu() {
           justify-content: space-between;
         }
 
-        /* ---- oben: Wortmarke ---- */
+        /* ---- oben: Logo + Wortmarke ---- */
         .rrmenu-top {
           flex: none;
+        }
+        .rrmenu-brand {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .rrmenu-overlay :global(.rrmenu-mark) {
+          height: clamp(22px, 2.2vw, 30px);
+          width: auto;
+          display: block;
         }
         .rrmenu-wordmark {
           font-family: var(--rr-font-display, system-ui, sans-serif);
@@ -435,21 +475,6 @@ export default function RelaunchMenu() {
           z-index: 1;
         }
 
-        /* Punkt-Akzent (links vom Wort, ausserhalb des Flusses -> kein Versatz) */
-        .rrmenu-overlay :global(.rrmenu-dot) {
-          position: absolute;
-          left: -0.05em;
-          top: 50%;
-          width: 0.28em;
-          height: 0.28em;
-          border-radius: 50%;
-          background: var(--rr-red, #f12032);
-          opacity: 0;
-          transform: translate(-50%, -50%) scale(0.4);
-          transition: opacity 300ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)),
-            transform 300ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
-        }
-
         /* Eck-Klammern (Reticle) — opacity 0 -> 1 bei Hover (Vorbild-Mechanik) */
         .rrmenu-overlay :global(.rrmenu-corners) {
           position: absolute;
@@ -491,12 +516,6 @@ export default function RelaunchMenu() {
         .rrmenu-overlay :global(.rrmenu-link:focus-visible .rrmenu-corners),
         .rrmenu-overlay :global(.rrmenu-link.is-active .rrmenu-corners) {
           opacity: 1;
-        }
-        .rrmenu-overlay :global(.rrmenu-link:hover .rrmenu-dot),
-        .rrmenu-overlay :global(.rrmenu-link:focus-visible .rrmenu-dot),
-        .rrmenu-overlay :global(.rrmenu-link.is-active .rrmenu-dot) {
-          opacity: 1;
-          transform: translate(-50%, -50%) scale(1);
         }
         .rrmenu-overlay :global(.rrmenu-link:focus-visible) {
           outline: none;
@@ -541,26 +560,13 @@ export default function RelaunchMenu() {
           color: var(--rr-ink, #23262e);
           transition: color 220ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
         }
-        .rrmenu-overlay :global(.rrmenu-sublink--muted) {
-          font-size: clamp(12px, min(1.9vh, 2vw), 17px);
-          color: var(--rr-ink-soft, #5a5e68);
-        }
         .rrmenu-overlay :global(.rrmenu-sublink-text) {
           position: relative;
           z-index: 1;
         }
-        .rrmenu-overlay :global(.rrmenu-dot--sm) {
-          width: 0.34em;
-          height: 0.34em;
-        }
         .rrmenu-overlay :global(.rrmenu-sublink:hover .rrmenu-corners),
         .rrmenu-overlay :global(.rrmenu-sublink:focus-visible .rrmenu-corners) {
           opacity: 1;
-        }
-        .rrmenu-overlay :global(.rrmenu-sublink:hover .rrmenu-dot),
-        .rrmenu-overlay :global(.rrmenu-sublink:focus-visible .rrmenu-dot) {
-          opacity: 1;
-          transform: translate(-50%, -50%) scale(1);
         }
         .rrmenu-overlay :global(.rrmenu-sublink .rrmenu-c) {
           width: 0.5rem;
