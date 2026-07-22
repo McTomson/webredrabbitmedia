@@ -1,107 +1,132 @@
-import type { Metadata } from "next";
-import TalosPresentation from "@/components/relaunch/talos/TalosPresentation";
-import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
-import CornerLogo from "@/components/relaunch/CornerLogo";
-import FooterReassembly from "@/components/relaunch/FooterReassembly";
-import JsonLd from "@/components/JsonLd";
-import WasTalosIst from "@/components/subpages/leistungen/talos/WasTalosIst";
-import Fundament from "@/components/subpages/leistungen/talos/Fundament";
-import Module from "@/components/subpages/leistungen/talos/Module";
-import Arbeitstag from "@/components/subpages/leistungen/talos/Arbeitstag";
-import FragTalosSection from "@/components/subpages/leistungen/talos/FragTalosSection";
-import TalosFaq from "@/components/subpages/leistungen/talos/TalosFaq";
-import TalosCta from "@/components/subpages/leistungen/talos/TalosCta";
-import { crimson, dmsans, grotesk } from "@/lib/relaunch/fonts";
-import "@/app/styleguide/styleguide.css";
-import "@/components/subpages/leistungen/talos/talos-sub.css";
+import fs from 'node:fs';
+import path from 'node:path';
+import type { Metadata } from 'next';
+import CornerLogo from '@/components/relaunch/CornerLogo';
+import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
+import FooterReassembly from '@/components/relaunch/FooterReassembly';
+import TalosDemoClient from '@/components/subpages/TalosDemoClient';
+import WerIstTalos from '@/components/subpages/leistungen/talos/v2/WerIstTalos';
+import InklusiveDashboard from '@/components/subpages/leistungen/talos/v2/InklusiveDashboard';
+import Faehigkeiten from '@/components/subpages/leistungen/talos/v2/Faehigkeiten';
+import FreigabePrinzip from '@/components/subpages/leistungen/talos/v2/FreigabePrinzip';
+import Onboarding from '@/components/subpages/leistungen/talos/v2/Onboarding';
+import Kontrollraum from '@/components/subpages/leistungen/talos/v2/Kontrollraum';
+import Beweis from '@/components/subpages/leistungen/talos/v2/Beweis';
+import TalosFaqV2 from '@/components/subpages/leistungen/talos/v2/TalosFaqV2';
+import TalosSchlussCta from '@/components/subpages/leistungen/talos/v2/TalosSchlussCta';
+import JsonLd from '@/components/JsonLd';
+import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
+import '@/app/styleguide/styleguide.css';
+import '@/components/relaunch/subpages.css';
+import '@/components/subpages/leistungen/wd-eyebrow.css';
+import '@/components/subpages/leistungen/talos/v2/talos-v2.css';
 
+/**
+ * Leistungen — Talos ("der digitale Mitarbeiter"), Preview, noindex —
+ * GERUEST-Fassung (Etappe "Geruest", 22.07.2026). War bewusst eine 1:1-Kopie
+ * von app/relaunch-preview/leistungen/website/page.tsx (Ausgangslage laut
+ * Auftrag); jetzt auf die neuen v2-Sektionen dieses Ordners umgebaut. Chrome
+ * (RelaunchMenu/CornerLogo/FooterReassembly, Fonts, styleguide.css) 1:1 aus
+ * der Kopie uebernommen.
+ *
+ * Bewusst NICHT angefasst (Aufraeumen folgt separat, laut Auftrag): die
+ * alten Talos-Komponenten in components/subpages/leistungen/talos/* und
+ * components/relaunch/talos/TalosPresentation.tsx bleiben unveraendert
+ * liegen, nur nicht mehr von dieser Seite importiert.
+ *
+ * Kein Feindesign, kein 3D in dieser Etappe: TalosHeroPlaceholder und der
+ * .tl-stage-slot in WerIstTalos sind Platzhalter fuer die spaetere
+ * Walk-in-Hero-/Naeherkommen-Buehne (Orchestrator, naechste Etappe). Der
+ * FragTalos-Port (Assistent-Logik + 5 Fragen aus der alten Seite) ist als
+ * Etappe-4-Kommentar vorgemerkt, noch nicht eingebaut.
+ *
+ * JSON-LD: Service-Eintrag aus der alten Seite (git show HEAD, vor dieser
+ * Aenderung) uebernommen und auf den neuen Sprachgebrauch angepasst
+ * (digitaler Mitarbeiter statt Helfer/Dashboard, Fähigkeiten statt Module).
+ */
 export const metadata: Metadata = {
-  title: "Talos, dein Helfer · Red Rabbit Media",
+  title: 'Talos, der digitale Mitarbeiter in deiner Website (Preview) · Red Rabbit Media',
   description:
-    "Talos arbeitet auf deiner Website, auch wenn du gerade keine Zeit hast: Anfragen erfassen, nachfassen, Zahlen in Klartext. Du gibst per Klick frei.",
+    'Talos ist der digitale Mitarbeiter, der in jeder Website von uns steckt: Anfragen auffangen, Beiträge schreiben, Zahlen in Klartext. Du gibst per Klick frei.',
   robots: { index: false, follow: false },
 };
 
-/**
- * Talos / Dashboard / Helfer — Unterseite mit der 3D-Scroll-Praesentation
- * (components/relaunch/talos/TalosPresentation.tsx, unveraendert
- * importiert) plus SSR-Substanz danach, fuer Crawler/LLMs UND fuer
- * Nutzer, die weiterscrollen, statt die Buehne bis zum Ende zu erleben.
- *
- * Chrome 1:1 aus app/relaunch-preview/talos-intro/page.tsx gespiegelt
- * (RelaunchMenu oben, FooterReassembly unten opak/z50, gleiche Font-
- * Variablen). Die 3D-Buehne (tp-stage) ist innerhalb TalosPresentation
- * fixed mit z-index:0 — der SSR-Block danach braucht darum selbst
- * position:relative + z-index>=1 (siehe talos-sub.css .lt-substance),
- * sonst faellt der Text optisch hinter die Buehne.
- *
- * Genau EIN <h1> auf der Seite: TalosPresentation rendert pro Station
- * nur <h2 class="tp-headline"> (geprueft, kein <h1> im Deck), darum
- * traegt WasTalosIst() das erste Statement als <h1>. Alle folgenden
- * Zwischenueberschriften sind <h2> (grep-verifiziert vor Abgabe).
- */
-export default function TalosLeistungPage() {
-  const rrFonts = `rr ${dmsans.variable} ${grotesk.variable} ${crimson.variable}`;
+export default function TalosLeistungPreviewPage() {
+  const rrFonts = `rr ${dmsans.variable} ${crimson.variable} ${grotesk.variable}`;
+
+  // Geklonte Scroll-Strecke (Wort-Zerlegung + Talos-Walk-in + Story +
+  // Beruhigungs-Bumper) aus components/subpages/talos-demo/. Reads pro Request
+  // (IN der Komponentenfunktion, nicht auf Modulebene) fuer Dev-Hot-Reload —
+  // gleiches Muster wie die Website-Seite.
+  const heroDir = path.join(process.cwd(), 'components/subpages/talos-demo');
+  const heroCss = fs.readFileSync(path.join(heroDir, 'demo.css'), 'utf8');
+  const heroHtml = fs.readFileSync(path.join(heroDir, 'demo.body.html'), 'utf8');
+  const heroJs = fs.readFileSync(path.join(heroDir, 'demo.engine.jstext'), 'utf8');
 
   return (
     <>
-      {/* Service (Talos als Dashboard/Helfer-Leistung) + Organization.
-          FAQPage-JSON-LD kommt automatisch aus der echten Faq-Komponente
-          in TalosFaq (components/relaunch/Faq.tsx) — nicht doppeln. */}
+      {/* Organization + Service (Talos) als JSON-LD. FAQPage-JSON-LD kommt
+          automatisch aus der echten Faq-Komponente in TalosFaqV2
+          (components/relaunch/Faq.tsx) — nicht doppeln. */}
       <JsonLd
         data={{
-          "@context": "https://schema.org",
-          "@graph": [
+          '@context': 'https://schema.org',
+          '@graph': [
             {
-              "@type": "Organization",
-              "@id": "https://web.redrabbit.media/#organization",
-              name: "Red Rabbit Media",
-              url: "https://web.redrabbit.media",
+              '@type': 'Organization',
+              '@id': 'https://web.redrabbit.media/#organization',
+              name: 'Red Rabbit Media',
+              url: 'https://web.redrabbit.media',
             },
             {
-              "@type": "Service",
-              name: "Talos, Helfer und Dashboard",
-              serviceType: "Website-Betreuung mit automatisierter Anfragen-Erfassung",
+              '@type': 'Service',
+              name: 'Talos, der digitale Mitarbeiter',
+              serviceType: 'Website mit automatisierten, buchbaren Fähigkeiten',
               description:
-                "Talos sitzt in der Website und erfasst Anfragen, schreibt freundlich zurück, fasst nach und legt alles zur Freigabe vor. Zahlen in Klartext, Uptime-Wache und Speed-Report sind in jeder Website inklusive; Der Schreiber und Der Empfang sind dazu buchbare Module.",
-              provider: { "@type": "Organization", name: "Red Rabbit Media" },
-              areaServed: "AT",
+                'Talos ist der digitale Mitarbeiter, der in jeder Website von uns steckt. Texte und Bilder selbst ändern, Zahlen in Klartext, Ausfall-Alarm, Hosting und Pflege sind in jeder Website inklusive. Fähigkeiten wie Der Schreiber, Der Empfang, Der Aussendienst, Der Social-Poster und Die Sichtbarkeit bucht man einzeln dazu, monatlich, jederzeit kündbar.',
+              provider: { '@type': 'Organization', name: 'Red Rabbit Media' },
+              areaServed: 'AT',
             },
           ],
         }}
       />
 
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
+      />
+
+      {/* Ecken-Logo (rote Hasen-Marke oben links). */}
+      <CornerLogo />
+
       {/* Hamburger-Menue der Hauptseite; .rr-Wrapper liefert nur Font-Variablen. */}
-      <div className={rrFonts} style={{ background: "transparent" }}>
+      <div className={rrFonts} style={{ background: 'transparent' }}>
         <RelaunchMenu />
       </div>
 
-      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
-          blendet erst nach etwas Scrollen ein. Der opake Footer (z-index 50)
-          deckt es beim Herunterscrollen wie zuvor das Talos-Chrome ab. */}
-      <CornerLogo />
+      {/* Hero-Strecke: Wort "Talos" + Wisch-Reveal + 3D-Walk-in + Story-Text +
+          Beruhigungs-Bumper (Belief-Szene) — alles in der geklonten Demo. */}
+      <TalosDemoClient css={heroCss} html={heroHtml} js={heroJs} />
 
-      {/* Talos: Scroll-Praesentation (3D-Buehne + Stationen). */}
-      <div className={rrFonts} style={{ background: "#ffffff" }}>
-        <TalosPresentation />
+      {/* Inhalts-Sektionen, echte tl-*-Bauteile im .rr-Font-Scope auf Weiss. */}
+      <div className={rrFonts} style={{ background: '#ffffff', position: 'relative', zIndex: 2 }}>
+        <WerIstTalos />
+        <InklusiveDashboard />
+        <Faehigkeiten />
+        <FreigabePrinzip />
+        <Onboarding />
+        <Kontrollraum />
+        <Beweis />
+        {/* FragTalos-Port (Assistent-Logik + 5 Fragen aus der alten Seite,
+            components/subpages/leistungen/talos/FragTalosSection.tsx) folgt
+            in Etappe 4 — bewusst noch nicht eingebaut. */}
+        <TalosFaqV2 />
+        <TalosSchlussCta />
       </div>
 
-      {/* SSR-Substanz nach der Buehne: der crawlbare/LLM-lesbare Kern der
-          Seite, in normalem Fluss, ueber der fixen 3D-Buehne (z-index). */}
-      <div className={rrFonts} style={{ background: "#ffffff" }}>
-        <WasTalosIst />
-        <Fundament />
-        <Module />
-        <Arbeitstag />
-        <FragTalosSection />
-        <TalosFaq />
-        <TalosCta />
-      </div>
-
-      {/* Footer der Hauptseite (opak). z-index 50 deckt beim Herunterscrollen die
-          fixe 3D-Buehne UND das fixe Talos-Chrome (Anrufen, Logo, Dots, Progress:
-          z40-43) ab; der globale Menue-Trigger (z1001) bleibt darueber erreichbar. */}
-      <div className={rrFonts} style={{ background: "transparent", position: "relative", zIndex: 50 }}>
+      <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
         <FooterReassembly />
       </div>
     </>
