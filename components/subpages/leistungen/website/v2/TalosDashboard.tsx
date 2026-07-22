@@ -9,16 +9,18 @@ import TalosEntranceStage from "@/components/relaunch/talos/TalosEntranceStage";
  * Variante A "Browser-Frame". Ein dunkler Browser-Chrome (Navy, Ampel-Punkte,
  * URL-Pill) rahmt ein helles Dashboard-Mockup: Sidebar-Skeleton, Panels mit
  * Klartext (Benachrichtigung, Status-Ring, Besucher-Skeleton, Faehigkeiten).
- * Ein Chart-Panel schwebt ueber den oberen Frame-Rand. Talos ragt von rechts
- * halb ueber den Rahmen, spielt seinen Auftritt und winkt bei Klick erneut.
- * Darunter: Eyebrow + H2 + Erklaerabsatz + drei Info-Spalten.
+ * Talos ragt von rechts halb ueber den Rahmen, spielt seinen Auftritt und
+ * winkt bei Klick erneut. Darunter: Eyebrow + H2 + Erklaerabsatz + drei
+ * Info-Spalten.
  *
- * Fixes ggue. der Variante (Thomas-Feedback 21.07.):
- *  1) Klicks-Panel sitzt jetzt oben RECHTS und ragt dezent ueber die Ecke,
- *     kollidiert nicht mehr mit der URL-Pill; unter ~900px liegt es im Fluss.
- *  2) Talos weiter nach rechts + hoehere, bodenverankerte Buehne, damit der
- *     ganze Koerper inkl. Fuesse sichtbar ist.
- *  3) Talos winkt bei Klick erneut (TalosEntranceStage waveOnClick).
+ * Fixes ggue. der Variante (Thomas-Feedback 22.07.):
+ *  1) "Klicks nach Seite" ist ein normales Panel IM Dashboard (unten rechts im
+ *     Panel-Raster), kein schwebendes Feld mehr; Kartendesign wie "Besucher".
+ *  2) Talos weiter nach rechts + tiefer (ueber die untere Frame-Kante), Fuesse
+ *     bleiben sichtbar (Kamera-Framing unveraendert).
+ *  3) Reihenfolge: erst das Dashboard einblenden, dann tritt Talos auf
+ *     (TalosEntranceStage autoplayDelayMs).
+ *  4) Talos winkt bei Klick mit der ANDEREN Hand (talosMotion "other").
  *
  * Keine erfundenen Kennzahlen: alle Panels zeigen Klartext oder Skeleton-Balken.
  */
@@ -140,25 +142,34 @@ export default function TalosDashboard() {
                     <li>Auf Social Media posten</li>
                   </ul>
                 </div>
-              </div>
-            </div>
 
-            {/* Schwebendes Chart-Panel, sitzt oben rechts ueber der Ecke (FIX 1) */}
-            <div className="wda__float" aria-hidden="true">
-              <span className="wda__cardHead">Klicks nach Seite</span>
-              <div className="wda__floatBars">
-                <span style={{ height: "72%" }} />
-                <span style={{ height: "44%" }} />
-                <span style={{ height: "88%" }} />
-                <span style={{ height: "58%" }} />
+                {/* Klicks nach Seite — normales Panel unten rechts im Dashboard
+                    (FIX 1: kein schwebendes Feld mehr), gleiches Kartendesign
+                    wie "Besucher diese Woche". */}
+                <div
+                  className="wda__card wda__card--clicks"
+                  style={{ "--i": 4 } as React.CSSProperties}
+                >
+                  <span className="wda__cardHead">Klicks nach Seite</span>
+                  <div className="wda__clickBars" aria-hidden="true">
+                    <span style={{ height: "72%" }} />
+                    <span style={{ height: "44%" }} />
+                    <span style={{ height: "88%" }} />
+                    <span style={{ height: "58%" }} />
+                  </div>
+                  <span className="wda__cardSub">Welche Seite am meisten geklickt wird.</span>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Talos ragt von rechts halb ueber den Rahmen, winkt bei Klick erneut */}
+          {/* Talos ragt von rechts halb ueber den Rahmen, winkt bei Klick erneut.
+              Erscheint NACH dem Dashboard (autoplayDelayMs): erst Panels rein,
+              dann tritt Talos auf. */}
           <div className="wda__talos">
             <TalosEntranceStage
                 waveOnClick
+                autoplayDelayMs={900}
                 /* Ganzkoerper-Kadrierung (Fuesse sichtbar): im Browser getuned,
                    Default der Buehne rahmt nur den Oberkoerper. */
                 camPos={[30, 190, 1150]}
@@ -450,31 +461,22 @@ export default function TalosDashboard() {
           color: var(--rr-red);
         }
 
-        /* FIX 1 — schwebendes Chart-Panel oben RECHTS, ragt dezent ueber die
-           Ecke, niemals ueber die URL-Pill. */
-        .wda__float {
-          position: absolute;
-          top: -28px;
-          right: -24px;
-          width: 190px;
-          padding: 14px 16px;
-          background: var(--rr-paper, #ffffff);
-          border: 1px solid rgba(28, 40, 55, 0.16);
-          box-shadow: 0 18px 40px -24px rgba(28, 40, 55, 0.5);
-          z-index: 6;
-        }
-        .wda__floatBars {
+        /* FIX 1 — "Klicks nach Seite" ist jetzt ein normales Panel im Dashboard
+           (unten rechts im Panel-Raster), gleiches Kartendesign wie "Besucher
+           diese Woche": Skeleton-Balken mit einem roten Balken. */
+        .wda__clickBars {
           display: flex;
           align-items: flex-end;
-          gap: 8px;
-          height: 42px;
+          gap: 5px;
+          height: 46px;
           margin-top: 12px;
         }
-        .wda__floatBars span {
+        .wda__clickBars span {
           flex: 1;
-          background: color-mix(in srgb, var(--rr-navy) 22%, transparent);
+          background: color-mix(in srgb, var(--rr-navy) 20%, transparent);
+          min-height: 4px;
         }
-        .wda__floatBars span:nth-child(3) {
+        .wda__clickBars span:nth-child(3) {
           background: var(--rr-red);
         }
 
@@ -483,8 +485,8 @@ export default function TalosDashboard() {
            den Rahmen, unten aber nicht mehr abgeschnitten). */
         .wda__talos {
           position: absolute;
-          right: -7%;
-          bottom: 0;
+          right: -14%;
+          bottom: -10%;
           width: clamp(260px, 34vw, 460px);
           height: clamp(440px, 56vw, 680px);
           z-index: 5;
@@ -544,8 +546,7 @@ export default function TalosDashboard() {
 
         /* ---- Panel-Einblendung ---- */
         @media (prefers-reduced-motion: no-preference) {
-          .wda__card,
-          .wda__float {
+          .wda__card {
             opacity: 0;
             transform: translateY(14px);
           }
@@ -553,26 +554,11 @@ export default function TalosDashboard() {
             animation: wda-rise 560ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
             animation-delay: calc(160ms + var(--i, 0) * 100ms);
           }
-          .is-in .wda__float {
-            animation: wda-rise 620ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-            animation-delay: 640ms;
-          }
         }
         @keyframes wda-rise {
           to {
             opacity: 1;
             transform: none;
-          }
-        }
-
-        /* FIX 1 — schmale Viewports: Klicks-Panel in den Frame-Fluss legen
-           statt schweben (unter ~900px). */
-        @media (max-width: 900px) {
-          .wda__float {
-            position: static;
-            width: auto;
-            margin: 12px 12px 0;
-            box-shadow: none;
           }
         }
 

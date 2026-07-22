@@ -364,6 +364,9 @@ export default function Ablauf() {
             width: 100%;
             max-width: 760px;
             min-height: clamp(260px, 36vh, 360px);
+            /* Thomas 21.07.: Textblock (Titel/Text/Ergebnis) eine Spur weiter
+               weg von der Kreis-Reihe. Kreise selbst unveraendert. */
+            margin-top: clamp(16px, 2.4vw, 28px);
           }
           .wd-abl__step {
             position: absolute;

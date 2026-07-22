@@ -140,6 +140,9 @@ export default function Diagnose() {
                       {String.fromCharCode(97 + i)}
                     </span>
                     <span className="wd-diag__optlabel">{label}</span>
+                    <span className="wd-diag__optarrow" aria-hidden="true">
+                      &rarr;
+                    </span>
                   </button>
                 ))}
               </div>
@@ -275,6 +278,8 @@ export default function Diagnose() {
           gap: 14px;
         }
         .wd-diag__opt {
+          position: relative;
+          overflow: hidden;
           display: flex;
           align-items: flex-start;
           gap: 16px;
@@ -286,11 +291,35 @@ export default function Diagnose() {
           background: rgba(0, 0, 0, 0.18);
           padding: 20px 22px;
           cursor: pointer;
-          transition: border-color 0.22s ease, background 0.22s ease,
+          transition: border-color 0.28s ease, background 0.22s ease,
             transform 0.22s ease;
         }
-        .wd-diag__opt:hover {
-          border-color: rgba(246, 245, 241, 0.7);
+        /* Hover/Focus-Fuellung wie Diagnose-Variante C: voll-flaechig
+           dunkleres Teal zieht von links auf, Text hell, Pfeil faehrt rechts
+           herein. Bestehende Klick-Logik/Frage-Aufbau unveraendert. */
+        .wd-diag__opt::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: #0f5a63;
+          transform: scaleX(0);
+          transform-origin: left center;
+          transition: transform 0.32s ease;
+          z-index: 0;
+        }
+        .wd-diag__opt:hover,
+        .wd-diag__opt:focus-visible {
+          border-color: #0f5a63;
+        }
+        .wd-diag__opt:hover::before,
+        .wd-diag__opt:focus-visible::before {
+          transform: scaleX(1);
+        }
+        .wd-diag__optnum,
+        .wd-diag__optlabel,
+        .wd-diag__optarrow {
+          position: relative;
+          z-index: 1;
         }
         .wd-diag__optnum {
           font-family: var(--rr-font-ui, inherit);
@@ -308,6 +337,21 @@ export default function Diagnose() {
           font-size: clamp(1.05rem, 1.35vw, 1.32rem);
           line-height: 1.4;
           color: #ffffff;
+          flex: 1;
+        }
+        .wd-diag__optarrow {
+          flex: none;
+          align-self: center;
+          font-size: 1.25rem;
+          color: var(--rr-world-1-accent, #fcfbc9);
+          opacity: 0;
+          transform: translateX(-8px);
+          transition: opacity 0.28s ease, transform 0.28s ease;
+        }
+        .wd-diag__opt:hover .wd-diag__optarrow,
+        .wd-diag__opt:focus-visible .wd-diag__optarrow {
+          opacity: 1;
+          transform: translateX(0);
         }
         /* gewaehlte Antwort blitzt kurz weiss auf, dann naechste Frage */
         .wd-diag__opt.is-flash {
@@ -462,8 +506,19 @@ export default function Diagnose() {
           .wd-diag__alttext {
             animation: none;
           }
-          .wd-diag__opt {
+          .wd-diag__opt,
+          .wd-diag__opt::before,
+          .wd-diag__optarrow {
             transition: none;
+          }
+          /* nur Farbwechsel, keine Fuell-/Slide-Bewegung */
+          .wd-diag__opt:hover::before,
+          .wd-diag__opt:focus-visible::before {
+            transform: scaleX(1);
+          }
+          .wd-diag__opt:hover .wd-diag__optarrow,
+          .wd-diag__opt:focus-visible .wd-diag__optarrow {
+            transform: none;
           }
         }
       `}</style>

@@ -193,7 +193,10 @@ export default function VarianteA() {
 
       <style jsx>{`
         .lwa {
-          background: var(--rr-surface);
+          /* Thomas 21.07.: den hellgrauen Sektions-Hintergrund gibt es sonst
+             nirgends auf der Seite -> weg. Die Seite ist ohnehin weiss
+             (siehe Wrapper in page.tsx), also transparent statt --rr-surface. */
+          background: transparent;
           color: var(--rr-ink);
           padding: var(--rr-section-y, clamp(96px, 12vw, 180px)) var(--rr-gutter, clamp(20px, 4vw, 64px));
         }

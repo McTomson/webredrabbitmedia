@@ -30,8 +30,12 @@ const damp = (cur: number, target: number, lambda: number, dt: number) =>
 export interface TalosMotion {
   /** Pro Frame aufrufen. dt in Sekunden. */
   update(dt: number): void;
-  /** Gruss ausloesen (Arm heben + winken). Ignoriert waehrend er laeuft. */
-  triggerGreeting(): void;
+  /**
+   * Gruss ausloesen (Arm heben + winken). Ignoriert waehrend eine Geste laeuft.
+   * `arm` waehlt die Hand: "primary" (Default, arm1/Hand2 — bit-identisch zum
+   * bisherigen Verhalten) oder "other" (gespiegelte arm/Hand-Kette).
+   */
+  triggerGreeting(arm?: "primary" | "other"): void;
   /** Leichte Verbeugung (Abschluss-Geste). */
   triggerBow(): void;
   /** Blickziel: normalisierte Viewport-Koordinaten -1..1 (x rechts, y oben). */
@@ -53,10 +57,18 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
   const nodes = {
     head: rig.head,
     topPart: rig.topPart,
+    // Primaerer Arm (Frontalansicht Bildschirm-rechts): arm1/elbow1/forearm1/Hand2.
     arm: byName["arm1"],
     elbow: byName["elbow1"],
     forearm: byName["forearm1"],
     hand: byName["Hand2"],
+    // Gegen-Arm (gespiegelte Kette, am Modell verifiziert 22.07.):
+    // arm/elbow/forearm mit End-Hand "Hand". Fuer den Klick-Wink mit der
+    // ANDEREN Hand — gespiegelte Rotationsvorzeichen (siehe update()).
+    armB: byName["arm"],
+    elbowB: byName["elbow"],
+    forearmB: byName["forearm"],
+    handB: byName["Hand"],
   };
 
   // Vector3-Konstruktor aus der Szene ziehen (Modul importiert THREE nicht,
@@ -100,21 +112,42 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
   let gazePitch = 0;
 
   // Gesten-Timelines (-1 = inaktiv, sonst 0..1)
-  let greetT = -1;
+  let greetT = -1;   // Primaer-Arm-Wink
+  let greetBT = -1;  // Gegen-Arm-Wink (andere Hand)
   let bowT = -1;
 
   // Idle-Daempfer fuer weiche Uebergaenge nach Gesten
   let armLift = 0;
   let elbowBend = 0;
   let wristWave = 0;
+  // Zweiter Satz Daempfer fuer den Gegen-Arm.
+  let armLiftB = 0;
+  let elbowBendB = 0;
+  let wristWaveB = 0;
 
   const setPointer = (nx: number, ny: number) => {
     pointerX = clamp(nx, -1, 1);
     pointerY = clamp(ny, -1, 1);
   };
 
-  const triggerGreeting = () => {
-    if (greetT < 0 && bowT < 0 && !reduced) greetT = 0;
+  // Wink-Hebe-/Faecher-Kurve aus dem Timeline-Fortschritt (0..1).
+  // Phasen: 0-0.25 heben, 0.25-0.75 winken, 0.75-1 senken.
+  const greetPose = (t: number) => {
+    const lift =
+      t < 0.25 ? easeInOut(t / 0.25) : t > 0.75 ? easeInOut((1 - t) / 0.25) : 1;
+    const wave =
+      t >= 0.25 && t <= 0.75
+        ? Math.sin(((t - 0.25) / 0.5) * Math.PI * 4) * lift
+        : 0;
+    return { lift, wave };
+  };
+
+  const triggerGreeting = (arm: "primary" | "other" = "primary") => {
+    // Nur starten, wenn keine Geste laeuft (Winken beider Arme + Verbeugung
+    // schliessen sich gegenseitig aus) — no-op waehrend eines laufenden Winkens.
+    if (reduced || greetT >= 0 || greetBT >= 0 || bowT >= 0) return;
+    if (arm === "other") greetBT = 0;
+    else greetT = 0;
   };
   const triggerBow = () => {
     if (bowT < 0 && greetT < 0 && !reduced) bowT = 0;
@@ -151,7 +184,7 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
     // --- Kopfneigung (Frage-Geste) ---
     const tiltTarget = headTilt ? 0.14 : 0;
 
-    // --- Gruss-Timeline ---
+    // --- Gruss-Timeline (Primaer-Arm) ---
     let greetArm = 0;
     let greetElbow = 0;
     let greetWave = 0;
@@ -160,24 +193,34 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
       if (greetT >= 1) {
         greetT = -1;
       } else {
-        const t = greetT;
-        // Phasen: 0-0.25 heben, 0.25-0.75 winken, 0.75-1 senken
-        const lift =
-          t < 0.25
-            ? easeInOut(t / 0.25)
-            : t > 0.75
-              ? easeInOut((1 - t) / 0.25)
-              : 1;
-        greetArm = lift;
-        greetElbow = lift;
-        if (t >= 0.25 && t <= 0.75) {
-          greetWave = Math.sin(((t - 0.25) / 0.5) * Math.PI * 4) * lift;
-        }
+        const g = greetPose(greetT);
+        greetArm = g.lift;
+        greetElbow = g.lift;
+        greetWave = g.wave;
       }
     }
     armLift = damp(armLift, greetArm, 10, dt);
     elbowBend = damp(elbowBend, greetElbow, 10, dt);
     wristWave = damp(wristWave, greetWave, 14, dt);
+
+    // --- Gruss-Timeline (Gegen-Arm, andere Hand) ---
+    let greetArmB = 0;
+    let greetElbowB = 0;
+    let greetWaveB = 0;
+    if (greetBT >= 0) {
+      greetBT += dt / GREETING_DURATION;
+      if (greetBT >= 1) {
+        greetBT = -1;
+      } else {
+        const g = greetPose(greetBT);
+        greetArmB = g.lift;
+        greetElbowB = g.lift;
+        greetWaveB = g.wave;
+      }
+    }
+    armLiftB = damp(armLiftB, greetArmB, 10, dt);
+    elbowBendB = damp(elbowBendB, greetElbowB, 10, dt);
+    wristWaveB = damp(wristWaveB, greetWaveB, 14, dt);
 
     // --- Verbeugung ---
     let bowAmount = 0;
@@ -225,6 +268,23 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
         nodes.hand.rotateOnAxis(PALM_AXIS, wristWave * 0.5);
       }
     }
+
+    // --- Gegen-Arm schreiben (gespiegelte Vorzeichen) ---
+    // Die zweite Arm-Kette ist die Spiegelung der ersten; das gleiche Anheben
+    // erfordert das entgegengesetzte Rotationsvorzeichen (am Modell verifiziert).
+    if (nodes.armB && base.armB)
+      nodes.armB.rotation.z = base.armB.z - armLiftB * 1.35;
+    if (nodes.elbowB && base.elbowB)
+      nodes.elbowB.rotation.z = base.elbowB.z - elbowBendB * 1.05;
+    if (nodes.forearmB && base.forearmB)
+      nodes.forearmB.rotation.z = base.forearmB.z - elbowBendB * 0.35;
+    if (nodes.handB && base.handB) {
+      nodes.handB.rotation.set(base.handB.x, base.handB.y, base.handB.z);
+      if (armLiftB > 0.001) {
+        nodes.handB.rotateOnAxis(FINGER_AXIS, -PALM_FORWARD_TWIST * armLiftB);
+        nodes.handB.rotateOnAxis(PALM_AXIS, -wristWaveB * 0.5);
+      }
+    }
   };
 
   return {
@@ -238,6 +298,6 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
     setReducedMotion: (r: boolean) => {
       reduced = r;
     },
-    isBusy: () => greetT >= 0 || bowT >= 0,
+    isBusy: () => greetT >= 0 || greetBT >= 0 || bowT >= 0,
   };
 }

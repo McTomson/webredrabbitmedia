@@ -51,6 +51,13 @@ export interface TalosEntranceStageProps {
    */
   waveOnClick?: boolean;
   /**
+   * Optionale Verzoegerung (ms) zwischen Sichtbar-Werden und Auftritts-Start
+   * (additiv; Default 0 = bisheriges Verhalten, Start sofort bei inView). Damit
+   * kann zuerst das Dashboard/die Sektion einblenden und Talos danach auftreten.
+   * Greift nur im autoplay-Pfad; prefers-reduced-motion zeigt sofort die Endpose.
+   */
+  autoplayDelayMs?: number;
+  /**
    * Optionale Kamera-Kadrierung (additiv; Default = bisherige Konstanten,
    * Oberkoerper-Framing der Talos-Seite). Die Website-Dashboard-Sektion
    * braucht den GANZEN Koerper inkl. Fuesse und uebergibt eigene Werte.
@@ -60,7 +67,7 @@ export interface TalosEntranceStageProps {
   camFov?: number;
 }
 
-export default function TalosEntranceStage({ autoplay = true, waveOnClick = false, camPos, camTgt, camFov }: TalosEntranceStageProps) {
+export default function TalosEntranceStage({ autoplay = true, waveOnClick = false, autoplayDelayMs = 0, camPos, camTgt, camFov }: TalosEntranceStageProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [no3d, setNo3d] = useState(false);
@@ -112,6 +119,7 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
 
     // Auftritts-Zustand.
     let inView = false;
+    let inViewAt = -1;        // Zeitpunkt (ms) des Sichtbar-Werdens (fuer Delay)
     let started = false;      // Auftritt begonnen
     let ent = 0;              // 0..1 Auftritts-Fortschritt
     let waved = false;        // Winken schon ausgeloest?
@@ -151,7 +159,8 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
     // aus. Reuse von motion.triggerGreeting (no-op waehrend ein Winken laeuft).
     const wrap = wrapRef.current;
     const onActivate = () => {
-      motion?.triggerGreeting();
+      // Klick-Wink mit der ANDEREN Hand (der Auftritts-Wink nutzt die erste).
+      motion?.triggerGreeting("other");
     };
     const onKey = (ev: KeyboardEvent) => {
       if (ev.key === "Enter" || ev.key === " " || ev.key === "Spacebar") {
@@ -227,6 +236,8 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
       // QA: erneutes Winken ausloesen bzw. pruefen, ob gerade gewinkt wird
       // (nutzt fuer die Klick-Wink-Verifikation der Website-Leistungsseite).
       wave: () => { motion?.triggerGreeting(); },
+      // QA: Wink mit der ANDEREN Hand (entspricht dem Klick-Verhalten).
+      wave2: () => { motion?.triggerGreeting("other"); },
       // QA: Kamera-Handle zum Live-Tuning der Kadrierung (nur Lesen/Justieren).
       camera,
       isWaving: () => motion?.isBusy() ?? false,
@@ -240,7 +251,12 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
         if (manualProg != null) {
           ent = manualProg;
         } else {
-          if (!started && (!autoplay ? false : inView)) started = true;
+          if (!started && autoplay && inView) {
+            // Erst nach Ablauf der optionalen Verzoegerung starten (Default 0
+            // -> sofort). Erlaubt: zuerst Dashboard einblenden, dann Talos.
+            if (inViewAt < 0) inViewAt = performance.now();
+            if (performance.now() - inViewAt >= autoplayDelayMs) started = true;
+          }
           if (started && ent < 1) ent = Math.min(1, ent + delta / ENTRANCE_DUR);
         }
         applyEntrancePose();
@@ -259,7 +275,7 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
       rig?.dispose();
       teardown();
     };
-  }, [autoplay]);
+  }, [autoplay, autoplayDelayMs]);
 
   return (
     <div
