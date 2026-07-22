@@ -50,7 +50,7 @@ export default function LeistungenFaq() {
     <section className="rr-section lh-faq">
       <div className="rr-wrap rr-narrow lh-faq__grid">
         <div className="lh-faq__label">
-          <p className="rr-eyebrow-lg">Häufige Fragen</p>
+          <p className="wd-eyebrow">Häufige Fragen</p>
           <h2 className="rr-statement lh-faq__heading">
             Häufig gefragt<span className="lh-faq__dot">.</span>
           </h2>

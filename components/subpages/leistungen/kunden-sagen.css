@@ -8,9 +8,8 @@
   --ks-tile-bg: #f1f1ef;
   width: 100%;
   background: #ffffff;
-  /* dezente Trennung zu angrenzenden weissen Sektionen (kein neuer Farbwert) */
-  border-top: 1px solid var(--rr-line, #e4e4e0);
-  border-bottom: 1px solid var(--rr-line, #e4e4e0);
+  /* KEINE Trennlinien: Thomas 22.07. "die Linie gehoert dort nicht hin" —
+     Sektionsgrenzen laufen linienlos ineinander, Abstand kommt vom Padding. */
   padding: 100px 30px;
 }
 

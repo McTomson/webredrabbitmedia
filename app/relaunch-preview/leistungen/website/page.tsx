@@ -1,8 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { RabbitMark } from '@/components/relaunch/RabbitMark';
+import CornerLogo from '@/components/relaunch/CornerLogo';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import WebsiteDemoClient from '@/components/subpages/WebsiteDemoClient';
@@ -27,6 +26,7 @@ import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
+import '@/components/subpages/leistungen/wd-eyebrow.css';
 import '@/components/subpages/leistungen/website/website.css';
 
 /**
@@ -95,21 +95,9 @@ export default function LeistungenWebsitePreviewPage() {
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
       />
 
-      {/* Rote Hasen-Marke oben links, Link zur Startseite (Muster aus Hub). */}
-      <Link
-        href="/relaunch-preview"
-        aria-label="Zur Startseite"
-        style={{
-          position: 'fixed',
-          top: 'clamp(18px, 2.4vw, 34px)',
-          left: 'var(--rr-gutter, clamp(20px, 4vw, 64px))',
-          zIndex: 43,
-          display: 'block',
-          lineHeight: 0,
-        }}
-      >
-        <RabbitMark style={{ display: 'block', width: 'clamp(18px, 1.8vw, 21px)', height: 'auto' }} />
-      </Link>
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
+          blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
+      <CornerLogo />
 
       {/* Hamburger-Menue der Hauptseite; .rr-Wrapper liefert nur Font-Variablen. */}
       <div className={rrFonts} style={{ background: 'transparent' }}>

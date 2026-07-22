@@ -12,7 +12,7 @@ export default function TalosSlot() {
     <section className="rr-section lh-talos">
       <div className="rr-wrap lht-grid">
         <div className="lht-copy">
-          <p className="rr-eyebrow-lg">So sieht das in echt aus</p>
+          <p className="wd-eyebrow">So sieht das in echt aus</p>
           <h2 className="rr-statement lh-talos__title">
             Eine Anfrage kommt um 23 Uhr rein. Du schläfst.
           </h2>
@@ -59,6 +59,12 @@ export default function TalosSlot() {
       </div>
 
       <style>{`
+/* Grau-Flaeche (Task 4, Angleich an TalosDashboard auf der Website-
+   Unterseite, .wda-Muster): hebt den Talos-Moment vom weissen Grund ab, ohne
+   eine harte Trennlinie zu brauchen (rr-section liefert bereits den
+   Standard-Sektionsabstand, keine border noetig). */
+.lh-talos { background: var(--rr-surface, #f4f4f2); }
+
 .lht-grid { display: grid; grid-template-columns: 1fr; gap: clamp(24px, 5vh, 56px); align-items: center; }
 
 /* ---- Browser-Mockup, in dem Talos "steht" ---- */

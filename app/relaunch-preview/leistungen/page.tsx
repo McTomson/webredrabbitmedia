@@ -1,35 +1,39 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { RabbitMark } from '@/components/relaunch/RabbitMark';
+import CornerLogo from '@/components/relaunch/CornerLogo';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import LeistungenHero2Client from '@/components/subpages/LeistungenHero2Client';
 import LeistungenUeberblick from '@/components/subpages/leistungen/LeistungenUeberblick';
 import JsonLd from '@/components/JsonLd';
-import Scharnierzeile from '@/components/subpages/leistungen/Scharnierzeile';
+import ScrollBumper from '@/components/subpages/leistungen/ScrollBumper';
 import TalosSlot from '@/components/subpages/leistungen/TalosSlot';
+import ProduktTueren from '@/components/subpages/leistungen/ProduktTueren';
 import KundenSagen from '@/components/subpages/leistungen/KundenSagen';
 import LeistungenFaq from '@/components/subpages/leistungen/LeistungenFaq';
 import SchlussCta from '@/components/subpages/leistungen/SchlussCta';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
+import '@/components/subpages/leistungen/wd-eyebrow.css';
 import '@/components/subpages/leistungen/leistungen.css';
 
 /**
  * Leistungen-Hub (Preview, noindex) — Server-Komponente. Aufbau nach dem
- * Schnitt vom 21.07. (Thomas): Hero (ueber-uns-Klon mit Zahnrad-Figur) ->
- * LeistungenUeberblick (6 Punkte, pixelperfektion-Raster, Kern-Botschaft
- * "Kommandozentrale") -> Scharnierzeile -> TalosSlot (der eine Teal-Moment)
- * -> KundenSagen -> FAQ -> CTA -> Footer.
+ * Schnitt vom 21.07. (Thomas), Design-Angleich an /leistungen/website am
+ * 22.07.: Hero (ueber-uns-Klon mit Zahnrad-Figur) -> LeistungenUeberblick
+ * (6 Punkte, pixelperfektion-Raster, Kern-Botschaft "Kommandozentrale") ->
+ * ScrollBumper (Stups-Mechanik, ersetzt die statische Scharnierzeile) ->
+ * TalosSlot (Grau-Flaeche) -> ProduktTueren (der eine Teal-Moment, Tuer zu
+ * den zwei Unterseiten) -> KundenSagen -> FAQ -> CTA -> Footer.
  * BauMoment/WasDuBekommst/WasSieKann/MehrAlsWebsite sind bewusst RAUS —
  * ihr Inhalt steckt verdichtet in den 6 Punkten (keine Dopplung).
  * Kern-Regel bleibt: erst das Produkt (Website) beweisen, DANN der Helfer
- * als Verb ("Website, die mitarbeitet"), kein zweiter Pfeiler.
+ * als Verb ("Website, die mitarbeitet"), kein zweiter Pfeiler — ProduktTueren
+ * bildet das optisch ab (Talos-Karte kleiner/eingebettet in der Website-Flaeche).
  *
- * Chrome (RabbitMark/RelaunchMenu/FooterReassembly, Fonts, styleguide.css)
+ * Chrome (CornerLogo/RelaunchMenu/FooterReassembly, Fonts, styleguide.css)
  * 1:1 aus dem Muster der Tipps-Seite (UNTERSEITEN_STIL.md §1); nur noch
  * DM Sans / Crimson Pro / Instrument Sans.
  */
@@ -127,22 +131,9 @@ export default function LeistungenPreviewPage() {
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
       />
 
-      {/* Rote Hasen-Marke oben links (Muster aus der bisherigen Leistungen-/
-          Tipps-Seite), Link zur Startseite. */}
-      <Link
-        href="/relaunch-preview"
-        aria-label="Zur Startseite"
-        style={{
-          position: 'fixed',
-          top: 'clamp(18px, 2.4vw, 34px)',
-          left: 'var(--rr-gutter, clamp(20px, 4vw, 64px))',
-          zIndex: 43,
-          display: 'block',
-          lineHeight: 0,
-        }}
-      >
-        <RabbitMark style={{ display: 'block', width: 'clamp(18px, 1.8vw, 21px)', height: 'auto' }} />
-      </Link>
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
+          blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
+      <CornerLogo />
 
       {/* Hamburger-Menue der Hauptseite; .rr-Wrapper liefert nur Font-Variablen. */}
       <div className={rrFonts} style={{ background: 'transparent' }}>
@@ -167,17 +158,30 @@ export default function LeistungenPreviewPage() {
         <LeistungenUeberblick />
       </div>
 
-      {/* Sektionen 3-7 (Schnitt Thomas 21.07.: BauMoment, WasDuBekommst,
-          WasSieKann und MehrAlsWebsite sind RAUS, ihr Inhalt steckt verdichtet
-          in den 6 Punkten des Ueberblicks. Eine Aussage pro Sektion, gleich-
-          maessiger Rhythmus): Scharnierzeile -> Talos (der eine Teal-Moment)
-          -> KundenSagen -> FAQ -> CTA. */}
+      {/* Sektionen 3-8 (Schnitt Thomas 21.07., Design-Angleich 22.07.:
+          BauMoment, WasDuBekommst, WasSieKann und MehrAlsWebsite sind RAUS,
+          ihr Inhalt steckt verdichtet in den 6 Punkten des Ueberblicks.
+          Scharnierzeile.tsx ist durch ScrollBumper ersetzt, Datei bleibt
+          bestehen/unveraendert): ScrollBumper -> Talos (der eine Teal-Moment,
+          jetzt Grau-Flaeche) -> ProduktTueren (Teal-Tuer zu den zwei
+          Unterseiten) -> KundenSagen -> FAQ -> CTA. */}
       <div className={rrFonts} style={{ background: '#ffffff' }}>
-        {/* 3 · Scharnier-Zeile — Kipp-Punkt vom Bau zur mitarbeitenden Website */}
-        <Scharnierzeile />
+        {/* 3 · Scroll-Bumper — Kipp-Punkt vom Bau zur mitarbeitenden Website,
+            Stups-Mechanik statt statischer Zeile (siehe ScrollBumper.tsx). */}
+        <ScrollBumper
+          statements={[
+            { text: 'Und dann hört deine Seite auf, nur schön dazustehen.' },
+            { text: 'Sie fängt an, für dich zu arbeiten.' },
+            { text: 'Rund um die Uhr. Mit Talos im Team.', pointe: true },
+          ]}
+        />
 
-        {/* 4 · Talos-Auftritt — Talos als Gesicht der Helfer */}
+        {/* 4 · Talos-Auftritt — Talos als Gesicht der Helfer, Grau-Flaeche */}
         <TalosSlot />
+
+        {/* 4b · Produkt-Tueren — die Website (Teal) und Talos, der Mitarbeiter
+            darin (kleinere Navy-Flaeche), mit Link zu den beiden Unterseiten. */}
+        <ProduktTueren />
 
         {/* 5 · KundenSagen — vermessene finsight.framer.ai-Sektion, Navy-Grund,
             echte Google-Rezensionen (Rafael Danesh, Rene Rohrer), Gold-Sterne */}

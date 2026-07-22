@@ -109,7 +109,7 @@ export default function VarianteA() {
   return (
     <section className="lwa">
       <div className="lwa__wrap">
-        <p className="wd-eyebrow">(WAS DRINSTECKT)</p>
+        <p className="wd-eyebrow">WAS DRINSTECKT</p>
         <h2 className="rr-statement lwa__h2">Das Fundament ist immer schon drin.</h2>
         <p className="rr-body-lg lwa__intro">
           Nicht als Zusatzpaket, nicht als Kleingedrucktes. Sondern als das,

@@ -161,7 +161,7 @@ export default function LeistungenUeberblick() {
     <div className="lu-wrap" ref={rootRef}>
       <div className="lu-inner">
         <div className="lu-intro lu-reveal">
-          <p className="lu-eyebrow">Was wir anders machen</p>
+          <p className="wd-eyebrow">Was wir anders machen</p>
           <h2 className="lu-h">
             Eine normale Website kriegst du überall. Unsere hat eine{' '}
             <span className="plus">Kommandozentrale</span>.

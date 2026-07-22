@@ -35,7 +35,10 @@
 }
 
 /* ---- 4 · Scharnier-Zeile ---- */
-.rr .lh-scharnier { padding-top: clamp(56px, 8vw, 104px); padding-bottom: clamp(56px, 8vw, 104px); }
+/* Ueberschreibt sonst das Standard-Padding aus Scharnierzeile.tsx (hoehere
+   Spezifitaet .rr .lh-scharnier > .lh-scharnier) — auf denselben
+   --rr-section-y-Rhythmus gebracht (Design-Angleich 22.07.). */
+.rr .lh-scharnier { padding-top: var(--rr-section-y, clamp(96px, 12vw, 180px)); padding-bottom: var(--rr-section-y, clamp(96px, 12vw, 180px)); }
 .rr .lh-scharnier__text { max-width: 17em; margin: 0 auto; text-align: center; color: var(--rr-navy); }
 
 /* ---- 5 · SLOT Talos-Auftritt (statischer Fallback) ---- */
@@ -64,14 +67,16 @@
   .rr .lh-faq__label { position: static; margin-bottom: 24px; }
 }
 
-/* ---- 9 · Schluss-CTA (Navy-Band, wie ueber-uns-preview §6) ---- */
+/* ---- 7 · Schluss-CTA (Navy-Band) — 1:1 auf das .lw-cta-Muster der
+   Website-Unterseite gebracht (website.css, Design-Angleich 22.07.): mehr
+   Luft (Sub/Actions-Abstand), zentriert, wd-eyebrow--ondark statt
+   rr-eyebrow-lg. ---- */
 .rr .lh-cta { background: var(--rr-navy); text-align: center; }
-.rr .lh-cta__eyebrow { color: rgba(246, 245, 241, 0.82); margin: 0 auto 16px; }
-.rr .lh-cta__title { color: #f6f5f1; max-width: 13em; margin: 0 auto; }
-.rr .lh-cta__subline { color: rgba(246, 245, 241, 0.75); max-width: 34em; margin: 16px auto 0; }
-.rr .lh-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: clamp(32px, 5vh, 48px); }
+.rr .lh-cta__title { color: #f6f5f1; max-width: 15em; margin: 0 auto; }
+.rr .lh-cta__subline { color: rgba(246, 245, 241, 0.78); max-width: 560px; margin: clamp(36px, 5vh, 60px) auto 0; }
+.rr .lh-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(20px, 2.5vw, 32px); margin-top: clamp(56px, 8vh, 96px); }
 /* rr-btn-sweep hat im Ruhezustand Ink-Text (fuer helle Flaechen); auf dem
-   Navy-Band den Text hell setzen (Kontrast-Fix, Muster aus ueber-uns-preview). */
+   Navy-Band den Text hell setzen (Kontrast-Fix, Muster aus website.css). */
 .rr .lh-cta .rr-btn-sweep { color: #f6f5f1; }
 
 @media (prefers-reduced-motion: reduce) {

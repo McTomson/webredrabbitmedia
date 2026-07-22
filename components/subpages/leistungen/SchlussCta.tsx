@@ -1,18 +1,24 @@
 import Link from "next/link";
 
 /**
- * Sektion 9 — Schluss-CTA, produktbezogen. Primär rr-btn-sweep--red zu den
- * Preisen (keine Preise auf dieser Seite selbst), sekundär rr-btn-frame als
- * Anruf-Button (Telefonnummer nie im Klartext, nur hinter dem Button).
+ * Sektion 7 — Schluss-CTA, 1:1 auf das Website-CTA-Muster gebracht
+ * (components/subpages/leistungen/website/SchlussCta.tsx + website.css
+ * .lw-cta, Design-Angleich 22.07.): wd-eyebrow--ondark, rr-display-2-Titel
+ * mit rotem Schlusspunkt, rr-body-lg Sub, nur zwei Buttons (sweep-red zum
+ * Entwurf, frame-red zum Anrufen). Die frühere Drei-Button-Zeile (inkl.
+ * separatem Preise-Link) ist raus — Preise verlinkt weiterhin aus der FAQ.
+ * Telefonnummer nie im Klartext, nur hinter dem Anrufen-Button.
  */
 export default function SchlussCta() {
   return (
     <section className="rr-section lh-cta">
       <div className="rr-wrap rr-narrow">
-        <p className="rr-eyebrow-lg lh-cta__eyebrow">Dein nächster Schritt</p>
+        <p className="wd-eyebrow wd-eyebrow--ondark" style={{ marginBottom: 32 }}>
+          Dein nächster Schritt
+        </p>
         <p className="rr-display-2 lh-cta__title">
-          Jetzt weißt du, wer für dich arbeitet, wenn du Feierabend hast.
-          Deine Website. Und Talos, der drinsteckt.
+          Jetzt weißt du, wer für dich arbeitet, wenn du Feierabend
+          hast<span style={{ color: "var(--rr-red)" }}>.</span>
         </p>
         <p className="rr-body-lg lh-cta__subline">
           Du siehst zuerst deinen Entwurf, ganz ohne Vorkasse. Gefällt er dir
@@ -20,14 +26,7 @@ export default function SchlussCta() {
         </p>
         <div className="lh-cta__actions">
           <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
-            Kostenloser Entwurf
-          </Link>
-          <Link href="/preise" className="rr-btn-frame rr-btn-frame--red">
-            <i className="c1" />
-            <i className="c2" />
-            <i className="c3" />
-            <i className="c4" />
-            <span className="rr-btn-frame__t">Preise ansehen</span>
+            Kostenlosen Entwurf holen
           </Link>
           <a href="tel:+436769000955" className="rr-btn-frame rr-btn-frame--red">
             <i className="c1" />

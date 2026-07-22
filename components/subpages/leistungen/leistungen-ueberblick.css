@@ -54,16 +54,15 @@
 
 /* ---- Intro: Unterschied-Hook (Website +) ---- */
 .lu-intro { max-width: 820px; margin: 0 0 clamp(56px, 8vw, 120px); }
-.lu-eyebrow {
-  font-family: var(--font-grotesk, "Instrument Sans"), sans-serif;
-  font-size: clamp(12px, 1.05vw, 15px); font-weight: 500;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--lu-red); margin: 0 0 18px;
-}
+/* Eyebrow: wd-eyebrow (components/subpages/leistungen/wd-eyebrow.css) ersetzt
+   die frueher hier definierte .lu-eyebrow (Design-Angleich 22.07.). */
 .lu-h {
   font-family: var(--font-crimson, "Crimson Pro"), Georgia, serif;
   font-weight: 500; font-size: clamp(30px, 4.6vw, 62px);
-  line-height: 1.04; letter-spacing: -0.01em; margin: 0 0 22px; text-wrap: balance;
+  line-height: 1.04; letter-spacing: -0.01em;
+  /* 20px oben: Standard-Abstand nach wd-eyebrow (Muster u.a.
+     VarianteA.tsx .lwa__h2) — wd-eyebrow selbst hat margin:0. */
+  margin: 20px 0 22px; text-wrap: balance;
 }
 .lu-h .plus { color: var(--lu-red); }
 .lu-lead {
