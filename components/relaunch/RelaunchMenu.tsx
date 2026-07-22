@@ -16,13 +16,22 @@ import Link from "next/link";
  * Styles sind ueber styled-jsx auf die Komponente gescoped (kein globales Leck).
  */
 
-type NavItem = { label: string; href: string };
+type NavItem = { label: string; href: string; children?: { label: string; href: string }[] };
 
 // Preise zeigt bewusst noch auf die alte Live-Seite, bis es eine Relaunch-
 // Version gibt (Tomson 16.07.). Leistungen zeigt auf die neue Preview-Seite.
 const NAV_ITEMS: NavItem[] = [
   { label: "Start", href: "/relaunch-preview" },
-  { label: "Leistungen", href: "/relaunch-preview/leistungen" },
+  {
+    label: "Leistungen",
+    href: "/relaunch-preview/leistungen",
+    // Unterseiten im Menue (Thomas 22.07.). Talos-Label ohne das Wort "KI"
+    // (Hausregel: Talos = digitaler Kollege/Mitarbeiter).
+    children: [
+      { label: "Website", href: "/relaunch-preview/leistungen/website" },
+      { label: "Dein digitaler Mitarbeiter · Talos", href: "/relaunch-preview/leistungen/talos" },
+    ],
+  },
   { label: "Referenzen", href: "/relaunch-preview/referenzen" },
   { label: "Preise", href: "/preise" },
   { label: "Tipps", href: "/relaunch-preview/tipps" },
@@ -160,6 +169,18 @@ export default function RelaunchMenu() {
                     <span className="rrmenu-link-index">{String(i + 1).padStart(2, "0")}</span>
                     <span className="rrmenu-link-text">{item.label}</span>
                   </Link>
+                  {item.children ? (
+                    <ul className="rrmenu-sublist">
+                      {item.children.map((sub) => (
+                        <li key={sub.href}>
+                          <Link href={sub.href} className="rrmenu-sublink" onClick={close}>
+                            <span className="rrmenu-subdot" aria-hidden="true" />
+                            {sub.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </li>
               ))}
             </ul>
@@ -354,6 +375,45 @@ export default function RelaunchMenu() {
         }
         .rrmenu-overlay :global(.rrmenu-link-text) {
           position: relative;
+        }
+        /* ---- Unterseiten (z.B. Leistungen -> Website / Talos) ---- */
+        .rrmenu-overlay :global(.rrmenu-sublist) {
+          list-style: none;
+          margin: 6px 0 10px;
+          padding: 0 0 0 clamp(34px, 3.4vw, 52px);
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .rrmenu-overlay :global(.rrmenu-sublink) {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          font-family: var(--rr-font-ui, sans-serif);
+          font-size: clamp(15px, 1.5vw, 19px);
+          font-weight: 550;
+          letter-spacing: 0.01em;
+          color: rgba(255, 255, 255, 0.55);
+          text-decoration: none;
+          padding: 4px 0;
+          transition: color 0.25s ease, transform 0.25s ease;
+        }
+        .rrmenu-overlay :global(.rrmenu-subdot) {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.35);
+          flex: none;
+          transition: background 0.25s ease;
+        }
+        .rrmenu-overlay :global(.rrmenu-sublink:hover),
+        .rrmenu-overlay :global(.rrmenu-sublink:focus-visible) {
+          color: var(--rr-red, #f12032);
+          transform: translateX(8px);
+        }
+        .rrmenu-overlay :global(.rrmenu-sublink:hover .rrmenu-subdot),
+        .rrmenu-overlay :global(.rrmenu-sublink:focus-visible .rrmenu-subdot) {
+          background: var(--rr-red, #f12032);
         }
         .rrmenu-overlay :global(.rrmenu-link:hover),
         .rrmenu-overlay :global(.rrmenu-link:focus-visible) {
