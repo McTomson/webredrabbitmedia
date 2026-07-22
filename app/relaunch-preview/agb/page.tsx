@@ -46,7 +46,7 @@ export default function AGBPreviewPage() {
             <p>
               Red Rabbit GmbH
               <br />
-              Stand: Juli 2025
+              Stand: Juli 2026
             </p>
           </header>
 
@@ -67,7 +67,7 @@ export default function AGBPreviewPage() {
                 Ein Vertrag kommt durch das Absenden des vollständig ausgefüllten Kontaktformulars auf
                 unserer Website zustande.
               </p>
-              <p>Nur in diesem Fall gilt der vergünstigte Fixpreis ab 790 € netto.</p>
+              <p>Nur in diesem Fall gilt der vergünstigte Fixpreis ab 950 € netto.</p>
               <ul>
                 <li>
                   Das Angebot ist 30 Tage gültig. Danach kann die Red Rabbit GmbH das Angebot einseitig

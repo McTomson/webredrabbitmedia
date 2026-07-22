@@ -12,11 +12,11 @@ import { RabbitMark } from "@/components/relaunch/RabbitMark";
  * NICHT von --rr-gutter abhaengig (hart auf den Referenz-Fallback), damit sie
  * unabhaengig vom .rr-Scope auf jeder Seite identisch sitzt.
  *
- * Verhalten (Thomas 22.07.): beim Laden UNSICHTBAR, blendet erst langsam
- * (~1200ms) ein, sobald sich die Hero-Woerter zerlegt haben. Die Zerlegung
- * ist scroll-getrieben, darum ist der Trigger scrollY > 45% Viewport-Hoehe
- * (einmalig). Fallback fuer Seiten ohne Scroll-Hero bzw. wenn nicht gescrollt
- * wird: nach 4s. prefers-reduced-motion: sofort sichtbar, ohne Transition.
+ * Verhalten (Thomas 22.07., praezisiert): beim Laden UNSICHTBAR, blendet
+ * NUR beim Runterscrollen langsam (~1200ms) ein, sobald sich die Hero-
+ * Woerter zerlegen (Trigger scrollY > 45% Viewport-Hoehe, einmalig).
+ * BEWUSST KEIN Zeit-Fallback ("immer erst wenn wir weiter runter gehen").
+ * prefers-reduced-motion: sofort sichtbar, ohne Transition.
  */
 export default function CornerLogo() {
   const [shown, setShown] = useState(false);
@@ -31,25 +31,21 @@ export default function CornerLogo() {
     }
 
     let done = false;
-    let timer = 0;
     const reveal = () => {
       if (done) return;
       done = true;
       setShown(true);
       window.removeEventListener("scroll", onScroll);
-      window.clearTimeout(timer);
     };
     const onScroll = () => {
       if (window.scrollY > window.innerHeight * 0.45) reveal();
     };
 
-    timer = window.setTimeout(reveal, 4000);
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll(); // falls die Seite bereits gescrollt geladen wird
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.clearTimeout(timer);
     };
   }, []);
 

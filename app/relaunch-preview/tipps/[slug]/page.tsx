@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import nodePath from 'node:path';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -39,6 +41,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString('de-AT', { day: 'numeric', month: 'long', year: 'numeric' });
 
+/**
+ * MDX-Bilder nur rendern, wenn die Datei in public/ wirklich existiert.
+ * Hintergrund: Artikel referenzieren Bilder, die die Medien-Pipeline erst
+ * nach Freigabe produziert (offene Marker in content-engine/.media-requests/)
+ * — bis dahin soll kein kaputtes Bild auf der Seite haengen (QA 22.07.).
+ */
+function ArticleImg(props: React.ImgHTMLAttributes<HTMLImageElement>) {
+  const src = typeof props.src === 'string' ? props.src : '';
+  if (src.startsWith('/')) {
+    const abs = nodePath.join(process.cwd(), 'public', decodeURIComponent(src));
+    if (!fs.existsSync(abs)) return null;
+  }
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img {...props} alt={props.alt ?? ''} />;
+}
+
 export default async function TippsArticlePreview({ params }: Props) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
@@ -51,7 +69,7 @@ export default async function TippsArticlePreview({ params }: Props) {
     // Die vier Custom-Tags aus den MDX-Quellen MUESSEN aber uebergeben werden,
     // sonst wirft compileMDX zur Laufzeit (13 Artikel nutzen SimpleAudioPlayer,
     // 11 VideoEmbed, je 1 die Vergleichstabellen — Link-Sweep 16.07.).
-    components: { SimpleAudioPlayer, VideoEmbed, HeroldComparisonTable, RegionComparisonTable },
+    components: { SimpleAudioPlayer, VideoEmbed, HeroldComparisonTable, RegionComparisonTable, img: ArticleImg },
   });
 
   const related = await getRelatedPosts(slug, 3);
