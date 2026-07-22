@@ -1,75 +1,4 @@
-# Naechste Session — Leistungen/Website-Unterseite (2026-07-21, IST-ZUSTAND gesichert)
-
-## IST-ZUSTAND 21.07. (Commit 5e33e38 LOKAL, von Thomas abgenommen: "passt, von hier weiter")
-Die Feedback-Runde vom 21.07. ist committet und im Browser komplett verifiziert
-(localhost:9000, Hero bis Footer durchgescrollt, tsc gruen, keine Konsolen-Fehler):
-- **Hero:** Zahnrad via `<MorphSculpture comp={0} style={{transform:'translateX(-4vw) scale(0.92)'}}>`
-  (Figur klebte sonst an der Textspalte), Titel 19vw statt 22vw, roter Mal-Punkt (.cursor-dot) wieder AN,
-  Haarlinien-Bug gefixt (belief-backing vollflaechig `inset:0` statt 58vh-Band).
-- **NEU Belief-Bumper** direkt im Hero-Demo (`demo.body.html` #sceneBelief, originale ueber-uns-Push-
-  Mechanik, Engine hatte den Code schon): "schoen sind / was bringen" -> "Wir koennen beides. Schoen und
-  sie klingelt." -> Mitarbeiter-oben-drauf -> Pointe "Deine soll auch klingeln?" + Entwurf-CTA.
-- **Sektions-Reihenfolge NEU:** SoBauenWir (Handwerk-Kontrastpaare, ersetzt alten Bumper) -> Diagnose
-  (jetzt 3-Fragen-Quiz-Flow, Teal-Welt) -> Ablauf (4 Kreise, scroll-getrieben) -> Fundament =
-  **fundament-varianten/VarianteA** (Sticky-Ledger, Thomas' Wahl aus A/B/C; Vorschau-Seite
-  app/.../website/fundament-varianten existiert noch) -> DreiStufen (Editorial-Rows, Business-Held) ->
-  KollegeAnreisser (**Talos-Dashboard**: TalosEntranceStage rechts, rendert verifiziert; links UI-Panels)
-  -> KundenSagen (Hub-Sektion 1:1) -> ReferenzenTeaser (neu, schmaler Streifen) -> WebsiteFaq ->
-  SchlussCta (neue Copy "Hol dir die Website, bei der das Telefon geht.").
-- Alte Dateien Fundament.tsx/Testimonials.tsx sind ersetzt, aber noch im Repo.
-
-## FEEDBACK-RUNDE 2 (21.07. abend, Commits e15914a + 7b21aba LOKAL, review-it GO)
-4 parallele Agenten (Fable orchestriert), alles browser-verifiziert, tsc gruen, vitest 168/168:
-- Eyebrow-Stil "(...)" rot/letterspaced (.wd-eyebrow in website.css) in ALLEN 9 Sektionen
-  (DOM-geprueft; Diagnose=cream-Modifikator auf Teal, CTA=helleres Rot auf Navy).
-- SoBauenWir-Paare mehr Luft; Sektions-Paddings auf var(--rr-section-y) vereinheitlicht.
-- Fundament-Ledger: roter PUNKT statt Quadrat.
-- DreiStufen: MEISTGEWÄHLT-Badge fix am Business-Namen; styled-jsx-:global-Fix (Row-Padding
-  griff vorher NIE — Scope-Klasse propagiert nicht in next/link).
-- KundenSagen (geteilt mit Hub!): weiss, Google-G+Sterne-Badge, Zitat 32px, Crossfade-Wechsel
-  (key-Animation, min-height gegen Jump), Avatare hellgrau + dezenter Rot-Filter (opacity .76)
-  auf aktiv, Logo-Slot (logo?-Feld) fuer spaeter, Pfeile auf Weiss.
-- NEU /leistungen/website/stufen-varianten (A Editorial-Accordion / B Sticky-Matrix /
-  C Stacked-Tiles; 8-10 aufklappbare Merkmale je Stufe, Daten geteilt aus VarianteA.tsx).
-- NEU /leistungen/website/dashboard-varianten (A Browser-Frame mit Talos halb drueber /
-  B Floating Panels mit Ganzkoerper-Talos / C dunkle Kommandozentrale, Talos schaut von oben).
-  THOMAS WAEHLT je eine Variante; beim Promoten Hex-Farben auf var(--rr-*) umstellen
-  (Review-Vormerkung) und nur 1 Talos-Instanz auf der Live-Seite.
-- review-it (3 Agenten): GO, 0 CRITICAL/MAJOR; P1 ReferenzenTeaser-Eyebrow sofort gefixt;
-  Rest dokumentiert in docs/reviews/website-feedback2-e15914a.md.
-
-## RUNDE 3 — PROMOTION + NEUE VARIANTEN (22.07. nachts, Commit 42dde8c LOKAL)
-Thomas' Wahl aus Runde 2: Stufen = VARIANTE B, Dashboard = VARIANTE A. Umgesetzt:
-- **DreiStufenMatrix.tsx** (Variante B, Sticky-Stufe + 2-Spalten-Merkmale, Daten-Import aus
-  stufen-varianten/VarianteA) ersetzt DreiStufen auf der Live-Seite; Hex->Tokens.
-- **TalosDashboard.tsx** (Variante A Browser-Frame) ersetzt KollegeAnreisser, mit Thomas'
-  Fixes: Klicks-Panel oben RECHTS (keine URL-Pill-Kollision, <900px im Fluss), Talos
-  bodenverankert weiter rechts, **Klick auf Talos -> winkt erneut**.
-- **TalosEntranceStage ADDITIV erweitert** (Default bit-identisch fuer alle Bestandsnutzer):
-  `waveOnClick` (Klick/Enter/Space -> triggerGreeting, role=button), `camPos/camTgt/camFov`
-  (optionale Kamera-Kadrierung), QA-Hooks `wave()`/`isWaving()`/`camera`.
-  WICHTIG: Default-Kamera rahmt nur den OBERKOERPER; fuer Ganzkoerper inkl. Fuesse braucht
-  es eigene Werte — TalosDashboard nutzt camPos=[30,190,1150], camTgt=[0,170,12]
-  (im Browser via __talosEntrance.camera getuned). Fuesse-Beschnitt war KEIN CSS-Problem.
-- **NEU /leistungen/website/ablauf-varianten** (A Editorial-Zahlen-Stack / B Sticky-Split
-  mit rotem Faden / C horizontales Prozess-Band) — Ersatz-Kandidaten fuer die Kreis-Kette.
-- **NEU /leistungen/website/diagnose-varianten** (A grosse Typo-Antworten / B Diagnose-
-  Bogen mit rotem Hand-Kreis + Stempel / C Split mit Live-Zusammenfassung) — gleiche
-  Quiz-Logik wie Bestand, alle 3 bis zum Ergebnis durchgeklickt.
-- QA: tsc gruen, vitest 168/168, Live-Seite browser-verifiziert. Alte Dateien
-  (DreiStufen/KollegeAnreisser) + alle Varianten-Routen bleiben liegen bis zur Abnahme.
-- NAECHSTER SCHRITT: Thomas waehlt Ablauf- und Diagnose-Variante, dann promoten
-  (dabei wieder Hex->var(--rr-*)); danach Varianten-Routen aufraeumen.
-
-## Kleinigkeiten offen (bewusst NICHT gefixt, Thomas hat Stand so abgenommen)
-- ASCII-Umlaute in KollegeAnreisser-Copy: "gewoehnlichen", "Blogbeitraege", "geprueft" — Hausregel
-  waere echte Umlaute; bei naechster Copy-Runde mitziehen.
-- Talos-Buehne fuellt nur den oberen Teil der rechten Spalte (feste Zellhoehe), darunter Weissraum.
-- Varianten-Vorschau /leistungen/website/fundament-varianten nach finaler Abnahme entfernen.
-
----
-
-# Aelterer Stand (2026-07-20)
+# Naechste Session — Leistungen/Website-Unterseite (2026-07-22)
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, STATE.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
@@ -80,32 +9,58 @@ Thomas' Wahl aus Runde 2: Stufen = VARIANTE B, Dashboard = VARIANTE A. Umgesetzt
 - Laufend testen + `review-it` bei groesseren Schritten. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
 - Bei langen Agenten-/Hintergrund-Laeufen ALLE 15 MIN Health-Check + Stichprobe (TaskList/BashOutput/Monitor). Bricht ein Tool ein → STOPP + fixen, keine kaputten Daten schreiben. Nicht endlos haengen.
 
-## Scope-Abgrenzung (WICHTIG, Thomas 20.07.)
-- MEINE Seite = NUR `/relaunch-preview/leistungen/website` (die Website-Unterseite).
-- Die Leistungs-HAUPTSEITE (`/relaunch-preview/leistungen`, der Hub) macht JEMAND ANDERES. NICHT anfassen.
-- Working Tree ist geteilt mit vielen Fremd-Straengen (talos-*, preise-preview, leistungen-hero2, SubpageHero, StepStack, BrushReveal, KontaktForm, PNGs, brand/PREISE_SEITE_BRIEF.md, docs/specs/FUCHAI*). NUR eigene Website-Dateien committen.
+## Scope-Abgrenzung
+- MEINE Seite = NUR /relaunch-preview/leistungen/website (+ deren Varianten-Vorschau-Routen).
+- Der Hub /relaunch-preview/leistungen gehoert einem ANDEREN Strang (Ausnahme: KundenSagen.tsx ist geteilt, Aenderungen dort betreffen beide — war von Thomas so beauftragt).
+- Working Tree geteilt mit Fremd-Straengen (talos-choreo, preise-preview, PNGs etc.) — NUR eigene Dateien committen.
 
-## Stand dieser Session (erledigt + verifiziert, committet ad3e41c LOKAL, nicht gepusht)
-Die Website-Unterseite ist inhaltlich + technisch FERTIG und deployt.
-- **Architektur:** Hero-only ueber-uns-"painting"-Mechanik (Wort "Website" + Wisch + Figur), Figur = ZAHNRAD. Darunter echte React-Sektionen mit rr-*-Bauteilen.
-- **DIE FIGUR-ERKENNTNIS (Gold wert, hat 4 Runden gekostet):** Die Figur wird NICHT vom inline `#headSvg`/`COMP5`-Code gerendert (der ist per CSS `display:none`), sondern von der React-Komponente `<MorphSculpture comp={N}>`, portalt vom `WebsiteDemoClient` in `.main-sticky`, getrieben von `window.__sculptProgress`. comp ist 0-INDEXIERT auf `COMPS=[atShapes1..5]`: **comp0=Zahnrad(Webdesign), comp1=Gluehbirne(Kontakt), comp2=Dokument(Content), comp3=Chart(Betreuung), comp4=Kopf(ueber-uns)**. Figur tauschen = EINE Zeile (`comp={0}`), NICHT die COMP5-Daten grafte(n). Siehe [[reference_subpage_hero_figur_morphsculpture]].
-- **Sektionen (Copy in scratchpad/website-copy-v2.md):** Hero → Fundament ("Was drinsteckt", 6+6 Haekchen) → **Diagnose** (interaktiv: Persona-Klick → ehrliche Empfehlung Starter/Business/Premium, Kollege immer dabei) → Ablauf (4-Schritt-Timeline, "Entwurf zuerst" charmant, NICHT billig) → 3 Stufen (nur Namen + Verweis /preise, KEIN Preis) → Kollege-Anreisser (Navy-Band, "digitaler Kollege", KEIN Wort "KI", Link /leistungen) → Testimonials (Teal, echte Danesh+Rohrer, "5,0 aus 8") → FAQ (6) → Schluss-CTA ("Deine ruft an.", loest Hero-Hook).
-- **Qualitaet:** tsc gruen, vitest 168/168, keine Konsolen-Fehler, Browser real durchgescrollt (alle 9 Sektionen), Mobile ok (kein Overflow, Diagnose stapelt), Hausregeln sauber (du, kein Gedankenstrich, keine Emojis, kein "KI", echte Umlaute, ein h1, echte Reviews, keine Preise).
-- **Deploy (Preview):** https://webredrabbitmedia-elynqfexd-toms-projects-17d37f0b.vercel.app/relaunch-preview/leistungen/website
+## Stand dieser Session (Feedback-Runden 2-4, alle Commits LOKAL auf Branch relaunch, nicht gepusht)
+Commits: e15914a, 7b21aba (Runde 2 + review-it GO), 42dde8c, 9215152 (Runde 3 Promotion),
+57a1787 (Runde 4), 98aca30 (Talos-Wink-Fix). QA je Runde: tsc gruen, vitest 168/168,
+Browser-Durchlaeufe, Konsole sauber. review-it-Protokoll: docs/reviews/website-feedback2-e15914a.md.
 
-## Offen / UNKLAR / Naechste konkrete Schritte
-- Thomas will die Seite in Ruhe anschauen und dann gemeinsam Sektion fuer Sektion FEIN durchgehen (Copy, Reihenfolge, Design-Details). Auf sein Feedback warten, nicht vorgreifen.
-- Moegliche Fein-Themen (nur wenn Thomas es will): Navy-Rhythmus (Kollege-Band + CTA + Footer alle navy im unteren Drittel), Diagnose-Feinschliff, evtl. Wisch-Botschaft/Hero-Copy schaerfen.
-- **reduced-motion:** der gehaltene Hero ueberlappt den Story-Text — IDENTISCH zur ueber-uns-Referenz (geerbt, KEIN Regress). Falls Fix gewuenscht: separater Fix fuer ueber-uns + alle Klone.
-- Trivial offen: ein paar em-dashes in JSDoc-Kommentaren (nicht user-facing).
+**Live-Seite ist jetzt:** Hero (Zahnrad, roter Mal-Punkt, 19vw) → Belief-Bumper → SoBauenWir →
+Diagnose (Teal-Quiz, Hover-Fuellung #0f5a63 + Pfeil) → Ablauf (Kreis-Kette, Text tiefer) →
+Fundament Sticky-Ledger (WEISS, rote Punkte) → **DreiStufenMatrix** (Stufen-Variante B, sticky
+Stufe + 2-Spalten-Merkmale aufklappbar, Business MEISTGEWÄHLT) → **TalosDashboard** (Dashboard-
+Variante A: Navy-Browser-Frame, Klicks-Panel als normales Panel unten rechts, Talos rechts/tief
+mit sichtbaren Fuessen, erscheint NACH dem Dashboard, winkt bei Entrance UND Klick mit dem
+Gegen-Arm) → KundenSagen (weiss, Google-G, Crossfade, Rot-Filter-Avatare) → ReferenzenTeaser →
+FAQ → SchlussCta. Alle 9 Sektions-Eyebrows im "(...)"-wd-eyebrow-Stil.
+
+**TalosEntranceStage-API (additiv, Defaults = alle anderen Talos-Seiten unveraendert):**
+`waveOnClick`, `greetArm ("primary"|"other")`, `autoplayDelayMs`, `camPos/camTgt/camFov`.
+TalosDashboard nutzt: waveOnClick, greetArm="other", autoplayDelayMs={900},
+camPos=[30,190,1150], camTgt=[0,140,12]. QA-Hooks: __talosEntrance.wave()/wave2()/isWaving()/camera.
+WICHTIGE LESSONS: (1) Default-Kamera rahmt nur den Oberkoerper — Ganzkoerper braucht eigene
+cam-Werte; Slot-CSS aendert NICHTS an der vertikalen Kadrierung (FOV fix). (2) Der Gegen-Arm
+(arm/elbow/forearm/Hand) haengt an einer bereits X-gespiegelten Modell-Instanz — fuer die
+Spiegel-Geste IDENTISCHE lokale Offsets wie der Primaer-Arm verwenden, NICHT negieren
+(Doppel-Spiegelung = Hand kippt falsch).
+
+## Offen / Naechste konkrete Schritte
+1. **Thomas' KREIS-WAHL (a/b/c) einarbeiten**: /relaunch-preview/leistungen/website/kreise-varianten
+   zeigt 3 Designs der Ablauf-Kreise (A Hairline+kreisender Punkt / B Rot+atmender Halo+Punktlinie /
+   C roter SVG-Bogen). Gewinner-Design in Ablauf.tsx auf die 4-Kreis-Kette uebertragen
+   (Kreis-Optik tauschen, Scroll-Logik/Copy bleibt).
+2. Danach Varianten-Aufraeumen (nach Thomas-OK): Routen fundament-/stufen-/dashboard-/ablauf-/
+   diagnose-/kreise-varianten + alte DreiStufen.tsx/KollegeAnreisser.tsx/Testimonials.tsx/
+   Fundament.tsx entfernen. Die ablauf-varianten (Zahlen-Stack/Sticky-Split/Band) und
+   diagnose-varianten (Typo/Bogen/Split) wurden NICHT gewaehlt — Thomas will Kreise behalten
+   und Diagnose-Layout behalten; Routen existieren noch als Fundus.
+3. Review-Vormerkungen (docs/reviews/website-feedback2-e15914a.md): Eyebrow-Klammern als
+   ::before/::after robuster machen; __talosEntrance nicht instanz-namespaced (nur QA-relevant).
+4. Deploy-Preview (vercel deploy --yes) steht aus — Thomas hat bisher nur lokal abgenommen.
+5. Nicht gepusht — bewusst, wie im ganzen Relaunch-Strang.
 
 ## Blocker / Risiken
-- Keine. Seite laeuft. Dev-Server lokal ggf. neu starten: `cd ~/dev/redrabbit && npm run dev -- --port 9000`.
+- Keine. Dev-Server: cd ~/dev/redrabbit && npm run dev -- --port 9000 (Thomas beendet ihn
+  gelegentlich — vor Browser-Checks pruefen).
 
 ## Relevante Dateien/Befehle
-- Seite: `app/relaunch-preview/leistungen/website/page.tsx`
-- Hero-Demo (hero-only, getrimmt + engine null-geguardet): `components/subpages/website-demo/{demo.body.html,demo.css,demo.engine.jstext}` + Wrapper `components/subpages/WebsiteDemoClient.tsx` (`<MorphSculpture comp={0}>` = Zahnrad).
-- Sektionen: `components/subpages/leistungen/website/v2/{Fundament,Diagnose,Ablauf,DreiStufen,KollegeAnreisser,Testimonials}.tsx` + `../{WebsiteFaq,SchlussCta}.tsx`.
-- Copy: `scratchpad/website-copy-v2.md`. Voice-Regeln: `content-engine/voice/house.md`. Preis-Regeln: `brand/PREISE_SEITE_BRIEF.md` (nur 950/2.900/ab 4.900, nie 790). Figur-Motive: `docs/UNTERSEITEN_STIL.md §4`.
-- Dev: `npm run dev -- --port 9000`. tsc: `npx tsc --noEmit`. Deploy Preview: `vercel deploy --yes`.
-- LESSON StepStack: `components/subpages/StepStack.tsx` hat GAR KEIN CSS (kt-* Klassen nirgends definiert) → Schritte stapeln unlesbar. NICHT verwenden, bis CSS existiert. Ablauf nutzt eigene Timeline.
+- Seite: app/relaunch-preview/leistungen/website/page.tsx
+- Sektionen: components/subpages/leistungen/website/v2/ (DreiStufenMatrix, TalosDashboard,
+  Ablauf, Diagnose, SoBauenWir, fundament-varianten/VarianteA=Fundament) + ../KundenSagen.tsx (geteilt!)
+- Talos: components/relaunch/talos/{TalosEntranceStage.tsx,talosMotion.ts}
+- Kreis-Designs: components/subpages/leistungen/website/v2/kreise-varianten/KreiseVarianten.tsx
+- tsc: npx tsc --noEmit · Tests: npx vitest run · Eyebrow-Stil: website.css (.wd-eyebrow)
