@@ -65,9 +65,15 @@ export interface TalosEntranceStageProps {
   camPos?: [number, number, number];
   camTgt?: [number, number, number];
   camFov?: number;
+  /**
+   * Welcher Arm winkt am ENDE des Auftritts. "primary" (Default, arm1/Hand2 —
+   * bit-identisch zu allen bestehenden Verwendungen) oder "other" (gespiegelte
+   * Kette). Der Klick-Wink bleibt unabhaengig davon immer "other".
+   */
+  greetArm?: "primary" | "other";
 }
 
-export default function TalosEntranceStage({ autoplay = true, waveOnClick = false, autoplayDelayMs = 0, camPos, camTgt, camFov }: TalosEntranceStageProps) {
+export default function TalosEntranceStage({ autoplay = true, waveOnClick = false, autoplayDelayMs = 0, camPos, camTgt, camFov, greetArm = "primary" }: TalosEntranceStageProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [no3d, setNo3d] = useState(false);
@@ -262,7 +268,7 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
         applyEntrancePose();
         if (started && !waved && ent >= WAVE_AT) {
           waved = true;
-          motion?.triggerGreeting();
+          motion?.triggerGreeting(greetArm);
         }
       }
 
@@ -275,7 +281,7 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
       rig?.dispose();
       teardown();
     };
-  }, [autoplay, autoplayDelayMs]);
+  }, [autoplay, autoplayDelayMs, greetArm]);
 
   return (
     <div

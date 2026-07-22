@@ -62,9 +62,10 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
     elbow: byName["elbow1"],
     forearm: byName["forearm1"],
     hand: byName["Hand2"],
-    // Gegen-Arm (gespiegelte Kette, am Modell verifiziert 22.07.):
-    // arm/elbow/forearm mit End-Hand "Hand". Fuer den Klick-Wink mit der
-    // ANDEREN Hand — gespiegelte Rotationsvorzeichen (siehe update()).
+    // Gegen-Arm (gespiegelte Instanz-Kette unter "Hand Instance", am Modell
+    // verifiziert 22.07.): arm/elbow/forearm mit End-Hand "Hand". Fuer den
+    // Wink mit der ANDEREN Hand — IDENTISCHE lokale Offsets, die X-Spiegelung
+    // des Eltern-Knotens erzeugt die Spiegel-Geste (siehe update()).
     armB: byName["arm"],
     elbowB: byName["elbow"],
     forearmB: byName["forearm"],
@@ -269,20 +270,25 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
       }
     }
 
-    // --- Gegen-Arm schreiben (gespiegelte Vorzeichen) ---
-    // Die zweite Arm-Kette ist die Spiegelung der ersten; das gleiche Anheben
-    // erfordert das entgegengesetzte Rotationsvorzeichen (am Modell verifiziert).
+    // --- Gegen-Arm schreiben (IDENTISCHE lokale Rotationen wie der Primaer-Arm) ---
+    // Am Modell vermessen (22.07.): die Gegen-Arm-Kette haengt unter "Hand
+    // Instance", einer GESPIEGELTEN Instanz von "Hand1" (world-Determinante
+    // kippt das Vorzeichen: arm1=+0.512, arm=-0.512; die lokalen Transforms sind
+    // numerisch identisch). Weil der Eltern-Knoten bereits die X-Spiegelung
+    // liefert, erzeugt DERSELBE lokale Rotations-Offset automatisch die
+    // spiegelbildliche Geste (Arm hebt, Hand pendelt oben). Das fruehere Negieren
+    // der Vorzeichen war eine Doppel-Spiegelung -> Hand kippte nach unten/innen.
     if (nodes.armB && base.armB)
-      nodes.armB.rotation.z = base.armB.z - armLiftB * 1.35;
+      nodes.armB.rotation.z = base.armB.z + armLiftB * 1.35;
     if (nodes.elbowB && base.elbowB)
-      nodes.elbowB.rotation.z = base.elbowB.z - elbowBendB * 1.05;
+      nodes.elbowB.rotation.z = base.elbowB.z + elbowBendB * 1.05;
     if (nodes.forearmB && base.forearmB)
-      nodes.forearmB.rotation.z = base.forearmB.z - elbowBendB * 0.35;
+      nodes.forearmB.rotation.z = base.forearmB.z + elbowBendB * 0.35;
     if (nodes.handB && base.handB) {
       nodes.handB.rotation.set(base.handB.x, base.handB.y, base.handB.z);
       if (armLiftB > 0.001) {
-        nodes.handB.rotateOnAxis(FINGER_AXIS, -PALM_FORWARD_TWIST * armLiftB);
-        nodes.handB.rotateOnAxis(PALM_AXIS, -wristWaveB * 0.5);
+        nodes.handB.rotateOnAxis(FINGER_AXIS, PALM_FORWARD_TWIST * armLiftB);
+        nodes.handB.rotateOnAxis(PALM_AXIS, wristWaveB * 0.5);
       }
     }
   };

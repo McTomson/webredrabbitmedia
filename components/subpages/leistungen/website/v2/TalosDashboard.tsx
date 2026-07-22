@@ -169,11 +169,16 @@ export default function TalosDashboard() {
           <div className="wda__talos">
             <TalosEntranceStage
                 waveOnClick
+                greetArm="other"
                 autoplayDelayMs={900}
                 /* Ganzkoerper-Kadrierung (Fuesse sichtbar): im Browser getuned,
-                   Default der Buehne rahmt nur den Oberkoerper. */
+                   Default der Buehne rahmt nur den Oberkoerper. camTgt.y auf 140
+                   gesenkt (22.07.): bei 170 klippte die Schuh-Unterkante an der
+                   Canvas-Unterkante (vertikales FOV fix -> hoehere Slot-Hoehe
+                   allein zeigt die Fuesse nicht; Kamera muss tiefer zielen).
+                   Bei 1280 UND 1500 Fensterbreite mit Schuh-Marge verifiziert. */
                 camPos={[30, 190, 1150]}
-                camTgt={[0, 170, 12]}
+                camTgt={[0, 140, 12]}
               />
           </div>
         </div>
