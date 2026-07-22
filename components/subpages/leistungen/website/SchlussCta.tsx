@@ -12,7 +12,7 @@ export default function SchlussCta() {
   return (
     <section className="rr-section lw-cta">
       <div className="rr-wrap rr-narrow">
-        <p className="wd-eyebrow wd-eyebrow--ondark" style={{ marginBottom: 24 }}>
+        <p className="wd-eyebrow wd-eyebrow--ondark" style={{ marginBottom: 32 }}>
           Bereit?
         </p>
         <p className="rr-display-2 lw-cta__title">

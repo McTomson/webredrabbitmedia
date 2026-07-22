@@ -267,13 +267,14 @@ export default function DreiStufenMatrix() {
   return (
     <section className="fmx">
       <div className="fmx__wrap">
-        <p className="wd-eyebrow">DREI STUFEN</p>
-        <h2 className="fmx__h2">Drei Stufen, je nachdem wie viel du brauchst.</h2>
+        <p className="wd-eyebrow">DREI PAKETE</p>
+        <h2 className="fmx__h2">Drei Pakete, je nachdem wie viel du brauchst.</h2>
         <p className="fmx__intro">
           Der One-Pager als schlanker Einstieg, wenn eine saubere Seite für den
-          Anfang reicht. Die mittlere Stufe, die die meisten Betriebe wählen. Und
-          die große Lösung, wenn deine Seite richtig etwas leisten soll. Klein
-          anfangen und später wachsen geht immer.
+          Anfang reicht. Das mittlere Paket, das die meisten Betriebe wählen. Und
+          die große Lösung, wenn deine Seite richtig etwas leisten soll. Du
+          entscheidest dich für eines. Und wer klein anfängt, kann später
+          jederzeit wachsen.
         </p>
 
         {STUFEN.map((s) => (
@@ -281,7 +282,7 @@ export default function DreiStufenMatrix() {
         ))}
 
         <p className="rr-meta fmx__meta">
-          Was die Stufen kosten, steht schwarz auf weiß auf der{" "}
+          Was die Pakete kosten, steht schwarz auf weiß auf der{" "}
           <Link href="/preise" className="rr-link rr-link--text">
             Preisseite
           </Link>
