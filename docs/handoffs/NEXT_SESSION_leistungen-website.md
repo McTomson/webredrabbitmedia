@@ -39,10 +39,16 @@ Spiegel-Geste IDENTISCHE lokale Offsets wie der Primaer-Arm verwenden, NICHT neg
 (Doppel-Spiegelung = Hand kippt falsch).
 
 ## Offen / Naechste konkrete Schritte
-1. **Thomas' KREIS-WAHL (a/b/c) einarbeiten**: /relaunch-preview/leistungen/website/kreise-varianten
-   zeigt 3 Designs der Ablauf-Kreise (A Hairline+kreisender Punkt / B Rot+atmender Halo+Punktlinie /
-   C roter SVG-Bogen). Gewinner-Design in Ablauf.tsx auf die 4-Kreis-Kette uebertragen
-   (Kreis-Optik tauschen, Scroll-Logik/Copy bleibt).
+0. ERLEDIGT 22.07. (Runde 5, Commit 3f90b9a): Kreis-Wahl obsolet — Thomas behaelt die Kreise,
+   neu: 1px-Navy-Hairline (rgba(28,40,55,.30)) in ALLEN Zustaenden + 400vh Scroll-Strecke
+   (ein Scroll je Schritt) + Intro unter der Ablauf-Ueberschrift. Ausserdem: SoBauenWir-Copy neu,
+   DreiStufen-Kopf zu Starter/Business/Premium, SchlussCta ("klingelt", Anrufen statt Preise,
+   mehr Luft), Fundament Off-White #f6f5f1, Eyebrow-Klammern als ::before/::after (Literale raus),
+   __talosEntrance instanz-sicher, KundenSagen: Rene-Zitat 1:1-Wortlaut. WICHTIG Rezensionen:
+   Google-Profil hat nur 3 (2 verwendbar, Dmitry=Team nie als Kundenstimme); positioning.md korrigiert.
+   OFFENE THOMAS-THEMEN aus Runde 5: Starter-Inhalt/Monatskosten der Module (Preise NIE erfinden,
+   gemeinsamer Copy-Durchgang steht aus); Vorschlaege Founder-Element + frueheres Vertrauenssignal
+   liegen unbeantwortet.
 2. Danach Varianten-Aufraeumen (nach Thomas-OK): Routen fundament-/stufen-/dashboard-/ablauf-/
    diagnose-/kreise-varianten + alte DreiStufen.tsx/KollegeAnreisser.tsx/Testimonials.tsx/
    Fundament.tsx entfernen. Die ablauf-varianten (Zahlen-Stack/Sticky-Split/Band) und
