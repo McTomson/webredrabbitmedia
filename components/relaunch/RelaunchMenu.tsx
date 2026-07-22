@@ -130,10 +130,11 @@ export default function RelaunchMenu() {
   }, []);
 
   // Fokus in den Dialog schicken; beim Schliessen zurueck zum Trigger.
+  // Fokus auf das Overlay selbst (nicht den ersten Link), sonst zeigt
+  // "Start" beim Oeffnen sofort die Klammern (Thomas 22.07.: erst bei Hover).
   useEffect(() => {
     if (open) {
-      const first = overlayRef.current?.querySelector<HTMLElement>("[data-menu-focus]");
-      first?.focus();
+      overlayRef.current?.focus();
     } else {
       triggerRef.current?.focus();
     }
@@ -200,6 +201,7 @@ export default function RelaunchMenu() {
         role="dialog"
         aria-modal="true"
         aria-label="Hauptnavigation"
+        tabIndex={-1}
         className={`rrmenu-overlay${open ? " is-open" : ""}`}
         hidden={!open}
         onClick={(e) => {
@@ -221,9 +223,14 @@ export default function RelaunchMenu() {
           >
             <ul className="rrmenu-list">
               {NAV_ITEMS.map((item, i) => {
+                const delayVar = { "--i": i } as React.CSSProperties;
                 if (item.children) {
                   return (
-                    <li key={item.href} className="rrmenu-item rrmenu-item--has-sub">
+                    <li
+                      key={item.href}
+                      className="rrmenu-item rrmenu-item--has-sub"
+                      style={delayVar}
+                    >
                       <button
                         type="button"
                         className={`rrmenu-link rrmenu-link--btn${servicesOpen ? " is-active" : ""}`}
@@ -261,13 +268,8 @@ export default function RelaunchMenu() {
                   );
                 }
                 return (
-                  <li key={item.href} className="rrmenu-item">
-                    <Link
-                      href={item.href}
-                      className="rrmenu-link"
-                      data-menu-focus={i === 0 ? "" : undefined}
-                      onClick={close}
-                    >
+                  <li key={item.href} className="rrmenu-item" style={delayVar}>
+                    <Link href={item.href} className="rrmenu-link" onClick={close}>
                       <span className="rrmenu-link-text">{item.label}</span>
                       <Reticle />
                     </Link>
@@ -420,15 +422,16 @@ export default function RelaunchMenu() {
           display: flex;
           align-items: center;
           justify-content: center;
-          /* VH-basierte Groessen. Zusammengeklappt: 8 Punkte. */
-          --menu-fs: clamp(24px, min(6.3vh, 7.6vw), 58px);
-          --menu-gap: clamp(2px, 1vh, 14px);
+          /* VH-basierte Groessen. Zusammengeklappt: 8 Punkte.
+             Thomas 22.07.: Punkte brauchen mehr Luft zueinander. */
+          --menu-fs: clamp(22px, min(5.8vh, 7.2vw), 54px);
+          --menu-gap: clamp(8px, 2vh, 26px);
           --menu-pad-y: clamp(2px, 0.7vh, 8px);
         }
         /* Aufgeklappt: Punkte schrumpfen sanft, damit Dropdown + Social passen. */
         .rrmenu-nav.is-expanded {
-          --menu-fs: clamp(20px, min(4.9vh, 6vw), 46px);
-          --menu-gap: clamp(1px, 0.5vh, 8px);
+          --menu-fs: clamp(18px, min(4.4vh, 5.6vw), 42px);
+          --menu-gap: clamp(5px, 1.3vh, 16px);
           --menu-pad-y: clamp(1px, 0.45vh, 6px);
         }
         .rrmenu-list {
@@ -445,6 +448,22 @@ export default function RelaunchMenu() {
           display: flex;
           flex-direction: column;
           align-items: center;
+        }
+        /* Gestaffeltes Einblenden beim Oeffnen (Thomas 22.07.): Punkte
+           erscheinen nacheinander von oben nach unten, nicht alle sofort. */
+        .rrmenu-overlay.is-open .rrmenu-item {
+          animation: rrmenuItemIn 480ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)) both;
+          animation-delay: calc(120ms + var(--i, 0) * 70ms);
+        }
+        @keyframes rrmenuItemIn {
+          from {
+            opacity: 0;
+            transform: translateY(16px);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
         }
 
         /* Link/Button = teils next/link -> :global() unter dem Overlay ansprechen
@@ -618,6 +637,9 @@ export default function RelaunchMenu() {
           .rrmenu-overlay :global(.rrmenu-corners),
           .rrmenu-overlay :global(.rrmenu-dot) {
             transition-duration: 0.01ms;
+          }
+          .rrmenu-overlay.is-open .rrmenu-item {
+            animation: none;
           }
         }
       `}</style>
