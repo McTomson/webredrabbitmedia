@@ -97,10 +97,14 @@ export default function Ablauf() {
   return (
     <section className="wd-abl" aria-labelledby="wd-abl-title">
       <div className="wd-abl__head">
-        <p className="wd-eyebrow">(SO LÄUFT DAS AB)</p>
+        <p className="wd-eyebrow">SO LÄUFT DAS AB</p>
         <h2 id="wd-abl-title" className="rr-statement">
           Vier Schritte. Und du siehst deine Seite echt, bevor du dich festlegst.
         </h2>
+        <p className="rr-body-lg wd-abl__intro">
+          Vier Schritte von heute bis online. Du siehst bei jedem davon, was
+          passiert, und der erste kostet dich nichts.
+        </p>
       </div>
 
       <div ref={trackRef} className="wd-abl__track">
@@ -161,7 +165,12 @@ export default function Ablauf() {
         }
         .wd-abl__head {
           max-width: 780px;
-          margin-bottom: clamp(40px, 6vw, 72px);
+          margin-bottom: clamp(48px, 7vw, 88px);
+        }
+        .wd-abl__intro {
+          margin-top: clamp(20px, 2.6vw, 30px);
+          max-width: 42em;
+          color: var(--rr-ink-soft, #5a5e68);
         }
         .wd-abl__track {
           position: relative;
@@ -204,12 +213,15 @@ export default function Ablauf() {
           width: var(--circle);
           height: var(--circle);
           border-radius: 50%;
-          border: 2px solid var(--rr-navy, #1c2837);
+          /* Thomas 22.07.: nur eine ganz leichte navyblaue Hairline, die auch
+             am gefuellten (roten/navy) Kreis sichtbar bleibt. Border-Farbe wird
+             daher in keinem Zustand ueberschrieben. */
+          border: 1px solid rgba(28, 40, 55, 0.30);
           background: #fff;
           display: flex;
           align-items: center;
           justify-content: center;
-          transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+          transition: transform 0.3s ease, background 0.3s ease;
         }
         .wd-abl__circlenum {
           font-family: var(--rr-font-display, inherit);
@@ -221,14 +233,12 @@ export default function Ablauf() {
         }
         .wd-abl__circle.is-done {
           background: var(--rr-navy, #1c2837);
-          border-color: var(--rr-navy, #1c2837);
         }
         .wd-abl__circle.is-done .wd-abl__circlenum {
           color: #fff;
         }
         .wd-abl__circle.is-active {
           background: var(--rr-red, #f12032);
-          border-color: var(--rr-red, #f12032);
           transform: scale(1.12);
         }
         .wd-abl__circle.is-active .wd-abl__circlenum {
@@ -344,7 +354,11 @@ export default function Ablauf() {
         /* Desktop-Szene: Sticky-Scroll, nur wenn Platz da ist und Motion erlaubt */
         @media (min-width: 721px) and (prefers-reduced-motion: no-preference) {
           .wd-abl__track {
-            height: calc(100vh + 180vh);
+            /* Thomas 22.07.: "ein Scroll = ein Punkt". 100vh Sticky-Pin +
+               400vh Scroll-Strecke. Der Fortschritt q laeuft ueber diese
+               400vh, floor(q*4) verteilt die 4 Schritte gleichmaessig, also
+               rund eine Viewport-Hoehe Scroll pro Schritt. */
+            height: calc(100vh + 400vh);
           }
           .wd-abl__stage {
             position: sticky;

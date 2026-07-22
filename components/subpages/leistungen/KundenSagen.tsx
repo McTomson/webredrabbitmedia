@@ -12,12 +12,16 @@ import './kunden-sagen.css';
  * dezenten roten Farbfilter (halbtransparent) statt Vollton-Rot; Logo-Slot
  * ist vorbereitet (Initialen als Fallback).
  *
- * Nur ECHTE Google-Rezensionen, Wortlaut 1:1 aus Referenzen.tsx uebernommen:
- * Rafael Danesh + Rene Rohrer, beide 5 Sterne. Dmitry Pashlov ist laut
- * Referenzen.tsx und website/v2/Testimonials.tsx (beide 1:1 geprueft)
- * Teammitglied, KEINE Kundenstimme — deshalb hier bewusst NICHT als drittes
- * Zitat verwendet, kein Text erfunden. Kein Foto vorhanden -> Kachel zeigt
- * Initialen statt eines erfundenen Bildes.
+ * Nur ECHTE Google-Rezensionen, Wortlaut 1:1. Am 22.07.2026 direkt gegen das
+ * Live-Google-Profil verifiziert (Maps: "Red Rabbit GmbH", redrabbit.media,
+ * Habsburgergasse 1010 Wien): Das Profil hat insgesamt genau DREI Rezensionen
+ * (5,0): Rafael Danesh (5 Sterne), Rene Rohrer (5 Sterne), Dmitry Pashlov
+ * (5 Sterne). Dmitry Pashlov ist Teammitglied (Lead Developer, siehe
+ * Referenzen.tsx / SoArbeitenWir.tsx: "NIE als Kundenstimme") — seine
+ * Rezension wird deshalb bewusst NICHT angezeigt. Mehr echte Rezensionen
+ * existieren nicht; nichts erfinden. Rene-Rohrer-Wortlaut am 22.07. auf den
+ * exakten Original-Wortlaut korrigiert (inkl. ":-)" und Original-Zeichensetzung).
+ * Kein Foto vorhanden -> Kachel zeigt Initialen statt eines erfundenen Bildes.
  */
 
 interface Testimonial {
@@ -48,7 +52,7 @@ const TESTIMONIALS: Testimonial[] = [
     initials: 'RR',
     stars: 5,
     quote:
-      'Ich bin von der Firma begeistert, vor allem von der Umsetzung. Ein Lob an Herrn Uhlir, der mich durch die Zeit der Umsetzung begleitet hat. Vielen lieben Dank. 100 Prozent Empfehlung.',
+      'Ich bin von der Firma begeistert vor allem von der Umsetzung, ein Lob an Herrn Uhlir der mich durch die Zeit der Umsetzung begleitet hat. Vielen lieben Dank :-) 100 Prozent Empfehlung',
   },
 ];
 

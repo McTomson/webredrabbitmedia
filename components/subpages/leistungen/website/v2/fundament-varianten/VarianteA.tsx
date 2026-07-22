@@ -193,10 +193,11 @@ export default function VarianteA() {
 
       <style jsx>{`
         .lwa {
-          /* Thomas 21.07.: den hellgrauen Sektions-Hintergrund gibt es sonst
-             nirgends auf der Seite -> weg. Die Seite ist ohnehin weiss
-             (siehe Wrapper in page.tsx), also transparent statt --rr-surface. */
-          background: transparent;
+          /* Design-Lead 22.07.: zur Abgrenzung ein ganz dezenter warmer
+             Off-White-Ton (projektweit etabliertes #f6f5f1, kein kaltes Grau)
+             statt reinem Weiss. Kein var-Token vorhanden (--rr-surface ist
+             #f4f4f2, ein anderer Wert), daher Hex wie im restlichen Projekt. */
+          background: #f6f5f1;
           color: var(--rr-ink);
           padding: var(--rr-section-y, clamp(96px, 12vw, 180px)) var(--rr-gutter, clamp(20px, 4vw, 64px));
         }

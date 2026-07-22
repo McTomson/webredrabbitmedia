@@ -39,7 +39,7 @@ export default function WebsiteFaq() {
     <section className="rr-section lw-faq">
       <div className="rr-wrap rr-narrow lw-faq__grid">
         <div className="lw-faq__label">
-          <p className="wd-eyebrow">(HÄUFIGE FRAGEN)</p>
+          <p className="wd-eyebrow">HÄUFIGE FRAGEN</p>
           <h2 className="rr-statement lw-faq__heading">
             Bevor du baust<span className="lw-faq__dot">.</span>
           </h2>

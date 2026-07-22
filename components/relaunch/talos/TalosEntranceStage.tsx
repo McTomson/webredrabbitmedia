@@ -71,9 +71,18 @@ export interface TalosEntranceStageProps {
    * Kette). Der Klick-Wink bleibt unabhaengig davon immer "other".
    */
   greetArm?: "primary" | "other";
+  /**
+   * Optionaler stabiler Key fuer die QA-Hook-Registry window.__talosEntrances
+   * (additiv; ohne Angabe fortlaufende ID "tle-N"). Rein fuer QA-Skripte,
+   * kein Einfluss auf Rendering/Verhalten.
+   */
+  debugId?: string;
 }
 
-export default function TalosEntranceStage({ autoplay = true, waveOnClick = false, autoplayDelayMs = 0, camPos, camTgt, camFov, greetArm = "primary" }: TalosEntranceStageProps) {
+// Fortlaufende ID fuer die QA-Hook-Registry (Fallback, wenn kein debugId gesetzt).
+let tleHookSeq = 0;
+
+export default function TalosEntranceStage({ autoplay = true, waveOnClick = false, autoplayDelayMs = 0, camPos, camTgt, camFov, greetArm = "primary", debugId }: TalosEntranceStageProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [no3d, setNo3d] = useState(false);
@@ -203,7 +212,13 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
       }
       renderer.dispose();
       if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
-      delete (window as unknown as Record<string, unknown>).__talosEntrance;
+      // Nur die EIGENE QA-Hook-Registrierung entfernen: den eigenen Key aus
+      // __talosEntrances, und __talosEntrance nur, wenn es (noch) auf diese
+      // Instanz zeigt — sonst wuerde der Hook einer anderen Stage geloescht.
+      const w = window as unknown as Record<string, unknown>;
+      const reg = w.__talosEntrances as Record<string, unknown> | undefined;
+      if (reg && reg[hookKey] === qaHooks) delete reg[hookKey];
+      if (w.__talosEntrance === qaHooks) delete w.__talosEntrance;
     };
 
     const loader = new SplineLoader() as unknown as {
@@ -235,7 +250,11 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
     );
 
     // QA-Hooks: window.__talosEntrance.play() / .setProg(0..1) / .replay()
-    (window as unknown as Record<string, unknown>).__talosEntrance = {
+    // Instanz-sicher: __talosEntrance zeigt (Bestandsverhalten) auf die ZULETZT
+    // gemountete Instanz; ZUSAETZLICH haelt __talosEntrances alle Instanzen
+    // unter einem stabilen Key (debugId-Prop oder fortlaufend "tle-N").
+    const hookKey = debugId ?? `tle-${++tleHookSeq}`;
+    const qaHooks = {
       play: () => { if (loaded) { started = true; manualProg = null; } },
       replay: () => { ent = 0; waved = false; started = true; manualProg = null; },
       setProg: (p: number) => { manualProg = Math.max(0, Math.min(1, p)); started = true; },
@@ -248,6 +267,11 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
       camera,
       isWaving: () => motion?.isBusy() ?? false,
     };
+    const qaWin = window as unknown as Record<string, unknown>;
+    qaWin.__talosEntrance = qaHooks;
+    const qaRegistry = (qaWin.__talosEntrances ?? {}) as Record<string, unknown>;
+    qaRegistry[hookKey] = qaHooks;
+    qaWin.__talosEntrances = qaRegistry;
 
     const clock = new THREE.Clock();
     renderer.setAnimationLoop(() => {
@@ -281,7 +305,7 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
       rig?.dispose();
       teardown();
     };
-  }, [autoplay, autoplayDelayMs, greetArm]);
+  }, [autoplay, autoplayDelayMs, greetArm, debugId]);
 
   return (
     <div

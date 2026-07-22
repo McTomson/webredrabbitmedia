@@ -16,16 +16,16 @@ type Paar = { fabrik: string; wir: string };
 
 const PAARE: Paar[] = [
   {
-    fabrik: 'Vorlage auf, Logo rein, fertig.',
-    wir: 'Wir fangen bei dir an. Erst wenn klar ist, was deine Seite können muss, wird gebaut.',
+    fabrik: 'Fertige Vorlage nehmen, dein Logo oben rein, fertig ist die Seite.',
+    wir: 'Wir schauen zuerst, wen du erreichen willst. Deine Seite wird für deine Kunden gebaut, nicht von der Stange.',
   },
   {
-    fabrik: 'Masse. Je mehr durchlaufen, desto besser.',
-    wir: 'Maß. Wir nehmen nur an, was wir sauber schaffen.',
+    fabrik: 'Der Stundensatz läuft weiter, jede Nachfrage kostet extra.',
+    wir: 'Fixpreis, den du vorher kennst. Und du siehst den Entwurf, bevor du dich festlegst.',
   },
   {
-    fabrik: 'Jeder Auftrag ist ein guter Auftrag.',
-    wir: 'Wenn dir das Kleine reicht, sagen wir dir das.',
+    fabrik: 'Ist die Seite einmal online, meldet sich keiner mehr bei dir.',
+    wir: 'Du redest immer mit derselben Person. Auch nach dem Livegang bleiben wir erreichbar.',
   },
 ];
 
@@ -33,7 +33,7 @@ export default function SoBauenWir() {
   return (
     <section className="wd-hand" aria-labelledby="wd-hand-title">
       <div className="wd-hand__inner rr-reveal">
-        <p className="wd-eyebrow">(SO BAUEN WIR)</p>
+        <p className="wd-eyebrow">SO BAUEN WIR</p>
         <h2 id="wd-hand-title" className="rr-statement wd-hand__statement">
           Das hier ist kein Baukasten. Merkst du gerade selbst.
         </h2>

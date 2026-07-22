@@ -188,8 +188,8 @@
 /* ---- Schluss-CTA (Navy-Band) ---- */
 .rr .lw-cta { background: var(--rr-navy); text-align: center; }
 .rr .lw-cta__title { color: #f6f5f1; max-width: 15em; margin: 0 auto; }
-.rr .lw-cta__sub { color: rgba(246, 245, 241, 0.78); max-width: 480px; margin: 20px auto 0; }
-.rr .lw-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: clamp(32px, 5vh, 48px); }
+.rr .lw-cta__sub { color: rgba(246, 245, 241, 0.78); max-width: 480px; margin: clamp(24px, 3.5vh, 40px) auto 0; }
+.rr .lw-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: clamp(40px, 6vh, 64px); }
 /* rr-btn-sweep hat im Ruhezustand Ink-Text (fuer helle Flaechen); auf dem
    Navy-Band den Text hell setzen (Kontrast-Fix, Muster aus leistungen.css).
    rr-btn-frame--red bleibt unveraendert Rot-auf-Navy (identisches Muster
@@ -216,6 +216,10 @@
   color: var(--rr-red);
   margin: 0;
 }
+/* Klammern gehoeren zum Stil, nicht zum Inhalt: als Pseudo-Content kann
+   keine Sektion sie vergessen (Review-Vormerkung e15914a, Simplify P3). */
+.rr .wd-eyebrow::before { content: "("; }
+.rr .wd-eyebrow::after { content: ")"; }
 /* Navy (Schluss-CTA): reines Markenrot faellt unter 4.5:1 auf #1c2837 (~3.55:1)
    -> helleres Rot, geprueft ~5.5:1 (AA fuer Kleintext). */
 .rr .wd-eyebrow--ondark { color: #f77480; }

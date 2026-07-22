@@ -51,7 +51,7 @@ export default function DreiStufen() {
   return (
     <section className="rr-section">
       <div className="rr-wrap rr-narrow">
-        <p className="wd-eyebrow rr-reveal">(DREI STUFEN)</p>
+        <p className="wd-eyebrow rr-reveal">DREI STUFEN</p>
         <h2
           className="rr-statement rr-reveal"
           style={{

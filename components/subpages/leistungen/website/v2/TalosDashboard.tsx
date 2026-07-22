@@ -185,7 +185,7 @@ export default function TalosDashboard() {
 
         {/* Infos UNTER dem Dashboard */}
         <div className="wda__info">
-          <p className="wd-eyebrow wda__eyebrow">(NICHT NUR EINE SEITE)</p>
+          <p className="wd-eyebrow wda__eyebrow">NICHT NUR EINE SEITE</p>
           <h2 className="rr-statement wda__title">
             Zu einer gewöhnlichen Website bekommst du bei uns einen Helfer dazu.
             Er heisst <span className="wda__name">Talos</span>.

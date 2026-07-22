@@ -107,7 +107,7 @@ export default function Diagnose() {
     <section className="wd-diag" aria-labelledby="wd-diag-title">
       <div className="wd-diag__inner">
         <div className="wd-diag__head">
-          <p className="wd-eyebrow wd-eyebrow--cream">(WAS DU WIRKLICH BRAUCHST)</p>
+          <p className="wd-eyebrow wd-eyebrow--cream">WAS DU WIRKLICH BRAUCHST</p>
           <h2 id="wd-diag-title" className="rr-statement wd-diag__statement">
             Sag uns, wer du bist. Wir sagen dir ehrlich, was du brauchst.
           </h2>

@@ -66,7 +66,7 @@ export default function KollegeAnreisser() {
         {/* Fenster-Inhalt: links Text + Panels, rechts Talos */}
         <div className="wd-kol__body">
           <div className="wd-kol__left">
-            <p className="wd-eyebrow wd-kol__eyebrow">(NICHT NUR EINE SEITE)</p>
+            <p className="wd-eyebrow wd-kol__eyebrow">NICHT NUR EINE SEITE</p>
 
             <h2 className="rr-statement wd-kol__title">
               Zu einer gewöhnlichen Website bekommst du bei uns einen Helfer

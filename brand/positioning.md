@@ -31,3 +31,6 @@ Oesterreichischer Mittelstand und KMU, Schwerpunkt Handwerk, Gastronomie, Dienst
 
 ## Konsistenz-Hinweis (offener Fix)
 Kundenzahlen auf der Seite sind widerspruechlich (164 / 152 / 315 / 800+). Auf EINE belegbare Zahl vereinheitlichen (haengt mit Glaubwuerdigkeit + Schema zusammen, siehe SEO-Monitor).
+
+## Korrektur (2026-07-22, live am Google-Profil verifiziert)
+Das Google-Profil "Red Rabbit GmbH" hat aktuell DREI Rezensionen (5,0), nicht ~8 wie oben erwaehnt. Davon sind ZWEI als Kundenstimmen verwendbar (Rafael Danesh, Rene Rohrer, wortgetreu 1:1); die dritte ist von Dmitry Pashlov (Teammitglied, per Entscheidung nie als Kundenstimme). Social-Proof-Aufbau bleibt damit offener Punkt Nr. 4.

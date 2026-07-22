@@ -267,8 +267,14 @@ export default function DreiStufenMatrix() {
   return (
     <section className="fmx">
       <div className="fmx__wrap">
-        <p className="wd-eyebrow">(DREI STUFEN)</p>
-        <h2 className="fmx__h2">Drei Stufen. Eine passt zu dir.</h2>
+        <p className="wd-eyebrow">DREI STUFEN</p>
+        <h2 className="fmx__h2">Drei Stufen, je nachdem wie viel du brauchst.</h2>
+        <p className="fmx__intro">
+          Der One-Pager als schlanker Einstieg, wenn eine saubere Seite für den
+          Anfang reicht. Die mittlere Stufe, die die meisten Betriebe wählen. Und
+          die große Lösung, wenn deine Seite richtig etwas leisten soll. Klein
+          anfangen und später wachsen geht immer.
+        </p>
 
         {STUFEN.map((s) => (
           <StufeMatrix key={s.name} stufe={s} />
@@ -302,7 +308,15 @@ export default function DreiStufenMatrix() {
           letter-spacing: -0.02em;
           color: var(--rr-navy);
           max-width: 16em;
-          margin: 18px 0 clamp(36px, 5vw, 56px);
+          margin: 18px 0 20px;
+        }
+        .fmx__intro {
+          font-family: var(--rr-font-ui);
+          font-size: clamp(1rem, 1.15vw, 1.14rem);
+          line-height: 1.65;
+          color: var(--rr-ink-soft);
+          max-width: 56ch;
+          margin: 0 0 clamp(20px, 3vw, 32px);
         }
         .fmx__meta {
           margin-top: clamp(40px, 5vw, 64px);
