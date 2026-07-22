@@ -1,4 +1,36 @@
-# Naechste Session — Leistungen/Website-Unterseite (2026-07-22)
+# Naechste Session — Leistungen/Website-Unterseite + Site-Chrome (2026-07-22 abends)
+
+## NEU 22.07. abends (diese Session, alles committet + GEPUSHT + deployt)
+- Branch relaunch ist jetzt AUF GITHUB (origin/relaunch) und wird bei Push von Vercel gebaut.
+  Deploy-Status IMMER via `vercel ls` (Ready) pruefen — die Preview-URL antwortet mit SSO-302
+  auch wenn der Build kaputt ist!
+- SITE-CHROME (gilt auf allen Preview-Seiten, RelaunchMenu + CornerLogo sind die Traeger):
+  - Menue = Kookie-Rekonstruktion (kookie-kollective.com): deckendes Off-White-Overlay,
+    zentrierte Grossschrift, rote Eck-Klammern NUR bei Hover (Fokus geht aufs Overlay),
+    Stagger-Einblendung (70ms), Logo+Wortmarke oben links, Social-Zeile unten links.
+    Leistungen klappt Dropdown auf: "Deine Website" + "Bei jeder Website dabei · Talos"
+    (KEIN "Alle Leistungen" mehr — Hub nur noch via Footer erreichbar, Thomas weiss es).
+  - Roter Punkt = seitenweiter Maus-Cursor (cursor:none global, Touch unberuehrt).
+  - CornerLogo (components/relaunch/CornerLogo.tsx) auf allen 17 Seiten: gleiche Groesse
+    (21px), beim Laden unsichtbar, blendet NUR beim Runterscrollen (45vh) in 1200ms ein,
+    bewusst KEIN Zeit-Fallback. Alte Einzel-Logos (GalleryChrome, TalosPresentation) raus.
+  - HomeClosing (Startseite): CTA-Buttons = Website-Muster (rr-btn-sweep + rr-btn-frame).
+- QA-GROSSRUNDE gefahren (3 Agenten + eigene Nachpruefung, alle 16 Seiten): Konsolen sauber,
+  Menue/Cursor/Logo ueberall verifiziert. Fixes: AGB 790->950 + Stand Juli 2026 (Thomas
+  noch abnicken lassen!), MDX-Bild-Guard (Artikel zeigen nur existierende Bilder).
+- DEPLOY-BLOCKER GELOEST (2 Commits 447ec13+0bc4474): fs-Check in ArticleImg liess Vercel
+  den ganzen public/-Ordner (>1 GB) in die tipps/[slug]-Funktion packen -> 250-MB-Limit.
+  Fix: Route SSG (generateStaticParams + dynamicParams=false) UND next.config.ts
+  outputFileTracingExcludes public/**. Lokaler `npm run build` ist der Beweis-Check.
+- FREMD-FIX NICHT COMMITTET: components/subpages/leistungen/ProduktTueren.tsx (untracked,
+  Hub-Strang) brauchte `"use client"` (brach sonst Dev-Hydration app-weit). Zeile ist nur
+  im Working Tree — der Hub-Strang muss sie uebernehmen.
+- OFFENE THOMAS-HINWEISE: Cookie-Einstellungen zeigten Analytics/Marketing beim ersten
+  Laden AN (DSGVO pruefen); Menue-Hintergrund ist Off-White (falls Reinweiss gewuenscht:
+  1 Zeile); Tipps-Artikel "versteckte Kosten" wartet auf Bild aus der Medien-Pipeline
+  (offener Marker in content-engine/.media-requests/).
+
+# Aelterer Stand (22.07. mittags)
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, STATE.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
