@@ -9,7 +9,7 @@ import LeistungenHero2Client from '@/components/subpages/LeistungenHero2Client';
 import LeistungenUeberblick from '@/components/subpages/leistungen/LeistungenUeberblick';
 import JsonLd from '@/components/JsonLd';
 import Scharnierzeile from '@/components/subpages/leistungen/Scharnierzeile';
-import TalosSlot from '@/components/subpages/leistungen/TalosSlot';
+import TalosDashboard from '@/components/subpages/leistungen/website/v2/TalosDashboard';
 import KundenSagen from '@/components/subpages/leistungen/KundenSagen';
 import LeistungenFaq from '@/components/subpages/leistungen/LeistungenFaq';
 import SchlussCta from '@/components/subpages/leistungen/SchlussCta';
@@ -17,12 +17,15 @@ import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
 import '@/components/subpages/leistungen/leistungen.css';
+import '@/components/subpages/leistungen/wd-eyebrow.css';
+import '@/components/subpages/leistungen/website/website.css';
 
 /**
  * Leistungen-Hub (Preview, noindex) — Server-Komponente. Aufbau nach dem
  * Schnitt vom 21.07. (Thomas): Hero (ueber-uns-Klon mit Zahnrad-Figur) ->
  * LeistungenUeberblick (6 Punkte, pixelperfektion-Raster, Kern-Botschaft
- * "Kommandozentrale") -> Scharnierzeile -> TalosSlot (der eine Teal-Moment)
+ * "Kommandozentrale") -> Scharnierzeile -> TalosDashboard (der eine
+ * Teal-Moment, 1:1 aus der Website-Unterseite wiederverwendet)
  * -> KundenSagen -> FAQ -> CTA -> Footer.
  * BauMoment/WasDuBekommst/WasSieKann/MehrAlsWebsite sind bewusst RAUS —
  * ihr Inhalt steckt verdichtet in den 6 Punkten (keine Dopplung).
@@ -176,8 +179,10 @@ export default function LeistungenPreviewPage() {
         {/* 3 · Scharnier-Zeile — Kipp-Punkt vom Bau zur mitarbeitenden Website */}
         <Scharnierzeile />
 
-        {/* 4 · Talos-Auftritt — Talos als Gesicht der Helfer */}
-        <TalosSlot />
+        {/* 4 · Talos-Auftritt — TalosDashboard 1:1 aus der Website-Unterseite
+            wiederverwendet (Thomas 21.07.: Dashboard-Variante A "Browser-Frame"),
+            nicht nachgebaut. Ersetzt den bisherigen TalosSlot-Platzhalter. */}
+        <TalosDashboard />
 
         {/* 5 · KundenSagen — vermessene finsight.framer.ai-Sektion, Navy-Grund,
             echte Google-Rezensionen (Rafael Danesh, Rene Rohrer), Gold-Sterne */}

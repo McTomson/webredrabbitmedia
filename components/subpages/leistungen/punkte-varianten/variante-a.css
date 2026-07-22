@@ -1,0 +1,151 @@
+/* ============================================================================
+   Punkte-Varianten / Variante A — "Typo-Werkbank".
+   Rein typografisch: keine Bilder, keine runden Badges, keine Schatten, keine
+   1px-Trennlinien. Nur Weiss/Off-White, Ink, Rot, Navy sparsam. Alle Flaechen
+   border-radius 0. Ziffern sind das einzige grafische Element (grosse Zahlen,
+   Punkt 03 als Outline-Sondermoment).
+   ========================================================================== */
+
+.pva-wrap {
+  --pva-ink: #23262e;
+  --pva-sub: #5a5e68;
+  --pva-red: #f12032;
+  --pva-navy: #1c2837;
+  --pva-off: #f6f5f1;
+  --pva-max: 1180px;
+  background: var(--pva-off);
+  color: var(--pva-ink);
+  padding: clamp(64px, 9vw, 140px) 0 clamp(80px, 10vw, 160px);
+}
+
+.pva-inner {
+  max-width: var(--pva-max);
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 40px);
+}
+
+/* ---- Intro ---- */
+.pva-intro { max-width: 820px; margin: 0 0 clamp(72px, 10vw, 140px); }
+.pva-eyebrow {
+  font-family: var(--rr-font-ui, var(--font-grotesk, "Instrument Sans")), sans-serif;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--pva-red); margin: 0 0 18px;
+}
+.pva-h {
+  font-family: var(--rr-font-serif, var(--font-crimson, "Crimson Pro")), Georgia, serif;
+  font-weight: 500; font-size: clamp(32px, 4.8vw, 64px);
+  line-height: 1.05; letter-spacing: -0.01em;
+  margin: 0 0 24px; text-wrap: balance;
+}
+.pva-h .pva-accent { color: var(--pva-red); }
+.pva-lead {
+  font-family: var(--rr-font-display, var(--font-dmsans, "DM Sans")), sans-serif;
+  font-size: clamp(17px, 1.6vw, 21px); line-height: 1.6;
+  color: var(--pva-sub); margin: 0; max-width: 60ch;
+}
+
+/* ---- Liste ---- */
+.pva-list { display: flex; flex-direction: column; }
+
+.pva-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.9fr) 1.4fr;
+  gap: clamp(24px, 5vw, 72px);
+  align-items: start;
+  padding: clamp(44px, 7vw, 88px) 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Alternierendes Layout: gerade Reihen Ziffer links, ungerade Ziffer rechts
+   (Textspalte tauscht die Grid-Reihenfolge). Kein Bild, nur Versatz + Breite. */
+.pva-row--right {
+  grid-template-columns: 1.4fr minmax(180px, 0.9fr);
+}
+.pva-row--right .pva-num { order: 2; justify-self: end; }
+.pva-row--right .pva-copy { order: 1; }
+
+/* ---- Ziffer: grosse flaechige Zahl, DM Sans sehr fett ---- */
+.pva-num {
+  font-family: var(--rr-font-display, var(--font-dmsans, "DM Sans")), sans-serif;
+  font-weight: 800;
+  font-size: clamp(88px, 11vw, 168px);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  color: var(--pva-red);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Punkt 03: der Sonder-Moment ("Entwurf vor Bezahlung") — Outline statt
+   Flaeche, staerkster typografischer Akzent der Sektion. */
+.pva-num--outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--pva-red);
+  font-size: clamp(110px, 14vw, 220px);
+}
+
+.pva-copy { padding-top: clamp(10px, 1.6vw, 28px); }
+
+.pva-title {
+  font-family: var(--rr-font-serif, var(--font-crimson, "Crimson Pro")), Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(24px, 2.4vw, 34px);
+  line-height: 1.2;
+  margin: 0 0 16px;
+  max-width: 22ch;
+}
+.pva-row--interlude .pva-title { color: var(--pva-navy); }
+
+.pva-body {
+  font-family: var(--rr-font-display, var(--font-dmsans, "DM Sans")), sans-serif;
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: 1.7;
+  color: var(--pva-sub);
+  margin: 0;
+  max-width: 46ch;
+}
+
+.pva-more {
+  display: inline-flex; align-items: center; gap: 9px; margin-top: 22px;
+  font-family: var(--rr-font-display, var(--font-dmsans, "DM Sans")), sans-serif;
+  font-weight: 600;
+  font-size: clamp(16px, 1.4vw, 19px);
+  color: var(--pva-red);
+}
+.pva-more svg { transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+.pva-row:hover .pva-more svg { transform: translateX(6px); }
+
+/* Interlude-Reihe (03): staerker abgesetzt durch mehr Weissraum statt einer
+   Linie — der Kunde will keine Haarlinien. */
+.pva-row--interlude {
+  padding: clamp(64px, 10vw, 140px) 0;
+}
+
+/* ---- Scroll-Reveal, Muster aus LeistungenUeberblick.tsx uebernommen ---- */
+.pva-reveal {
+  opacity: 0; transform: translateY(36px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.pva-reveal.is-in { opacity: 1; transform: none; }
+
+/* ---- Mobil: eine Spalte, Ziffer ueber dem Text, kein Versatz ---- */
+@media (max-width: 720px) {
+  .pva-row,
+  .pva-row--right {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: clamp(40px, 12vw, 64px) 0;
+  }
+  .pva-row--right .pva-num { justify-self: start; order: 0; }
+  .pva-row--right .pva-copy { order: 1; }
+  .pva-num { font-size: clamp(64px, 22vw, 96px); }
+  .pva-num--outline { font-size: clamp(76px, 26vw, 120px); }
+  .pva-copy { padding-top: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pva-reveal { opacity: 1; transform: none; transition: none; }
+  .pva-more svg { transition: none; }
+}

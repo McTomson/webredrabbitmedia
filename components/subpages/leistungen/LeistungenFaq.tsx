@@ -35,6 +35,26 @@ const FAQ_ITEMS: FaqItem[] = [
     ),
   },
   {
+    q: "Wie lange dauert das?",
+    a: (
+      "Das hängt vom Umfang ab, ehrlich gesagt. Eine einzelne Seite ist " +
+      "schneller fertig als ein großer Auftritt mit vielen Bereichen. " +
+      "Deshalb machen wir es so: Zuerst siehst du den kostenlosen Entwurf. " +
+      "Sagst du ja, bekommst du einen fixen Fahrplan mit Termin. Du weißt " +
+      "vor dem Start, wann du live gehst."
+    ),
+  },
+  {
+    // TODO Thomas: Zusage-Umfang bestaetigen (Umzug, E-Mail, Weiterleitungen)
+    q: "Was passiert mit meiner alten Seite und meiner Domain?",
+    a: (
+      "Deine Domain bleibt deine, daran ändert sich nichts. Den Umzug " +
+      "übernehmen wir für dich. Deine E-Mail-Adressen bleiben erhalten, und " +
+      "Weiterleitungen sorgen dafür, dass du bei Google auffindbar bleibst. " +
+      "Du musst dich um nichts kümmern."
+    ),
+  },
+  {
     q: "Was kostet das?",
     a: (
       "Das hängt davon ab, was du brauchst. Die Website hat einen " +

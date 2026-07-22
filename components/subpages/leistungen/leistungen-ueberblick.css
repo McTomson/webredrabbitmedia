@@ -97,6 +97,13 @@
 /* Einzel (Karte 06): breite einer Spalte, links. */
 .lu-single { max-width: 553px; }
 
+/* Preis-Einordnung am Sektionsende: ruhige Zeile im Fliesstext-Stil. */
+.lu-priceNote {
+  font-family: var(--font-dmsans, "DM Sans"), sans-serif;
+  font-size: clamp(17px, 1.5vw, 20px); line-height: 1.7; color: var(--lu-sub);
+  margin: 0; max-width: 52ch;
+}
+
 /* ---- Eine Leistungs-Karte ---- */
 .lu-card { display: block; text-decoration: none; color: inherit; }
 .lu-figure { position: relative; margin: 0 0 clamp(30px, 3vw, 42px); }

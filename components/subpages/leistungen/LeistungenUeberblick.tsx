@@ -67,8 +67,8 @@ const P: Record<string, Punkt> = {
     img: '/relaunch/leistungen/punkt-06-agenten.jpg',
     alt: 'Mehrere Teile greifen ineinander',
     n: '06',
-    title: 'Helfer, die du dazustellen kannst',
-    body: 'In der Kommandozentrale warten Helfer auf Arbeit. Einer schreibt Beiträge über dein Handwerk, einer beantwortet Anfragen, einer kümmert sich um Termine. Du gibst per Klick frei, sie erledigen den Rest.',
+    title: 'Talos ist immer dabei. Weitere Helfer stellst du dazu.',
+    body: 'Bei jeder Website fix dabei: Talos, dein Mitarbeiter. Kein Extra-Paket. Er sitzt in deiner Kommandozentrale und wartet auf Arbeit. Brauchst du mehr, stellst du dir weitere Helfer dazu, die Beiträge schreiben oder Anfragen beantworten. Du gibst per Klick frei, sie erledigen den Rest.',
     href: '/relaunch-preview/leistungen/talos',
     more: 'Mehr über die Agenten',
   },
@@ -193,6 +193,14 @@ export default function LeistungenUeberblick() {
 
           {/* Einzel 06 (links, mit Agenten-Link) */}
           <div className="lu-reveal lu-single"><Karte p={P.s6} /></div>
+
+          {/* Preis-Einordnung: frueh, ohne Zahlen. Link auf dieselbe Preisseite
+              wie Menue + FAQ (/preise). Zahlen bewusst nur auf der Preisseite. */}
+          <p className="lu-reveal lu-priceNote">
+            Bei uns zahlst du einen Fixpreis statt Stundensätze. Den Entwurf siehst du
+            gratis, bevor du dich entscheidest. Was das kostet, steht offen auf der{' '}
+            <Link href="/preise" className="rr-link">Preisseite</Link>.
+          </p>
         </div>
       </div>
     </div>
