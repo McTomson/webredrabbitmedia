@@ -1,49 +1,72 @@
 /**
- * Faehigkeiten — Intro aus docs/specs/TALOS_COPY_2026-07.md Station 3, plus
- * Karten-Grid mit 5 buchbaren Faehigkeiten + 1 Massarbeit-Karte. Fusszeile
- * traegt die einzig erlaubte Preis-Logik (monatlich pro Faehigkeit,
- * jederzeit kuendbar) OHNE Zahlen. Kein Link auf /relaunch-preview/preise:
- * die Route existiert noch nicht (geprueft 22.07.), sobald sie da ist, kann
- * hier verlinkt werden.
+ * Faehigkeiten — Intro + Karten-Grid aus docs/specs/
+ * TALOS_COPY_V2_2026-07-22_ENTWURF.md, Sektion 4. 6 Karten (5 buchbare
+ * Faehigkeiten + Die Sonderanfertigung als Massarbeit-Empfehlung), pro Karte
+ * 4 Mikro-Label-Bloecke (NUTZEN / FÜR WEN / SO LÄUFT ES / WARUM GUT) plus
+ * Talos-Sprechzeile. Die 6. Karte (Die Sonderanfertigung) navy-invers
+ * abgesetzt. Fusszeile traegt die einzig erlaubte Preis-Logik (Sektion 4.7)
+ * OHNE Zahlen. Kein Link auf /relaunch-preview/preise: die Route existiert
+ * noch nicht (geprueft 22.07.), sobald sie da ist, kann hier verlinkt werden.
  */
-type Faehigkeit = { name: string; nutzen: string; fuerWen: string; ablauf: string };
+type Faehigkeit = {
+  name: string;
+  nutzen: string;
+  fuerWen: string;
+  ablauf: string;
+  warum: string;
+  says: string;
+  invers?: boolean;
+};
 
 const FAEHIGKEITEN: Faehigkeit[] = [
   {
     name: 'Der Schreiber',
-    nutzen: 'Schreibt Beiträge für deinen Betrieb und verteilt sie.',
-    fuerWen: 'Für dich, wenn deine Seite lebendig bleiben soll, ohne dass du selbst schreibst.',
-    ablauf: 'Entwurf landet bei dir, du liest drüber, ein Klick, fertig.',
+    nutzen: 'Er schreibt regelmäßig Beiträge für deinen Betrieb und verteilt sie dort, wo deine Kunden und Google sie finden.',
+    fuerWen: 'Für alle, die wissen, dass sie eigentlich bloggen sollten, aber nie dazukommen.',
+    ablauf: 'Er legt dir fertige Beiträge als Entwurf ins Postfach. Du liest drüber, ein Klick, online.',
+    warum: 'Eine Seite, die regelmäßig Neues bringt, wird öfter gefunden und wirkt lebendig. Ganz ohne dass du selbst schreiben musst.',
+    says: 'Ich schreibe, du entscheidest. Nichts geht raus, bevor du Ja sagst.',
   },
   {
     name: 'Der Empfang',
-    nutzen: 'Fängt Anfragen auf, hakt nach und vereinbart Termine.',
-    fuerWen: 'Für dich, wenn dir sonst Anfragen zwischen Tür und Angel durchrutschen.',
-    ablauf: 'Talos antwortet freundlich, du bekommst die Übersicht in Klartext.',
+    nutzen: 'Er fängt jede Anfrage auf, meldet sich sofort zurück, hakt nach, wenn jemand still wird, und schlägt Termine vor.',
+    fuerWen: 'Für alle, die tagsüber am Kunden, auf der Baustelle oder im Betrieb sind und nicht ans Postfach kommen.',
+    ablauf: 'Kommt eine Anfrage rein, reagiert er sofort in deiner Art. Was er vorbereitet, siehst du und gibst es frei, oder du lässt ihn machen.',
+    warum: 'Die meisten Interessenten springen ab, wenn sie zu lange auf Antwort warten. Talos lässt niemanden warten, auch nachts nicht.',
+    says: 'Meldet sich jemand um zwei Uhr früh, bin ich trotzdem da.',
   },
   {
     name: 'Der Aussendienst',
-    nutzen: 'Findet deine Wunschkunden und schreibt sie an.',
-    fuerWen: 'Für dich, wenn du aktiv neue Kunden willst, nicht nur wartest.',
-    ablauf: 'Vorschläge kommen als Entwurf, du entscheidest, wer angeschrieben wird.',
+    nutzen: 'Er sucht deine Wunschkunden, findet die passenden Ansprechpartner und schreibt sie in deinem Namen an.',
+    fuerWen: 'Für Betriebe, die nicht nur gefunden werden wollen, sondern selbst auf Leute zugehen.',
+    ablauf: 'Du sagst ihm, wen du suchst. Er recherchiert und legt dir die Nachrichten fertig hin. Du gibst frei, was rausgeht.',
+    warum: 'Neukunden gewinnen kostet normalerweise viel Zeit oder viel Geld. Talos übernimmt das Suchen und Anschreiben, du führst nur noch die Gespräche, die was werden.',
+    says: 'Sag mir, wen du gewinnen willst. Den Erstkontakt übernehme ich.',
   },
   {
-    name: 'Der Social-Poster',
-    nutzen: 'Baut Beiträge für deine Kanäle aus dem, was ohnehin entsteht.',
-    fuerWen: 'Für dich, wenn dir für Social Media schlicht die Zeit fehlt.',
-    ablauf: 'Beitrag steht als Entwurf bereit, du gibst frei oder stellst auf Selbstlauf.',
+    name: 'Der Poster',
+    nutzen: 'Er macht regelmäßig Posts für deine Kanäle, in deinem Ton und mit deinen Themen.',
+    fuerWen: 'Für alle, die wissen, dass sie präsent sein sollten, aber keine Lust auf den täglichen Post-Stress haben.',
+    ablauf: 'Er bereitet die Posts vor, du siehst sie vorher, ein Klick und sie sind draußen. Oder du lässt ihn einen Kanal allein bespielen.',
+    warum: 'Regelmäßig sichtbar zu sein bringt Kunden, kostet aber Disziplin. Talos hält die Disziplin, du behältst die Kontrolle.',
+    says: 'Ich halte deine Kanäle lebendig, du musst nicht mehr dran denken.',
   },
   {
-    name: 'Die Sichtbarkeit',
-    nutzen: 'Sorgt dafür, dass dich Google und die neuen Antwort-Maschinen finden.',
-    fuerWen: 'Für dich, wenn du willst, dass man dich auch dort findet, wo gerade gesucht wird.',
-    ablauf: 'Läuft im Hintergrund mit, du bekommst regelmäßig Klartext-Bescheid.',
+    name: 'Der Sichtbarmacher',
+    nutzen: 'Er sorgt dafür, dass dich mehr Leute finden, bei Google und bei den neuen Antwort-Maschinen, die immer mehr Leute statt einer Suche fragen.',
+    fuerWen: 'Für alle, die online zu selten auftauchen und daran etwas ändern wollen.',
+    ablauf: 'Er beobachtet, wo und wie du gefunden wirst, und arbeitet laufend daran, dass es mehr wird. Was er dafür tut, siehst du in deinem Dashboard.',
+    warum: 'Immer mehr Menschen suchen nicht mehr selbst, sondern fragen und bekommen eine Antwort empfohlen. Wer da nicht auftaucht, existiert für sie nicht. Talos sorgt dafür, dass du auftauchst.',
+    says: 'Ich sorge dafür, dass man dich empfiehlt, nicht nur findet.',
   },
   {
-    name: 'Massarbeit auf Anfrage',
-    nutzen: 'Wir bauen jede Fähigkeit, die dein Betrieb konkret braucht.',
-    fuerWen: 'Für dich, wenn keine der fünf Fähigkeiten oben genau passt.',
-    ablauf: 'Kurzes Gespräch, dann bauen wir dir dein eigenes Modul.',
+    name: 'Die Sonderanfertigung',
+    nutzen: 'Braucht dein Betrieb etwas, das es so nicht von der Stange gibt, bauen wir es. Marktanalyse, Research-Beiträge, fertige Antwort-Entwürfe, Termin-Abstimmung, jede Automatisierung, die dir Zeit spart.',
+    fuerWen: 'Für alle mit einer wiederkehrenden Aufgabe, die nervt und Zeit frisst, aber in kein fertiges Feld passt.',
+    ablauf: 'Kurzes Gespräch, wir schauen uns an, was du brauchst, und schneidern es Talos passend auf den Leib.',
+    warum: 'Kein Betrieb ist gleich. Statt dir ein Standardpaket aufzudrücken, bauen wir genau das, was bei dir Arbeit spart.',
+    says: 'Sag mir, was dich ständig aufhält. Wahrscheinlich baue ich dir das.',
+    invers: true,
   },
 ];
 
@@ -51,31 +74,55 @@ export default function Faehigkeiten() {
   return (
     <section className="rr-section tl-section">
       <div className="rr-wrap rr-narrow">
-        <p className="wd-eyebrow tl-eyebrow">Was Talos kann</p>
+        <p className="wd-eyebrow tl-eyebrow">Wenn du mehr willst</p>
         <h2 className="rr-statement tl-title">
-          Such dir aus, welche Arbeit dir Talos abnimmt.
+          Und wenn dir das noch nicht reicht, gib Talos einfach mehr Arbeit.
         </h2>
         <p className="rr-body-lg tl-lead">
-          Die Website ist die Basis. Darauf schaltest du Fähigkeiten dazu, wie
-          Bausteine. Nimm, was du brauchst, den Rest lässt du weg.
+          Über die Grundausstattung hinaus kannst du Talos einzelne Aufgaben
+          übergeben. Jede wie ein eigener Kollege, den du dazuholst. Nimm, was
+          dein Betrieb gerade braucht, und lass den Rest weg. Der Katalog
+          wächst laufend.
+        </p>
+        <p className="tl-says">
+          Such dir aus, was dir Arbeit abnimmt. Alles andere ignorierst du
+          einfach.
         </p>
 
-        <div className="tl-cards">
+        <div className="tl-cards tl-cards--faehigkeiten">
           {FAEHIGKEITEN.map((f) => (
-            <div className={`tl-card${f.name === 'Massarbeit auf Anfrage' ? ' tl-card--muted' : ''}`} key={f.name}>
-              <p className="tl-card__name">{f.name}</p>
-              <p className="tl-card__text">{f.nutzen}</p>
-              <p className="tl-card__text">{f.fuerWen}</p>
-              <p className="tl-card__meta">{f.ablauf}</p>
+            <div className={`tl-card tl-card--faehigkeit${f.invers ? ' tl-card--invers' : ''}`} key={f.name}>
+              <h3 className="tl-card__name">{f.name}</h3>
+
+              <div className="tl-card__block">
+                <p className="tl-card__label">Nutzen</p>
+                <p className="tl-card__text">{f.nutzen}</p>
+              </div>
+              <div className="tl-card__block">
+                <p className="tl-card__label">Für wen</p>
+                <p className="tl-card__text">{f.fuerWen}</p>
+              </div>
+              <div className="tl-card__block">
+                <p className="tl-card__label">So läuft es</p>
+                <p className="tl-card__text">{f.ablauf}</p>
+              </div>
+              <div className="tl-card__block">
+                <p className="tl-card__label">Warum gut</p>
+                <p className="tl-card__text">{f.warum}</p>
+              </div>
+
+              <p className="tl-says tl-says--card">{f.says}</p>
             </div>
           ))}
         </div>
 
         <p className="tl-footnote">
-          Jede Fähigkeit buchst du einzeln, monatlich, jederzeit kündbar. Du
-          musst dich nicht sofort entscheiden: Fähigkeiten kannst du auch
-          später noch dazubuchen. Die Preise dazu findest du auf unserer
-          Preisseite.
+          Jede Fähigkeit buchst du einzeln, Monat für Monat. Du kannst
+          jederzeit dazunehmen, was du brauchst, und jederzeit kündigen, was
+          du nicht mehr brauchst. Keine Mindestlaufzeit, keine Vertragsfalle.
+          Was das im Einzelnen kostet, steht offen auf der Preisseite.
+          Maßarbeit richtet sich nach der Komplexität, das besprechen wir
+          vorher.
         </p>
       </div>
     </section>

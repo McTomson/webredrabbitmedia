@@ -1,41 +1,36 @@
 /**
- * Freigabe-Prinzip — Spec Station 3c ("Das Freigabe-Prinzip") plus die
- * Ergaenzung aus dem Auftrag: pro Aufgabe Entwurf-Modus (du klickst auf
- * Senden) oder Selbstlauf, jederzeit umstellbar; Kommunikation per Mail
- * oder Telegram.
+ * Freigabe-Prinzip — Copy aus docs/specs/TALOS_COPY_V2_2026-07-22_ENTWURF.md,
+ * Sektion 5, inklusive der Kurz-Klaerung "Und wenn er einen Fehler macht?"
+ * als eingerueckter Block.
  */
 export default function FreigabePrinzip() {
   return (
     <section className="rr-section tl-section tl-section--surface">
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow tl-eyebrow">Du hast das Sagen</p>
-        <h2 className="rr-statement tl-title">Nichts passiert ohne dich.</h2>
+        <h2 className="rr-statement tl-title">
+          Nichts verlässt dein Haus, ohne dass du es freigibst.
+        </h2>
         <p className="rr-body-lg tl-lead">
-          Talos bereitet alles vor, du gibst frei. Willst du bei einer Aufgabe
-          nicht mehr jedes Mal gefragt werden, schaltest du sie auf Selbstlauf.
-          Deine Entscheidung, jederzeit umstellbar.
+          Alles, was Talos vorbereitet, landet zuerst bei dir als Entwurf. Du
+          liest drüber, änderst, was du willst, und klickst auf Senden. Erst
+          dann geht etwas raus. Willst du bei einer bestimmten Aufgabe nicht
+          mehr jedes Mal gefragt werden, stellst du genau diese auf Selbstlauf.
+          Und wenn dir das doch nicht passt, drehst du es mit einem Klick
+          wieder zurück.
         </p>
 
-        <div className="tl-modes">
-          <div className="tl-mode">
-            <p className="tl-mode__label">Entwurf-Modus</p>
-            <p className="tl-mode__text">
-              Talos bereitet die Aufgabe vor, du bekommst sie zum Lesen und
-              klickst selbst auf Senden.
-            </p>
-          </div>
-          <div className="tl-mode">
-            <p className="tl-mode__label">Selbstlauf</p>
-            <p className="tl-mode__text">
-              Talos erledigt die Aufgabe eigenständig. Du kannst das für jede
-              Aufgabe einzeln umstellen, jederzeit zurück.
-            </p>
-          </div>
+        <div className="tl-klaerung">
+          <p className="tl-klaerung__frage">Und wenn er einen Fehler macht?</p>
+          <p className="tl-klaerung__text">
+            Weil nichts ohne dein Ja rausgeht, fällt dir jeder Fehler auf,
+            bevor ihn ein Kunde sieht. Und wo du eine Aufgabe auf Selbstlauf
+            gestellt hast, siehst du in deinem Dashboard mit, was passiert,
+            und kannst sie jederzeit wieder anhalten.
+          </p>
         </div>
 
-        <p className="tl-footnote" style={{ marginTop: 'clamp(24px, 3.5vw, 32px)', borderTop: 'none', paddingTop: 0 }}>
-          Wie ihr redet, entscheidest du: per Mail oder per Telegram.
-        </p>
+        <p className="tl-says">Ein Klick von dir genügt. Und du kannst mich jederzeit bremsen.</p>
       </div>
     </section>
   );
