@@ -4,32 +4,39 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 
 /**
- * RelaunchMenu — distinktives Vollbild-Overlay-Menue fuer den Red-Rabbit-Relaunch.
+ * RelaunchMenu — Vollbild-Overlay-Menue fuer den Red-Rabbit-Relaunch.
  *
- * Bewusst KEIN Seiten-Panel (Abgrenzung zu all-turtles): beim Oeffnen faellt ein
- * vollflaechiges Navy-Overlay ein, die Fraunces-Links "setzen sich" gestaffelt aus
- * leichter Rotation/Versatz in die Flucht — Echo auf das Marken-Motiv (Typografie,
- * die zerbricht und sich neu zusammensetzt).
+ * Mechanik-Vorbild: kookie-kollective.com (1:1 rekonstruiert, nur Farbe + Font +
+ * Inhalte auf die Marke uebersetzt). Kern des Vorbilds:
+ *   - helle, halbtransparente Overlay-Flaeche, Seite dahinter unscharf
+ *     (backdrop-filter: blur), KEIN Panel, KEIN Navy.
+ *   - zentral gestapelte Grosschrift-Menuepunkte.
+ *   - Hover: vier Eck-Klammern (Reticle) blenden um den Punkt ein
+ *     (opacity 0 -> 1), plus ein kleiner runder Punkt-Akzent.
+ * Bei uns: Klammern + Punkt in Marken-Rot, Text in Display-Font/Ink.
  *
- * Rendert BEIDES selbst: den fixierten Hamburger-Trigger und das Overlay.
- * Verwaltet eigenen Open-State. Keine externen Deps ausser React/next/link.
- * Styles sind ueber styled-jsx auf die Komponente gescoped (kein globales Leck).
+ * WICHTIG (Groessen-Regel): Schriftgroesse ist VH-basiert (min(vh, vw)), so dass
+ * alle 8 Punkte + aufgeklapptes Leistungen-Dropdown + Social-Zeile auch bei
+ * ~700px Fensterhoehe komplett in den Viewport passen. Beim Aufklappen
+ * schrumpfen die Punkte sanft (Klasse .is-expanded).
+ *
+ * Rendert BEIDES selbst: den fixierten Trigger und das Overlay. Eigener
+ * Open-State. Styles ueber styled-jsx gescoped; next/link-Klassen via :global().
  */
 
 type NavItem = { label: string; href: string; children?: { label: string; href: string }[] };
 
-// Preise zeigt bewusst noch auf die alte Live-Seite, bis es eine Relaunch-
-// Version gibt (Tomson 16.07.). Leistungen zeigt auf die neue Preview-Seite.
 const NAV_ITEMS: NavItem[] = [
   { label: "Start", href: "/relaunch-preview" },
   {
     label: "Leistungen",
     href: "/relaunch-preview/leistungen",
-    // Unterseiten im Menue (Thomas 22.07.). Talos-Label ohne das Wort "KI"
-    // (Hausregel: Talos = digitaler Kollege/Mitarbeiter).
+    // Klick klappt auf statt zu navigieren. "Alle Leistungen" haelt die
+    // Hub-Seite erreichbar. Talos-Label ohne das Wort "KI" (Hausregel).
     children: [
-      { label: "Website", href: "/relaunch-preview/leistungen/website" },
+      { label: "Website erstellen", href: "/relaunch-preview/leistungen/website" },
       { label: "Dein digitaler Mitarbeiter · Talos", href: "/relaunch-preview/leistungen/talos" },
+      { label: "Alle Leistungen", href: "/relaunch-preview/leistungen" },
     ],
   },
   { label: "Referenzen", href: "/relaunch-preview/referenzen" },
@@ -41,19 +48,42 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 const CONTACTS: { label: string; href: string; external?: boolean }[] = [
-  { label: "office@redrabbit.media", href: "mailto:office@redrabbit.media" },
-  { label: "Anrufen", href: "tel:+436769000955" },
   { label: "Instagram", href: "https://www.instagram.com/redrabbit.media/", external: true },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/thomasuhlir/", external: true },
+  { label: "office@redrabbit.media", href: "mailto:office@redrabbit.media" },
+  { label: "Anrufen", href: "tel:+436769000955" },
 ];
+
+/** Vier Eck-Klammern (Reticle) + Punkt-Akzent, wie beim Vorbild. */
+function Reticle() {
+  return (
+    <span className="rrmenu-corners" aria-hidden="true">
+      <span className="rrmenu-corners-row">
+        <span className="rrmenu-c rrmenu-c--tl" />
+        <span className="rrmenu-c rrmenu-c--tr" />
+      </span>
+      <span className="rrmenu-corners-row">
+        <span className="rrmenu-c rrmenu-c--bl" />
+        <span className="rrmenu-c rrmenu-c--br" />
+      </span>
+    </span>
+  );
+}
 
 export default function RelaunchMenu() {
   const [open, setOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const dialogId = useId();
+  const subId = useId();
 
   const close = useCallback(() => setOpen(false), []);
+
+  // Beim Schliessen Dropdown zuruecksetzen.
+  useEffect(() => {
+    if (!open) setServicesOpen(false);
+  }, [open]);
 
   // Body-Scroll sperren solange offen (ohne Layout-Sprung durch Scrollbar).
   useEffect(() => {
@@ -63,9 +93,8 @@ export default function RelaunchMenu() {
     const prevPad = document.body.style.paddingRight;
     document.body.style.overflow = "hidden";
     if (scrollbar > 0) document.body.style.paddingRight = `${scrollbar}px`;
-    // Lenis (Smooth-Scroll der Morph-Seite) sauber pausieren und beim Schliessen
-    // fortsetzen — sonst bleibt der Scroll nach dem Menue eingefroren. No-op wenn
-    // keine Lenis-Instanz vorhanden ist (z.B. Test-Routen).
+    // Lenis (Smooth-Scroll der Morph-Seite) sauber pausieren, beim Schliessen
+    // fortsetzen — sonst bleibt der Scroll eingefroren. No-op ohne Lenis.
     const lenis = (window as unknown as {
       lenis?: { stop?: () => void; start?: () => void };
     }).lenis;
@@ -122,7 +151,7 @@ export default function RelaunchMenu() {
 
   return (
     <div className="rrmenu-root">
-      {/* ---- Fixierter Hamburger-Trigger (oben rechts) ---- */}
+      {/* ---- Fixierter Trigger (oben rechts) ---- */}
       <button
         ref={triggerRef}
         type="button"
@@ -152,46 +181,82 @@ export default function RelaunchMenu() {
         }}
       >
         <div className="rrmenu-inner">
-          <p className="rrmenu-eyebrow" aria-hidden={!open}>
-            Red Rabbit · Navigation
-          </p>
+          {/* oben links: Wortmarke (auf hellem Grund in Ink) */}
+          <div className="rrmenu-top">
+            <span className="rrmenu-wordmark" aria-hidden={!open}>
+              Red Rabbit
+            </span>
+          </div>
 
-          <nav className="rrmenu-nav" aria-label="Seiten">
+          <nav
+            className={`rrmenu-nav${servicesOpen ? " is-expanded" : ""}`}
+            aria-label="Seiten"
+          >
             <ul className="rrmenu-list">
-              {NAV_ITEMS.map((item, i) => (
-                <li key={item.href} className="rrmenu-item" style={itemDelay(i)}>
-                  <Link
-                    href={item.href}
-                    className="rrmenu-link"
-                    data-menu-focus={i === 0 ? "" : undefined}
-                    onClick={close}
-                  >
-                    <span className="rrmenu-link-index">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="rrmenu-link-text">{item.label}</span>
-                  </Link>
-                  {item.children ? (
-                    <ul className="rrmenu-sublist">
-                      {item.children.map((sub) => (
-                        <li key={sub.href}>
-                          <Link href={sub.href} className="rrmenu-sublink" onClick={close}>
-                            <span className="rrmenu-subdot" aria-hidden="true" />
-                            {sub.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </li>
-              ))}
+              {NAV_ITEMS.map((item, i) => {
+                if (item.children) {
+                  return (
+                    <li key={item.href} className="rrmenu-item rrmenu-item--has-sub">
+                      <button
+                        type="button"
+                        className={`rrmenu-link rrmenu-link--btn${servicesOpen ? " is-active" : ""}`}
+                        aria-expanded={servicesOpen}
+                        aria-controls={subId}
+                        onClick={() => setServicesOpen((v) => !v)}
+                      >
+                        <span className="rrmenu-dot" aria-hidden="true" />
+                        <span className="rrmenu-link-text">{item.label}</span>
+                        <Reticle />
+                      </button>
+
+                      <div
+                        id={subId}
+                        className={`rrmenu-sub-outer${servicesOpen ? " is-open" : ""}`}
+                      >
+                        <div className="rrmenu-sub-inner">
+                          <ul className="rrmenu-sublist">
+                            {item.children.map((sub, si) => (
+                              <li key={sub.href}>
+                                <Link
+                                  href={sub.href}
+                                  className={`rrmenu-sublink${
+                                    si === item.children!.length - 1 ? " rrmenu-sublink--muted" : ""
+                                  }`}
+                                  tabIndex={servicesOpen ? undefined : -1}
+                                  onClick={close}
+                                >
+                                  <span className="rrmenu-dot rrmenu-dot--sm" aria-hidden="true" />
+                                  <span className="rrmenu-sublink-text">{sub.label}</span>
+                                  <Reticle />
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                }
+                return (
+                  <li key={item.href} className="rrmenu-item">
+                    <Link
+                      href={item.href}
+                      className="rrmenu-link"
+                      data-menu-focus={i === 0 ? "" : undefined}
+                      onClick={close}
+                    >
+                      <span className="rrmenu-dot" aria-hidden="true" />
+                      <span className="rrmenu-link-text">{item.label}</span>
+                      <Reticle />
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
-          <div className="rrmenu-foot" style={itemDelay(NAV_ITEMS.length)}>
-            <Link href="/relaunch-preview/kontakt" className="rrmenu-cta" onClick={close}>
-              Projekt anfragen
-              <span className="rrmenu-cta-arrow" aria-hidden="true">→</span>
-            </Link>
-
+          {/* unten links: Social/Kontakt-Zeile */}
+          <div className="rrmenu-foot">
             <ul className="rrmenu-contacts">
               {CONTACTS.map((c) => (
                 <li key={c.href}>
@@ -226,7 +291,6 @@ export default function RelaunchMenu() {
           place-items: center;
           padding: 0;
           border: none;
-          border-radius: 999px;
           background: transparent;
           cursor: pointer;
           -webkit-tap-highlight-color: transparent;
@@ -241,20 +305,17 @@ export default function RelaunchMenu() {
           height: 11px;
           display: block;
         }
-        /* Zwei gleich lange Linien (wie all-turtles) */
         .rrmenu-bar {
           position: absolute;
           left: 0;
           height: 2px;
           width: 28px;
-          border-radius: 2px;
           background: var(--rr-red, #f12032);
           transition: transform 360ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)),
             opacity 200ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
         }
         .rrmenu-bar--1 { top: 0; }
         .rrmenu-bar--2 { bottom: 0; }
-        /* Offen: X */
         .rrmenu-trigger.is-open .rrmenu-bar--1 {
           top: 50%;
           transform: translateY(-50%) rotate(45deg);
@@ -265,293 +326,295 @@ export default function RelaunchMenu() {
           transform: translateY(-50%) rotate(-45deg);
         }
 
-        /* ============ Overlay ============ */
+        /* ============ Overlay (helle Flaeche, Seite dahinter unscharf) ============ */
         .rrmenu-overlay {
           position: fixed;
           inset: 0;
           z-index: 1000;
-          background: var(--rr-navy, #1c2837);
+          /* Fallback fuer fehlenden backdrop-filter: fast opake Flaeche */
+          background: rgba(246, 245, 241, 0.985);
           display: flex;
           opacity: 0;
-          transform: scale(1.03);
-          transition: opacity 350ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)),
-            transform 350ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
-          overflow-y: auto;
-          overflow-x: hidden;
+          transition: opacity 320ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
+          overflow: hidden;
+        }
+        @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+          .rrmenu-overlay {
+            background: rgba(246, 245, 241, 0.72);
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+          }
         }
         .rrmenu-overlay.is-open {
           opacity: 1;
-          transform: scale(1);
-        }
-        /* Dezente Rot-Aura oben rechts hinter dem Trigger + Vignette unten */
-        .rrmenu-overlay::before {
-          content: "";
-          position: absolute;
-          top: -20%;
-          right: -10%;
-          width: 60vw;
-          height: 60vw;
-          background: radial-gradient(
-            closest-side,
-            rgba(241, 32, 50, 0.16),
-            rgba(241, 32, 50, 0) 70%
-          );
-          pointer-events: none;
         }
 
         .rrmenu-inner {
           position: relative;
           width: 100%;
           max-width: var(--rr-max, 1680px);
+          height: 100%;
           margin: 0 auto;
-          padding: clamp(84px, 12vh, 150px) var(--rr-gutter, clamp(24px, 5vw, 72px))
-            clamp(40px, 7vh, 80px);
+          padding: clamp(20px, 3vh, 34px) var(--rr-gutter, clamp(22px, 5vw, 56px));
           display: flex;
           flex-direction: column;
+          justify-content: space-between;
+        }
+
+        /* ---- oben: Wortmarke ---- */
+        .rrmenu-top {
+          flex: none;
+        }
+        .rrmenu-wordmark {
+          font-family: var(--rr-font-display, system-ui, sans-serif);
+          font-weight: 700;
+          font-size: clamp(16px, 1.5vw, 20px);
+          letter-spacing: -0.01em;
+          color: var(--rr-ink, #23262e);
+        }
+
+        /* ---- Mitte: zentral gestapelte Punkte ---- */
+        .rrmenu-nav {
+          flex: 1 1 auto;
+          min-height: 0;
+          display: flex;
+          align-items: center;
           justify-content: center;
-          min-height: 100%;
+          /* VH-basierte Groessen. Zusammengeklappt: 8 Punkte. */
+          --menu-fs: clamp(24px, min(6.3vh, 7.6vw), 58px);
+          --menu-gap: clamp(2px, 1vh, 14px);
+          --menu-pad-y: clamp(2px, 0.7vh, 8px);
         }
-
-        .rrmenu-eyebrow {
-          font-family: var(--rr-font-ui, sans-serif);
-          font-size: 13px;
-          font-weight: 650;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: var(--rr-red, #f12032);
-          margin: 0 0 clamp(24px, 4vh, 46px);
+        /* Aufgeklappt: Punkte schrumpfen sanft, damit Dropdown + Social passen. */
+        .rrmenu-nav.is-expanded {
+          --menu-fs: clamp(20px, min(4.9vh, 6vw), 46px);
+          --menu-gap: clamp(1px, 0.5vh, 8px);
+          --menu-pad-y: clamp(1px, 0.45vh, 6px);
         }
-
-        /* ============ Nav-Links ============ */
         .rrmenu-list {
           list-style: none;
           margin: 0;
           padding: 0;
           display: flex;
           flex-direction: column;
-          gap: clamp(6px, 1.4vh, 16px);
+          align-items: center;
+          gap: var(--menu-gap);
+          transition: gap 360ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
         }
         .rrmenu-item {
-          opacity: 0;
-          transform: translateY(24px) rotate(-4deg);
-          transform-origin: left center;
-        }
-        .rrmenu-overlay.is-open .rrmenu-item {
-          animation: rrmenu-settle 620ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)) forwards;
-          animation-delay: var(--rrmenu-delay, 0ms);
-        }
-        @keyframes rrmenu-settle {
-          to {
-            opacity: 1;
-            transform: translateY(0) rotate(0deg);
-          }
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
-        /* Link = next/link (custom component): styled-jsx haengt hier KEINEN
-           Scope-Hash an -> per :global() unter dem gescopten Overlay ansprechen
-           (bleibt dadurch trotzdem auf dieses Menue begrenzt, kein Leck). */
+        /* Link/Button = teils next/link -> :global() unter dem Overlay ansprechen
+           (bleibt trotzdem auf dieses Menue begrenzt, kein globales Leck). */
         .rrmenu-overlay :global(.rrmenu-link) {
+          position: relative;
           display: inline-flex;
-          align-items: baseline;
-          gap: clamp(12px, 1.6vw, 22px);
+          align-items: center;
+          justify-content: center;
+          padding: var(--menu-pad-y) 0.75rem;
           text-decoration: none;
-          color: #ffffff;
-          font-family: var(--rr-font-display, Georgia, serif);
-          font-weight: 560;
-          font-size: clamp(40px, 7vw, 76px);
-          line-height: 1.02;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          font-family: var(--rr-font-display, system-ui, sans-serif);
+          font-weight: 500;
+          font-size: var(--menu-fs);
+          line-height: 1;
           letter-spacing: -0.02em;
-          transition: color 240ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)),
-            transform 240ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
-        }
-        .rrmenu-overlay :global(.rrmenu-link-index) {
-          font-family: var(--rr-font-ui, sans-serif);
-          font-size: clamp(12px, 1vw, 15px);
-          font-weight: 650;
-          letter-spacing: 0.08em;
-          color: rgba(255, 255, 255, 0.35);
-          transform: translateY(-0.35em);
-          transition: color 240ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
+          text-transform: uppercase;
+          color: var(--rr-ink, #23262e);
+          transition: font-size 360ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)),
+            padding 360ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)),
+            color 220ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
         }
         .rrmenu-overlay :global(.rrmenu-link-text) {
           position: relative;
+          z-index: 1;
         }
-        /* ---- Unterseiten (z.B. Leistungen -> Website / Talos) ---- */
-        .rrmenu-overlay :global(.rrmenu-sublist) {
-          list-style: none;
-          margin: 6px 0 10px;
-          padding: 0 0 0 clamp(34px, 3.4vw, 52px);
+
+        /* Punkt-Akzent (links vom Wort, ausserhalb des Flusses -> kein Versatz) */
+        .rrmenu-overlay :global(.rrmenu-dot) {
+          position: absolute;
+          left: -0.05em;
+          top: 50%;
+          width: 0.28em;
+          height: 0.28em;
+          border-radius: 50%;
+          background: var(--rr-red, #f12032);
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.4);
+          transition: opacity 300ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)),
+            transform 300ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
+        }
+
+        /* Eck-Klammern (Reticle) — opacity 0 -> 1 bei Hover (Vorbild-Mechanik) */
+        .rrmenu-overlay :global(.rrmenu-corners) {
+          position: absolute;
+          inset: 0;
           display: flex;
           flex-direction: column;
-          gap: 2px;
+          justify-content: space-between;
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 300ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
         }
-        .rrmenu-overlay :global(.rrmenu-sublink) {
-          display: inline-flex;
-          align-items: center;
-          gap: 12px;
-          font-family: var(--rr-font-ui, sans-serif);
-          font-size: clamp(15px, 1.5vw, 19px);
-          font-weight: 550;
-          letter-spacing: 0.01em;
-          color: rgba(255, 255, 255, 0.55);
-          text-decoration: none;
-          padding: 4px 0;
-          transition: color 0.25s ease, transform 0.25s ease;
+        .rrmenu-overlay :global(.rrmenu-corners-row) {
+          display: flex;
+          justify-content: space-between;
         }
-        .rrmenu-overlay :global(.rrmenu-subdot) {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.35);
-          flex: none;
-          transition: background 0.25s ease;
+        .rrmenu-overlay :global(.rrmenu-c) {
+          width: 0.75rem;
+          height: 0.75rem;
         }
-        .rrmenu-overlay :global(.rrmenu-sublink:hover),
-        .rrmenu-overlay :global(.rrmenu-sublink:focus-visible) {
-          color: var(--rr-red, #f12032);
-          transform: translateX(8px);
+        .rrmenu-overlay :global(.rrmenu-c--tl) {
+          border-top: 1px solid var(--rr-red, #f12032);
+          border-left: 1px solid var(--rr-red, #f12032);
         }
-        .rrmenu-overlay :global(.rrmenu-sublink:hover .rrmenu-subdot),
-        .rrmenu-overlay :global(.rrmenu-sublink:focus-visible .rrmenu-subdot) {
-          background: var(--rr-red, #f12032);
+        .rrmenu-overlay :global(.rrmenu-c--tr) {
+          border-top: 1px solid var(--rr-red, #f12032);
+          border-right: 1px solid var(--rr-red, #f12032);
         }
-        .rrmenu-overlay :global(.rrmenu-link:hover),
+        .rrmenu-overlay :global(.rrmenu-c--bl) {
+          border-bottom: 1px solid var(--rr-red, #f12032);
+          border-left: 1px solid var(--rr-red, #f12032);
+        }
+        .rrmenu-overlay :global(.rrmenu-c--br) {
+          border-bottom: 1px solid var(--rr-red, #f12032);
+          border-right: 1px solid var(--rr-red, #f12032);
+        }
+
+        /* Hover / Fokus / aktiver Dropdown -> Klammern + Punkt sichtbar */
+        .rrmenu-overlay :global(.rrmenu-link:hover .rrmenu-corners),
+        .rrmenu-overlay :global(.rrmenu-link:focus-visible .rrmenu-corners),
+        .rrmenu-overlay :global(.rrmenu-link.is-active .rrmenu-corners) {
+          opacity: 1;
+        }
+        .rrmenu-overlay :global(.rrmenu-link:hover .rrmenu-dot),
+        .rrmenu-overlay :global(.rrmenu-link:focus-visible .rrmenu-dot),
+        .rrmenu-overlay :global(.rrmenu-link.is-active .rrmenu-dot) {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
         .rrmenu-overlay :global(.rrmenu-link:focus-visible) {
-          color: var(--rr-red, #f12032);
-          transform: translateX(10px) skewX(-5deg);
           outline: none;
         }
-        .rrmenu-overlay :global(.rrmenu-link:hover .rrmenu-link-index),
-        .rrmenu-overlay :global(.rrmenu-link:focus-visible .rrmenu-link-index) {
-          color: var(--rr-red, #f12032);
-        }
-        .rrmenu-overlay :global(.rrmenu-link:focus-visible .rrmenu-link-text) {
-          text-decoration: underline;
-          text-decoration-thickness: 2px;
-          text-underline-offset: 8px;
-        }
 
-        /* ============ Fuss: CTA + Kontakte ============ */
-        .rrmenu-foot {
-          margin-top: clamp(34px, 6vh, 64px);
+        /* ---- Dropdown (Leistungen) ---- */
+        .rrmenu-sub-outer {
+          display: grid;
+          grid-template-rows: 0fr;
+          width: 100%;
+          transition: grid-template-rows 380ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
+        }
+        .rrmenu-sub-outer.is-open {
+          grid-template-rows: 1fr;
+        }
+        .rrmenu-sub-inner {
+          overflow: hidden;
+          min-height: 0;
+        }
+        .rrmenu-sublist {
+          list-style: none;
+          margin: 0;
+          padding: clamp(4px, 0.9vh, 12px) 0 clamp(2px, 0.6vh, 8px);
           display: flex;
-          flex-wrap: wrap;
+          flex-direction: column;
           align-items: center;
-          justify-content: space-between;
-          gap: clamp(20px, 3vw, 40px);
-          opacity: 0;
-          transform: translateY(24px) rotate(-4deg);
-          transform-origin: left center;
+          gap: clamp(1px, 0.4vh, 6px);
         }
-        .rrmenu-overlay.is-open .rrmenu-foot {
-          animation: rrmenu-settle 620ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)) forwards;
-          animation-delay: var(--rrmenu-delay, 0ms);
-        }
-
-        /* CTA = next/link -> ebenfalls :global() unter dem Overlay. */
-        .rrmenu-overlay :global(.rrmenu-cta) {
+        .rrmenu-overlay :global(.rrmenu-sublink) {
+          position: relative;
           display: inline-flex;
           align-items: center;
-          gap: 10px;
-          font-family: var(--rr-font-ui, sans-serif);
-          font-size: 16px;
-          font-weight: 600;
-          line-height: 1;
-          padding: 17px 30px;
-          border-radius: 999px;
-          background: var(--rr-red, #f12032);
-          color: #fff;
+          justify-content: center;
+          padding: clamp(2px, 0.5vh, 6px) 0.65rem;
           text-decoration: none;
-          transition: background-color 200ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)),
-            transform 200ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
+          font-family: var(--rr-font-display, system-ui, sans-serif);
+          font-weight: 500;
+          font-size: clamp(15px, min(2.6vh, 2.6vw), 24px);
+          line-height: 1;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+          color: var(--rr-ink, #23262e);
+          transition: color 220ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
         }
-        .rrmenu-overlay :global(.rrmenu-cta:hover) {
-          background: var(--rr-red-deep, #c81222);
+        .rrmenu-overlay :global(.rrmenu-sublink--muted) {
+          font-size: clamp(12px, min(1.9vh, 2vw), 17px);
+          color: var(--rr-ink-soft, #5a5e68);
         }
-        .rrmenu-overlay :global(.rrmenu-cta:focus-visible) {
-          outline: 2px solid #fff;
-          outline-offset: 3px;
+        .rrmenu-overlay :global(.rrmenu-sublink-text) {
+          position: relative;
+          z-index: 1;
         }
-        .rrmenu-overlay :global(.rrmenu-cta-arrow) {
-          transition: transform 200ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
+        .rrmenu-overlay :global(.rrmenu-dot--sm) {
+          width: 0.34em;
+          height: 0.34em;
         }
-        .rrmenu-overlay :global(.rrmenu-cta:hover .rrmenu-cta-arrow) {
-          transform: translateX(4px);
+        .rrmenu-overlay :global(.rrmenu-sublink:hover .rrmenu-corners),
+        .rrmenu-overlay :global(.rrmenu-sublink:focus-visible .rrmenu-corners) {
+          opacity: 1;
+        }
+        .rrmenu-overlay :global(.rrmenu-sublink:hover .rrmenu-dot),
+        .rrmenu-overlay :global(.rrmenu-sublink:focus-visible .rrmenu-dot) {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        .rrmenu-overlay :global(.rrmenu-sublink .rrmenu-c) {
+          width: 0.5rem;
+          height: 0.5rem;
+        }
+        .rrmenu-overlay :global(.rrmenu-sublink:focus-visible) {
+          outline: none;
         }
 
+        /* ============ Fuss: Social/Kontakt (unten links) ============ */
+        .rrmenu-foot {
+          flex: none;
+        }
         .rrmenu-contacts {
           list-style: none;
           margin: 0;
           padding: 0;
           display: flex;
           flex-wrap: wrap;
-          gap: 8px 26px;
+          gap: 6px 22px;
         }
         .rrmenu-contact {
           font-family: var(--rr-font-ui, sans-serif);
-          font-size: 15px;
+          font-size: clamp(12px, 1.2vw, 15px);
           font-weight: 500;
-          color: rgba(255, 255, 255, 0.7);
+          color: var(--rr-ink-soft, #5a5e68);
           text-decoration: none;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.18);
           padding-bottom: 2px;
+          border-bottom: 1px solid transparent;
           transition: color 200ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1)),
             border-color 200ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
         }
         .rrmenu-contact:hover,
         .rrmenu-contact:focus-visible {
-          color: #fff;
+          color: var(--rr-ink, #23262e);
           border-color: var(--rr-red, #f12032);
           outline: none;
         }
-        .rrmenu-contact:focus-visible {
-          color: var(--rr-red, #f12032);
-        }
 
-        @media (max-width: 560px) {
-          .rrmenu-inner {
-            justify-content: flex-start;
-          }
-          .rrmenu-foot {
-            flex-direction: column;
-            align-items: flex-start;
-          }
-        }
-
-        /* ============ Reduced Motion: alles sofort auf Endzustand ============ */
+        /* ============ Reduced Motion ============ */
         @media (prefers-reduced-motion: reduce) {
-          .rrmenu-overlay {
-            transition: opacity 0.01ms;
-            transform: none;
-          }
-          .rrmenu-overlay.is-open {
-            transform: none;
-          }
-          .rrmenu-item,
-          .rrmenu-foot {
-            opacity: 1;
-            transform: none;
-          }
-          .rrmenu-overlay.is-open .rrmenu-item,
-          .rrmenu-overlay.is-open .rrmenu-foot {
-            animation: none;
-          }
+          .rrmenu-overlay,
+          .rrmenu-list,
+          .rrmenu-sub-outer,
           .rrmenu-bar,
-          .rrmenu-contact {
-            transition-duration: 0.01ms;
-          }
+          .rrmenu-contact,
           .rrmenu-overlay :global(.rrmenu-link),
-          .rrmenu-overlay :global(.rrmenu-cta),
-          .rrmenu-overlay :global(.rrmenu-cta-arrow) {
+          .rrmenu-overlay :global(.rrmenu-sublink),
+          .rrmenu-overlay :global(.rrmenu-corners),
+          .rrmenu-overlay :global(.rrmenu-dot) {
             transition-duration: 0.01ms;
           }
         }
       `}</style>
     </div>
   );
-}
-
-/** Staffel-Delay pro Link (~60ms), als CSS-Variable an das <li>. */
-function itemDelay(i: number): React.CSSProperties {
-  return { ["--rrmenu-delay" as string]: `${120 + i * 60}ms` };
 }
