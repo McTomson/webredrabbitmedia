@@ -473,6 +473,9 @@
 }
 .rr .tl-says::before { content: '\201E'; }
 .rr .tl-says::after { content: '\201C'; }
+/* Mehrere Sprechzeilen hintereinander: als EINE gesprochene Gruppe setzen
+   (erste Zeile haelt Abstand zum Fliesstext, Folgezeilen ruecken enger). */
+.rr .tl-says + .tl-says { margin-top: 10px; }
 .rr .tl-says--ondark {
   color: rgba(246, 245, 241, 0.92);
   margin-top: clamp(28px, 4vw, 40px);
@@ -644,8 +647,11 @@
   .rr .tl-sticky { position: static; min-height: 0; }
 }
 
-/* Wer-ist-Talos: Text links, rechts Leerraum als Talos-Standplatz. */
-.rr .tl-wer__grid { display: grid; grid-template-columns: minmax(0, 54%) 1fr; gap: clamp(24px, 4vw, 64px); align-items: center; }
+/* Wer-ist-Talos: Text links, rechts Leerraum als Talos-Standplatz.
+   Titel gedeckelt: die Sticky-Szene muss samt Lead + Sprechzeilen in EINEN
+   Viewport passen (volle Statement-Groesse sprengte 100vh auf normalen Screens). */
+.rr .tl-wer__grid { display: grid; grid-template-columns: minmax(0, 58%) 1fr; gap: clamp(24px, 4vw, 64px); align-items: center; }
+.rr .tl-wer__text .tl-title { font-size: clamp(30px, 3.3vw, 60px); }
 @media (max-width: 899px) { .rr .tl-wer__grid { grid-template-columns: 1fr; } .rr .tl-wer__grid .tl-stage-slot { display: none; } }
 
 /* Freigabe: Kurz-Klaerung "Und wenn er einen Fehler macht?" als ruhiger,
