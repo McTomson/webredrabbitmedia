@@ -86,3 +86,9 @@
 **Pattern to avoid**: `npm run build` parallel zum laufenden `next dev` — der Build ueberschreibt `.next/`, danach liefern die Dev-Chunks (main-app.js etc.) 404, React hydratisiert nicht mehr. Die Seite sieht komplett tot aus: kein Menue, keine Engine, keine Interaktion, Konsole trotzdem "sauber".
 **Why**: Preise-Session 23.07.: eine halbe QA-Runde wurde gegen eine Seite gefahren, die nur wegen des parallelen Builds nicht lief — Fehldiagnose "Hero-Engine kaputt".
 **Check**: Bau-Agenten explizit briefen: Build nur ohne laufenden Dev-Server; danach Dev-Server neu starten. In der QA bei "Seite reagiert gar nicht" ZUERST `curl -s -o /dev/null -w '%{http_code}' localhost:9000/_next/static/chunks/main-app.js` pruefen — 404 = Build hat den Dev-Server zerschossen, kein Code-Bug.
+
+### L-preise-03 — Design-Entscheidungen woertlich ins Agenten-Briefing
+**When**: Ein Bau-Agent soll eine mit dem Auftraggeber getroffene Design-/Architektur-Entscheidung umsetzen.
+**Pattern to avoid**: Die Entscheidung nur sinngemaess zusammenfassen. Der Agent waehlt dann die branchenuebliche Standardloesung, weil sie "richtiger" wirkt.
+**Why**: Preise-Seite 23.07.2026: Thomas hatte den DreiStufenMatrix-Klon gewaehlt (sticky Stufe, aufklappbare Merkmale, Stufen untereinander). Das Briefing nannte das Ziel, aber nicht den Auswahl-Wortlaut und nicht die verworfene Alternative. Der Agent baute drei klassische Preis-Karten nebeneinander — eine komplette Umbau-Runde verloren.
+**Check**: Original-Wortlaut der Entscheidung ins Briefing kopieren, plus einen Satz "NICHT gewaehlt wurde X, weil Y". Zusaetzlich frueher visuell kontrollieren (Zwischen-Screenshot nach der ersten Sektion) statt erst nach der Fertigmeldung.
