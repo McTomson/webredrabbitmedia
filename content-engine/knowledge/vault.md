@@ -2021,3 +2021,66 @@ quelle: https://web.redrabbit.media/tipps/website-optimierung-kosten
 quelle_name: Red Rabbit Media: Was kostet eine Website-Optimierung? [Preise & Strategien 2026]
 geprueft_am: 2026-07-22
 recheck_nach: 2027-01-18
+
+## t49-2026-07-22-225
+cluster: 1
+keywords: muss, zwingend, rechtssicheres, impressum
+aussage: In Österreich regeln vier Gesetze parallel die 'Impressumspflicht' mit unterschiedlichen Anwendungsbereichen: § 14 UGB gilt nur für ins Firmenbuch eingetragene Unternehmen, § 63 GewO nur für Gewerbetreibende ohne Firmenbucheintrag, § 5 ECG für sämtliche kommerziellen Websites und § 25 MedienG stellt auf den Inhalt der Website ab. Die Bestimmungen gelten auch für Social-Media-Profile (z.B. Facebook, X/Twitter, XING) und Apps.
+quelle: https://www.wko.at/internetrecht/website-impressum
+quelle_name: WKO - Das korrekte Website Impressum
+geprueft_am: 2026-07-22
+recheck_nach: 2027-01-18
+
+## t49-2026-07-22-226
+cluster: 1
+keywords: muss, zwingend, rechtssicheres, impressum
+aussage: § 5 Abs 1 ECG verlangt sechs Pflichtangaben, die 'leicht und unmittelbar zugänglich' bereitzustellen sind: (1) Name bzw. Firma, (2) geografische Anschrift der Niederlassung, (3) Kontaktangaben für rasche und unmittelbare Verbindung einschließlich elektronischer Postadresse, (4) Firmenbuchnummer und Firmenbuchgericht sofern vorhanden, (5) die zuständige Aufsichtsbehörde soweit die Tätigkeit behördlicher Aufsicht unterliegt, (6) Kammer/Berufsverband, Berufsbezeichnung, Verleihungs-Mitgliedstaat und Hinweis auf die anwendbaren gewerbe- oder berufsrechtlichen Vorschriften samt Zugang zu diesen.
+quelle: https://www.internet4jurists.at/e-commerce/impressum1a.html
+quelle_name: Internet4jurists - Die Impressumspflicht nach dem ECG (Wortlaut § 5 ECG)
+geprueft_am: 2026-07-22
+recheck_nach: 2027-01-18
+
+## t49-2026-07-22-227
+cluster: 1
+keywords: muss, zwingend, rechtssicheres, impressum
+aussage: Verstöße gegen die Informationspflichten des ECG sind eine Verwaltungsübertretung und mit einer Geldstrafe von bis zu 3.000 EUR bedroht. Die Behörde kann (muss aber nicht) vorab auf die Gesetzesverletzung hinweisen und eine Frist zur Korrektur setzen — bei fristgerechter Behebung bleibt der Diensteanbieter straffrei. Unabhängig davon droht eine gerichtliche Inanspruchnahme durch Mitbewerber nach § 1 UWG.
+quelle: https://www.wko.at/internetrecht/informationspflichten-nach-dem-e-commerce-gesetz--dem-unte
+quelle_name: WKO - Informationspflichten nach dem E-Commerce-Gesetz (ECG)
+geprueft_am: 2026-07-22
+recheck_nach: 2027-01-18
+
+## t49-2026-07-22-228
+cluster: 1
+keywords: muss, zwingend, rechtssicheres, impressum
+aussage: Das ECG verlangt über UGB/GewO hinaus die volle geografische Anschrift der tatsächlichen Niederlassung (eine für behördliche und gerichtliche Zustellungen taugliche Adresse, nicht bloß Wohnort oder Sitz) sowie mindestens zwei Kontaktwege für unmittelbare und rasche Kontaktaufnahme (z.B. E-Mail plus Telefon oder Webformular). Für Webshops sind nach dem Fern- und Auswärtsgeschäfte-Gesetz (FAGG) jedenfalls Telefonnummer UND E-Mail-Adresse anzugeben.
+quelle: https://www.wko.at/noe/internetrecht/das-korrekte-website-impressum.pdf
+quelle_name: WKO Niederösterreich - Das korrekte Website Impressum (PDF, Stand August 2025)
+geprueft_am: 2026-07-22
+recheck_nach: 2027-01-18
+
+## t49-2026-07-22-229
+cluster: 1
+keywords: muss, zwingend, rechtssicheres, impressum
+aussage: Die Offenlegungspflicht nach § 25 MedienG gilt für sämtliche Websites — private wie kommerzielle — und trifft den Medieninhaber; die Angaben müssen ständig leicht und unmittelbar auffindbar sein. Das MedienG unterscheidet 'kleine Website' (Name/Firma, Wohnort/Sitz, Unternehmensgegenstand) und 'große Website': eine große Website liegt vor, wenn der Informationsgehalt über die reine Unternehmenspräsentation hinausgeht und geeignet ist, die Meinungsbildung zu beeinflussen — dann sind zusätzlich Beteiligungsverhältnisse, Mehrfachbeteiligungen und eine Erklärung über die grundlegende Richtung (Blattlinie) offenzulegen.
+quelle: https://www.wko.at/internetrecht/informationspflichten-nach-dem-mediengesetz-fuer-websites
+quelle_name: WKO - Informationspflichten nach dem Mediengesetz für Websites
+geprueft_am: 2026-07-22
+recheck_nach: 2027-01-18
+
+## t49-2026-07-22-230
+cluster: 1
+keywords: muss, zwingend, rechtssicheres, impressum
+aussage: Kommerzieller Zweck im Sinne des § 5 ECG setzt keinen Onlineshop und keine Gewinnabsicht voraus: es genügt bereits, dass eine Website durch Werbeanzeigen oder Sponsoring finanziert wird oder der Eigenwerbung dient. Auch ein Verein ohne Gewinnabsicht unterliegt daher der Impressumspflicht nach § 5 ECG, wenn die Website Eigenwerbung betreibt oder Waren anbietet.
+quelle: https://www.ombudsstelle.at/datenschutzrecht/datenschutz-und-internet/muss-eine-webseite-ein-impressum-haben
+quelle_name: Internet-Ombudsstelle Österreich - Muss eine Webseite ein Impressum haben?
+geprueft_am: 2026-07-22
+recheck_nach: 2027-01-18
+
+## t49-2026-07-22-231
+cluster: 1
+keywords: muss, zwingend, rechtssicheres, impressum
+aussage: Nach § 14 UGB müssen ins Firmenbuch eingetragene Unternehmen auf Websites Firma, Rechtsform, Sitz, Firmenbuchnummer und Firmenbuchgericht angeben; bei Liquidation ist auch dieser Hinweis aufzunehmen. Bei einer GmbH & Co KG, bei der kein unbeschränkt haftender Gesellschafter eine natürliche Person ist, sind diese Angaben nicht nur für die KG, sondern auch für die Komplementär-GmbH zu machen. Einzelunternehmer müssen zusätzlich ihren Namen angeben, wenn dieser von der Firma abweicht.
+quelle: https://www.ubit-stmk.at/wp-content/uploads/40c_InfopflichtenDetailinformationen.pdf
+quelle_name: WKO Fachgruppe UBIT Steiermark - Informationspflichten nach dem E-Commerce-Gesetz (Detailinformationen, PDF)
+geprueft_am: 2026-07-22
+recheck_nach: 2027-01-18
