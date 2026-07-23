@@ -44,10 +44,6 @@ const FAQ_ITEMS: FaqItem[] = [
     a: 'Weil wir das Risiko tragen, bis du überzeugt bist. Wir zeigen dir deine Seite zuerst fertig, weil wir ziemlich sicher sind, dass sie sitzt. Gefällt sie dir nicht, hat es dich nichts gekostet. Sagst du Ja, arbeiten wir ab da partnerschaftlich, und dann fällt eine faire Anzahlung an. Das ist ehrlicher, als dir vorher Geld abzunehmen und zu hoffen, dass es passt.',
   },
   {
-    q: 'Warum seht ihr den Entwurf ohne Vorkasse?',
-    a: 'Weil wir das Risiko tragen wollen, nicht du. Du siehst zuerst einen echten Vorschlag. Eine Anzahlung fällt erst an, wenn dir das Ergebnis gefällt und du den Auftrag erteilst.',
-  },
-  {
     q: 'Sind das Fixpreise oder kommt noch etwas dazu?',
     a: 'Die Pakete geben dir einen klaren Rahmen. Was genau du brauchst, besprechen wir vorher und halten es fest. Keine Stundensatz-Lotterie, keine versteckten Kosten.',
   },
