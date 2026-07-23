@@ -110,7 +110,9 @@ export default function FloatingReview({
         .fr-wrap {
           position: absolute;
           top: 28vh;
-          width: clamp(180px, 15vw, 230px);
+          /* Breite so klemmen, dass die Karte in der freien Randspalte bleibt
+             (Textspalte beginnt bei ~200px): nie ueber Text. */
+          width: clamp(140px, 10vw, 230px);
           opacity: 0;
           transform: translateY(18px);
           transition: opacity 0.9s var(--rr-ease, ease), transform 0.9s var(--rr-ease, ease),

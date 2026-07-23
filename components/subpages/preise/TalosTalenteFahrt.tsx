@@ -209,6 +209,10 @@ function TalosFahrt() {
         .tf-track {
           height: calc(${SLIDES} * 105vh);
           position: relative;
+          /* Full-bleed wie CasePanels: aus dem rr-section-Seitenpadding
+             (72px) ausbrechen, die Navy-Buehne traegt bis an beide Kanten. */
+          width: 100vw;
+          margin-left: calc(50% - 50vw);
         }
         .tf-sticky {
           position: sticky;
