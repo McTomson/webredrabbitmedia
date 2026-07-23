@@ -32,7 +32,11 @@ export default function RisikoBand() {
         </p>
       </div>
 
-      <style jsx>{`
+      {/* Plain globales style-Tag statt <style jsx> (LESSONS_LEARNED.md
+          "styled-jsx im Relaunch meiden" — 3 dokumentierte Faelle, in denen
+          Komponenten ungestylt als roher Text rendern). Klassen rp- sind
+          seiten-lokal eindeutig genug. */}
+      <style>{`
         .rp-risiko {
           position: relative;
           isolation: isolate;

@@ -76,7 +76,9 @@ export default function PreiseFaq() {
         </div>
       </div>
 
-      <style jsx>{`
+      {/* Plain globales style-Tag statt <style jsx> (LESSONS_LEARNED.md
+          "styled-jsx im Relaunch meiden"). */}
+      <style>{`
         .rp-faq {
           background: #ffffff;
         }

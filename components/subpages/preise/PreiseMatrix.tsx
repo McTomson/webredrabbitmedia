@@ -13,6 +13,13 @@ import FloatingReview from './FloatingReview';
  * Stufen UNTEREINANDER. Merkmale + Aufklapp-Verhalten 1:1 aus dem Original
  * (STUFEN-Daten importiert, nichts dupliziert). Preise NUR 950 / 2.900 /
  * ab 4.900 — nie andere Zahlen, nie 790.
+ *
+ * Styling: plain globales <style>-Tag statt <style jsx> (LESSONS_LEARNED.md
+ * "styled-jsx im Relaunch meiden" — 3 dokumentierte Faelle, in denen
+ * Komponenten ungestylt als roher Text rendern). EIN Block auf oberster
+ * Ebene der Komponente (PreiseMatrix), nicht in der pro Stufe wiederholten
+ * StufeMatrix-Unterkomponente — sonst wuerde derselbe Block 3x ins DOM
+ * dupliziert. Klassen rpm-/rp- sind seiten-lokal eindeutig genug.
  */
 
 const PREIS: Record<string, string> = {
@@ -66,8 +73,58 @@ function StufeMatrix({ stufe }: { stufe: (typeof STUFEN)[number] }) {
           );
         })}
       </div>
+    </div>
+  );
+}
 
-      <style jsx>{`
+export default function PreiseMatrix() {
+  return (
+    <section className="rr-section rp-matrix" id="pakete">
+      <div className="rr-wrap rr-narrow">
+        <p className="wd-eyebrow">Drei Pakete</p>
+        <h2 className="rr-statement rp-matrix__h2">
+          Drei Pakete, ein Prinzip<span style={{ color: 'var(--rr-red)' }}>.</span>
+        </h2>
+        <p className="rr-body-lg rp-matrix__intro">
+          Du weißt vorher, woran du bist. Wähl das Paket, das zu deinem Betrieb passt, und
+          wachse später jederzeit in die nächste Stufe.
+        </p>
+
+        {STUFEN.map((s) => (
+          <StufeMatrix key={s.name} stufe={s} />
+        ))}
+
+        <p className="rr-meta rp-matrix__custom">
+          Große oder besondere Projekte, etwa Shops oder Sonderfunktionen, planen wir
+          individuell. Sprich uns einfach an, dann finden wir den passenden Rahmen.
+        </p>
+      </div>
+
+      <FloatingReview
+        side="right"
+        quote="Ein Lob an Herrn Uhlir, der mich durch die Zeit der Umsetzung begleitet hat."
+        name="Rene Rohrer, Google-Rezension"
+      />
+
+      <style>{`
+        .rp-matrix {
+          position: relative;
+          background: #ffffff;
+        }
+        .rp-matrix__h2 {
+          margin: 18px 0 20px;
+          max-width: 16em;
+        }
+        .rp-matrix__intro {
+          color: var(--rr-ink-soft);
+          max-width: 56ch;
+          margin: 0 0 clamp(20px, 3vw, 32px);
+        }
+        .rp-matrix__custom {
+          margin-top: clamp(40px, 5vw, 64px);
+          max-width: 60ch;
+        }
+
         .rpm__stufe {
           display: grid;
           grid-template-columns: minmax(220px, 300px) 1fr;
@@ -277,58 +334,6 @@ function StufeMatrix({ stufe }: { stufe: (typeof STUFEN)[number] }) {
           .rpm__detail {
             transition: none;
           }
-        }
-      `}</style>
-    </div>
-  );
-}
-
-export default function PreiseMatrix() {
-  return (
-    <section className="rr-section rp-matrix" id="pakete">
-      <div className="rr-wrap rr-narrow">
-        <p className="wd-eyebrow">Drei Pakete</p>
-        <h2 className="rr-statement rp-matrix__h2">
-          Drei Pakete, ein Prinzip<span style={{ color: 'var(--rr-red)' }}>.</span>
-        </h2>
-        <p className="rr-body-lg rp-matrix__intro">
-          Du weißt vorher, woran du bist. Wähl das Paket, das zu deinem Betrieb passt, und
-          wachse später jederzeit in die nächste Stufe.
-        </p>
-
-        {STUFEN.map((s) => (
-          <StufeMatrix key={s.name} stufe={s} />
-        ))}
-
-        <p className="rr-meta rp-matrix__custom">
-          Große oder besondere Projekte, etwa Shops oder Sonderfunktionen, planen wir
-          individuell. Sprich uns einfach an, dann finden wir den passenden Rahmen.
-        </p>
-      </div>
-
-      <FloatingReview
-        side="right"
-        quote="Ein Lob an Herrn Uhlir, der mich durch die Zeit der Umsetzung begleitet hat."
-        name="Rene Rohrer, Google-Rezension"
-      />
-
-      <style jsx>{`
-        .rp-matrix {
-          position: relative;
-          background: #ffffff;
-        }
-        .rp-matrix__h2 {
-          margin: 18px 0 20px;
-          max-width: 16em;
-        }
-        .rp-matrix__intro {
-          color: var(--rr-ink-soft);
-          max-width: 56ch;
-          margin: 0 0 clamp(20px, 3vw, 32px);
-        }
-        .rp-matrix__custom {
-          margin-top: clamp(40px, 5vw, 64px);
-          max-width: 60ch;
         }
       `}</style>
     </section>

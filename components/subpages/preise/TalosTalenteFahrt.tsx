@@ -89,7 +89,9 @@ function StaticStations() {
         </Link>
       </div>
 
-      <style jsx>{`
+      {/* Plain globales style-Tag statt <style jsx> (LESSONS_LEARNED.md
+          "styled-jsx im Relaunch meiden"). */}
+      <style>{`
         .tf-static {
           display: flex;
           flex-direction: column;
@@ -201,7 +203,9 @@ function TalosFahrt() {
         </div>
       </section>
 
-      <style jsx>{`
+      {/* Plain globales style-Tag statt <style jsx> (LESSONS_LEARNED.md
+          "styled-jsx im Relaunch meiden"). */}
+      <style>{`
         .tf-track {
           height: calc(${SLIDES} * 105vh);
           position: relative;
@@ -302,7 +306,7 @@ function TalosFahrt() {
           max-width: 40ch;
           margin: 0;
         }
-        .tf-slide--close :global(.rr-btn-frame) {
+        .tf-slide--close .rr-btn-frame {
           margin-top: 30px;
           align-self: flex-start;
         }
@@ -329,7 +333,9 @@ export default function TalosTalenteFahrt() {
 
       {fallback ? <StaticStations /> : <TalosFahrt />}
 
-      <style jsx>{`
+      {/* Plain globales style-Tag statt <style jsx> (LESSONS_LEARNED.md
+          "styled-jsx im Relaunch meiden"). */}
+      <style>{`
         .rp-talos {
           background: #ffffff;
           padding-left: 0;

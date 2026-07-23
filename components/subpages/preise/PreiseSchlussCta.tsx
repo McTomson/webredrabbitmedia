@@ -36,7 +36,11 @@ export default function PreiseSchlussCta() {
         </div>
       </div>
 
-      <style jsx>{`
+      {/* Plain globales style-Tag statt <style jsx> (LESSONS_LEARNED.md
+          "styled-jsx im Relaunch meiden"). Kein :global(...) mehr noetig
+          (das ist styled-jsx-Syntax) — bei einem globalen Tag wirkt jeder
+          Selektor ohnehin ungescopet auf .rr-btn-sweep. */}
+      <style>{`
         .rp-cta {
           background: var(--rr-navy);
         }
@@ -62,7 +66,7 @@ export default function PreiseSchlussCta() {
         /* rr-btn-sweep hat im Ruhezustand Ink-Text (fuer helle Flaechen); auf
            dem Navy-Band den Text hell setzen (Kontrast-Fix, 1:1 Muster aus
            components/subpages/leistungen/website/website.css .lw-cta). */
-        .rp-cta__actions :global(.rr-btn-sweep) {
+        .rp-cta__actions .rr-btn-sweep {
           color: #f6f5f1;
         }
       `}</style>

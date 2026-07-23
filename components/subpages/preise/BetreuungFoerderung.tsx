@@ -29,7 +29,9 @@ export default function BetreuungFoerderung() {
         </div>
       </div>
 
-      <style jsx>{`
+      {/* Plain globales style-Tag statt <style jsx> (LESSONS_LEARNED.md
+          "styled-jsx im Relaunch meiden"). */}
+      <style>{`
         .rp-bf {
           background: #f6f5f1;
         }

@@ -102,7 +102,11 @@ export default function FloatingReview({
         <p className="fr-name">{name}</p>
       </div>
 
-      <style jsx>{`
+      {/* Plain globales style-Tag statt <style jsx> (LESSONS_LEARNED.md
+          "styled-jsx im Relaunch meiden"). Klassen fr- sind seiten-lokal
+          eindeutig; die Komponente wird zweimal instanziiert (RisikoBand +
+          PreiseMatrix), das Tag dupliziert dadurch harmlos im DOM. */}
+      <style>{`
         .fr-wrap {
           position: absolute;
           top: 28vh;
