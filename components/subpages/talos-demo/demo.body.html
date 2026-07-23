@@ -25,6 +25,58 @@
       <div class="hero-title" id="htitle" role="heading" aria-level="1" aria-label="Talos"><span class="ltr" data-l="0" aria-hidden="true">T</span><span class="ltr" data-l="1" aria-hidden="true">a</span><span class="ltr" data-l="2" aria-hidden="true">l</span><span class="ltr" data-l="3" aria-hidden="true">o</span><span class="ltr" data-l="4" aria-hidden="true">s</span><span class="ltr dot" data-l="5" aria-hidden="true">.</span></div>
     </div>
 
+    <!-- Navy-Dashboard-Fenster: 1:1-Klon des abgenommenen wda-Fensters von der
+         Website-Seite (components/subpages/leistungen/website/v2/TalosDashboard.tsx),
+         Klassen umbenannt auf Praefix tlh- (kein Import, reiner CSS-Klon). Sichtbar
+         nur wenn .main-sticky die Klasse "is-dash" traegt (setzt eine andere
+         Komponente). Panels nur linke Haelfte, rechte Haelfte bleibt fuer den
+         Story-Text frei (der per CSS ueber .story-grid/.text-window dort hinein
+         positioniert wird, Markup dort unveraendert). -->
+    <div class="tlh-frame" aria-hidden="true">
+      <div class="tlh-chrome">
+        <span class="tlh-lights"><span></span><span></span><span></span></span>
+        <span class="tlh-url"><span class="tlh-lock"></span>dein-dashboard.redrabbit.media</span>
+        <span class="tlh-spacer"></span>
+      </div>
+      <div class="tlh-screen">
+        <div class="tlh-panels">
+          <div class="tlh-card tlh-card--note">
+            <span class="tlh-mark"></span>
+            <span class="tlh-card-head">Benachrichtigung</span>
+            <span class="tlh-card-line">Formular geprüft: alles in Ordnung.</span>
+          </div>
+          <div class="tlh-card tlh-card--ring">
+            <span class="tlh-donut"><span class="tlh-donut-hole"></span></span>
+            <span class="tlh-ring-meta">
+              <span class="tlh-card-head">Deine Seite</span>
+              <span class="tlh-card-sub">läuft, alles online</span>
+            </span>
+          </div>
+          <div class="tlh-card tlh-card--stats">
+            <span class="tlh-card-head">Besucher diese Woche</span>
+            <div class="tlh-spark">
+              <span style="height:34%"></span>
+              <span style="height:52%"></span>
+              <span style="height:41%"></span>
+              <span style="height:68%"></span>
+              <span style="height:57%"></span>
+              <span style="height:79%"></span>
+              <span style="height:63%"></span>
+              <span style="height:48%"></span>
+            </div>
+          </div>
+          <div class="tlh-card tlh-card--skills">
+            <span class="tlh-card-head">Talos kann mehr lernen</span>
+            <ul class="tlh-skills">
+              <li>Blogbeiträge schreiben</li>
+              <li>Kunden suchen und anschreiben</li>
+              <li>Auf Social Media posten</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="story-grid">
       <div class="head-col">
         <svg id="headSvg" viewBox="120 110 770 910" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>

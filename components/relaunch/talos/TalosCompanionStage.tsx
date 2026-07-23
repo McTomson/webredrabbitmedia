@@ -41,8 +41,12 @@ const CAM_POS: [number, number, number] = [30, 150, 700];
 const CAM_TGT: [number, number, number] = [0, 132, 12];
 const CAM_FOV = 40;
 
-const END_X = -170; // Hero-Zielplatz: links der Mitte (rechts laeuft der Text)
+const END_X = -390; // Hero-Zielplatz: klar links (Thomas 23.07.: weiter links, darf Fenster ueberdecken)
+const HERO_Z = -130; // Hero: eine Spur kleiner (weiter von der Kamera)
 const OFF_MARGIN = 260; // Luft hinter der Bildkante (offscreen)
+// Koerperhaltung im Stand: IMMER leicht zur Bildmitte gedreht, nie nach aussen
+// (Thomas-Regel). Vorzeichen: +yaw = nach rechts gedreht.
+const STAND_BIAS = 0.13;
 // Dreiviertel-Ansicht in Laufrichtung (empirisch: +1.05 = geht nach rechts,
 // Gesicht leicht zum User; Vorzeichen spiegelt fuer Laufrichtung links).
 const FACE_TURN = 1.05;
@@ -82,13 +86,14 @@ interface Station {
   sizeZ: number;
   gesture: string;
   yaw: number;
+  layer: "front" | "back";
+  appear: number;
 }
 
 export default function TalosCompanionStage() {
   const hostRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [no3d, setNo3d] = useState(false);
-  const [frameOn, setFrameOn] = useState(false);
 
   useEffect(() => {
     const host = hostRef.current;
@@ -105,7 +110,8 @@ export default function TalosCompanionStage() {
     const mem = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
     if (!webgl2 || (mem !== undefined && mem <= 4)) {
       setNo3d(true);
-      setFrameOn(true);
+      // Ohne 3D bleibt wenigstens das Dashboard-Fenster im Hero sichtbar.
+      document.getElementById("mainSticky")?.classList.add("is-dash");
       return;
     }
 
@@ -167,11 +173,23 @@ export default function TalosCompanionStage() {
         sizeZ: SIZE_Z[el.dataset.talosSize ?? "m"] ?? 0,
         gesture: el.dataset.talosGesture ?? "",
         yaw: parseFloat(el.dataset.talosYaw ?? "0"),
+        layer: (el.dataset.talosLayer as "front" | "back") ?? "back",
+        appear: parseFloat(el.dataset.talosAppear ?? "0.18"),
       }));
     };
 
     const halfWidthAt = (z: number) =>
       Math.tan(((CAM_FOV / 2) * Math.PI) / 180) * (CAM_POS[2] - z) * camera.aspect;
+
+    // Ebenen-Schaltung: "front" = Canvas VOR dem Inhalt (Hero, Kontrollraum,
+    // CTA), "back" = HINTER dem Text (Text bleibt lesbar, Thomas 23.07.).
+    // Der Inhalts-Wrapper der Seite liegt auf z20 mit transparentem Grund.
+    let curLayer: "front" | "back" | null = null;
+    const setLayer = (l: "front" | "back") => {
+      if (curLayer === l) return;
+      curLayer = l;
+      wrap.style.zIndex = l === "front" ? "30" : "12";
+    };
 
     // Beine/Arme/Vorlage fuer Gehen ODER Stehen schreiben.
     const writeWalkPose = (x: number, z: number, yaw: number, walking: boolean, dt: number) => {
@@ -209,16 +227,18 @@ export default function TalosCompanionStage() {
       if (ep > 0) {
         const turnBack = smooth(Math.min(1, ep / 0.18));
         x = tuning.endX + (exitX - tuning.endX) * smooth(ep);
-        yaw = FACE_TURN * turnBack;
+        yaw = STAND_BIAS + (FACE_TURN - STAND_BIAS) * turnBack;
         walking = ep > 0.12 && ep < 0.98;
       } else {
         x = startX + (tuning.endX - startX) * wp;
-        yaw = FACE_TURN * (1 - smooth(tp));
+        // Ankommen: nicht auf 0 drehen, sondern auf die Stand-Haltung leicht
+        // zur Mitte (er steht links -> Haltung leicht nach rechts, nie aussen).
+        yaw = STAND_BIAS + (FACE_TURN - STAND_BIAS) * (1 - smooth(tp));
         walking = wp > 0.001 && wp < 0.999;
       }
       walkPhase = (x - startX) * PHASE_PER_UNIT;
-      curX = x; curZ = 0; curYaw = yaw;
-      writeWalkPose(x, 0, yaw, walking, dt);
+      curX = x; curZ = HERO_Z; curYaw = yaw;
+      writeWalkPose(x, HERO_Z, yaw, walking, dt);
 
       if (!waved && p >= P_WAVE && ep <= 0) {
         waved = true;
@@ -226,15 +246,24 @@ export default function TalosCompanionStage() {
       }
       if (waved && p < P_WALK1 - 0.06) waved = false;
 
+      // Dashboard-Fenster (Navy-Frame lebt im Demo-DOM, Klasse steuert Opacity).
       const wantFrame = p >= P_FRAME0 && p <= P_FRAME1;
-      if (wantFrame !== frameVisible) { frameVisible = wantFrame; setFrameOn(wantFrame); }
+      if (wantFrame !== frameVisible) {
+        frameVisible = wantFrame;
+        document.getElementById("mainSticky")?.classList.toggle("is-dash", wantFrame);
+      }
+      // Im Hero liegt der Canvas immer VOR dem Inhalt.
+      setLayer("front");
       // Sichtbarkeit: im Hero immer voll (er ist eh offscreen, wenn p klein).
       opacity = damp(opacity, 1, 8, dt);
     };
 
     // --- Modus 2: Stationen (Begleiter zwischen den Sektionen) ---
     const applyStations = (dt: number) => {
-      if (frameVisible) { frameVisible = false; setFrameOn(false); }
+      if (frameVisible) {
+        frameVisible = false;
+        document.getElementById("mainSticky")?.classList.remove("is-dash");
+      }
       const vh = window.innerHeight;
       const mobile = window.innerWidth < 900;
       // Aktive Station = die, deren Element der Viewport-Mitte am naechsten ist.
@@ -249,7 +278,12 @@ export default function TalosCompanionStage() {
       }
       if (mobile) best = null;
 
+      // Erst aktiv, wenn die Sektion wirklich da ist (Thomas: er erschien nach
+      // dem Bumper zu frueh/zu schnell) — pro Station eigene Schwelle moeglich.
+      if (best && bestScore < best.appear) best = null;
+
       if (best) {
+        setLayer(best.layer);
         const targetZ = best.sizeZ;
         const half = halfWidthAt(targetZ);
         const targetX = (best.anchor * 2 - 1) * half;
@@ -263,12 +297,13 @@ export default function TalosCompanionStage() {
         const vx = (curX - prevX) / Math.max(dt, 1 / 240);
         const walking = !reduced && Math.abs(vx) > 30 && Math.abs(targetX - curX) > 20;
         walkPhase += (curX - prevX) * PHASE_PER_UNIT * Math.sign(1);
-        // Blick: beim Gehen Dreiviertel in Laufrichtung, im Stand die Stations-
-        // Grunddrehung (leicht, Richtung Bildmitte deklariert das Markup).
-        const targetYaw = walking ? FACE_TURN * Math.sign(vx) : best.yaw;
+        // Blick/Haltung: beim Gehen Dreiviertel in Laufrichtung; im Stand IMMER
+        // leicht zur Bildmitte (nie nach aussen) plus optionale Markup-Drehung.
+        const centerBias = curX > 60 ? -STAND_BIAS : curX < -60 ? STAND_BIAS : 0;
+        const targetYaw = walking ? FACE_TURN * Math.sign(vx) : centerBias + best.yaw;
         curYaw = damp(curYaw, targetYaw, 5, dt);
         writeWalkPose(curX, curZ, curYaw, walking, dt);
-        opacity = damp(opacity, 1, 5, dt);
+        opacity = damp(opacity, 1, 3.2, dt);
         if (lastStation !== best) { lastStation = best; gestureDone = false; }
         if (!gestureDone && bestScore > 0.45 && !walking) {
           gestureDone = true;
@@ -293,7 +328,13 @@ export default function TalosCompanionStage() {
     window.visualViewport?.addEventListener("resize", onResize);
 
     const onGaze = (e: PointerEvent) => {
-      motion?.setPointer((e.clientX / window.innerWidth) * 2 - 1, -((e.clientY / window.innerHeight) * 2 - 1));
+      let nx = (e.clientX / window.innerWidth) * 2 - 1;
+      // BLICK-SPERRE (Thomas-Regel, seitenweit): Der Kopf darf der Maus nie so
+      // weit folgen, dass Talos aus dem Bild schaut. Steht er links, ist der
+      // Blick nach links (negatives nx) hart begrenzt; rechts umgekehrt.
+      if (curX < -60) nx = Math.max(nx, -0.12);
+      else if (curX > 60) nx = Math.min(nx, 0.12);
+      motion?.setPointer(nx, -((e.clientY / window.innerHeight) * 2 - 1));
     };
     window.addEventListener("pointermove", onGaze);
 
@@ -352,8 +393,8 @@ export default function TalosCompanionStage() {
         loaded = true;
         if (reduced) {
           curX = tuning.endX;
-          writeWalkPose(curX, 0, 0, false, 1 / 60);
-          setFrameOn(true);
+          writeWalkPose(curX, HERO_Z, STAND_BIAS, false, 1 / 60);
+          document.getElementById("mainSticky")?.classList.add("is-dash");
           opacity = 1;
         }
       },
@@ -361,7 +402,7 @@ export default function TalosCompanionStage() {
       () => {
         teardown();
         setNo3d(true);
-        setFrameOn(true);
+        document.getElementById("mainSticky")?.classList.add("is-dash");
       },
     );
 
@@ -410,27 +451,6 @@ export default function TalosCompanionStage() {
 
   return (
     <div className="tcs-wrap" aria-hidden="true" ref={wrapRef}>
-      {/* Dashboard-Fenster UNTER dem Canvas: Talos steht davor / ragt drueber. */}
-      <div className={"tcs-frame" + (frameOn ? " tcs-frame--on" : "")}>
-        <div className="tcs-frame__bar">
-          <span className="tcs-frame__dot" />
-          <span className="tcs-frame__title">Talos · im Dienst</span>
-        </div>
-        <div className="tcs-frame__widgets">
-          <div className="tcs-widget">
-            <span className="tcs-widget__k">Seite l&auml;uft</span>
-            <span className="tcs-widget__v">schnell und erreichbar</span>
-          </div>
-          <div className="tcs-widget">
-            <span className="tcs-widget__k">Anfrage aufgefangen</span>
-            <span className="tcs-widget__v">Antwort wartet auf dein Ja</span>
-          </div>
-          <div className="tcs-widget">
-            <span className="tcs-widget__k">Beitrag fertig</span>
-            <span className="tcs-widget__v">liegt zur Freigabe bereit</span>
-          </div>
-        </div>
-      </div>
       <div className="tcs-canvas" ref={hostRef} />
       {no3d && <div className="tcs-poster" />}
       <style
@@ -441,24 +461,6 @@ export default function TalosCompanionStage() {
 .tcs-canvas canvas{ display:block; width:100%; height:100%; }
 .tcs-poster{ position:absolute; left:6vw; bottom:10vh; width:min(34vw,420px); aspect-ratio:3/4; z-index:1;
   background:radial-gradient(120% 90% at 50% 40%, #ffffff 0%, #f4f4f2 55%, #e9edf0 100%); }
-.tcs-frame{ position:absolute; z-index:1; left:3vw; right:3vw; top:9vh; bottom:7vh;
-  border:1px solid rgba(28,40,55,.22); background:transparent;
-  opacity:0; transform:translateY(10px); transition:opacity .9s ease, transform .9s ease; }
-.tcs-frame--on{ opacity:1; transform:none; }
-.tcs-frame__bar{ position:absolute; top:0; left:0; right:0; height:34px;
-  display:flex; align-items:center; gap:10px; padding:0 14px;
-  border-bottom:1px solid rgba(28,40,55,.14);
-  font:600 11px/1 "DM Sans",sans-serif; letter-spacing:.14em; text-transform:uppercase;
-  color:rgba(28,40,55,.72); }
-.tcs-frame__dot{ width:7px; height:7px; border-radius:50%; background:var(--rr-red,#f12032); }
-.tcs-frame__widgets{ position:absolute; left:14px; bottom:14px; display:flex; flex-direction:column; gap:8px; }
-.tcs-widget{ display:flex; flex-direction:column; gap:2px; padding:8px 12px;
-  border:1px solid rgba(28,40,55,.16); background:rgba(255,255,255,.85); min-width:200px; }
-.tcs-widget__k{ font:700 10px/1.2 "DM Sans",sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#1c2837; }
-.tcs-widget__v{ font:400 12px/1.35 "DM Sans",sans-serif; color:rgba(28,40,55,.66); }
-@media (max-width: 760px){
-  .tcs-frame__widgets{ display:none; }
-}
 `,
         }}
       />

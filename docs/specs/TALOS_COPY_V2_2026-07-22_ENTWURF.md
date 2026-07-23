@@ -324,3 +324,60 @@ Muster wie Website-Seite: "Kostenlosen Entwurf holen" + "Anrufen".
 - {articleCount} bleibt als Platzhalter, wird zur Bauzeit aus der echten Zahl gefuellt.
 - Website-Fixpreise (950 / 2.900 / ab 4.900) sind hier bewusst NICHT prominent gesetzt, weil die Seite Talos verkauft, nicht die Website. Falls eine Preis-Bruecke gewuenscht ist, gehoert sie in Sektion 11 oder als Link zur Preisseite, nicht in den Hero.
 - Namens-Entscheidung pro Karte steht noch aus (je 3 Vorschlaege). Empfehlung fuer den ersten Durchgang: Der Schreiber, Der Empfang, Der Aussendienst, Der Poster, Der Sichtbarmacher, Die Sonderanfertigung.
+
+---
+
+## REVISION 23.07. — Sektion 2 + Sektion 3 (ENTWURF)
+
+Grund: Thomas fand beide Sektionen sinngemaess richtig, aber "klingt nicht nach uns und
+ist unlogisch im Satzaufbau". Hier neu geschrieben in der Hausstimme, mit kurzen, logisch
+aufeinander aufbauenden Saetzen. Bestehender Text oben bleibt unveraendert.
+
+### Sektion 2 — Wer ist Talos (NEU)
+
+Beantwortet die Kundenfrage "Was ist das konkret?" (Unterton: "Ist das wieder ein Tool
+oder Abo, das man mir andrehen will?"). Talos kommt im 3D nah heran, man sieht seine Bauweise.
+
+- Eyebrow (GROSS): **WER IST TALOS**
+
+- Headline (2 Varianten):
+  - **V1:** Kein Tool, kein Abo. Talos ist der Mitarbeiter, der in deiner Website steckt.
+  - **V2:** Nein, das ist nichts zum Kaufen. Das ist dein Mitarbeiter, fest in deine Seite eingebaut.
+
+- Subline (Einwand aufnehmen, aufloesen, konkret machen):
+  Du fragst dich wahrscheinlich, ob dir hier wieder irgendein Programm oder Abo angedreht
+  werden soll. Wird es nicht. Talos ist nichts, das du kaufst oder installierst. Er ist
+  fest in deine Website eingebaut und arbeitet dort. Er passt auf, dass die Seite laeuft.
+  Kommt eine Anfrage rein, faengt er sie auf und sagt dir Bescheid.
+
+- Talos (3 Sprechzeilen, scroll-getaktet, waehrend man ihn nah sieht):
+  - "Schau ruhig genau hin, wie ich gebaut bin. So nah siehst du einen Mitarbeiter selten."
+  - "Kaufen musst du mich nicht. Ich stecke schon in deiner Seite."
+  - "Ich halte deine Seite am Laufen und melde mich, sobald du etwas wissen musst."
+
+### Sektion 3 — Bei jeder Website dabei (NEU, erweitert)
+
+Erweitert um Thomas' Ansage (woertlich): Der Kunde loggt sich in ein eigenes Backend
+ein, aendert dort aehnlich wie bei WordPress, nur einfacher, Bilder und Texte, und hat die
+Talos-Kommandozentrale, in der diese Features gratis schon eingebaut sind. "Das hat niemand."
+
+- Eyebrow: **BEI JEDER WEBSITE DABEI**
+
+- Headline (2 Varianten):
+  - **V1:** Du bekommst dein eigenes Dashboard. Und die Talos-Kommandozentrale gleich dazu.
+  - **V2:** Das steckt schon drin, bevor du auch nur an einen Zusatz denkst.
+
+- Subline (Login, eigenes Dashboard, einfacher als WordPress, Kommandozentrale, Punchline):
+  Zu jeder Website von uns bekommst du einen Login. Dahinter liegt dein eigenes Dashboard.
+  Dort tauschst du Bilder und Texte selbst aus, aehnlich wie bei WordPress, nur einfacher.
+  Und daneben liegt die Talos-Kommandozentrale, in der die Sachen hier schon eingebaut sind.
+  Alles ohne Aufpreis. So bekommst du das sonst nirgends.
+
+- Basis-Bullets (4, je Kurz-Titel + 1-2 Saetze):
+  1. **Selbst aendern.** Bilder und Texte tauschst du in deinem Dashboard selbst aus. Das geht einfacher als bei WordPress, und du brauchst dafuer keinen Anruf bei uns.
+  2. **Zahlen in Klartext.** Du siehst, wie oft du gefunden wirst und wo die Leute klicken. Verstaendlich aufbereitet, mit Google Search Console und Heatmap dahinter.
+  3. **Ausfall-Alarm per Mail.** Klemmt etwas oder faellt die Seite aus, bekommst du sofort eine Mail. Du erfaehrst es von uns, nicht von deinen Kunden.
+  4. **Hosting laeuft mit.** Hosting, Pflege und Updates uebernehmen wir im Hintergrund. Um nichts davon musst du dich kuemmern, deine Seite bleibt schnell und sicher.
+
+- Talos (1 Sprechzeile):
+  - "Das steckt alles schon drin. Dafuer zahlst du keinen Cent extra."

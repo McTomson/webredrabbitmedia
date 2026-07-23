@@ -120,25 +120,28 @@ export default function TalosLeistungPreviewPage() {
           data-talos-station-Wrapper = Halte-Punkte des Companions (anchor =
           horizontale Position 0..1, size s/m/l/xl = Naehe/Groesse, gesture =
           einmalige Geste beim Ankommen). Feintuning mit Thomas. */}
-      <div className={rrFonts} style={{ background: '#ffffff', position: 'relative', zIndex: 2 }}>
-        <div data-talos-station data-talos-anchor="0.76" data-talos-size="xl">
+      {/* Wrapper TRANSPARENT + z20: der Companion-Canvas schaltet pro Station
+          zwischen z12 (hinter dem Text, Text lesbar) und z30 (vor der Flaeche,
+          Kontrollraum/CTA). Weisser Grund kommt vom body. */}
+      <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 20 }}>
+        <div data-talos-station data-talos-anchor="0.78" data-talos-size="l" data-talos-appear="0.5" data-talos-layer="back">
           <WerIstTalos />
         </div>
         <InklusiveDashboard />
         <Faehigkeiten />
-        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-gesture="bow">
+        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-gesture="bow" data-talos-layer="back">
           <FreigabePrinzip />
         </div>
         <Onboarding />
-        <div data-talos-station data-talos-anchor="0.78" data-talos-size="m">
+        <div data-talos-station data-talos-anchor="0.78" data-talos-size="m" data-talos-layer="front">
           <Kontrollraum />
         </div>
         <Beweis />
-        <div data-talos-station data-talos-anchor="0.8" data-talos-size="s">
+        <div data-talos-station data-talos-anchor="0.8" data-talos-size="s" data-talos-layer="back">
           <FragTalosAnmoderation />
         </div>
         <TalosFaqV2 />
-        <div data-talos-station data-talos-anchor="0.08" data-talos-size="m" data-talos-gesture="wave">
+        <div data-talos-station data-talos-anchor="0.08" data-talos-size="m" data-talos-gesture="wave" data-talos-layer="front">
           <TalosSchlussCta />
         </div>
       </div>

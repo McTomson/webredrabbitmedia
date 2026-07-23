@@ -5,7 +5,11 @@
  */
 export default function FreigabePrinzip() {
   return (
-    <section className="rr-section tl-section tl-section--surface">
+    /* Sticky-Szene: Track 180vh, Inhalt bleibt einen Moment stehen (lesbar,
+       und der Companion-Talos hat Zeit fuer seine Verbeugung). Grund bewusst
+       TRANSPARENT: Talos laeuft hier auf der "back"-Ebene HINTER dem Text. */
+    <section className="rr-section tl-section tl-sticky-track">
+      <div className="tl-sticky">
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow tl-eyebrow">Du hast das Sagen</p>
         <h2 className="rr-statement tl-title">
@@ -31,6 +35,7 @@ export default function FreigabePrinzip() {
         </div>
 
         <p className="tl-says">Ein Klick von dir genügt. Und du kannst mich jederzeit bremsen.</p>
+      </div>
       </div>
     </section>
   );

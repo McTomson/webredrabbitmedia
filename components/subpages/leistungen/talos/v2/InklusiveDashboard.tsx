@@ -16,22 +16,23 @@ import { useEffect, useRef, useState } from "react";
  */
 type Item = { tag: string; text: string };
 
+// Copy: REVISION 23.07. (Login/eigenes Backend + Kommandozentrale, ENTWURF).
 const ITEMS: Item[] = [
   {
-    tag: "Alles selbst ändern",
-    text: "Texte und Bilder tauschst du in deinem Dashboard selbst, einfacher als bei WordPress. Kein Anruf bei uns, kein Warten.",
+    tag: "Selbst ändern",
+    text: "Bilder und Texte tauschst du in deinem Dashboard selbst aus. Das geht einfacher als bei WordPress, und du brauchst dafür keinen Anruf bei uns.",
   },
   {
-    tag: "Deine Zahlen in Klartext",
-    text: "Wie oft du gefunden wirst, wo die Leute klicken, was funktioniert. In verständlicher Sprache statt Fachchinesisch, mit Google Search Console, Heatmap und weiteren Gratis-Anschlüssen.",
+    tag: "Zahlen in Klartext",
+    text: "Du siehst, wie oft du gefunden wirst und wo die Leute klicken. Verständlich aufbereitet, mit Google Search Console und Heatmap dahinter.",
   },
   {
-    tag: "Alarm, bevor du es merkst",
-    text: "Fällt die Seite aus oder klemmt etwas, bekommst du eine Mail. Du erfährst es von uns, nicht von deinen Kunden.",
+    tag: "Ausfall-Alarm per Mail",
+    text: "Klemmt etwas oder fällt die Seite aus, bekommst du sofort eine Mail. Du erfährst es von uns, nicht von deinen Kunden.",
   },
   {
-    tag: "Hosting, Pflege und Updates laufen mit",
-    text: "Im Hintergrund, ohne dass du dich darum kümmern musst. Deine Seite bleibt schnell und sicher.",
+    tag: "Hosting läuft mit",
+    text: "Hosting, Pflege und Updates übernehmen wir im Hintergrund. Um nichts davon musst du dich kümmern, deine Seite bleibt schnell und sicher.",
   },
 ];
 
@@ -73,12 +74,15 @@ export default function InklusiveDashboard() {
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow tl-eyebrow">Bei jeder Website dabei</p>
         <h2 className="rr-statement tl-title">
-          Das kann jede Website von uns. Ohne Aufpreis.
+          Du bekommst dein eigenes Dashboard. Und die Talos-Kommandozentrale
+          gleich dazu.
         </h2>
         <p className="rr-body-lg tl-lead">
-          Bevor du auch nur an einen einzigen Zusatz denkst: das hier ist alles
-          schon drin, in jeder Seite, die wir bauen. Fest im Preis, den du
-          vorher kennst.
+          Zu jeder Website von uns bekommst du einen Login. Dahinter liegt dein
+          eigenes Dashboard. Dort tauschst du Bilder und Texte selbst aus,
+          ähnlich wie bei WordPress, nur einfacher. Und daneben liegt die
+          Talos-Kommandozentrale, in der die Sachen hier schon eingebaut sind.
+          Alles ohne Aufpreis. So bekommst du das sonst nirgends.
         </p>
 
         <div className="tl-ink-grid">
@@ -139,7 +143,7 @@ export default function InklusiveDashboard() {
         </div>
 
         <p className="tl-says">
-          Das ist die Grundausstattung. Dafür zahlst du keinen Cent extra.
+          Das steckt alles schon drin. Dafür zahlst du keinen Cent extra.
         </p>
       </div>
     </section>

@@ -10,7 +10,10 @@
    ============================================================ */
 
 /* ---- Grundraster, das alle Sektionen teilen ---- */
-.rr .tl-section { padding: var(--rr-section-y) var(--rr-gutter); background: #ffffff; }
+.rr .tl-section { padding: var(--rr-section-y) var(--rr-gutter); }
+/* WICHTIG: KEIN background auf .tl-section — der Seiten-Wrapper ist transparent
+   (weiss kommt vom body), damit der Companion-Talos auf der "back"-Ebene
+   HINTER dem Text sichtbar ist (Thomas 23.07.: Schrift ueber ihm). */
 .rr .tl-section--surface { background: var(--rr-surface); }
 .rr .tl-eyebrow { margin: 0 0 20px; }
 .rr .tl-title { max-width: 16em; margin: 0 0 clamp(20px, 3vw, 28px); color: var(--rr-navy); }
@@ -236,7 +239,7 @@
 .rr .tl-ink-row.is-active .tl-ink-label { font-weight: 700; }
 .rr .tl-ink-details { min-width: 0; }
 .rr .tl-ink-detail {
-  min-height: 62vh;
+  min-height: 88vh; /* mehr Scrollweg je Punkt: kurz stehen bleiben, lesbar (Thomas 23.07.) */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -608,3 +611,38 @@
   .rr .tl-ob__stepnum { display: none; }
   .rr .tl-ob__body { max-width: 720px; margin: 0 auto; }
 }
+
+
+/* ---- Sticky-Szenen (Thomas 23.07.: auf der ganzen Seite sticky, wo sinnvoll;
+   Inhalt bleibt stehen, Talos hat Zeit fuer Naehe/Verbeugung) ---- */
+.rr .tl-sticky-track { padding: 0 var(--rr-gutter); min-height: 180vh; }
+.rr .tl-sticky-track--tall { min-height: 200vh; }
+.rr .tl-sticky {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(48px, 8vh, 96px) 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rr .tl-sticky-track, .rr .tl-sticky-track--tall { min-height: 0; }
+  .rr .tl-sticky { position: static; min-height: 0; }
+}
+
+/* Wer-ist-Talos: Text links, rechts Leerraum als Talos-Standplatz. */
+.rr .tl-wer__grid { display: grid; grid-template-columns: minmax(0, 54%) 1fr; gap: clamp(24px, 4vw, 64px); align-items: center; }
+@media (max-width: 899px) { .rr .tl-wer__grid { grid-template-columns: 1fr; } .rr .tl-wer__grid .tl-stage-slot { display: none; } }
+
+/* Freigabe: Kurz-Klaerung "Und wenn er einen Fehler macht?" als ruhiger,
+   eingerueckter Block (war ungestylt -> volle Breite, gequetscht). */
+.rr .tl-klaerung {
+  max-width: 640px;
+  margin: clamp(28px, 4vw, 44px) 0 0;
+  padding: clamp(16px, 2vw, 22px) clamp(18px, 2.4vw, 26px);
+  border-left: 2px solid var(--rr-ink, #23262e);
+  background: rgba(28, 40, 55, 0.04);
+}
+.rr .tl-klaerung__frage { margin: 0 0 10px; font-weight: 700; font-size: clamp(16px, 1.8vw, 19px); }
+.rr .tl-klaerung__text { margin: 0; max-width: 58ch; color: var(--rr-ink-soft, rgba(28,40,55,.78)); line-height: 1.55; }
