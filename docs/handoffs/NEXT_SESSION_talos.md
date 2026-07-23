@@ -64,14 +64,22 @@ Letzter verifizierter Ready-Deploy: webredrabbitmedia-j86risb2c...vercel.app/rel
 tsc gruen, vitest 168/168, Konsole sauber, alle Stationen im Browser sichtgeprueft.
 
 ## OFFEN — hier weitermachen
-1. **Thomas-Feedback zur Runde vom 23.07. einholen/umsetzen** (Link oben). Bekannt noch offen
-   aus seiner Liste: einheitliche Seitenraender ALLER Sektionen inkl. Abgleich mit der
-   Website-Seite (sein Punkt "uneinheitliche Raender" ist erst teilweise adressiert);
-   Talos verdeckt im Hero die Panel-Texte (er sagte "darf ueberdecken", aber ggf. x auf
-   ~-460 oder Panels schmaler); Kontrollraum-Sticky pruefen; "sticky wo sinnvoll" ggf.
-   auf weitere Sektionen (Faehigkeiten? Beweis?) ausdehnen.
-2. **Design-Polish Fable**: Faehigkeiten-Karten (Sonderanfertigung Navy-invers?), Talos-
-   Sprechzeilen-Rhythmus, Augen-Akzent pro Faehigkeit (rig.setEyeColor, dezent), Abstaende.
+0. **ERLEDIGT 24.07. (Commits f8a5afd + 893a330, gepusht)**: (a) Raender vereinheitlicht —
+   WerIstTalos auf rr-narrow (war der einzige Kanten-Ausreisser, 1680px); alle Sektionen
+   jetzt Textkante 367px @1913vw, Onboarding bewusst 489px = exakt das wd-abl-Vorbild
+   (Website-Seite selbst streut 357/367/417/489, Talos-Seite ist damit einheitlicher als
+   das Vorbild). (b) Hero-Ueberdeckung geloest: END_X -545 (linke Fensterkante) + Frustum-
+   Clamp in applyHero (schmale Viewports), .tlh-panels padding-left clamp(170px,17.5vw,340px)
+   -> ALLE Panel-Texte voll lesbar, Talos steht als eigene Spalte neben den Karten.
+   (c) Polish: Sonderanfertigung navy-invers mit Tuerkis-Labels (#39c2d7, KEIN Rot auf
+   Navy), tl-card__block-CSS nachgezogen, Sprechzeilen-Gruppen enger (.tl-says + .tl-says),
+   Wer-ist-Talos-Sticky passt in EINEN Viewport (Titel gedeckelt clamp(30px,3.3vw,60px),
+   Spalte 58%). Browser-verifiziert, tsc gruen, vitest 168/168.
+1. **Thomas-Feedback zur neuen Runde einholen/umsetzen.** Noch offen aus seiner Liste:
+   Kontrollraum-Sticky pruefen; "sticky wo sinnvoll" ggf. auf weitere Sektionen
+   (Faehigkeiten? Beweis?) ausdehnen.
+2. **Design-Polish Fable (Rest)**: Augen-Akzent pro Faehigkeit (rig.setEyeColor, dezent —
+   braeuchte eine Station bei den Faehigkeiten, aktuell hat die Sektion keine).
 3. **Gemeinsamer Copy-Durchgang mit Thomas**: Headline-Varianten waehlen, Faehigkeits-Namen
    final, FAQ-Feinschliff (Frage 9 = Automatik-Frage, Variante A eingebaut), dann Freigabe-
    Vermerk in die Spec. Danach Beweis-Zahl (26 echte Beitraege) verifiziert halten.
