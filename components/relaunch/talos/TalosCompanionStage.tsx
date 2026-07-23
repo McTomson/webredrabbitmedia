@@ -41,7 +41,7 @@ const CAM_POS: [number, number, number] = [30, 150, 700];
 const CAM_TGT: [number, number, number] = [0, 132, 12];
 const CAM_FOV = 40;
 
-const END_X = -390; // Hero-Zielplatz: klar links (Thomas 23.07.: weiter links, darf Fenster ueberdecken)
+const END_X = -545; // Hero-Zielplatz: an der linken Fensterkante (die Panel-Spalte hat dafuer einen Einzug, .tlh-panels padding-left); wird in applyHero gegen den Frustum-Rand geclampt, damit er auf schmalen Viewports nicht aus dem Bild rutscht
 const HERO_Z = -130; // Hero: eine Spur kleiner (weiter von der Kamera)
 const OFF_MARGIN = 260; // Luft hinter der Bildkante (offscreen)
 // Koerperhaltung im Stand: IMMER leicht zur Bildmitte gedreht, nie nach aussen
@@ -217,6 +217,9 @@ export default function TalosCompanionStage() {
       const halfW = halfWidthAt(0);
       const startX = -(halfW + tuning.offMargin);
       const exitX = halfW + tuning.offMargin;
+      // Zielplatz nie aus dem Bild: auf schmalen Viewports (kleineres halfW)
+      // rueckt er automatisch so weit rein, dass er voll sichtbar bleibt.
+      const endX = Math.max(tuning.endX, -(halfWidthAt(HERO_Z) - 130));
       const wp = clamp01((p - P_WALK0) / (P_WALK1 - P_WALK0));
       const tp = clamp01((p - P_WALK1) / (P_TURN1 - P_WALK1));
       const ep = clamp01((p - P_EXIT0) / (P_EXIT1 - P_EXIT0));
@@ -226,11 +229,11 @@ export default function TalosCompanionStage() {
       let walking: boolean;
       if (ep > 0) {
         const turnBack = smooth(Math.min(1, ep / 0.18));
-        x = tuning.endX + (exitX - tuning.endX) * smooth(ep);
+        x = endX + (exitX - endX) * smooth(ep);
         yaw = STAND_BIAS + (FACE_TURN - STAND_BIAS) * turnBack;
         walking = ep > 0.12 && ep < 0.98;
       } else {
-        x = startX + (tuning.endX - startX) * wp;
+        x = startX + (endX - startX) * wp;
         // Ankommen: nicht auf 0 drehen, sondern auf die Stand-Haltung leicht
         // zur Mitte (er steht links -> Haltung leicht nach rechts, nie aussen).
         yaw = STAND_BIAS + (FACE_TURN - STAND_BIAS) * (1 - smooth(tp));

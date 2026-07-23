@@ -124,6 +124,19 @@
   align-self: flex-start;
 }
 
+/* Faehigkeiten-Karten: 4 Mikro-Bloecke je Karte + Sonderanfertigung invers.
+   Kein Rot auf Navy (Barrierefreiheits-Regel) -> Akzent auf der inversen
+   Karte ist Tuerkis #39c2d7 (gleicher Ton wie GEBUCHT im Kontrollraum). */
+.rr .tl-card--faehigkeit { gap: 14px; }
+.rr .tl-card__block { display: flex; flex-direction: column; gap: 4px; }
+.rr .tl-card__block .tl-card__label { margin: 0; }
+.rr .tl-card__block .tl-card__text { margin: 0; }
+.rr .tl-card--invers { background: var(--rr-navy); border-color: var(--rr-navy); }
+.rr .tl-card--invers .tl-card__name { color: #f6f5f1; }
+.rr .tl-card--invers .tl-card__label { color: #39c2d7; }
+.rr .tl-card--invers .tl-card__text { color: rgba(246, 245, 241, 0.82); }
+.rr .tl-card--invers .tl-says { color: rgba(246, 245, 241, 0.92); }
+
 @media (max-width: 1180px) { .rr .tl-cards { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .rr .tl-cards { grid-template-columns: 1fr; } }
 

@@ -200,6 +200,9 @@
     width:50%;height:100%;box-sizing:border-box;overflow:hidden;
     padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px;
     align-content:start;
+    /* linker Einzug = Standplatz des Companion-Talos an der Fensterkante
+       (END_X -545): Kartentexte bleiben komplett lesbar, er verdeckt nichts */
+    padding-left:clamp(170px,17.5vw,340px);
   }
   .tlh-card{padding:16px 18px;border:1px solid rgba(28,40,55,.14);background:var(--offwhite)}
   .tlh-card--note{
