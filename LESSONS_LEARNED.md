@@ -500,3 +500,6 @@ Update this file at the end of every session when a debugging lesson, setup issu
   data-active-Attribut erst im Engine-Boot scharf schalten.
 - **Nicht zu grob fixen:** `.layer-base display:none` toetete das Mal-Feature
   (Gooey-Reveal der versteckten Botschaft). Erst Mechanik verstehen, dann minimal fixen.
+
+## 2026-07-23 — styled-jsx im Relaunch meiden
+- `<style jsx>` rendert Komponenten ungestylt oder bricht Server-Komponenten (ProduktTueren.tsx, punkte-varianten/VarianteB.tsx, website/v2/Ablauf.tsx). Standard: plain globales `<style>{...}</style>`-Tag mit namespaced Klassen (Muster Scharnierzeile/TalosSlot). Build-Agenten explizit so briefen.

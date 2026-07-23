@@ -1,70 +1,90 @@
-# Naechste Session — LEISTUNGEN-Strang (21.07.2026 abend)
+# Naechste Session — LEISTUNGEN-Hub (23.07.2026, nach Neustart)
 
 ## Arbeitsregeln (verbindlich)
-- Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, docs/lessons.md,
-  docs/reviews/leistungen-ueberblick-2026-07-21.md, betroffene Dateien. Nicht loslegen ohne Kontext.
-- NIE raten — immer verifizieren (Code/Browser/vermessen). Bei Unsicherheit: fragen oder fail-closed.
-- Erst Plan (TodoWrite), dann ausfuehren.
-- **Arbeitsmodus (Thomas 21.07.): PARALLELE Sub-Agenten mit anderen LLMs (Sonnet baut,
-  fuer Copy ggf. Opus); die Hauptsession (Fable) ist DESIGN-LEAD + UEBERWACHER:
-  briefen, kontrollieren, korrigieren, QA — nicht alles selbst bauen (Token sparen).**
-- Laufend Browser-QA mit ECHTEM Scrollen (agent-browser), tsc + vitest gruen halten.
-  `review-it` nach groesseren Schritten.
-- Nur Leistungs-Strang-Dateien anfassen (Fremd-Straenge: website/v2, website-demo,
-  talos-choreo, SubpageHero, kontakt/ueber-uns-Demos = TABU). Commits lokal, nicht pushen.
-- Haus-Stimme: Du-Anrede, NIE Gedankenstrich, kein sichtbares "KI", keine Preise,
-  echte Umlaute im sichtbaren Content.
+- Lies ZUERST alles Relevante: diesen Handoff, STATE.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
+- NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.
+- Erst einen Plan machen (TodoWrite), dann ausfuehren.
+- Skills + parallele Sub-Agenten nutzen wo es hilft. Fuer lange autonome Laeufe den `autonomous-runner` Agent verwenden.
+- Autonom handeln, voller Zugriff inkl. Browser — ohne fuer jeden Schritt nachzufragen (Grenze: kein Botschutz-Umgehen, keine Account-Anlage, nichts Destruktives ohne Deckung).
+- Laufend testen + `review-it` bei groesseren Schritten. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
+- Bei langen Agenten-/Hintergrund-Laeufen ALLE 15 MIN Health-Check + Stichprobe (TaskList/BashOutput/Monitor). Bricht ein Tool ein → STOPP + fixen, keine kaputten Daten schreiben. Nicht endlos haengen.
 
-## Stand dieser Session (21.07., alles browser-verifiziert, lokal committet)
-- Hero = ueber-uns-Klon (leistungen-hero2-demo + LeistungenHero2Client), Zahnrad via
-  MorphSculpture comp={0} + navyPiece={false}. KERN-ERKENNTNIS: Figur kommt NICHT aus
-  der Engine (#headSvg ist per CSS aus), sondern aus MorphSculpture-Portal, getrieben
-  ueber window.__sculptProgress. NIE Fragmentdaten in die Engine mappen.
-- Seiten-Flow nach Schnitt: Hero -> LeistungenUeberblick (6 Punkte, pixelperfektion-
-  Raster vermessen: 1230er-Container, 553x450-Bilder, Paar/Interlude/Paar/Einzel,
-  rechte Spalte +100px, Reveal 0.6s gestaffelt) -> Scharnierzeile -> TalosSlot ->
-  Referenzen -> FAQ -> CTA. BauMoment/WasDuBekommst/WasSieKann/MehrAlsWebsite RAUS.
-- Copy-Kern: "Eine normale Website kriegst du ueberall. Unsere hat eine
-  Kommandozentrale." 6 Punkte in Haus-Stimme. Punkt 06 -> Link /leistungen/talos.
-- 6 Stimmungsbilder unter public/relaunch/leistungen/ (Unsplash/Pexels; 02+06 sind
-  die schwaechsten, spaeter durch echte Screens ersetzen).
-- Review (3 Agenten) + Fixes: Overlap -84vh transparent (exakt Zerfallsbeginn DIS0=0.92,
-  Herleitung in leistungen-ueberblick.css dokumentiert), __sculptProgress Reset/Delete,
-  toter CSS 615->240 Zeilen, Gedankenstrich aus Meta-Description. 2 Haiku-Findings
-  nach Verifikation verworfen (im Review-Log).
+## Arbeitsmodus mit Thomas (WICHTIG)
+- Thomas sagt Punkte EINZELN an; je Punkt: umsetzen -> im Browser zeigen -> SEIN OK an
+  SEINEM Bildschirm abwarten -> erst dann weiter. Nichts gross vorbauen.
+- Er wuenscht: parallele Agenten mit UNTERSCHIEDLICHEN Modellen (sonnet/opus mischen),
+  Hauptsession ist Orchestrator + QA (Memory feedback_fable_dirigent_agenten_delegieren).
+- Visuelle Fixes gelten erst nach SEINER Bestaetigung als erledigt
+  (Memory feedback_visuelle_fixes_thomas_bestaetigt).
 
-## ERLEDIGT 21.07. spaetabend (Folgesession, alle 4 Feedback-Punkte, browser-verifiziert)
-1. Roter Mal-Punkt zurueck im Hero (.cursor-dot wieder aktiv, cursor:none beim Malen).
-2. "Linie" aufgeklaert: war die Ablauf-Timeline der WEBSITE-Unterseite mit kaputten
-   styled-jsx-Styles; 'use client'-Fix kam von der Parallel-Session, rendert jetzt
-   korrekt als Kreis-Kette. Hub hat keine Linie (dokumentweiter DOM-Scan leer).
-3. TalosSlot: Browser-Mockup-Rahmen (.lht-browser: Navy-Leiste, roter Punkt,
-   "deine-website.at"-Pille, Skeleton-Inhalt) um die bestehende TalosEntranceStage —
-   Figur erscheint, winkt, folgt Maus, blinzelt (kam gratis aus talosMotion).
-4. KundenSagen (ersetzt Referenzen): 1:1 nach vermessener finsight-Spec (42px-Preset,
-   Kacheln 123px/19px-Radius, aktiv farbig +30px hoch, Name an aktiver Kachel,
-   instant-Cut, zyklische Pfeile), Marken-Navy-Grund, Initialen-Kacheln.
-   AKZENT-ENTSCHEIDUNG Thomas 21.07.: gedaempftes Rot #c94f5c (= Default --ks-accent).
-   NUR 2 echte Reviews (Danesh, Rohrer) — Dmitry Pashlov ist TEAM, kein Kunde
-   (Code-Doku), dritte Kachel erst bei echter dritter Rezension.
+## Vorgeschichte in Kurzform
+1. 22.07. vormittag: Hub-Umbau auf Website-Designregeln (6904727) — Thomas NICHT zufrieden.
+2. Eine andere Session drehte mit ihm vieles zurueck (74b8308): Scharnierzeile statt
+   ScrollBumper, kein ProduktTueren, keine Klammer-Eyebrows im Hub. DIESER Stand ist die Basis.
+3. 22.07. abends (diese Session): ehrliche Analyse geliefert, Thomas hat bestaetigt:
+   - Hero-Strecke BLEIBT wie sie ist (lang, Zahnrad-Morph). Nicht anfassen.
+   - Bilder-Strecke (6 Punkte mit Stockfotos) passt NICHT -> zwei Varianten gebaut (s.u.).
+   - Restliche Analyse-Punkte (Preis frueh, Dauer-FAQ, Domain-FAQ, Talos-Kernsatz) = uebernehmen -> GEBAUT.
+   - Talos-Sektion: gleiches Feld wie Unterseite website -> GEBAUT (TalosDashboard 1:1 im Hub).
+   - "weitere anweisungen folgen" — er diktiert als naechstes Punkt fuer Punkt.
 
-## OFFEN fuer naechste Session
-- Thomas-Abnahme der Gesamtseite (Hero -> 6 Punkte -> Scharnier -> Talos-Mockup ->
-  KundenSagen -> FAQ -> CTA).
-- Teal-Moment: alte Referenzen-Sektion war der eine Teal-Traeger, KundenSagen ist
-  Navy — mit Thomas klaeren, ob TalosSlot den Teal-Akzent uebernimmt.
-- Talos-Blickfolge reagiert auf die GANZE Seite (window.pointermove) — Begrenzung
-  auf den Mockup-Bereich braeuchte Eingriff in TalosEntranceStage (Talos-Strang).
-- Dritte echte Google-Rezension besorgen -> TESTIMONIALS-Array in KundenSagen.tsx.
-- Danach: /leistungen/website- + talos-Hero nach Klon-Rezept.
+## Stand dieser Session (Commit f155bdd lokal, tsc gruen, vitest 168/168, Browser-QA ok)
+Auf der LIVE-Hub-Seite /relaunch-preview/leistungen:
+- TalosSlot ERSETZT durch `<TalosDashboard />` (components/subpages/leistungen/website/v2/
+  TalosDashboard.tsx, 1:1 Reuse; Hub importiert jetzt wd-eyebrow.css + website.css,
+  beide komplett .rr-gescoped, Konfliktcheck negativ). TalosSlot.tsx existiert noch, unbenutzt.
+- LeistungenUeberblick Punkt 06 NEU: Titel "Talos ist immer dabei. Weitere Helfer stellst du
+  dazu." Body beginnt mit Kernsatz "Bei jeder Website fix dabei: Talos, dein Mitarbeiter.
+  Kein Extra-Paket."
+- Preis-Zeile nach Punkt 06 (.lu-priceNote in leistungen-ueberblick.css): Fixpreis statt
+  Stundensaetze, Entwurf gratis, Link /preise (gleiches Ziel wie Menue+FAQ). KEINE Zahlen.
+- LeistungenFaq: 2 neue Fragen "Wie lange dauert das?" (ohne erfundene Fristen) und
+  "Was passiert mit meiner alten Seite und meiner Domain?" — letztere enthaelt Zusagen
+  (Umzug/E-Mail/Weiterleitungen), im Code markiert "TODO Thomas: Zusage-Umfang bestaetigen".
 
-## Offen / Risiken
-- EXIF-Credit in punkt-04-website.jpg vor Live-Gang strippen (alle Stock-Bilder).
-- Geparkte Idee (NICHT ungefragt bauen): Fragebogen "Finde raus, was du brauchst".
-- Vorbestehender Fremd-Fehler: website/v2/Ablauf.tsx styled-jsx ohne 'use client'.
-- Dev-Server: `npm run dev -- --port 9000` (nie parallel `next build`).
+Varianten fuer die Bilder-Strecke (Vorschau-Routen, Live-Seite unveraendert):
+- A "Typo-Werkbank": /relaunch-preview/leistungen/punkte-varianten/a
+  (VarianteA.tsx + variante-a.css: riesige rote Ziffern, 03 als Outline-Sondermoment, keine Bilder)
+- B "Echte Bauteile": /relaunch-preview/leistungen/punkte-varianten/b
+  (VarianteB.tsx: 6 Skeleton-Bauteile: Notiz, Marken-Kacheln, Browser-Wireframe mit
+  Entwurf-Stempel, Code-Editor, Dashboard, Freigabe-Liste; alles eckig, keine erfundenen Werte)
+- Empfehlung an Thomas: B (Sektion = Produktbeweis). Joker-Idee (NICHT gebaut):
+  rote Fragment-Figuren wie das Hero-Zahnrad, ein Motiv je Punkt.
+- Bekannt: Variante B zeigt bei Punkt 06 noch die ALTE Copy (Route entstand parallel zur
+  Copy-Aenderung) — beim Uebernehmen der Gewinner-Variante angleichen.
 
-## Befehle/Vorbilder
-- Seite: http://localhost:9000/relaunch-preview/leistungen · Vorbild-Hero: /ueber-uns
-- Vorbild Aufgabe 4: https://finsight.framer.ai/ (Testimonial-Sektion)
-- tsc: `npx tsc --noEmit` · Tests: `npx vitest run` · QA: agent-browser, echtes Scrollen
+## Naechste konkrete Schritte
+1. Dev-Server pruefen (npm run dev -- --port 9000), dann Thomas auf SEINEM Schirm zeigen:
+   Hub-Aenderungen + Varianten A/B. Er waehlt Variante oder verlangt den Joker.
+2. Gewinner-Variante in LeistungenUeberblick einbauen (neue Punkt-06-Copy + Preis-Zeile
+   mitnehmen), Browser-QA, sein OK, Commit.
+3. Domain-/Umzugs-Zusage in der FAQ von Thomas absegnen lassen (TODO im Code).
+4. Danach seine weiteren Ansagen einzeln. Bestaetigte, aber NOCH NICHT beauftragte Ideen
+   (nicht ungefragt bauen): Vertrauens-/Founder-Block (braucht sein Material), echtes
+   Referenz-Beispiel mit Screenshot.
+5. Falls er wieder eine stoerende Linie sieht: exakte Stelle mit SEINEM Screenshot klaeren,
+   DOM-Scan: Array.from(document.querySelectorAll('*')).filter(el => {const s=
+   getComputedStyle(el); return [s.borderTopWidth,s.borderBottomWidth].some(w=>w==='1px');})
+6. Aufraeumen NACH Abnahme: Verlierer-Variante + punkte-varianten-Routen raus,
+   TalosSlot.tsx/Scharnierzeile.tsx/ProduktTueren.tsx (unbenutzt, TEMP "use client" Zeile 1)
+   entsorgen oder behalten.
+
+## Blocker / Risiken
+- Working Tree geteilt mit AKTIVEN Parallel-Sessions: talos/page.tsx wird umgebaut
+  (Talos-Strang), neue Preise-Seite (Commits 311c10c, 25bd5f9), Talos-Companion (b9702b5).
+  NUR eigene Hub-Dateien anfassen/committen. Diese Handoff-Datei wurde zwischenzeitlich
+  von einer anderen Session ueberschrieben — bei Widerspruechen gilt DIESE Version (23.07.).
+- Nicht pushen (Relaunch-Strang bewusst lokal).
+- styled-jsx funktioniert im Relaunch NICHT zuverlaessig (2x aufgetreten: ProduktTueren,
+  VarianteB): immer plain globales `<style>`-Tag mit namespaced Klassen verwenden.
+- Dev-Server NIE parallel zu `next build` laufen lassen.
+
+## Relevante Dateien/Befehle
+- Hub: app/relaunch-preview/leistungen/page.tsx
+- Sektionen: components/subpages/leistungen/ (LeistungenUeberblick.tsx +
+  leistungen-ueberblick.css, LeistungenFaq.tsx, KundenSagen.tsx GETEILT mit Unterseite,
+  SchlussCta.tsx, website/v2/TalosDashboard.tsx)
+- Varianten: components/subpages/leistungen/punkte-varianten/ +
+  app/relaunch-preview/leistungen/punkte-varianten/{a,b}/page.tsx
+- tsc: npx tsc --noEmit · Tests: npx vitest run · QA: agent-browser Chrome, ECHTES Scrollen;
+  Scroll-Sprung per JS window.scrollTo({top:N,behavior:'instant'}) funktioniert auf der Seite
