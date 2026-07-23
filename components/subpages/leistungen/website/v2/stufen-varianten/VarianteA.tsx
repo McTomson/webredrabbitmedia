@@ -12,6 +12,12 @@ import { useEffect, useRef, useState } from "react";
  * (grid-template-rows 0fr -> 1fr, Text fadet ein). Beim Scroll-Eintritt
  * staggern die Zeilen herein. prefers-reduced-motion -> alles statisch offen-fahig
  * ohne Bewegung. Copy identisch zu Variante B/C.
+ *
+ * ACHTUNG beim Varianten-Aufraeumen (Review-Hinweis 23.07.): Diese Datei ist
+ * NICHT mehr nur eine Vorschau-Variante — ihr STUFEN-Export ist die produktive
+ * Datenquelle fuer die Merkmale von DreiStufenMatrix (Website-Unterseite) UND
+ * von components/subpages/preise/PreiseMatrix.tsx (Preisseite). Variante B/C
+ * duerfen geloescht werden, VarianteA nicht — sonst brechen beide Seiten.
  */
 
 type Merkmal = { titel: string; detail: string };

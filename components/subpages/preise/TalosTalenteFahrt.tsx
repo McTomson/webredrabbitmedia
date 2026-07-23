@@ -164,6 +164,12 @@ function TalosFahrt() {
             Bild). Slots von 140vw Breite tragen das Wort ueber die ganze
             Fahrt hinweg im Sichtfeld, wie bei CasePanels' Riesenwort. */}
         <div ref={giantRef} aria-hidden="true" className="tf-giant">
+          {/* Slot-Zahl hergeleitet: Fahrtweg des Wortes = (SLIDES-1) * 100vw * 1.15
+              = 6 * 115vw = 690vw. Bei 140vw je Slot deckt eine Kette von
+              ceil(690/140) + 1 = 6 Slots die Strecke gerade eben ab; 10 Slots
+              geben Puffer fuer breite Viewports und eine spaeter groessere
+              STATIONEN-Liste (ueberzaehlige Slots liegen ausserhalb, kosten
+              nichts). Bei mehr als ~11 Stationen diese Zahl nachziehen. */}
           {Array.from({ length: 10 }).map((_, i) => (
             <span className="tf-giant__slot" key={i}>Talos</span>
           ))}
@@ -207,6 +213,10 @@ function TalosFahrt() {
           "styled-jsx im Relaunch meiden"). */}
       <style>{`
         .tf-track {
+          /* 105vh je Slide statt 100vh: die Buehne haelt 100vh, die zusaetzlichen
+             5vh sind Scroll-Puffer, damit die letzte Station nicht exakt im
+             Moment des Sticky-Endes umschaltet (sonst wirkt der Ausstieg
+             abgehackt). Gleiche Groessenordnung wie CasePanels' ~380vh/Thema. */
           height: calc(${SLIDES} * 105vh);
           position: relative;
           /* Full-bleed wie CasePanels: aus dem rr-section-Seitenpadding

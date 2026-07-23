@@ -28,6 +28,22 @@ const PREIS: Record<string, string> = {
   Premium: 'ab 4.900 €',
 };
 
+/* Fail-closed (Review-Finding P2, 23.07.): der Lookup laeuft ueber den
+   Stufen-NAMEN aus VarianteA.tsx. Wird dort umbenannt, stuende hier sonst
+   still eine leere Preiszeile — ausgerechnet auf der Preisseite. Bewusst
+   namens- statt indexbasiert: eine geaenderte Reihenfolge wuerde bei
+   Index-Zuordnung einen FALSCHEN Preis anzeigen, und ein falscher Preis ist
+   schlimmer als ein harter Fehler. Die Seite wird statisch generiert, dieser
+   Check schlaegt also im Build zu, nicht beim Besucher. */
+const STUFEN_OHNE_PREIS = STUFEN.filter((s) => !PREIS[s.name]).map((s) => s.name);
+if (STUFEN_OHNE_PREIS.length > 0) {
+  throw new Error(
+    `PreiseMatrix: kein Preis fuer Stufe(n) ${STUFEN_OHNE_PREIS.join(', ')}. ` +
+      'PREIS-Map und STUFEN (leistungen/website/v2/stufen-varianten/VarianteA.tsx) ' +
+      'sind auseinandergelaufen — Preise NUR 950 / 2.900 / ab 4.900.',
+  );
+}
+
 function StufeMatrix({ stufe }: { stufe: (typeof STUFEN)[number] }) {
   const [active, setActive] = useState<number | null>(null);
 

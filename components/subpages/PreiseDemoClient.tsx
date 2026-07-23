@@ -43,6 +43,12 @@ export default function PreiseDemoClient({
     //    einmal booten.
     if (!booted.current) {
       booted.current = true;
+      /* Review-Fix (Lesson L-leistungen-02): __sculptProgress ist window-global
+         und wird auch von den ueber-uns-/kontakt-/website-Engines geschrieben.
+         Bei Soft-Navigation von dort hierher stuende bis zum fonts.ready-Boot
+         der eigenen Engine der fremde Alt-Wert (Figur flasht in falscher Pose).
+         Vor dem Engine-Start auf 0 (= Startpose "offscreen") setzen. */
+      (window as unknown as { __sculptProgress?: number }).__sculptProgress = 0;
       const script = document.createElement('script');
       script.setAttribute('data-preise-demo-engine', '');
       script.textContent = js;
@@ -70,6 +76,11 @@ export default function PreiseDemoClient({
          sich tote <script>-Knoten im body. booted bleibt true (StrictMode-
          Doppel-Effekt darf die Engine nicht erneut booten). */
       document.querySelector('script[data-preise-demo-engine]')?.remove();
+      /* Gegenstueck zum Reset oben (Lesson L-leistungen-02): den globalen
+         Fortschritt nicht fuer die naechste Seite liegen lassen. Fremd-Clients
+         raeumen selbst nicht auf, darum verlassen wir uns beim Mount NICHT auf
+         fremdes Aufraeumen. */
+      delete (window as unknown as { __sculptProgress?: number }).__sculptProgress;
     };
   }, [js]);
 
