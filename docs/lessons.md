@@ -74,3 +74,15 @@
 **Reviewer-Finding was**: UeberUnsDemoClient / KontaktDemoClient / LeistungenHero2Client sind ~105 LOC nahezu identisch; gemeinsame Basis wuerde Duplikation halbieren.
 **User-Decision**: Bewusste Duplikation — kontakt/ueber-uns sind Fremd-Straenge (Arbeitsregel: nur eigene Strang-Dateien anfassen). Konsolidierung nur, wenn ein Strang ohnehin alle drei Seiten bearbeitet.
 **Don't re-flag**: Die Struktur-Duplikation der *DemoClient/*Hero2Client-Wrapper, solange die Fremd-Strang-Regel gilt.
+
+### L-preise-01 — Autoritative Werte nie per weichem Lookup gegen eine Fremd-Datenquelle
+**When**: Preise, Fristen, Rechtszahlen oder andere autoritative Werte werden per Map/Lookup an Daten geheftet, die aus einer ANDEREN Datei/Komponente importiert werden (z. B. `PREIS[stufe.name]` gegen importierte STUFEN).
+**Pattern to avoid**: Lookup ohne Vollstaendigkeits-Guard — laeuft der Schluessel auseinander (Umbenennung in der Quelldatei), rendert die Stelle still LEER; TypeScript meldet bei `Record<string, T>` nichts.
+**Why**: Preise-Review 23.07.: eine Umbenennung in stufen-varianten/VarianteA.tsx haette eine leere Preiszeile auf der Preisseite erzeugt. Deckt sich mit der Dauerregel "nie raten, fail-closed".
+**Check**: Modul-Level-Guard, der bei fehlendem Schluessel wirft (bei SSG bricht das im Build, nicht beim Besucher). Zuordnung ueber den NAMEN behalten, nicht ueber den Index — eine geaenderte Reihenfolge wuerde sonst einen FALSCHEN Wert zeigen, und falsch ist schlimmer als leer.
+
+### L-preise-02 — Kein `npm run build`, solange der Dev-Server laeuft
+**When**: Agenten oder Menschen wollen waehrend laufender Browser-QA "schnell den Build gruen sehen" (Dev-Server auf Port 9000 aktiv).
+**Pattern to avoid**: `npm run build` parallel zum laufenden `next dev` — der Build ueberschreibt `.next/`, danach liefern die Dev-Chunks (main-app.js etc.) 404, React hydratisiert nicht mehr. Die Seite sieht komplett tot aus: kein Menue, keine Engine, keine Interaktion, Konsole trotzdem "sauber".
+**Why**: Preise-Session 23.07.: eine halbe QA-Runde wurde gegen eine Seite gefahren, die nur wegen des parallelen Builds nicht lief — Fehldiagnose "Hero-Engine kaputt".
+**Check**: Bau-Agenten explizit briefen: Build nur ohne laufenden Dev-Server; danach Dev-Server neu starten. In der QA bei "Seite reagiert gar nicht" ZUERST `curl -s -o /dev/null -w '%{http_code}' localhost:9000/_next/static/chunks/main-app.js` pruefen — 404 = Build hat den Dev-Server zerschossen, kein Code-Bug.
