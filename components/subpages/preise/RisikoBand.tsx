@@ -15,7 +15,7 @@ export default function RisikoBand() {
           bis Section-Ende) muss ab Section-Anfang reichen, sonst haette sie kaum
           Sticky-Weg (QA-Fix: Karte war in keinem Scroll-Sample sichtbar). */}
       <FloatingReview
-        side="left"
+        side="right"
         quote="Die Zusammenarbeit war äußerst präzise, auf all unsere Wünsche wurde detailliert eingegangen."
         name="Rafael Danesh, Google-Rezension"
       />

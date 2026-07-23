@@ -110,9 +110,12 @@ export default function FloatingReview({
         .fr-wrap {
           position: absolute;
           top: 28vh;
-          /* Breite so klemmen, dass die Karte in der freien Randspalte bleibt
-             (Textspalte beginnt bei ~200px): nie ueber Text. */
-          width: clamp(140px, 10vw, 230px);
+          /* Beide Karten schweben rechts: dort ist die echte Freiflaeche.
+             Live vermessen — der Inhalt beider Sektionen beginnt bei ~199px
+             (rr-wrap-Padding), links bleiben also nur ~175px und die Karte
+             wuerde auf 6 Zeilen umbrechen. Rechts endet der laufende Text bei
+             ~1005px (max-width 56ch), die Karte liegt im freien Aussenrand. */
+          width: clamp(180px, 14vw, 225px);
           opacity: 0;
           transform: translateY(18px);
           transition: opacity 0.9s var(--rr-ease, ease), transform 0.9s var(--rr-ease, ease),
