@@ -3,11 +3,46 @@
 import Faq, { type FaqItem } from '@/components/relaunch/Faq';
 
 /**
- * Sektion 6 — Preis-FAQ (brand/PREISE_SEITE_BRIEF.md Abschnitt 5.6/9), Copy
- * 1:1 aus der alten Live-Seite (app/preise/page.tsx), SSR-lesbar ueber
- * components/relaunch/Faq.tsx (liefert FAQPage-JSON-LD automatisch mit).
+ * Sektion 6 — Preis-FAQ (brand/PREISE_SEITE_BRIEF.md Abschnitt 5.6/9),
+ * SSR-lesbar ueber components/relaunch/Faq.tsx (liefert FAQPage-JSON-LD
+ * automatisch mit).
+ *
+ * QA-Fix (Design-Lead-Addendum): die 6 allgemeinen Fragen 1:1 im Wortlaut
+ * der Website-FAQ (components/subpages/leistungen/website/WebsiteFaq.tsx)
+ * ergaenzt, in deren Reihenfolge — vorher standen nur die 4 preis-
+ * spezifischen Fragen da. Die bisherigen 4 preis-spezifischen Fragen
+ * bleiben zusaetzlich, ans Ende gestellt (Auftrag: "duerfen zusaetzlich
+ * bleiben"). EINE woertliche Abweichung: die erste Antwort verwies im
+ * Original auf "die Preisseite" — da diese Antwort HIER auf der Preisseite
+ * selbst steht, wurde nur dieser eine Verweis auf "weiter oben auf dieser
+ * Seite" umformuliert (sonst waere der Satz zirkulaer/falsch), der Rest
+ * ist unveraendert.
  */
 const FAQ_ITEMS: FaqItem[] = [
+  {
+    q: 'Was kostet so eine Website ungefähr?',
+    a: 'Das kommt drauf an, wie viel Seite du brauchst, aber es ist immer ein Fixpreis, kein Stundensatz, bei dem am Ende eine böse Überraschung steht. Die drei Stufen mit den echten Zahlen stehen weiter oben auf dieser Seite, da schaust du dir in Ruhe an, was zu dir passt. Und den Entwurf siehst du sowieso, bevor du dich festlegst.',
+  },
+  {
+    q: 'Wie lange dauert das Ganze?',
+    a: 'Den ersten Entwurf siehst du schnell, meist in ein paar Tagen. Danach feilen wir so lange, bis es passt. Ohne endlose Meetings, den großen Teil der Arbeit machen wir, nicht du.',
+  },
+  {
+    q: 'Gehört mir die Website am Ende wirklich?',
+    a: 'Ja, ganz. Sobald die Seite live ist, gehört sie dir, mit Domain, Texten, Bildern und allem, was drinsteckt. Wir sitzen nicht auf deinem Zugang und halten dich nicht fest. Willst du irgendwann zu jemand anderem, nimmst du deine Seite einfach mit.',
+  },
+  {
+    q: 'Kann ich Texte und Bilder selbst ändern?',
+    a: 'Ja. Du bekommst einen einfachen Zugang, in dem du Texte und Bilder mit ein paar Klicks selbst tauschst, ganz ohne Technikwissen. Und wenn du lieber willst, dass wir das übernehmen, sagst du kurz Bescheid und wir ziehen es für dich nach.',
+  },
+  {
+    q: 'Ist die Seite rechtlich sauber, also Impressum und Datenschutz?',
+    a: 'Ja. Impressum und Datenschutzerklärung setzen wir nach österreichischem Recht auf, und die Seite ist so gebaut, dass sie die üblichen Vorgaben erfüllt. Du stehst also nicht mit einem Bein im Risiko, nur weil dir eine Pflichtangabe gefehlt hat.',
+  },
+  {
+    q: 'Warum seht ihr mir den Entwurf ohne Vorkasse, wollt dann aber eine Anzahlung?',
+    a: 'Weil wir das Risiko tragen, bis du überzeugt bist. Wir zeigen dir deine Seite zuerst fertig, weil wir ziemlich sicher sind, dass sie sitzt. Gefällt sie dir nicht, hat es dich nichts gekostet. Sagst du Ja, arbeiten wir ab da partnerschaftlich, und dann fällt eine faire Anzahlung an. Das ist ehrlicher, als dir vorher Geld abzunehmen und zu hoffen, dass es passt.',
+  },
   {
     q: 'Warum seht ihr den Entwurf ohne Vorkasse?',
     a: 'Weil wir das Risiko tragen wollen, nicht du. Du siehst zuerst einen echten Vorschlag. Eine Anzahlung fällt erst an, wenn dir das Ergebnis gefällt und du den Auftrag erteilst.',

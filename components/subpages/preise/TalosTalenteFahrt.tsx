@@ -102,9 +102,9 @@ function StaticStations() {
           padding: clamp(32px, 5vw, 56px) clamp(20px, 5vw, 48px);
         }
         .tf-static__name {
-          font-family: var(--rr-font-display);
-          font-weight: 800;
-          font-size: clamp(1.5rem, 4vw, 2.1rem);
+          font-family: var(--rr-font-serif);
+          font-weight: 500;
+          font-size: clamp(1.7rem, 4.4vw, 2.4rem);
           margin: 0 0 12px;
           color: #fff;
         }
@@ -171,7 +171,10 @@ function TalosFahrt() {
           {STATIONEN.map((s, i) => (
             <div className="tf-slide" key={s.name} style={{ left: `${i * 100}vw` }}>
               <div className="tf-slide__inner">
-                <span className="tf-slide__num">{`0${i + 1}`}</span>
+                <div className="tf-slide__eyebrow">
+                  <span className="tf-slide__eyebrow-label">Talos-Talent</span>
+                  <span className="tf-slide__num">{`0${i + 1}`}</span>
+                </div>
                 <h3 className="tf-slide__name">{s.name}</h3>
                 <p className="tf-slide__text">{s.text}</p>
               </div>
@@ -257,19 +260,37 @@ function TalosFahrt() {
           margin-left: max(24px, 8vw);
           margin-right: 12vw;
         }
+        /* Typografie-Fix (Design-Lead-Addendum): CasePanels-Grammatik ist
+           kleine Sans-Eyebrow letterspaced + grosse Serif-Headline weiss,
+           nicht DM-Sans-Bold wie zuvor. Die Nummer bleibt rot + Sans, ruckt
+           aber als Teil der Eyebrow-Zeile ein statt eigener Block. */
+        .tf-slide__eyebrow {
+          display: flex;
+          align-items: baseline;
+          gap: 12px;
+          margin-bottom: 18px;
+        }
+        .tf-slide__eyebrow-label {
+          font-family: var(--rr-font-ui);
+          font-size: 13px;
+          font-weight: 600;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.55);
+        }
         .tf-slide__num {
           font-family: var(--rr-font-ui);
           font-size: 13px;
           font-weight: 700;
           letter-spacing: 0.16em;
           color: var(--rr-red);
-          margin-bottom: 18px;
         }
         .tf-slide__name {
-          font-family: var(--rr-font-display);
-          font-weight: 800;
-          font-size: clamp(2.2rem, 5vw, 4rem);
-          line-height: 1.02;
+          font-family: var(--rr-font-serif);
+          font-weight: 500;
+          font-size: clamp(2.6rem, 5.6vw, 4.6rem);
+          line-height: 1.05;
+          letter-spacing: -0.01em;
           margin: 0 0 20px;
           color: #fff;
         }
