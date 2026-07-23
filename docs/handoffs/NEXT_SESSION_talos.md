@@ -59,9 +59,16 @@
    REVISION 23.07. am Dateiende (integriert: "Kein Tool, kein Abo..." + Login/Dashboard/
    Kommandozentrale/"so bekommst du das sonst nirgends"). NICHT freigegeben.
 
-## Commits (alle GEPUSHT auf origin/relaunch): 1524f1d, a6fbb96, da9844d, 495caa3, ef5fa72
-Letzter verifizierter Ready-Deploy: webredrabbitmedia-j86risb2c...vercel.app/relaunch-preview/leistungen/talos
-tsc gruen, vitest 168/168, Konsole sauber, alle Stationen im Browser sichtgeprueft.
+## Commits (alle GEPUSHT auf origin/relaunch)
+Talos-Strang: 1524f1d, a6fbb96, da9844d, 495caa3, ef5fa72, b9702b5 (Session 23.07.),
+dann Runde 24.07.: f8a5afd + 893a330 (Raender/Hero/Polish) + 9beaa73 (dieser Handoff).
+ACHTUNG: relaunch ist ein GETEILTER Branch (parallele Preise-Session pusht auch dorthin).
+Vor dem Pushen immer `git pull --rebase --autostash`; NUR eigene Talos-Dateien committen
+(components/{relaunch/talos,subpages/talos-demo,subpages/leistungen/talos}, page.tsx,
+docs/handoffs/NEXT_SESSION_talos.md). NIE seo-monitor-log.md, brand/, preise-*, Root-PNGs.
+Letzter verifizierter Ready-Deploy (Stand 24.07., Runde Raender/Hero/Polish):
+https://webredrabbitmedia-jfehncfcl-toms-projects-17d37f0b.vercel.app/relaunch-preview/leistungen/talos
+tsc gruen, vitest 168/168, Konsole sauber, Hero + Sektionen im Browser sichtgeprueft.
 
 ## OFFEN — hier weitermachen
 0. **ERLEDIGT 24.07. (Commits f8a5afd + 893a330, gepusht)**: (a) Raender vereinheitlicht —
