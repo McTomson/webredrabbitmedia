@@ -88,10 +88,23 @@ export default function PreiseDemoClient({
     <>
       <style dangerouslySetInnerHTML={{ __html: css }} />
       {injectedHtml}
+      {/* Figur-Versatz als eigene Regel statt Inline-Style, weil er an einen
+          Breakpoint gebunden ist: ab 769px liegen Figur und Text NEBENeinander
+          (.story-grid 2-spaltig) — die comp3-Komposition sitzt von Haus aus
+          rechts und wuerde die Textspalte ueberdecken, deshalb nach links in
+          die freie Haelfte. Unter 768px stapelt .story-grid (Figur UEBER Text,
+          grid-template-rows 44vh auto), dort muss die Figur mittig bleiben —
+          ein Versatz wuerde sie aus dem Bild schieben. */}
+      <style>{`
+        @media (min-width: 769px) {
+          .pd-figur { transform: translateX(-46vw); }
+        }
+      `}</style>
       {sticky &&
         createPortal(
           <div
             aria-hidden
+            className="pd-figur"
             style={{
               position: 'absolute',
               inset: 0,
@@ -109,9 +122,10 @@ export default function PreiseDemoClient({
                 SONDERKORREKTUR ist (comp0 hat ein breiteres u-Fenster/andere
                 Rahmung als comp1-4, siehe WebsiteDemoClient-Kommentar).
                 comp1 (Gluehbirne, KontaktDemoClient) laeuft OHNE Zusatz-
-                Transform; comp3 folgt diesem Default (QA-Fix: die Zahnrad-
-                Korrektur verschob die Chart-Figur aus dem sichtbaren Bild/
-                liess sie waehrend des Story-Texts nicht sauber halten). */}
+                Transform. Der Versatz von comp3 steckt stattdessen in der
+                .pd-figur-Regel oben (breakpoint-gebunden, live vermessen:
+                Figur 855..1426px vs. Textspalte ab 777px -> ueberdeckte den
+                Text; nach -46vw liegt sie bei 120..691px mit sauberem Abstand). */}
             <MorphSculpture comp={3} style={{ background: 'transparent' }} />
           </div>,
           sticky,
