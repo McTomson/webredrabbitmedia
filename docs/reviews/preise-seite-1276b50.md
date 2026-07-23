@@ -66,3 +66,21 @@ Der Bau-Agent hat `npm run build` laufen lassen, waehrend der Dev-Server auf Por
 Das ueberschreibt `.next/`, die Chunks liefern danach 404 und React hydratisiert nicht mehr —
 die Seite wirkt komplett tot (kein Menue, keine Engine), obwohl der Code fehlerfrei ist.
 Fehldiagnose-Gefahr in der QA. Siehe neue Lesson L-preise-02.
+
+## Nachtrag — Design-QA nach dem Review (Commit 1458c3d)
+
+Beim eigenen Design-Durchgang (nicht von den Reviewern gefunden, weil rein visuell):
+Die comp3-Komposition (Chart) sitzt nativ in der RECHTEN Bildhaelfte und lag damit exakt
+ueber der Textspalte des Heros (live vermessen: Fragmente 855..1426px, Textspalte ab 777px).
+Auf der Vorbild-Seite (leistungen/website) liegt die Figur links, der Text rechts.
+Fix: `.pd-figur { transform: translateX(-46vw) }` als breakpoint-gebundene Regel
+(`min-width: 769px`), weil `.story-grid` in demo.css unter 768px auf eine Spalte stapelt
+(Figur UEBER Text) und ein Versatz die Figur dort aus dem Bild schoebe.
+Ergebnis verifiziert: Figur 120..691px, Textspalte ab 777px.
+
+**QA-Lesson dabei**: Ich habe zuerst mit `window.scrollTo` gemessen und dadurch falsche
+Zwischenstaende gesehen (Figur wirkte "nie zusammengesetzt"). Das ist exakt der in
+L-referenzen-02 dokumentierte Fehler — Scroll-QA gehoert mit echten Wheel-Events gefahren.
+Zusaetzlich hat ein JS-Loop mit vielen scrollTo+rAF-Awaits den Renderer in einen
+CDP-Timeout getrieben (weisse Screenshots) — solche Mess-Schleifen nicht im Page-Context
+batchen, sondern einzeln scrollen und messen.
