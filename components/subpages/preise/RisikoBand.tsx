@@ -11,6 +11,15 @@ import FloatingReview from './FloatingReview';
 export default function RisikoBand() {
   return (
     <section className="rr-section rp-risiko">
+      {/* FloatingReview VOR dem Inhalt im DOM: ihr sticky-Bereich ("Anschlagpunkt"
+          bis Section-Ende) muss ab Section-Anfang reichen, sonst haette sie kaum
+          Sticky-Weg (QA-Fix: Karte war in keinem Scroll-Sample sichtbar). */}
+      <FloatingReview
+        side="left"
+        quote="Die Zusammenarbeit war äußerst präzise, auf all unsere Wünsche wurde detailliert eingegangen."
+        name="Rafael Danesh, Google-Rezension"
+      />
+
       <div className="rr-wrap rr-narrow rp-risiko__inner">
         <p className="wd-eyebrow wd-eyebrow--ondark">Dein Risiko: null</p>
         <p className="rr-statement rp-risiko__statement">
@@ -22,12 +31,6 @@ export default function RisikoBand() {
           nicht bei dir.
         </p>
       </div>
-
-      <FloatingReview
-        side="left"
-        quote="Die Zusammenarbeit war äußerst präzise, auf all unsere Wünsche wurde detailliert eingegangen."
-        name="Rafael Danesh, Google-Rezension"
-      />
 
       <style jsx>{`
         .rp-risiko {

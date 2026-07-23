@@ -59,6 +59,12 @@ export default function PreiseSchlussCta() {
           gap: clamp(1.2rem, 2.4vw, 2rem);
           flex-wrap: wrap;
         }
+        /* rr-btn-sweep hat im Ruhezustand Ink-Text (fuer helle Flaechen); auf
+           dem Navy-Band den Text hell setzen (Kontrast-Fix, 1:1 Muster aus
+           components/subpages/leistungen/website/website.css .lw-cta). */
+        .rp-cta__actions :global(.rr-btn-sweep) {
+          color: #f6f5f1;
+        }
       `}</style>
     </section>
   );

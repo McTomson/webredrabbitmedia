@@ -4,11 +4,22 @@ import { useEffect, useRef, useState } from 'react';
 
 /**
  * Schwebende Rezensionskarte (rabenrifaie-Mechanik, dezent): kleine 5-Sterne-
- * Karte mit Google-G, Ein-Satz-Zitat und Name. Scroll-getrieben ein-/ausge-
- * blendet (IntersectionObserver auf den eigenen Wrapper), NIE ueber Text
- * (position:absolute im Rand der Section, pointer-events:none), leicht
- * transparent. Nur ECHTE Google-Rezensionen (Quelle: KundenSagen.tsx,
- * Dmitry Pashlov = Team, NIE als Kundenstimme verwenden).
+ * Karte mit Google-G, Ein-Satz-Zitat und Name. NIE ueber Text
+ * (eigene Spalte am Section-Rand, pointer-events:none), leicht transparent.
+ * Nur ECHTE Google-Rezensionen (Quelle: KundenSagen.tsx, Dmitry Pashlov =
+ * Team, NIE als Kundenstimme verwenden).
+ *
+ * Sichtbarkeitsfenster (QA-Fix nach Orchestrator-Feedback: Karte war in
+ * keinem Scroll-Sample sichtbar): "manuelles Sticky" statt fixer top-%-
+ * Position. `position:sticky` kam nicht infrage, weil die Karte dafuer VOR
+ * dem Inhalt im DOM-Fluss liegen muesste und dann selbst Layout-Hoehe
+ * beansprucht (Textverschiebung). Stattdessen bleibt sie `position:absolute`
+ * (kein Layout-Einfluss), aber ein rAF-Loop rechnet den Section-Rahmen
+ * (getBoundingClientRect des Eltern-<section>) gegen den Viewport und
+ * klemmt die Karte auf eine feste Zielposition IM Viewport (28vh von oben),
+ * solange die Section irgendwo im Bild ist — dadurch schwebt sie waehrend
+ * eines GROSSEN Teils der Scrollstrecke sichtbar, verlaesst die Buehne aber
+ * sauber an den Section-Kanten (Fade per Opacity).
  *
  * reduced-motion: keine Bewegung, aber wegen "nie ueber Text" bleibt sie
  * ausgeblendet (kein sinnvoller statischer Platz ohne Layout-Verschiebung).
@@ -22,27 +33,62 @@ export default function FloatingReview({
   name: string;
   side: 'left' | 'right';
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) return;
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) setVisible(e.isIntersecting);
-      },
-      { rootMargin: '-15% 0px -15% 0px', threshold: 0 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
+    const wrap = wrapRef.current;
+    const card = cardRef.current;
+    const section = wrap?.parentElement;
+    if (!wrap || !card || !section) return;
+
+    let raf = 0;
+    let destroyed = false;
+    const FADE_ZONE = 120; // px am Section-Rand, in denen die Karte ein-/ausblendet
+    const TARGET_VH = 0.28; // Zielposition im Viewport (28% von oben)
+
+    function render() {
+      const sec = section as HTMLElement;
+      const r = sec.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const cardH = card!.offsetHeight || 160;
+      const margin = 24;
+
+      // Zielposition im Viewport, geklemmt auf den innerhalb der Section
+      // sichtbaren Bereich (nie ueber den oberen/unteren Rand hinaus).
+      const desiredViewportY = vh * TARGET_VH;
+      const minViewportY = Math.max(r.top + margin, margin);
+      const maxViewportY = Math.min(r.bottom - cardH - margin, vh - cardH - margin);
+      const viewportY =
+        maxViewportY >= minViewportY
+          ? Math.min(Math.max(desiredViewportY, minViewportY), maxViewportY)
+          : (minViewportY + maxViewportY) / 2;
+
+      wrap!.style.top = `${viewportY - r.top}px`;
+
+      // Fade: sichtbar, solange die Section im (erweiterten) Bild ist.
+      const inView = r.bottom > -FADE_ZONE && r.top < vh + FADE_ZONE;
+      setVisible(inView);
+    }
+
+    function loop() {
+      if (destroyed) return;
+      render();
+      raf = requestAnimationFrame(loop);
+    }
+    raf = requestAnimationFrame(loop);
+    return () => {
+      destroyed = true;
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
-    <div ref={ref} className={`fr-wrap fr-wrap--${side}${visible ? ' is-in' : ''}`} aria-hidden="true">
-      <div className="fr-card">
+    <div ref={wrapRef} className={`fr-wrap fr-wrap--${side}${visible ? ' is-in' : ''}`} aria-hidden="true">
+      <div ref={cardRef} className="fr-card">
         <div className="fr-head">
           <svg className="fr-g" viewBox="0 0 48 48" width="16" height="16" aria-hidden="true">
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
@@ -59,20 +105,20 @@ export default function FloatingReview({
       <style jsx>{`
         .fr-wrap {
           position: absolute;
-          top: 8%;
+          top: 28vh;
           width: clamp(180px, 15vw, 230px);
           opacity: 0;
           transform: translateY(18px);
-          transition: opacity 0.9s var(--rr-ease, ease), transform 0.9s var(--rr-ease, ease);
+          transition: opacity 0.9s var(--rr-ease, ease), transform 0.9s var(--rr-ease, ease),
+            top 0.05s linear;
           pointer-events: none;
           z-index: 3;
         }
         .fr-wrap--left {
-          left: clamp(0px, 2vw, 24px);
+          left: clamp(4px, 2vw, 24px);
         }
         .fr-wrap--right {
-          right: clamp(0px, 2vw, 24px);
-          top: 55%;
+          right: clamp(4px, 2vw, 24px);
         }
         .fr-wrap.is-in {
           opacity: 1;
@@ -83,9 +129,6 @@ export default function FloatingReview({
           border: 1px solid rgba(28, 40, 55, 0.1);
           padding: 14px 16px;
           box-shadow: 0 18px 40px rgba(28, 40, 55, 0.14);
-        }
-        .fr-wrap--left .fr-card {
-          background: rgba(255, 255, 255, 0.88);
         }
         .fr-head {
           display: flex;

@@ -92,11 +92,16 @@ export default function PreiseDemoClient({
                 dieser Figur auf einer Unterseite (siehe
                 reference_ueber_uns_template_rezept: 0=Zahnrad,1=Gluehbirne,
                 2=Dokument,3=Chart,4=Kopf). Kein progress-Prop -> liest
-                window.__sculptProgress (von der Demo-Engine pro Frame gesetzt). */}
-            <MorphSculpture
-              comp={3}
-              style={{ background: 'transparent', transform: 'translateX(-4vw) scale(0.92)' }}
-            />
+                window.__sculptProgress (von der Demo-Engine pro Frame gesetzt).
+                KEIN manueller translateX/scale-Versatz: der war 1:1 vom
+                Zahnrad (comp=0) kopiert, das dort dokumentiert eine
+                SONDERKORREKTUR ist (comp0 hat ein breiteres u-Fenster/andere
+                Rahmung als comp1-4, siehe WebsiteDemoClient-Kommentar).
+                comp1 (Gluehbirne, KontaktDemoClient) laeuft OHNE Zusatz-
+                Transform; comp3 folgt diesem Default (QA-Fix: die Zahnrad-
+                Korrektur verschob die Chart-Figur aus dem sichtbaren Bild/
+                liess sie waehrend des Story-Texts nicht sauber halten). */}
+            <MorphSculpture comp={3} style={{ background: 'transparent' }} />
           </div>,
           sticky,
         )}

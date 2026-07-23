@@ -154,34 +154,46 @@ function TalosFahrt() {
   return (
     <div ref={trackRef} className="tf-track">
       <section aria-label="Talos-Talente" className="tf-sticky">
-        {/* Riesenwort "Talos", Parallax-Ebene hinter der Buehne */}
+        {/* Riesenwort "Talos", Parallax-Ebene hinter der Buehne. WIEDERHOLT
+            (nicht nur einmal): bei 7 Slides legt die Buehne bis zu 600vw
+            zurueck, das Wort bewegt sich mit 1.15x noch schneller (~690vw) —
+            eine einzelne Instanz waere laengst aus dem Bild, bevor die
+            Fahrt zu Ende ist (QA-Fix: Wort war bei keiner Stichprobe im
+            Bild). Slots von 140vw Breite tragen das Wort ueber die ganze
+            Fahrt hinweg im Sichtfeld, wie bei CasePanels' Riesenwort. */}
         <div ref={giantRef} aria-hidden="true" className="tf-giant">
-          <span>Talos</span>
+          {Array.from({ length: 10 }).map((_, i) => (
+            <span className="tf-giant__slot" key={i}>Talos</span>
+          ))}
         </div>
 
         <div ref={stageRef} className="tf-stage">
           {STATIONEN.map((s, i) => (
             <div className="tf-slide" key={s.name} style={{ left: `${i * 100}vw` }}>
-              <span className="tf-slide__num">{`0${i + 1}`}</span>
-              <h3 className="tf-slide__name">{s.name}</h3>
-              <p className="tf-slide__text">{s.text}</p>
+              <div className="tf-slide__inner">
+                <span className="tf-slide__num">{`0${i + 1}`}</span>
+                <h3 className="tf-slide__name">{s.name}</h3>
+                <p className="tf-slide__text">{s.text}</p>
+              </div>
             </div>
           ))}
           <div className="tf-slide tf-slide--close" style={{ left: `${STATIONEN.length * 100}vw` }}>
-            <p className="wd-eyebrow wd-eyebrow--ondark">Was das kostet</p>
-            <h3 className="tf-slide__name">Fixbetrag, keine Credit-Rätsel.</h3>
-            <p className="tf-slide__text">
-              Monatlich, jederzeit kündbar, jederzeit nachbuchbar. Kein Credit-System, das du
-              erst durchrechnen musst, sondern ein fixer Betrag pro Fähigkeit. Konkrete Zahlen
-              auf Anfrage.
-            </p>
-            <Link href="/relaunch-preview/kontakt" className="rr-btn-frame rr-btn-frame--red">
-              <i className="c1" />
-              <i className="c2" />
-              <i className="c3" />
-              <i className="c4" />
-              <span className="rr-btn-frame__t">Talos-Gespräch</span>
-            </Link>
+            <div className="tf-slide__inner">
+              <p className="wd-eyebrow wd-eyebrow--ondark">Was das kostet</p>
+              <h3 className="tf-slide__name">Fixbetrag, keine Credit-Rätsel.</h3>
+              <p className="tf-slide__text">
+                Monatlich, jederzeit kündbar, jederzeit nachbuchbar. Kein Credit-System, das du
+                erst durchrechnen musst, sondern ein fixer Betrag pro Fähigkeit. Konkrete Zahlen
+                auf Anfrage.
+              </p>
+              <Link href="/relaunch-preview/kontakt" className="rr-btn-frame rr-btn-frame--red">
+                <i className="c1" />
+                <i className="c2" />
+                <i className="c3" />
+                <i className="c4" />
+                <span className="rr-btn-frame__t">Talos-Gespräch</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -207,14 +219,15 @@ function TalosFahrt() {
           pointer-events: none;
           will-change: transform;
         }
-        .tf-giant span {
+        .tf-giant__slot {
+          flex: 0 0 auto;
+          width: 140vw;
           font-family: var(--rr-font-display);
           font-weight: 800;
           white-space: nowrap;
           font-size: min(58vh, 34vw);
           line-height: 0.9;
           color: rgba(255, 255, 255, 0.06);
-          margin-left: 8vw;
         }
         .tf-stage {
           position: absolute;
@@ -225,13 +238,24 @@ function TalosFahrt() {
         .tf-slide {
           position: absolute;
           top: 0;
+          left: 0;
           width: 100vw;
           height: 100%;
           display: flex;
-          flex-direction: column;
-          justify-content: center;
-          padding: 0 8vw;
-          max-width: 720px;
+          align-items: center;
+        }
+        /* Innenbreite EXPLIZIT begrenzt (nicht ueber Padding von einer
+           100vw/max-width-Box abgeleitet, das brach bei laengeren
+           Stationsnamen wie "Der Aussendienst" ins rechte Nachbar-Slide
+           hinein — QA-Fix, Massstab an CasePanels .introRef orientiert:
+           dort traegt der Textblock selbst eine feste width+maxWidth statt
+           padding-basiertem Rest). min()-Breite + fixer Aussenabstand
+           garantiert genug Luft zum rechten Slide-Rand auf jeder
+           Bildschirmgroesse. */
+        .tf-slide__inner {
+          width: min(46vw, 560px);
+          margin-left: max(24px, 8vw);
+          margin-right: 12vw;
         }
         .tf-slide__num {
           font-family: var(--rr-font-ui);
