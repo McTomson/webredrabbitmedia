@@ -1,78 +1,93 @@
-# Naechste Session — TALOS-Leistungsseite (Stand 23.07.2026 frueh)
+# Naechste Session — TALOS-Leistungsseite (Stand 23.07.2026 mittags, nach Feedback-Runde 1)
 
 ## Arbeitsregeln (verbindlich)
-- Lies ZUERST alles Relevante: diesen Handoff, docs/specs/TALOS_COPY_V2_2026-07-22_ENTWURF.md,
-  MEMORY.md, die betroffenen Dateien. Nicht loslegen ohne Kontext.
-- NIE raten — immer verifizieren (Code/Browser/Docs). Gilt scharf fuer Copy/Preise.
-- Erst Plan (TodoWrite), dann ausfuehren. DESIGN MACHT FABLE SELBST (Thomas 23.07.:
-  "am besten ist wenn du das design uebernimmst nicht sonnet oder opus") — Agenten nur
-  fuer 1:1-Klone abgenommener Mechaniken und Copy-Mechanik, nie fuer Design-Entscheide.
-- Copy-Regeln: echte Umlaute, kein "KI", Du-Anrede, kein Gedankenstrich, Preise NUR
-  950/2.900/ab 4.900 bzw. Talos-Preise NIE erfinden (Preisseite spaeter), Telefon nur
-  tel:-Button, border-radius 0 (rund nur Punkte/Kreise), Eyebrow-Klammern via CSS.
-- QA im AKTIVEN Chrome-Tab (Hintergrund-Tab friert rAF ein -> osascript aktivieren).
-  Fuer Thomas-Abnahmen deployen (Push baut Vercel-Preview; Status NUR via `vercel ls`
-  Ready melden). Dev: npm run dev -- --port 9000.
+- Lies ZUERST alles Relevante: diesen Handoff, docs/specs/TALOS_COPY_V2_2026-07-22_ENTWURF.md
+  (inkl. REVISION-Block am Ende), MEMORY.md, die betroffenen Dateien. Nicht loslegen ohne Kontext.
+- NIE raten — immer verifizieren (Code/Browser/Docs). Bei Unsicherheit fragen oder fail-closed.
+- Erst Plan (TodoWrite), dann ausfuehren. Bei Design-Fragen Optionen VISUELL zeigen.
+- **DESIGN MACHT FABLE SELBST** (Thomas 23.07. woertlich: "am besten ist wenn du das design
+  uebernimmst nicht sonnet oder opus"). Agenten NUR fuer: 1:1-Klone abgenommener Mechaniken
+  (exakte Vorbild-Datei nennen!), Copy-Rohfassungen (Opus), mechanische Sweeps. Fable prueft alles.
+- Autonom arbeiten, voller Browser-Zugriff; committen/pushen/deployen erlaubt (Preview, NIE prod).
+  Deploy NUR mit `vercel inspect <url>` Status **Ready** als "online" melden (SSO-302 luegt).
+- QA im AKTIVEN Chrome-Tab (Hintergrund-Tab friert rAF ein -> osascript aktivieren; nach
+  scrollTo(instant) hinkt __sculptProgress nach, Engine glaettet -> echte Wheel-Ticks nutzen).
+- Copy-Regeln: echte Umlaute, kein "KI" (Talos = digitaler Mitarbeiter/Kollege), Du-Anrede,
+  kein Gedankenstrich, keine Emojis, border-radius 0 (rund nur Punkte/Kreise/Donut), Preise
+  NIE erfinden (Website 950/2.900/ab 4.900 existieren; Talos-Faehigkeits-Preise = Preisseite,
+  auf dieser Seite NUR die Logik monatlich/einzeln/kuendbar), Telefon nur tel:-Button,
+  Eyebrow-Klammern via .wd-eyebrow-CSS. ALLE Copy ist ENTWURF bis Thomas freigibt.
+- Dev: nohup npm run dev -- --port 9000 (Thomas beendet ihn gelegentlich; Log /tmp/redrabbit-dev-9000.log).
+- Fremde Straenge NICHT committen (seo-monitor-log, brand/, preise-preview, PNGs im Root...).
 
-## GRUNDSATZ-ENTSCHEIDUNGEN (Grill 22.07. + Feedback 23.07., NICHT neu aufrollen)
-- Seite auf Basis der Website-Seite; Vollbild-Praesentation (TalosPresentation) ersetzt.
-- Hero = talos-demo-Klon (Wort "Talos" + Mal-Erklaerzeile "Er steckt in jeder Website,
-  die wir bauen. Ohne Aufpreis." + Wisch + Wort zerlegt sich) — Talos GEHT scroll-
-  gekoppelt von links herein, dreht sich, winkt rechts, Dashboard-Fenster (hell, 3
-  Mini-Widgets) baut sich um ihn, Abgang rechts. HERO_MODE="fly" existiert als
-  Alternative, falls Thomas das Gehen doch nicht gefaellt (talos-intro-Flug).
-- COMPANION-PRINZIP (Thomas 23.07.): Talos begleitet die GANZE Seite wie auf
-  /talos-intro. components/relaunch/talos/TalosCompanionStage.tsx = EINE fixe
-  3D-Ebene (z30, pointer-events none): Hero-Choreo + danach Stationen per Markup
-  `data-talos-station data-talos-anchor="0..1" data-talos-size="s|m|l|xl"
-  data-talos-gesture="wave|wave2|bow" data-talos-yaw="rad"` (Wrapper in page.tsx).
-  Er GEHT sichtbar zwischen Stationen (Beine+Armschwung), ohne Station blendet er aus,
-  Position wird VOR dem Einblenden gesetzt (nie Teleport im Sichtbaren). Blick-Regel:
-  nie aus dem Bildschirm hinaus (FACE_TURN=+1.05 = Dreiviertel; -1.5 waere falsch).
-  Mobil <900px: Stationen aus. QA-Hooks: __talosCompanion.state()/stations()/setProg().
-- Sektionen = 1:1-Klone abgenommener Website-Mechaniken (tl-*-Klassen in
-  talos-v2.css, Website-Dateien unberuehrt): InklusiveDashboard=Sticky-Ledger
-  (VarianteA), Kontrollraum=Navy-Browser-Frame mit tl-kr__stage-void (Talos steht
-  drin), Onboarding=Kreis-Kette 3 Schritte (Ablauf-Klon), Faehigkeiten=6 Karten
-  (Schreiber/Empfang/Aussendienst/Poster/Sichtbarmacher/Sonderanfertigung, Namen
-  sind ARBEITSTITEL), FragTalosAnmoderation bindet bestehenden FragTalos ein.
-- Copy = docs/specs/TALOS_COPY_V2_2026-07-22_ENTWURF.md (Opus-ENTWURF, Thomas hat
-  NICHT freigegeben; gemeinsamer Copy-Durchgang + Namens-Entscheid stehen aus).
-- Preise: NUR auf der Preisseite (Website-Fixpreise + Talos-Faehigkeiten, klar
-  getrennt); auf der Talos-Seite nur die Logik (monatlich/kuendbar/nachbuchbar).
-- Beruhigungs-Ton ist Gesetz: "du bekommst eine wunderschoene Website; Mitarbeiter
-  nur wenn du willst". Beruhigungs-Bumper = Belief-Szene im Hero-Klon.
+## ARCHITEKTUR (steht, NICHT neu erfinden — Thomas hat sie iterativ geformt)
+1. **Seite**: app/relaunch-preview/leistungen/talos/page.tsx. Sektionen in
+   components/subpages/leistungen/talos/v2/ (+ talos-v2.css). Chrome = RelaunchMenu +
+   CornerLogo + FooterReassembly (kanonisch, nicht anfassen).
+2. **Hero** = Klon-Ordner components/subpages/talos-demo/ (demo.body.html/.css/.engine.jstext),
+   gerendert von components/subpages/TalosDemoClient.tsx (nur CSS+HTML+Engine-Script, KEIN Portal).
+   Ablauf: Wort "Talos" + Mal-Erklaerzeile -> Buchstaben fliegen weg -> Talos GEHT scroll-
+   gekoppelt von links rein -> dreht sich, winkt rechts -> Navy-Dashboard-Fenster (.tlh-frame,
+   1:1-Klon des wda-Fensters, sichtbar via Klasse `is-dash` auf #mainSticky) -> Story-Text
+   laeuft MASKIERT IM weissen Feld rechts -> Abgang rechts. Scene-Main 1495vh (bewusst langsam).
+   HERO_MODE="fly" existiert als Schalter in TalosCompanionStage, falls Thomas Gehen ablehnt.
+3. **Companion** = components/relaunch/talos/TalosCompanionStage.tsx — EINE fixe 3D-Ebene fuer
+   die GANZE Seite (Talos begleitet wie /talos-intro; Thomas-Wunsch). Kern-Mechanik:
+   - Hero-Modus solange #sceneMain.bottom > 0 (liest window.__sculptProgress), danach Stationen.
+   - Stationen per Markup-Wrapper in page.tsx: data-talos-station + data-talos-anchor (0..1)
+     + data-talos-size (s|m|l|xl -> Naehe/Groesse via z) + data-talos-gesture (wave|wave2|bow)
+     + data-talos-layer (back=hinter dem Text z12 / front=vor der Flaeche z30)
+     + data-talos-appear (Score-Schwelle gegen zu fruehes Erscheinen) + data-talos-yaw.
+   - Er GEHT sichtbar zwischen Stationen (Beine + Arm-Gegenschwung + Vorlage), ohne Station
+     weiches Ausblenden, Position wird VOR Einblenden gesetzt (nie Teleport).
+   - HARTE THOMAS-REGELN eingebaut: Blick-Sperre (Kopf folgt Maus nie aus dem Bild, onGaze
+     clampt nx nach curX-Seite) + STAND_BIAS (Haltung im Stand immer leicht zur Bildmitte).
+   - Inhalts-Wrapper in page.tsx ist TRANSPARENT + z20 (weiss kommt vom body) — .tl-section
+     hat deshalb bewusst KEIN background; Sektionen mit eigenem Grund (Ledger --surface,
+     Kontrollraum navy, CTA navy) verdecken die back-Ebene -> dort ist er front oder absent.
+   - QA-Hooks: __talosCompanion.state()/stations()/setProg()/tune(). Mobil <900px Stationen aus.
+4. **Sektionen** (Reihenfolge in page.tsx): Hero-Demo (inkl. Beruhigungs-Bumper = Belief-Szene)
+   -> WerIstTalos (Sticky 200vh, Station l/back/appear .5, Talos rechts hinter Text)
+   -> InklusiveDashboard (Sticky-Ledger-Klon, 4 Punkte, 88vh je Punkt, KEINE Station)
+   -> Faehigkeiten (6 Karten: Schreiber/Empfang/Aussendienst/Poster/Sichtbarmacher/
+      Sonderanfertigung — ARBEITSTITEL) -> FreigabePrinzip (Sticky 180vh, Station m/back,
+      Verbeugung, Klaerungs-Kasten) -> Onboarding (Kreis-Ketten-Klon, 3 Schritte)
+   -> Kontrollraum (Navy-Frame-Klon, Station m/front, Talos in tl-kr__stage-void)
+   -> Beweis -> FragTalosAnmoderation (+ bestehender FragTalos; Station s/back)
+   -> TalosFaqV2 (9 Fragen) -> TalosSchlussCta (Station m/front, Abschieds-Wink).
+5. **Copy-Stand**: docs/specs/TALOS_COPY_V2_2026-07-22_ENTWURF.md; Sektionen 2+3 als
+   REVISION 23.07. am Dateiende (integriert: "Kein Tool, kein Abo..." + Login/Dashboard/
+   Kommandozentrale/"so bekommst du das sonst nirgends"). NICHT freigegeben.
 
-## Stand (Commits lokal+gepusht: 1524f1d, a6fbb96, da9844d; tsc gruen, 168/168)
-- Alles oben gebaut und im Browser sichtgeprueft: Hero gross + Wink + Fenster,
-  WerIstTalos-Close-up (xl, Struktur sichtbar), Kontrollraum mit Talos im Frame,
-  Beweis-Vorbeigehen, FragTalos rechts, CTA-Abschiedswink links auf Navy.
-- Deploy: Push baut Vercel-Preview automatisch (Status pruefen!).
+## Commits (alle GEPUSHT auf origin/relaunch): 1524f1d, a6fbb96, da9844d, 495caa3, ef5fa72
+Letzter verifizierter Ready-Deploy: webredrabbitmedia-j86risb2c...vercel.app/relaunch-preview/leistungen/talos
+tsc gruen, vitest 168/168, Konsole sauber, alle Stationen im Browser sichtgeprueft.
 
-## Offen / Naechste Schritte
-1. THOMAS-SICHTUNG des Companion-Prinzips (Deploy-Link schicken). Feintuning der
-   Stationen (anchor/size je Sektion, WerIstTalos-Kopf-Anschnitt, Hero endX -170
-   vs. Eyebrow-Ueberlappung) NUR mit seinem Feedback.
-2. Design-Polish durch Fable: Faehigkeiten-Karten (Sonderanfertigung Navy-invers?),
-   Abstaende, Talos-Sprechzeilen-Rhythmus, Augen-Akzent pro Faehigkeit (setEyeColor,
-   nur dezent, Ein-Rot-Prinzip beachten).
-3. Gemeinsamer Copy-Durchgang (Hero-Headline-Wahl, Faehigkeits-Namen, FAQ-Feinschliff,
-   heikle Automatik-Frage), DANN Freigabe-Vermerk in die Spec-Datei.
-4. Aufraeumen nach Thomas-OK: alte Talos-Sektionen (components/subpages/leistungen/
-   talos/{WasTalosIst,Fundament,Module,Arbeitstag,FragTalosSection,TalosFaq,TalosCta}),
-   TalosPresentation/TalosIntro/TalosHeroStage/TalosApproachStage (ungenutzt gebaut,
-   Fundus), talos-intro/talos-demo/talos-choreo-Routen, TalosHeroPlaceholder/
-   BeruhigungsBumper (ersetzt durch Demo-Klon).
-5. Spaeter: Preisseite (Talos-Preise von Thomas), Menue-Eintrag prueft "Bei jeder
-   Website dabei · Talos" bleibt korrekt.
+## OFFEN — hier weitermachen
+1. **Thomas-Feedback zur Runde vom 23.07. einholen/umsetzen** (Link oben). Bekannt noch offen
+   aus seiner Liste: einheitliche Seitenraender ALLER Sektionen inkl. Abgleich mit der
+   Website-Seite (sein Punkt "uneinheitliche Raender" ist erst teilweise adressiert);
+   Talos verdeckt im Hero die Panel-Texte (er sagte "darf ueberdecken", aber ggf. x auf
+   ~-460 oder Panels schmaler); Kontrollraum-Sticky pruefen; "sticky wo sinnvoll" ggf.
+   auf weitere Sektionen (Faehigkeiten? Beweis?) ausdehnen.
+2. **Design-Polish Fable**: Faehigkeiten-Karten (Sonderanfertigung Navy-invers?), Talos-
+   Sprechzeilen-Rhythmus, Augen-Akzent pro Faehigkeit (rig.setEyeColor, dezent), Abstaende.
+3. **Gemeinsamer Copy-Durchgang mit Thomas**: Headline-Varianten waehlen, Faehigkeits-Namen
+   final, FAQ-Feinschliff (Frage 9 = Automatik-Frage, Variante A eingebaut), dann Freigabe-
+   Vermerk in die Spec. Danach Beweis-Zahl (26 echte Beitraege) verifiziert halten.
+4. **Aufraeumen nach Thomas-OK**: alte Talos-Sektionen components/subpages/leistungen/talos/
+   {WasTalosIst,Fundament,Module,Arbeitstag,FragTalosSection,TalosFaq,TalosCta}, ungenutzte
+   Buehnen (TalosPresentation/TalosIntro/TalosHeroStage/TalosApproachStage), Platzhalter
+   (TalosHeroPlaceholder, BeruhigungsBumper), Routen talos-intro/talos-demo/talos-choreo.
+5. **Spaeter**: Preisseite (Website-Fixpreise + Talos-Faehigkeiten, Thomas nennt Preise;
+   evtl. HORIZONTAL, siehe Memory), Mobil-Konzept fuer den Companion (<900px aktuell aus).
 
 ## Technik-Lessons (nicht neu entdecken)
-- Offscreen-Kanten IMMER aus dem Kamera-Frustum rechnen (aspect-abhaengig), fixe
-  Weltkoordinaten sind bei breiten Viewports noch im Bild.
-- Engine glaettet Scroll intern: nach scrollTo(instant) hinkt __sculptProgress nach;
-  echte Wheel-Ticks fuer QA verwenden.
-- talosMotion schreibt Kopf/Oberkoerper/arm.z absolut pro Frame — eigene Zusaetze
-  entweder auf UNBERUEHRTE Achsen (arm.x Armschwung) oder NACH motion.update
-  additiv (topPart-Vorlage).
-- Companion + Demo teilen sich window.__sculptProgress; Hero aktiv solange
-  #sceneMain.bottom > 0.
+- Offscreen-Kanten IMMER aus dem Kamera-Frustum rechnen (aspect-abhaengig).
+- talosMotion schreibt Kopf/Oberkoerper/arm.z absolut pro Frame — Zusaetze nur auf
+  unberuehrte Achsen (arm.x = Armschwung) oder NACH motion.update additiv (topPart-Vorlage).
+- Bot-Yaw: +1.05 = Dreiviertel nach rechts mit sichtbarem Gesicht; +1.5 = hartes Profil;
+  -1.5 = schaut nach links raus (VERBOTEN).
+- Vercel: `vercel ls` ohne TTY liefert NUR URLs (kein Status!) -> `vercel inspect <url>`.
+- Der Hero-Frame-Agent, Ledger-/Kreis-/Navy-Klone: bei "wie Sektion X" IMMER die exakte
+  Vorbild-Datei lesen+kopieren+umbenennen (tl-/tlh-Praefixe), Website-Dateien nie anfassen.
