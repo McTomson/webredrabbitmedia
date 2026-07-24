@@ -1,23 +1,36 @@
 'use client';
 
 /**
- * Faehigkeiten — Raster im KUNDENLISTE-Look (Thomas 24.07.). Der bisherige
- * Karten-/Massimo-Osti-Look ist ersetzt durch das Zellen-Raster der
- * Hauptseite (components/relaunch/KundenGrid.tsx): weisser Grund, 3-Spalten-
- * Grid mit 1px-Hairline-Fugen (#e4e4e0), border-radius 0, in jeder Zelle NUR
- * der Faehigkeits-Name in DM Sans (var(--font-dmsans), weight 300). Die
- * Zellen sind hier <button>s: Klick oeffnet ein Modal mit der vollen
- * Beschreibung (4 Bloecke Nutzen / Fuer wen / So laeuft es / Warum gut, rote
- * Labels), der Talos-Sprechzeile und einem CTA -> /relaunch-preview/kontakt.
+ * Faehigkeiten — EXAKTER Klon des Kundenliste-Rasters der Hauptseite
+ * (components/relaunch/KundenGrid.tsx), inkl. Schreib-/Tipp-Effekt (Thomas
+ * 24.07.). Die Grid-/Zellen-/Namen-/Caret-Werte sind 1:1 aus dem <style>-Block
+ * von KundenGrid.tsx uebernommen (.rrkg-grid / .rrkg-cell / .rrkg-name /
+ * .rrkg-caret): weisser Grund #ffffff, Hover #f4f4f2, 3-Spalten-Grid mit
+ * 1px-Hairline-Fugen auf #e4e4e0, border 1px #e4e4e0, border-radius 0, Zelle
+ * min-height 140px, padding clamp(2rem,2.6vw,3.1rem), Name DM Sans weight 300,
+ * font-size clamp(1.4rem,1.85vw,1.7rem), letter-spacing -.01em, color #23262e.
+ * Die Font-Metrik steht — wie im Original — auf der ZELLE, damit die Caret-
+ * Groesse (.14em / 1.05em) exakt mitzieht.
  *
- * Look-Referenz 1:1 der <style>-Block-Werte aus KundenGrid.tsx
- * (.rrkg-cell/.rrkg-name/.rrkg-grid). Die Sonderanfertigung-Zelle ist navy
- * abgesetzt (#1c2837, Name off-white) — KEIN Rot auf Navy.
+ * Tipp-Effekt 1:1 aus KundenGrid.tsx Zeilen 133-198: rAF-Loop, State-Machine
+ * idle -> del -> pause -> type -> idle, DEL_MS/TYPE_MS/PAUSE_MS identisch, jede
+ * Zelle tippt IHREN eigenen Namen neu (kein Fremdname), rAF nur aktiv solange
+ * die Sektion im Viewport steht (bounding-rect-Check), prefers-reduced-motion
+ * => kein Tippen (statische Namen, kein Caret).
+ *
+ * Abweichungen von KundenGrid (bewusst, markenkonform):
+ *  - 6 Faehigkeits-Namen statt Kundennamen; kein CTA-/Chevron-Feld.
+ *  - Zellen sind <button>: Klick oeffnet ein Modal (4 Bloecke, rote Labels,
+ *    says-Zeile, CTA -> /relaunch-preview/kontakt). Modal-Logik unveraendert
+ *    uebernommen (Esc/X/Backdrop, Body-Scroll-Lock, harte Fokusfalle).
+ *  - Klick-Zeichen (kleines Plus) unten rechts je Zelle als Klickbarkeits-
+ *    Signal (border-radius 0), hover -> Rot.
+ *  - Sonderanfertigung-Zelle navy #1c2837, Name off-white, Caret + Plus in
+ *    Tuerkis #39c2d7 — KEIN Rot auf Navy.
  *
  * Daten aus ./faehigkeiten-data (geteilt, NICHT dupliziert). Kein styled-jsx
  * (greift im Projekt nicht zuverlaessig): plain namespaced <style> (.tlfg-*).
- * talos-v2.css bleibt unberuehrt; der Intro-Block nutzt weiter die tl-*-Klassen
- * (harmonisch mit dem Rest der Seite).
+ * talos-v2.css bleibt unberuehrt; der Intro-Block nutzt weiter die tl-*-Klassen.
  */
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -25,15 +38,110 @@ import { FAEHIGKEITEN } from './faehigkeiten-data';
 
 const KONTAKT = '/relaunch-preview/kontakt';
 
+// Timing 1:1 aus KundenGrid.tsx (Zeilen 42-44).
+const DEL_MS = 42;
+const TYPE_MS = 78;
+const PAUSE_MS = 320;
+
+type CellState = 'idle' | 'del' | 'pause' | 'type';
+
+interface CellRuntime {
+  cur: string;
+  target: string;
+  state: CellState;
+  t0: number;
+}
+
 export default function Faehigkeiten() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
 
+  // Refs fuer den Tipp-Effekt (1:1-Aufbau wie KundenGrid.tsx).
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const cellRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const nameRefs = useRef<Array<HTMLSpanElement | null>>([]);
+
   const open = openIndex !== null ? FAEHIGKEITEN[openIndex] : null;
 
   const close = useCallback(() => setOpenIndex(null), []);
+
+  // Tipp-Loop 1:1 aus KundenGrid.tsx (Zeilen 133-198). rAF-Loop, State-Machine
+  // idle -> del -> pause -> type -> idle, jede Zelle tippt ihren eigenen Namen
+  // neu. rAF laeuft nur weiter, wenn die Sektion im Viewport steht
+  // (bounding-rect-Check). prefers-reduced-motion => kein Tippen.
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    const cells: CellRuntime[] = FAEHIGKEITEN.map((f) => ({
+      cur: f.name,
+      target: '',
+      state: 'idle',
+      t0: 0,
+    }));
+    let nextLaunch = performance.now() + 1500;
+    let rrIndex = 0;
+    let raf = 0;
+
+    function partnerTick(now: number) {
+      const section = sectionRef.current;
+      if (section) {
+        const r = section.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > window.innerHeight) {
+          raf = requestAnimationFrame(partnerTick);
+          return;
+        }
+      }
+      let active = 0;
+      for (const c of cells) if (c.state !== 'idle') active++;
+      if (active < 2 && now > nextLaunch) {
+        for (let k = 0; k < cells.length; k++) {
+          const idx = (rrIndex + k) % cells.length;
+          const c = cells[idx];
+          if (c.state === 'idle') {
+            rrIndex = (rrIndex + k + 1) % cells.length;
+            c.state = 'del';
+            c.t0 = now;
+            c.target = c.cur; // eigenen Namen neu tippen (kein Fremdname)
+            cellRefs.current[idx]?.classList.add('typing');
+            break;
+          }
+        }
+        nextLaunch = now + 2600 + Math.random() * 1600;
+      }
+      cells.forEach((c, idx) => {
+        const nameEl = nameRefs.current[idx];
+        if (!nameEl) return;
+        if (c.state === 'del') {
+          const n = Math.max(0, c.cur.length - Math.floor((now - c.t0) / DEL_MS));
+          nameEl.textContent = c.cur.slice(0, n);
+          if (n === 0) {
+            c.state = 'pause';
+            c.t0 = now;
+          }
+        } else if (c.state === 'pause') {
+          if (now - c.t0 > PAUSE_MS) {
+            c.state = 'type';
+            c.t0 = now;
+          }
+        } else if (c.state === 'type') {
+          const n = Math.min(c.target.length, Math.floor((now - c.t0) / TYPE_MS) + 1);
+          nameEl.textContent = c.target.slice(0, n);
+          if (n >= c.target.length) {
+            c.cur = c.target;
+            c.state = 'idle';
+            cellRefs.current[idx]?.classList.remove('typing');
+          }
+        }
+      });
+      raf = requestAnimationFrame(partnerTick);
+    }
+
+    raf = requestAnimationFrame(partnerTick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   // Esc schliesst; Body-Scroll sperren; Fokus in den Dialog und eine harte
   // Fokusfalle (Tab/Shift+Tab bleiben im Dialog); Fokus beim Schliessen zurueck.
@@ -83,7 +191,7 @@ export default function Faehigkeiten() {
   }, [openIndex, close]);
 
   return (
-    <section className="rr-section tl-section">
+    <section className="rr-section tl-section" ref={sectionRef}>
       <style>{CSS}</style>
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow tl-eyebrow">Wenn du mehr willst</p>
@@ -107,10 +215,26 @@ export default function Faehigkeiten() {
               type="button"
               key={f.name}
               className={`tlfg-cell${f.invers ? ' tlfg-cell--invers' : ''}`}
+              ref={(el) => {
+                cellRefs.current[i] = el;
+              }}
               onClick={() => setOpenIndex(i)}
               aria-haspopup="dialog"
             >
-              <span className="tlfg-name">{f.name}</span>
+              <span
+                className="tlfg-name"
+                ref={(el) => {
+                  nameRefs.current[i] = el;
+                }}
+              >
+                {f.name}
+              </span>
+              <i className="tlfg-caret" aria-hidden="true" />
+              <span className="tlfg-plus" aria-hidden="true">
+                <svg viewBox="0 0 14 14" fill="none">
+                  <path d="M7 1V13M1 7H13" stroke="currentColor" strokeWidth="1.4" />
+                </svg>
+              </span>
             </button>
           ))}
         </div>
@@ -197,7 +321,8 @@ export default function Faehigkeiten() {
 }
 
 const CSS = `
-/* ---- Raster im KundenGrid-Look (Werte 1:1 aus KundenGrid.tsx) ---- */
+/* ---- Raster: EXAKTER Klon von KundenGrid.tsx (.rrkg-grid/.rrkg-cell/
+       .rrkg-name/.rrkg-caret), Werte 1:1 ---- */
 .rr .tlfg-grid {
   margin-top: clamp(32px, 4.5vw, 56px);
   display: grid;
@@ -205,15 +330,24 @@ const CSS = `
   gap: 1px;
   background: #e4e4e0;
   border: 1px solid #e4e4e0;
+  user-select: none;
+  -webkit-user-select: none;
 }
 .rr .tlfg-cell {
-  display: flex;
-  align-items: center;
-  min-height: 140px;
-  padding: clamp(2rem, 2.6vw, 3.1rem);
+  position: relative;
   background: #ffffff;
   border: 0;
   border-radius: 0;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  padding: clamp(2rem, 2.6vw, 3.1rem);
+  font-family: var(--font-dmsans), "DM Sans", sans-serif;
+  font-weight: 300;
+  font-size: clamp(1.4rem, 1.85vw, 1.7rem);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: #23262e;
   text-align: left;
   cursor: pointer;
   overflow: hidden;
@@ -227,28 +361,57 @@ const CSS = `
 .rr .tlfg-name {
   font-family: var(--font-dmsans), "DM Sans", sans-serif;
   font-weight: 300;
-  font-size: clamp(1.4rem, 1.85vw, 1.7rem);
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-  color: #23262e;
 }
+/* Caret 1:1 aus .rrkg-caret (KundenGrid.tsx Zeilen 278-283). */
+.rr .tlfg-caret {
+  display: none;
+  flex: none;
+  width: 0.14em;
+  height: 1.05em;
+  margin-left: 2px;
+  background: #f12032;
+}
+.rr .tlfg-cell.typing .tlfg-caret { display: inline-block; }
 
-/* Sonderanfertigung: navy abgesetzt, Name off-white — KEIN Rot auf Navy. */
+/* Klick-Zeichen unten rechts: kleines Plus (dazubuchen), border-radius 0,
+   dezent; hover -> Marken-Rot. Signalisiert Klickbarkeit. */
+.rr .tlfg-plus {
+  position: absolute;
+  bottom: clamp(12px, 1.4vw, 18px);
+  right: clamp(14px, 1.6vw, 20px);
+  width: 14px;
+  height: 14px;
+  color: #b7b7b1;
+  pointer-events: none;
+  transition: color 0.3s var(--rr-ease, cubic-bezier(.6,0,.4,1)),
+              transform 0.3s var(--rr-ease, cubic-bezier(.6,0,.4,1));
+}
+.rr .tlfg-plus svg { display: block; width: 100%; height: 100%; }
+.rr .tlfg-cell:hover .tlfg-plus { color: #f12032; transform: scale(1.12); }
+
+/* Sonderanfertigung: navy abgesetzt, Name off-white — KEIN Rot auf Navy.
+   Caret + Plus in Tuerkis. */
 .rr .tlfg-cell--invers { background: #1c2837; }
 .rr .tlfg-cell--invers:hover { background: #16202c; }
 .rr .tlfg-cell--invers:focus-visible { box-shadow: inset 0 0 0 2px #f6f5f1; }
 .rr .tlfg-cell--invers .tlfg-name { color: #f6f5f1; }
+.rr .tlfg-cell--invers .tlfg-caret { background: #39c2d7; }
+.rr .tlfg-cell--invers .tlfg-plus { color: #6fd4e5; }
+.rr .tlfg-cell--invers:hover .tlfg-plus { color: #39c2d7; transform: scale(1.12); }
 
+/* Responsive 1:1 zu KundenGrid.tsx (Zeilen 300-308). */
 @media (min-width: 769px) and (max-width: 1120px) {
-  .rr .tlfg-cell { min-height: 122px; padding: clamp(1.5rem, 2.2vw, 2.2rem); }
-  .rr .tlfg-name { font-size: clamp(1.2rem, 2.15vw, 1.42rem); }
+  .rr .tlfg-cell {
+    min-height: 122px;
+    padding: clamp(1.5rem, 2.2vw, 2.2rem);
+    font-size: clamp(1.2rem, 2.15vw, 1.42rem);
+  }
 }
 @media (max-width: 768px) {
   .rr .tlfg-grid { grid-template-columns: repeat(2, 1fr); }
-  .rr .tlfg-cell { min-height: 88px; padding: 1.1rem 1.2rem; }
-  .rr .tlfg-name { font-size: 1.15rem; }
+  .rr .tlfg-cell { min-height: 88px; font-size: 1.05rem; padding: 1.1rem 1.2rem; }
 }
-@media (max-width: 460px) {
+@media (max-width: 440px) {
   .rr .tlfg-grid { grid-template-columns: 1fr; }
 }
 
@@ -366,5 +529,6 @@ const CSS = `
 @media (prefers-reduced-motion: reduce) {
   .rr .tlfg-backdrop, .rr .tlfg-modal { animation: none; }
   .rr .tlfg-cell { transition: none; }
+  .rr .tlfg-cell.typing .tlfg-caret { display: none; }
 }
 `;

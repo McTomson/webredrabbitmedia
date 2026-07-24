@@ -47,10 +47,10 @@ export interface TalosMotion {
   /** Zwinkern automatisch alle ~10 s wiederholen, solange aktiv. */
   setWinkLoop(active: boolean): void;
   /**
-   * Kopf aktiv zur Bildmitte ziehen (Thomas-Regel). v in -1..1:
-   * -1 = Blick nach Bildschirm-links, +1 = nach rechts, 0 = frei der Maus folgen.
+   * Kopf-Ziel-Yaw relativ zur Basis. Zum User (Kamera) schauen = Koerperdrehung
+   * ausgleichen, also v = -Koerper-Yaw setzen (Thomas 24.07.). 0 = geradeaus.
    */
-  setCenterPull(v: number): void;
+  setHeadYaw(v: number): void;
   /** Blickziel: normalisierte Viewport-Koordinaten -1..1 (x rechts, y oben). */
   setPointer(nx: number, ny: number): void;
   /** Kopfneigung an/aus (z.B. waehrend einer Frage im Assistenten). */
@@ -141,8 +141,10 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
   const WINK_DUR = 0.5;
   const LOOP_GAP = 10; // Sekunden zwischen den Wiederholungen
 
-  // Aktiver Zug des Kopfes zur Bildmitte (-1 links .. +1 rechts), 0 = Maus frei.
-  let centerPull = 0;
+  // Ziel-Yaw des Kopfes RELATIV zur Basis. Zum User (Kamera) schauen heisst die
+  // Koerperdrehung ausgleichen -> die Buehne setzt headYaw = -Koerper-Yaw
+  // (Thomas 24.07.: Kopf immer zum Nutzer, nie zur Bildmitte). 0 = geradeaus.
+  let headYaw = 0;
 
   // Idle-Daempfer fuer weiche Uebergaenge nach Gesten
   let armLift = 0;
@@ -196,8 +198,8 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
     if (!active) nextWinkAt = 1e9;
     winkLoop = active;
   };
-  const setCenterPull = (v: number) => {
-    centerPull = clamp(v, -1, 1);
+  const setHeadYaw = (v: number) => {
+    headYaw = clamp(v, -1.2, 1.2);
   };
 
   const update = (dt: number) => {
@@ -253,11 +255,10 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
       }
     }
 
-    // --- Blickfolge: Kopf folgt dem Cursor, weich gedaempft ---
-    // Bei aktivem centerPull zieht der Kopf zur Bildmitte (Thomas-Regel); die
-    // Maus-Folge wird dann gedaempft, damit er nie nach aussen schaut.
-    const pullW = Math.min(1, Math.abs(centerPull));
-    const targetYaw = centerPull * 0.3 + pointerX * 0.32 * (1 - pullW * 0.7);
+    // --- Blickfolge: Kopf schaut den User (Kamera) an ---
+    // headYaw gleicht die Koerperdrehung aus (die Buehne setzt -Koerper-Yaw),
+    // plus dezente Maus-Folge. Nie zur Bildmitte (Thomas 24.07.).
+    const targetYaw = headYaw + pointerX * 0.16;
     // Pitch: leichte Neigung zum Inhalt (leicht nach unten), gedaempfte Maus-Folge
     // und HART gegen Hochschauen geklemmt (Thomas 24.07.: "schaut in die Luft").
     const targetPitch = clamp(0.05 - pointerY * 0.1, -0.04, 0.2);
@@ -389,7 +390,7 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
     triggerWink,
     setNodLoop,
     setWinkLoop,
-    setCenterPull,
+    setHeadYaw,
     setPointer,
     setHeadTilt: (active: boolean) => {
       headTilt = active;

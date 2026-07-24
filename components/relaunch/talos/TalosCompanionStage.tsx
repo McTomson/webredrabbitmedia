@@ -47,9 +47,10 @@ const OFF_MARGIN = 320; // Luft hinter der Bildkante (offscreen) — inkl. Armre
 // Koerperhaltung im Stand: IMMER deutlich zur Bildmitte gedreht, nie nach aussen
 // (Thomas-Regel 24.07.: die alten 0.13 rad waren zu subtil, er las die Haltung als
 // "nach aussen"). Vorzeichen: +yaw = nach rechts gedreht.
-// Koerperhaltung im Stand: DEUTLICH zur Bildmitte gedreht (Thomas 24.07.: 0.30 war
-// zu subtil, las sich als "nach aussen"; die Richtung stimmt, es braucht mehr Drehung).
-const STAND_BIAS = 0.5;
+// Koerperhaltung im Stand: nur LEICHT zur Bildmitte angedeutet (Thomas 24.07.:
+// 0.50 war zu viel -> man sah seinen Ruecken). Die Praesenz macht der KOPF, der
+// den User anschaut (headYaw = -Koerper-Yaw); der Koerper deutet die Wendung nur an.
+const STAND_BIAS = 0.24;
 // Dreiviertel-Ansicht in Laufrichtung (empirisch: +1.05 = geht nach rechts,
 // Gesicht leicht zum User; Vorzeichen spiegelt fuer Laufrichtung links).
 const FACE_TURN = 1.05;
@@ -262,8 +263,9 @@ export default function TalosCompanionStage() {
         frameVisible = wantFrame;
         document.getElementById("mainSticky")?.classList.toggle("is-dash", wantFrame);
       }
-      // Im Hero blickt Talos zum User, keine Mitte-Kopplung, keine Loops.
-      motion?.setCenterPull(0);
+      // Im Hero schaut Talos den User an (Kopf gleicht die Stand-Drehung aus);
+      // beim Abgang (ep>0, er geht) NICHT — dann schaut er in Laufrichtung.
+      motion?.setHeadYaw(ep > 0 ? 0 : -yaw);
       motion?.setNodLoop(false);
       motion?.setWinkLoop(false);
       // Im Hero liegt der Canvas immer VOR dem Inhalt.
@@ -317,9 +319,9 @@ export default function TalosCompanionStage() {
         const targetYaw = walking ? FACE_TURN * Math.sign(vx) : centerBias + best.yaw;
         curYaw = damp(curYaw, targetYaw, 5, dt);
         writeWalkPose(curX, curZ, curYaw, walking, dt);
-        // Kopf AKTIV zur Bildmitte (Thomas-Regel): steht er rechts, blickt er
-        // leicht nach links, steht er links, leicht nach rechts. Beim Gehen frei.
-        motion?.setCenterPull(walking ? 0 : curX > 40 ? -0.9 : curX < -40 ? 0.9 : 0);
+        // Kopf schaut den User an (Kamera): gleicht die Koerperdrehung aus.
+        // Beim Gehen frei (Kopf in Laufrichtung), im Stand -Koerper-Yaw.
+        motion?.setHeadYaw(walking ? 0 : -curYaw);
         // Nicken/Zwinkern laufen als 10-s-Loop, solange die Station aktiv ist.
         motion?.setNodLoop(best.gesture === "nod");
         motion?.setWinkLoop(best.gesture === "wink");
@@ -333,7 +335,7 @@ export default function TalosCompanionStage() {
         }
       } else {
         lastStation = null;
-        motion?.setCenterPull(0);
+        motion?.setHeadYaw(0);
         motion?.setNodLoop(false);
         motion?.setWinkLoop(false);
         opacity = damp(opacity, 0, 6, dt);

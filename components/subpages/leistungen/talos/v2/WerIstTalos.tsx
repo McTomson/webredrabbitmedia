@@ -11,13 +11,11 @@ export default function WerIstTalos() {
   return (
     <section className="rr-section tl-section tl-sticky-track tl-sticky-track--tall">
       <div className="tl-sticky">
-        <div className="rr-wrap rr-narrow tl-wer__grid">
+        <div className="rr-wrap tl-wer__grid">
           <div className="tl-wer__text">
             <p className="wd-eyebrow tl-eyebrow">Wer ist Talos</p>
-            <h2 className="rr-statement tl-title">
-              Talos ist kein Programm, das du kaufst oder installierst. Seine
-              Grundausstattung steckt fest in deiner Website, weitere
-              Fähigkeiten holst du dir bei Bedarf monatlich dazu.
+            <h2 className="rr-statement tl-title tl-wer__title">
+              Talos ist kein Programm, das du kaufst oder installierst.
             </h2>
             <p className="rr-body-lg tl-lead">
               Talos ist nichts, das du extra kaufst oder installierst. Seine
