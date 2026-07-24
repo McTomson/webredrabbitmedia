@@ -2084,3 +2084,57 @@ quelle: https://www.ubit-stmk.at/wp-content/uploads/40c_InfopflichtenDetailinfor
 quelle_name: WKO Fachgruppe UBIT Steiermark - Informationspflichten nach dem E-Commerce-Gesetz (Detailinformationen, PDF)
 geprueft_am: 2026-07-22
 recheck_nach: 2027-01-18
+
+## t50-2026-07-24-232
+cluster: 1
+keywords: wird, dsgvo, website, technisch, umgesetzt
+aussage: Nicht technisch notwendige Cookies (z. B. Tracking/Werbung) duerfen erst nach aktiver, informierter Einwilligung des Nutzers gesetzt werden; vorangekreuzte Kaestchen oder Opt-out sind laut EuGH ('Planet49') keine wirksame Einwilligung. Technisch heisst das: ein Consent-Banner muss Tracking-/Marketing-Skripte bis zur Zustimmung blockieren.
+quelle: https://dejure.org/dienste/vernetzung/rechtsprechung?Text=C-673/17
+quelle_name: EuGH, Urteil vom 01.10.2019, Rs. C-673/17 (Planet49) - dejure.org
+geprueft_am: 2026-07-24
+recheck_nach: 2027-01-20
+
+## t50-2026-07-24-233
+cluster: 1
+keywords: wird, dsgvo, website, technisch, umgesetzt
+aussage: Google Fonts (und aehnliche externe Ressourcen) muessen lokal auf dem eigenen Server eingebunden werden. Bei dynamischem Nachladen von Google-Servern wird die IP-Adresse des Besuchers ohne Einwilligung in die USA uebertragen — laut LG Muenchen I ein DSGVO-Verstoss, der zu 100 EUR Schadensersatz (Art. 82 DSGVO) fuehrte. Praktische Umsetzung: Fonts, Maps, Analytics etc. selbst hosten oder erst nach Consent laden.
+quelle: https://www.dr-datenschutz.de/schadensersatz-urteil-google-fonts-und-die-dsgvo/
+quelle_name: LG Muenchen I, Urteil vom 20.01.2022, Az. 3 O 17493/20 - Dr. Datenschutz
+geprueft_am: 2026-07-24
+recheck_nach: 2027-01-20
+
+## t50-2026-07-24-234
+cluster: 1
+keywords: wird, dsgvo, website, technisch, umgesetzt
+aussage: Art. 32 DSGVO verpflichtet Betreiber zu technischen und organisatorischen Massnahmen 'nach dem Stand der Technik', wozu ausdruecklich die Verschluesselung personenbezogener Daten zaehlt. Fuer Websites bedeutet das u. a. verschluesselte Uebertragung per TLS/HTTPS (Kontakt- und Formulardaten) als Mindeststandard.
+quelle: https://dsgvo-gesetz.de/art-32-dsgvo/
+quelle_name: Art. 32 DSGVO (Sicherheit der Verarbeitung) - dsgvo-gesetz.de
+geprueft_am: 2026-07-24
+recheck_nach: 2027-01-20
+
+## t50-2026-07-24-235
+cluster: 1
+keywords: wird, dsgvo, website, technisch, umgesetzt
+aussage: Wer eine Website hostet, muss mit dem Hosting-Provider einen Auftragsverarbeitungsvertrag (AVV) nach Art. 28 DSGVO abschliessen; fehlt dieser, drohen Massnahmen der Datenschutzaufsichtsbehoerden. Die WKO stellt dafuer einen oesterreichischen Mustervertrag bereit.
+quelle: https://www.wko.at/datenschutz/eu-dsgvo-auftragsverarbeitung-mustervertrag
+quelle_name: WKO - EU-DSGVO: Mustervertrag fuer die Auftragsverarbeitung nach Art. 28 DSGVO
+geprueft_am: 2026-07-24
+recheck_nach: 2027-01-20
+
+## t50-2026-07-24-236
+cluster: 1
+keywords: wird, dsgvo, website, technisch, umgesetzt
+aussage: Ein Serverstandort in der EU allein garantiert keine DSGVO-Konformitaet: Der US CLOUD Act verpflichtet US-Anbieter und ausdruecklich auch ihre EU-Tochtergesellschaften zur Datenherausgabe an US-Behoerden, unabhaengig vom physischen Standort der Daten. Entscheidend ist die Kontrolle ueber die Daten — daher fuer AT-Websites moeglichst ein europaeischer Hoster ohne US-Mutter.
+quelle: https://www.activemind.legal/guides/us-cloud-act/
+quelle_name: activeMind.legal - U.S. CLOUD Act (Guide)
+geprueft_am: 2026-07-24
+recheck_nach: 2027-01-20
+
+## t50-2026-07-24-237
+cluster: 1
+keywords: wird, dsgvo, website, technisch, umgesetzt
+aussage: Datentransfers in die USA (z. B. ueber US-Tools/CDNs) sind seit dem Schrems-II-Urteil (EuGH, 16.07.2020, C-311/18) ein zentrales Hosting-Risiko; sie sind ohne Zusatzmassnahmen nur zulaessig, wenn die empfangende US-Organisation unter dem EU-U.S. Data Privacy Framework (Angemessenheitsbeschluss seit 10.07.2023) zertifiziert ist.
+quelle: https://www.bfdi.bund.de/SharedDocs/Kurzmeldungen/DE/2023/17_Angemessenheitsbeschluss-EU-US-DPF.html
+quelle_name: BfDI - Angemessenheitsbeschluss zum EU-U.S. Data Privacy Framework in Kraft getreten
+geprueft_am: 2026-07-24
+recheck_nach: 2027-01-20

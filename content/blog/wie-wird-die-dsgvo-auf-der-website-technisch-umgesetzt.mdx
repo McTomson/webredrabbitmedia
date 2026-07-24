@@ -1,0 +1,149 @@
+---
+title: "DSGVO auf der Website umsetzen: Praxis-Leitfaden 2026"
+slug: wie-wird-die-dsgvo-auf-der-website-technisch-umgesetzt
+excerpt: "So setzen Sie die DSGVO auf Ihrer Website technisch um: HTTPS, ein wirklich blockierendes Consent-Banner, lokale Google Fonts und datenschutzkonformes Hosting. Dieser Praxis-Leitfaden zeigt Schritt für Schritt, worauf es 2026 ankommt."
+featuredSnippetTitle: "Wie wird die DSGVO auf einer Website technisch umgesetzt?"
+featuredSnippet: "Die DSGVO wird auf einer Website vor allem über vier technische Bausteine umgesetzt: verschlüsselte Übertragung per TLS/HTTPS, ein Consent-Banner, das Tracking-Skripte bis zur Einwilligung blockiert, das lokale Einbinden externer Ressourcen wie Google Fonts, sowie ein datenschutzkonformes Hosting mit Auftragsverarbeitungsvertrag und möglichst europäischem Anbieter ohne US-Mutterkonzern."
+author: "Thomas Uhlir MBA"
+publishedAt: "2026-07-24"
+updatedAt: "2026-07-24"
+category: "Strategie & Kosten"
+tags:
+  - "DSGVO"
+  - "Datenschutz"
+  - "Website"
+  - "Hosting"
+  - "Österreich"
+  - "Recht"
+featuredImage: /images/blog/wie-wird-die-dsgvo-auf-der-website-technisch-umgesetzt.png
+status: draft
+aiAssisted: true
+sources:
+  - name: "EuGH, Urteil vom 01.10.2019, Rs. C-673/17 (Planet49), dejure.org"
+    url: "https://dejure.org/dienste/vernetzung/rechtsprechung?Text=C-673/17"
+  - name: "LG München I, Urteil vom 20.01.2022, Az. 3 O 17493/20, Dr. Datenschutz"
+    url: "https://www.dr-datenschutz.de/schadensersatz-urteil-google-fonts-und-die-dsgvo/"
+  - name: "Art. 32 DSGVO (Sicherheit der Verarbeitung), dsgvo-gesetz.de"
+    url: "https://dsgvo-gesetz.de/art-32-dsgvo/"
+  - name: "WKO, EU-DSGVO: Mustervertrag für die Auftragsverarbeitung nach Art. 28 DSGVO"
+    url: "https://www.wko.at/datenschutz/eu-dsgvo-auftragsverarbeitung-mustervertrag"
+  - name: "activeMind.legal, U.S. CLOUD Act (Guide)"
+    url: "https://www.activemind.legal/guides/us-cloud-act/"
+  - name: "BfDI, Angemessenheitsbeschluss zum EU-U.S. Data Privacy Framework in Kraft getreten"
+    url: "https://www.bfdi.bund.de/SharedDocs/Kurzmeldungen/DE/2023/17_Angemessenheitsbeschluss-EU-US-DPF.html"
+keyTakeaways:
+  - "HTTPS/TLS ist der nicht verhandelbare Mindeststandard nach Artikel 32 DSGVO, heute kostenlos und in Minuten aktiviert."
+  - "Das Consent-Banner muss Tracking- und Marketing-Skripte technisch blockieren, bis der Nutzer aktiv zustimmt (EuGH, Planet49, 2019). Ein Banner, das nur fragt, aber nichts stoppt, ist wertlos."
+  - "Google Fonts und andere externe Ressourcen lokal einbinden. Das dynamische Nachladen von US-Servern kostete in München 100 Euro Schadensersatz pro Fall."
+  - "Ein AVV nach Artikel 28 mit dem Hoster ist Pflicht. Die WKO-Vorlage macht es einfach."
+  - "Ein EU-Serverstandort allein genügt nicht. Wegen US CLOUD Act und Schrems II lieber ein europäischer Hoster ohne US-Mutter oder ein im Data Privacy Framework zertifizierter US-Dienst."
+conclusionStats:
+  - label: "Schadensersatz je Fall (Google Fonts, LG München I)"
+    value: "100 €"
+  - label: "TLS-Zertifikat per Let's Encrypt"
+    value: "0 €"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Muss meine Website zwingend über HTTPS laufen?"
+    answer: "Ja. Artikel 32 DSGVO verlangt Verschlüsselung nach dem Stand der Technik, sobald personenbezogene Daten verarbeitet werden. Spätestens bei einem Kontaktformular ist HTTPS Pflicht. Ein TLS-Zertifikat gibt es bei seriösen Hostern kostenlos, etwa über Let's Encrypt."
+  - question: "Reicht ein Cookie-Banner für DSGVO-Konformität aus?"
+    answer: "Nein. Entscheidend ist nicht, dass ein Banner erscheint, sondern dass es Tracking- und Marketing-Skripte technisch blockiert, bis der Besucher aktiv zustimmt. Feuern Google Analytics oder das Meta-Pixel schon vor dem Klick, ist der Cookie rechtswidrig gesetzt, egal wie das Banner aussieht."
+  - question: "Warum sind Google Fonts ein Datenschutzproblem?"
+    answer: "Beim dynamischen Nachladen von den Google-Servern wird die IP-Adresse des Besuchers ohne Einwilligung in die USA übertragen. Das Landgericht München I wertete das 2022 als DSGVO-Verstoß und sprach 100 Euro Schadensersatz zu. Die Lösung ist, die Schriften lokal auf dem eigenen Server einzubinden."
+  - question: "Genügt ein Serverstandort in der EU für DSGVO-Konformität?"
+    answer: "Nicht automatisch. Der US CLOUD Act verpflichtet US-Anbieter und deren europäische Töchter, Daten an US-Behörden herauszugeben, unabhängig vom Serverstandort. Sicherer ist ein europäischer Hoster ohne US-Mutterkonzern oder ein US-Dienst, der im EU-U.S. Data Privacy Framework zertifiziert ist."
+  - question: "Brauche ich einen Auftragsverarbeitungsvertrag mit meinem Hoster?"
+    answer: "Ja. Wer eine Website hostet, muss nach Artikel 28 DSGVO einen Auftragsverarbeitungsvertrag (AVV) mit dem Provider abschließen. Die Wirtschaftskammer Österreich stellt dafür einen fertigen Mustervertrag bereit, und bei den meisten seriösen Hostern liegt der AVV im Kundenkonto zum Abschluss bereit."
+hookCandidates:
+  - "ist meine website dsgvo-konform?"
+  - "dsgvo auf der website: was fehlt?"
+  - "google fonts lokal einbinden, oder?"
+---
+
+Datenschutz auf einer Website ist ein bisschen wie die Elektrik in einem Haus. Man sieht sie im Alltag nicht, man denkt nicht darüber nach, und trotzdem entscheidet sie darüber, ob alles sicher läuft oder ob es irgendwann gefährlich wird. Der Unterschied ist nur: Bei der Elektrik kommt der Elektriker mit Prüfprotokoll. Bei der DSGVO kommt im schlimmsten Fall eine Abmahnung oder eine Beschwerde bei der Datenschutzbehörde.
+
+Viele Unternehmer in Wien und ganz Österreich denken bei DSGVO zuerst an einen langen Text im Footer, die Datenschutzerklärung. Die ist wichtig, keine Frage. Aber sie ist nur der juristische Teil. Die eigentliche Arbeit passiert unter der Haube, im Code, im Consent-Banner, in der Wahl des Hosters. Genau darum geht es hier: nicht um Paragrafen zum Vorlesen, sondern um die Technik, die Sie tatsächlich auf Ihrer Seite umsetzen müssen.
+
+![DSGVO auf der Website technisch umsetzen: HTTPS, Consent-Banner und datenschutzkonformes Hosting im Überblick](/images/blog/wie-wird-die-dsgvo-auf-der-website-technisch-umgesetzt.png)
+
+## Wie wird die DSGVO auf einer Website technisch umgesetzt?
+
+Die DSGVO wird auf einer Website vor allem über vier technische Bausteine umgesetzt: verschlüsselte Übertragung per TLS/HTTPS, ein Consent-Banner, das Tracking-Skripte bis zur Einwilligung blockiert, das lokale Einbinden externer Ressourcen wie Google Fonts, sowie ein datenschutzkonformes Hosting mit Auftragsverarbeitungsvertrag und möglichst europäischem Anbieter ohne US-Mutterkonzern.
+
+Das ist die Kurzfassung. Jeder dieser vier Punkte hat seine eigenen Fallen, und genau an denen scheitern die meisten Websites. Gehen wir sie der Reihe nach durch, damit Sie am Ende wissen, was auf Ihrer Seite konkret passieren muss.
+
+## HTTPS und Verschlüsselung: der absolute Mindeststandard
+
+Fangen wir mit dem an, was ohnehin nicht verhandelbar ist. [Artikel 32 der DSGVO](https://dsgvo-gesetz.de/art-32-dsgvo/) verpflichtet jeden Website-Betreiber zu technischen und organisatorischen Maßnahmen "nach dem Stand der Technik", und die Verschlüsselung personenbezogener Daten wird dort ausdrücklich genannt. Für eine Website heißt das im Klartext: Ihre Seite muss über HTTPS laufen, also über eine verschlüsselte Verbindung per TLS.
+
+Das gilt für jede Seite, auf der ein Besucher etwas eingibt, nicht bloß für den Login-Bereich. Beim Kontaktformular zum Beispiel, oder wenn jemand über Ihre Seite einen Termin bucht. Wenn ein potenzieller Kunde aus dem 7. Bezirk Ihnen über das Formular seine Telefonnummer schickt und diese Daten unverschlüsselt durchs Netz gehen, dann ist das ein Verstoß gegen den Mindeststandard. Und der Besucher sieht es sofort, weil der Browser die Seite als "nicht sicher" markiert. Kein guter erster Eindruck, oder?
+
+Die gute Nachricht: Ein TLS-Zertifikat ist heute technisch trivial und bei praktisch jedem seriösen Hoster kostenlos dabei, etwa über Let's Encrypt. Es gibt also keinen einzigen guten Grund, eine Geschäfts-Website 2026 noch ohne HTTPS zu betreiben. Prüfen Sie es in 30 Sekunden: Steht in der Adressleiste ein Schloss-Symbol und beginnt die Adresse mit "https://"? Wenn ja, ist dieser Punkt erledigt. Wenn nein, ist das Ihr erstes To-do für heute.
+
+## Cookie-Consent: das Banner, das wirklich blockiert
+
+Jetzt wird es interessant, denn hier machen die meisten Seiten denselben Fehler. Der Europäische Gerichtshof hat schon im [Planet49-Urteil vom 1. Oktober 2019](https://dejure.org/dienste/vernetzung/rechtsprechung?Text=C-673/17) klargestellt: Nicht technisch notwendige Cookies, also alles rund um Tracking und Werbung, dürfen erst gesetzt werden, nachdem der Nutzer aktiv und informiert zugestimmt hat. Ein vorangekreuztes Kästchen zählt nicht. Eine Opt-out-Lösung, bei der der Besucher erst widersprechen müsste, zählt ebenfalls nicht.
+
+Technisch bedeutet das etwas sehr Konkretes, das viele Banner in der Praxis gar nicht leisten. Das Consent-Banner muss die Marketing- und Tracking-Skripte tatsächlich blockieren, bis der Besucher auf "Akzeptieren" klickt. Der klassische Fehler: Man baut ein hübsches Banner ein, das nach Zustimmung fragt, aber Google Analytics und das Meta-Pixel laufen schon beim Seitenaufruf mit. Dann ist das Banner reine Deko, und rechtlich ist der Cookie längst gesetzt, bevor überhaupt jemand geklickt hat.
+
+Meine klare Empfehlung: Setzen Sie eine Consent-Management-Lösung ein, die die Skripte technisch erst nach der Einwilligung nachlädt. Und testen Sie es selbst. Öffnen Sie die Entwickler-Konsole im Browser, laden Sie Ihre Seite neu, ohne zu klicken, und schauen Sie, welche Tracker feuern. Feuert vor dem Klick schon etwas, das nichts mit dem reinen Betrieb der Seite zu tun hat, dann haben Sie ein Problem, egal wie schön das Banner aussieht.
+
+## Google Fonts und externe Ressourcen lokal einbinden
+
+Dieser Punkt hat 2022 in Deutschland eine kleine Abmahnwelle ausgelöst, und die Logik dahinter gilt für Österreich genauso. Das Landgericht München I hat mit [Urteil vom 20. Jänner 2022](https://www.dr-datenschutz.de/schadensersatz-urteil-google-fonts-und-die-dsgvo/) einer Website-Besucherin 100 Euro Schadensersatz nach Artikel 82 DSGVO zugesprochen, weil eine Seite Google Fonts dynamisch von den Google-Servern nachgeladen hatte. Der Grund: Beim dynamischen Nachladen wird die IP-Adresse des Besuchers ohne dessen Einwilligung an Google in die USA übertragen. Das Gericht wertete das als DSGVO-Verstoß.
+
+Google Fonts sind dabei nur das prominenteste Beispiel. Dasselbe Prinzip trifft auf alles zu, was Ihre Seite live von einem externen Server holt: eingebettete Schriften, Karten von Google Maps, Analytics-Skripte, manche Icon-Bibliotheken. Jedes Mal, wenn der Browser eines Besuchers eine solche Datei von einem fremden Server anfragt, wandert seine IP-Adresse mit.
+
+Die Lösung ist technisch unspektakulär, aber wirksam: Hosten Sie diese Ressourcen selbst. Laden Sie die Schriftdateien herunter und binden Sie sie lokal von Ihrem eigenen Server ein. Bei Karten und Analytics laden Sie den Dienst entweder erst nach der Cookie-Einwilligung oder Sie verwenden eine datensparsame Alternative. Rechnen wir kurz das Risiko durch: 100 Euro pro betroffener Person klingt harmlos, aber bei einer gut besuchten Seite und einem Anwalt, der systematisch abmahnt, wird aus der Kleinigkeit schnell eine unangenehme Zahl. Der Aufwand, Fonts lokal einzubinden, liegt dagegen bei vielleicht einer Stunde Arbeit.
+
+## Hosting: warum ein EU-Server allein nicht reicht
+
+Kommen wir zum Fundament, dem Hosting. Hier gibt es zwei Ebenen, die oft durcheinandergehen. Die erste ist vertraglich: Wer eine Website hostet, muss mit dem Hosting-Provider einen Auftragsverarbeitungsvertrag nach Artikel 28 DSGVO abschließen, kurz AVV. Fehlt der, drohen Maßnahmen der Datenschutzaufsichtsbehörden. Die [Wirtschaftskammer Österreich stellt dafür einen fertigen Mustervertrag bereit](https://www.wko.at/datenschutz/eu-dsgvo-auftragsverarbeitung-mustervertrag), Sie müssen das Rad also nicht neu erfinden. Bei den meisten seriösen Hostern liegt der AVV ohnehin zum Abschluss im Kundenkonto bereit.
+
+Die zweite Ebene ist heikler und wird gern übersehen. Viele denken: "Mein Server steht in Frankfurt oder Wien, also bin ich sicher." Das stimmt leider nicht automatisch. Der [US CLOUD Act](https://www.activemind.legal/guides/us-cloud-act/) verpflichtet US-Anbieter und ausdrücklich auch deren europäische Tochtergesellschaften dazu, Daten an US-Behörden herauszugeben, unabhängig davon, wo die Server physisch stehen. Entscheidend ist nicht der Standort, sondern wer die Kontrolle über die Daten hat. Ein US-Konzern mit Rechenzentrum in der EU bleibt ein US-Konzern.
+
+Dazu kommt das Thema Datentransfer in die USA, das seit dem Schrems-II-Urteil des EuGH vom 16. Juli 2020 ein zentrales Hosting-Risiko ist. Datenübertragungen in die USA, etwa über US-Tools oder US-CDNs, sind ohne Zusatzmaßnahmen nur dann zulässig, wenn die empfangende US-Organisation unter dem EU-U.S. Data Privacy Framework zertifiziert ist. Für dieses Framework gibt es seit dem [10. Juli 2023 einen Angemessenheitsbeschluss](https://www.bfdi.bund.de/SharedDocs/Kurzmeldungen/DE/2023/17_Angemessenheitsbeschluss-EU-US-DPF.html). Praktisch heißt das: Prüfen Sie, ob ein eingesetzter US-Dienst dort tatsächlich zertifiziert gelistet ist, oder wählen Sie gleich einen europäischen Hoster ohne US-Mutter. Das erspart Ihnen die ganze Prüfkette.
+
+## Sicher und aktuell halten: der stille Teil von Artikel 32
+
+Artikel 32 verlangt Sicherheit "nach dem Stand der Technik", und dazu gehört auch, dass Ihre Website-Software nicht auf einem verwundbaren, jahrealten Stand vor sich hin gammelt. Eine ungepatchte Schwachstelle, über die jemand an Ihre Kontaktdaten kommt, ist auch ein Datenschutzthema, nicht nur ein IT-Problem.
+
+Wie viel Pflege das braucht, hängt stark davon ab, wie Ihre Seite gebaut ist. Eine klassische WordPress-Installation mit einem Dutzend Plugins ist eine laufende Baustelle, weil jedes Plugin eine potenzielle Lücke ist und regelmäßig aktualisiert werden muss. Eine schlanke, statisch ausgelieferte Seite hat schlicht viel weniger Angriffsfläche. Genau hier wird der Zusammenhang zwischen Wartung und Datenschutz konkret.
+
+> "Ein laufender Wartungsvertrag lohnt sich für eine reine Website meistens nicht. Steht die Seite einmal, dann steht sie. Eine statische Seite hat kaum Angriffsfläche und keine Plugin-Update-Tretmühle. Sinnvoll wird laufende Betreuung erst, wenn wirklich laufende Dienste dranhängen, ein Chatbot, automatische Mail-Beantwortung, oder wenn Sie SEO und Google Ads betreiben, die man ohnehin kontrollieren muss."
+> Thomas Uhlir MBA, Geschäftsführer Red Rabbit Media
+
+Für die DSGVO folgt daraus eine einfache Regel: Je weniger bewegliche Teile Ihre Seite hat, desto weniger können Sie technisch übersehen. Wer eine reine Visitenkarten-Website betreibt, braucht kein teures Wartungsabo, sondern muss vor allem einmal sauber aufsetzen und die wenigen externen Abhängigkeiten im Blick behalten.
+
+## Schritt für Schritt: was Sie konkret tun sollten
+
+Damit das nicht abstrakt bleibt, hier die Reihenfolge, die ich einem Kunden im Erstgespräch mitgebe. Arbeiten Sie sie von oben nach unten ab.
+
+- **HTTPS prüfen.** Schloss-Symbol da, Adresse mit "https://"? Wenn nicht, beim Hoster ein kostenloses Zertifikat aktivieren.
+- **Consent-Banner testen.** In der Browser-Konsole schauen, ob Tracker schon vor dem Klick feuern. Wenn ja, auf eine Lösung umstellen, die Skripte erst nach Zustimmung lädt.
+- **Externe Ressourcen finden.** Google Fonts, Google Maps, externe Analytics und Icon-Bibliotheken lokal einbinden oder erst nach Consent laden.
+- **AVV abschließen.** Beim Hoster prüfen, ob ein Auftragsverarbeitungsvertrag nach Artikel 28 vorliegt. Vorlage gibt es bei der WKO.
+- **Hoster prüfen.** Europäischer Anbieter ohne US-Mutter? Falls US-Dienste im Spiel sind, deren Zertifizierung im Data Privacy Framework kontrollieren.
+- **Datenschutzerklärung anpassen.** Erst wenn die Technik steht, den juristischen Text an die tatsächlich eingesetzten Tools anpassen, nicht umgekehrt.
+
+Der letzte Punkt ist wichtiger, als er klingt. Eine Datenschutzerklärung, die Dienste beschreibt, die Sie gar nicht mehr nutzen, oder die verschweigt, was wirklich läuft, ist genauso ein Problem wie gar keine.
+
+## Häufige Irrtümer, die teuer werden
+
+Zum Schluss die Fallen, in die ich Kunden immer wieder tappen sehe. Der erste Irrtum: "Ich habe ein Cookie-Banner, also passt das." Nein. Entscheidend ist, ob es die Skripte auch wirklich blockiert, nicht ob es hübsch aufpoppt. Der zweite: "Mein Server steht in der EU, also bin ich DSGVO-konform." Auch nein, wenn dahinter ein US-Konzern sitzt, Stichwort CLOUD Act. Und der dritte, der mir fast am häufigsten begegnet: "Datenschutz ist reine Rechtssache, das macht mein Anwalt." Der Anwalt schreibt den Text, schon klar. Aber die IP-Adresse, die beim Laden einer externen Schrift in die USA wandert, stoppt kein Jurist. Das ist Technik.
+
+Und ein Wort zur Ehrlichkeit: Dieser Artikel ist eine praxisnahe Orientierung, keine Rechtsberatung. Bei einer heiklen Konstellation, etwa einem Onlineshop mit vielen Drittanbieter-Tools, holen Sie sich zusätzlich juristischen Rat. Die Technik können wir Ihnen abnehmen, die finale rechtliche Bewertung im Einzelfall gehört in fachkundige Hände.
+
+## Key Takeaways
+
+- HTTPS/TLS ist der nicht verhandelbare Mindeststandard nach Artikel 32 DSGVO, heute kostenlos und in Minuten aktiviert.
+- Das Consent-Banner muss Tracking- und Marketing-Skripte technisch blockieren, bis der Nutzer aktiv zustimmt (EuGH, Planet49, 2019). Ein Banner, das nur fragt, aber nichts stoppt, ist wertlos.
+- Google Fonts und andere externe Ressourcen lokal einbinden. Das dynamische Nachladen von US-Servern kostete in München 100 Euro Schadensersatz pro Fall.
+- Ein AVV nach Artikel 28 mit dem Hoster ist Pflicht. Die WKO-Vorlage macht es einfach.
+- Ein EU-Serverstandort allein genügt nicht. Wegen US CLOUD Act und Schrems II lieber ein europäischer Hoster ohne US-Mutter oder ein im Data Privacy Framework zertifizierter US-Dienst.
+
+## Sie wollen es einmal sauber gemacht haben?
+
+DSGVO-Technik ist keine Raketenwissenschaft, aber sie hat viele kleine Ecken, an denen man leicht etwas übersieht. Wenn Sie nicht selbst in der Browser-Konsole nachschauen wollen, welcher Tracker wann feuert, schauen wir uns Ihre Seite gerne an und sagen Ihnen klar, wo etwas fehlt. Ohne Panikmache und ohne unnötiges Wartungsabo. Einfach einmal richtig aufgesetzt. [Schreiben Sie uns über unser Kontaktformular](/kontakt), und wir sehen es uns an.
+
+Dieser Beitrag ersetzt keine individuelle Rechtsberatung.
