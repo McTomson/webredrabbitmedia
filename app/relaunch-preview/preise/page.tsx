@@ -6,7 +6,7 @@ import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import TalosCompanionStage from '@/components/relaunch/talos/TalosCompanionStage';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import PreiseDemoClient from '@/components/subpages/PreiseDemoClient';
-import Bumper from '@/components/subpages/preise/Bumper';
+import ScrollBumper from '@/components/subpages/leistungen/ScrollBumper';
 import RisikoBand from '@/components/subpages/preise/RisikoBand';
 import PreiseMatrix from '@/components/subpages/preise/PreiseMatrix';
 import BetreuungFoerderung from '@/components/subpages/preise/BetreuungFoerderung';
@@ -115,7 +115,20 @@ export default function PreisePreviewPage() {
 
       {/* 2-7 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope. */}
       <div className={rrFonts} style={{ background: '#ffffff', position: 'relative', zIndex: 2 }}>
-        <Bumper />
+        {/* Bumper = wiederverwendeter ScrollBumper der Leistungs-Seite (Navy,
+            zentrierte Zeilen, ein Satz mittig, der naechste stupst ihn nach
+            oben; letzter mit rotem Punkt). Thomas 25.07.: der eigene Bumper war
+            kaputt (nichts sichtbar) und sollte "genauso wie auf der Leistungs-
+            Seite" zentriert sein -> reuse statt nachbauen. */}
+        <ScrollBumper
+          statements={[
+            { text: 'Wir bauen dir eine ganze Website.' },
+            { text: 'Von Grund auf. Nicht von der Stange.' },
+            { text: 'Dazu ein Dashboard: Talos, dein persönlicher Helfer.' },
+            { text: 'Grundfunktionen immer dabei. Mehr per Abo, wenn du willst.' },
+            { text: 'Erst überzeugt, dann bezahlt.', pointe: true },
+          ]}
+        />
         <RisikoBand />
         <PreiseMatrix />
         <BetreuungFoerderung />
