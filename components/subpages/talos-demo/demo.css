@@ -38,8 +38,9 @@
   /* Scroll-Tempo (Thomas 23.07.: Hero scrollt zu schnell): Hoehe erhoeht
      (1150 -> 1495 -> 24.07. 1850vh), dehnt die gleiche Engine-Strecke auf mehr
      Scroll-Distanz. 24.07.: Abgang war zu hektisch (nur ~6,6% Progress), mehr
-     Hoehe dehnt auch den Abgang und laesst "Gruender" laenger neben Talos stehen. */
-  .scene-main{position:relative;height:1850vh}
+     Hoehe dehnt auch den Abgang und laesst "Gruender" laenger neben Talos stehen.
+     24.07. (2): Thomas -> Abgang noch zu schnell, mehr Scrollweg noetig -> 2400vh. */
+  .scene-main{position:relative;height:2400vh}
   .main-sticky{
     position:sticky;top:0;height:100vh;height:100dvh;
     overflow:hidden;isolation:isolate;

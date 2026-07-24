@@ -63,6 +63,11 @@ export default function Faehigkeiten() {
   const cellRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const nameRefs = useRef<Array<HTMLSpanElement | null>>([]);
 
+  // Zwei Akkordeons im Modal: die Fähigkeiten (rechts) und die 4 Beschreibungs-
+  // punkte (unten). Beide starten EINGEKLAPPT (-1); Klick oeffnet je genau eins.
+  const [activeFae, setActiveFae] = useState<number>(-1);
+  const [activeDesc, setActiveDesc] = useState<number>(-1);
+
   const open = openIndex !== null ? FAEHIGKEITEN[openIndex] : null;
 
   const close = useCallback(() => setOpenIndex(null), []);
@@ -218,7 +223,11 @@ export default function Faehigkeiten() {
               ref={(el) => {
                 cellRefs.current[i] = el;
               }}
-              onClick={() => setOpenIndex(i)}
+              onClick={() => {
+                setOpenIndex(i);
+                setActiveFae(-1);
+                setActiveDesc(-1);
+              }}
               aria-haspopup="dialog"
             >
               <span
@@ -269,30 +278,78 @@ export default function Faehigkeiten() {
               <span aria-hidden="true">×</span>
             </button>
 
-            <p className="tlfg-modal__idx">
-              {String((openIndex ?? 0) + 1).padStart(2, '0')} /{' '}
-              {String(FAEHIGKEITEN.length).padStart(2, '0')}
-            </p>
-            <h3 id="tlfg-modal-title" className="tlfg-modal__name">
-              {open.name}
-            </h3>
+            {/* Kopf: links Name + Einzeiler, rechts die konkreten Fähigkeiten
+                als Klick-Akkordeon (alle eingeklappt, + = ausklappbar). */}
+            <div className="tlfg-modal__head">
+              <div className="tlfg-modal__headL">
+                <h3 id="tlfg-modal-title" className="tlfg-modal__name">
+                  {open.name}
+                </h3>
+                <p className="tlfg-modal__kurz">{open.kurz}</p>
+              </div>
 
-            <div className="tlfg-modal__grid">
-              <div className="tlfg-block">
-                <p className="tlfg-label">Nutzen</p>
-                <p className="tlfg-text">{open.nutzen}</p>
+              <div className="tlfg-modal__headR">
+                <p className="tlfg-modal__eyebrow">
+                  {open.invers ? 'Das bauen wir dir' : 'Das kann er konkret'}
+                </p>
+                <div className="tlfg-mx">
+                  {open.koennen.map((k, ki) => (
+                    <AccRow
+                      key={k.titel}
+                      titel={k.titel}
+                      detail={k.detail}
+                      isActive={activeFae === ki}
+                      dimmed={
+                        activeFae >= 0 &&
+                        activeFae < open.koennen.length &&
+                        activeFae !== ki
+                      }
+                      onToggle={() => setActiveFae(activeFae === ki ? -1 : ki)}
+                    />
+                  ))}
+                </div>
               </div>
-              <div className="tlfg-block">
-                <p className="tlfg-label">Für wen</p>
-                <p className="tlfg-text">{open.fuerWen}</p>
+            </div>
+
+            <hr className="tlfg-divider" />
+
+            {/* Beschreibung: die 4 Punkte in ZWEI getrennten Spalten-Stapeln
+                (links Nutzen/So läufts, rechts Für wen/Warum gut). Jede Spalte
+                oeffnet fuer sich -> der Detailtext bleibt in Feldbreite und
+                spannt NICHT ueber die ganze Breite. */}
+            <p className="tlfg-modal__eyebrow tlfg-modal__eyebrow--desc">Beschreibung</p>
+            <div className="tlfg-desc">
+              <div className="tlfg-mx">
+                <AccRow
+                  titel="Nutzen"
+                  detail={open.nutzen}
+                  isActive={activeDesc === 0}
+                  dimmed={activeDesc >= 0 && activeDesc !== 0}
+                  onToggle={() => setActiveDesc(activeDesc === 0 ? -1 : 0)}
+                />
+                <AccRow
+                  titel="So läuft es"
+                  detail={open.ablauf}
+                  isActive={activeDesc === 2}
+                  dimmed={activeDesc >= 0 && activeDesc !== 2}
+                  onToggle={() => setActiveDesc(activeDesc === 2 ? -1 : 2)}
+                />
               </div>
-              <div className="tlfg-block">
-                <p className="tlfg-label">So läuft es</p>
-                <p className="tlfg-text">{open.ablauf}</p>
-              </div>
-              <div className="tlfg-block">
-                <p className="tlfg-label">Warum gut</p>
-                <p className="tlfg-text">{open.warum}</p>
+              <div className="tlfg-mx">
+                <AccRow
+                  titel="Für wen"
+                  detail={open.fuerWen}
+                  isActive={activeDesc === 1}
+                  dimmed={activeDesc >= 0 && activeDesc !== 1}
+                  onToggle={() => setActiveDesc(activeDesc === 1 ? -1 : 1)}
+                />
+                <AccRow
+                  titel="Warum gut"
+                  detail={open.warum}
+                  isActive={activeDesc === 3}
+                  dimmed={activeDesc >= 0 && activeDesc !== 3}
+                  onToggle={() => setActiveDesc(activeDesc === 3 ? -1 : 3)}
+                />
               </div>
             </div>
 
@@ -317,6 +374,50 @@ export default function Faehigkeiten() {
         </div>
       )}
     </section>
+  );
+}
+
+// Eine Akkordeon-Zeile (fuer Faehigkeiten UND Beschreibung). Eingeklappt mit
+// Ausklapp-Zeichen (+); offen rotiert das + zu x, Detail faehrt auf (roter Rand).
+function AccRow({
+  titel,
+  detail,
+  isActive,
+  dimmed,
+  onToggle,
+}: {
+  titel: string;
+  detail: string;
+  isActive: boolean;
+  dimmed: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div
+      className={
+        'tlfg-mx__cell' + (isActive ? ' is-active' : '') + (dimmed ? ' is-dim' : '')
+      }
+    >
+      <button
+        type="button"
+        className="tlfg-mx__btn"
+        aria-expanded={isActive}
+        onClick={onToggle}
+      >
+        <span className="tlfg-mx__mark" aria-hidden="true" />
+        <span className="tlfg-mx__titel">{titel}</span>
+        <span className="tlfg-mx__sign" aria-hidden="true">
+          <svg viewBox="0 0 14 14" fill="none">
+            <path d="M7 1V13M1 7H13" stroke="currentColor" strokeWidth="1.4" />
+          </svg>
+        </span>
+      </button>
+      <div className="tlfg-mx__panel">
+        <div className="tlfg-mx__panel-inner">
+          <p className="tlfg-mx__detail">{detail}</p>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -430,7 +531,7 @@ const CSS = `
 }
 .rr .tlfg-modal {
   position: relative;
-  width: min(640px, 100%);
+  width: min(960px, 100%);
   max-height: 88vh;
   overflow-y: auto;
   padding: clamp(28px, 4vw, 48px);
@@ -474,15 +575,146 @@ const CSS = `
 }
 .rr .tlfg-modal--invers .tlfg-modal__idx { color: #39c2d7; }
 .rr .tlfg-modal__name {
-  margin: 0 0 clamp(20px, 3vw, 28px);
+  margin: 0 0 10px;
   font-family: var(--font-dmsans), "DM Sans", sans-serif;
   font-weight: 300;
-  font-size: clamp(30px, 4.4vw, 46px);
-  line-height: 1.05;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.08;
   letter-spacing: -0.02em;
   color: var(--rr-navy);
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 .rr .tlfg-modal--invers .tlfg-modal__name { color: #f6f5f1; }
+
+/* Kopf: Name links, Fähigkeiten-Akkordeon rechts. */
+.rr .tlfg-modal__head {
+  display: grid;
+  grid-template-columns: minmax(170px, 248px) 1fr;
+  gap: clamp(20px, 3.4vw, 44px);
+  align-items: start;
+}
+@media (max-width: 620px) {
+  .rr .tlfg-modal__head { grid-template-columns: 1fr; gap: 16px; }
+}
+.rr .tlfg-modal__headL { padding-top: 2px; }
+.rr .tlfg-modal__kurz {
+  margin: 0;
+  font-family: var(--rr-font-ui);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--rr-ink-soft);
+  max-width: 18em;
+}
+.rr .tlfg-modal--invers .tlfg-modal__kurz { color: rgba(246, 245, 241, 0.7); }
+
+.rr .tlfg-modal__eyebrow {
+  margin: 0 0 8px;
+  font-family: var(--rr-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rr-red);
+}
+.rr .tlfg-modal--invers .tlfg-modal__eyebrow { color: #39c2d7; }
+
+/* Fähigkeiten-Akkordeon (Mechanik aus DreiStufenMatrix, single-column im Modal). */
+.rr .tlfg-mx { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--rr-line); }
+.rr .tlfg-modal--invers .tlfg-mx { border-top-color: rgba(246, 245, 241, 0.18); }
+/* Beschreibung: zwei getrennte Spalten-Stapel nebeneinander, damit der
+   geoeffnete Detailtext in Feldbreite bleibt (nicht ueber beide spannt). */
+.rr .tlfg-desc { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(20px, 3vw, 44px); align-items: start; }
+@media (max-width: 620px) { .rr .tlfg-desc { grid-template-columns: 1fr; } }
+.rr .tlfg-mx__cell {
+  border-bottom: 1px solid var(--rr-line);
+  transition: opacity 0.4s var(--rr-ease, ease);
+}
+.rr .tlfg-modal--invers .tlfg-mx__cell { border-bottom-color: rgba(246, 245, 241, 0.18); }
+.rr .tlfg-mx__cell.is-dim { opacity: 0.45; }
+.rr .tlfg-mx__btn {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 2px;
+  text-align: left;
+  transition: padding-left 0.3s var(--rr-ease, ease);
+}
+.rr .tlfg-mx__btn:hover { padding-left: 8px; }
+.rr .tlfg-mx__btn:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--rr-red); }
+.rr .tlfg-modal--invers .tlfg-mx__btn:focus-visible { box-shadow: inset 0 0 0 2px #39c2d7; }
+.rr .tlfg-mx__mark {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(28, 40, 55, 0.28); flex: none;
+  transition: background 0.3s var(--rr-ease, ease), transform 0.3s var(--rr-ease, ease);
+}
+.rr .tlfg-modal--invers .tlfg-mx__mark { background: rgba(246, 245, 241, 0.3); }
+.rr .tlfg-mx__btn:hover .tlfg-mx__mark { background: var(--rr-red); }
+.rr .tlfg-modal--invers .tlfg-mx__btn:hover .tlfg-mx__mark { background: #39c2d7; }
+.rr .tlfg-mx__cell.is-active .tlfg-mx__mark { background: var(--rr-red); transform: scale(1.35); }
+.rr .tlfg-modal--invers .tlfg-mx__cell.is-active .tlfg-mx__mark { background: #39c2d7; }
+.rr .tlfg-mx__titel {
+  font-family: var(--font-dmsans), "DM Sans", sans-serif;
+  font-weight: 400;
+  font-size: clamp(15px, 1.5vw, 17px);
+  letter-spacing: -0.005em;
+  color: var(--rr-ink-soft);
+  transition: color 0.3s var(--rr-ease, ease), font-weight 0.3s var(--rr-ease, ease);
+}
+.rr .tlfg-modal--invers .tlfg-mx__titel { color: rgba(246, 245, 241, 0.8); }
+.rr .tlfg-mx__cell.is-active .tlfg-mx__titel { color: var(--rr-navy); font-weight: 600; }
+.rr .tlfg-modal--invers .tlfg-mx__cell.is-active .tlfg-mx__titel { color: #f6f5f1; }
+/* Ausklapp-Zeichen (+): signalisiert Klickbarkeit; offen rotiert es zu x. */
+.rr .tlfg-mx__sign {
+  margin-left: auto;
+  flex: none;
+  width: 13px;
+  height: 13px;
+  color: #b7b7b1;
+  transition: color 0.3s var(--rr-ease, ease), transform 0.3s var(--rr-ease, ease);
+}
+.rr .tlfg-mx__sign svg { display: block; width: 100%; height: 100%; }
+.rr .tlfg-mx__btn:hover .tlfg-mx__sign { color: var(--rr-red); }
+.rr .tlfg-mx__cell.is-active .tlfg-mx__sign { color: var(--rr-red); transform: rotate(45deg); }
+.rr .tlfg-modal--invers .tlfg-mx__sign { color: rgba(246, 245, 241, 0.5); }
+.rr .tlfg-modal--invers .tlfg-mx__btn:hover .tlfg-mx__sign,
+.rr .tlfg-modal--invers .tlfg-mx__cell.is-active .tlfg-mx__sign { color: #39c2d7; }
+.rr .tlfg-mx__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s var(--rr-ease, ease);
+}
+.rr .tlfg-mx__cell.is-active .tlfg-mx__panel { grid-template-rows: 1fr; }
+.rr .tlfg-mx__panel-inner { overflow: hidden; min-height: 0; }
+.rr .tlfg-mx__detail {
+  margin: 0 0 0 2px;
+  padding: 2px 2px 16px 19px;
+  border-left: 2px solid var(--rr-red);
+  font-family: var(--rr-font-ui);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--rr-navy);
+  opacity: 0;
+  transition: opacity 0.35s var(--rr-ease, ease) 0.05s;
+}
+.rr .tlfg-modal--invers .tlfg-mx__detail { border-left-color: #39c2d7; color: rgba(246, 245, 241, 0.9); }
+.rr .tlfg-mx__cell.is-active .tlfg-mx__detail { opacity: 1; }
+
+/* Trennlinie zwischen Fähigkeiten-Kopf und Beschreibungsfeld. */
+.rr .tlfg-divider {
+  border: 0;
+  height: 1px;
+  background: var(--rr-line);
+  margin: clamp(24px, 3.2vw, 34px) 0 clamp(16px, 2.2vw, 22px);
+}
+.rr .tlfg-modal--invers .tlfg-divider { background: rgba(246, 245, 241, 0.18); }
+.rr .tlfg-modal__eyebrow--desc { color: var(--rr-ink-soft); }
+.rr .tlfg-modal--invers .tlfg-modal__eyebrow--desc { color: rgba(246, 245, 241, 0.55); }
+
 .rr .tlfg-modal__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -530,5 +762,8 @@ const CSS = `
   .rr .tlfg-backdrop, .rr .tlfg-modal { animation: none; }
   .rr .tlfg-cell { transition: none; }
   .rr .tlfg-cell.typing .tlfg-caret { display: none; }
+  .rr .tlfg-mx__cell, .rr .tlfg-mx__btn, .rr .tlfg-mx__mark,
+  .rr .tlfg-mx__titel, .rr .tlfg-mx__panel, .rr .tlfg-mx__detail,
+  .rr .tlfg-mx__sign { transition: none; }
 }
 `;

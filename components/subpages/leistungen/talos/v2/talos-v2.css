@@ -663,7 +663,10 @@
 /* Wer-ist-Talos: Text links, rechts Leerraum als Talos-Standplatz.
    Titel gedeckelt: die Sticky-Szene muss samt Lead + Sprechzeilen in EINEN
    Viewport passen (volle Statement-Groesse sprengte 100vh auf normalen Screens). */
-.rr .tl-wer__grid { display: grid; grid-template-columns: minmax(0, 58%) 1fr; gap: clamp(24px, 4vw, 64px); align-items: center; }
+/* Der Grid ist rr-wrap in einem flex(center)-Sticky -> er schrumpfte auf
+   Inhaltsbreite und wurde zentriert (Text sass zu mittig, Thomas 24.07.).
+   Voll ausdehnen + linksbuendig, damit der Text am Seiten-Gutter startet. */
+.rr .tl-wer__grid { display: grid; grid-template-columns: minmax(0, 52%) 1fr; gap: clamp(24px, 4vw, 64px); align-items: center; max-width: none; width: 100%; margin: 0; }
 .rr .tl-wer__text .tl-title { font-size: clamp(30px, 3.3vw, 60px); }
 @media (max-width: 899px) { .rr .tl-wer__grid { grid-template-columns: 1fr; } .rr .tl-wer__grid .tl-stage-slot { display: none; } }
 

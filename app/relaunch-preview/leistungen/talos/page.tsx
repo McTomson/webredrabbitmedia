@@ -124,7 +124,7 @@ export default function TalosLeistungPreviewPage() {
           zwischen z12 (hinter dem Text, Text lesbar) und z30 (vor der Flaeche,
           Kontrollraum/CTA). Weisser Grund kommt vom body. */}
       <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 20 }}>
-        <div data-talos-station data-talos-anchor="0.84" data-talos-size="l" data-talos-appear="0.5" data-talos-layer="back">
+        <div data-talos-station data-talos-anchor="0.78" data-talos-size="l" data-talos-appear="0.5" data-talos-layer="back">
           <WerIstTalos />
         </div>
         <InklusiveDashboard />

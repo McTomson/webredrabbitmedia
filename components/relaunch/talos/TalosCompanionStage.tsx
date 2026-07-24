@@ -49,8 +49,17 @@ const OFF_MARGIN = 320; // Luft hinter der Bildkante (offscreen) — inkl. Armre
 // "nach aussen"). Vorzeichen: +yaw = nach rechts gedreht.
 // Koerperhaltung im Stand: nur LEICHT zur Bildmitte angedeutet (Thomas 24.07.:
 // 0.50 war zu viel -> man sah seinen Ruecken). Die Praesenz macht der KOPF, der
-// den User anschaut (headYaw = -Koerper-Yaw); der Koerper deutet die Wendung nur an.
+// den User anschaut; der Koerper deutet die Wendung nur an.
 const STAND_BIAS = 0.24;
+// Wie stark der KOPF (netto, in Welt-Yaw) zum mittig VOR dem Bildschirm sitzenden
+// User dreht. Steht Talos links -> Kopf nach rechts/zur Mitte (+), steht er rechts
+// -> spiegelverkehrt (-). Thomas 24.07.: der abgenommene Testwert (~0.5) ist das
+// Ziel; eine dezentere Variante (0.2) sah wieder fast frontal aus ("falsch").
+const USER_LOOK = 0.5;
+// Ab welcher Auslenkung (Bruchteil der halben Bildbreite) die volle Drehung
+// erreicht ist. Klein -> ausserhalb der Bildmitte ueberall gleich deutlich
+// gedreht, nur ganz mittig laeuft es gegen 0 (dann schaut er gerade zum User).
+const USER_LOOK_REF = 0.35;
 // Dreiviertel-Ansicht in Laufrichtung (empirisch: +1.05 = geht nach rechts,
 // Gesicht leicht zum User; Vorzeichen spiegelt fuer Laufrichtung links).
 const FACE_TURN = 1.05;
@@ -187,6 +196,14 @@ export default function TalosCompanionStage() {
     const halfWidthAt = (z: number) =>
       Math.tan(((CAM_FOV / 2) * Math.PI) / 180) * (CAM_POS[2] - z) * camera.aspect;
 
+    // Netto-Welt-Yaw des Kopfes, damit Talos den mittig VOR dem Bildschirm sitzenden
+    // User anschaut: proportional zur horizontalen Bild-Auslenkung (Bruchteil der
+    // halben Bildbreite bei seiner Tiefe). Links (x<0) -> +, rechts (x>0) -> -.
+    const userLookYaw = (x: number, z: number) => {
+      const frac = Math.max(-1, Math.min(1, x / halfWidthAt(z) / USER_LOOK_REF));
+      return -frac * USER_LOOK;
+    };
+
     // Ebenen-Schaltung: "front" = Canvas VOR dem Inhalt (Hero, Kontrollraum,
     // CTA), "back" = HINTER dem Text (Text bleibt lesbar, Thomas 23.07.).
     // Der Inhalts-Wrapper der Seite liegt auf z20 mit transparentem Grund.
@@ -263,9 +280,10 @@ export default function TalosCompanionStage() {
         frameVisible = wantFrame;
         document.getElementById("mainSticky")?.classList.toggle("is-dash", wantFrame);
       }
-      // Im Hero schaut Talos den User an (Kopf gleicht die Stand-Drehung aus);
-      // beim Abgang (ep>0, er geht) NICHT — dann schaut er in Laufrichtung.
-      motion?.setHeadYaw(ep > 0 ? 0 : -yaw);
+      // Im Hero schaut Talos den mittig sitzenden User an: netto = userLookYaw
+      // (headYaw = Ziel - Koerper-Yaw). Beim Abgang (ep>0, er geht) NICHT — dann
+      // schaut der Kopf frei in Laufrichtung.
+      motion?.setHeadYaw(ep > 0 ? 0 : userLookYaw(x, HERO_Z) - yaw);
       motion?.setNodLoop(false);
       motion?.setWinkLoop(false);
       // Im Hero liegt der Canvas immer VOR dem Inhalt.
@@ -319,9 +337,9 @@ export default function TalosCompanionStage() {
         const targetYaw = walking ? FACE_TURN * Math.sign(vx) : centerBias + best.yaw;
         curYaw = damp(curYaw, targetYaw, 5, dt);
         writeWalkPose(curX, curZ, curYaw, walking, dt);
-        // Kopf schaut den User an (Kamera): gleicht die Koerperdrehung aus.
-        // Beim Gehen frei (Kopf in Laufrichtung), im Stand -Koerper-Yaw.
-        motion?.setHeadYaw(walking ? 0 : -curYaw);
+        // Kopf schaut den mittig sitzenden User an: netto = userLookYaw (links ->
+        // leicht zur Mitte/rechts, rechts spiegelverkehrt). Beim Gehen frei.
+        motion?.setHeadYaw(walking ? 0 : userLookYaw(curX, curZ) - curYaw);
         // Nicken/Zwinkern laufen als 10-s-Loop, solange die Station aktiv ist.
         motion?.setNodLoop(best.gesture === "nod");
         motion?.setWinkLoop(best.gesture === "wink");
