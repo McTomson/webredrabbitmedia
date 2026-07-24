@@ -108,11 +108,11 @@
     mix-blend-mode:difference;transition:opacity .4s;
   }
 
-  /* Story-Ebene (Kopf links, Text-Fenster rechts) — ueber dem Deck */
+  /* Story-Ebene (Text-Fenster LINKS, Figur rechts — Thomas 24.07.) — ueber dem Deck */
   .story-grid{
     position:absolute;inset:0;z-index:3;
     max-width:1240px;margin:0 auto;padding:0 4vw;
-    display:grid;grid-template-columns:44% 52%;gap:4%;
+    display:grid;grid-template-columns:52% 44%;gap:4%;
     align-items:center;
     pointer-events:none;
   }
@@ -124,7 +124,7 @@
      (MorphSculpture) wird als Vollbild-Ebene in .main-sticky portalt und rendert oben drueber. */
   .head-col svg{width:100%;height:86vh;overflow:visible;display:block;opacity:0!important}
 
-  .text-col{position:relative;height:100%;display:flex;align-items:center;user-select:text;-webkit-user-select:text}
+  .text-col{position:relative;height:100%;display:flex;align-items:center;user-select:text;-webkit-user-select:text;order:-1}
   .text-window{
     position:relative;width:100%;height:78vh;overflow:hidden;
     -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 86%,transparent 100%);
@@ -557,6 +557,11 @@
       grid-template-columns:1fr;grid-template-rows:44vh auto;gap:1rem;
       align-content:center;padding:0 6vw;align-items:start;
     }
+    /* order:-1 (Desktop: Text links) mobil zuruecknehmen, sonst kippt es die
+       Stapelreihenfolge: .text-col wuerde in den 44vh-Track statt in den auto-
+       Track rutschen und .text-window (46vh) wuerde ueberlaufen (Logic-Review
+       24.07.). Mobil bleibt es bei Figur oben (44vh) / Text darunter (auto). */
+    .text-col{order:0}
     .head-col{height:44vh}
     .head-col svg{height:42vh}
     .text-window{height:46vh}

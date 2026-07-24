@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { STUFEN } from '@/components/subpages/leistungen/website/v2/stufen-varianten/VarianteA';
 import FloatingReview from './FloatingReview';
 
@@ -59,6 +60,15 @@ function StufeMatrix({ stufe }: { stufe: (typeof STUFEN)[number] }) {
           <p className="rpm__price">{PREIS[stufe.name]}</p>
           <span className="rpm__badge">0 € bis zum Entwurf</span>
           <p className="rpm__text">{stufe.text}</p>
+          <Link
+            href="/relaunch-preview/kontakt"
+            className={
+              'rpm__cta rr-btn-sweep ' +
+              (stufe.featured ? 'rr-btn-sweep--red' : 'rr-btn-sweep--navy')
+            }
+          >
+            {stufe.name} anfragen
+          </Link>
         </div>
       </aside>
 
@@ -231,6 +241,10 @@ export default function PreiseMatrix() {
           color: var(--rr-ink-soft);
           max-width: 24em;
           margin: 6px 0 0;
+        }
+        .rpm__cta {
+          margin-top: 18px;
+          align-self: flex-start;
         }
 
         .rpm__matrix {

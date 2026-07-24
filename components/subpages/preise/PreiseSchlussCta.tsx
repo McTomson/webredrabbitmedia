@@ -50,17 +50,19 @@ export default function PreiseSchlussCta() {
         }
         .rp-cta__title {
           color: #ffffff;
-          margin: 0 0 24px;
+          margin: 0 0 clamp(28px, 3.4vw, 44px);
+          line-height: 1.08;
         }
         .rp-cta__sub {
           color: rgba(255, 255, 255, 0.78);
           max-width: 52ch;
-          margin: 0 0 40px;
+          margin: 0 0 clamp(40px, 4.6vw, 60px);
+          line-height: 1.6;
         }
         .rp-cta__actions {
           display: flex;
           align-items: center;
-          gap: clamp(1.2rem, 2.4vw, 2rem);
+          gap: clamp(1.4rem, 2.8vw, 2.4rem);
           flex-wrap: wrap;
         }
         /* rr-btn-sweep hat im Ruhezustand Ink-Text (fuer helle Flaechen); auf

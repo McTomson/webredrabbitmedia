@@ -88,18 +88,12 @@ export default function PreiseDemoClient({
     <>
       <style dangerouslySetInnerHTML={{ __html: css }} />
       {injectedHtml}
-      {/* Figur-Versatz als eigene Regel statt Inline-Style, weil er an einen
-          Breakpoint gebunden ist: ab 769px liegen Figur und Text NEBENeinander
-          (.story-grid 2-spaltig) — die comp3-Komposition sitzt von Haus aus
-          rechts und wuerde die Textspalte ueberdecken, deshalb nach links in
-          die freie Haelfte. Unter 768px stapelt .story-grid (Figur UEBER Text,
-          grid-template-rows 44vh auto), dort muss die Figur mittig bleiben —
-          ein Versatz wuerde sie aus dem Bild schieben. */}
-      <style>{`
-        @media (min-width: 769px) {
-          .pd-figur { transform: translateX(-46vw); }
-        }
-      `}</style>
+      {/* Figur-Versatz (Thomas 24.07.: Bild RECHTS, Text links). Die
+          comp3-Komposition sitzt von Haus aus rechts — genau da soll sie jetzt
+          hin. Text liegt neu in der linken Grid-Spalte (.text-col order:-1),
+          die Figur bleibt in ihrer natuerlichen Rechts-Haelfte, also KEIN
+          negativer Versatz mehr (frueher -46vw nach links). Unter 768px stapelt
+          .story-grid (Figur UEBER Text), dort ohnehin mittig. */}
       {sticky &&
         createPortal(
           <div

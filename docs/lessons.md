@@ -92,3 +92,9 @@
 **Pattern to avoid**: Die Entscheidung nur sinngemaess zusammenfassen. Der Agent waehlt dann die branchenuebliche Standardloesung, weil sie "richtiger" wirkt.
 **Why**: Preise-Seite 23.07.2026: Thomas hatte den DreiStufenMatrix-Klon gewaehlt (sticky Stufe, aufklappbare Merkmale, Stufen untereinander). Das Briefing nannte das Ziel, aber nicht den Auswahl-Wortlaut und nicht die verworfene Alternative. Der Agent baute drei klassische Preis-Karten nebeneinander — eine komplette Umbau-Runde verloren.
 **Check**: Original-Wortlaut der Entscheidung ins Briefing kopieren, plus einen Satz "NICHT gewaehlt wurde X, weil Y". Zusaetzlich frueher visuell kontrollieren (Zwischen-Screenshot nach der ersten Sektion) statt erst nach der Fertigmeldung.
+
+### L-preise-04 — CSS `order` auf einem Grid-Item leckt ueber alle Breakpoints
+**When**: Zwei Grid-Spalten sollen NUR auf Desktop die Seite tauschen (z. B. Text links / Figur rechts), umgesetzt per `order:-1` auf einem Item.
+**Pattern to avoid**: `order` global (ausserhalb einer Media-Query) setzen. `order` steuert auch das Auto-Placement in einspaltigen Mobile-Grids mit `grid-template-rows` — die Stapelreihenfolge kippt dort ungewollt, feste Track-Hoehen (z. B. 44vh) treffen dann das falsche Element und Inhalte laufen ueber.
+**Why**: Preise-Hero 24.07.: `.text-col{order:-1}` fuer den Desktop-Tausch kippte mobil die dokumentierte "Figur ueber Text"-Stapelung, `.text-window` (46vh) landete im 44vh-Track. (Logic-Review preise-talos-umbau-2026-07-24)
+**Check**: `order` immer breakpoint-scopen (`@media(min-width:...)`), oder in der Mobile-Query explizit `order:0` zuruecksetzen. Beim Spalten-Tausch die Mobile-Stapelung mitpruefen.

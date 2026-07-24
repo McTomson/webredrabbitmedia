@@ -106,7 +106,16 @@ interface Station {
   appear: number;
 }
 
-export default function TalosCompanionStage() {
+export default function TalosCompanionStage({
+  stationsOnly = false,
+}: {
+  // stationsOnly: der Companion ueberspringt den Hero-Modus komplett (liest
+  // NIE window.__sculptProgress, ignoriert #sceneMain) und macht nur Stationen.
+  // Noetig auf Seiten, die selbst ein #sceneMain/__sculptProgress-Hero haben
+  // (z. B. die Preisseite mit der Chart-Figur) — sonst wuerde Talos deren Hero
+  // kapern. Default false = Verhalten der Talos-Leistungsseite unveraendert.
+  stationsOnly?: boolean;
+} = {}) {
   const hostRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [no3d, setNo3d] = useState(false);
@@ -127,7 +136,9 @@ export default function TalosCompanionStage() {
     if (!webgl2 || (mem !== undefined && mem <= 4)) {
       setNo3d(true);
       // Ohne 3D bleibt wenigstens das Dashboard-Fenster im Hero sichtbar.
-      document.getElementById("mainSticky")?.classList.add("is-dash");
+      // In stationsOnly (Fremdseite mit eigenem Hero) NICHT den fremden
+      // #mainSticky anfassen — is-dash ist eine Talos-Hero-Klasse.
+      if (!stationsOnly) document.getElementById("mainSticky")?.classList.add("is-dash");
       return;
     }
 
@@ -399,7 +410,7 @@ export default function TalosCompanionStage() {
     const onDblClick = (e: MouseEvent) => {
       if (!loaded || manualProg != null || opacity < 0.5) return;
       const heroScene = document.getElementById("sceneMain");
-      if (heroScene && heroScene.getBoundingClientRect().bottom > 0) return; // im Hero nicht
+      if (!stationsOnly && heroScene && heroScene.getBoundingClientRect().bottom > 0) return; // im Hero nicht
       // Projektion eines Punkts auf Brust-/Kopfhoehe (botBase.py + 90 ~ Torso).
       const p = new THREE.Vector3(curX, botBase.py + 90, curZ).project(camera);
       const sx = (p.x * 0.5 + 0.5) * window.innerWidth;
@@ -467,7 +478,11 @@ export default function TalosCompanionStage() {
         }
         scanStations();
         loaded = true;
-        if (reduced) {
+        // reduced-motion: statische Hero-Pose. In stationsOnly (Fremdseite ohne
+        // Talos-Hero) NICHT anwenden — sonst klebt Talos an der Hero-Position
+        // links ueber dem fremden Hero. Dort bleibt er unsichtbar (opacity 0),
+        // die Seite traegt das statische Wortmarken-Wort im Figur-Slot.
+        if (reduced && !stationsOnly) {
           curX = tuning.endX;
           writeWalkPose(curX, HERO_Z, STAND_BIAS, false, 1 / 60);
           document.getElementById("mainSticky")?.classList.add("is-dash");
@@ -478,7 +493,7 @@ export default function TalosCompanionStage() {
       () => {
         teardown();
         setNo3d(true);
-        document.getElementById("mainSticky")?.classList.add("is-dash");
+        if (!stationsOnly) document.getElementById("mainSticky")?.classList.add("is-dash");
       },
     );
 
@@ -488,9 +503,10 @@ export default function TalosCompanionStage() {
       if (loaded) {
         if (--scanIn <= 0) { scanStations(); scanIn = 150; }
         const heroScene = document.getElementById("sceneMain");
-        const heroActive = !!heroScene && heroScene.getBoundingClientRect().bottom > 0;
+        const heroActive =
+          !stationsOnly && !!heroScene && heroScene.getBoundingClientRect().bottom > 0;
         if (!reduced) {
-          if (manualProg != null) {
+          if (!stationsOnly && manualProg != null) {
             applyHero(manualProg, delta);
           } else if (heroActive) {
             const raw = (window as unknown as { __sculptProgress?: number }).__sculptProgress ?? 0;

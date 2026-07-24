@@ -3,12 +3,15 @@ import path from 'node:path';
 import type { Metadata } from 'next';
 import CornerLogo from '@/components/relaunch/CornerLogo';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
+import TalosCompanionStage from '@/components/relaunch/talos/TalosCompanionStage';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import PreiseDemoClient from '@/components/subpages/PreiseDemoClient';
+import Bumper from '@/components/subpages/preise/Bumper';
 import RisikoBand from '@/components/subpages/preise/RisikoBand';
 import PreiseMatrix from '@/components/subpages/preise/PreiseMatrix';
 import BetreuungFoerderung from '@/components/subpages/preise/BetreuungFoerderung';
 import TalosTalenteFahrt from '@/components/subpages/preise/TalosTalenteFahrt';
+import MehrwertRechner from '@/components/subpages/preise/MehrwertRechner';
 import PreiseFaq from '@/components/subpages/preise/PreiseFaq';
 import PreiseSchlussCta from '@/components/subpages/preise/PreiseSchlussCta';
 import JsonLd from '@/components/JsonLd';
@@ -95,6 +98,12 @@ export default function PreisePreviewPage() {
 
       <CornerLogo />
 
+      {/* Talos-3D-Companion, stationsOnly = ueberspringt den Hero (die Seite hat
+          selbst ein #sceneMain/__sculptProgress-Hero mit der Chart-Figur). Er
+          erscheint nur an der Station im blauen Talos-Panel (data-talos-station
+          am Figur-Slot), rechts, gross, winkend. Fixe Vollbild-Ebene. */}
+      <TalosCompanionStage stationsOnly />
+
       <div className={rrFonts} style={{ background: 'transparent' }}>
         <RelaunchMenu />
       </div>
@@ -106,10 +115,12 @@ export default function PreisePreviewPage() {
 
       {/* 2-7 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope. */}
       <div className={rrFonts} style={{ background: '#ffffff', position: 'relative', zIndex: 2 }}>
+        <Bumper />
         <RisikoBand />
         <PreiseMatrix />
         <BetreuungFoerderung />
         <TalosTalenteFahrt />
+        <MehrwertRechner />
         <PreiseFaq />
         <PreiseSchlussCta />
       </div>

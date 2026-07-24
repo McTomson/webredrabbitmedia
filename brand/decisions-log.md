@@ -167,3 +167,51 @@ NAECHSTE BAURUNDE (Reihenfolge): Wortmarken-Setzung -> Teile-Vermehrung/Dichte +
 - **Unter der Haube Pflicht:** SSR-Text (H1 = Hero-Statement), JSON-LD (ContactPage/FAQPage/Organization/LocalBusiness, Reviews nur echt, kein erfundenes aggregateRating), Meta/OG + selbst-referenzielles Canonical, Speed (nur transform/opacity, wenig Client-JS). Ziel: gutes Ranking auf Google, Bing, LLMs.
 - **In Arbeit:** Kontakt-Seite als erste Unterseite (`/relaunch-preview/kontakt`), Figur = Gluehbirne (comp2). Rezept vollstaendig in `docs/UNTERSEITEN_STIL.md`.
 - **Offen zur Bestaetigung (nicht geraten):** Rating-Anzahl (design-system sagt 3 Rezensionen, `lib/reviews.ts` sagt reviewCount 8) und Starter-Preis (Brand-README 790 Euro vs. diese decisions-log 05.07. 950 Euro). Bis zur Klaerung fail-closed: Schema nutzt die 3 belegbaren, Copy nennt 790 mit Platzhalter-Markierung.
+
+## 2026-07-24 — Talos-Modul-Preise FESTGELEGT (Thomas bestaetigt, "ja passt")
+Erarbeitet mit 2 Research-Laeufen (docs/strategie/TALOS_MODUL_PREISE_RESEARCH_2026-07-24.md
++ TALOS_ADS_PREIS_RESEARCH_2026-07-24.md, Marktanker mit URLs). Alle Modul-Preise sind
+EINFUEHRUNGSPREISE fuer Pilotkunden (ehrliches Label, gibt Spielraum nach Pilotphase zu
+erhoehen). Nach 3-5 Pilotkunden testverkaufen, dann final festschreiben.
+
+MODELL (Thomas-Entscheidung): Hybrid. Website einmalig (unveraendert 950 / 2.900 / ab 4.900),
+darueber Talos-Module als Abo. Kein Prozent-/Credit-/Pro-Nachricht-Modell -> flache
+Monatspauschale je Mitarbeiter (ist selbst das Verkaufsargument: "keine Kosten pro Klick,
+Nachricht oder Minute"). KEINE 3 Zwangs-Pakete.
+
+- **Talos Basis-Team: ab 360 EUR/Monat** (Einfuehrungspreis) · **Setup 290 EUR einmalig** ·
+  alle Preise **zzgl. USt**. 360 ist die Untergrenze ("Talos startet als Team"). Inhalt:
+  - **Schreiber:** 2 Beitraege/Woche (8/Monat), SEO/LLM/GEO/EEAT-optimiert, automatisch auf
+    die Seite gepostet, inkl. Bilder UND Podcast-Vertonung zum Anhoeren.
+  - **Empfang:** Anfrage-Erfassung + Terminbuchung + automatisches Nachfassen.
+  - **Chatbot** auf der Seite.
+- **Grosse Mitarbeiter (SOLO buchbar, liegen ohnehin bei ~290+):**
+  - **Poster** (Social-Content: Bilder+Texte erzeugen + auf Kanaelen posten) — **290 EUR/Monat**.
+    Bewusst NICHT mit dem Schreiber zusammengelegt (echte Produktion, andere Arbeit).
+  - **Aussendienst** (sucht wo moeglich TAEGLICH automatisch passende Kunden, schreibt E-Mails
+    als Draft ODER per Knopfdruck im Backend versendbar) — **290 EUR/Monat**.
+  - **Ads-Mitarbeiter** (Google Ads + Meta, EIN Modul; Management durch uns) — **ab 390 EUR/Monat**
+    (eine Plattform; zweite Plattform +~50 %). Auf der Seite nur "ab 390" zeigen, Staffel
+    (bis 1.000 Budget 390 / 1.000-3.000 490-690 / ab 3.000 790-990) klaert der Verkauf im
+    Gespraech. **Werbebudget laeuft KOMPLETT ueber das EIGENE Konto des Kunden, er zahlt Google/
+    Meta direkt** — wir managen nur, kein Budget-Durchlauf, kein Aufschlag aufs Budget.
+    Trust-Satz: "Fixpreis, keine Prozente vom Budget, dein Werbegeld bleibt auf deinem Konto."
+- **Zusatz (nur im Team):** **Sichtbarmacher** (GEO/AEO) — **+120 EUR/Monat**.
+- **Nur im Team (nicht solo):** Chatbot, Empfang, einzelner Schreiber (zu billig fuer solo,
+  wuerden den 360-Boden untergraben).
+- **KI-Telefon: RAUS** (Thomas 24.07., machen wir nicht).
+- **Team-Rabatt: 10 % ab 2 Modulen.**
+- **KMU.DIGITAL:** nur fuer **Website + Setup** (das ist das foerderbare Projekt), NICHT fuer
+  die laufenden Abos. Ehrlich so kommuniziert.
+- **Sonderanfertigung:** Projektpreis, "auf Anfrage" mit WARUM-Satz.
+
+DARSTELLUNG auf der Preisseite:
+- **Mehrwert-Rechner:** Talos-Team gegen "was diese Arbeit klassisch extern kostet" (verifizierte
+  Marktanker, ehrliche Variante — NICHT erfundenes Angestellten-Gehalt). Live-Summe, Basis-Team
+  fix 360, Add-ons zuschaltbar. Setup 290 + zzgl. USt + Einfuehrungspreis ausweisen.
+- **Positionierung im blauen Talos-Panel:** "135 Jahre Erfahrung zusammen, unser gesamtes Wissen
+  steckt in den Agenten, wir sitzen dahinter und ueberwachen Monat fuer Monat" (nicht nur eine KI).
+- Nur die ausgereiften Module zeigen Preis; genuin individuelle ("auf Anfrage") mit WARUM-Satz.
+
+MERKEN (Thomas, separat): Sales-One-Pager/Produktseiten mit Talos + Ads als eigenes Angebot —
+beim naechsten Mal ansprechen (Memory project_redrabbit_sales_onepager_talos).

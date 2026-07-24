@@ -21,9 +21,9 @@ export default function RisikoBand() {
       />
 
       <div className="rr-wrap rr-narrow rp-risiko__inner">
-        <p className="wd-eyebrow wd-eyebrow--ondark">Dein Risiko: null</p>
+        <p className="wd-eyebrow wd-eyebrow--ondark">Ohne Vorkasse</p>
         <p className="rr-statement rp-risiko__statement">
-          Erst überzeugt, dann bezahlt<span style={{ color: '#f77480' }}>.</span>
+          Dein Risiko liegt bei uns, nicht bei dir<span style={{ color: '#f77480' }}>.</span>
         </p>
         <p className="rr-body-lg rp-risiko__body">
           Du bekommst zuerst einen echten Entwurf zu sehen, ohne Vorkasse. Gefällt er dir und
