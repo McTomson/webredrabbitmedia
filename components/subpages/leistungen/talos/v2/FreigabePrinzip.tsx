@@ -16,21 +16,30 @@ export default function FreigabePrinzip() {
           Nichts verlässt dein Haus, ohne dass du es freigibst.
         </h2>
         <p className="rr-body-lg tl-lead">
-          Alles, was Talos vorbereitet, landet zuerst bei dir als Entwurf. Du
-          liest drüber, änderst, was du willst, und klickst auf Senden. Erst
-          dann geht etwas raus. Willst du bei einer bestimmten Aufgabe nicht
-          mehr jedes Mal gefragt werden, stellst du genau diese auf Selbstlauf.
-          Und wenn dir das doch nicht passt, drehst du es mit einem Klick
-          wieder zurück.
+          Alles, was Talos vorbereitet, eine Antwort auf eine Anfrage, ein
+          Text, ein Beitrag, landet zuerst als Entwurf bei dir. Du findest ihn
+          in deinem Dashboard, liest in Ruhe drüber, änderst jedes Wort, das
+          dir nicht passt, und klickst dann auf Senden. Erst mit diesem Klick
+          geht etwas raus, vorher passiert nach außen nichts. Willst du bei
+          einer bestimmten Aufgabe nicht mehr jedes Mal gefragt werden, stellst
+          du genau diese eine Aufgabe auf Selbstlauf. Dann erledigt Talos sie
+          von allein, während alle anderen Aufgaben weiter auf deine Freigabe
+          warten. Und wenn dir der Selbstlauf doch nicht passt, drehst du ihn
+          mit einem Klick wieder zurück, ohne dass du irgendwo anrufen oder
+          etwas umbauen musst.
         </p>
 
         <div className="tl-klaerung">
           <p className="tl-klaerung__frage">Und wenn er einen Fehler macht?</p>
           <p className="tl-klaerung__text">
-            Weil nichts ohne dein Ja rausgeht, fällt dir jeder Fehler auf,
-            bevor ihn ein Kunde sieht. Und wo du eine Aufgabe auf Selbstlauf
-            gestellt hast, siehst du in deinem Dashboard mit, was passiert,
-            und kannst sie jederzeit wieder anhalten.
+            Weil kein Entwurf ohne dein Ja rausgeht, fällt dir jeder Fehler
+            schon im Dashboard auf, bevor ihn ein Kunde zu sehen bekommt. Du
+            korrigierst ihn direkt im Entwurf oder verwirfst ihn ganz. Und wo
+            du eine Aufgabe auf Selbstlauf gestellt hast, läuft sie nicht im
+            Verborgenen. Jeder Schritt wird in deinem Dashboard mitgeschrieben,
+            sodass du jederzeit nachlesen kannst, was Talos getan hat, und die
+            Aufgabe mit einem Klick wieder anhältst, sobald dir etwas komisch
+            vorkommt.
           </p>
         </div>
 

@@ -15,23 +15,25 @@ export default function WerIstTalos() {
           <div className="tl-wer__text">
             <p className="wd-eyebrow tl-eyebrow">Wer ist Talos</p>
             <h2 className="rr-statement tl-title">
-              Kein Tool, kein Abo. Talos ist der Mitarbeiter, der in deiner
-              Website steckt.
+              Talos ist kein Programm, das du kaufst oder installierst. Seine
+              Grundausstattung steckt fest in deiner Website, weitere
+              Fähigkeiten holst du dir bei Bedarf monatlich dazu.
             </h2>
             <p className="rr-body-lg tl-lead">
-              Du fragst dich wahrscheinlich, ob dir hier wieder irgendein
-              Programm oder Abo angedreht werden soll. Wird es nicht. Talos ist
-              nichts, das du kaufst oder installierst. Er ist fest in deine
-              Website eingebaut und arbeitet dort. Er passt auf, dass die Seite
-              läuft. Kommt eine Anfrage rein, fängt er sie auf und sagt dir
-              Bescheid.
+              Talos ist nichts, das du extra kaufst oder installierst. Seine
+              Grundausstattung ist in deiner Website enthalten und fest
+              eingebaut. Er passt auf, dass die Seite läuft. Kommt eine Anfrage
+              rein, fängt er sie auf und sagt dir Bescheid. Braucht dein Betrieb
+              mehr, holst du dir einzelne Fähigkeiten dazu. Die sind als
+              monatliche Abos gebaut, die du jederzeit kündigen kannst, und du
+              nimmst nur, was du wirklich brauchst.
             </p>
 
             <p className="tl-says">
               Schau ruhig genau hin, wie ich gebaut bin. So nah siehst du einen
               Mitarbeiter selten.
             </p>
-            <p className="tl-says">Kaufen musst du mich nicht. Ich stecke schon in deiner Seite.</p>
+            <p className="tl-says">Als Programm kaufst du mich nicht. Meine Grundausstattung steckt schon in deiner Seite.</p>
             <p className="tl-says">
               Ich halte deine Seite am Laufen und melde mich, sobald du etwas
               wissen musst.

@@ -129,14 +129,16 @@ export default function TalosLeistungPreviewPage() {
         </div>
         <InklusiveDashboard />
         <Faehigkeiten />
-        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-gesture="bow" data-talos-layer="back">
+        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-gesture="nod" data-talos-layer="back">
           <FreigabePrinzip />
         </div>
         <Onboarding />
-        <div data-talos-station data-talos-anchor="0.78" data-talos-size="m" data-talos-layer="front">
+        <div data-talos-station data-talos-anchor="0.7" data-talos-size="m" data-talos-gesture="wink" data-talos-layer="front">
           <Kontrollraum />
         </div>
-        <Beweis />
+        <div data-talos-station data-talos-anchor="0.8" data-talos-size="m" data-talos-layer="back">
+          <Beweis />
+        </div>
         <div data-talos-station data-talos-anchor="0.8" data-talos-size="s" data-talos-layer="back">
           <FragTalosAnmoderation />
         </div>

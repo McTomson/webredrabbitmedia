@@ -35,9 +35,11 @@
   .demobar em{font-style:normal;opacity:.55;font-weight:500}
 
   /* ================= HAUPT-SZENE: HERO + UEBERGANG + STORY ================= */
-  /* Scroll-Tempo (Thomas 23.07.: Hero scrollt zu schnell): Hoehe um ~30% erhoeht
-     (1150vh -> 1495vh), dehnt die gleiche Engine-Strecke auf mehr Scroll-Distanz. */
-  .scene-main{position:relative;height:1495vh}
+  /* Scroll-Tempo (Thomas 23.07.: Hero scrollt zu schnell): Hoehe erhoeht
+     (1150 -> 1495 -> 24.07. 1850vh), dehnt die gleiche Engine-Strecke auf mehr
+     Scroll-Distanz. 24.07.: Abgang war zu hektisch (nur ~6,6% Progress), mehr
+     Hoehe dehnt auch den Abgang und laesst "Gruender" laenger neben Talos stehen. */
+  .scene-main{position:relative;height:1850vh}
   .main-sticky{
     position:sticky;top:0;height:100vh;height:100dvh;
     overflow:hidden;isolation:isolate;

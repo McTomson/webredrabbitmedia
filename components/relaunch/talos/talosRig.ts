@@ -53,6 +53,11 @@ export interface TalosRig {
   eyesGroup: any;
   /** 0 = zu, 1 = offen. Skaliert die Augen-Reihen vertikal (Blinzeln). */
   setEyeOpen(open: number): void;
+  /**
+   * Augen seitengetrennt oeffnen/schliessen (fuer einaeugiges Zwinkern).
+   * openLeft steuert das Auge auf x<0 (Bildschirm-links), openRight x>0.
+   */
+  setEyeOpenSided(openLeft: number, openRight: number): void;
   /** Augenfarbe umschalten (Hex), z.B. Original-Weiss vs. Marken-Tuerkis. */
   setEyeColor(hex: number): void;
   dispose(): void;
@@ -133,16 +138,24 @@ export function buildTalosRig(THREE: any, splineScene: any): TalosRig | null {
     }
   }
 
-  const setEyeOpen = (open: number) => {
+  const applyEyeDot = (d: DotRecord, open: number) => {
     const clamped = Math.max(0, Math.min(1, open));
-    for (const d of dots) {
-      // Reihen kollabieren zur Augenmitte: geschlossen = flache Linie.
-      d.mesh.position.y = d.base.y - d.rowY * (1 - clamped);
-      const rowVisible = clamped > 0.15 || d.rowY === 0;
-      d.mesh.visible = rowVisible;
-      const s = 0.6 + 0.4 * clamped;
-      d.mesh.scale.set(1, s, 1);
-    }
+    // Reihen kollabieren zur Augenmitte: geschlossen = flache Linie.
+    d.mesh.position.y = d.base.y - d.rowY * (1 - clamped);
+    const rowVisible = clamped > 0.15 || d.rowY === 0;
+    d.mesh.visible = rowVisible;
+    const s = 0.6 + 0.4 * clamped;
+    d.mesh.scale.set(1, s, 1);
+  };
+
+  const setEyeOpen = (open: number) => {
+    for (const d of dots) applyEyeDot(d, open);
+  };
+
+  // Seitengetrennt: openLeft steuert Dots auf x<0, openRight die auf x>0.
+  // Dient dem einaeugigen Zwinkern; base.x ist eindeutig signiert (±~15.5).
+  const setEyeOpenSided = (openLeft: number, openRight: number) => {
+    for (const d of dots) applyEyeDot(d, d.base.x < 0 ? openLeft : openRight);
   };
 
   const setEyeColor = (hex: number) => {
@@ -165,6 +178,7 @@ export function buildTalosRig(THREE: any, splineScene: any): TalosRig | null {
     handRight,
     eyesGroup,
     setEyeOpen,
+    setEyeOpenSided,
     setEyeColor,
     dispose,
   };

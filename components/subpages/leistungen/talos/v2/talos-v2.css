@@ -187,6 +187,9 @@
 .rr .tl-cta__sub { color: rgba(246, 245, 241, 0.78); max-width: 560px; margin: clamp(36px, 5vh, 60px) auto 0; }
 .rr .tl-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(20px, 2.5vw, 32px); margin-top: clamp(56px, 8vh, 96px); }
 .rr .tl-cta .rr-btn-sweep { color: #f6f5f1; }
+/* In der zentrierten CTA die Sprechzeile als inline-block zentrieren, sonst
+   steht ihre tuerkise border-left verwaist ganz links (Bild 16, Thomas 24.07.). */
+.rr .tl-cta .tl-says { display: inline-block; text-align: left; }
 
 /* ---- FAQ (Muster aus lw-faq, tl-Praefix) ---- */
 .rr .tl-faq__grid { display: grid; grid-template-columns: 280px 1fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
@@ -215,6 +218,16 @@
   position: sticky;
   top: clamp(96px, 16vh, 172px);
   align-self: start;
+}
+.rr .tl-ink-grouphd {
+  display: block;
+  font-family: var(--rr-font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rr-red);
+  margin: 0 0 14px;
 }
 .rr .tl-ink-list { list-style: none; margin: 0; padding: 0; }
 .rr .tl-ink-row {

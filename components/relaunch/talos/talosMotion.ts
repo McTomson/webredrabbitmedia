@@ -38,6 +38,19 @@ export interface TalosMotion {
   triggerGreeting(arm?: "primary" | "other"): void;
   /** Leichte Verbeugung (Abschluss-Geste). */
   triggerBow(): void;
+  /** Einmaliges Nicken (Kopf-Wippe nach unten und zurueck). */
+  triggerNod(): void;
+  /** Einmaliges einaeugiges Zwinkern (rechtes Auge, x>0). */
+  triggerWink(): void;
+  /** Nicken automatisch alle ~10 s wiederholen, solange aktiv. */
+  setNodLoop(active: boolean): void;
+  /** Zwinkern automatisch alle ~10 s wiederholen, solange aktiv. */
+  setWinkLoop(active: boolean): void;
+  /**
+   * Kopf aktiv zur Bildmitte ziehen (Thomas-Regel). v in -1..1:
+   * -1 = Blick nach Bildschirm-links, +1 = nach rechts, 0 = frei der Maus folgen.
+   */
+  setCenterPull(v: number): void;
   /** Blickziel: normalisierte Viewport-Koordinaten -1..1 (x rechts, y oben). */
   setPointer(nx: number, ny: number): void;
   /** Kopfneigung an/aus (z.B. waehrend einer Frage im Assistenten). */
@@ -116,6 +129,20 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
   let greetT = -1;   // Primaer-Arm-Wink
   let greetBT = -1;  // Gegen-Arm-Wink (andere Hand)
   let bowT = -1;
+  let nodT = -1;     // Nicken (Kopf-Wippe)
+  let winkT = -1;    // Zwinkern (rechtes Auge)
+
+  // Auto-Loops fuer Nicken/Zwinkern (Thomas: einmal, dann ~10 s Pause, wieder).
+  let nodLoop = false;
+  let winkLoop = false;
+  let nextNodAt = 1e9;
+  let nextWinkAt = 1e9;
+  const NOD_DUR = 0.9;
+  const WINK_DUR = 0.5;
+  const LOOP_GAP = 10; // Sekunden zwischen den Wiederholungen
+
+  // Aktiver Zug des Kopfes zur Bildmitte (-1 links .. +1 rechts), 0 = Maus frei.
+  let centerPull = 0;
 
   // Idle-Daempfer fuer weiche Uebergaenge nach Gesten
   let armLift = 0;
@@ -153,28 +180,84 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
   const triggerBow = () => {
     if (bowT < 0 && greetT < 0 && !reduced) bowT = 0;
   };
+  const triggerNod = () => {
+    if (nodT < 0 && !reduced) nodT = 0;
+  };
+  const triggerWink = () => {
+    if (winkT < 0 && !reduced) winkT = 0;
+  };
+  const setNodLoop = (active: boolean) => {
+    if (active && !nodLoop) nextNodAt = elapsed + 0.6; // erstes Nicken bald
+    if (!active) nextNodAt = 1e9;
+    nodLoop = active;
+  };
+  const setWinkLoop = (active: boolean) => {
+    if (active && !winkLoop) nextWinkAt = elapsed + 1.6; // erstes Zwinkern bald
+    if (!active) nextWinkAt = 1e9;
+    winkLoop = active;
+  };
+  const setCenterPull = (v: number) => {
+    centerPull = clamp(v, -1, 1);
+  };
 
   const update = (dt: number) => {
     if (!Number.isFinite(dt) || dt <= 0) return;
     elapsed += dt;
 
     // --- Blinzeln (laeuft auch bei reduced-motion, ist minimal) ---
+    // Beide Augen zusammen; das Ergebnis wird als blinkOpen weitergereicht und
+    // erst am Frame-Ende (zusammen mit dem Zwinkern) seitengetrennt geschrieben.
+    let blinkOpen = 1;
     if (blinkPhase < 0 && elapsed >= nextBlinkAt) blinkPhase = 0;
     if (blinkPhase >= 0) {
       blinkPhase += dt / 0.28;
       if (blinkPhase >= 1) {
         blinkPhase = -1;
         nextBlinkAt = elapsed + 3.2 + 2.2 * Math.abs(Math.sin(elapsed * 5.7));
-        rig.setEyeOpen(1);
+        blinkOpen = 1;
       } else {
-        rig.setEyeOpen(Math.abs(1 - blinkPhase * 2));
+        blinkOpen = Math.abs(1 - blinkPhase * 2);
       }
     }
 
-    if (reduced) return; // statische Pose, nur Blinzeln
+    if (reduced) {
+      // statische Pose, nur Blinzeln (beidaeugig)
+      rig.setEyeOpenSided(blinkOpen, blinkOpen);
+      return;
+    }
+
+    // --- Nicken (Auto-Loop oder Einzel-Ausloeser) ---
+    if (nodLoop && nodT < 0 && elapsed >= nextNodAt) nodT = 0;
+    let nodAmt = 0;
+    if (nodT >= 0) {
+      nodT += dt / NOD_DUR;
+      if (nodT >= 1) {
+        nodT = -1;
+        nextNodAt = elapsed + LOOP_GAP;
+      } else {
+        // Eine saubere Wippe nach unten und zurueck (Kinn kurz runter).
+        nodAmt = Math.sin(nodT * Math.PI) * 0.16;
+      }
+    }
+
+    // --- Zwinkern (Auto-Loop oder Einzel-Ausloeser), schliesst nur x>0 ---
+    if (winkLoop && winkT < 0 && elapsed >= nextWinkAt) winkT = 0;
+    let winkOpen = 1;
+    if (winkT >= 0) {
+      winkT += dt / WINK_DUR;
+      if (winkT >= 1) {
+        winkT = -1;
+        nextWinkAt = elapsed + LOOP_GAP;
+      } else {
+        winkOpen = Math.abs(1 - winkT * 2); // 1 -> 0 -> 1, ein Lidschlag
+      }
+    }
 
     // --- Blickfolge: Kopf folgt dem Cursor, weich gedaempft ---
-    const targetYaw = pointerX * 0.32;
+    // Bei aktivem centerPull zieht der Kopf zur Bildmitte (Thomas-Regel); die
+    // Maus-Folge wird dann gedaempft, damit er nie nach aussen schaut.
+    const pullW = Math.min(1, Math.abs(centerPull));
+    const targetYaw = centerPull * 0.3 + pointerX * 0.32 * (1 - pullW * 0.7);
     const targetPitch = -pointerY * 0.18;
     gazeYaw = damp(gazeYaw, targetYaw, 6, dt);
     gazePitch = damp(gazePitch, targetPitch, 6, dt);
@@ -243,7 +326,7 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
     // --- Auf die Nodes schreiben (Basis + Offsets) ---
     if (nodes.head) {
       nodes.head.rotation.y = base.head.y + gazeYaw;
-      nodes.head.rotation.x = base.head.x + gazePitch + bowAmount * 0.22;
+      nodes.head.rotation.x = base.head.x + gazePitch + bowAmount * 0.22 + nodAmt;
       nodes.head.rotation.z = damp(
         nodes.head.rotation.z,
         base.head.z + tiltTarget,
@@ -291,12 +374,20 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
         nodes.handB.rotateOnAxis(PALM_AXIS, wristWaveB * 0.5);
       }
     }
+
+    // --- Augen schreiben: links nur Blinzeln, rechts Blinzeln + Zwinkern ---
+    rig.setEyeOpenSided(blinkOpen, Math.min(blinkOpen, winkOpen));
   };
 
   return {
     update,
     triggerGreeting,
     triggerBow,
+    triggerNod,
+    triggerWink,
+    setNodLoop,
+    setWinkLoop,
+    setCenterPull,
     setPointer,
     setHeadTilt: (active: boolean) => {
       headTilt = active;

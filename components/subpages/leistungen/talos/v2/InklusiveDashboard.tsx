@@ -82,7 +82,9 @@ export default function InklusiveDashboard() {
           eigenes Dashboard. Dort tauschst du Bilder und Texte selbst aus,
           ähnlich wie bei WordPress, nur einfacher. Und daneben liegt die
           Talos-Kommandozentrale, in der die Sachen hier schon eingebaut sind.
-          Alles ohne Aufpreis. So bekommst du das sonst nirgends.
+          Alles ohne Aufpreis, weil es fest zur Website gehört. Was Talos
+          darüber hinaus kann, buchst du bei Bedarf als einzelnes monatliches
+          Abo dazu. So bekommst du das sonst nirgends.
         </p>
 
         <div className="tl-ink-grid">
@@ -103,6 +105,7 @@ export default function InklusiveDashboard() {
 
           {/* Sticky Ledger links */}
           <aside className="tl-ink-aside" aria-hidden="true">
+            <p className="tl-ink-grouphd">Was in jeder Seite mitläuft</p>
             <ol className="tl-ink-list">
               {ITEMS.map((it, idx) => (
                 <li key={it.tag} className="tl-ink-li">

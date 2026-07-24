@@ -43,10 +43,11 @@ const CAM_FOV = 40;
 
 const END_X = -545; // Hero-Zielplatz: an der linken Fensterkante (die Panel-Spalte hat dafuer einen Einzug, .tlh-panels padding-left); wird in applyHero gegen den Frustum-Rand geclampt, damit er auf schmalen Viewports nicht aus dem Bild rutscht
 const HERO_Z = -130; // Hero: eine Spur kleiner (weiter von der Kamera)
-const OFF_MARGIN = 260; // Luft hinter der Bildkante (offscreen)
-// Koerperhaltung im Stand: IMMER leicht zur Bildmitte gedreht, nie nach aussen
-// (Thomas-Regel). Vorzeichen: +yaw = nach rechts gedreht.
-const STAND_BIAS = 0.13;
+const OFF_MARGIN = 320; // Luft hinter der Bildkante (offscreen) — inkl. Armreichweite, damit ganz oben NICHTS von Talos ins Bild ragt (Thomas 24.07., Bild 1)
+// Koerperhaltung im Stand: IMMER deutlich zur Bildmitte gedreht, nie nach aussen
+// (Thomas-Regel 24.07.: die alten 0.13 rad waren zu subtil, er las die Haltung als
+// "nach aussen"). Vorzeichen: +yaw = nach rechts gedreht.
+const STAND_BIAS = 0.3;
 // Dreiviertel-Ansicht in Laufrichtung (empirisch: +1.05 = geht nach rechts,
 // Gesicht leicht zum User; Vorzeichen spiegelt fuer Laufrichtung links).
 const FACE_TURN = 1.05;
@@ -65,12 +66,14 @@ const P_WALK1 = 0.44;
 const P_TURN1 = 0.53;
 const P_WAVE = 0.545;
 const P_EXIT0 = 0.62;
-const P_EXIT1 = 0.95;
+const P_EXIT1 = 0.98; // 24.07.: Abgang spaeter beenden -> langsamer, Talos bleibt laenger neben "Gruender"
 const P_FRAME0 = 0.5;
 const P_FRAME1 = 0.64;
 
 // Stations-Groessen: Naehe zur Kamera (Bot.position.z, Basis ~z0).
-const SIZE_Z: Record<string, number> = { s: -420, m: 0, l: 200, xl: 330 };
+// 24.07.: l/xl verkleinert, weil Talos bei l/xl unten abgeschnitten war
+// (Thomas Bild 2/15: "etwas verkleinern"). Fuesse sollen im Bild bleiben.
+const SIZE_Z: Record<string, number> = { s: -420, m: -70, l: 110, xl: 220 };
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const smooth = (t: number) => {
@@ -214,7 +217,9 @@ export default function TalosCompanionStage() {
 
     // --- Modus 1: Hero-Choreografie (p = __sculptProgress) ---
     const applyHero = (p: number, dt: number) => {
-      const halfW = halfWidthAt(0);
+      // Frustum-Breite bei der ECHTEN Hero-Tiefe (z=HERO_Z), nicht bei z=0 —
+      // sonst steht Talos zu weit vorne im breiteren Bild und der Arm ragt oben rein.
+      const halfW = halfWidthAt(HERO_Z);
       const startX = -(halfW + tuning.offMargin);
       const exitX = halfW + tuning.offMargin;
       // Zielplatz nie aus dem Bild: auf schmalen Viewports (kleineres halfW)
@@ -255,6 +260,10 @@ export default function TalosCompanionStage() {
         frameVisible = wantFrame;
         document.getElementById("mainSticky")?.classList.toggle("is-dash", wantFrame);
       }
+      // Im Hero blickt Talos zum User, keine Mitte-Kopplung, keine Loops.
+      motion?.setCenterPull(0);
+      motion?.setNodLoop(false);
+      motion?.setWinkLoop(false);
       // Im Hero liegt der Canvas immer VOR dem Inhalt.
       setLayer("front");
       // Sichtbarkeit: im Hero immer voll (er ist eh offscreen, wenn p klein).
@@ -306,6 +315,12 @@ export default function TalosCompanionStage() {
         const targetYaw = walking ? FACE_TURN * Math.sign(vx) : centerBias + best.yaw;
         curYaw = damp(curYaw, targetYaw, 5, dt);
         writeWalkPose(curX, curZ, curYaw, walking, dt);
+        // Kopf AKTIV zur Bildmitte (Thomas-Regel): steht er rechts, blickt er
+        // leicht nach links, steht er links, leicht nach rechts. Beim Gehen frei.
+        motion?.setCenterPull(walking ? 0 : curX > 40 ? -0.9 : curX < -40 ? 0.9 : 0);
+        // Nicken/Zwinkern laufen als 10-s-Loop, solange die Station aktiv ist.
+        motion?.setNodLoop(best.gesture === "nod");
+        motion?.setWinkLoop(best.gesture === "wink");
         opacity = damp(opacity, 1, 3.2, dt);
         if (lastStation !== best) { lastStation = best; gestureDone = false; }
         if (!gestureDone && bestScore > 0.45 && !walking) {
@@ -316,6 +331,9 @@ export default function TalosCompanionStage() {
         }
       } else {
         lastStation = null;
+        motion?.setCenterPull(0);
+        motion?.setNodLoop(false);
+        motion?.setWinkLoop(false);
         opacity = damp(opacity, 0, 6, dt);
         writeWalkPose(curX, curZ, curYaw, false, dt);
       }
@@ -409,20 +427,9 @@ export default function TalosCompanionStage() {
       },
     );
 
-    const qaHooks = {
-      setProg: (p: number | null) => { manualProg = p == null ? null : clamp01(p); },
-      tune: (t: Partial<typeof tuning>) => Object.assign(tuning, t),
-      camera,
-      stations: () => stations.map((s) => ({ anchor: s.anchor, sizeZ: s.sizeZ, gesture: s.gesture })),
-      wave: () => motion?.triggerGreeting("primary"),
-      isWaving: () => motion?.isBusy() ?? false,
-      state: () => ({ x: curX, z: curZ, yaw: curYaw, opacity }),
-    };
-    (window as unknown as Record<string, unknown>).__talosCompanion = qaHooks;
-
-    const clock = new THREE.Clock();
-    renderer.setAnimationLoop(() => {
-      const delta = clock.getDelta();
+    // Ein Frame: Modus waehlen, Motion updaten, rendern. Ausgelagert, damit die
+    // QA-Hooks bei eingefrorenem rAF (Hintergrund-Tab) Frames manuell treiben koennen.
+    const frame = (delta: number) => {
       if (loaded) {
         if (--scanIn <= 0) { scanStations(); scanIn = 150; }
         const heroScene = document.getElementById("sceneMain");
@@ -443,7 +450,25 @@ export default function TalosCompanionStage() {
       // Oberkoerper-Vorlage NACH motion.update (das schreibt topPart absolut).
       if (n.topPart && walkW > 0.01) n.topPart.rotation.x += WALK_LEAN * walkW;
       renderer.render(scene, camera);
-    });
+    };
+
+    const qaHooks = {
+      setProg: (p: number | null) => { manualProg = p == null ? null : clamp01(p); },
+      tune: (t: Partial<typeof tuning>) => Object.assign(tuning, t),
+      camera,
+      stations: () => stations.map((s) => ({ anchor: s.anchor, sizeZ: s.sizeZ, gesture: s.gesture })),
+      wave: () => motion?.triggerGreeting("primary"),
+      isWaving: () => motion?.isBusy() ?? false,
+      state: () => ({ x: curX, z: curZ, yaw: curYaw, opacity }),
+      // QA: Frames manuell treiben, wenn der Tab im Hintergrund liegt (rAF friert).
+      tick: (dt = 1 / 60, steps = 1) => { for (let i = 0; i < steps; i++) frame(dt); },
+      // QA: Zugriff auf Kopf-Pitch (Nicken) + Augen-Dots (Zwinkern) zum Messen.
+      rig: () => rig,
+    };
+    (window as unknown as Record<string, unknown>).__talosCompanion = qaHooks;
+
+    const clock = new THREE.Clock();
+    renderer.setAnimationLoop(() => frame(clock.getDelta()));
 
     return () => {
       disposed = true;
