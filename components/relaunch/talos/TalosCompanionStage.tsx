@@ -85,7 +85,8 @@ const P_FRAME1 = 0.64;
 // Stations-Groessen: Naehe zur Kamera (Bot.position.z, Basis ~z0).
 // 24.07.: l/xl verkleinert, weil Talos bei l/xl unten abgeschnitten war
 // (Thomas Bild 2/15: "etwas verkleinern"). Fuesse sollen im Bild bleiben.
-const SIZE_Z: Record<string, number> = { s: -420, sm: -200, m: -70, l: 110, xl: 220 };
+// m/l 24.07. eine Spur kleiner (Thomas, Kontrollraum war zu gross): m -70->-150, l 110->40.
+const SIZE_Z: Record<string, number> = { s: -420, sm: -200, m: -150, l: 40, xl: 220 };
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const smooth = (t: number) => {
@@ -381,6 +382,37 @@ export default function TalosCompanionStage() {
     };
     window.addEventListener("pointermove", onGaze);
 
+    // Doppelklick auf Talos -> naechste Geste (winken, nicken, zwinkern,
+    // verbeugen, anderer Arm). window-Listener trotz pointer-events:none am
+    // Canvas; wir reagieren NUR, wenn der Doppelklick im Screen-Bereich von
+    // Talos liegt (horizontal UND vertikal, projizierte Trefferbox) und er
+    // sichtbar ist — sonst nichts, damit normale Seiten-Klicks bzw. Text-
+    // Selektion per Doppelklick keine Geste ausloesen.
+    const GESTURES: Array<() => void> = [
+      () => motion?.triggerGreeting("primary"),
+      () => motion?.triggerNod(),
+      () => motion?.triggerWink(),
+      () => motion?.triggerBow(),
+      () => motion?.triggerGreeting("other"),
+    ];
+    let gestureCycle = 0;
+    const onDblClick = (e: MouseEvent) => {
+      if (!loaded || manualProg != null || opacity < 0.5) return;
+      const heroScene = document.getElementById("sceneMain");
+      if (heroScene && heroScene.getBoundingClientRect().bottom > 0) return; // im Hero nicht
+      // Projektion eines Punkts auf Brust-/Kopfhoehe (botBase.py + 90 ~ Torso).
+      const p = new THREE.Vector3(curX, botBase.py + 90, curZ).project(camera);
+      const sx = (p.x * 0.5 + 0.5) * window.innerWidth;
+      const sy = (0.5 - p.y * 0.5) * window.innerHeight;
+      // Trefferbox um Talos: horizontal ~±17% der Breite, vertikal ~±42% der
+      // Hoehe (er ist eine grosse, hohe Figur). Ausserhalb -> ignorieren.
+      if (Math.abs(e.clientX - sx) > window.innerWidth * 0.17) return;
+      if (Math.abs(e.clientY - sy) > window.innerHeight * 0.42) return;
+      GESTURES[gestureCycle % GESTURES.length]();
+      gestureCycle++;
+    };
+    window.addEventListener("dblclick", onDblClick);
+
     let torn = false;
     const teardown = () => {
       if (torn) return;
@@ -389,6 +421,7 @@ export default function TalosCompanionStage() {
       window.removeEventListener("resize", onResize);
       window.visualViewport?.removeEventListener("resize", onResize);
       window.removeEventListener("pointermove", onGaze);
+      window.removeEventListener("dblclick", onDblClick);
       renderer.dispose();
       if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
       const w = window as unknown as Record<string, unknown>;

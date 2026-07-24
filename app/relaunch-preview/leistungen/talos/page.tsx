@@ -129,17 +129,23 @@ export default function TalosLeistungPreviewPage() {
         </div>
         <InklusiveDashboard />
         <Faehigkeiten />
-        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-gesture="nod" data-talos-layer="back">
-          <FreigabePrinzip />
-        </div>
+        {/* FreigabePrinzip + Onboarding OHNE Companion: Talos ist hier weg. Er
+            erscheint erst, wenn der Kontrollraum WIRKLICH zentriert ist (hoher
+            appear-Schwellwert 0.55) — nicht schon beim Onboarding-Uebergang
+            (Thomas 24.07., Bild 54 "zu frueh" -> Bild 55 "soll erst hier"). */}
+        <FreigabePrinzip />
         <Onboarding />
-        <div data-talos-station data-talos-anchor="0.7" data-talos-size="m" data-talos-gesture="wink" data-talos-layer="front">
+        <div data-talos-station data-talos-anchor="0.7" data-talos-size="m" data-talos-appear="0.55" data-talos-gesture="wink" data-talos-layer="front">
           <Kontrollraum />
         </div>
-        <div data-talos-station data-talos-anchor="0.8" data-talos-size="m" data-talos-appear="0.45" data-talos-layer="back">
+        {/* Beweis "front" (nicht back): sonst schneidet der Navy-Frame beim
+            Uebergang Kontrollraum->Beweis den Koerper an (Thomas 24.07., Bild 48/49). */}
+        <div data-talos-station data-talos-anchor="0.8" data-talos-size="m" data-talos-appear="0.45" data-talos-layer="front">
           <Beweis />
         </div>
-        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-layer="front">
+        {/* FragTalos MIT Companion (front): Talos soll hier noch sichtbar sein
+            und genau hier anfangen zu verschwinden (Thomas 24.07., Bild 56). */}
+        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-appear="0.45" data-talos-layer="front">
           <FragTalosAnmoderation />
         </div>
         <TalosFaqV2 />
