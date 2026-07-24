@@ -98,3 +98,9 @@
 **Pattern to avoid**: `order` global (ausserhalb einer Media-Query) setzen. `order` steuert auch das Auto-Placement in einspaltigen Mobile-Grids mit `grid-template-rows` — die Stapelreihenfolge kippt dort ungewollt, feste Track-Hoehen (z. B. 44vh) treffen dann das falsche Element und Inhalte laufen ueber.
 **Why**: Preise-Hero 24.07.: `.text-col{order:-1}` fuer den Desktop-Tausch kippte mobil die dokumentierte "Figur ueber Text"-Stapelung, `.text-window` (46vh) landete im 44vh-Track. (Logic-Review preise-talos-umbau-2026-07-24)
 **Check**: `order` immer breakpoint-scopen (`@media(min-width:...)`), oder in der Mobile-Query explizit `order:0` zuruecksetzen. Beim Spalten-Tausch die Mobile-Stapelung mitpruefen.
+
+### L-preise-05 — `tsc --noEmit` gruen heisst NICHT `next build` gruen
+**When**: Vor einem Vercel-Deploy nur `npx tsc --noEmit` als Gruen-Check laufen lassen.
+**Pattern to avoid**: Auf tsc allein vertrauen. `next build` fuehrt zusaetzlich ESLint aus und BRICHT bei Errors ab (z. B. `react/no-unescaped-entities` bei einem rohen `"`/`'` in JSX-Text). tsc sieht das nicht -> der Build scheitert erst auf Vercel, eine Deploy-Runde ist verloren.
+**Why**: Preise 24.07.: rohes `"` im Rechner-Disclaimer, tsc gruen, Vercel-Build rot ("Failed to compile", exit 1). Kam nicht mal bis zur SSG-Stufe.
+**Check**: VOR jedem Deploy mindestens `npx next lint` (faengt die Lint-Errors), besser den vollen `npm run build` — der braucht aber einen gestoppten Dev-Server (L-preise-02), danach Dev neu starten. Rohe Anfuehrungszeichen in JSX = deutsche Typo-Zeichen (U+201E/U+201C) oder `&quot;`/`&#34;`.

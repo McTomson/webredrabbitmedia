@@ -1,89 +1,54 @@
-# Naechste Session — Preise-Seite (Stand 2026-07-23 abends)
+# Naechste Session — Preise-Seite (Stand 2026-07-25, nachts)
 
 ## Arbeitsregeln (verbindlich)
-- Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, docs/lessons.md, betroffene Dateien. Nicht loslegen ohne Kontext.
-- NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden. Gilt verschaerft fuer PREISE.
-- Erst einen Plan machen (TodoWrite), dann ausfuehren.
-- Skills + parallele Sub-Agenten nutzen wo es hilft. Fuer lange autonome Laeufe den `autonomous-runner` Agent verwenden.
-- Autonom handeln, voller Zugriff inkl. Browser — ohne fuer jeden Schritt nachzufragen (Grenze: kein Botschutz-Umgehen, keine Account-Anlage, nichts Destruktives ohne Deckung).
-- Laufend testen + `review-it` bei groesseren Schritten. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
-- Bei langen Agenten-/Hintergrund-Laeufen ALLE 15 MIN Health-Check + Stichprobe (TaskList/BashOutput/Monitor). Bricht ein Tool ein → STOPP + fixen, keine kaputten Daten schreiben.
-- Bau-Agenten die Design-Entscheidungen WOERTLICH mitgeben inkl. verworfener Gegen-Option (Lesson 23.07.: sonst wird die branchenuebliche Standardloesung gebaut = eine Umbau-Runde verloren).
+- Lies ZUERST: diesen Handoff, MEMORY.md, docs/lessons.md, betroffene Dateien.
+- NIE raten — verifizieren (Code/Browser/Docs). Bei Unsicherheit fragen oder fail-closed. Verschaerft fuer PREISE.
+- Erst Plan (TodoWrite), dann ausfuehren. Skills + parallele Sub-Agenten (verschiedene LLM je Aufgabe) nutzen.
+- Bau-Agenten Design-Entscheidungen WOERTLICH mitgeben + verworfene Gegen-Option (L-preise-03).
+- Laufend testen + `review-it` bei groesseren Schritten.
+- **VOR jedem Deploy: `next lint` UND `next build` lokal gruen** (tsc reicht NICHT — L-preise-05). Dev-Server dafuer stoppen (L-preise-02), danach neu starten.
+- Deploy nur Preview, nie prod. Ready NUR via `vercel inspect <url>` = Ready melden (SSO-302 luegt).
+- GETEILTER Branch `relaunch`: vor Arbeit `git fetch` + `git ls-remote origin relaunch`, nur EIGENE Dateien stagen. ACHTUNG: Thomas committet teils selbst parallel im selben Working Tree (diese Session war e006b00 seiner). Vor Commit HEAD gegen Remote pruefen.
 
-## WICHTIG: Branch-Status
-Der Branch `relaunch` ist GEPUSHT (origin/relaunch stand am 23.07. abends auf demselben Commit wie lokal).
-Er ist ein GETEILTER Branch — mehrere parallele Straenge (Preise, Talos, Leistungen-Hub) committen darauf.
-Vor dem Arbeiten `git fetch` + `git log --oneline -15` pruefen, und NUR eigene Dateien committen.
+## Stand am Session-Ende (ALLES committet + gepusht + deployt)
+origin/relaunch = **a89155a**. Commits dieser Session: 5a2c3da (grosser Umbau) -> e006b00 (Thomas' Build-Fix, gerades Anfuehrungszeichen) -> a89155a (Bumper-Fix). review-it: GO (Decision-Log docs/reviews/preise-talos-umbau-2026-07-24.md). Preview zuletzt Ready (Link im Chat).
 
-## Was fertig ist (Branch relaunch, gepusht)
+### Fertig + abgenommen (Preis-Logik + Struktur)
+- Preise FESTGELEGT und autoritativ in **brand/decisions-log.md 24.07.** (Basis-Team 360 Einfuehrungspreis, Setup 290, zzgl USt; Poster/Aussendienst 290, Ads ab 390, Sichtbarmacher +120; Team-Rabatt 10% ab 2 Modulen; KMU.DIGITAL nur Website+Setup; KI-Telefon RAUS). Research: docs/strategie/TALOS_MODUL_PREISE_RESEARCH_2026-07-24.md + TALOS_ADS_PREIS_RESEARCH_2026-07-24.md.
+- Hero getauscht (Text links, Chart-Figur rechts). Bumper = wiederverwendeter ScrollBumper (Navy, zentriert). RisikoBand entdoppelt. Paket-Karten mit Anfrage-CTA. Betreuung = schlichter KMU-Text. Talos-Intro-Panel (Figur rechts, 135 Jahre). Mehrwert-Rechner (Basis 360 vs klassisch).
+- 3D-Companion: TalosCompanionStage bekam rueckwaertskompatiblen `stationsOnly`-Prop (kapert den Preise-Hero nicht). Figur haengt als data-talos-station am Slot in TalosTalenteFahrt (anchor .78, size l, gesture wave, appear .4). Talos-Leistungsseite unveraendert (verifiziert).
 
-Neue Seite: `/relaunch-preview/preise`. Dev-Server: `cd ~/dev/redrabbit && npm run dev -- --port 9000`.
+## OFFEN — naechste Runde (mit Thomas per grill-me 25.07. GELOCKT)
 
-Commits (aelteste zuerst): `311c10c` (Bau) · `25bd5f9` (QA-Runde 1) · `3ec643b` (QA-Addendum)
-· `d7530d9` (FAQ-Dublette) · `1276b50` (Fahrt full-bleed, Karte) · `e7454dd` (Review-Findings)
-· `4f398a1` (Review-Log + Lessons) · `1458c3d` (Hero-Figur links) · `89956fb` (Log-Nachtrag)
-· `b93377d` (Karten rechts) · `e3ac108` (dieser Handoff) · `46c2f22` (Brief nach brand/).
+### A) Talos-Sektion: Fahrt-Felder = PREISE statt Faehigkeits-Text
+Die seitwaerts-Fahrt (TalosTalenteFahrt.tsx) zeigt aktuell 7 Faehigkeits-Slides mit Nutzen-Text, KEINE Preise. Thomas will auf der Preisseite statt dessen PREIS-Felder. Gelockte Struktur:
+- **Intro-Block** (Talos-Figur + 135 Jahre) bleibt und geht **GLEICH nach rechts** in Feld 1 ueber (aktuell geht die Fahrt "erst ein Feld runter, dann nach rechts" — das ist zu fixen, Thomas' Wortlaut).
+- **Feld 1 = Muss-Paket "Basis-Team 360"**: listet die 3 enthaltenen Rollen (Schreiber, Empfang, Chatbot) je mit EINER Nutzen-Zeile + Setup 290 + zzgl USt.
+- **Feld 2 = Poster + Sichtbarmacher** (je Nutzen-Zeile + Preis: Poster 290, Sichtbarmacher +120).
+- **Feld 3 = Aussendienst + Ads** (je Nutzen-Zeile + Preis: 290, ab 390).
+- **Feld 4 = Spezial/Custom** — auf Anfrage.
+- **Feld 5 = der Rechner** (letztes Feld IN der Fahrt, Thomas-Entscheidung; die letzte Slide steht still, Interaktion dort ok).
+- Jede Rolle: kurze Was-macht-er-Zeile + Preis (nicht nur Name, nicht der ganze Faehigkeiten-Absatz).
 
-Zwischendrin liegen Fremd-Commits des Talos-Strangs (`f8a5afd`, `893a330`, `9beaa73`, `c00d614`) —
-derselbe Branch, anderer Strang. Nicht wundern und nicht anfassen.
+### B) Rechner umbauen: Vergleich gegen BEIDE — Mitarbeiter-brutto UND Agentur
+Aktuell vergleicht MehrwertRechner.tsx nur gegen "klassisch extern". Neu: zwei Vergleiche neben unserem Paket-Preis: (1) was EIGENES Personal brutto kostet (inkl. AT-Lohnnebenkosten ~+30%), (2) was Agenturen/Dienste verlangen (Anker aus dem Research schon belegt).
+- **ZUERST die Brutto-Zahlen an echten AT-Gehaltsdaten verifizieren** (nicht erfinden — Ehrlichkeits-Regel). Team-Summe vs. Personal-Summe ehrlich framen (ein Modul != ein ganzer Mitarbeiter).
 
-Zustand am Session-Ende: `npx tsc --noEmit` gruen, `npx vitest run` 168/168 gruen,
-Seite liefert 200 auf `localhost:9000/relaunch-preview/preise`.
+### C) Talos-Figur-Fixes
+- Winkt mit der FALSCHEN Hand -> andere Hand.
+- **Einmal** winken beim Ankommen reicht, danach NUR bei Klick (aktuell offenbar mehr). Gesten-Logik in TalosCompanionStage.tsx (GESTURES-Array, data-talos-gesture, Doppelklick-Zyklus).
 
-## Konzept (mit Thomas per grill-me festgelegt, NICHT neu aufrollen)
+### Kleinere offene Copy-/Brand-Punkte (aus review-it Security)
+- SchlussCta "ohne Risiko" — starke Aussage, gedeckt; bei Bindungs-Einfuehrung neu pruefen.
+- Rechner-Vergleichswert (frueher ~950) kollidierte mit Starter-Preis 950 — beim Rechner-Umbau eh neu.
 
-- Grundgeruest vertikal mit EINEM horizontalen Moment: die Talos-Talente fahren als
-  CasePanels-Adaption seitwaerts. Website-Pakete bleiben vertikal vergleichbar.
-- rabenrifaie.com wurde live geprueft: scrollt NICHT horizontal. Uebernommen wurde von dort
-  nur die Idee der schwebenden 5-Sterne-Karten.
-- Sektionsfolge: Painting-Hero (MorphSculpture comp={3} Chart) -> Risiko-Umkehr (Navy)
-  -> PreiseMatrix (DreiStufenMatrix-Klon MIT Preisen) -> Betreuung + KMU.DIGITAL
-  -> Talos-Talente-Fahrt -> Preis-FAQ -> SchlussCta -> FooterReassembly.
-
-## Dateien
-
-- `app/relaunch-preview/preise/page.tsx`
-- `components/subpages/PreiseDemoClient.tsx` + `components/subpages/preise-demo/` (Hero-Klon)
-- `components/subpages/preise/{RisikoBand,PreiseMatrix,BetreuungFoerderung,TalosTalenteFahrt,PreiseFaq,PreiseSchlussCta,FloatingReview}.tsx`
-- Review-Log: `docs/reviews/preise-seite-1276b50.md`
-
-## Lessons aus dieser Session (stehen in docs/lessons.md)
-
-- **L-preise-01**: autoritative Werte (Preise) nie per weichem Lookup gegen eine Fremd-Datei —
-  PreiseMatrix hat jetzt einen fail-closed Guard, der im Build bricht statt still leer zu rendern.
-- **L-preise-02**: KEIN `npm run build`, solange der Dev-Server laeuft — zerschiesst `.next`,
-  die Seite wirkt komplett tot. Bei "Seite reagiert nicht" ZUERST
-  `curl -o /dev/null -w '%{http_code}' localhost:9000/_next/static/chunks/main-app.js` (404 = das).
-- Scroll-QA nur mit echten Wheel-Events (L-referenzen-02), nie mit `window.scrollTo` messen.
-
-## OFFEN — braucht Thomas
-
-1. **Abnahme am eigenen Schirm** (Regel: visuelle Fixes gelten erst, wenn Thomas sie sieht).
-2. **Talos-Modul-Preise fehlen weiterhin.** Die Fahrt zeigt bewusst nur die Logik
-   (monatlich, jederzeit kuendbar, nachbuchbar, Fixbetrag statt Credit-Raetsel) und
-   "Preis auf Anfrage". Zahlen NIE erfinden — sobald Thomas sie festlegt, in
-   `TalosTalenteFahrt.tsx` eintragen und in `brand/decisions-log.md` dokumentieren.
-3. **Talent-Namen sind Arbeitstitel** (Schreiber, Empfang, Aussendienst, Poster,
-   Sichtbarmacher, Sonderanfertigung) — stammen von der Talos-Seite, Thomas hat sie
-   noch nicht final abgenommen.
-4. **Mobile wurde nicht visuell geprueft** — das Chrome-Fenster liess sich nicht unter
-   ~1500px verkleinern. Code-seitig geprueft: alle Sektionen haben Breakpoints bzw.
-   fluide Einheiten, die Talos-Fahrt schaltet unter 900px auf einen statischen Stapel,
-   der Hero-Figur-Versatz ist auf `min-width: 769px` begrenzt (darunter stapelt
-   `.story-grid`). Trotzdem: am echten Geraet gegenchecken.
-5. Deploy-Preview steht aus (Regel: Deploy-Status nur via `vercel ls` = Ready melden).
-
-## So startest du nach dem Rechner-Neustart
-
+## So startest du
 ```bash
 cd ~/dev/redrabbit
-git fetch && git log --oneline -15        # geteilter Branch: erst schauen, was dazugekommen ist
-npm run dev -- --port 9000                # Dev-Server (NICHT parallel `npm run build`!)
+git fetch && git ls-remote origin relaunch   # geteilter Branch, HEAD gegen Remote pruefen
+npm run dev -- --port 9000
 open http://localhost:9000/relaunch-preview/preise
 ```
-Wenn die Seite tot wirkt (kein Menue, keine Animation, Konsole sauber):
-`curl -s -o /dev/null -w '%{http_code}' localhost:9000/_next/static/chunks/main-app.js`
-→ 404 heisst, ein Build hat den Dev-Server zerschossen. Dev-Server neu starten, kein Code-Bug.
+Seite tot (kein Menue, Konsole sauber)? -> `curl -s -o /dev/null -w '%{http_code}' localhost:9000/_next/static/chunks/main-app.js` (404 = ein Build hat den Dev-Server zerschossen, kein Code-Bug).
 
-Erster inhaltlicher Schritt der neuen Session: Seite gemeinsam mit Thomas durchgehen
-(Abnahme Punkt 1), dabei die offenen Punkte 2 und 3 klaeren (Talos-Preise, Talent-Namen).
+Erster Schritt: A + C bauen (Fahrt-Felder + Figur-Fixes), parallel die Brutto-Research fuer B; dann Rechner umbauen; dann review-it + voller Build + Deploy.
