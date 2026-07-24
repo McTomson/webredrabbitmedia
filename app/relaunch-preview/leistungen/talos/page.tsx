@@ -129,11 +129,14 @@ export default function TalosLeistungPreviewPage() {
         </div>
         <InklusiveDashboard />
         <Faehigkeiten />
-        {/* FreigabePrinzip + Onboarding OHNE Companion: Talos ist hier weg. Er
-            erscheint erst, wenn der Kontrollraum WIRKLICH zentriert ist (hoher
-            appear-Schwellwert 0.55) — nicht schon beim Onboarding-Uebergang
-            (Thomas 24.07., Bild 54 "zu frueh" -> Bild 55 "soll erst hier"). */}
-        <FreigabePrinzip />
+        {/* FreigabePrinzip MIT nickendem Talos (originalgetreu wiederhergestellt,
+            Thomas 24.07. spaet: "der nickende Talos war sehr gut, stell ihn wieder
+            her"). Nur ONBOARDING bleibt ohne Companion — DORT war Talos "zu frueh"
+            (Bild 54), erst danach am Kontrollraum wieder zentriert. layer="back",
+            weil weisse Sektion (kein Navy-Body-Cut) und Text links / Talos rechts. */}
+        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-gesture="nod" data-talos-layer="back">
+          <FreigabePrinzip />
+        </div>
         <Onboarding />
         <div data-talos-station data-talos-anchor="0.7" data-talos-size="m" data-talos-appear="0.55" data-talos-gesture="wink" data-talos-layer="front">
           <Kontrollraum />
