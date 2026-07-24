@@ -1,9 +1,8 @@
 /**
- * Faehigkeiten-Daten (geteilt) — 1:1 aus Faehigkeiten.tsx (Karten-Fassung,
- * 22.07.2026) ausgelagert, damit die Vergleichs-Varianten (Kachel + Modal /
- * Aufklapp-Karte) dieselbe Copy nutzen ohne sie zu duplizieren. Die
- * Original-Datei Faehigkeiten.tsx bleibt unveraendert (sie haelt ihr Array
- * weiter inline, kein Import-Zwang). Quelle der Copy:
+ * Faehigkeiten-Daten — Typ + FAEHIGKEITEN-Array (6 Eintraege, 5 buchbare +
+ * "Die Sonderanfertigung" invers). Einziger Konsument: Faehigkeiten.tsx
+ * (Firmen-Grid + Modal). Daten/View bewusst getrennt, damit die reine Copy
+ * die Grid-Komponente nicht aufblaeht. Quelle der Copy:
  * docs/specs/TALOS_COPY_V2_2026-07-22_ENTWURF.md, Sektion 4.
  */
 export type Faehigkeit = {

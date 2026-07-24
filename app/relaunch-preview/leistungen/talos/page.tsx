@@ -139,11 +139,11 @@ export default function TalosLeistungPreviewPage() {
         <div data-talos-station data-talos-anchor="0.8" data-talos-size="m" data-talos-layer="back">
           <Beweis />
         </div>
-        <div data-talos-station data-talos-anchor="0.8" data-talos-size="s" data-talos-layer="back">
+        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-layer="front">
           <FragTalosAnmoderation />
         </div>
         <TalosFaqV2 />
-        <div data-talos-station data-talos-anchor="0.08" data-talos-size="m" data-talos-gesture="wave" data-talos-layer="front">
+        <div data-talos-station data-talos-anchor="0.17" data-talos-size="sm" data-talos-gesture="wave" data-talos-layer="front">
           <TalosSchlussCta />
         </div>
       </div>

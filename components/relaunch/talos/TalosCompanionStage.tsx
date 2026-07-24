@@ -47,7 +47,9 @@ const OFF_MARGIN = 320; // Luft hinter der Bildkante (offscreen) — inkl. Armre
 // Koerperhaltung im Stand: IMMER deutlich zur Bildmitte gedreht, nie nach aussen
 // (Thomas-Regel 24.07.: die alten 0.13 rad waren zu subtil, er las die Haltung als
 // "nach aussen"). Vorzeichen: +yaw = nach rechts gedreht.
-const STAND_BIAS = 0.3;
+// Koerperhaltung im Stand: DEUTLICH zur Bildmitte gedreht (Thomas 24.07.: 0.30 war
+// zu subtil, las sich als "nach aussen"; die Richtung stimmt, es braucht mehr Drehung).
+const STAND_BIAS = 0.5;
 // Dreiviertel-Ansicht in Laufrichtung (empirisch: +1.05 = geht nach rechts,
 // Gesicht leicht zum User; Vorzeichen spiegelt fuer Laufrichtung links).
 const FACE_TURN = 1.05;
@@ -73,7 +75,7 @@ const P_FRAME1 = 0.64;
 // Stations-Groessen: Naehe zur Kamera (Bot.position.z, Basis ~z0).
 // 24.07.: l/xl verkleinert, weil Talos bei l/xl unten abgeschnitten war
 // (Thomas Bild 2/15: "etwas verkleinern"). Fuesse sollen im Bild bleiben.
-const SIZE_Z: Record<string, number> = { s: -420, m: -70, l: 110, xl: 220 };
+const SIZE_Z: Record<string, number> = { s: -420, sm: -200, m: -70, l: 110, xl: 220 };
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const smooth = (t: number) => {

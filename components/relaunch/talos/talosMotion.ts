@@ -258,7 +258,9 @@ export function createTalosMotion(rig: TalosRig, splineScene: any): TalosMotion 
     // Maus-Folge wird dann gedaempft, damit er nie nach aussen schaut.
     const pullW = Math.min(1, Math.abs(centerPull));
     const targetYaw = centerPull * 0.3 + pointerX * 0.32 * (1 - pullW * 0.7);
-    const targetPitch = -pointerY * 0.18;
+    // Pitch: leichte Neigung zum Inhalt (leicht nach unten), gedaempfte Maus-Folge
+    // und HART gegen Hochschauen geklemmt (Thomas 24.07.: "schaut in die Luft").
+    const targetPitch = clamp(0.05 - pointerY * 0.1, -0.04, 0.2);
     gazeYaw = damp(gazeYaw, targetYaw, 6, dt);
     gazePitch = damp(gazePitch, targetPitch, 6, dt);
 
