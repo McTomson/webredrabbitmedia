@@ -13,7 +13,7 @@ import { useMemo, useState } from 'react';
  * nichts erfinden. Basis-Team 360 €/Monat (Untergrenze), Add-ons Poster
  * 290/~490, Sichtbarmacher +120/~250, Außendienst 290/~600, Ads ab 390/~800.
  * Setup 290 € einmalig, alle Preise zzgl. USt, "Einführungspreis für
- * Pilotkunden". Die "klassisch"-Werte sind marktübliche Größenordnung für
+ * Pilotkunden". Die "klassisch“-Werte sind marktübliche Größenordnung für
  * dieselbe Arbeit extern (Freelancer/Agentur/Dienst) — keine Fixzusage,
  * kein erfundenes Angestellten-Gehalt (siehe Disclaimer am Fußende).
  *
@@ -193,10 +193,10 @@ export default function MehrwertRechner() {
       </div>
 
       <p className="rr-meta mwr-disclaimer">
-        Die „klassisch"-Werte zeigen die marktübliche Größenordnung für dieselbe
-        Arbeit extern eingekauft, etwa über Freelancer, Agentur oder Dienstleister
-        &mdash; keine Fixzusage und kein erfundenes Angestellten-Gehalt, sondern
-        bewusst ehrlich das, was diese Arbeit draußen kostet.
+        Die „klassisch“-Werte zeigen die marktübliche Größenordnung für dieselbe
+        Arbeit extern eingekauft, etwa über Freelancer, Agentur oder Dienstleister.
+        Keine Fixzusage und kein erfundenes Angestellten-Gehalt, sondern bewusst
+        ehrlich das, was diese Arbeit draußen kostet.
       </p>
 
       <style>{`
