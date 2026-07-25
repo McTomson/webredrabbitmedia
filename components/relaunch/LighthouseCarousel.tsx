@@ -51,9 +51,23 @@ function Ring({ value, size, stroke, fontSize, active }: { value: number; size: 
   );
 }
 
-export default function LighthouseCarousel({ active = true }: { active?: boolean }) {
+export default function LighthouseCarousel() {
   const [idx, setIdx] = useState(0);
+  const [active, setActive] = useState(false);
   const hostRef = useRef<HTMLDivElement>(null);
+
+  // Erst animieren + weiterschalten, wenn das Widget ins Sichtfeld faehrt.
+  useEffect(() => {
+    const el = hostRef.current;
+    if (!el || !("IntersectionObserver" in window)) { setActive(true); return; }
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(true); }),
+      { threshold: 0.35 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   useEffect(() => {
     if (!active) return;
     const id = setInterval(() => setIdx((i) => (i + 1) % CLIENTS.length), 5200);

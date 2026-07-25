@@ -12,13 +12,20 @@ export function middleware(request: NextRequest) {
     const isTestHost = host.startsWith('v2.');
     if (isTestHost) {
         response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+        // Test-Subdomain nie cachen -> Reviewer sieht immer die frische Fassung
+        // (Edge-HIT hatte alte HTML ausgeliefert, Tomson 25.07.). Assets (_next/static)
+        // sind vom Matcher ausgeschlossen und bleiben content-hash-gecacht.
+        response.headers.set('Cache-Control', 'no-store, must-revalidate');
     }
 
     // 1. Canonical URL Enforcement - Remove trailing slashes
     const url = request.nextUrl;
     if (url.pathname.endsWith('/') && url.pathname !== '/') {
         const redirect = NextResponse.redirect(new URL(url.pathname.slice(0, -1) + url.search, url));
-        if (isTestHost) redirect.headers.set('X-Robots-Tag', 'noindex, nofollow');
+        if (isTestHost) {
+            redirect.headers.set('X-Robots-Tag', 'noindex, nofollow');
+            redirect.headers.set('Cache-Control', 'no-store, must-revalidate');
+        }
         return redirect;
     }
 
@@ -32,6 +39,7 @@ export function middleware(request: NextRequest) {
         target.pathname = '/relaunch-preview' + (url.pathname === '/' ? '' : url.pathname);
         const rewritten = NextResponse.rewrite(target);
         rewritten.headers.set('X-Robots-Tag', 'noindex, nofollow');
+        rewritten.headers.set('Cache-Control', 'no-store, must-revalidate');
         return rewritten;
     }
 
