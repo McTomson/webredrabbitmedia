@@ -784,6 +784,28 @@
 .rr .rr-btn-sweep--navy { --c: var(--rr-navy); }
 .rr .rr-btn-sweep--red { --c: var(--rr-red); }
 
+/* Sekundaerer Rahmen-Button (matched pair zum roten Sweep, Tomson 25.07.):
+   duenner Rahmen, Ink-Schrift; Hover fuellt dunkel. Gleiche Schrift/Groesse
+   wie der Sweep, damit beide als Paar wirken. */
+.rr .rr-btn-outline {
+  display: inline-block;
+  text-align: center;
+  min-width: 150px;
+  font-family: var(--rr-font-ui);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 11px 26px;
+  color: var(--rr-ink);
+  border: 1.5px solid var(--rr-ink);
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s var(--rr-ease), color 0.3s var(--rr-ease);
+}
+.rr .rr-btn-outline:hover { background: var(--rr-ink); color: #fff; }
+.rr .rr-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--rr-paper), 0 0 0 4.5px var(--rr-ink); }
+
 /* ---- Eck-Rahmen (uiverse-Idee, auf Marke) ----
    Ruhe: nur vier Eck-Winkel (<i class="c1..c4">) + Schrift in --c,
    Grund bleibt Seitenfarbe. Hover: die Winkel wachsen auf 50% und

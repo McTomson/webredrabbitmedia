@@ -34,7 +34,7 @@ export default function MorphSculpture({
   progress,
   className,
   style,
-  navyPiece = true,
+  navyPiece = false,
 }: {
   comp: number;
   /** 0..1. Wenn nicht gesetzt, liest die Komponente `window.__sculptProgress` (Default 0.55 = gehalten). */

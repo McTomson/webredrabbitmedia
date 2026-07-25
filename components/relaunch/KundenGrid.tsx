@@ -235,7 +235,7 @@ export default function KundenGrid() {
       <style>{`
         .rrkg-scene{
           position:relative;isolation:isolate;
-          background:#ffffff;color:#23262e;
+          background:#f4f4f2;color:#23262e;
           padding:14vh 6vw 16vh;
         }
         .rrkg-head{max-width:1240px;margin:0 auto 6vh}
