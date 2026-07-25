@@ -226,6 +226,7 @@ export default function KundenGrid() {
           </div>
         ))}
         <Link className="rrkg-cell rrkg-cta" href="/relaunch-preview/referenzen" aria-label="Alle Projekte ansehen" ref={ctaRef}>
+          <span className="rrkg-cta-label">Alle Projekte ansehen</span>
           <svg className="rrkg-chev" viewBox="0 0 128 64" aria-hidden="true">
             <g ref={chevWrapRef} />
           </svg>
@@ -282,13 +283,18 @@ export default function KundenGrid() {
         }
         .rrkg-cell.typing .rrkg-caret{display:inline-block}
         a.rrkg-cta{
-          text-decoration:none;justify-content:center;align-items:center;gap:0;cursor:pointer;
-          padding:.9rem 2.8rem;
+          text-decoration:none;flex-direction:column;justify-content:center;align-items:center;gap:.7rem;cursor:pointer;
+          padding:.9rem 2rem;
           grid-column:3;grid-row:4 / span 2;
           transition:background-color .3s var(--rr-ease, cubic-bezier(.6,0,.4,1));
         }
         a.rrkg-cta:hover{background:#f4f4f2}
-        .rrkg-chev{width:clamp(90px,46%,170px);height:auto;flex:none;overflow:visible}
+        .rrkg-cta-label{
+          font-family:var(--font-grotesk),"Instrument Sans",sans-serif;
+          font-weight:600;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;
+          color:#f12032;text-align:center;line-height:1.3;
+        }
+        .rrkg-chev{width:clamp(64px,34%,120px);height:auto;flex:none;overflow:visible}
         .rrkg-chev g{transition:transform .35s var(--rr-ease, cubic-bezier(.6,0,.4,1))}
         a.rrkg-cta:hover .rrkg-chev g{transform:translateX(8px)}
         .rrkg-chev-frag{
