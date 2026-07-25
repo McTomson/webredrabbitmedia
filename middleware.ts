@@ -4,10 +4,22 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
     const response = NextResponse.next();
 
+    // 0. noindex fuer die Test-Subdomain v2.redrabbit.media (und jeden v2.*-Host).
+    //    Denylist statt Allowlist: so kann die Live-Domain web.redrabbit.media
+    //    niemals versehentlich deindexiert werden. Die Subdomain spiegelt den
+    //    relaunch-Branch nur zum Testen/Teilen — darf nie in den Google-Index.
+    const host = request.headers.get('host') || '';
+    const isTestHost = host.startsWith('v2.');
+    if (isTestHost) {
+        response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    }
+
     // 1. Canonical URL Enforcement - Remove trailing slashes
     const url = request.nextUrl;
     if (url.pathname.endsWith('/') && url.pathname !== '/') {
-        return NextResponse.redirect(new URL(url.pathname.slice(0, -1) + url.search, url));
+        const redirect = NextResponse.redirect(new URL(url.pathname.slice(0, -1) + url.search, url));
+        if (isTestHost) redirect.headers.set('X-Robots-Tag', 'noindex, nofollow');
+        return redirect;
     }
 
     // 2. Mobile-First Indexing Hint für Googlebot
