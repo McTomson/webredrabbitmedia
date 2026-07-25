@@ -4,6 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ChromeGate from "@/components/ChromeGate";
 import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google';
 import { aggregateRatingLd } from '@/lib/reviews';
 
@@ -250,9 +251,9 @@ export default function RootLayout({
         <ContactFormProvider>
           <AOSInit />
           <AnalyticsListener />
-          <Header />
+          <ChromeGate><Header /></ChromeGate>
           <main id="main-content" tabIndex={-1} className="scroll-mt-20 focus:outline-none">{children}</main>
-          <Footer />
+          <ChromeGate><Footer /></ChromeGate>
           <ContactFormWrapper />
         </ContactFormProvider>
       </body>
