@@ -2138,3 +2138,48 @@ quelle: https://www.bfdi.bund.de/SharedDocs/Kurzmeldungen/DE/2023/17_Angemessenh
 quelle_name: BfDI - Angemessenheitsbeschluss zum EU-U.S. Data Privacy Framework in Kraft getreten
 geprueft_am: 2026-07-24
 recheck_nach: 2027-01-20
+
+## t51-2026-07-25-238
+cluster: 1
+keywords: wann, wird, cookie, banner, rechtlich, benötigt
+aussage: In Österreich richtet sich die Zulässigkeit von Cookies nach § 165 Abs. 3 TKG 2021 (Umsetzung von Art. 5 Abs. 3 der ePrivacy-Richtlinie 2002/58/EG): Nur 'unbedingt erforderliche' (technisch notwendige) Cookies dürfen ohne Einwilligung gesetzt werden, für alle technisch nicht notwendigen Cookies (Tracking, Werbung, Social-Media-Plugins) ist eine vorherige Einwilligung nach Art. 4 Z 11 und Art. 7 DSGVO nötig.
+quelle: https://dsb.gv.at/faqs/datenschutz-cookies
+quelle_name: Österreichische Datenschutzbehörde - FAQ Datenschutz & Cookies
+geprueft_am: 2026-07-25
+recheck_nach: 2027-01-21
+
+## t51-2026-07-25-239
+cluster: 1
+keywords: wann, wird, cookie, banner, rechtlich, benötigt
+aussage: Ein Cookie-Banner ist rechtlich NICHT zwingend, wenn eine Website ausschließlich technisch notwendige Cookies einsetzt (z. B. Warenkorb, Login-Status, Sprachwahl, Speicherung der Cookie-Einwilligung selbst); erst sobald technisch nicht notwendige Cookies (Analytics, Remarketing, Affiliate, Social-Plugins) verwendet werden, muss vor deren Setzen eine ausdrückliche Einwilligung über einen Cookie-Banner eingeholt werden.
+quelle: https://www.wko.at/noe/e-commerce/faq-19-cookies
+quelle_name: WKO - Rechtsfrage #19: Technisch notwendige versus nicht notwendige Cookies
+geprueft_am: 2026-07-25
+recheck_nach: 2027-01-21
+
+## t51-2026-07-25-240
+cluster: 1
+keywords: wann, wird, cookie, banner, rechtlich, benötigt
+aussage: Die österreichische Datenschutzbehörde verlangt für eine gültige Cookie-Einwilligung: 'Erst Einwilligung, dann Cookies' (kein Setzen technisch nicht notwendiger Cookies vor Zustimmung), keine vorangekreuzten Kästchen (privacy by default), Freiwilligkeit ohne Nachteile bei Ablehnung, gleichwertige Accept-/Reject-Buttons sowie eine klare Widerrufsmöglichkeit.
+quelle: https://dsb.gv.at/faqs/datenschutz-cookies
+quelle_name: Österreichische Datenschutzbehörde - FAQ Datenschutz & Cookies
+geprueft_am: 2026-07-25
+recheck_nach: 2027-01-21
+
+## t51-2026-07-25-241
+cluster: 1
+keywords: wann, wird, cookie, banner, rechtlich, benötigt
+aussage: Eine bloß 'wirtschaftliche Notwendigkeit' (etwa Werbefinanzierung der Website) macht Cookies laut österreichischer Datenschutzbehörde NICHT zu technisch notwendigen Cookies – solche Cookies bleiben einwilligungspflichtig.
+quelle: https://dsb.gv.at/faqs/datenschutz-cookies
+quelle_name: Österreichische Datenschutzbehörde - FAQ Datenschutz & Cookies
+geprueft_am: 2026-07-25
+recheck_nach: 2027-01-21
+
+## t51-2026-07-25-242
+cluster: 1
+keywords: wann, wird, cookie, banner, rechtlich, benötigt
+aussage: Der EuGH hat im Urteil 'Planet49' (01.10.2019, Rs. C-673/17) klargestellt, dass ein voreingestelltes (vorangekreuztes) Ankreuzkästchen keine wirksame Einwilligung darstellt; die Einwilligung muss aktiv und informiert erfolgen – technisch bedeutet das, dass ein Consent-Banner Tracking-/Marketing-Skripte bis zur aktiven Zustimmung blockieren muss.
+quelle: https://dejure.org/dienste/vernetzung/rechtsprechung?Text=C-673/17
+quelle_name: EuGH, Urteil vom 01.10.2019, Rs. C-673/17 (Planet49) - dejure.org
+geprueft_am: 2026-07-25
+recheck_nach: 2027-01-21
