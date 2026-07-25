@@ -20,8 +20,10 @@ export default function HomeClosing() {
         style={{ background: "#F4F4F2", paddingTop: "clamp(80px, 12vw, 180px)", paddingBottom: "clamp(120px, 18vw, 240px)" }}
       >
         <div className="rr-wrap">
-          <p className="rr-display-2" style={{ maxWidth: "15em", fontSize: "clamp(30px, 4.2vw, 58px)", lineHeight: 1.08 }}>
-            Du willst eine Website, die man findet? Und die für dich im Hintergrund Kunden gewinnt? Reden wir.
+          <p className="rr-display-2" style={{ maxWidth: "16em", fontSize: "clamp(30px, 4.2vw, 58px)", lineHeight: 1.14 }}>
+            Du willst eine Website, die man findet?<br />
+            Und die für dich im Hintergrund Kunden gewinnt?<br />
+            Reden wir.
           </p>
           {/* Button-Paar (Thomas 25.07.): Haupt-CTA roter Sweep, Anrufen als
               klarer Rahmen-Button (matched pair). */}

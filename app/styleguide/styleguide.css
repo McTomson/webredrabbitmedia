@@ -806,6 +806,11 @@
 .rr .rr-btn-outline:hover { background: var(--rr-ink); color: #fff; }
 .rr .rr-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--rr-paper), 0 0 0 4.5px var(--rr-ink); }
 
+/* KundenSagen im dunklen Beweis-Panel (Tomson 26.07.): Grund transparent (Panel-
+   Dunkel bleibt), Ink-Tokens auf hell -> Titel/Zitat/Namen werden hell lesbar. */
+.rr .ks-ondark { --rr-ink: #f6f5f1; --rr-ink-soft: rgba(246,245,241,0.62); --rr-line: rgba(255,255,255,0.14); }
+.rr .ks-ondark .ks-section { background: transparent; }
+
 /* ---- Eck-Rahmen (uiverse-Idee, auf Marke) ----
    Ruhe: nur vier Eck-Winkel (<i class="c1..c4">) + Schrift in --c,
    Grund bleibt Seitenfarbe. Hover: die Winkel wachsen auf 50% und
