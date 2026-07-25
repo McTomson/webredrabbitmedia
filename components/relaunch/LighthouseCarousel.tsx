@@ -53,7 +53,7 @@ function Ring({ value, size, stroke, fontSize, active }: { value: number; size: 
 export default function LighthouseCarousel() {
   const [idx, setIdx] = useState(0);
   const [active, setActive] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true); // von Anfang an ausgeklappt (Tomson 26.07.)
   const hostRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function LighthouseCarousel() {
 
   return (
     <div ref={hostRef} style={{
-      width: "min(92vw, 460px)", maxHeight: "76vh", overflow: "hidden", display: "flex", flexDirection: "column",
+      width: "min(94vw, 600px)", display: "flex", flexDirection: "column",
       background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.10)",
       padding: "clamp(20px, 2.4vw, 30px)", color: "#f6f5f1",
     }}>
@@ -106,21 +106,20 @@ export default function LighthouseCarousel() {
       {/* Details: aufklappbar, im Widget scrollbar (passt immer auf die Seite) */}
       <button
         onClick={() => setOpen((o) => !o)}
-        style={{ marginTop: 18, alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", border: "none", cursor: "pointer", color: "#f12032", fontFamily: uiFont, fontSize: 13, fontWeight: 600, padding: 0 }}
+        style={{ marginTop: 18, alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", border: "none", cursor: "pointer", color: "rgba(246,245,241,0.85)", fontFamily: uiFont, fontSize: 13, fontWeight: 600, padding: 0 }}
       >
         {open ? "Weniger anzeigen" : "Was heißt das?"}
         <span style={{ display: "inline-block", transform: open ? "rotate(180deg)" : "none", transition: "transform .25s" }}>▾</span>
       </button>
 
       {open && (
-        <div style={{ marginTop: 14, overflowY: "auto", display: "grid", gap: 12, paddingRight: 6 }}>
+        <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(215px, 1fr))", gap: "16px 26px" }}>
           {METRICS.map((m) => (
-            <div key={m.key} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-              <Ring value={c.scores[m.key]} size={40} stroke={3} fontSize={12} active={active} />
-              <div>
-                <p style={{ margin: 0, fontSize: 13, fontWeight: 600, fontFamily: uiFont }}>{m.label}</p>
-                <p style={{ margin: "2px 0 0", fontSize: 12, lineHeight: 1.45, color: muted, fontFamily: uiFont }}>{m.info}</p>
-              </div>
+            <div key={m.key}>
+              <p style={{ margin: 0, fontSize: 12.5, fontWeight: 600, fontFamily: uiFont, color: "#f6f5f1" }}>
+                {m.label} <span style={{ color: "#31d07a", fontWeight: 700 }}>{c.scores[m.key]}</span>
+              </p>
+              <p style={{ margin: "3px 0 0", fontSize: 11.5, lineHeight: 1.42, color: muted, fontFamily: uiFont }}>{m.info}</p>
             </div>
           ))}
         </div>

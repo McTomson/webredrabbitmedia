@@ -90,7 +90,7 @@ const THEMES: Theme[] = [
 
 function TextBlock({ w, accent }: { w: PanelWindow; accent: string }) {
   return (
-    <div style={{ width: "min(88vw, 640px)" }}>
+    <div style={{ width: "min(90vw, 760px)" }}>
       {w.eyebrow && (
         <p className="rr-eyebrow-lg" style={{ color: accent, fontFamily: "var(--rr-font-sans)", letterSpacing: "0.12em", fontWeight: 600, margin: 0 }}>{w.eyebrow}</p>
       )}
@@ -100,10 +100,10 @@ function TextBlock({ w, accent }: { w: PanelWindow; accent: string }) {
         </h3>
       )}
       {w.body && (
-        <p style={{ fontFamily: "var(--rr-font-ui)", fontSize: "clamp(17px, 1.45vw, 23px)", lineHeight: 1.55, fontWeight: 400, margin: (w.eyebrow || w.headline) ? "1.1em 0 0" : 0, maxWidth: "27em", color: "inherit", opacity: 0.94 }}>{w.body}</p>
+        <p style={{ fontFamily: "var(--rr-font-ui)", fontSize: "clamp(18px, 1.55vw, 25px)", lineHeight: 1.55, fontWeight: 400, margin: (w.eyebrow || w.headline) ? "1.1em 0 0" : 0, maxWidth: "33em", color: "inherit", opacity: 0.94 }}>{w.body}</p>
       )}
       {w.linkText && w.href && (
-        <p style={{ margin: "1.7em 0 0" }}>
+        <p style={{ margin: "2.6em 0 0" }}>
           <Link href={w.href} style={{ color: "inherit", fontFamily: "var(--rr-font-sans)", fontSize: "clamp(21px, 1.9vw, 27px)", fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 7 }}>
             {w.linkText} {"→"}
           </Link>
@@ -146,11 +146,12 @@ function smoothstep(x: number) { const t = clamp01(x); return t * t * (3 - 2 * t
 function PanelTrack({ t }: { t: Theme }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const giantRef = useRef<HTMLDivElement>(null);
   const N = t.windows.length;
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const track = trackRef.current!, stage = stageRef.current!;
+    const track = trackRef.current!, stage = stageRef.current!, giant = giantRef.current!;
     let raf = 0, destroyed = false;
 
     function render() {
@@ -167,6 +168,8 @@ function PanelTrack({ t }: { t: Theme }) {
       // mittleren 20%-Fenster -> "klebt" laenger, schneller Snap dazwischen.
       const units = i + smoothstep((f - 0.4) / 0.2);
       stage.style.transform = `translate3d(${-units * vw}px, 0, 0)`;
+      // Riesen-Wort faehrt mit (Parallax, etwas schneller) — Tomson 26.07.
+      giant.style.transform = `translate3d(${-units * vw * 1.18}px, 0, 0)`;
     }
 
     function loop() {
@@ -181,8 +184,8 @@ function PanelTrack({ t }: { t: Theme }) {
   return (
     <div ref={trackRef} style={{ height: `${N * 190}vh`, position: "relative" }}>
       <section aria-label={t.key} style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", background: t.bg, color: t.text }}>
-        {/* Riesen-Thema-Wort: bleibt FIX stehen (faehrt nicht mit) */}
-        <div aria-hidden style={{ position: "absolute", left: 0, top: 0, height: "100%", display: "flex", alignItems: "flex-end", pointerEvents: "none", zIndex: 0 }}>
+        {/* Riesen-Thema-Wort: faehrt mit (Parallax) */}
+        <div ref={giantRef} aria-hidden style={{ position: "absolute", left: 0, top: 0, height: "100%", display: "flex", alignItems: "flex-end", pointerEvents: "none", zIndex: 0, willChange: "transform" }}>
           <span style={{ fontFamily: "var(--rr-font-display)", fontWeight: 640, whiteSpace: "nowrap", fontSize: "min(64vh, 40vw)", lineHeight: 0.9, color: t.giantColor, transform: "translateY(0.16em)", marginLeft: "58vw" }}>{t.giant}</span>
         </div>
 

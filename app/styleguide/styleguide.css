@@ -809,7 +809,9 @@
 /* KundenSagen im dunklen Beweis-Panel (Tomson 26.07.): Grund transparent (Panel-
    Dunkel bleibt), Ink-Tokens auf hell -> Titel/Zitat/Namen werden hell lesbar. */
 .rr .ks-ondark { --rr-ink: #f6f5f1; --rr-ink-soft: rgba(246,245,241,0.62); --rr-line: rgba(255,255,255,0.14); }
-.rr .ks-ondark .ks-section { background: transparent; }
+.rr .ks-ondark .ks-section { background: transparent; --ks-tile-bg: rgba(255,255,255,0.09); }
+/* Inaktive Avatar-Kachel dunkel -> helle Initialen bleiben lesbar (Tomson 26.07.) */
+.rr .ks-ondark .ks-tile-initials { color: rgba(246,245,241,0.9); }
 
 /* ---- Eck-Rahmen (uiverse-Idee, auf Marke) ----
    Ruhe: nur vier Eck-Winkel (<i class="c1..c4">) + Schrift in --c,
