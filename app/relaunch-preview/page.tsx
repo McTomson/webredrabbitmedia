@@ -33,23 +33,9 @@ export default function RelaunchPreviewPage() {
           durchgehende Morph-Buehne integriert (Hero + 5 Leistungs-Szenen) */}
       <HomeMorph />
 
-      {/* Sektion 4: Ueberleitung — zentriert und grosszuegig geluftet wie
-          all-turtles' "Meet a few of our studio companies" (viel Weissraum
-          vor dem ersten farbigen Panel). */}
-      <section
-        className="rr-section"
-        style={{
-          textAlign: "center",
-          paddingTop: "clamp(360px, 52vh, 760px)",
-          paddingBottom: "clamp(130px, 18vh, 260px)",
-        }}
-      >
-        <div className="rr-wrap">
-          <h2 className="rr-claim" style={{ margin: "0 auto", maxWidth: "13em" }}>
-            Erst das Problem. Dann die Lösung. Dann der Beweis.
-          </h2>
-        </div>
-      </section>
+      {/* Sektion 4: nur Weissraum als Atempause vor dem ersten Panel
+          (Ueberleitungs-Satz entfernt, Tomson 25.07.). */}
+      <div aria-hidden style={{ height: "clamp(160px, 26vh, 360px)" }} />
 
       {/* Sektion 5: Case-Panels (Referenz-Auswahl = Vorschlag, Tomson-Gate) */}
       <CasePanels />

@@ -38,23 +38,23 @@ const THEMES: Theme[] = [
   {
     key: "problem",
     eyebrow: "Das Problem",
-    headline: "Die meisten Handwerker-Websites sehen alt aus. Und keiner findet sie.",
-    statement: "Veraltetes Design, unsichtbar bei Google, kein einziger Anruf daraus. Deine beste Arbeit bleibt im Verborgenen, während billigere Betriebe die Aufträge holen.",
-    linkText: "Warum das teuer wird",
-    href: "/leistungen/webdesign",
+    headline: "Schön gebaut. Trotzdem ruft keiner an.",
+    statement: "Die meisten Websites sehen gut aus und verstauben auf Seite 3 von Google. Schön allein zahlt keine Rechnungen.",
+    linkText: "Was wir anders machen",
+    href: "/relaunch-preview/leistungen",
     giant: "Problem",
     bg: "var(--rr-world-1-bg)",
     text: "#23262e",
     accent: "var(--rr-red)",
-    giantColor: "rgba(35,38,46,0.06)",
+    giantColor: "rgba(35,38,46,0.05)",
   },
   {
     key: "loesung",
     eyebrow: "Die Lösung",
-    headline: "Eine Website mit eingebauten Helfern, die für dich arbeiten.",
-    statement: "Wir bauen dir kein digitales Plakat, sondern ein Werkzeug: sichtbar bei Google und KI, mit Inhalten, die von selbst entstehen, und einer Kommandozentrale namens Talos, die den Alltag übernimmt.",
-    linkText: "So arbeitet deine Website",
-    href: "/leistungen/dashboard",
+    headline: "Wir bauen Seiten, die gefunden werden.",
+    statement: "Kein Baukasten, kein Risiko, keine Vorkasse. Du siehst den Entwurf, bevor du zahlst. Danach arbeitet deine Seite bei Google und KI für dich weiter.",
+    linkText: "Was wir anders machen",
+    href: "/relaunch-preview/leistungen",
     giant: "Lösung",
     bg: "var(--rr-world-2-bg)",
     text: "#23262e",
@@ -64,9 +64,9 @@ const THEMES: Theme[] = [
   {
     key: "beweis",
     eyebrow: "Der Beweis",
-    headline: "Betriebe, die uns schon vertrauen.",
-    statement: "Echte Kunden, echte 5-Sterne-Bewertungen auf Google. Kein erfundenes Marketing, sondern nachprüfbare Ergebnisse.",
-    linkText: "Referenzen ansehen",
+    headline: "Kunden, die für uns sprechen.",
+    statement: "Echte Stimmen, echte 5-Sterne-Bewertungen auf Google.",
+    linkText: "Alle Referenzen",
     href: "/relaunch-preview/referenzen",
     giant: "Beweis",
     bg: "var(--rr-world-3-bg)",
@@ -75,53 +75,6 @@ const THEMES: Theme[] = [
     giantColor: "rgba(255,255,255,0.05)",
   },
 ];
-
-/* Problem-Karte (Panel 1): die stille, tote Website — null Anfragen, kein Trend. */
-function ProblemCard() {
-  return (
-    <div aria-hidden style={{
-      position: "absolute", left: "58vw", top: "50vh", width: "clamp(300px, 30vw, 460px)",
-      background: "#fff", border: "1px solid #e7e7e3", padding: 22,
-      boxShadow: "0 30px 80px rgba(35,38,46,.10)",
-    }}>
-      <p style={{ margin: "0 0 4px", fontSize: 12, letterSpacing: "0.09em", textTransform: "uppercase", color: "#8a8d94", fontWeight: 600 }}>Anfragen diesen Monat</p>
-      <p style={{ fontFamily: "var(--rr-font-display)", fontSize: 44, fontWeight: 620, color: "#23262e", margin: "0 0 14px" }}>0</p>
-      <div style={{ display: "flex", gap: 8, alignItems: "flex-end", height: 100 }}>
-        {[6, 5, 7, 4, 5, 3, 4].map((h, i) => (
-          <i key={i} style={{ flex: 1, height: `${h}%`, background: "#d9d9d5" }} />
-        ))}
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#8a8d94", marginTop: 12 }}>
-        <span>Sichtbar bei Google <b style={{ color: "#23262e" }}>Nein</b></span>
-        <span>Neue Inhalte <b style={{ color: "#23262e" }}>0</b></span>
-      </div>
-    </div>
-  );
-}
-
-/* Lebendes Dashboard (Panel 2) — Analogie zu den Airtime-Produkt-Videos. */
-function DashCard() {
-  return (
-    <div aria-hidden style={{
-      position: "absolute", left: "58vw", top: "50vh", width: "clamp(300px, 30vw, 460px)",
-      background: "#1f2129", border: "1px solid #33353d", borderRadius: 16, padding: 22,
-      boxShadow: "0 30px 80px rgba(0,0,0,.5)",
-    }}>
-      <p style={{ margin: "0 0 4px", fontSize: 12, letterSpacing: "0.09em", textTransform: "uppercase", color: "#a3a6ae", fontWeight: 600 }}>Besucher diesen Monat</p>
-      <p style={{ fontFamily: "var(--rr-font-display)", fontSize: 44, fontWeight: 620, color: "#fff", margin: "0 0 14px" }}>1.284</p>
-      <div style={{ display: "flex", gap: 8, alignItems: "flex-end", height: 100 }}>
-        {[34, 52, 44, 68, 58, 82, 100].map((h, i) => (
-          <i key={i} className="rr-dash-bar" style={{ flex: 1, height: `${h}%`, background: "var(--rr-red)", borderRadius: "4px 4px 0 0", animationDelay: `${i * 0.2}s` }} />
-        ))}
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#a3a6ae", marginTop: 12 }}>
-        <span>Anfragen <b style={{ color: "#fff" }}>7</b></span>
-        <span>Artikel <b style={{ color: "#fff" }}>+4</b></span>
-        <span>Bewertungen <b style={{ color: "#fff" }}>+2</b></span>
-      </div>
-    </div>
-  );
-}
 
 /* Beweis-Karte (Panel 3): echte Google-Rezension, Wortlaut 1:1 (verifiziert
    22.07.2026 gegen das Live-Google-Profil; Dmitry = Team, bewusst nicht gezeigt). */
@@ -207,29 +160,23 @@ function PanelTrack({ t }: { t: Theme }) {
 
         {/* Buehne 300vw, lineare Fahrt */}
         <div ref={stageRef} style={{ position: "absolute", inset: 0, width: "300vw", willChange: "transform" }}>
-          {/* Slide 1: Eyebrow + 135px-Headline links (at: x=215/y=263 bei 1828) */}
-          <div ref={introRef} style={{ position: "absolute", left: "max(24px, 11vw)", top: "27vh", width: "76vw", maxWidth: 1100 }}>
-            <p className="rr-eyebrow-lg" style={{ color: t.accent, opacity: 0.85, fontFamily: "var(--rr-font-sans)", letterSpacing: "0.12em", fontWeight: 600 }}>{t.eyebrow}</p>
-            <h3 className="rr-display-1" style={{ margin: "0.16em 0 0", color: "inherit", maxWidth: "8.2em" }}>{t.headline}</h3>
+          {/* Slide 1: Eyebrow + Headline links */}
+          <div ref={introRef} style={{ position: "absolute", left: "max(24px, 11vw)", top: "27vh", width: "70vw", maxWidth: 900 }}>
+            <p className="rr-eyebrow-lg" style={{ color: t.accent, opacity: 0.9, fontFamily: "var(--rr-font-sans)", letterSpacing: "0.12em", fontWeight: 600 }}>{t.eyebrow}</p>
+            <h3 className="rr-display-1" style={{ margin: "0.2em 0 0", color: "inherit", maxWidth: "9em", fontSize: "clamp(30px, 4.4vw, 60px)", lineHeight: 1.06 }}>{t.headline}</h3>
           </div>
 
-          {/* Mittelzone: Themen-Animation + Material-Platzhalter */}
-          {/* Logo-Badge: weisser Kreis mit Hasen-Logo (at: Produkt-Icon-Badge) */}
-          <div aria-hidden style={{ position: "absolute", left: "64vw", top: "30vh", width: 116, height: 116, borderRadius: "50%", background: "#fff", display: "grid", placeItems: "center", boxShadow: "0 18px 50px rgba(0,0,0,0.22)" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/logo.webp" alt="" style={{ width: "58%", height: "58%", objectFit: "contain" }} />
-          </div>
-          {t.key === "problem" && <ProblemCard />}
-          {t.key === "loesung" && <DashCard />}
+          {/* Mittelzone: nur beim Beweis echte Google-Rezensionen (Problem/Loesung
+              bleiben ruhig, Text traegt sie). */}
           {t.key === "beweis" && (
             <>
               <ReviewCard
-                left="58vw" top="30vh"
+                left="56vw" top="26vh"
                 name="Rafael Danesh"
                 quote="Für unsere beiden Firmen wurden zwei Webseiten erstellt. Die Zusammenarbeit war äußerst präzise, auf all unsere Wünsche wurde detailliert eingegangen, und wir sind mit den Ergebnissen sehr zufrieden! Danke!"
               />
               <ReviewCard
-                left="150vw" top="52vh"
+                left="128vw" top="30vh"
                 name="Rene Rohrer"
                 quote="Ich bin von der Firma begeistert vor allem von der Umsetzung, ein Lob an Herrn Uhlir der mich durch die Zeit der Umsetzung begleitet hat. Vielen lieben Dank :-) 100 Prozent Empfehlung"
               />
