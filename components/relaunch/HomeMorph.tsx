@@ -302,10 +302,12 @@ export default function HomeMorph() {
       }
 
       // Statement: startet in der oberen/mittigen Zone, scrollt mit dem Stack nach
-      // oben aus dem Bild — OHNE zu verblassen (volle Deckkraft durchgehend).
+      // oben aus dem Bild. Voll deckend waehrend des Intros; sobald der Morph
+      // beginnt (u>0) schnell ausblenden, damit die letzte Zeile bei laengerem
+      // Text nicht oben haengen bleibt und in die erste Szene ragt (Tomson 25.07.).
       if (statementRef.current) {
         const stY = STMT_TOP_DY - introShift; // -12 -> off top
-        statementRef.current.style.opacity = "1";
+        statementRef.current.style.opacity = String(1 - clamp01(u / 0.12));
         statementRef.current.style.transform = `translate(-50%, calc(-50% + ${stY}vh))`;
       }
 
@@ -408,12 +410,12 @@ export default function HomeMorph() {
               margin: 0,
               fontFamily: "var(--rr-font-serif)",
               fontWeight: 500,
-              fontSize: "clamp(34px, 4.6vw, 68px)",
-              lineHeight: 1.12,
-              letterSpacing: "-0.015em",
+              fontSize: "clamp(24px, 3vw, 42px)",
+              lineHeight: 1.2,
+              letterSpacing: "-0.01em",
               color: "#23262E",
             }}>
-              Wir bauen ästhetische Websites, die man dort findet,<br />wo deine Kunden sind – mit einem digitalen Mitarbeiter im Hintergrund.
+              Wir bauen ästhetische Websites, die man dort findet,<br />wo deine Kunden sind, mit einem digitalen Mitarbeiter im Hintergrund.
             </p>
           </div>
         )}
@@ -447,8 +449,8 @@ export default function HomeMorph() {
 
         {reduced && (
           <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3vh", padding: "0 24px" }}>
-            <p style={{ fontFamily: "var(--rr-font-serif)", fontWeight: 500, fontSize: "clamp(34px, 4.6vw, 68px)", lineHeight: 1.12, textAlign: "center", color: "#23262E", maxWidth: "min(92vw, 1000px)", margin: 0 }}>
-              Wir bauen ästhetische Websites, die man dort findet,<br />wo deine Kunden sind – mit einem digitalen Mitarbeiter im Hintergrund.
+            <p style={{ fontFamily: "var(--rr-font-serif)", fontWeight: 500, fontSize: "clamp(24px, 3vw, 42px)", lineHeight: 1.2, textAlign: "center", color: "#23262E", maxWidth: "min(90vw, 900px)", margin: 0 }}>
+              Wir bauen ästhetische Websites, die man dort findet,<br />wo deine Kunden sind, mit einem digitalen Mitarbeiter im Hintergrund.
             </p>
             <div style={{ height: "30vh", aspectRatio: "174 / 267" }}>
               <RabbitMark className="rr-heromark" color="var(--rr-red)" title="Red Rabbit" />
