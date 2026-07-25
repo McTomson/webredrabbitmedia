@@ -22,7 +22,7 @@ import { buildReassembly, sample, clamp01, type Keyframe } from "@/lib/relaunch/
  * spannt fast die volle Breite (all-turtles-Massstab), statt Footer-Lottie-klein.
  */
 
-const NAVY = "var(--rr-navy, #1C2837)";
+const NAVY = "var(--rr-navy, #23262e)";
 
 // Leistungen/Preise zeigen bewusst noch auf die alten Live-Seiten,
 // bis es Relaunch-Versionen gibt (Tomson 16.07.).

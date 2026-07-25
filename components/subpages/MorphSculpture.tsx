@@ -162,7 +162,7 @@ export default function MorphSculpture({
         if (hs.o <= 0.001) return;
 
         const jp = COMPS[p.scene].pieces[p.at];
-        const fill = navyPiece && p.at === navyIdxByScene[p.scene] ? "#1c2837" : "#F12032";
+        const fill = navyPiece && p.at === navyIdxByScene[p.scene] ? "#23262e" : "#F12032";
         const el = document.createElement("div");
         el.innerHTML = `<svg width="100%" height="100%" viewBox="${-jp.w / 2} ${-jp.h / 2} ${jp.w} ${jp.h}" preserveAspectRatio="none" style="display:block;overflow:visible"><g transform="scale(${jp.sx < 0 ? -1 : 1} ${jp.sy < 0 ? -1 : 1})"><path d="${jp.d}" fill="${fill}"/></g></svg>`;
         el.style.cssText =

@@ -153,7 +153,7 @@ function VariantA() {
           font-weight: 700;
           letter-spacing: 0.04em;
           text-indent: 0.04em;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
         }
         .a-orbit {
           position: absolute;
@@ -400,7 +400,7 @@ function VariantC() {
         }
         .c-c.is-active .c-num {
           font-weight: 700;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
         }
         .c-arc {
           position: absolute;

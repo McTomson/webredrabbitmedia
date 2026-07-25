@@ -18,7 +18,7 @@ export default function Scharnierzeile() {
 
       <style>{`
 .lh-scharnier {
-  background: var(--rr-navy, #1c2837);
+  background: var(--rr-navy, #23262e);
   /* Standard-Rhythmus (Design-Angleich 22.07., vorher clamp(96px,16vh,200px)
      0 als eigener Wert): var(--rr-section-y) wie alle anderen Hub-Sektionen. */
   padding: var(--rr-section-y, clamp(96px, 12vw, 180px)) 0;

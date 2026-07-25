@@ -112,7 +112,7 @@ export default function ProduktTueren() {
           padding: clamp(24px, 3vw, 36px);
           /* Flach und eckig wie der Rest der Marke: kein Rahmen, kein
              Schatten — Navy auf Teal traegt die Trennung von selbst. */
-          background: var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
         }
         .pt-talos__label {
           font-family: var(--rr-font-display);

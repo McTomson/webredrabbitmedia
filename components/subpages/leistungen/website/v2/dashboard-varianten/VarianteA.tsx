@@ -219,8 +219,8 @@ export default function VarianteA() {
 
         .wda__browser {
           position: relative;
-          background: var(--rr-navy, #1c2837);
-          border: 1px solid var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
+          border: 1px solid var(--rr-navy, #23262e);
           padding: 0 0 12px;
         }
 
@@ -294,7 +294,7 @@ export default function VarianteA() {
           font-size: 12px;
           font-weight: 650;
           letter-spacing: 0.16em;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
           margin-bottom: 8px;
         }
         .wda__sideDot {
@@ -306,10 +306,10 @@ export default function VarianteA() {
         .wda__sideLine {
           height: 10px;
           width: 100%;
-          background: color-mix(in srgb, var(--rr-navy, #1c2837) 12%, transparent);
+          background: color-mix(in srgb, var(--rr-navy, #23262e) 12%, transparent);
         }
         .wda__sideLine--on {
-          background: color-mix(in srgb, var(--rr-navy, #1c2837) 42%, transparent);
+          background: color-mix(in srgb, var(--rr-navy, #23262e) 42%, transparent);
           width: 82%;
         }
         .wda__sideLine--short {
@@ -381,7 +381,7 @@ export default function VarianteA() {
           border-radius: 50%;
           background: conic-gradient(
             var(--rr-red, #f12032) 0turn 0.72turn,
-            color-mix(in srgb, var(--rr-navy, #1c2837) 14%, transparent) 0.72turn 1turn
+            color-mix(in srgb, var(--rr-navy, #23262e) 14%, transparent) 0.72turn 1turn
           );
           flex: none;
         }
@@ -407,11 +407,11 @@ export default function VarianteA() {
         }
         .wda__spark span {
           flex: 1;
-          background: color-mix(in srgb, var(--rr-navy, #1c2837) 20%, transparent);
+          background: color-mix(in srgb, var(--rr-navy, #23262e) 20%, transparent);
           min-height: 4px;
         }
         .wda__spark span:last-child {
-          background: var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
         }
 
         .wda__skills {
@@ -457,7 +457,7 @@ export default function VarianteA() {
         }
         .wda__floatBars span {
           flex: 1;
-          background: color-mix(in srgb, var(--rr-navy, #1c2837) 22%, transparent);
+          background: color-mix(in srgb, var(--rr-navy, #23262e) 22%, transparent);
         }
         .wda__floatBars span:nth-child(3) {
           background: var(--rr-red, #f12032);
@@ -484,7 +484,7 @@ export default function VarianteA() {
           margin-bottom: 14px;
         }
         .wda__title {
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
           max-width: 20em;
         }
         .wda__name {

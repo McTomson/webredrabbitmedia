@@ -197,7 +197,7 @@ export default function FragTalos() {
 .ft-result-text{ font-size:.96rem; line-height:1.5; color:var(--rr-ink-soft,#5a5e68); }
 .ft-say{ font-family:var(--rr-font-serif,"Crimson Pro",Georgia,serif); font-weight:500;
   font-size:1.15rem; line-height:1.3; color:var(--rr-ink,#23262e); margin:20px 0 0;
-  padding-left:15px; border-left:2px solid #39c2d7; }
+  padding-left:15px; border-left:2px solid #f12032; }
 
 .ft-actions{ margin-top:26px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
 .ft-btn{ display:inline-flex; align-items:center; justify-content:center; padding:14px 26px; font-weight:600; font-size:1rem;

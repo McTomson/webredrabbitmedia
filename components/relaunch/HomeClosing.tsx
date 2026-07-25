@@ -23,18 +23,14 @@ export default function HomeClosing() {
           <p className="rr-display-2" style={{ maxWidth: "10em" }}>
             Du willst eine Website, die man findet? Reden wir.
           </p>
-          {/* Buttons 1:1 wie der Schluss-CTA der Website-Unterseite (Thomas 22.07.:
-              eine Button-Sprache ueberall): Sweep = Haupt-CTA, Eck-Rahmen = Anrufen. */}
+          {/* Eine Button-Sprache (Thomas 25.07.): NUR der linke Sweep-Typ. Haupt-CTA
+              rot, Anrufen als dunkle Sweep-Variante (kein Eck-Rahmen mehr). */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "clamp(20px, 2.5vw, 32px)", marginTop: "clamp(40px, 6vh, 64px)" }}>
             <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
               Kostenlosen Entwurf holen
             </Link>
-            <a href="tel:+436769000955" className="rr-btn-frame rr-btn-frame--red">
-              <i className="c1" />
-              <i className="c2" />
-              <i className="c3" />
-              <i className="c4" />
-              <span className="rr-btn-frame__t">Anrufen</span>
+            <a href="tel:+436769000955" className="rr-btn-sweep rr-btn-sweep--navy">
+              Anrufen
             </a>
           </div>
         </div>

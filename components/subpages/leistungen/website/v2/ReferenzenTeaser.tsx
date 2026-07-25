@@ -41,7 +41,7 @@ export default function ReferenzenTeaser() {
               fontStyle: 'italic',
               fontSize: 'clamp(1.15rem, 1.6vw, 1.5rem)',
               lineHeight: 1.45,
-              color: 'var(--rr-navy, #1c2837)',
+              color: 'var(--rr-navy, #23262e)',
             }}
           >
             Seiten, die wir von Hand gebaut haben, kannst du dir anschauen und

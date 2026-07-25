@@ -9,9 +9,9 @@
   --rrt-paper: #ffffff;
   --rrt-ink: #23262e;
   --rrt-ink-soft: #6a6e78;
-  --rrt-navy: #1c2837;
+  --rrt-navy: #23262e;
   --rrt-red: #f12032;
-  --rrt-blue: #0a72a0;
+  --rrt-blue: #f12032;
   --rrt-line: #e4e4e0;
   background: var(--rrt-paper);
   color: var(--rrt-ink);

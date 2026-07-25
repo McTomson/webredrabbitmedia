@@ -69,7 +69,7 @@ export default function SoBauenWir() {
         }
         .wd-hand__statement {
           max-width: 15em;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
         }
         .wd-hand__beweis {
           margin-top: 24px;

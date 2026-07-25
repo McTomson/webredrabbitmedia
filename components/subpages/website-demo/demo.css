@@ -2,9 +2,9 @@
     --offwhite:#ffffff;
     --ink:#23262e;
     --ink-soft:#6a6e78;
-    --navy:#1c2837;
+    --navy:#23262e;
     --anthra:#2d2d2d;
-    --blue:#0a72a0;   /* barrierefreie Blau-Farbwelt: Off-White #f6f5f1 darauf >= 4.5:1 (alt #0a8aba war ~3.5:1) */
+    --blue:#f12032;   /* barrierefreie Blau-Farbwelt: Off-White #f6f5f1 darauf >= 4.5:1 (alt #0a8aba war ~3.5:1) */
     --red:#f12032;
     --red-deep:#c81222;
     --line:#e4e4e0;
@@ -296,7 +296,7 @@
     overflow:hidden;
   }
   /* Namen: DM Sans Light 300 — real duennerer Render als Instrument Sans (das kein echtes 300 hat;
-     Google clampt 300->400). DM Sans ist Marken-Displayschrift; Off-White #f6f5f1 auf #0a72a0 ~4.9:1 (>= 4.5). */
+     Google clampt 300->400). DM Sans ist Marken-Displayschrift; Off-White #f6f5f1 auf #f12032 ~4.9:1 (>= 4.5). */
   .p-name{font-family:"DM Sans",sans-serif;font-weight:300}
   .p-caret{
     display:none;flex:none;

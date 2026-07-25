@@ -125,16 +125,6 @@ export default function HomeMorph() {
           srcOf.push(-1);
         });
       });
-      // Navy-Teil je Szene (Tomson 06.07.): der EINE markante gestreckte Balken
-      // (max. Seitenverhaeltnis) — pro Figur genau EIN Teil — wird dauerhaft navy
-      // statt rot gefaerbt. Es fliegt/zerfaellt exakt wie jedes andere Teil.
-      const asp = (jp: { w: number; h: number; sx: number; sy: number }) => {
-        const W = jp.w * Math.abs(jp.sx), H = jp.h * Math.abs(jp.sy);
-        return Math.max(W / H, H / W);
-      };
-      const navyIdxByScene = COMPS.map((comp) =>
-        comp.pieces.reduce((best, jp, idx) => (asp(jp) > asp(comp.pieces[best]) ? idx : best), 0)
-      );
       const plan = buildStagePlan(pool, { w: window.innerWidth, h: window.innerHeight });
       timelines = plan.timelines;
       sceneLayouts = plan.scenes;
@@ -169,8 +159,8 @@ export default function HomeMorph() {
         const el = document.createElement("div");
         if (p.at != null && p.scene != null) {
           const jp = COMPS[p.scene].pieces[p.at];
-          // Alle Szenen-Teile rot; GENAU der Navy-Slot dieser Szene dauerhaft navy.
-          const fill = p.at === navyIdxByScene[p.scene] ? "#1c2837" : "#F12032";
+          // Design-System 25.07.: ALLE Morph-Teile Markenrot (kein Navy/Blau-Slot mehr).
+          const fill = "#F12032";
           el.innerHTML = `<svg width="100%" height="100%" viewBox="${-jp.w / 2} ${-jp.h / 2} ${jp.w} ${jp.h}" preserveAspectRatio="none" style="display:block;overflow:visible"><g transform="scale(${jp.sx < 0 ? -1 : 1} ${jp.sy < 0 ? -1 : 1})"><path d="${jp.d}" fill="${fill}"/></g></svg>`;
         } else {
           el.innerHTML = layout.pieces[srcOf[i]].svg;
@@ -374,7 +364,7 @@ export default function HomeMorph() {
   return (
     <div ref={trackRef} style={{ height: `${U_SPAN * 150 + 100}vh`, position: "relative" }}>
       <span ref={probeRef} aria-hidden style={{ fontFamily: "var(--rr-font-display)", position: "absolute", opacity: 0, pointerEvents: "none" }}>probe</span>
-      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
+      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", background: "#F4F4F2" }}>
         {/* Teile-Buehne: Origin = Viewport-Zentrum (Wortmarke -> Shatter) */}
         {!reduced && <div ref={stageRef} style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", willChange: "transform, opacity" }} />}
 
@@ -418,12 +408,12 @@ export default function HomeMorph() {
               margin: 0,
               fontFamily: "var(--rr-font-serif)",
               fontWeight: 500,
-              fontSize: "clamp(24px, 3vw, 42px)",
-              lineHeight: 1.2,
-              letterSpacing: "-0.01em",
-              color: "var(--rr-navy)",
+              fontSize: "clamp(34px, 4.6vw, 68px)",
+              lineHeight: 1.12,
+              letterSpacing: "-0.015em",
+              color: "#23262E",
             }}>
-              Wir bauen ästhetische Websites,<br />die man dort findet, wo deine Kunden sind.
+              Wir bauen ästhetische Websites, die man dort findet,<br />wo deine Kunden sind – mit einem digitalen Mitarbeiter im Hintergrund.
             </p>
           </div>
         )}
@@ -457,8 +447,8 @@ export default function HomeMorph() {
 
         {reduced && (
           <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3vh", padding: "0 24px" }}>
-            <p style={{ fontFamily: "var(--rr-font-serif)", fontWeight: 500, fontSize: "clamp(24px, 3vw, 42px)", lineHeight: 1.2, textAlign: "center", color: "var(--rr-navy)", maxWidth: "min(90vw, 900px)", margin: 0 }}>
-              Wir bauen ästhetische Websites,<br />die man dort findet, wo deine Kunden sind.
+            <p style={{ fontFamily: "var(--rr-font-serif)", fontWeight: 500, fontSize: "clamp(34px, 4.6vw, 68px)", lineHeight: 1.12, textAlign: "center", color: "#23262E", maxWidth: "min(92vw, 1000px)", margin: 0 }}>
+              Wir bauen ästhetische Websites, die man dort findet,<br />wo deine Kunden sind – mit einem digitalen Mitarbeiter im Hintergrund.
             </p>
             <div style={{ height: "30vh", aspectRatio: "174 / 267" }}>
               <RabbitMark className="rr-heromark" color="var(--rr-red)" title="Red Rabbit" />

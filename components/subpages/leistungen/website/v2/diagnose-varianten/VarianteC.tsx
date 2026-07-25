@@ -532,7 +532,7 @@ export default function VarianteC() {
           font-weight: 800;
           font-size: clamp(2rem, 3.4vw, 3rem);
           line-height: 1.02;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
         }
         .sp__paket::after {
           content: '.';
@@ -574,15 +574,15 @@ export default function VarianteC() {
           font-family: var(--rr-font-display, inherit);
           font-weight: 700;
           font-size: clamp(1rem, 1.15vw, 1.15rem);
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
           transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
         }
         .sp__altbtn:hover {
-          border-color: var(--rr-navy, #1c2837);
+          border-color: var(--rr-navy, #23262e);
         }
         .sp__altbtn.is-open {
-          background: var(--rr-navy, #1c2837);
-          border-color: var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
+          border-color: var(--rr-navy, #23262e);
           color: #f6f5f1;
         }
         .sp__alttext {

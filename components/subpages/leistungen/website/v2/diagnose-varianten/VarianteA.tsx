@@ -450,7 +450,7 @@ export default function VarianteA() {
           font-weight: 800;
           font-size: clamp(2.2rem, 4vw, 3.4rem);
           line-height: 1.0;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
         }
         .gta__paket::after {
           content: '.';
@@ -493,15 +493,15 @@ export default function VarianteA() {
           font-family: var(--rr-font-display, inherit);
           font-weight: 700;
           font-size: clamp(1rem, 1.15vw, 1.15rem);
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
           transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
         }
         .gta__altbtn:hover {
-          border-color: var(--rr-navy, #1c2837);
+          border-color: var(--rr-navy, #23262e);
         }
         .gta__altbtn.is-open {
-          background: var(--rr-navy, #1c2837);
-          border-color: var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
+          border-color: var(--rr-navy, #23262e);
           color: #f6f5f1;
         }
         .gta__alttext {

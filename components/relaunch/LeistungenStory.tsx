@@ -514,7 +514,7 @@ export default function LeistungenStory({ articleCount }: { articleCount: number
       <div className="rrls-kollege rrls-kollege--navy">
         <div className="rrls-kollege-figure">
           <div className="rrls-figure-inner">
-            <RabbitMark color="#1c2837" title="Der Empfang" style={{ display: "block", height: "clamp(140px, 18vw, 200px)", width: "auto" }} />
+            <RabbitMark color="#23262e" title="Der Empfang" style={{ display: "block", height: "clamp(140px, 18vw, 200px)", width: "auto" }} />
             <p className="rrls-kollege-name">Der Empfang</p>
             <p className="rrls-kollege-tag">dein digitaler Kollege</p>
             <p className="rrls-kollege-claim">Nimmt an, was reinkommt. Auch wenn du am Dach stehst.</p>
@@ -856,7 +856,7 @@ const CSS = `
   font-family:var(--font-grotesk),"Instrument Sans",sans-serif;
   font-size:.8rem; text-transform:uppercase; letter-spacing:.12em; color:#f12032;
 }
-.rrls-kollege--navy .rrls-kollege-tag{ color:#1c2837; }
+.rrls-kollege--navy .rrls-kollege-tag{ color:#23262e; }
 .rrls-kollege-claim{
   font-family:var(--font-crimson),"Crimson Pro",Georgia,serif;
   font-size:clamp(1.15rem,1.8vw,1.4rem); line-height:1.25; color:#3a3e48;
@@ -949,7 +949,7 @@ const CSS = `
   font-size:.9rem; color:#5a5e68; margin-top:6px;
 }
 .rrls-cta-panel{
-  background:#1c2837; color:#f6f5f1; border-radius:0;
+  background:#23262e; color:#f6f5f1; border-radius:0;
   padding:clamp(40px,7vw,80px) clamp(26px,5vw,64px);
   text-align:center;
 }
@@ -958,7 +958,7 @@ const CSS = `
   display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap;
   margin-top:clamp(26px,4vh,40px);
 }
-.rrls-cta-panel .rr-btn-sweep{ background:#ffffff; color:#1c2837; }
+.rrls-cta-panel .rr-btn-sweep{ background:#ffffff; color:#23262e; }
 .rrls-cta-panel .rr-btn-frame{ --c:#f6f5f1; color:#f6f5f1; }
 
 /* ===== Kapitel-Orientierung (rechts) ===== */

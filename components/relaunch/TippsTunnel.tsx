@@ -660,7 +660,7 @@ const CSS = `
   /* Breit genug, dass auf Desktop alle Kategorien inkl. "KI & Automatisierung"
      unbeschnitten neben dem Suchfeld stehen; darunter scrollt die Chip-Zeile. */
   max-width:min(96vw,1120px);
-  background:#1c2837; color:#f6f5f1;
+  background:#23262e; color:#f6f5f1;
   border-radius:0;
 }
 .rrtn-bar-scroll{

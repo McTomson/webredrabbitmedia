@@ -368,7 +368,7 @@ export default function VarianteB() {
           font-weight: 700;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
         }
         .db__sheetmeta {
           font-family: var(--rr-font-ui, inherit);
@@ -395,7 +395,7 @@ export default function VarianteB() {
           font-weight: 700;
           font-size: clamp(1.1rem, 1.8vw, 1.5rem);
           line-height: 1.2;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
           margin: 0 0 clamp(12px, 1.6vw, 18px);
         }
         .db__qnum {
@@ -403,7 +403,7 @@ export default function VarianteB() {
           width: 26px;
           height: 26px;
           border-radius: 50%;
-          border: 1.5px solid var(--rr-navy, #1c2837);
+          border: 1.5px solid var(--rr-navy, #23262e);
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -471,7 +471,7 @@ export default function VarianteB() {
           font-style: italic;
           font-size: clamp(1.05rem, 1.35vw, 1.32rem);
           line-height: 1.3;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
         }
         .db__circle {
           position: absolute;
@@ -492,7 +492,7 @@ export default function VarianteB() {
           font-family: var(--rr-font-ui, inherit);
           font-size: 0.86rem;
           font-weight: 600;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
           opacity: 0.7;
           text-decoration: underline;
           text-underline-offset: 3px;
@@ -527,7 +527,7 @@ export default function VarianteB() {
           font-weight: 800;
           font-size: clamp(2rem, 3.6vw, 3.1rem);
           line-height: 1.0;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
         }
         .db__paket::after {
           content: '.';
@@ -570,15 +570,15 @@ export default function VarianteB() {
           font-family: var(--rr-font-display, inherit);
           font-weight: 700;
           font-size: clamp(1rem, 1.15vw, 1.12rem);
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
           transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
         }
         .db__altbtn:hover {
-          border-color: var(--rr-navy, #1c2837);
+          border-color: var(--rr-navy, #23262e);
         }
         .db__altbtn.is-open {
-          background: var(--rr-navy, #1c2837);
-          border-color: var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
+          border-color: var(--rr-navy, #23262e);
           color: #f6f5f1;
         }
         .db__alttext {

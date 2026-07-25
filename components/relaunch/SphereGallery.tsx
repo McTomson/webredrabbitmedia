@@ -27,7 +27,7 @@ import { SPHERE_PROJECTS, type SphereProject } from "@/lib/relaunch/projects";
 // Loops nur auf einem Teil der Zellen, Info-Karten im Raster.
 // ============================================================
 
-const CELL_BG = "#1c2837"; // --rr-navy (Thomas: Navy statt Schwarz)
+const CELL_BG = "#23262e"; // --rr-navy (Thomas: Navy statt Schwarz)
 const GAP_BG = "#0b1017"; // Szenengrund: fast schwarz, Navy-Stich
 const GRID_LINE = "rgba(246,245,241,0.11)"; // feine durchlaufende Linien (Thomas 16.07.)
 const INK_MAIN = "#f6f5f1";

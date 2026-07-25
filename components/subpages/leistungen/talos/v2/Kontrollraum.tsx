@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
  * seitenweite Companion-Talos uebernimmt den Auftritt, deshalb bleibt rechts
  * im Frame eine bewusst freie Flaeche (.tl-kr__stage-void, min. 30% Breite).
  * 6 Status-Panels statt der 5 Dashboard-Karten: 3 mit Tag "IMMER AN"
- * (Grundausstattung), 3 mit Tag "GEBUCHT · <Faehigkeit>" (Tuerkis #39c2d7,
+ * (Grundausstattung), 3 mit Tag "GEBUCHT · <Faehigkeit>" (Tuerkis #f12032,
  * gleiche Akzentfarbe wie sonst bei Talos-Elementen im Projekt). Panel-
  * Einblendung (opacity/translateY, gestaffelt per --i) 1:1 aus dem Vorbild.
  */

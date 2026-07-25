@@ -153,7 +153,7 @@ export default function VarianteC() {
       <style jsx>{`
         .wdc {
           padding: clamp(72px, 12vh, 148px) var(--rr-gutter, clamp(20px, 4vw, 64px));
-          background: var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
         }
         .wdc__wrap {
           max-width: 1120px;
@@ -368,7 +368,7 @@ export default function VarianteC() {
           font-weight: 500;
           font-size: clamp(1.5rem, 3vw, 2.3rem);
           line-height: 1.16;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
           margin: 0;
           max-width: 16em;
         }

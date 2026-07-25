@@ -25,8 +25,8 @@
  *    uebernommen (Esc/X/Backdrop, Body-Scroll-Lock, harte Fokusfalle).
  *  - Klick-Zeichen (kleines Plus) unten rechts je Zelle als Klickbarkeits-
  *    Signal (border-radius 0), hover -> Rot.
- *  - Sonderanfertigung-Zelle navy #1c2837, Name off-white, Caret + Plus in
- *    Tuerkis #39c2d7 — KEIN Rot auf Navy.
+ *  - Sonderanfertigung-Zelle navy #23262e, Name off-white, Caret + Plus in
+ *    Tuerkis #f12032 — KEIN Rot auf Navy.
  *
  * Daten aus ./faehigkeiten-data (geteilt, NICHT dupliziert). Kein styled-jsx
  * (greift im Projekt nicht zuverlaessig): plain namespaced <style> (.tlfg-*).
@@ -492,13 +492,13 @@ const CSS = `
 
 /* Sonderanfertigung: navy abgesetzt, Name off-white — KEIN Rot auf Navy.
    Caret + Plus in Tuerkis. */
-.rr .tlfg-cell--invers { background: #1c2837; }
+.rr .tlfg-cell--invers { background: #23262e; }
 .rr .tlfg-cell--invers:hover { background: #16202c; }
 .rr .tlfg-cell--invers:focus-visible { box-shadow: inset 0 0 0 2px #f6f5f1; }
 .rr .tlfg-cell--invers .tlfg-name { color: #f6f5f1; }
-.rr .tlfg-cell--invers .tlfg-caret { background: #39c2d7; }
+.rr .tlfg-cell--invers .tlfg-caret { background: #f12032; }
 .rr .tlfg-cell--invers .tlfg-plus { color: #6fd4e5; }
-.rr .tlfg-cell--invers:hover .tlfg-plus { color: #39c2d7; transform: scale(1.12); }
+.rr .tlfg-cell--invers:hover .tlfg-plus { color: #f12032; transform: scale(1.12); }
 
 /* Responsive 1:1 zu KundenGrid.tsx (Zeilen 300-308). */
 @media (min-width: 769px) and (max-width: 1120px) {
@@ -541,7 +541,7 @@ const CSS = `
   box-shadow: 0 24px 60px rgba(28, 40, 55, 0.28);
   animation: tlfg-rise 0.24s var(--rr-ease, ease);
 }
-.rr .tlfg-modal--invers { background: #1c2837; border-color: #1c2837; }
+.rr .tlfg-modal--invers { background: #23262e; border-color: #23262e; }
 .rr .tlfg-close {
   position: absolute;
   top: 14px;
@@ -563,7 +563,7 @@ const CSS = `
 .rr .tlfg-close:hover { background: var(--rr-red); color: #fff; border-color: var(--rr-red); }
 .rr .tlfg-close:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--rr-paper), 0 0 0 4px var(--rr-red); }
 .rr .tlfg-modal--invers .tlfg-close { color: #f6f5f1; border-color: rgba(246, 245, 241, 0.3); }
-.rr .tlfg-modal--invers .tlfg-close:hover { background: #39c2d7; color: #1c2837; border-color: #39c2d7; }
+.rr .tlfg-modal--invers .tlfg-close:hover { background: #f12032; color: #23262e; border-color: #f12032; }
 
 .rr .tlfg-modal__idx {
   margin: 0 0 10px;
@@ -573,7 +573,7 @@ const CSS = `
   letter-spacing: 0.16em;
   color: var(--rr-red);
 }
-.rr .tlfg-modal--invers .tlfg-modal__idx { color: #39c2d7; }
+.rr .tlfg-modal--invers .tlfg-modal__idx { color: #f12032; }
 .rr .tlfg-modal__name {
   margin: 0 0 10px;
   font-family: var(--font-dmsans), "DM Sans", sans-serif;
@@ -617,7 +617,7 @@ const CSS = `
   text-transform: uppercase;
   color: var(--rr-red);
 }
-.rr .tlfg-modal--invers .tlfg-modal__eyebrow { color: #39c2d7; }
+.rr .tlfg-modal--invers .tlfg-modal__eyebrow { color: #f12032; }
 
 /* Fähigkeiten-Akkordeon (Mechanik aus DreiStufenMatrix, single-column im Modal). */
 .rr .tlfg-mx { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--rr-line); }
@@ -646,7 +646,7 @@ const CSS = `
 }
 .rr .tlfg-mx__btn:hover { padding-left: 8px; }
 .rr .tlfg-mx__btn:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--rr-red); }
-.rr .tlfg-modal--invers .tlfg-mx__btn:focus-visible { box-shadow: inset 0 0 0 2px #39c2d7; }
+.rr .tlfg-modal--invers .tlfg-mx__btn:focus-visible { box-shadow: inset 0 0 0 2px #f12032; }
 .rr .tlfg-mx__mark {
   width: 7px; height: 7px; border-radius: 50%;
   background: rgba(28, 40, 55, 0.28); flex: none;
@@ -654,9 +654,9 @@ const CSS = `
 }
 .rr .tlfg-modal--invers .tlfg-mx__mark { background: rgba(246, 245, 241, 0.3); }
 .rr .tlfg-mx__btn:hover .tlfg-mx__mark { background: var(--rr-red); }
-.rr .tlfg-modal--invers .tlfg-mx__btn:hover .tlfg-mx__mark { background: #39c2d7; }
+.rr .tlfg-modal--invers .tlfg-mx__btn:hover .tlfg-mx__mark { background: #f12032; }
 .rr .tlfg-mx__cell.is-active .tlfg-mx__mark { background: var(--rr-red); transform: scale(1.35); }
-.rr .tlfg-modal--invers .tlfg-mx__cell.is-active .tlfg-mx__mark { background: #39c2d7; }
+.rr .tlfg-modal--invers .tlfg-mx__cell.is-active .tlfg-mx__mark { background: #f12032; }
 .rr .tlfg-mx__titel {
   font-family: var(--font-dmsans), "DM Sans", sans-serif;
   font-weight: 400;
@@ -682,7 +682,7 @@ const CSS = `
 .rr .tlfg-mx__cell.is-active .tlfg-mx__sign { color: var(--rr-red); transform: rotate(45deg); }
 .rr .tlfg-modal--invers .tlfg-mx__sign { color: rgba(246, 245, 241, 0.5); }
 .rr .tlfg-modal--invers .tlfg-mx__btn:hover .tlfg-mx__sign,
-.rr .tlfg-modal--invers .tlfg-mx__cell.is-active .tlfg-mx__sign { color: #39c2d7; }
+.rr .tlfg-modal--invers .tlfg-mx__cell.is-active .tlfg-mx__sign { color: #f12032; }
 .rr .tlfg-mx__panel {
   display: grid;
   grid-template-rows: 0fr;
@@ -701,7 +701,7 @@ const CSS = `
   opacity: 0;
   transition: opacity 0.35s var(--rr-ease, ease) 0.05s;
 }
-.rr .tlfg-modal--invers .tlfg-mx__detail { border-left-color: #39c2d7; color: rgba(246, 245, 241, 0.9); }
+.rr .tlfg-modal--invers .tlfg-mx__detail { border-left-color: #f12032; color: rgba(246, 245, 241, 0.9); }
 .rr .tlfg-mx__cell.is-active .tlfg-mx__detail { opacity: 1; }
 
 /* Trennlinie zwischen Fähigkeiten-Kopf und Beschreibungsfeld. */
@@ -731,7 +731,7 @@ const CSS = `
   text-transform: uppercase;
   color: var(--rr-red);
 }
-.rr .tlfg-modal--invers .tlfg-label { color: #39c2d7; }
+.rr .tlfg-modal--invers .tlfg-label { color: #f12032; }
 .rr .tlfg-text {
   margin: 0;
   font-family: var(--rr-font-ui);
@@ -754,7 +754,7 @@ const CSS = `
 .rr .tlfg-modal__cta { margin-top: clamp(24px, 3.2vw, 32px); }
 
 /* Tuerkis-Eck-Rahmen fuer die Invers-CTA (rr-btn-frame, nur Farbe --c). */
-.rr .tlfg-frame--teal { --c: #39c2d7; }
+.rr .tlfg-frame--teal { --c: #f12032; }
 
 @keyframes tlfg-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes tlfg-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }

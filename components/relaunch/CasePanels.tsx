@@ -36,69 +36,66 @@ type Theme = {
 
 const THEMES: Theme[] = [
   {
-    key: "webdesign",
-    eyebrow: "Webdesign & Handwerk",
-    headline: "Eine Website, die dein Handwerk ernst nimmt.",
-    statement: "Design-System statt Baukasten, schnell auf jedem Handy, in klarer Zeit gebaut. Du siehst den Entwurf, bevor du zahlst.",
-    linkText: "So bauen wir",
+    key: "problem",
+    eyebrow: "Das Problem",
+    headline: "Die meisten Handwerker-Websites sehen alt aus. Und keiner findet sie.",
+    statement: "Veraltetes Design, unsichtbar bei Google, kein einziger Anruf daraus. Deine beste Arbeit bleibt im Verborgenen, während billigere Betriebe die Aufträge holen.",
+    linkText: "Warum das teuer wird",
     href: "/leistungen/webdesign",
-    giant: "Websites",
+    giant: "Problem",
     bg: "var(--rr-world-1-bg)",
-    text: "#f6f5f1",
-    accent: "var(--rr-world-1-accent)",
-    giantColor: "rgba(0,0,0,0.26)",
+    text: "#23262e",
+    accent: "var(--rr-red)",
+    giantColor: "rgba(35,38,46,0.06)",
   },
   {
-    key: "dashboard",
-    eyebrow: "Dashboard & Selbstlauf",
-    headline: "Deine Website meldet sich bei dir.",
-    statement: "Besucher, Anfragen, neue Artikel, echte Bewertungen: dein Dashboard zeigt, was deine Website leistet, während du arbeitest.",
-    linkText: "Was der Selbstlauf kann",
+    key: "loesung",
+    eyebrow: "Die Lösung",
+    headline: "Eine Website mit eingebauten Helfern, die für dich arbeiten.",
+    statement: "Wir bauen dir kein digitales Plakat, sondern ein Werkzeug: sichtbar bei Google und KI, mit Inhalten, die von selbst entstehen, und einer Kommandozentrale namens Talos, die den Alltag übernimmt.",
+    linkText: "So arbeitet deine Website",
     href: "/leistungen/dashboard",
-    giant: "Dashboard",
+    giant: "Lösung",
     bg: "var(--rr-world-2-bg)",
-    text: "#f6f5f1",
-    accent: "var(--rr-world-2-accent)",
-    giantColor: "rgba(0,0,0,0.34)",
+    text: "#23262e",
+    accent: "var(--rr-red)",
+    giantColor: "rgba(35,38,46,0.05)",
   },
   {
-    key: "sichtbar",
-    eyebrow: "Sichtbarkeit: Google & KI",
-    headline: "Wenn deine Region sucht, bist du die Antwort.",
-    statement: "Bei Google und in KI-Antworten wie ChatGPT. Regionalseiten, saubere Daten und Inhalte, die zitiert werden.",
-    linkText: "So wirst du gefunden",
-    href: "/leistungen/ki-sichtbarkeit",
-    giant: "Sichtbar",
+    key: "beweis",
+    eyebrow: "Der Beweis",
+    headline: "Betriebe, die uns schon vertrauen.",
+    statement: "Echte Kunden, echte 5-Sterne-Bewertungen auf Google. Kein erfundenes Marketing, sondern nachprüfbare Ergebnisse.",
+    linkText: "Referenzen ansehen",
+    href: "/relaunch-preview/referenzen",
+    giant: "Beweis",
     bg: "var(--rr-world-3-bg)",
     text: "#f6f5f1",
-    accent: "var(--rr-world-3-accent)",
-    giantColor: "rgba(0,0,0,0.24)",
+    accent: "var(--rr-red)",
+    giantColor: "rgba(255,255,255,0.05)",
   },
 ];
 
-/* Pfotenspur (Panel 1): statisch auf der Buehne wie die Sora-Voegel — die
-   Fahrt der Buehne laesst die Spur "durchlaufen". */
-function PawTrail({ color }: { color: string }) {
-  // Echte Hasenspur (Tomson-Vorlage): pro Sprung 2 laengliche Hinterlauf-Abdruecke
-  // nebeneinander (leicht V-gestellt) + 2 kleine runde Vorderpfoten-Punkte versetzt
-  // dahinter; Spur laeuft diagonal aufsteigend in Laufrichtung.
-  const jumps = Array.from({ length: 10 }, (_, i) => {
-    const x = 40 + i * 128;
-    const y = 300 - i * 26;
-    return (
-      <g key={i} transform={`translate(${x} ${y}) rotate(38)`}>
-        <ellipse cx="-7" cy="0" rx="3.6" ry="12" transform="rotate(-7 -7 0)" />
-        <ellipse cx="7" cy="-2" rx="3.6" ry="12" transform="rotate(7 7 -2)" />
-        <circle cx="-2" cy="19" r="2.8" />
-        <circle cx="5" cy="26" r="2.8" />
-      </g>
-    );
-  });
+/* Problem-Karte (Panel 1): die stille, tote Website — null Anfragen, kein Trend. */
+function ProblemCard() {
   return (
-    <svg viewBox="0 0 1360 360" fill={color} aria-hidden
-      style={{ position: "absolute", left: "70vw", top: "8vh", width: "170vw", opacity: 0.9, pointerEvents: "none" }}>
-      {jumps}
-    </svg>
+    <div aria-hidden style={{
+      position: "absolute", left: "58vw", top: "50vh", width: "clamp(300px, 30vw, 460px)",
+      background: "#fff", border: "1px solid #e7e7e3", padding: 22,
+      boxShadow: "0 30px 80px rgba(35,38,46,.10)",
+    }}>
+      <p style={{ margin: "0 0 4px", fontSize: 12, letterSpacing: "0.09em", textTransform: "uppercase", color: "#8a8d94", fontWeight: 600 }}>Anfragen diesen Monat</p>
+      <p style={{ fontFamily: "var(--rr-font-display)", fontSize: 44, fontWeight: 620, color: "#23262e", margin: "0 0 14px" }}>0</p>
+      <div style={{ display: "flex", gap: 8, alignItems: "flex-end", height: 100 }}>
+        {[6, 5, 7, 4, 5, 3, 4].map((h, i) => (
+          <i key={i} style={{ flex: 1, height: `${h}%`, background: "#d9d9d5" }} />
+        ))}
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#8a8d94", marginTop: 12 }}>
+        <span>Sichtbar bei Google <b style={{ color: "#23262e" }}>Nein</b></span>
+        <span>Neue Inhalte <b style={{ color: "#23262e" }}>0</b></span>
+      </div>
+    </div>
   );
 }
 
@@ -126,32 +123,30 @@ function DashCard() {
   );
 }
 
-/* KI-Antwort (Panel 3): Suchanfrage + zitierende Antwort. */
-function AnswerCard() {
+/* Beweis-Karte (Panel 3): echte Google-Rezension, Wortlaut 1:1 (verifiziert
+   22.07.2026 gegen das Live-Google-Profil; Dmitry = Team, bewusst nicht gezeigt). */
+function ReviewCard({ quote, name, left, top }: { quote: string; name: string; left: string; top: string }) {
   return (
     <div aria-hidden style={{
-      position: "absolute", left: "58vw", top: "48vh", width: "clamp(300px, 32vw, 480px)",
-      background: "#fff", border: "1px solid #e6d9d3", borderRadius: 16, padding: "20px 22px",
-      boxShadow: "0 24px 60px rgba(140,47,66,.14)",
+      position: "absolute", left, top, width: "clamp(300px, 32vw, 480px)",
+      background: "#fff", padding: "22px 24px",
+      boxShadow: "0 24px 60px rgba(0,0,0,.30)",
     }}>
-      <p style={{ fontSize: 14, color: "#8c2f42", fontWeight: 600, margin: "0 0 10px" }}>
-        <span style={{ opacity: 0.6, fontWeight: 400 }}>Suche: </span>Installateur Thermenwartung in meiner Nähe?
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+        <svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true" style={{ flex: "0 0 auto" }}>
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+        </svg>
+        <span style={{ color: "#f5b400", fontSize: 16, letterSpacing: "1px" }}>★★★★★</span>
+      </div>
+      <p style={{ fontFamily: "var(--rr-font-serif)", fontWeight: 500, fontSize: 19, lineHeight: 1.42, color: "#23262e", margin: "0 0 14px" }}>
+        {`„${quote}“`}
       </p>
-      <p style={{ fontFamily: "var(--rr-font-display)", fontSize: 19, lineHeight: 1.4, color: "#23262e", margin: 0, borderLeft: "3px solid #8c2f42", paddingLeft: 14 }}>
-        Red Rabbit Media aus Wien baut Websites für Handwerksbetriebe, die bei Google und in KI-Antworten gefunden werden.
+      <p style={{ fontFamily: "var(--rr-font-ui)", fontSize: 14, fontWeight: 600, color: "#23262e", margin: 0 }}>
+        {name} <span style={{ fontWeight: 400, color: "#8a8d94" }}>· Google-Rezension</span>
       </p>
-    </div>
-  );
-}
-
-function MediaPlaceholder({ left, top, label, dark }: { left: string; top: string; label: string; dark?: boolean }) {
-  return (
-    <div aria-hidden style={{
-      position: "absolute", left, top, width: "clamp(260px, 28vw, 437px)", aspectRatio: "437/280",
-      borderRadius: 12, border: `1.5px dashed ${dark ? "rgba(35,38,46,0.35)" : "rgba(255,255,255,0.35)"}`,
-      display: "grid", placeItems: "center", fontSize: 13, opacity: 0.75, padding: 12, textAlign: "center",
-    }}>
-      PLATZHALTER: {label}
     </div>
   );
 }
@@ -224,23 +219,20 @@ function PanelTrack({ t }: { t: Theme }) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/logo.webp" alt="" style={{ width: "58%", height: "58%", objectFit: "contain" }} />
           </div>
-          {t.key === "webdesign" && (
+          {t.key === "problem" && <ProblemCard />}
+          {t.key === "loesung" && <DashCard />}
+          {t.key === "beweis" && (
             <>
-              <PawTrail color="rgba(0,0,0,0.30)" />
-              <MediaPlaceholder left="60vw" top="54vh" label="echte Projekt-Screens (thermewarten, Danesh, La Morra)" />
-              <MediaPlaceholder left="150vw" top="30vh" label="zweites Projekt-Motiv" />
-            </>
-          )}
-          {t.key === "dashboard" && (
-            <>
-              <DashCard />
-              <MediaPlaceholder left="150vw" top="32vh" label="Dashboard-Aufnahme (echtes Produkt-Video)" />
-            </>
-          )}
-          {t.key === "sichtbar" && (
-            <>
-              <AnswerCard />
-              <MediaPlaceholder left="152vw" top="30vh" label="Google-Treffer / Regionalseiten-Material" />
+              <ReviewCard
+                left="58vw" top="30vh"
+                name="Rafael Danesh"
+                quote="Für unsere beiden Firmen wurden zwei Webseiten erstellt. Die Zusammenarbeit war äußerst präzise, auf all unsere Wünsche wurde detailliert eingegangen, und wir sind mit den Ergebnissen sehr zufrieden! Danke!"
+              />
+              <ReviewCard
+                left="150vw" top="52vh"
+                name="Rene Rohrer"
+                quote="Ich bin von der Firma begeistert vor allem von der Umsetzung, ein Lob an Herrn Uhlir der mich durch die Zeit der Umsetzung begleitet hat. Vielen lieben Dank :-) 100 Prozent Empfehlung"
+              />
             </>
           )}
         </div>

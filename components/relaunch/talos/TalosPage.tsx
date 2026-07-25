@@ -877,7 +877,7 @@ const CSS = `
 .tal-step-eyebrow{ font-family:var(--font-grotesk),"Instrument Sans",sans-serif; font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; color:#5a5e68; }
 .tal-step-label{ font-family:var(--font-dmsans),"DM Sans",sans-serif; font-weight:700; font-size:clamp(1.1rem,1.8vw,1.4rem); color:#23262e; margin-top:14px; }
 .tal-step-sub{ font-family:var(--font-grotesk),"Instrument Sans",sans-serif; font-size:.9rem; color:#5a5e68; margin-top:6px; }
-.tal-cta{ background:#1c2837; color:#f6f5f1; padding:clamp(40px,7vw,80px) clamp(26px,5vw,64px); text-align:center; }
+.tal-cta{ background:#23262e; color:#f6f5f1; padding:clamp(40px,7vw,80px) clamp(26px,5vw,64px); text-align:center; }
 .tal-cta-h2{ font-family:var(--font-crimson),"Crimson Pro",Georgia,serif; font-weight:500; color:#f6f5f1; font-size:clamp(1.7rem,3.6vw,2.8rem); line-height:1.15; max-width:22ch; margin:0 auto; }
 .tal-cta-actions{ display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap; margin-top:clamp(26px,4vh,40px); }
 
@@ -891,7 +891,7 @@ const CSS = `
 .tal-btn:hover{ transform:translateY(-2px); }
 .tal-btn:focus-visible{ outline:2px solid #f12032; outline-offset:3px; }
 .tal-btn--red{ background:#f12032; color:#ffffff; }
-.tal-btn--white{ background:#ffffff; color:#1c2837; }
+.tal-btn--white{ background:#ffffff; color:#23262e; }
 .tal-btn--ghost{ background:transparent; color:#f6f5f1; border-color:rgba(246,245,241,.5); }
 
 /* Orientierung: Kapitel-Punkte rechts */

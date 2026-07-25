@@ -228,11 +228,11 @@ export default function Ablauf() {
           font-weight: 700;
           font-size: clamp(0.95rem, 1.4vw, 1.3rem);
           line-height: 1;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
           transition: color 0.3s ease;
         }
         .wd-abl__circle.is-done {
-          background: var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
         }
         .wd-abl__circle.is-done .wd-abl__circlenum {
           color: #fff;
@@ -269,7 +269,7 @@ export default function Ablauf() {
           width: 44px;
           height: 44px;
           border-radius: 50%;
-          border: 2px solid var(--rr-navy, #1c2837);
+          border: 2px solid var(--rr-navy, #23262e);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -285,7 +285,7 @@ export default function Ablauf() {
           font-weight: 700;
           font-size: clamp(1.4rem, 2.4vw, 2.1rem);
           line-height: 1.14;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
           letter-spacing: -0.01em;
         }
         .wd-abl__text {
@@ -305,7 +305,7 @@ export default function Ablauf() {
           font-style: italic;
           font-size: clamp(1.02rem, 1.25vw, 1.22rem);
           line-height: 1.45;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
         }
         .wd-abl__ergtag {
           font-family: var(--rr-font-ui, inherit);

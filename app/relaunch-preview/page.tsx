@@ -46,7 +46,7 @@ export default function RelaunchPreviewPage() {
       >
         <div className="rr-wrap">
           <h2 className="rr-claim" style={{ margin: "0 auto", maxWidth: "13em" }}>
-            Ein paar unserer Projekte.
+            Erst das Problem. Dann die Lösung. Dann der Beweis.
           </h2>
         </div>
       </section>

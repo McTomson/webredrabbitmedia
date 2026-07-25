@@ -5,7 +5,7 @@ import FloatingReview from './FloatingReview';
 /**
  * Sektion 2 — Risiko-Umkehr-Navy-Band (brand/PREISE_SEITE_BRIEF.md Abschnitt
  * 5.2/7): staerkster USP VOR den Zahlen, Wortlaut 1:1 aus dem Brief bzw. der
- * alten Live-Seite (app/preise/page.tsx). Navy #1c2837, Eyebrow im
+ * alten Live-Seite (app/preise/page.tsx). Navy #23262e, Eyebrow im
  * wd-eyebrow-Stil (ondark-Variante fuer AA-Kontrast).
  */
 export default function RisikoBand() {

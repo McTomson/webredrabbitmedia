@@ -9,7 +9,7 @@ import FragTalos from '@/components/relaunch/talos/FragTalos';
  *
  * VOLLFLAECHIGE Blau-Sektion (Thomas 24.07.) im Look des Quiz "Sag uns, wer
  * du bist" (components/subpages/leistungen/website/v2/Diagnose.tsx, dort
- * Teal-Welt) — hier in BLAU (#0a72a0, das etablierte, barrierefreie --blue).
+ * Teal-Welt) — hier in BLAU (#f12032, das etablierte, barrierefreie --blue).
  * Der Assistent sitzt OHNE weisse Panel-Box DIREKT auf dem Blau: die
  * Antwort-Reihen sind durchscheinende, umrandete Zeilen (Rahmen Off-White,
  * Hover-Fuellung), Text Off-White #f6f5f1. HARTE REGEL: niemals Rot auf Blau
@@ -60,7 +60,7 @@ export default function FragTalosAnmoderation() {
       </div>
 
       <style>{`
-.tlfrag-section { background: #0a72a0; }
+.tlfrag-section { background: #23262e; }
 
 /* Linke Spalte: die 3D-Talos-Ebene steht rechts (data-talos-anchor 0.8),
    darum bleibt die rechte Haelfte frei. Text + Quiz teilen sich eine
@@ -73,7 +73,7 @@ export default function FragTalosAnmoderation() {
    Groesse/Gewicht/Letterspacing kommen unveraendert aus wd-eyebrow.css
    (0.72rem/700/.28em) -- exakt wie bei Diagnose (dort nur .wd-eyebrow--cream
    recolort genauso, keine Groesse angefasst). */
-.rr .tlfrag-section .wd-eyebrow { color: #39c2d7; }
+.rr .tlfrag-section .wd-eyebrow { color: #f12032; }
 /* Diagnose hat KEINEN Abstand zwischen Eyebrow und Headline (beide margin:0,
    wd-diag__head selbst setzt keinen Gap) -- .tl-eyebrow bringt sonst
    ueberall auf der Seite 20px mit (talos-v2.css), hier auf 0 zurueckgesetzt. */
@@ -104,7 +104,7 @@ export default function FragTalosAnmoderation() {
 /* ---- FragTalos DIREKT auf Blau (kein weisses Panel), im Diagnose-Look.
    Alle Overrides scoped ueber .rr .tlfrag-section .ft-* (3 Klassen), damit
    FragTalos.tsx SELBST unveraendert bleibt (wird evtl. woanders genutzt).
-   Off-White = #f6f5f1, Akzent = Tuerkis #39c2d7. NIE Rot auf Blau. ---- */
+   Off-White = #f6f5f1, Akzent = Tuerkis #f12032. NIE Rot auf Blau. ---- */
 
 .rr .tlfrag-section .tlfrag-quiz { max-width: 620px; }
 
@@ -117,7 +117,7 @@ export default function FragTalosAnmoderation() {
 }
 .rr .tlfrag-section .ft-start:hover { background: #ffffff; }
 .rr .tlfrag-section .ft-start:focus-visible {
-  outline: 2px solid #39c2d7;
+  outline: 2px solid #f12032;
   outline-offset: 3px;
 }
 
@@ -131,7 +131,7 @@ export default function FragTalosAnmoderation() {
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.14em;
-  color: #39c2d7;
+  color: #f12032;
 }
 /* Diagnose hat KEINEN Fortschrittsbalken (nur Text "Frage X von 3" + evtl.
    Zurueck-Button) -- FragTalos.tsx bringt strukturell einen Balken mit, den
@@ -140,7 +140,7 @@ export default function FragTalosAnmoderation() {
    Rahmen-Opacity 0.3 (wd-diag__opt border), Fuellung = Akzent Tuerkis
    wie der Balken/die Marker ueberall sonst in dieser Sektion. */
 .rr .tlfrag-section .ft-progress-track { background: rgba(246, 245, 241, 0.3); }
-.rr .tlfrag-section .ft-progress-bar { background: #39c2d7; }
+.rr .tlfrag-section .ft-progress-bar { background: #f12032; }
 
 /* Frage-Text EXAKT wie .wd-diag__question: weight 800 (Basis 700), Groesse
    clamp(1.5rem,2.6vw,2.2rem) (Basis clamp(1.25rem,2.2vw,1.7rem)), kein
@@ -181,7 +181,7 @@ export default function FragTalosAnmoderation() {
    dazu ist im Repo nirgends definiert (nur --rr-world-3-bg #0a8aba, eine
    ANDERE, hier bewusst nicht verwendete Blau-Variante) -- daher per
    color-mix() im selben Verhaeltnis aus der hier gesetzten Sektionsfarbe
-   #0a72a0 abgeleitet, statt einen neuen Hex-Wert zu erfinden. */
+   #f12032 abgeleitet, statt einen neuen Hex-Wert zu erfinden. */
 .rr .tlfrag-section .ft-choices { counter-reset: tlfragopt; gap: 14px; }
 .rr .tlfrag-section .ft-choice {
   display: flex;
@@ -194,8 +194,8 @@ export default function FragTalosAnmoderation() {
   color: #ffffff;
   background-color: rgba(0, 0, 0, 0.18);
   background-image: linear-gradient(
-    color-mix(in srgb, #0a72a0 64%, black),
-    color-mix(in srgb, #0a72a0 64%, black)
+    color-mix(in srgb, #f12032 64%, black),
+    color-mix(in srgb, #f12032 64%, black)
   );
   background-repeat: no-repeat;
   background-position: left center;
@@ -216,7 +216,7 @@ export default function FragTalosAnmoderation() {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #39c2d7;
+  color: #f12032;
 }
 /* Pfeil rechts wie .wd-diag__optarrow: unsichtbar in Ruhe, faehrt bei Hover
    ein. FragTalos.tsx hat kein eigenes Pfeil-Element -- als ::after
@@ -228,14 +228,14 @@ export default function FragTalosAnmoderation() {
   font-family: var(--rr-font-ui, inherit);
   font-style: normal;
   font-size: 1.25rem;
-  color: #39c2d7;
+  color: #f12032;
   opacity: 0;
   transform: translateX(-8px);
   transition: opacity 0.28s ease, transform 0.28s ease;
 }
 .rr .tlfrag-section .ft-choice:hover,
 .rr .tlfrag-section .ft-choice:focus-visible {
-  border-color: color-mix(in srgb, #0a72a0 64%, black);
+  border-color: color-mix(in srgb, #f12032 64%, black);
   background-size: 100% 100%;
   transform: none;
   box-shadow: none;
@@ -246,7 +246,7 @@ export default function FragTalosAnmoderation() {
   transform: translateX(0);
 }
 .rr .tlfrag-section .ft-choice:focus-visible {
-  outline: 2px solid #39c2d7;
+  outline: 2px solid #f12032;
   outline-offset: 3px;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -259,11 +259,11 @@ export default function FragTalosAnmoderation() {
 
 /* Ergebnis: Label Tuerkis (war rot), Karten als durchscheinende Reihen mit
    Tuerkis-Kante (war weisse Karte mit roter Kante), Text Off-White. */
-.rr .tlfrag-section .ft-result-lead { color: #39c2d7; }
+.rr .tlfrag-section .ft-result-lead { color: #f12032; }
 .rr .tlfrag-section .ft-result-item {
   background: rgba(0, 0, 0, 0.14);
   border-color: rgba(246, 245, 241, 0.24);
-  border-left: 3px solid #39c2d7;
+  border-left: 3px solid #f12032;
 }
 .rr .tlfrag-section .ft-result-title { color: #f6f5f1; }
 .rr .tlfrag-section .ft-result-text { color: rgba(246, 245, 241, 0.82); }
@@ -283,7 +283,7 @@ export default function FragTalosAnmoderation() {
 }
 .rr .tlfrag-section .ft-btn--ghost:hover { border-color: #f6f5f1; }
 .rr .tlfrag-section .ft-btn:focus-visible {
-  outline: 2px solid #39c2d7;
+  outline: 2px solid #f12032;
   outline-offset: 3px;
 }
       `}</style>

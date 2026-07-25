@@ -150,7 +150,7 @@ export default function KollegeAnreisser() {
           max-width: 1200px;
           margin: 0 auto;
           background: var(--rr-paper, #ffffff);
-          border: 1px solid var(--rr-navy, #1c2837);
+          border: 1px solid var(--rr-navy, #23262e);
           border-radius: 0;
         }
 
@@ -161,7 +161,7 @@ export default function KollegeAnreisser() {
           justify-content: space-between;
           gap: 16px;
           padding: 11px clamp(16px, 2.4vw, 26px);
-          border-bottom: 1px solid var(--rr-navy, #1c2837);
+          border-bottom: 1px solid var(--rr-navy, #23262e);
         }
         .wd-kol__brand {
           font-family: var(--rr-font-ui);
@@ -169,7 +169,7 @@ export default function KollegeAnreisser() {
           font-weight: 650;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
         }
         .wd-kol__status {
           display: inline-flex;
@@ -267,11 +267,11 @@ export default function KollegeAnreisser() {
         }
         .wd-kol__spark span {
           flex: 1;
-          background: color-mix(in srgb, var(--rr-navy, #1c2837) 20%, transparent);
+          background: color-mix(in srgb, var(--rr-navy, #23262e) 20%, transparent);
           min-height: 4px;
         }
         .wd-kol__spark span:last-child {
-          background: var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
         }
 
         .wd-kol__skills {

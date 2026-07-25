@@ -419,7 +419,7 @@ const CSS = `
 .tp-says{ margin-top:24px; display:flex; flex-direction:column; gap:12px; }
 .tp-say{ font-family:var(--rr-font-serif,var(--font-crimson),"Crimson Pro",Georgia,serif); font-weight:500;
   font-size:clamp(1.12rem,1.7vw,1.35rem); line-height:1.24; color:var(--rr-ink,#23262e); margin:0;
-  padding-left:15px; border-left:2px solid #39c2d7; }
+  padding-left:15px; border-left:2px solid #f12032; }
 
 .tp-bullets{ list-style:none; margin:24px 0 0; padding:0; display:flex; flex-direction:column; gap:16px; }
 .tp-bullet{ display:flex; flex-direction:column; gap:3px; }

@@ -7,7 +7,7 @@
  * abgeschnitten, unten "Kontakt" raus). Ziel jeder Variante: ALLES innerhalb von
  * 100vh sichtbar, auch bei ~760px Fensterhoehe.
  *
- * Farbwelt/Fonts exakt wie das Bestands-Overlay (Navy #1c2837, Off-White,
+ * Farbwelt/Fonts exakt wie das Bestands-Overlay (Navy #23262e, Off-White,
  * var(--rr-red), dezente Rot-Aura). border-radius 0 (Ausnahme: kleine Punkte).
  * Links sind statische <a href="#"> (keine Menue-Logik noetig) — dadurch keine
  * styled-jsx/next-link :global()-Falle; Hover-Zustaende sind echtes CSS.
@@ -259,7 +259,7 @@ export default function MenueVarianten() {
           position: relative;
           height: 100vh;
           width: 100%;
-          background: var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
           color: #ffffff;
           overflow: hidden;
           display: flex;

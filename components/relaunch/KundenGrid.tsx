@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react";
  * + demo.engine.jstext Zeilen 587-789 + demo.css .scene-partner/.p-*).
  *
  * Farb-Transposition Blau -> Weiss (Tomson 16.07.): Panel-Hintergrund war
- * var(--blue) #0a72a0 mit Off-White-Text -> hier Paper #ffffff mit Ink
+ * var(--blue) #f12032 mit Off-White-Text -> hier Paper #ffffff mit Ink
  * #23262e. Die Klammer-Label-Farbe war Off-White auf Blau, bleibt aber
  * markentypisch ROT (wie f-label im FAQ-Abschnitt derselben Quelle), nicht
  * Ink. Hairlines waren rgba(offwhite,.18) auf Blau -> #e4e4e0 auf Weiss.

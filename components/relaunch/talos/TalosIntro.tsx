@@ -207,7 +207,7 @@ export default function TalosIntro() {
             fontSize: 12,
             letterSpacing: "0.14em",
             textTransform: "uppercase",
-            color: "#0a72a0",
+            color: "#f12032",
             fontWeight: 600,
           }}
         >
@@ -228,7 +228,7 @@ export default function TalosIntro() {
                     width: 7,
                     height: 7,
                     borderRadius: "50%",
-                    background: "#39c2d7",
+                    background: "#f12032",
                     flex: "0 0 auto",
                   }}
                 />

@@ -265,11 +265,11 @@ export default function VarianteB() {
         }
         .wdb__spark span {
           flex: 1;
-          background: color-mix(in srgb, var(--rr-navy, #1c2837) 20%, transparent);
+          background: color-mix(in srgb, var(--rr-navy, #23262e) 20%, transparent);
           min-height: 4px;
         }
         .wdb__spark span:last-child {
-          background: var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
         }
 
         /* Schwebende Panels — versetzt + Parallax */
@@ -311,7 +311,7 @@ export default function VarianteB() {
           flex: none;
           background: conic-gradient(
             var(--rr-red, #f12032) 0turn 0.72turn,
-            color-mix(in srgb, var(--rr-navy, #1c2837) 14%, transparent) 0.72turn 1turn
+            color-mix(in srgb, var(--rr-navy, #23262e) 14%, transparent) 0.72turn 1turn
           );
         }
         .wdb__donutHole {
@@ -367,7 +367,7 @@ export default function VarianteB() {
           margin-bottom: 14px;
         }
         .wdb__title {
-          color: var(--rr-navy, #1c2837);
+          color: var(--rr-navy, #23262e);
           max-width: 20em;
         }
         .wdb__name {

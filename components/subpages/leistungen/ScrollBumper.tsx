@@ -135,7 +135,7 @@ export default function ScrollBumper({ statements }: ScrollBumperProps) {
         .sb-section {
           position: relative;
           height: 320vh;
-          background: var(--rr-navy, #1c2837);
+          background: var(--rr-navy, #23262e);
         }
         .sb-sticky {
           position: sticky;

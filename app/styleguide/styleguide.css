@@ -16,17 +16,17 @@
   --rr-paper: #ffffff;        /* Grund */
   --rr-surface: #f4f4f2;      /* zweite Flaeche */
   --rr-dark: #17181d;         /* dunkle Sektion */
-  --rr-navy: #1c2837;         /* Navy: Footer-Grund, Menue-Overlay, Hero-Statement */
+  --rr-navy: #23262e;         /* Dunkle Flaeche = einheitliches #23262E (Design-System 25.07.; kein Navy/Blau mehr) */
   --rr-line: #e4e4e0;         /* Hairlines */
 
-  /* Case-Farbwelten (je Referenz eine Welt; Startset, im Design-Pass final) */
-  /* Panel-Farbwelten: 1:1 all-turtles (Tomson-Entscheidung 05.07., live aus deren CSS gemessen) */
-  --rr-world-1-bg: #1d8c98;   /* at "airtime"-Tuerkis */
-  --rr-world-1-accent: #fcfbc9; /* cream Eyebrow */
-  --rr-world-2-bg: #2d2d2d;   /* at "carrot-dark" Anthrazit */
-  --rr-world-2-accent: #f35b09; /* Orange Eyebrow */
-  --rr-world-3-bg: #0a8aba;   /* at "sora"-Blau */
-  --rr-world-3-accent: #f2dc71; /* Gelb Eyebrow */
+  /* Case-Farbwelten (Design-System 25.07.): striktes Premium-Set, kein Tuerkis/Blau.
+     Panel 1 = Problem (Weiss), Panel 2 = Loesung (Hellgrau), Panel 3 = Beweis (Dunkel). */
+  --rr-world-1-bg: #ffffff;   /* Problem: Basis-Weiss */
+  --rr-world-1-accent: var(--rr-red);
+  --rr-world-2-bg: #f4f4f2;   /* Loesung: heller Hintergrund */
+  --rr-world-2-accent: var(--rr-red);
+  --rr-world-3-bg: #23262e;   /* Beweis: dunkle Flaeche */
+  --rr-world-3-accent: var(--rr-red);
 
   /* ---- Semantische Farben (Formular-/Statuszustaende; Tomson-Entscheidung 06.07.) ---- */
   /* Rot bleibt Marke UND Fehler-Signal; Erfolg/Warnung/Hinweis bewusst entsaettigt. */
