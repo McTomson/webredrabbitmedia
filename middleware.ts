@@ -22,6 +22,19 @@ export function middleware(request: NextRequest) {
         return redirect;
     }
 
+    // 1b. v2-Test-Host: den Relaunch (/relaunch-preview) als WURZEL ausliefern, damit
+    //     v2.redrabbit.media/ = Relaunch-Startseite und v2.redrabbit.media/leistungen/talos
+    //     = Talos-Seite, ohne /relaunch-preview in der sichtbaren URL. Interner Rewrite
+    //     (kein Redirect) — nur auf v2.*, die Live-Domain web.redrabbit.media ist unberuehrt.
+    //     Bereits /relaunch-preview-Pfade werden NICHT doppelt praefixiert.
+    if (isTestHost && !url.pathname.startsWith('/relaunch-preview')) {
+        const target = url.clone();
+        target.pathname = '/relaunch-preview' + (url.pathname === '/' ? '' : url.pathname);
+        const rewritten = NextResponse.rewrite(target);
+        rewritten.headers.set('X-Robots-Tag', 'noindex, nofollow');
+        return rewritten;
+    }
+
     // 2. Mobile-First Indexing Hint für Googlebot
     const userAgent = request.headers.get('user-agent') || '';
     if (userAgent.toLowerCase().includes('googlebot')) {
