@@ -163,7 +163,9 @@ function PanelTrack({ t }: { t: Theme }) {
       const seg = p * (N - 1);            // 0..N-1
       const i = Math.min(N - 2, Math.floor(seg));
       const f = seg - i;                   // 0..1 innerhalb der Etappe
-      const units = i + smoothstep((f - 0.3) / 0.4); // Dwell f<0.3 und f>0.7
+      // Langer Dwell: Fenster bleibt ~80% der Etappe stehen, Uebergang nur im
+      // mittleren 20%-Fenster -> "klebt" laenger, schneller Snap dazwischen.
+      const units = i + smoothstep((f - 0.4) / 0.2);
       stage.style.transform = `translate3d(${-units * vw}px, 0, 0)`;
     }
 
@@ -177,7 +179,7 @@ function PanelTrack({ t }: { t: Theme }) {
   }, [N]);
 
   return (
-    <div ref={trackRef} style={{ height: `${N * 150}vh`, position: "relative" }}>
+    <div ref={trackRef} style={{ height: `${N * 190}vh`, position: "relative" }}>
       <section aria-label={t.key} style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", background: t.bg, color: t.text }}>
         {/* Riesen-Thema-Wort: bleibt FIX stehen (faehrt nicht mit) */}
         <div aria-hidden style={{ position: "absolute", left: 0, top: 0, height: "100%", display: "flex", alignItems: "flex-end", pointerEvents: "none", zIndex: 0 }}>
