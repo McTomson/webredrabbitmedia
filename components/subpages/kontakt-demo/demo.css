@@ -35,7 +35,7 @@
   .demobar em{font-style:normal;opacity:.55;font-weight:500}
 
   /* ================= HAUPT-SZENE: HERO + UEBERGANG + STORY ================= */
-  .scene-main{position:relative;height:1150vh}
+  .scene-main{position:relative;height:1600vh}
   .main-sticky{
     position:sticky;top:0;height:100vh;height:100dvh;
     overflow:hidden;isolation:isolate;
