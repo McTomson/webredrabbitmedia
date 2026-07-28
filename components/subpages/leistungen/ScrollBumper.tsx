@@ -166,7 +166,9 @@ function ScrollBumperStyles() {
          rote ( Thema )-Zeile"). */
       .sb-label {
         position: absolute;
-        top: clamp(24px, 6vh, 64px);
+        /* unter der Chrome-Zeile (CornerLogo/Menue ~34-50px hoch) parken,
+           nicht an der Fensteroberkante kleben (QA 28.07.) */
+        top: clamp(96px, 14vh, 150px);
         left: 8vw;
         z-index: 2;
       }
