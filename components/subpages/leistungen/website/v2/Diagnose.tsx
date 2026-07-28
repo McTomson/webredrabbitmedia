@@ -8,8 +8,13 @@ import Link from 'next/link';
  * Durchklickender Fragebogen: drei Fragen nacheinander, dann eine ehrliche
  * Empfehlung (Starter/Business/Premium) mit den Nachbar-Stufen als
  * "Das koennte dir auch gefallen" und einem CTA.
- * Kein generisches Element: eigener Quiz-Flow im Marken-Stil (Teal-Welt,
- * rr-* Tokens, Eckig-Gesetz border-radius:0, roter Akzent).
+ * Kein generisches Element: eigener Quiz-Flow im Marken-Stil (rr-* Tokens,
+ * Eckig-Gesetz border-radius:0, roter Akzent).
+ * FARBEN (Kunde 29.07.): der Block liegt auf HELL (Off-White --rr-surface),
+ * alle Texte dunkel (--rr-ink #23262e), Antwort-Kacheln weiss mit dunklem
+ * Text, nur die Buchstaben a/b/c und der Hover-/Auswahl-Akzent sind rot.
+ * Die frueheren hellen Texte stammten aus der abgeschafften Teal-Welt
+ * (--rr-world-1-bg ist inzwischen #ffffff, dadurch weiss auf weiss).
  * DU-Anrede, echte Umlaute, kein Gedankenstrich, kein "KI"-Wort
  * (Hausbegriff: digitaler Kollege / Mitarbeiter).
  */
@@ -107,7 +112,7 @@ export default function Diagnose() {
     <section className="wd-diag" aria-labelledby="wd-diag-title">
       <div className="wd-diag__inner">
         <div className="wd-diag__head">
-          <p className="wd-eyebrow wd-eyebrow--cream">WAS DU WIRKLICH BRAUCHST</p>
+          <p className="wd-eyebrow">WAS DU WIRKLICH BRAUCHST</p>
           <h2 id="wd-diag-title" className="rr-statement wd-diag__statement">
             Sag uns, wer du bist. Wir sagen dir ehrlich, was du brauchst.
           </h2>
@@ -199,10 +204,9 @@ export default function Diagnose() {
 
       <style jsx>{`
         .wd-diag {
-          /* Teal-Welt: die Hauptseite fuehrt mit genau diesem Tuerkis zur
-             Website-Leistung; hier antwortet die Seite mit EINER Teal-Sektion
-             als Herzstueck. Farben = --rr-world-1-bg/-accent aus dem Styleguide. */
-          background: var(--rr-world-1-bg, #23262e);
+          /* Helle Grundflaeche (Off-White) nach DESIGN_STANDARD.md; der Block
+             lebt von der Typo und dem roten Akzent, nicht von einer Farbwelt. */
+          background: var(--rr-surface, #f4f4f2);
           padding: var(--rr-section-y, clamp(96px, 12vw, 180px)) var(--rr-gutter, clamp(20px, 4vw, 64px));
         }
         .wd-diag__inner {
@@ -213,14 +217,14 @@ export default function Diagnose() {
           max-width: 760px;
         }
         .wd-diag__statement {
-          color: #f4f4f2;
+          color: var(--rr-navy, #23262e);
         }
         .wd-diag__intro {
           margin-top: 22px;
           font-family: var(--rr-font-ui, inherit);
           font-size: clamp(1rem, 1.15vw, 1.15rem);
           line-height: 1.65;
-          color: #ffffff;
+          color: var(--rr-ink, #23262e);
           font-weight: 500;
         }
 
@@ -245,7 +249,7 @@ export default function Diagnose() {
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--rr-world-1-accent, #fcfbc9);
+          color: var(--rr-red, #f12032);
         }
         .wd-diag__back {
           border: 0;
@@ -255,7 +259,7 @@ export default function Diagnose() {
           font-family: var(--rr-font-ui, inherit);
           font-size: 0.82rem;
           font-weight: 600;
-          color: #ffffff;
+          color: var(--rr-ink, #23262e);
           opacity: 0.72;
           text-decoration: underline;
           text-underline-offset: 3px;
@@ -269,7 +273,7 @@ export default function Diagnose() {
           font-weight: 800;
           font-size: clamp(1.5rem, 2.6vw, 2.2rem);
           line-height: 1.12;
-          color: #f4f4f2;
+          color: var(--rr-navy, #23262e);
           margin-bottom: clamp(20px, 3vw, 32px);
         }
         .wd-diag__opts {
@@ -284,24 +288,24 @@ export default function Diagnose() {
           align-items: flex-start;
           gap: 16px;
           text-align: left;
-          /* Inaktive Zeilen: dunkler Scrim (hebt Text-Kontrast auf ~5:1),
-             Border cream. Kein Rot direkt an Teal (vibriert). */
-          border: 1px solid rgba(246, 245, 241, 0.3);
+          /* Kachel auf hellem Grund: weisses Papier, dunkler Text, feine
+             Ink-Linie. Kontrast Text/Grund ~13:1. */
+          border: 1px solid rgba(35, 38, 46, 0.16);
           border-radius: 0;
-          background: rgba(0, 0, 0, 0.18);
+          background: #ffffff;
           padding: 20px 22px;
           cursor: pointer;
           transition: border-color 0.28s ease, background 0.22s ease,
             transform 0.22s ease;
         }
-        /* Hover/Focus-Fuellung wie Diagnose-Variante C: voll-flaechig
-           dunkleres Teal zieht von links auf, Text hell, Pfeil faehrt rechts
-           herein. Bestehende Klick-Logik/Frage-Aufbau unveraendert. */
+        /* Hover/Focus-Fuellung wie zuvor (Flaeche zieht von links auf), aber
+           als heller Rot-Schleier, damit der dunkle Text lesbar bleibt.
+           Bestehende Klick-Logik/Frage-Aufbau unveraendert. */
         .wd-diag__opt::before {
           content: '';
           position: absolute;
           inset: 0;
-          background: #0f5a63;
+          background: rgba(241, 32, 50, 0.08);
           transform: scaleX(0);
           transform-origin: left center;
           transition: transform 0.32s ease;
@@ -309,7 +313,11 @@ export default function Diagnose() {
         }
         .wd-diag__opt:hover,
         .wd-diag__opt:focus-visible {
-          border-color: #0f5a63;
+          border-color: var(--rr-red, #f12032);
+        }
+        .wd-diag__opt:focus-visible {
+          outline: 2px solid var(--rr-red, #f12032);
+          outline-offset: 2px;
         }
         .wd-diag__opt:hover::before,
         .wd-diag__opt:focus-visible::before {
@@ -327,7 +335,7 @@ export default function Diagnose() {
           font-weight: 700;
           letter-spacing: 0.08em;
           text-transform: uppercase;
-          color: var(--rr-world-1-accent, #fcfbc9);
+          color: var(--rr-red, #f12032);
           padding-top: 6px;
           flex: none;
         }
@@ -336,14 +344,14 @@ export default function Diagnose() {
           font-style: italic;
           font-size: clamp(1.05rem, 1.35vw, 1.32rem);
           line-height: 1.4;
-          color: #ffffff;
+          color: var(--rr-ink, #23262e);
           flex: 1;
         }
         .wd-diag__optarrow {
           flex: none;
           align-self: center;
           font-size: 1.25rem;
-          color: var(--rr-world-1-accent, #fcfbc9);
+          color: var(--rr-red, #f12032);
           opacity: 0;
           transform: translateX(-8px);
           transition: opacity 0.28s ease, transform 0.28s ease;
@@ -353,17 +361,22 @@ export default function Diagnose() {
           opacity: 1;
           transform: translateX(0);
         }
-        /* gewaehlte Antwort blitzt kurz weiss auf, dann naechste Frage */
+        /* gewaehlte Antwort quittiert kurz dunkel, dann naechste Frage
+           (auf hellem Grund ist Dunkel die sichtbare Bestaetigung). */
         .wd-diag__opt.is-flash {
-          border-color: #f4f4f2;
-          background: #fff;
-          box-shadow: inset 4px 0 0 0 var(--rr-navy, #23262e);
+          border-color: var(--rr-navy, #23262e);
+          background: var(--rr-navy, #23262e);
+          box-shadow: inset 4px 0 0 0 var(--rr-red, #f12032);
+        }
+        .wd-diag__opt.is-flash::before {
+          opacity: 0;
         }
         .wd-diag__opt.is-flash .wd-diag__optlabel {
-          color: var(--rr-ink, #23262e);
+          color: #f4f4f2;
         }
-        .wd-diag__opt.is-flash .wd-diag__optnum {
-          color: var(--rr-red, #f12032);
+        .wd-diag__opt.is-flash .wd-diag__optnum,
+        .wd-diag__opt.is-flash .wd-diag__optarrow {
+          color: #f77480;
         }
 
         /* --- Ergebnis --- */
@@ -371,7 +384,7 @@ export default function Diagnose() {
           border: 1px solid rgba(28, 40, 55, 0.16);
           border-radius: 0;
           padding: clamp(26px, 3vw, 44px);
-          background: #f4f4f2;
+          background: #ffffff;
           animation: wdFade 0.4s ease both;
         }
         .wd-diag__answerlabel {

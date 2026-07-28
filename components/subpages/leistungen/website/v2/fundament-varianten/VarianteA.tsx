@@ -2,16 +2,51 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import {
+  TRANSITION_EASING,
+  TRANSITION_MS,
+  isBumperDegraded,
+  snapUnits,
+} from "@/lib/relaunch/scroll-standard";
 
 /**
  * Fundament — Variante A: STICKY-LEDGER MIT WANDERNDEM FOKUS.
- * Zweispaltig: links eine sticky Zeilenliste aller 12 Punkte (Label + Nummer,
- * die 2 Gruppen als Zwischen-Ueberschriften), rechts scrollen die Detail-Saetze
- * als grosse Typo-Bloecke vorbei. Der Listenpunkt des gerade mittig sichtbaren
- * Details wird voll hervorgehoben (navy, fett) + roter Marker, der Rest dimmt
- * auf opacity .35. IntersectionObserver, sauber aufgeraeumt, prefers-reduced-
- * motion -> statische Fassung (kein Dimmen). Kandidaten-Ersatz fuer Fundament.tsx.
+ * Zweispaltig: links die Zeilenliste aller 12 Punkte (Label + Nummer, die 2
+ * Gruppen als Zwischen-Ueberschriften), rechts steht der Detail-Satz des
+ * aktiven Punktes als grosser Typo-Block. Der aktive Listenpunkt ist voll
+ * hervorgehoben (navy, fett) + roter Marker, der Rest dimmt auf opacity .35.
+ *
+ * SCROLL (Kunde 29.07.: "der Kunde muss bei jedem Punkt durchatmen koennen,
+ * nicht in 2 Sekunden durch die Seite"): der fruehere frei durchlaufende
+ * Ledger (12 x 62vh) ist ersetzt durch eine gepinnte Strecke nach dem
+ * Scroll-Standard (lib/relaunch/scroll-standard.ts). Track = 12 x
+ * TRACK_VH_PER_POINT, ein 100vh-Sticky-Pin, und snapUnits() sorgt fuer den
+ * Dwell: jeder Punkt steht rund 80% seiner Etappe still, der Wechsel passiert
+ * im schmalen mittleren Fenster. Der Track traegt data-rr-snap (Einstieg
+ * rastet ein) + data-rr-snap-exempt (innen regiert der Dwell, nicht die
+ * Soft-Snap-Engine), wie CasePanels.tsx.
+ *
+ * Mobile (<= MOBILE_BREAKPOINT) und prefers-reduced-motion degradieren wie
+ * bisher zu normalem vertikalem Scrollen: alle Detail-Bloecke untereinander,
+ * aktiver Punkt per IntersectionObserver fuer die schlanke Sticky-Leiste.
  */
+
+/**
+ * Scroll-Strecke pro Punkt in vh. Bewusst UNTER dem Bumper-Standard von 190vh
+ * (12 x 190 = 2280vh waere fuer eine Inhalts-Sektion absurd lang), aber klar
+ * ueber einer Viewport-Hoehe. Track = 100vh Sticky-Pin + 12 x 130vh = 1660vh,
+ * davon 1560vh echte Scroll-Strecke auf 11 Uebergaenge, also rund 142vh je
+ * Etappe. Mit dem snapUnits-Dwell (DWELL_START .4 / DWELL_WIDTH .2) steht
+ * jeder Punkt rund 114vh still und wechselt dann in rund 28vh Scroll-Strecke.
+ */
+const TRACK_VH_PER_POINT = 130;
+
+/**
+ * Ab hier abwaerts degradiert die Strecke zu normalem vertikalem Scrollen.
+ * Deckungsgleich mit der bestehenden Mobile-Media-Query dieser Komponente
+ * (die Ledger-Spalte bricht schon bei 860px, nicht erst bei MOBILE_BREAKPOINT).
+ */
+const LEDGER_BREAKPOINT = 860;
 
 type Item = { tag: string; text: string };
 type Group = { heading: string; items: Item[] };
@@ -77,11 +112,65 @@ const FLAT: (Item & { n: number; groupStart: string | null })[] = (() => {
 
 export default function VarianteA() {
   const [active, setActive] = useState(0);
+  // null = noch nicht gemessen (SSR); danach true = degradiert (Handy /
+  // reduzierte Bewegung), false = gepinnte Strecke.
+  const [degraded, setDegraded] = useState<boolean | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const detailRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const activeRef = useRef(0);
+  const N = FLAT.length;
 
+  // Muss deckungsgleich mit den Media Queries unten bleiben, sonst laeuft der
+  // rAF-Loop gegen ein Layout, das gar nicht gepinnt ist.
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduce.matches) {
+    const sync = () => setDegraded(isBumperDegraded(LEDGER_BREAKPOINT));
+    sync();
+    const mqs = [
+      window.matchMedia(`(max-width: ${LEDGER_BREAKPOINT}px)`),
+      window.matchMedia("(prefers-reduced-motion: reduce)"),
+    ];
+    mqs.forEach((m) => m.addEventListener("change", sync));
+    return () => mqs.forEach((m) => m.removeEventListener("change", sync));
+  }, []);
+
+  // Gepinnte Strecke: Fortschritt -> snapUnits -> aktiver Punkt (mit Dwell).
+  useEffect(() => {
+    if (degraded !== false) return;
+    const track = trackRef.current;
+    if (!track) return;
+
+    let raf = 0;
+    let dead = false;
+
+    function render() {
+      const r = track!.getBoundingClientRect();
+      const total = r.height - window.innerHeight;
+      const raw = total > 0 ? -r.top / total : 0;
+      const p = raw < 0 ? 0 : raw > 1 ? 1 : raw;
+      const idx = Math.round(snapUnits(p * (N - 1), N));
+      if (idx !== activeRef.current) {
+        activeRef.current = idx;
+        setActive(idx);
+      }
+    }
+
+    function loop() {
+      if (dead) return;
+      render();
+      raf = requestAnimationFrame(loop);
+    }
+    raf = requestAnimationFrame(loop);
+    return () => {
+      dead = true;
+      cancelAnimationFrame(raf);
+    };
+  }, [degraded, N]);
+
+  // Degradiert: die Detail-Bloecke stehen untereinander, der aktive Punkt
+  // kommt wie bisher aus dem IntersectionObserver (treibt die Sticky-Leiste).
+  useEffect(() => {
+    if (degraded !== true) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setActive(-1); // -1 => kein Dimmen, alle voll
       return;
     }
@@ -104,7 +193,7 @@ export default function VarianteA() {
 
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [degraded]);
 
   return (
     <section className="lwa">
@@ -116,7 +205,18 @@ export default function VarianteA() {
           womit jede Seite von uns startet.
         </p>
 
-        <div className="lwa__grid">
+        {/* Gepinnte Strecke: data-rr-snap = der Einstieg rastet ein,
+            data-rr-snap-exempt = innen regiert der eigene Dwell (Soft-Snap-
+            Engine in components/relaunch/ScrollExperience.tsx). Degradiert
+            faellt die Hoehe auf auto zurueck (Media Query unten). */}
+        <div
+          ref={trackRef}
+          className="lwa__track"
+          data-rr-snap
+          data-rr-snap-exempt
+          style={{ ["--lwa-n" as string]: String(N) }}
+        >
+          <div className="lwa__grid">
           {/* Mobile: schlanke Sticky-Leiste statt der linken Ledger-Spalte.
               Zeigt immer den gerade aktiven Punkt + Fortschritt, damit der
               "wandernde Fokus" auch am Handy erlebbar bleibt (Thomas 21.07.:
@@ -170,7 +270,10 @@ export default function VarianteA() {
                 ref={(el) => {
                   detailRefs.current[idx] = el;
                 }}
-                className="lwa__detail"
+                className={
+                  "lwa__detail" +
+                  (idx === active || active === -1 ? " is-on" : "")
+                }
               >
                 <p className="lwa__detailTag">
                   {String(it.n).padStart(2, "0")} · {it.tag}
@@ -178,6 +281,7 @@ export default function VarianteA() {
                 <p className="lwa__detailText">{it.text}</p>
               </div>
             ))}
+            </div>
           </div>
         </div>
 
@@ -214,6 +318,12 @@ export default function VarianteA() {
           max-width: 44em;
           color: var(--rr-ink-soft);
           margin-bottom: clamp(48px, 7vw, 88px);
+        }
+        /* Grundzustand = degradiert: Track ohne eigene Hoehe, Detail-Bloecke
+           stehen untereinander. Die gepinnte Strecke schaltet die Media Query
+           ganz unten dazu (Progressive Enhancement wie in Ablauf.tsx). */
+        .lwa__track {
+          position: relative;
         }
         .lwa__grid {
           display: grid;
@@ -404,6 +514,62 @@ export default function VarianteA() {
           }
           .lwa__detail {
             opacity: 1;
+          }
+        }
+
+        /* ------------------------------------------------------------------
+           Gepinnte Strecke (Desktop + Bewegung erlaubt). Kunde 29.07.: jeder
+           Punkt soll stehen bleiben, statt in Sekunden durchzurauschen. Der
+           Breakpoint muss deckungsgleich mit LEDGER_BREAKPOINT im JS bleiben,
+           sonst laeuft der rAF-Loop gegen ein nicht gepinntes Layout.
+           ------------------------------------------------------------------ */
+        @media (min-width: ${LEDGER_BREAKPOINT + 1}px) and (prefers-reduced-motion: no-preference) {
+          .lwa__track {
+            /* 100vh Pin + 12 x 130vh Scroll-Strecke. */
+            height: calc(100vh + var(--lwa-n) * ${TRACK_VH_PER_POINT}vh);
+          }
+          .lwa__grid {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            align-items: center;
+          }
+          /* Im Pin haengt die Ledger-Spalte ohnehin fest, kein zweites Sticky. */
+          .lwa__aside {
+            position: static;
+            align-self: center;
+          }
+          /* Listendichte an die Fensterhoehe koppeln, damit die 12 Zeilen auch
+             auf flachen Laptops in den 100vh-Pin passen. */
+          .lwa__row {
+            padding: clamp(3px, 0.8vh, 7px) 0;
+          }
+          .lwa__grouphd {
+            margin: clamp(10px, 2vh, 22px) 0 clamp(5px, 1vh, 10px);
+          }
+          .lwa__details {
+            position: relative;
+            min-height: clamp(220px, 38vh, 380px);
+          }
+          /* Alle 12 Detail-Bloecke liegen uebereinander; sichtbar ist der
+             aktive. Der Wechsel ist eine kurze Blende in der Standard-Dauer,
+             das Stehenbleiben macht der snapUnits-Dwell im rAF-Loop. */
+          .lwa__detail {
+            position: absolute;
+            inset: 0;
+            min-height: 0;
+            padding: 0;
+            border-top: 0;
+            opacity: 0;
+            transform: translateY(14px);
+            pointer-events: none;
+            transition: opacity ${TRANSITION_MS}ms ${TRANSITION_EASING},
+              transform ${TRANSITION_MS}ms ${TRANSITION_EASING};
+          }
+          .lwa__detail.is-on {
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
           }
         }
       `}</style>

@@ -115,19 +115,35 @@ export default function LeistungenWebsitePreviewPage() {
         <WebsiteDemoClient css={heroCss} html={heroHtml} js={heroJs} />
       </div>
 
-      {/* 2-11 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope auf Weiss.
+      {/* 2-11 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope.
           Dramaturgie: nach dem Hero-Hook erst das WARUM (Handwerk + Bumper),
-          dann das Herzstueck Diagnose als Teal-Welt (die Hauptseite fuehrt mit
-          diesem Tuerkis hierher), dann die Fakten (Ablauf/Fundament/Stufen),
-          unten der Beweis-Block (Kollege navy, Testimonials teal, Referenzen). */}
-      <div className={rrFonts} style={{ background: '#ffffff', position: 'relative', zIndex: 2 }}>
+          dann das Herzstueck Diagnose, dann die Fakten (Ablauf/Fundament/
+          Stufen), unten der Beweis-Block (Kollege, Testimonials, Referenzen).
+
+          GRUND-RHYTHMUS (Kunde 29.07., Regel docs/DESIGN_STANDARD.md):
+          Grundflaeche ist Off-White #F4F4F2, reines Weiss NUR als bewusste
+          Wechsel-Flaeche und nie zweimal hintereinander. Zuordnung:
+            SoBauenWir        Off-White  (erbt vom Wrapper)
+            Diagnose          Off-White  (in der Komponente, war Weiss)
+            Ablauf            WEISS      (Prozess-Strecke, Wechsel 1)
+            Fundament         Off-White  (in der Komponente)
+            DreiStufenMatrix  WEISS      (Feature-Matrix, Wechsel 2)
+            TalosDashboard    Off-White  (in der Komponente)
+            KundenSagen       WEISS      (Beweis-Block, Wechsel 3)
+            ReferenzenTeaser  Off-White  (erbt)
+            WebsiteFaq        WEISS      (Frage-Antwort-Papier, Wechsel 4)
+            SiteClosing       Off-White  (in der Komponente) */}
+      <div
+        className={rrFonts}
+        style={{ background: 'var(--rr-surface, #f4f4f2)', position: 'relative', zIndex: 2 }}
+      >
         <div data-rr-snap>
           <SoBauenWir />
         </div>
         <div data-rr-snap>
           <Diagnose />
         </div>
-        <div data-rr-snap>
+        <div data-rr-snap style={{ background: 'var(--rr-paper, #ffffff)' }}>
           <Ablauf />
         </div>
         <div data-rr-snap>
@@ -139,13 +155,13 @@ export default function LeistungenWebsitePreviewPage() {
         <div data-rr-snap>
           <TalosDashboard />
         </div>
-        <div data-rr-snap>
+        <div data-rr-snap style={{ background: 'var(--rr-paper, #ffffff)' }}>
           <KundenSagen />
         </div>
         <div data-rr-snap>
           <ReferenzenTeaser />
         </div>
-        <div data-rr-snap>
+        <div data-rr-snap style={{ background: 'var(--rr-paper, #ffffff)' }}>
           <WebsiteFaq />
         </div>
         <SiteClosing

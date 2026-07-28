@@ -39,13 +39,13 @@ import { isBumperDegraded } from "@/lib/relaunch/scroll-standard";
 /** Ruhezeit ohne Scroll-Input, bevor das Einrasten ausgeloest wird (ms). */
 const IDLE_MS = 150;
 /** Fangbereich um die Ziel-Oberkante, als Anteil der Viewport-Hoehe. */
-const CATCH_RATIO = 0.28;
+const CATCH_RATIO = 0.35;
 /** Dauer der Einrast-Fahrt (Sekunden, Lenis-Einheit). */
-const SNAP_DURATION = 0.9;
+const SNAP_DURATION = 1.1;
 /** Ruhe nach einer programmatischen Fahrt, damit nichts in Schleife geraet. */
 const COOLDOWN_MS = 500;
 /** Site-weite Lenis-Daempfung (traeger als der Lenis-Default). */
-const SITE_LERP = 0.08;
+const SITE_LERP = 0.065;
 /** Naeher als das gilt als "steht schon dort" — kein erneuter Snap. */
 const DEAD_ZONE_PX = 2;
 /** Toleranz an der Track-Oberkante, damit der Einstiegs-Snap nicht sofort
