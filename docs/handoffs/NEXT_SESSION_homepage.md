@@ -1,6 +1,22 @@
 # NEXT_SESSION — Homepage-Relaunch (v2.redrabbit.media)
 
-Stand: 28.07.2026, letzter Homepage-Commit `5cf7180` (alles LIVE).
+Stand: 28.07.2026 spaet, letzter Commit `ad1c717` (Site-Vereinheitlichung, alles LIVE).
+
+## NEU 28.07. abends: Site-Vereinheitlichung (Grill-Session)
+- **ZUERST LESEN: `docs/DESIGN_STANDARD.md`** — seit 28.07. die EINE kanonische Quelle
+  (Farben, 2 Buttons, Eyebrow "( Thema )", Abstaende, Bumper-System, Mobile-Regel).
+  Plan/Herleitung: `docs/handoffs/PLAN_vereinheitlichung_2026-07-28.md`.
+- Umgesetzt in `af064de` + `ad1c717`: ein Off-White #F4F4F2 ueberall, Navy-Reste weg,
+  rr-btn-frame GELOESCHT (nur noch sweep+outline, --light auf dunkel), Menue ohne
+  Eck-Klammern (roter Punkt-Hover), CornerLogo ab 2 Viewport-Hoehen, geteiltes
+  `SiteClosing` (Texte: `brand/copy-closing-cta.md`) + echte FooterReassembly auf allen
+  Seiten (Nachbauten in ueber-uns/kontakt/faq-Demos entfernt), zentrales
+  `lib/relaunch/scroll-standard.ts` (Bumper-Dwell, 820px-Degradation), Preise-Bumper
+  hell + "( Was du bekommst )", Abstaende auf --rr-section-y.
+- OFFEN: (a) Mobile-Degradation nur code-verifiziert — visueller Geraete-Test bei
+  Thomas' Abnahme; (b) Talos-Fahrt-Slides tragen noch ihre eigenen Slide-Eyebrows,
+  keine ( Thema )-Zeile; (c) components/subpages/leistungen/talos/TalosCta.tsx ist
+  verwaist, kann weg; (d) Thomas' visuelle Gesamt-Abnahme steht aus.
 
 ## Wo wir arbeiten
 - **Ordner:** `~/dev/redrabbit` — **Branch `relaunch`** (geteilt, gepusht). Vor Arbeit: `git fetch` + `git log --oneline -8`.
