@@ -2183,3 +2183,57 @@ quelle: https://dejure.org/dienste/vernetzung/rechtsprechung?Text=C-673/17
 quelle_name: EuGH, Urteil vom 01.10.2019, Rs. C-673/17 (Planet49) - dejure.org
 geprueft_am: 2026-07-25
 recheck_nach: 2027-01-21
+
+## t52-2026-07-28-243
+cluster: 1
+keywords: haftet, abmahnungen, wegen, rechtlicher, fehler, website
+aussage: Verstöße gegen die Informationspflichten nach dem E-Commerce-Gesetz (ECG, z.B. fehlendes oder unvollständiges Impressum) sind in Österreich eine Verwaltungsübertretung und mit Geldstrafe bis zu 3.000 EUR bedroht. Adressat der Strafe ist der Diensteanbieter, also der Website-Betreiber selbst. Die Behörde kann (muss aber nicht) vor der Strafe eine Korrekturfrist setzen, bei deren Einhaltung der Betreiber straffrei bleibt.
+quelle: https://www.wko.at/internetrecht/informationspflichten-nach-dem-e-commerce-gesetz--dem-unte
+quelle_name: WKO - Informationspflichten nach dem E-Commerce-Gesetz (ECG)
+geprueft_am: 2026-07-28
+recheck_nach: 2027-01-24
+
+## t52-2026-07-28-244
+cluster: 1
+keywords: haftet, abmahnungen, wegen, rechtlicher, fehler, website
+aussage: Bei Verstößen gegen die Impressums- und Offenlegungspflicht nach dem Mediengesetz (§§ 24, 25 MedienG) drohen Verwaltungsstrafen bis zu 20.000 EUR. Verantwortlich ist der Medieninhaber — bei einer Unternehmens-Website also der Betreiber, nicht der Ersteller; bereits Fahrlässigkeit genügt für die Strafbarkeit.
+quelle: https://www.wko.at/information-consulting/druck/impressum-vorschriften-auswirkung-auf-den-printbereich
+quelle_name: WKO - Impressum-Vorschriften (Mediengesetz)
+geprueft_am: 2026-07-28
+recheck_nach: 2027-01-24
+
+## t52-2026-07-28-245
+cluster: 1
+keywords: haftet, abmahnungen, wegen, rechtlicher, fehler, website
+aussage: Neben Verwaltungsstrafen drohen zivilrechtliche Unterlassungsklagen: Klagslegitimiert nach dem UWG sind Mitbewerber und legitimierte Verbände wie der Schutzverband gegen den unlauteren Wettbewerb (der in der Regel zuvor abmahnt) — nicht jedoch Kunden. Der Streitwert solcher Klagen liegt zumeist über 40.000 EUR, woran sich die Gerichts- und Anwaltskosten orientieren.
+quelle: https://www.wko.at/internetrecht/verstoss-gegen-internetrecht--was-tun-auf-anwaltsbriefe-r
+quelle_name: WKO - Verstoß gegen Internetrecht: Auf Rechtsanwaltsbriefe richtig reagieren
+geprueft_am: 2026-07-28
+recheck_nach: 2027-01-24
+
+## t52-2026-07-28-246
+cluster: 1
+keywords: haftet, abmahnungen, wegen, rechtlicher, fehler, website
+aussage: Klagebefugt auf Unterlassung nach § 14 UWG sind neben Mitbewerbern u.a. die Wirtschaftskammer Österreich, die Bundesarbeitskammer und bei irreführenden oder aggressiven Geschäftspraktiken auch der Verein für Konsumenteninformation (VKI) — der Kreis möglicher Abmahner ist also deutlich größer als nur die direkte Konkurrenz.
+quelle: https://www.jusline.at/gesetz/uwg/paragraf/14
+quelle_name: Jusline - § 14 UWG (Anspruch auf Unterlassung), Gesetzestext
+geprueft_am: 2026-07-28
+recheck_nach: 2027-01-24
+
+## t52-2026-07-28-247
+cluster: 1
+keywords: haftet, abmahnungen, wegen, rechtlicher, fehler, website
+aussage: Bei Datenschutzverstößen auf der Website (z.B. fehlerhafte Datenschutzerklärung, rechtswidrige Tools) ist Haftungsadressat der Geldbußen nach Art. 83 DSGVO der 'Verantwortliche' — das Unternehmen, das die Website betreibt. Die österreichische Datenschutzbehörde kann Geldbußen bis zu 20 Mio EUR oder 4 % des weltweiten Jahresumsatzes verhängen (in minder schweren Fällen bis 10 Mio EUR bzw. 2 %); auch fahrlässige Verstöße sind strafbar.
+quelle: https://www.wko.at/datenschutz/eu-dsgvo-rechtsdurchsetzung-strafen
+quelle_name: WKO - DSGVO: Rechtsdurchsetzung und Strafen
+geprueft_am: 2026-07-28
+recheck_nach: 2027-01-24
+
+## t52-2026-07-28-248
+cluster: 1
+keywords: haftet, abmahnungen, wegen, rechtlicher, fehler, website
+aussage: Die Agentur ist damit nicht aus dem Schneider: Webdesign-Verträge sind Werkverträge, und die Agentur schuldet eine Website frei von Rechtsmängeln. Wird der Betreiber wegen eines von der Agentur verursachten Fehlers (z.B. Bildrechte, nicht rechtskonformes Cookie-Tool) abgemahnt oder bestraft, kann er die Agentur im Innenverhältnis in Regress nehmen — weshalb viele Agenturen Haftungsbeschränkungen und Freistellungen in ihren AGB vereinbaren (dokumentiert für die deutsche Rechtslage; in Österreich gilt über das ABGB-Gewährleistungsrecht ein vergleichbares Prinzip).
+quelle: https://www.it-recht-kanzlei.de/webdesign-vertrag-haftungsrisiken-absicherung.html
+quelle_name: IT-Recht Kanzlei - Webdesign-Leistungen: Rechtsrisiken und Haftungsfragen
+geprueft_am: 2026-07-28
+recheck_nach: 2027-01-24
