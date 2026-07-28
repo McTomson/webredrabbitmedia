@@ -18,10 +18,12 @@ import { STUFEN } from "./stufen-varianten/VarianteA";
 
 function StufeMatrix({
   stufe,
+  defaultActive = null,
 }: {
   stufe: (typeof STUFEN)[number];
+  defaultActive?: number | null;
 }) {
-  const [active, setActive] = useState<number | null>(null);
+  const [active, setActive] = useState<number | null>(defaultActive);
 
   return (
     <div className={"fmx__stufe" + (stufe.featured ? " fmx__stufe--featured" : "")}>
@@ -277,8 +279,8 @@ export default function DreiStufenMatrix() {
           jederzeit wachsen.
         </p>
 
-        {STUFEN.map((s) => (
-          <StufeMatrix key={s.name} stufe={s} />
+        {STUFEN.map((s, i) => (
+          <StufeMatrix key={s.name} stufe={s} defaultActive={i === 0 ? 0 : null} />
         ))}
 
         <p className="rr-meta fmx__meta">

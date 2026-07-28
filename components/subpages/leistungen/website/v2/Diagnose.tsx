@@ -371,7 +371,7 @@ export default function Diagnose() {
           border: 1px solid rgba(28, 40, 55, 0.16);
           border-radius: 0;
           padding: clamp(26px, 3vw, 44px);
-          background: #fbfbfa;
+          background: #f4f4f2;
           animation: wdFade 0.4s ease both;
         }
         .wd-diag__answerlabel {

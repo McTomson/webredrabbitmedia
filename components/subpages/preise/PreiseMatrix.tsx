@@ -45,8 +45,14 @@ if (STUFEN_OHNE_PREIS.length > 0) {
   );
 }
 
-function StufeMatrix({ stufe }: { stufe: (typeof STUFEN)[number] }) {
-  const [active, setActive] = useState<number | null>(null);
+function StufeMatrix({
+  stufe,
+  defaultActive = null,
+}: {
+  stufe: (typeof STUFEN)[number];
+  defaultActive?: number | null;
+}) {
+  const [active, setActive] = useState<number | null>(defaultActive);
 
   return (
     <div className={'rpm__stufe' + (stufe.featured ? ' rpm__stufe--featured' : '')}>
@@ -116,8 +122,8 @@ export default function PreiseMatrix() {
           wachse später jederzeit in die nächste Stufe.
         </p>
 
-        {STUFEN.map((s) => (
-          <StufeMatrix key={s.name} stufe={s} />
+        {STUFEN.map((s, i) => (
+          <StufeMatrix key={s.name} stufe={s} defaultActive={i === 0 ? 0 : null} />
         ))}
 
         <p className="rr-meta rp-matrix__custom">

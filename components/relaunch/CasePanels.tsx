@@ -186,7 +186,10 @@ function PanelTrack({ t }: { t: Theme }) {
   }, [N]);
 
   return (
-    <div ref={trackRef} style={{ height: `${N * BUMPER_TRACK_VH_PER_WINDOW}vh`, position: "relative" }}>
+    // data-rr-snap = der Einstieg in den Track rastet ein (Soft-Snap,
+    // components/relaunch/ScrollExperience.tsx); data-rr-snap-exempt = innen
+    // regiert das eigene Dwell-System, dort wird nicht gesnappt.
+    <div ref={trackRef} data-rr-snap data-rr-snap-exempt style={{ height: `${N * BUMPER_TRACK_VH_PER_WINDOW}vh`, position: "relative" }}>
       <section aria-label={t.key} style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", background: t.bg, color: t.text }}>
         {/* Riesen-Thema-Wort: faehrt mit (Parallax) */}
         <div ref={giantRef} aria-hidden style={{ position: "absolute", left: 0, top: 0, height: "100%", display: "flex", alignItems: "flex-end", pointerEvents: "none", zIndex: 0, willChange: "transform" }}>

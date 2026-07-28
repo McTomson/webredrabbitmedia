@@ -6,6 +6,7 @@ import HomeMorph from "@/components/relaunch/HomeMorph";
 import CasePanels from "@/components/relaunch/CasePanels";
 import HomeClosing from "@/components/relaunch/HomeClosing";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
+import ScrollExperience from "@/components/relaunch/ScrollExperience";
 import "../styleguide/styleguide.css";
 
 export const metadata: Metadata = {
@@ -44,7 +45,15 @@ export default function RelaunchPreviewPage() {
       <HomeClosing />
 
       {/* Sektion 9: Footer mit Wortmarken-Reassembly */}
-      <FooterReassembly />
+      <div data-rr-snap>
+        <FooterReassembly />
+      </div>
+
+      {/* Site-weites Scroll-Gefuehl: Lenis + Soft-Snap (Thomas 28.07.).
+          Bewusst als LETZTES Kind: dann hat HomeMorph seine Lenis-Instanz
+          schon auf window.__rrLenis gelegt und ScrollExperience haengt sich
+          dort an, statt ein zweites Lenis zu starten. */}
+      <ScrollExperience />
     </div>
   );
 }

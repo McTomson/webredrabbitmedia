@@ -22,6 +22,7 @@ import TalosDashboard from '@/components/subpages/leistungen/website/v2/TalosDas
 import KundenSagen from '@/components/subpages/leistungen/KundenSagen';
 import WebsiteFaq from '@/components/subpages/leistungen/website/WebsiteFaq';
 import SiteClosing from '@/components/relaunch/SiteClosing';
+import ScrollExperience from '@/components/relaunch/ScrollExperience';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
@@ -109,7 +110,10 @@ export default function LeistungenWebsitePreviewPage() {
           AUSSERHALB des .rr-Font-Scopes (kein Style-Leak in demo.css), wie bei
           der ueber-uns-Seite. Story/Haltung/FAQ/CTA sind jetzt echte
           React-Sektionen darunter (rr-*-Bauteile). */}
-      <WebsiteDemoClient css={heroCss} html={heroHtml} js={heroJs} />
+      {/* data-rr-snap-exempt: eigene Scroll-Dramaturgie, kein Soft-Snap darin. */}
+      <div data-rr-snap-exempt>
+        <WebsiteDemoClient css={heroCss} html={heroHtml} js={heroJs} />
+      </div>
 
       {/* 2-11 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope auf Weiss.
           Dramaturgie: nach dem Hero-Hook erst das WARUM (Handwerk + Bumper),
@@ -117,15 +121,33 @@ export default function LeistungenWebsitePreviewPage() {
           diesem Tuerkis hierher), dann die Fakten (Ablauf/Fundament/Stufen),
           unten der Beweis-Block (Kollege navy, Testimonials teal, Referenzen). */}
       <div className={rrFonts} style={{ background: '#ffffff', position: 'relative', zIndex: 2 }}>
-        <SoBauenWir />
-        <Diagnose />
-        <Ablauf />
-        <Fundament />
-        <DreiStufenMatrix />
-        <TalosDashboard />
-        <KundenSagen />
-        <ReferenzenTeaser />
-        <WebsiteFaq />
+        <div data-rr-snap>
+          <SoBauenWir />
+        </div>
+        <div data-rr-snap>
+          <Diagnose />
+        </div>
+        <div data-rr-snap>
+          <Ablauf />
+        </div>
+        <div data-rr-snap>
+          <Fundament />
+        </div>
+        <div data-rr-snap>
+          <DreiStufenMatrix />
+        </div>
+        <div data-rr-snap>
+          <TalosDashboard />
+        </div>
+        <div data-rr-snap>
+          <KundenSagen />
+        </div>
+        <div data-rr-snap>
+          <ReferenzenTeaser />
+        </div>
+        <div data-rr-snap>
+          <WebsiteFaq />
+        </div>
         <SiteClosing
           lines={[
             'Gefunden werden ist der Anfang.',
@@ -135,9 +157,12 @@ export default function LeistungenWebsitePreviewPage() {
         />
       </div>
 
-      <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
+      <div className={rrFonts} data-rr-snap style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
         <FooterReassembly />
       </div>
+
+      {/* Site-weites Scroll-Gefuehl: Lenis + Soft-Snap (Thomas 28.07.). */}
+      <ScrollExperience />
     </>
   );
 }

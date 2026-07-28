@@ -57,7 +57,14 @@ Entscheidung von Thomas, dann hier nachziehen. Plan/Herleitung:
 - Uebergang A↔B: exakt Klasse-A-Abstand.
 
 ## Scroll & Bumper — EIN System
-- Ein Site-Tempo (Lenis ~0.1), eine Easing-Kurve, zentrale Dwell-Konstanten.
+- **Soft-Snap site-weit ("Umblaettern", Thomas 28.07.):** jede grosse Sektion traegt
+  `data-rr-snap`; beim Scroll-Idle (~150ms) zieht die Seite sanft zur naechsten
+  Sektionsoberkante, wenn sie im Fangbereich (~28% Viewport) liegt. Ueberhohe Sektionen:
+  Stopp an der Oberkante, danach frei. Sticky-Strecken (Bumper/Pan/Demo-Heroes) tragen
+  `data-rr-snap-exempt` — innen regiert ihr Dwell. Engine:
+  components/relaunch/ScrollExperience.tsx (auf jeder Seite eingebunden; Homepage nutzt
+  die HomeMorph-Lenis-Instanz via window.__rrLenis). Aus bei reduced-motion und <=820px.
+- Ein Site-Tempo (Lenis lerp ~0.08 site-weit), eine Easing-Kurve, zentrale Dwell-Konstanten.
 - Bumper-Regel: 1 Scroll-Schwung = 1 Fenster, haelt — NUR fuer Kurz-Inhalte (Wort, Headline,
   1-2 Saetze). Lange Absaetze nie im Snap gefangen (NN/g-belegt).
 - Jede Bumper-Strecke traegt oben die rote `( Thema )`-Zeile.

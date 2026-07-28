@@ -6,6 +6,7 @@ import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import CornerLogo from '@/components/relaunch/CornerLogo';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import SiteClosing from '@/components/relaunch/SiteClosing';
+import ScrollExperience from '@/components/relaunch/ScrollExperience';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 
@@ -48,7 +49,10 @@ export default function UeberUnsPage() {
       {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
           blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
       <CornerLogo />
-      <UeberUnsDemoClient css={css} html={html} js={js} />
+      {/* data-rr-snap-exempt: eigene Scroll-Dramaturgie, kein Soft-Snap darin. */}
+      <div data-rr-snap-exempt>
+        <UeberUnsDemoClient css={css} html={html} js={js} />
+      </div>
 
       {/* Abschluss-Block + ECHTER Footer (28.07., Design-Vereinheitlichung):
           der Nachbau-Footer und der zentrierte Schluss-CTA im demo.body.html
@@ -62,8 +66,13 @@ export default function UeberUnsPage() {
             'Reden wir.',
           ]}
         />
-        <FooterReassembly />
+        <div data-rr-snap>
+          <FooterReassembly />
+        </div>
       </div>
+
+      {/* Site-weites Scroll-Gefuehl: Lenis + Soft-Snap (Thomas 28.07.). */}
+      <ScrollExperience />
     </>
   );
 }

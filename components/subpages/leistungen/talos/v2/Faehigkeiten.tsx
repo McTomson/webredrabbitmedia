@@ -489,7 +489,7 @@ const CSS = `
 /* Sonderanfertigung: navy abgesetzt, Name off-white — KEIN Rot auf Navy.
    Caret + Plus in Tuerkis. */
 .rr .tlfg-cell--invers { background: #23262e; }
-.rr .tlfg-cell--invers:hover { background: #16202c; }
+.rr .tlfg-cell--invers:hover { background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), #23262e; }
 .rr .tlfg-cell--invers:focus-visible { box-shadow: inset 0 0 0 2px #f4f4f2; }
 .rr .tlfg-cell--invers .tlfg-name { color: #f4f4f2; }
 .rr .tlfg-cell--invers .tlfg-caret { background: #f12032; }

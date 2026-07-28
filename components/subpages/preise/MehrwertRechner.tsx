@@ -263,7 +263,7 @@ export default function MehrwertRechner() {
         }
         .mwr-row--locked {
           cursor: default;
-          background: #fbfbf9;
+          background: #f4f4f2;
           box-shadow: none;
         }
 

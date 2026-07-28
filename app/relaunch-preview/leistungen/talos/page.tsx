@@ -16,6 +16,7 @@ import Beweis from '@/components/subpages/leistungen/talos/v2/Beweis';
 import FragTalosAnmoderation from '@/components/subpages/leistungen/talos/v2/FragTalosAnmoderation';
 import TalosFaqV2 from '@/components/subpages/leistungen/talos/v2/TalosFaqV2';
 import SiteClosing from '@/components/relaunch/SiteClosing';
+import ScrollExperience from '@/components/relaunch/ScrollExperience';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
@@ -114,7 +115,10 @@ export default function TalosLeistungPreviewPage() {
 
       {/* Hero-Strecke: Wort "Talos" + Wisch-Reveal + 3D-Walk-in + Story-Text +
           Beruhigungs-Bumper (Belief-Szene) — alles in der geklonten Demo. */}
-      <TalosDemoClient css={heroCss} html={heroHtml} js={heroJs} />
+      {/* data-rr-snap-exempt: eigene Scroll-Dramaturgie, kein Soft-Snap darin. */}
+      <div data-rr-snap-exempt>
+        <TalosDemoClient css={heroCss} html={heroHtml} js={heroJs} />
+      </div>
 
       {/* Inhalts-Sektionen, echte tl-*-Bauteile im .rr-Font-Scope auf Weiss.
           data-talos-station-Wrapper = Halte-Punkte des Companions (anchor =
@@ -124,35 +128,43 @@ export default function TalosLeistungPreviewPage() {
           zwischen z12 (hinter dem Text, Text lesbar) und z30 (vor der Flaeche,
           Kontrollraum/CTA). Weisser Grund kommt vom body. */}
       <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 20 }}>
-        <div data-talos-station data-talos-anchor="0.78" data-talos-size="l" data-talos-appear="0.5" data-talos-layer="back">
+        <div data-rr-snap data-talos-station data-talos-anchor="0.78" data-talos-size="l" data-talos-appear="0.5" data-talos-layer="back">
           <WerIstTalos />
         </div>
-        <InklusiveDashboard />
-        <Faehigkeiten />
+        <div data-rr-snap>
+          <InklusiveDashboard />
+        </div>
+        <div data-rr-snap>
+          <Faehigkeiten />
+        </div>
         {/* FreigabePrinzip MIT nickendem Talos (originalgetreu wiederhergestellt,
             Thomas 24.07. spaet: "der nickende Talos war sehr gut, stell ihn wieder
             her"). Nur ONBOARDING bleibt ohne Companion — DORT war Talos "zu frueh"
             (Bild 54), erst danach am Kontrollraum wieder zentriert. layer="back",
             weil weisse Sektion (kein Navy-Body-Cut) und Text links / Talos rechts. */}
-        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-gesture="nod" data-talos-layer="back">
+        <div data-rr-snap data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-gesture="nod" data-talos-layer="back">
           <FreigabePrinzip />
         </div>
-        <Onboarding />
-        <div data-talos-station data-talos-anchor="0.7" data-talos-size="m" data-talos-appear="0.55" data-talos-gesture="wink" data-talos-layer="front">
+        <div data-rr-snap>
+          <Onboarding />
+        </div>
+        <div data-rr-snap data-talos-station data-talos-anchor="0.7" data-talos-size="m" data-talos-appear="0.55" data-talos-gesture="wink" data-talos-layer="front">
           <Kontrollraum />
         </div>
         {/* Beweis "front" (nicht back): sonst schneidet der Navy-Frame beim
             Uebergang Kontrollraum->Beweis den Koerper an (Thomas 24.07., Bild 48/49). */}
-        <div data-talos-station data-talos-anchor="0.8" data-talos-size="m" data-talos-appear="0.45" data-talos-layer="front">
+        <div data-rr-snap data-talos-station data-talos-anchor="0.8" data-talos-size="m" data-talos-appear="0.45" data-talos-layer="front">
           <Beweis />
         </div>
         {/* FragTalos MIT Companion (front): Talos soll hier noch sichtbar sein
             und genau hier anfangen zu verschwinden (Thomas 24.07., Bild 56). */}
-        <div data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-appear="0.45" data-talos-layer="front">
+        <div data-rr-snap data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-appear="0.45" data-talos-layer="front">
           <FragTalosAnmoderation />
         </div>
-        <TalosFaqV2 />
-        <div data-talos-station data-talos-anchor="0.17" data-talos-size="sm" data-talos-gesture="wave" data-talos-layer="front">
+        <div data-rr-snap>
+          <TalosFaqV2 />
+        </div>
+        <div data-rr-snap data-talos-station data-talos-anchor="0.17" data-talos-size="sm" data-talos-gesture="wave" data-talos-layer="front">
           <SiteClosing
             lines={[
               'Du hast Talos kennengelernt.',
@@ -163,9 +175,12 @@ export default function TalosLeistungPreviewPage() {
         </div>
       </div>
 
-      <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
+      <div className={rrFonts} data-rr-snap style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
         <FooterReassembly />
       </div>
+
+      {/* Site-weites Scroll-Gefuehl: Lenis + Soft-Snap (Thomas 28.07.). */}
+      <ScrollExperience />
     </>
   );
 }

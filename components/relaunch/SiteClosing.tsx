@@ -24,6 +24,9 @@ export default function SiteClosing({
   return (
     <section
       className="rr-section"
+      // Soft-Snap-Ziel (components/relaunch/ScrollExperience.tsx): gilt damit
+      // automatisch auf jeder Seite, die den Abschluss-Block einbindet.
+      data-rr-snap
       style={{
         background: "var(--rr-surface, #f4f4f2)",
         paddingTop: compact ? "clamp(56px, 8vw, 120px)" : "var(--rr-section-y)",
@@ -35,12 +38,23 @@ export default function SiteClosing({
           className="rr-display-2"
           style={{ maxWidth: "16em", fontSize: "clamp(30px, 4.2vw, 58px)", lineHeight: 1.14 }}
         >
-          {lines.map((line, i) => (
-            <span key={`${i}-${line}`}>
-              {line}
-              {i < lines.length - 1 ? <br /> : null}
-            </span>
-          ))}
+          {lines.map((line, i) => {
+            const isLast = i === lines.length - 1;
+            // Letzte Zeile ("Reden wir.") = Pointe (Thomas 28.07.): kleine
+            // Pause davor (Extra-Abstand) + roter Schlusspunkt.
+            const endsWithDot = isLast && line.endsWith(".");
+            const text = endsWithDot ? line.slice(0, -1) : line;
+            return (
+              <span
+                key={`${i}-${line}`}
+                style={isLast ? { display: "inline-block", marginTop: "0.55em" } : undefined}
+              >
+                {text}
+                {endsWithDot ? <span style={{ color: "var(--rr-red, #f12032)" }}>.</span> : null}
+                {!isLast ? <br /> : null}
+              </span>
+            );
+          })}
         </p>
         {/* Button-Paar (Thomas 25.07.): Haupt-CTA roter Sweep, Anrufen als
             klarer Rahmen-Button (matched pair). */}

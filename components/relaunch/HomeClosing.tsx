@@ -13,8 +13,11 @@ import SiteClosing from "@/components/relaunch/SiteClosing";
 export default function HomeClosing() {
   return (
     <>
-      {/* Sektionen 6+7: Kundenliste-Typing-Grid (Port ueber-uns, weiss statt blau) */}
-      <KundenGrid />
+      {/* Sektionen 6+7: Kundenliste-Typing-Grid (Port ueber-uns, weiss statt blau).
+          data-rr-snap = Soft-Snap-Ziel (ScrollExperience.tsx). */}
+      <div data-rr-snap>
+        <KundenGrid />
+      </div>
 
       {/* Sektion 8: Abschluss-CTA — eigener luftiger Block, Off-White-Grund */}
       <SiteClosing

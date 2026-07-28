@@ -4,6 +4,7 @@ import { getAllPosts } from "@/lib/blog/posts";
 import CornerLogo from "@/components/relaunch/CornerLogo";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
+import ScrollExperience from "@/components/relaunch/ScrollExperience";
 import TalosHeroStage from "@/components/relaunch/talos/TalosHeroStage";
 import FragTalos from "@/components/relaunch/talos/FragTalos";
 import { crimson, dmsans, fraunces, grotesk } from "@/lib/relaunch/fonts";
@@ -58,7 +59,7 @@ export default async function LeistungenHubPage() {
       <div className={rrFonts} style={{ background: "var(--rr-surface, #f4f4f2)" }}>
         <main className="lh">
           {/* 1 — HERO */}
-          <section className="lh-hero">
+          <section className="lh-hero" data-rr-snap>
             <div className="lh-hero-text">
               <p className="lh-eyebrow">Deine neue Website</p>
               <h1 className="lh-h1">
@@ -87,7 +88,7 @@ export default async function LeistungenHubPage() {
           </section>
 
           {/* 2 — DIE ZWEI HAELFTEN */}
-          <section className="lh-section">
+          <section className="lh-section" data-rr-snap>
             <div className="lh-wrap">
               <h2 className="lh-h2 lh-center">Du bekommst zwei Dinge, die zusammengehören.</h2>
               <div className="lh-halves">
@@ -120,7 +121,7 @@ export default async function LeistungenHubPage() {
           </section>
 
           {/* 3 — DIE BRUECKE */}
-          <section className="lh-section lh-section--surface">
+          <section className="lh-section lh-section--surface" data-rr-snap>
             <div className="lh-wrap">
               <p className="lh-eyebrow lh-center">In jeder Website drin</p>
               <h2 className="lh-h2 lh-center">In jeder Website steckt schon ein Fundament.</h2>
@@ -155,7 +156,7 @@ export default async function LeistungenHubPage() {
           </section>
 
           {/* 4 — DER BEWEIS */}
-          <section className="lh-section">
+          <section className="lh-section" data-rr-snap>
             <div className="lh-wrap lh-narrow">
               <p className="lh-eyebrow">Kein Versprechen, ein Nachweis</p>
               <h2 className="lh-h2">Wir machen das zuerst mit uns selbst.</h2>
@@ -172,7 +173,7 @@ export default async function LeistungenHubPage() {
           </section>
 
           {/* 5 — FRAG TALOS */}
-          <section id="frag-talos" className="lh-section lh-section--surface">
+          <section id="frag-talos" className="lh-section lh-section--surface" data-rr-snap>
             <div className="lh-wrap lh-narrow">
               <p className="lh-eyebrow">Unsicher, was du brauchst?</p>
               <h2 className="lh-h2">Stell Talos ein paar Fragen, dann weißt du mehr.</h2>
@@ -186,7 +187,7 @@ export default async function LeistungenHubPage() {
           </section>
 
           {/* 6 — SO ARBEITEN WIR */}
-          <section className="lh-section">
+          <section className="lh-section" data-rr-snap>
             <div className="lh-wrap">
               <h2 className="lh-h2 lh-center">In drei Schritten steht deine Seite.</h2>
               <ol className="lh-grid lh-grid-3 lh-steps">
@@ -206,7 +207,7 @@ export default async function LeistungenHubPage() {
           </section>
 
           {/* 7 — SCHLUSS-CTA */}
-          <section className="lh-section lh-section--close">
+          <section className="lh-section lh-section--close" data-rr-snap>
             <div className="lh-wrap lh-narrow lh-center">
               <h2 className="lh-h2">Lass uns deine Seite bauen. Talos wartet schon.</h2>
               <p className="lh-sub lh-measure lh-mx-auto">
@@ -234,6 +235,7 @@ export default async function LeistungenHubPage() {
 
       <div className={rrFonts} style={{ background: "transparent", position: "relative", zIndex: 50 }}>
         <FooterReassembly />
+        <ScrollExperience />
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: CSS }} />

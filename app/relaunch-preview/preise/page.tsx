@@ -14,6 +14,7 @@ import TalosTalenteFahrt from '@/components/subpages/preise/TalosTalenteFahrt';
 import MehrwertRechner from '@/components/subpages/preise/MehrwertRechner';
 import PreiseFaq from '@/components/subpages/preise/PreiseFaq';
 import SiteClosing from '@/components/relaunch/SiteClosing';
+import ScrollExperience from '@/components/relaunch/ScrollExperience';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
@@ -111,7 +112,10 @@ export default function PreisePreviewPage() {
       {/* 1 · Hero = ueber-uns/website-Malmechanik, hero-only (Wort "Preise" +
           Wisch + Chart-Figur comp={3} + Story-Spalte mit Headline A + Intro +
           CTA-Zeile). Demo-Inhalt bewusst AUSSERHALB des .rr-Font-Scopes. */}
-      <PreiseDemoClient css={heroCss} html={heroHtml} js={heroJs} />
+      {/* data-rr-snap-exempt: eigene Scroll-Dramaturgie, kein Soft-Snap darin. */}
+      <div data-rr-snap-exempt>
+        <PreiseDemoClient css={heroCss} html={heroHtml} js={heroJs} />
+      </div>
 
       {/* 2-7 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope. */}
       <div className={rrFonts} style={{ background: 'var(--rr-surface, #f4f4f2)', position: 'relative', zIndex: 2 }}>
@@ -128,12 +132,22 @@ export default function PreisePreviewPage() {
             { text: 'Erst überzeugt, dann bezahlt.', pointe: true },
           ]}
         />
-        <RisikoBand />
-        <PreiseMatrix />
-        <BetreuungFoerderung />
+        <div data-rr-snap>
+          <RisikoBand />
+        </div>
+        <div data-rr-snap>
+          <PreiseMatrix />
+        </div>
+        <div data-rr-snap>
+          <BetreuungFoerderung />
+        </div>
         <TalosTalenteFahrt />
-        <MehrwertRechner />
-        <PreiseFaq />
+        <div data-rr-snap>
+          <MehrwertRechner />
+        </div>
+        <div data-rr-snap>
+          <PreiseFaq />
+        </div>
         <SiteClosing
           lines={[
             'Du kennst jetzt die Zahlen.',
@@ -143,9 +157,12 @@ export default function PreisePreviewPage() {
         />
       </div>
 
-      <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
+      <div className={rrFonts} data-rr-snap style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
         <FooterReassembly />
       </div>
+
+      {/* Site-weites Scroll-Gefuehl: Lenis + Soft-Snap (Thomas 28.07.). */}
+      <ScrollExperience />
     </>
   );
 }

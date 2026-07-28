@@ -5,6 +5,7 @@ import CornerLogo from "@/components/relaunch/CornerLogo";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import SiteClosing from "@/components/relaunch/SiteClosing";
 import SphereGallery from "@/components/relaunch/SphereGallery";
+import ScrollExperience from "@/components/relaunch/ScrollExperience";
 import GalleryChrome from "@/components/relaunch/GalleryChrome";
 import { SPHERE_PROJECTS } from "@/lib/relaunch/projects";
 import "../../styleguide/styleguide.css";
@@ -56,7 +57,7 @@ export default function ReferenzenPreviewPage() {
 
       {/* Buehne: viewportfuellende Galerie. H1 wie der Original-Claim als
           kleiner Textblock oben Mitte (SSR, SEO), Chrome = Logo/Let's talk/Nav. */}
-      <section style={{ position: "relative", height: "100dvh", background: "var(--rr-navy)" }}>
+      <section data-rr-snap style={{ position: "relative", height: "100dvh", background: "var(--rr-navy)" }}>
         <SphereGallery />
         <div
           style={{
@@ -89,7 +90,7 @@ export default function ReferenzenPreviewPage() {
       </section>
 
       {/* Crawlbare, server-gerenderte Projektliste (SEO-Unterbau) */}
-      <section className="rr-section" style={{ background: "var(--rr-surface, #f4f4f2)" }}>
+      <section data-rr-snap className="rr-section" style={{ background: "var(--rr-surface, #f4f4f2)" }}>
         <div className="rr-wrap">
           <p className="rr-eyebrow-lg" style={{ marginBottom: 20 }}>
             Die Projekte
@@ -127,7 +128,12 @@ export default function ReferenzenPreviewPage() {
         ]}
       />
 
-      <FooterReassembly />
+      <div data-rr-snap>
+        <FooterReassembly />
+      </div>
+
+      {/* Site-weites Scroll-Gefuehl: Lenis + Soft-Snap (Thomas 28.07.). */}
+      <ScrollExperience />
     </div>
   );
 }

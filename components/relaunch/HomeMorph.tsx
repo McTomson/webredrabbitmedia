@@ -94,6 +94,10 @@ export default function HomeMorph() {
 
     // schwerere Daempfung als Default — at-Fahrt wirkt gedaempfter (Delta-Punkt 8)
     const lenis = new Lenis({ autoRaf: false, lerp: 0.075 });
+    // Bruecke fuer ScrollExperience (Soft-Snap, 28.07.): die Homepage hat schon
+    // diese Instanz samt eigenem raf-Loop. ScrollExperience haengt seine
+    // Snap-Engine hier an, statt ein zweites Lenis zu starten.
+    window.__rrLenis = lenis;
 
     function build() {
       const fam = getComputedStyle(probeRef.current!).fontFamily;
@@ -359,12 +363,13 @@ export default function HomeMorph() {
       destroyed = true;
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
+      if (window.__rrLenis === lenis) delete window.__rrLenis;
       lenis.destroy();
     };
   }, []);
 
   return (
-    <div ref={trackRef} style={{ height: `${U_SPAN * 150 + 100}vh`, position: "relative" }}>
+    <div ref={trackRef} data-rr-snap-exempt style={{ height: `${U_SPAN * 150 + 100}vh`, position: "relative" }}>
       <span ref={probeRef} aria-hidden style={{ fontFamily: "var(--rr-font-display)", position: "absolute", opacity: 0, pointerEvents: "none" }}>probe</span>
       <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", background: "#F4F4F2" }}>
         {/* Teile-Buehne: Origin = Viewport-Zentrum (Wortmarke -> Shatter) */}

@@ -124,6 +124,10 @@ export default function ScrollBumper({ statements, label }: ScrollBumperProps) {
     <section
       ref={sectionRef}
       className="sb-section"
+      // Soft-Snap (components/relaunch/ScrollExperience.tsx): der Einstieg in
+      // den Track rastet ein, innen regiert das eigene Dwell-System.
+      data-rr-snap
+      data-rr-snap-exempt
       style={{ '--sb-track': `${n * BUMPER_TRACK_VH_PER_WINDOW}vh` } as React.CSSProperties}
     >
       <div className="sb-sticky">

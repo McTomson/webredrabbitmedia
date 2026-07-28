@@ -13,6 +13,7 @@ import TalosDashboard from '@/components/subpages/leistungen/website/v2/TalosDas
 import KundenSagen from '@/components/subpages/leistungen/KundenSagen';
 import LeistungenFaq from '@/components/subpages/leistungen/LeistungenFaq';
 import SiteClosing from '@/components/relaunch/SiteClosing';
+import ScrollExperience from '@/components/relaunch/ScrollExperience';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
@@ -160,13 +161,17 @@ export default function LeistungenPreviewPage() {
           das Engine-SVG: #headSvg ist in demo.css hart ausgeblendet.
           Demo-Inhalt bewusst AUSSERHALB des .rr-Scopes (Muster ueber-uns/kontakt,
           keine Style-Leaks aus demo.css). */}
-      <LeistungenHero2Client css={heroCss} html={heroHtml} js={heroJs} comp={0} />
+      {/* data-rr-snap-exempt: die Hero-Strecke hat ihre eigene Scroll-Dramaturgie,
+          der Soft-Snap (ScrollExperience.tsx) haelt sich da raus. */}
+      <div data-rr-snap-exempt>
+        <LeistungenHero2Client css={heroCss} html={heroHtml} js={heroJs} comp={0} />
+      </div>
 
       {/* 2 · Leistungs-Ueberblick — die 6 Punkte im vermessenen pixelperfektion-
           Layout (Paar/Interlude/Paar/Einzel, versetzt), Marke Red Rabbit. Steht
           direkt nach dem Hero als Ueberblick ueber die Gesamtleistung; die
           Detailtiefe liegt auf den Unterseiten (Website, Agenten). */}
-      <div className={rrFonts} style={{ background: 'var(--rr-surface, #f4f4f2)' }}>
+      <div className={rrFonts} data-rr-snap style={{ background: 'var(--rr-surface, #f4f4f2)' }}>
         <LeistungenUeberblick />
       </div>
 
@@ -177,19 +182,27 @@ export default function LeistungenPreviewPage() {
           -> KundenSagen -> FAQ -> CTA. */}
       <div className={rrFonts} style={{ background: 'var(--rr-surface, #f4f4f2)' }}>
         {/* 3 · Scharnier-Zeile — Kipp-Punkt vom Bau zur mitarbeitenden Website */}
-        <Scharnierzeile />
+        <div data-rr-snap>
+          <Scharnierzeile />
+        </div>
 
         {/* 4 · Talos-Auftritt — TalosDashboard 1:1 aus der Website-Unterseite
             wiederverwendet (Thomas 21.07.: Dashboard-Variante A "Browser-Frame"),
             nicht nachgebaut. Ersetzt den bisherigen TalosSlot-Platzhalter. */}
-        <TalosDashboard />
+        <div data-rr-snap>
+          <TalosDashboard />
+        </div>
 
         {/* 5 · KundenSagen — vermessene finsight.framer.ai-Sektion, Navy-Grund,
             echte Google-Rezensionen (Rafael Danesh, Rene Rohrer), Gold-Sterne */}
-        <KundenSagen />
+        <div data-rr-snap>
+          <KundenSagen />
+        </div>
 
         {/* 6 · FAQ zweispaltig */}
-        <LeistungenFaq />
+        <div data-rr-snap>
+          <LeistungenFaq />
+        </div>
 
         {/* 7 · Schluss-CTA — geteilter Abschluss-Block SiteClosing (DESIGN_STANDARD
             28.07.: gleicher Aufbau wie Homepage, Text pro Seite aus
@@ -204,9 +217,12 @@ export default function LeistungenPreviewPage() {
       </div>
 
       {/* Footer der Hauptseite (opak, deckt die fixe Buehne beim Herunterscrollen). */}
-      <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
+      <div className={rrFonts} data-rr-snap style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
         <FooterReassembly />
       </div>
+
+      {/* Site-weites Scroll-Gefuehl: Lenis + Soft-Snap (Thomas 28.07.). */}
+      <ScrollExperience />
     </>
   );
 }

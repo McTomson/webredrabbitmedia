@@ -333,7 +333,9 @@ function TalosFahrt() {
   }, []);
 
   return (
-    <div ref={trackRef} className="tf-track">
+    // Soft-Snap (components/relaunch/ScrollExperience.tsx): Einstieg rastet
+    // ein, innen regiert das eigene Dwell-System.
+    <div ref={trackRef} className="tf-track" data-rr-snap data-rr-snap-exempt>
       <section aria-label="Talos-Talente" className="tf-sticky">
         {/* Riesenwort "Talos", Parallax-Ebene hinter der Buehne. WIEDERHOLT
             (nicht nur einmal): bei 8 Slides legt die Buehne bis zu 700vw

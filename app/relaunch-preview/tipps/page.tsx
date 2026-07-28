@@ -8,6 +8,7 @@ import CornerLogo from '@/components/relaunch/CornerLogo';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import SiteClosing from '@/components/relaunch/SiteClosing';
+import ScrollExperience from '@/components/relaunch/ScrollExperience';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 import '@/components/subpages/tipps-preview.css';
@@ -79,11 +80,14 @@ export default async function TippsPreviewPage() {
           Ersetzt den alten statischen rrt-hero-Textblock. Der Satz lebt als
           reveal-msg unter der Farbe ("Das sagt dir sonst keiner gratis.") und
           als Intro-Zeile im Index weiter. */}
-      <TippsHeroClient css={heroCss} html={heroHtml} js={heroJs} />
+      {/* data-rr-snap-exempt: eigene Scroll-Dramaturgie, kein Soft-Snap darin. */}
+      <div data-rr-snap-exempt>
+        <TippsHeroClient css={heroCss} html={heroHtml} js={heroJs} />
+      </div>
 
       {/* 3D-Karten-Tunnel: die Artikel-Karten fliegen beim Scrollen aus der
           Tiefe an der Kamera vorbei. Ersetzt das alte rrt-Register. */}
-      <div className={rrFonts} style={{ background: 'transparent' }}>
+      <div className={rrFonts} data-rr-snap data-rr-snap-exempt style={{ background: 'transparent' }}>
         <TippsTunnel posts={tunnelPosts} />
       </div>
 
@@ -96,9 +100,12 @@ export default async function TippsPreviewPage() {
       </div>
 
       {/* Footer der Hauptseite (self-contained Styles, .rr nur fuer Font-Variablen). */}
-      <div className={rrFonts} style={{ background: 'transparent' }}>
+      <div className={rrFonts} data-rr-snap style={{ background: 'transparent' }}>
         <FooterReassembly />
       </div>
+
+      {/* Site-weites Scroll-Gefuehl: Lenis + Soft-Snap (Thomas 28.07.). */}
+      <ScrollExperience />
     </>
   );
 }
