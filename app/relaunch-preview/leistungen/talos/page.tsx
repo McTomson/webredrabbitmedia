@@ -15,7 +15,7 @@ import Kontrollraum from '@/components/subpages/leistungen/talos/v2/Kontrollraum
 import Beweis from '@/components/subpages/leistungen/talos/v2/Beweis';
 import FragTalosAnmoderation from '@/components/subpages/leistungen/talos/v2/FragTalosAnmoderation';
 import TalosFaqV2 from '@/components/subpages/leistungen/talos/v2/TalosFaqV2';
-import TalosSchlussCta from '@/components/subpages/leistungen/talos/v2/TalosSchlussCta';
+import SiteClosing from '@/components/relaunch/SiteClosing';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
@@ -153,7 +153,13 @@ export default function TalosLeistungPreviewPage() {
         </div>
         <TalosFaqV2 />
         <div data-talos-station data-talos-anchor="0.17" data-talos-size="sm" data-talos-gesture="wave" data-talos-layer="front">
-          <TalosSchlussCta />
+          <SiteClosing
+            lines={[
+              'Du hast Talos kennengelernt.',
+              'Ob er auch für dich arbeitet, klärt ein kurzes Gespräch.',
+              'Reden wir.',
+            ]}
+          />
         </div>
       </div>
 

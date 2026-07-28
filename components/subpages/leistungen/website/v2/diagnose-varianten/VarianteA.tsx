@@ -245,7 +245,7 @@ export default function VarianteA() {
 
       <style jsx>{`
         .gta {
-          background: var(--rr-world-1-bg, #1d8c98);
+          background: var(--rr-world-1-bg, #23262e);
           padding: var(--rr-section-y, clamp(96px, 12vw, 180px))
             var(--rr-gutter, clamp(20px, 4vw, 64px));
         }
@@ -257,7 +257,7 @@ export default function VarianteA() {
           max-width: 780px;
         }
         .gta__statement {
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .gta__intro {
           margin-top: 22px;
@@ -327,7 +327,7 @@ export default function VarianteA() {
           font-weight: 800;
           font-size: clamp(1.5rem, 2.6vw, 2.2rem);
           line-height: 1.12;
-          color: #f6f5f1;
+          color: #f4f4f2;
           margin-bottom: clamp(24px, 3.4vw, 40px);
           max-width: 20em;
         }
@@ -387,7 +387,7 @@ export default function VarianteA() {
           width: clamp(30px, 3.4vw, 40px);
           height: clamp(30px, 3.4vw, 40px);
           border-radius: 50%;
-          background: #f6f5f1;
+          background: #f4f4f2;
           color: var(--rr-red, #f12032);
           font-family: var(--rr-font-ui, inherit);
           font-weight: 700;
@@ -502,7 +502,7 @@ export default function VarianteA() {
         .gta__altbtn.is-open {
           background: var(--rr-navy, #23262e);
           border-color: var(--rr-navy, #23262e);
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .gta__alttext {
           margin-top: 18px;

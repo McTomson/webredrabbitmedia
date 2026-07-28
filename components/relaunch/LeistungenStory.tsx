@@ -14,7 +14,7 @@ import MorphSculpture from "@/components/subpages/MorphSculpture";
  *
  * Wird auf der Seite INNERHALB des `.rr`-Font-Wrappers gerendert, damit die
  * echten Marken-Bauteile (rr-eyebrow-lg, rr-statement, rr-btn-sweep--red,
- * rr-btn-frame, rr-card-soft) greifen (Stil-Gesetz: echte Klassen, nicht
+ * rr-btn-outline, rr-card-soft) greifen (Stil-Gesetz: echte Klassen, nicht
  * nachgebaut). Die `.rrls-`-Klassen liefern nur Layout/Struktur.
  *
  * Kapitel: 0 Weiche (+ Assistent) / 1 Fundament (+ Zahnraeder-Skulptur comp0) /
@@ -569,9 +569,8 @@ export default function LeistungenStory({ articleCount }: { articleCount: number
           kein Baukasten, kein Flickwerk. Wenn dein Betrieb es braucht, finden wir einen Weg.
         </p>
         <div className="rrls-reveal">
-          <Link href="/relaunch-preview/kontakt" className="rr-btn-frame">
-            <span className="rr-btn-frame__t">Erzähl uns davon</span>
-            <i className="c1" /><i className="c2" /><i className="c3" /><i className="c4" />
+          <Link href="/relaunch-preview/kontakt" className="rr-btn-outline">
+            Erzähl uns davon
           </Link>
         </div>
       </div>
@@ -604,9 +603,8 @@ export default function LeistungenStory({ articleCount }: { articleCount: number
             <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
               Kostenlosen Entwurf anfragen
             </Link>
-            <a href={`tel:${PHONE_TEL}`} className="rr-btn-frame">
-              <span className="rr-btn-frame__t">Anrufen</span>
-              <i className="c1" /><i className="c2" /><i className="c3" /><i className="c4" />
+            <a href={`tel:${PHONE_TEL}`} className="rr-btn-outline rr-btn-outline--light">
+              Anrufen
             </a>
           </div>
         </div>
@@ -687,7 +685,7 @@ const CSS = `
 .rrls-door{
   display:flex; flex-direction:column; gap:8px;
   text-align:left; cursor:pointer;
-  background:#f6f5f1; border:1px solid #e4e4e0; border-radius:0;
+  background:#f4f4f2; border:1px solid #e4e4e0; border-radius:0;
   padding:26px 24px;
   transition:transform .25s var(--rr-ease,cubic-bezier(.6,0,.4,1)), border-color .25s var(--rr-ease,cubic-bezier(.6,0,.4,1)), background .25s var(--rr-ease,cubic-bezier(.6,0,.4,1));
 }
@@ -743,7 +741,7 @@ const CSS = `
   text-align:left; cursor:pointer;
   font-family:var(--font-grotesk),"Instrument Sans",sans-serif;
   font-size:1.02rem; font-weight:500; color:#23262e;
-  background:#f6f5f1; border:1px solid #e4e4e0; border-radius:0;
+  background:#f4f4f2; border:1px solid #e4e4e0; border-radius:0;
   padding:15px 18px;
   transition:transform .2s var(--rr-ease,cubic-bezier(.6,0,.4,1)), border-color .2s, background .2s;
 }
@@ -879,7 +877,7 @@ const CSS = `
 }
 .rrls-type{
   margin-top:20px; display:inline-flex; align-items:center;
-  background:#f6f5f1; border:1px solid #e4e4e0;
+  background:#f4f4f2; border:1px solid #e4e4e0;
   padding:14px 18px; max-width:100%;
 }
 .rrls-type-text{
@@ -931,7 +929,7 @@ const CSS = `
 }
 
 /* ===== Kapitel 3: Massarbeit ===== */
-.rrls-massarbeit .rr-btn-frame{ margin-top:6px; }
+.rrls-massarbeit .rr-btn-outline{ margin-top:6px; }
 
 /* ===== Kapitel 4: Beweis + Start ===== */
 .rrls-beweis{
@@ -949,17 +947,16 @@ const CSS = `
   font-size:.9rem; color:#5a5e68; margin-top:6px;
 }
 .rrls-cta-panel{
-  background:#23262e; color:#f6f5f1; border-radius:0;
+  background:#23262e; color:#f4f4f2; border-radius:0;
   padding:clamp(40px,7vw,80px) clamp(26px,5vw,64px);
   text-align:center;
 }
-.rrls-cta-h2{ color:#f6f5f1; font-size:clamp(1.7rem,3.6vw,2.8rem); max-width:22ch; margin:0 auto; }
+.rrls-cta-h2{ color:#f4f4f2; font-size:clamp(1.7rem,3.6vw,2.8rem); max-width:22ch; margin:0 auto; }
 .rrls-cta-actions{
   display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap;
   margin-top:clamp(26px,4vh,40px);
 }
 .rrls-cta-panel .rr-btn-sweep{ background:#ffffff; color:#23262e; }
-.rrls-cta-panel .rr-btn-frame{ --c:#f6f5f1; color:#f6f5f1; }
 
 /* ===== Kapitel-Orientierung (rechts) ===== */
 .rrls-dots{

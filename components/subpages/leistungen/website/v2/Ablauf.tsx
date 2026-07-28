@@ -2,6 +2,13 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import {
+  MOBILE_BREAKPOINT,
+  STEP_TRACK_VH_PER_STEP,
+  TRANSITION_EASING,
+  TRANSITION_MS,
+  isBumperDegraded,
+} from '@/lib/relaunch/scroll-standard';
 
 /**
  * Ablauf "So läuft das ab" (Copy v2 §4). Vier Schritte als scroll-getriebene
@@ -50,9 +57,12 @@ export default function Ablauf() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [reduced, setReduced] = useState(false);
 
+  // Degradiert nach Scroll-Standard (lib/relaunch/scroll-standard.ts):
+  // prefers-reduced-motion ODER schmaler Viewport (<= MOBILE_BREAKPOINT).
+  // Muss deckungsgleich mit der Media Query der Sticky-Szene unten bleiben,
+  // sonst laeuft der rAF-Loop gegen ein Layout, das gar nicht sticky ist.
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return;
-    setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    setReduced(isBumperDegraded());
   }, []);
 
   useEffect(() => {
@@ -149,9 +159,8 @@ export default function Ablauf() {
               Sweep), damit Quiz-CTA und Schluss-CTA die Haupt-Buttons bleiben.
               Mobile/reduced-motion: statisch nach der Liste sichtbar. */}
           <div className={'wd-abl__cta' + (reduced || activeIndex === 3 ? ' is-show' : '')}>
-            <Link href="/relaunch-preview/kontakt" className="rr-btn-frame rr-btn-frame--navy">
-              <i className="c1" /><i className="c2" /><i className="c3" /><i className="c4" />
-              <span className="rr-btn-frame__t">Mach den ersten Schritt</span>
+            <Link href="/relaunch-preview/kontakt" className="rr-btn-outline">
+              Mach den ersten Schritt
             </Link>
           </div>
         </div>
@@ -221,7 +230,7 @@ export default function Ablauf() {
           display: flex;
           align-items: center;
           justify-content: center;
-          transition: transform 0.3s ease, background 0.3s ease;
+          transition: transform ${TRANSITION_MS}ms ${TRANSITION_EASING}, background ${TRANSITION_MS}ms ${TRANSITION_EASING};
         }
         .wd-abl__circlenum {
           font-family: var(--rr-font-display, inherit);
@@ -229,7 +238,7 @@ export default function Ablauf() {
           font-size: clamp(0.95rem, 1.4vw, 1.3rem);
           line-height: 1;
           color: var(--rr-navy, #23262e);
-          transition: color 0.3s ease;
+          transition: color ${TRANSITION_MS}ms ${TRANSITION_EASING};
         }
         .wd-abl__circle.is-done {
           background: var(--rr-navy, #23262e);
@@ -326,7 +335,7 @@ export default function Ablauf() {
           text-align: center;
           opacity: 0;
           transform: translateY(8px);
-          transition: opacity 0.3s ease, transform 0.3s ease;
+          transition: opacity ${TRANSITION_MS}ms ${TRANSITION_EASING}, transform ${TRANSITION_MS}ms ${TRANSITION_EASING};
           pointer-events: none;
         }
         .wd-abl__cta.is-show {
@@ -334,7 +343,7 @@ export default function Ablauf() {
           transform: translateY(0);
           pointer-events: auto;
         }
-        @media (max-width: 720px) {
+        @media (max-width: ${MOBILE_BREAKPOINT}px) {
           .wd-abl__cta {
             opacity: 1;
             transform: none;
@@ -351,14 +360,19 @@ export default function Ablauf() {
           }
         }
 
-        /* Desktop-Szene: Sticky-Scroll, nur wenn Platz da ist und Motion erlaubt */
-        @media (min-width: 721px) and (prefers-reduced-motion: no-preference) {
+        /* Desktop-Szene: Sticky-Scroll, nur wenn Platz da ist und Motion erlaubt.
+           Breakpoint aus dem Scroll-Standard (MOBILE_BREAKPOINT = 820px), damit
+           er deckungsgleich mit isBumperDegraded() im rAF-Loop ist. */
+        @media (min-width: ${MOBILE_BREAKPOINT + 1}px) and (prefers-reduced-motion: no-preference) {
           .wd-abl__track {
             /* Thomas 22.07.: "ein Scroll = ein Punkt". 100vh Sticky-Pin +
-               400vh Scroll-Strecke. Der Fortschritt q laeuft ueber diese
-               400vh, floor(q*4) verteilt die 4 Schritte gleichmaessig, also
-               rund eine Viewport-Hoehe Scroll pro Schritt. */
-            height: calc(100vh + 400vh);
+               STEP_TRACK_VH_PER_STEP je Schritt Scroll-Strecke. Der Fortschritt
+               q laeuft ueber diese Strecke, floor(q*4) verteilt die 4 Schritte
+               gleichmaessig, also rund eine Viewport-Hoehe Scroll pro Schritt.
+               Bewusst OHNE Bumper-Dwell-Aufschlag: der Wechsel ist eine
+               CSS-Blende, das Standbild haelt ohnehin die ganze Etappe, und der
+               lange Absatz in Schritt 3 haengt so in keinem Snap (NN/g). */
+            height: calc(100vh + ${SCHRITTE.length * STEP_TRACK_VH_PER_STEP}vh);
           }
           .wd-abl__stage {
             position: sticky;
@@ -390,7 +404,7 @@ export default function Ablauf() {
             opacity: 0;
             transform: translateY(8px);
             pointer-events: none;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transition: opacity ${TRANSITION_MS}ms ${TRANSITION_EASING}, transform ${TRANSITION_MS}ms ${TRANSITION_EASING};
             text-align: center;
           }
           .wd-abl__step.is-active {

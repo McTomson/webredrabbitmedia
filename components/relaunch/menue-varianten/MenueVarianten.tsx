@@ -426,7 +426,7 @@ export default function MenueVarianten() {
           z-index: 2;
           transition: transform 200ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
         }
-        /* Eck-Rahmen (rr-btn-frame-Sprache) */
+        /* Eck-Rahmen (eigene mv-a-cta-Sprache, kein rr-btn-frame mehr) */
         .mv-a-cta i {
           position: absolute;
           width: 14px;

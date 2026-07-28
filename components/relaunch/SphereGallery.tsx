@@ -30,7 +30,7 @@ import { SPHERE_PROJECTS, type SphereProject } from "@/lib/relaunch/projects";
 const CELL_BG = "#23262e"; // --rr-navy (Thomas: Navy statt Schwarz)
 const GAP_BG = "#0b1017"; // Szenengrund: fast schwarz, Navy-Stich
 const GRID_LINE = "rgba(246,245,241,0.11)"; // feine durchlaufende Linien (Thomas 16.07.)
-const INK_MAIN = "#f6f5f1";
+const INK_MAIN = "#f4f4f2";
 const INK_SOFT = "#c3c8d0";
 const INFO_WASH = "#7d1522"; // Hover-Wash der Info-Zellen (dunkles Markenrot)
 
@@ -1092,7 +1092,7 @@ export default function SphereGallery() {
         style={{
           position: "absolute",
           inset: 0,
-          background: "#f6f5f1",
+          background: "#f4f4f2",
           opacity: leaving ? 1 : 0,
           pointerEvents: "none",
           transition: "opacity 0.42s ease",
@@ -1128,7 +1128,7 @@ function FallbackGrid() {
           <a
             key={p.slug}
             href={`/relaunch-preview/referenzen/${p.slug}`}
-            style={{ textDecoration: "none", color: "#f6f5f1" }}
+            style={{ textDecoration: "none", color: "#f4f4f2" }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

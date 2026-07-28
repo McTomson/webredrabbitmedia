@@ -59,7 +59,7 @@ export default async function ReferenzProjektPage({
           <p className="rr-eyebrow-lg" style={{ color: "#c7c9cf", marginBottom: 16 }}>
             {project.cat}
           </p>
-          <h1 className="rr-display-2" style={{ color: "#f6f5f1", marginBottom: 12 }}>
+          <h1 className="rr-display-2" style={{ color: "#f4f4f2", marginBottom: 12 }}>
             {project.name}
           </h1>
           <p className="rr-body" style={{ color: "#c7c9cf", marginBottom: 36, maxWidth: "52ch" }}>

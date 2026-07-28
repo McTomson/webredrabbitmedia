@@ -45,7 +45,7 @@ function Ring({ value, size, stroke, fontSize, active }: { value: number; size: 
         transform={`rotate(-90 ${size / 2} ${size / 2})`}
         style={{ transition: "stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)" }}
       />
-      <text x={size / 2} y={size / 2} textAnchor="middle" dominantBaseline="central" fill="#f6f5f1" fontSize={fontSize} fontWeight={500} fontFamily="var(--rr-font-ui)">{value}</text>
+      <text x={size / 2} y={size / 2} textAnchor="middle" dominantBaseline="central" fill="#f4f4f2" fontSize={fontSize} fontWeight={500} fontFamily="var(--rr-font-ui)">{value}</text>
     </svg>
   );
 }
@@ -82,11 +82,11 @@ export default function LighthouseCarousel() {
     <div ref={hostRef} style={{
       width: "min(94vw, 600px)", display: "flex", flexDirection: "column",
       background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.10)",
-      padding: "clamp(20px, 2.4vw, 30px)", color: "#f6f5f1",
+      padding: "clamp(20px, 2.4vw, 30px)", color: "#f4f4f2",
     }}>
       <p style={{ margin: "0 0 16px", fontSize: 11.5, lineHeight: 1.45, letterSpacing: "0.02em", color: muted, fontFamily: uiFont }}>
         Offizielles Google Lighthouse-Ergebnis für das Projekt:<br />
-        <span style={{ color: "#f6f5f1", fontWeight: 600 }}>{c.domain}</span> (Stand: Juli 2026)
+        <span style={{ color: "#f4f4f2", fontWeight: 600 }}>{c.domain}</span> (Stand: Juli 2026)
       </p>
 
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, marginBottom: 20 }}>
@@ -116,7 +116,7 @@ export default function LighthouseCarousel() {
         <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(215px, 1fr))", gap: "16px 26px" }}>
           {METRICS.map((m) => (
             <div key={m.key}>
-              <p style={{ margin: 0, fontSize: 12.5, fontWeight: 600, fontFamily: uiFont, color: "#f6f5f1" }}>
+              <p style={{ margin: 0, fontSize: 12.5, fontWeight: 600, fontFamily: uiFont, color: "#f4f4f2" }}>
                 {m.label} <span style={{ color: "#31d07a", fontWeight: 700 }}>{c.scores[m.key]}</span>
               </p>
               <p style={{ margin: "3px 0 0", fontSize: 11.5, lineHeight: 1.42, color: muted, fontFamily: uiFont }}>{m.info}</p>

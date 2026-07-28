@@ -194,10 +194,10 @@ export default function VarianteA() {
       <style jsx>{`
         .lwa {
           /* Design-Lead 22.07.: zur Abgrenzung ein ganz dezenter warmer
-             Off-White-Ton (projektweit etabliertes #f6f5f1, kein kaltes Grau)
+             Off-White-Ton (projektweit etabliertes #f4f4f2, kein kaltes Grau)
              statt reinem Weiss. Kein var-Token vorhanden (--rr-surface ist
              #f4f4f2, ein anderer Wert), daher Hex wie im restlichen Projekt. */
-          background: #f6f5f1;
+          background: #f4f4f2;
           color: var(--rr-ink);
           padding: var(--rr-section-y, clamp(96px, 12vw, 180px)) var(--rr-gutter, clamp(20px, 4vw, 64px));
         }

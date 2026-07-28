@@ -35,7 +35,7 @@
 /* ---- 2 · Beruhigungs-Bumper (statischer Platzhalter fuer den ScrollBumper) ---- */
 .rr .tl-bumper { background: var(--rr-navy); text-align: center; }
 .rr .tl-bumper__line {
-  color: #f6f5f1;
+  color: #f4f4f2;
   max-width: 18em;
   margin: 0 auto;
 }
@@ -132,7 +132,7 @@
 .rr .tl-card__block .tl-card__label { margin: 0; }
 .rr .tl-card__block .tl-card__text { margin: 0; }
 .rr .tl-card--invers { background: var(--rr-navy); border-color: var(--rr-navy); }
-.rr .tl-card--invers .tl-card__name { color: #f6f5f1; }
+.rr .tl-card--invers .tl-card__name { color: #f4f4f2; }
 .rr .tl-card--invers .tl-card__label { color: #f12032; }
 .rr .tl-card--invers .tl-card__text { color: rgba(246, 245, 241, 0.82); }
 .rr .tl-card--invers .tl-says { color: rgba(246, 245, 241, 0.92); }
@@ -183,10 +183,10 @@
 /* ---- Schluss-CTA (Navy-Band) — Muster 1:1 aus website.css .lw-cta,
    eigene tl-Klassen, weil diese Seite website.css nicht mehr importiert. ---- */
 .rr .tl-cta { background: var(--rr-navy); text-align: center; }
-.rr .tl-cta__title { color: #f6f5f1; max-width: 15em; margin: 0 auto; }
+.rr .tl-cta__title { color: #f4f4f2; max-width: 15em; margin: 0 auto; }
 .rr .tl-cta__sub { color: rgba(246, 245, 241, 0.78); max-width: 560px; margin: clamp(36px, 5vh, 60px) auto 0; }
 .rr .tl-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(20px, 2.5vw, 32px); margin-top: clamp(56px, 8vh, 96px); }
-.rr .tl-cta .rr-btn-sweep { color: #f6f5f1; }
+.rr .tl-cta .rr-btn-sweep { color: #f4f4f2; }
 /* In der zentrierten CTA die Sprechzeile als inline-block zentrieren, sonst
    steht ihre tuerkise border-left verwaist ganz links (Bild 16, Thomas 24.07.). */
 .rr .tl-cta .tl-says { display: inline-block; text-align: left; }
@@ -387,7 +387,7 @@
   font-family: var(--rr-font-ui);
   font-size: 13px;
   letter-spacing: 0.01em;
-  color: #f6f5f1;
+  color: #f4f4f2;
 }
 .rr .tl-kr__lock { width: 9px; height: 9px; border-radius: 50%; background: #2ea44f; }
 .rr .tl-kr__chromeSpacer { width: 44px; }
@@ -600,7 +600,7 @@
 }
 .rr .tl-ob__says { max-width: 720px; margin-left: auto; margin-right: auto; text-align: center; }
 
-@media (min-width: 721px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 821px) and (prefers-reduced-motion: no-preference) {
   .rr .tl-ob__track {
     /* "ein Scroll = ein Punkt", 3 Schritte: 100vh Sticky-Pin + 200vh
        Scroll-Strecke. floor(q*3) verteilt die 3 Schritte gleichmaessig

@@ -48,12 +48,8 @@ export default function ReferenzenTeaser() {
             selber urteilen.
           </p>
         </div>
-        <Link href="/relaunch-preview/referenzen" className="rr-btn-frame rr-btn-frame--navy">
-          <i className="c1" />
-          <i className="c2" />
-          <i className="c3" />
-          <i className="c4" />
-          <span className="rr-btn-frame__t">Unsere Arbeiten ansehen</span>
+        <Link href="/relaunch-preview/referenzen" className="rr-btn-outline">
+          Unsere Arbeiten ansehen
         </Link>
       </div>
     </section>

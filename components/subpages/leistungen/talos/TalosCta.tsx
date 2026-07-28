@@ -4,7 +4,7 @@ import Link from "next/link";
  * Schluss-CTA — loest den Hero-Open-Loop auf ("was tut sich unten auf
  * deiner Website, waehrend du auf der Baustelle stehst"). Navy-Band,
  * Muster aus components/subpages/leistungen/SchlussCta.tsx. Primaer
- * rr-btn-sweep--red (Kostenloser Entwurf), sekundaer rr-btn-frame
+ * rr-btn-sweep--red (Kostenloser Entwurf), sekundaer rr-btn-outline--light
  * (Preise ansehen -> /preise). Keine Preise auf dieser Seite selbst.
  */
 export default function TalosCta() {
@@ -27,12 +27,8 @@ export default function TalosCta() {
           <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
             Kostenloser Entwurf
           </Link>
-          <Link href="/preise" className="rr-btn-frame rr-btn-frame--red">
-            <i className="c1" />
-            <i className="c2" />
-            <i className="c3" />
-            <i className="c4" />
-            <span className="rr-btn-frame__t">Preise ansehen</span>
+          <Link href="/preise" className="rr-btn-outline rr-btn-outline--light">
+            Preise ansehen
           </Link>
         </div>
       </div>

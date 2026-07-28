@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { crimson, dmsans, grotesk } from "@/lib/relaunch/fonts";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
 import CornerLogo from "@/components/relaunch/CornerLogo";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
+import SiteClosing from "@/components/relaunch/SiteClosing";
 import SphereGallery from "@/components/relaunch/SphereGallery";
 import GalleryChrome from "@/components/relaunch/GalleryChrome";
 import { SPHERE_PROJECTS } from "@/lib/relaunch/projects";
@@ -45,7 +45,7 @@ export default function ReferenzenPreviewPage() {
   return (
     <div
       className={`rr rf ${dmsans.variable} ${crimson.variable} ${grotesk.variable}`}
-      style={{ background: "#ffffff" }}
+      style={{ background: "var(--rr-surface, #f4f4f2)" }}
     >
       <RelaunchMenu />
 
@@ -73,7 +73,7 @@ export default function ReferenzenPreviewPage() {
         >
           <h1
             style={{
-              color: "#f6f5f1",
+              color: "#f4f4f2",
               fontSize: "clamp(10.5px, 0.85vw, 13px)",
               fontWeight: 600,
               letterSpacing: "0.14em",
@@ -89,7 +89,7 @@ export default function ReferenzenPreviewPage() {
       </section>
 
       {/* Crawlbare, server-gerenderte Projektliste (SEO-Unterbau) */}
-      <section className="rr-section" style={{ background: "#ffffff" }}>
+      <section className="rr-section" style={{ background: "var(--rr-surface, #f4f4f2)" }}>
         <div className="rr-wrap">
           <p className="rr-eyebrow-lg" style={{ marginBottom: 20 }}>
             Die Projekte
@@ -116,17 +116,16 @@ export default function ReferenzenPreviewPage() {
         </div>
       </section>
 
-      {/* Abschluss: Statement + CTA (Copy V3, Thomas-Wahl) */}
-      <section className="rr-section" style={{ background: "var(--rr-surface)", textAlign: "center" }}>
-        <div className="rr-wrap">
-          <p className="rr-statement" style={{ margin: "0 auto 36px", maxWidth: "18ch" }}>
-            Das waren unsere Kunden. Der nächste bist du.
-          </p>
-          <Link className="rr-btn-sweep--red" href="/relaunch-preview/kontakt">
-            Den nächsten Schritt machen
-          </Link>
-        </div>
-      </section>
+      {/* Abschluss: geteilter Block SiteClosing (DESIGN_STANDARD 28.07.: gleicher
+          Aufbau wie Homepage, linksbuendig; Text aus brand/copy-closing-cta.md).
+          Ersetzt den frueheren zentrierten Inline-CTA. */}
+      <SiteClosing
+        lines={[
+          "Diese Projekte sprechen für uns.",
+          "Das nächste kann für dich sprechen.",
+          "Reden wir.",
+        ]}
+      />
 
       <FooterReassembly />
     </div>

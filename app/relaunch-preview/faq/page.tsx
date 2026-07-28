@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import FaqDemoClient from '@/components/subpages/FaqDemoClient';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import CornerLogo from '@/components/relaunch/CornerLogo';
+import FooterReassembly from '@/components/relaunch/FooterReassembly';
+import SiteClosing from '@/components/relaunch/SiteClosing';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
@@ -123,6 +125,21 @@ export default function FaqPreviewPage() {
           blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
       <CornerLogo />
       <FaqDemoClient css={css} html={html} js={js} />
+
+      {/* Abschluss-Block + ECHTER Footer (28.07., Design-Vereinheitlichung):
+          der Nachbau-Footer und der zentrierte Schluss-CTA im demo.body.html
+          sind raus, hier stehen die gemeinsamen Bauteile. Wrapper liefert nur
+          die .rr-Font-Variablen (Muster wie beim Menue oben). */}
+      <div className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
+        <SiteClosing
+          lines={[
+            'Deine Frage war nicht dabei?',
+            'Dann stell sie uns am besten direkt.',
+            'Reden wir.',
+          ]}
+        />
+        <FooterReassembly />
+      </div>
     </>
   );
 }

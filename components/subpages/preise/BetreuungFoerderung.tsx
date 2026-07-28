@@ -21,7 +21,7 @@ export default function BetreuungFoerderung() {
           "styled-jsx im Relaunch meiden"). */}
       <style>{`
         .rp-bf {
-          background: #f6f5f1;
+          background: #f4f4f2;
         }
         .rp-bf__p {
           color: var(--rr-ink-soft);

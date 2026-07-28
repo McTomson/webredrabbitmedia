@@ -164,12 +164,8 @@ export default function VarianteA() {
         </div>
 
         <div className="ez__cta">
-          <Link href="/relaunch-preview/kontakt" className="rr-btn-frame rr-btn-frame--navy">
-            <i className="c1" />
-            <i className="c2" />
-            <i className="c3" />
-            <i className="c4" />
-            <span className="rr-btn-frame__t">Mach den ersten Schritt</span>
+          <Link href="/relaunch-preview/kontakt" className="rr-btn-outline">
+            Mach den ersten Schritt
           </Link>
         </div>
       </div>

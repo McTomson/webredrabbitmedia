@@ -49,7 +49,7 @@ export default function SculptureTestPage() {
           borderTop: "1px solid #e5e5e5",
           fontFamily: "system-ui, sans-serif",
           fontSize: 13,
-          color: "#1c2837",
+          color: "#23262e",
           zIndex: 10,
         }}
       >

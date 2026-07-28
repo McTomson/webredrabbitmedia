@@ -7,9 +7,9 @@ import Link from "next/link";
 // GalleryChrome — DOM-Overlay der Referenzen-Galerie.
 // Umsetzung nach DESIGN.md (Thomas 16.07.):
 //   - Logo (Hasenkopf) oben links in MARKENROT
-//   - Buttons = rr-btn-frame (Eck-Rahmen, DESIGN.md §8) fuer
-//     Let's talk + Nav; CTAs in den Karten = rr-btn-sweep--red
-//     (Primaer-CTA-Rolle). Zwei Effekt-Stile, mehr nicht.
+//   - Buttons = rr-btn-outline--light (Button-System 28.07.: Sweep primaer +
+//     Outline sekundaer) fuer Let's talk + Nav; CTAs in den Karten =
+//     rr-btn-sweep--red (Primaer-CTA-Rolle). Zwei Effekt-Stile, mehr nicht.
 //   - Let's-talk-Overlay: durchsichtiger Blur-Grund bleibt,
 //     Karten sind PAPER-Karten im rr-card-layer-Duktus
 //     (Layer-Schatten + roter Innen-Balken, rote Eyebrows).
@@ -20,13 +20,14 @@ import Link from "next/link";
 const EMAIL = "office@redrabbit.media";
 const PHONE_TEL = "+436769000955"; // nur im tel:-Link, nie sichtbar
 
-// Eck-Rahmen-Button (DESIGN.md §8): vier <i class="c1..c4"> + Label.
-// `tone` steuert die Farbe ueber die CSS-Var --c.
+// Helle Outline-Sekundaerbuttons (Button-System 28.07.) fuer die Galerie-
+// Buehne (immer auf dunklem/photografischem Grund). `tone` markiert die
+// aktuelle Seite rot statt hell (Border + Text).
 function FrameBtn({
   href,
   onClick,
   children,
-  tone = "#f6f5f1",
+  tone,
   current = false,
 }: {
   href?: string;
@@ -35,17 +36,8 @@ function FrameBtn({
   tone?: string;
   current?: boolean;
 }) {
-  const cls = `rr-btn-frame rf-frame${current ? " rf-frame--current" : ""}`;
-  const style = { "--c": tone } as React.CSSProperties;
-  const inner = (
-    <>
-      <i className="c1" />
-      <i className="c2" />
-      <i className="c3" />
-      <i className="c4" />
-      <span className="rr-btn-frame__t">{children}</span>
-    </>
-  );
+  const cls = `rr-btn-outline rr-btn-outline--light rf-frame${current ? " rf-frame--current" : ""}`;
+  const style = tone ? ({ borderColor: tone, color: tone } as React.CSSProperties) : undefined;
   if (href) {
     return (
       <Link
@@ -54,13 +46,13 @@ function FrameBtn({
         href={href}
         aria-current={current ? "page" : undefined}
       >
-        {inner}
+        {children}
       </Link>
     );
   }
   return (
     <button type="button" className={cls} style={style} onClick={onClick}>
-      {inner}
+      {children}
     </button>
   );
 }
@@ -110,7 +102,7 @@ export default function GalleryChrome() {
         }}
       >
         <FrameBtn href="/relaunch-preview">Start</FrameBtn>
-        <FrameBtn href="/relaunch-preview/referenzen" tone="var(--rr-red)" current>
+        <FrameBtn href="/relaunch-preview/referenzen" current>
           Referenzen
         </FrameBtn>
         <FrameBtn href="/relaunch-preview/kontakt">Kontakt</FrameBtn>
@@ -154,7 +146,7 @@ export default function GalleryChrome() {
             </p>
             <p
               className="rr-display-2"
-              style={{ color: "#f6f5f1", marginBottom: 48, maxWidth: "22ch" }}
+              style={{ color: "#f4f4f2", marginBottom: 48, maxWidth: "22ch" }}
             >
               Willkommen! Schön, dich zu treffen.
             </p>
@@ -221,10 +213,10 @@ export default function GalleryChrome() {
           backdrop-filter: blur(6px);
           -webkit-backdrop-filter: blur(6px);
         }
-        /* Aktive Seite: Rahmen dauerhaft geschlossen */
-        .rr .rf-frame--current i {
-          width: 50%;
-          height: 50%;
+        /* Aktive Seite: Rahmen/Text dauerhaft rot statt hell */
+        .rr .rf-frame--current {
+          border-color: var(--rr-red);
+          color: var(--rr-red);
         }
         .rf-talk-close {
           position: fixed;
@@ -234,7 +226,7 @@ export default function GalleryChrome() {
           height: 44px;
           padding: 0;
           background: transparent;
-          color: #f6f5f1;
+          color: #f4f4f2;
           border: 1.5px solid rgba(246, 245, 241, 0.4);
           cursor: pointer;
           font-size: 20px;

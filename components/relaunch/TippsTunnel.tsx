@@ -660,7 +660,7 @@ const CSS = `
   /* Breit genug, dass auf Desktop alle Kategorien inkl. "KI & Automatisierung"
      unbeschnitten neben dem Suchfeld stehen; darunter scrollt die Chip-Zeile. */
   max-width:min(96vw,1120px);
-  background:#23262e; color:#f6f5f1;
+  background:#23262e; color:#f4f4f2;
   border-radius:0;
 }
 .rrtn-bar-scroll{
@@ -677,12 +677,12 @@ const CSS = `
   padding:15px 16px; cursor:pointer; white-space:nowrap;
   transition:color .25s var(--rr-ease,cubic-bezier(.6,0,.4,1));
 }
-.rrtn-chip:hover{ color:#f6f5f1; }
-.rrtn-chip.is-active{ color:#f6f5f1; font-weight:700; }
+.rrtn-chip:hover{ color:#f4f4f2; }
+.rrtn-chip.is-active{ color:#f4f4f2; font-weight:700; }
 .rrtn-search{
   flex:none; width:clamp(150px,18vw,240px);
   font-family:var(--font-grotesk),"Instrument Sans",sans-serif;
-  font-size:13px; color:#f6f5f1;
+  font-size:13px; color:#f4f4f2;
   background:transparent; border:0; border-radius:0;
   padding:15px 16px; outline:none;
   border-left:1px solid rgba(246,245,241,.14);

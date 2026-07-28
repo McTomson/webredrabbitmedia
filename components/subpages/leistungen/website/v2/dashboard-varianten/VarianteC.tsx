@@ -212,7 +212,7 @@ export default function VarianteC() {
           font-size: 12px;
           font-weight: 650;
           letter-spacing: 0.16em;
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .wdc__status {
           display: inline-flex;
@@ -267,7 +267,7 @@ export default function VarianteC() {
         .wdc__cardLine {
           font-family: var(--rr-font-ui);
           font-size: 15px;
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .wdc__cardSub {
           display: block;
@@ -333,7 +333,7 @@ export default function VarianteC() {
           padding-left: 20px;
           font-family: var(--rr-font-ui);
           font-size: 14px;
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .wdc__skills li::before {
           content: "+";

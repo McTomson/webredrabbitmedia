@@ -28,13 +28,9 @@ export default function TalosSlot() {
           </p>
           <Link
             href="/relaunch-preview/leistungen/talos"
-            className="rr-btn-frame rr-btn-frame--red"
+            className="rr-btn-outline"
           >
-            <i className="c1" />
-            <i className="c2" />
-            <i className="c3" />
-            <i className="c4" />
-            <span className="rr-btn-frame__t">Was Talos alles kann</span>
+            Was Talos alles kann
           </Link>
         </div>
 

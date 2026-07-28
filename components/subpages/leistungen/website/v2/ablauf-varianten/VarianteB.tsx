@@ -150,19 +150,15 @@ export default function VarianteB() {
         </div>
 
         <div className="sf__cta">
-          <Link href="/relaunch-preview/kontakt" className="rr-btn-frame rr-btn-frame--navy">
-            <i className="c1" />
-            <i className="c2" />
-            <i className="c3" />
-            <i className="c4" />
-            <span className="rr-btn-frame__t">Mach den ersten Schritt</span>
+          <Link href="/relaunch-preview/kontakt" className="rr-btn-outline">
+            Mach den ersten Schritt
           </Link>
         </div>
       </div>
 
       <style jsx>{`
         .sf {
-          background: #f6f5f1;
+          background: #f4f4f2;
           color: var(--rr-ink);
           padding: var(--rr-section-y, clamp(96px, 12vw, 180px))
             var(--rr-gutter, clamp(20px, 4vw, 64px));
@@ -314,7 +310,7 @@ export default function VarianteB() {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background: #f6f5f1;
+          background: #f4f4f2;
           box-shadow: inset 0 0 0 1.5px rgba(28, 40, 55, 0.3);
           transition: transform 0.35s var(--rr-ease, ease),
             box-shadow 0.35s var(--rr-ease, ease), background 0.35s var(--rr-ease, ease);

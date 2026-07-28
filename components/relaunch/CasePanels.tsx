@@ -3,6 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { clamp01 } from "@/lib/relaunch/morph/grammar";
+import {
+  BUMPER_TRACK_VH_PER_WINDOW,
+  isBumperDegraded,
+  snapUnits,
+} from "@/lib/relaunch/scroll-standard";
 import LighthouseCarousel from "@/components/relaunch/LighthouseCarousel";
 import KundenSagen from "@/components/subpages/leistungen/KundenSagen";
 
@@ -28,8 +33,9 @@ type Theme = {
   giant: string;
   bg: string;
   text: string;
-  accent: string;
   giantColor: string;
+  /** Dunkle Flaeche: Eyebrow braucht die kontraststarke ondark-Variante. */
+  onDark?: boolean;
   windows: PanelWindow[];
 };
 
@@ -41,7 +47,6 @@ const THEMES: Theme[] = [
     giant: "Problem",
     bg: "var(--rr-world-1-bg)",
     text: "#23262e",
-    accent: "var(--rr-red)",
     giantColor: "rgba(35,38,46,0.05)",
     windows: [
       { eyebrow: "Das Problem", headline: "Schön gebaut. Trotzdem\nruft keiner an." },
@@ -57,7 +62,6 @@ const THEMES: Theme[] = [
     giant: "Lösung",
     bg: "var(--rr-world-2-bg)",
     text: "#23262e",
-    accent: "var(--rr-red)",
     giantColor: "rgba(35,38,46,0.05)",
     windows: [
       { eyebrow: "Die Lösung", headline: "Wir bauen nicht nur Seiten, die gefunden werden.\nWir bauen dein Marketing-Team." },
@@ -72,9 +76,9 @@ const THEMES: Theme[] = [
     key: "beweis",
     giant: "Beweis",
     bg: "var(--rr-world-3-bg)",
-    text: "#f6f5f1",
-    accent: "var(--rr-red)",
+    text: "#f4f4f2",
     giantColor: "rgba(255,255,255,0.05)",
+    onDark: true,
     windows: [
       { eyebrow: "Der Beweis", headline: "Kunden, die für uns sprechen.", body: "Ergebnisse, schwarz auf weiß." },
       {
@@ -88,11 +92,14 @@ const THEMES: Theme[] = [
   },
 ];
 
-function TextBlock({ w, accent }: { w: PanelWindow; accent: string }) {
+function TextBlock({ w, onDark }: { w: PanelWindow; onDark?: boolean }) {
   return (
     <div style={{ width: "min(90vw, 760px)" }}>
+      {/* Eyebrow-Standard (docs/DESIGN_STANDARD.md): zentrale Klasse
+          rr-eyebrow-theme, die runden Klammern kommen aus der Klasse — der
+          Text wird darum OHNE Klammern uebergeben. */}
       {w.eyebrow && (
-        <p className="rr-eyebrow-lg" style={{ color: accent, fontFamily: "var(--rr-font-sans)", letterSpacing: "0.12em", fontWeight: 600, margin: 0 }}>{w.eyebrow}</p>
+        <p className={`rr-eyebrow-theme${onDark ? " rr-eyebrow-theme--ondark" : ""}`}>{w.eyebrow}</p>
       )}
       {w.headline && (
         <h3 style={{ fontFamily: "var(--rr-font-display)", fontWeight: 700, letterSpacing: "-0.018em", fontSize: "clamp(30px, 3.6vw, 52px)", lineHeight: 1.07, margin: w.eyebrow ? "0.4em 0 0" : 0, color: "inherit" }}>
@@ -114,7 +121,7 @@ function TextBlock({ w, accent }: { w: PanelWindow; accent: string }) {
 }
 
 /** Ein 100vw-breites Segment auf der horizontalen Buehne. */
-function Segment({ w, accent, index }: { w: PanelWindow; accent: string; index: number }) {
+function Segment({ w, onDark, index }: { w: PanelWindow; onDark?: boolean; index: number }) {
   const base: React.CSSProperties = { position: "absolute", left: `${index * 100}vw`, top: 0, width: "100vw", height: "100%" };
 
   if (w.kind === "kundensagen") {
@@ -129,19 +136,17 @@ function Segment({ w, accent, index }: { w: PanelWindow; accent: string; index: 
   if (w.kind === "lighthouse") {
     return (
       <div style={{ ...base, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "clamp(24px, 4vw, 64px)", padding: "8vh 8vw" }}>
-        <TextBlock w={w} accent={accent} />
+        <TextBlock w={w} onDark={onDark} />
         <LighthouseCarousel />
       </div>
     );
   }
   return (
     <div style={{ ...base, display: "flex", alignItems: "center", padding: "0 8vw" }}>
-      <TextBlock w={w} accent={accent} />
+      <TextBlock w={w} onDark={onDark} />
     </div>
   );
 }
-
-function smoothstep(x: number) { const t = clamp01(x); return t * t * (3 - 2 * t); }
 
 function PanelTrack({ t }: { t: Theme }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -150,7 +155,9 @@ function PanelTrack({ t }: { t: Theme }) {
   const N = t.windows.length;
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Sicherheitsnetz: der Elternteil rendert bei degradiertem Zustand ohnehin
+    // die vertikalen Sektionen, hier bleibt der rAF-Loop trotzdem still.
+    if (isBumperDegraded()) return;
     const track = trackRef.current!, stage = stageRef.current!, giant = giantRef.current!;
     let raf = 0, destroyed = false;
 
@@ -159,14 +166,11 @@ function PanelTrack({ t }: { t: Theme }) {
       const total = r.height - window.innerHeight;
       const p = total > 0 ? clamp01(-r.top / total) : 0;
       const vw = window.innerWidth;
-      // Snap-Dwell: pro Fenster stehen bleiben, Uebergang nur im mittleren Drittel
-      // jeder Etappe -> "einmal scrollen, ankommen, stop" (Tomson 26.07.).
-      const seg = p * (N - 1);            // 0..N-1
-      const i = Math.min(N - 2, Math.floor(seg));
-      const f = seg - i;                   // 0..1 innerhalb der Etappe
-      // Langer Dwell: Fenster bleibt ~80% der Etappe stehen, Uebergang nur im
-      // mittleren 20%-Fenster -> "klebt" laenger, schneller Snap dazwischen.
-      const units = i + smoothstep((f - 0.4) / 0.2);
+      // Snap-Dwell: pro Fenster stehen bleiben, Uebergang nur im schmalen
+      // Fenster in der Mitte jeder Etappe -> "einmal scrollen, ankommen, stop"
+      // (Tomson 26.07.). Mathe zentral in lib/relaunch/scroll-standard.ts,
+      // damit alle Bumper-Strecken dieselbe Kurve fahren (Standard 28.07.).
+      const units = snapUnits(p * (N - 1), N);
       stage.style.transform = `translate3d(${-units * vw}px, 0, 0)`;
       // Riesen-Wort faehrt mit (Parallax, etwas schneller) — Tomson 26.07.
       giant.style.transform = `translate3d(${-units * vw * 1.18}px, 0, 0)`;
@@ -182,7 +186,7 @@ function PanelTrack({ t }: { t: Theme }) {
   }, [N]);
 
   return (
-    <div ref={trackRef} style={{ height: `${N * 190}vh`, position: "relative" }}>
+    <div ref={trackRef} style={{ height: `${N * BUMPER_TRACK_VH_PER_WINDOW}vh`, position: "relative" }}>
       <section aria-label={t.key} style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", background: t.bg, color: t.text }}>
         {/* Riesen-Thema-Wort: faehrt mit (Parallax) */}
         <div ref={giantRef} aria-hidden style={{ position: "absolute", left: 0, top: 0, height: "100%", display: "flex", alignItems: "flex-end", pointerEvents: "none", zIndex: 0, willChange: "transform" }}>
@@ -192,7 +196,7 @@ function PanelTrack({ t }: { t: Theme }) {
         {/* Horizontale Buehne: N Segmente nebeneinander, translateX beim Scrollen */}
         <div ref={stageRef} style={{ position: "absolute", inset: 0, width: `${N * 100}vw`, willChange: "transform", zIndex: 1 }}>
           {t.windows.map((w, i) => (
-            <Segment key={i} w={w} accent={t.accent} index={i} />
+            <Segment key={i} w={w} onDark={t.onDark} index={i} />
           ))}
         </div>
       </section>
@@ -201,12 +205,16 @@ function PanelTrack({ t }: { t: Theme }) {
 }
 
 export default function CasePanels() {
-  const [reduced, setReduced] = useState(false);
+  // Degradiert = prefers-reduced-motion ODER schmaler Viewport (<= 820px):
+  // Bumper/Pan werden dann zu normalem vertikalem Scrollen (Standard 28.07.).
+  // Entscheidung beim Mount, kein Live-Umschalten bei Resize: ein Wechsel
+  // mitten im Scroll wuerde die Scroll-Position der Seite zerreissen.
+  const [degraded, setDegraded] = useState(false);
   useEffect(() => {
-    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    setDegraded(isBumperDegraded());
   }, []);
 
-  if (reduced) {
+  if (degraded) {
     return (
       <div>
         {THEMES.map((t) =>
@@ -215,8 +223,8 @@ export default function CasePanels() {
               {w.kind === "kundensagen" ? (
                 <div className="ks-ondark" style={{ width: "100%" }}><KundenSagen /></div>
               ) : (
-                <div className="rr-wrap" style={{ position: "relative", width: "100%", padding: "clamp(80px, 12vh, 160px) 0", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "clamp(24px, 4vw, 56px)" }}>
-                  <TextBlock w={w} accent={t.accent} />
+                <div className="rr-wrap" style={{ position: "relative", width: "100%", padding: "var(--rr-section-y) 0", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "clamp(24px, 4vw, 56px)" }}>
+                  <TextBlock w={w} onDark={t.onDark} />
                   {w.kind === "lighthouse" && <LighthouseCarousel />}
                 </div>
               )}

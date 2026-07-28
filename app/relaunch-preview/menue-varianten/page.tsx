@@ -28,7 +28,7 @@ export default function MenueVariantenPage() {
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
       />
 
-      <div className={rrFonts} style={{ background: '#1c2837' }}>
+      <div className={rrFonts} style={{ background: '#23262e' }}>
         <MenueVarianten />
       </div>
     </>

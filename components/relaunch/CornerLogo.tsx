@@ -12,9 +12,9 @@ import { RabbitMark } from "@/components/relaunch/RabbitMark";
  * NICHT von --rr-gutter abhaengig (hart auf den Referenz-Fallback), damit sie
  * unabhaengig vom .rr-Scope auf jeder Seite identisch sitzt.
  *
- * Verhalten (Thomas 22.07., praezisiert): beim Laden UNSICHTBAR, blendet
- * NUR beim Runterscrollen langsam (~1200ms) ein, sobald sich die Hero-
- * Woerter zerlegen (Trigger scrollY > 45% Viewport-Hoehe, einmalig).
+ * Verhalten (Thomas 28.07., praezisiert): beim Laden UNSICHTBAR, blendet
+ * NUR beim Runterscrollen langsam (~1200ms) ein, sobald ca. 2 Viewport-
+ * Hoehen gescrollt wurden (Trigger scrollY > 200% Viewport-Hoehe, einmalig).
  * BEWUSST KEIN Zeit-Fallback ("immer erst wenn wir weiter runter gehen").
  * prefers-reduced-motion: sofort sichtbar, ohne Transition.
  */
@@ -38,7 +38,7 @@ export default function CornerLogo() {
       window.removeEventListener("scroll", onScroll);
     };
     const onScroll = () => {
-      if (window.scrollY > window.innerHeight * 0.45) reveal();
+      if (window.scrollY > window.innerHeight * 2.0) reveal();
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });

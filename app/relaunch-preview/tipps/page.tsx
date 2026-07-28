@@ -7,6 +7,7 @@ import TippsTunnel from '@/components/relaunch/TippsTunnel';
 import CornerLogo from '@/components/relaunch/CornerLogo';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
+import SiteClosing from '@/components/relaunch/SiteClosing';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 import '@/components/subpages/tipps-preview.css';
@@ -84,6 +85,14 @@ export default async function TippsPreviewPage() {
           Tiefe an der Kamera vorbei. Ersetzt das alte rrt-Register. */}
       <div className={rrFonts} style={{ background: 'transparent' }}>
         <TippsTunnel posts={tunnelPosts} />
+      </div>
+
+      {/* Abschluss-Block (DESIGN_STANDARD 28.07.): geteiltes SiteClosing, gleicher
+          Aufbau wie Homepage, Text aus brand/copy-closing-cta.md. */}
+      <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
+        <SiteClosing
+          lines={['Lesen bringt dich auf Ideen.', 'Umsetzen bringt dir Kunden.', 'Reden wir.']}
+        />
       </div>
 
       {/* Footer der Hauptseite (self-contained Styles, .rr nur fuer Font-Variablen). */}

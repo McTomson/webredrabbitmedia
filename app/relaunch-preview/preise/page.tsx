@@ -13,7 +13,7 @@ import BetreuungFoerderung from '@/components/subpages/preise/BetreuungFoerderun
 import TalosTalenteFahrt from '@/components/subpages/preise/TalosTalenteFahrt';
 import MehrwertRechner from '@/components/subpages/preise/MehrwertRechner';
 import PreiseFaq from '@/components/subpages/preise/PreiseFaq';
-import PreiseSchlussCta from '@/components/subpages/preise/PreiseSchlussCta';
+import SiteClosing from '@/components/relaunch/SiteClosing';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
@@ -114,13 +114,12 @@ export default function PreisePreviewPage() {
       <PreiseDemoClient css={heroCss} html={heroHtml} js={heroJs} />
 
       {/* 2-7 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope. */}
-      <div className={rrFonts} style={{ background: '#ffffff', position: 'relative', zIndex: 2 }}>
-        {/* Bumper = wiederverwendeter ScrollBumper der Leistungs-Seite (Navy,
-            zentrierte Zeilen, ein Satz mittig, der naechste stupst ihn nach
-            oben; letzter mit rotem Punkt). Thomas 25.07.: der eigene Bumper war
-            kaputt (nichts sichtbar) und sollte "genauso wie auf der Leistungs-
-            Seite" zentriert sein -> reuse statt nachbauen. */}
+      <div className={rrFonts} style={{ background: 'var(--rr-surface, #f4f4f2)', position: 'relative', zIndex: 2 }}>
+        {/* Bumper = geteilter ScrollBumper im Site-Standard (hell, Fenster-Stopp,
+            rote ( Thema )-Zeile oben; Umbau 28.07., DESIGN_STANDARD.md). Zeilen
+            zentriert (Thomas 25.07.), letzter Satz mit rotem Punkt. */}
         <ScrollBumper
+          label="Was du bekommst"
           statements={[
             { text: 'Wir bauen dir eine ganze Website.' },
             { text: 'Von Grund auf. Nicht von der Stange.' },
@@ -135,7 +134,13 @@ export default function PreisePreviewPage() {
         <TalosTalenteFahrt />
         <MehrwertRechner />
         <PreiseFaq />
-        <PreiseSchlussCta />
+        <SiteClosing
+          lines={[
+            'Du kennst jetzt die Zahlen.',
+            'Was dein Projekt wirklich braucht, klären wir gemeinsam.',
+            'Reden wir.',
+          ]}
+        />
       </div>
 
       <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>

@@ -352,7 +352,7 @@
     const g=document.createElementNS(SVGNS,"g");
     const path=document.createElementNS(SVGNS,"path");
     path.setAttribute("d",p.d);
-    path.setAttribute("fill", i===EYE?"#1c2837":"#f12032");
+    path.setAttribute("fill", i===EYE?"#23262e":"#f12032");
     g.appendChild(path);
     headSvg.appendChild(g);
     let e2=p.e, a2=p.a;

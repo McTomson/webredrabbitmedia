@@ -286,7 +286,7 @@ export default function TalosDashboard() {
           font-family: var(--rr-font-ui);
           font-size: 13px;
           letter-spacing: 0.01em;
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .wda__lock {
           width: 9px;

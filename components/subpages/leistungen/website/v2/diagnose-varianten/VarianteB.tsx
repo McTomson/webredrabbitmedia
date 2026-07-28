@@ -314,7 +314,7 @@ export default function VarianteB() {
 
       <style jsx>{`
         .db {
-          background: var(--rr-world-1-bg, #1d8c98);
+          background: var(--rr-world-1-bg, #23262e);
           padding: var(--rr-section-y, clamp(96px, 12vw, 180px))
             var(--rr-gutter, clamp(20px, 4vw, 64px));
         }
@@ -326,7 +326,7 @@ export default function VarianteB() {
           max-width: 780px;
         }
         .db__statement {
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .db__intro {
           margin-top: 22px;
@@ -579,7 +579,7 @@ export default function VarianteB() {
         .db__altbtn.is-open {
           background: var(--rr-navy, #23262e);
           border-color: var(--rr-navy, #23262e);
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .db__alttext {
           margin-top: 18px;

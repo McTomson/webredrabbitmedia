@@ -117,10 +117,10 @@
 
 /* ---- 7 · Schluss-CTA (Navy-Band, Muster aus SchlussCta.tsx) ---- */
 .rr .lt-cta { background: var(--rr-navy); text-align: center; }
-.rr .lt-cta__title { color: #f6f5f1; max-width: 15em; margin: 0 auto; }
+.rr .lt-cta__title { color: #f4f4f2; max-width: 15em; margin: 0 auto; }
 .rr .lt-cta__sub { color: rgba(246, 245, 241, 0.78); max-width: 46em; margin: 18px auto 0; }
 .rr .lt-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: clamp(32px, 5vh, 48px); }
-.rr .lt-cta .rr-btn-sweep { color: #f6f5f1; }
+.rr .lt-cta .rr-btn-sweep { color: #f4f4f2; }
 
 @media (prefers-reduced-motion: reduce) {
   .rr .lt-card-grid .rr-card-soft { transition: none; }

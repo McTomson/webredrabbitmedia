@@ -23,7 +23,7 @@ export default function Scharnierzeile() {
      0 als eigener Wert): var(--rr-section-y) wie alle anderen Hub-Sektionen. */
   padding: var(--rr-section-y, clamp(96px, 12vw, 180px)) 0;
 }
-.lh-scharnier .lh-scharnier__text { color: #f6f5f1; margin: 0; }
+.lh-scharnier .lh-scharnier__text { color: #f4f4f2; margin: 0; }
 .lh-scharnier .lh-scharnier__dot { color: var(--rr-red, #f12032); }
       `}</style>
     </section>

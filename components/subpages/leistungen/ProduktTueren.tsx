@@ -40,12 +40,8 @@ export default function ProduktTueren() {
               Bei jeder Website fix dabei, kein Extra-Paket. Er steckt in
               deiner Seite drin und arbeitet, während du Feierabend hast.
             </p>
-            <Link href="/relaunch-preview/leistungen/talos" className="rr-btn-frame rr-btn-frame--red pt-talos__cta">
-              <i className="c1" />
-              <i className="c2" />
-              <i className="c3" />
-              <i className="c4" />
-              <span className="rr-btn-frame__t">Was Talos alles kann</span>
+            <Link href="/relaunch-preview/leistungen/talos" className="rr-btn-outline rr-btn-outline--light pt-talos__cta">
+              Was Talos alles kann
             </Link>
           </div>
         </div>
@@ -56,13 +52,13 @@ export default function ProduktTueren() {
           TalosSlot.tsx; Klassennamen pt-* sind seiten-lokal eindeutig). */}
       <style>{`
         .pt-section {
-          background: var(--rr-world-1-bg, #1d8c98);
+          background: var(--rr-world-1-bg, #23262e);
         }
         .pt-inner {
           max-width: 1180px;
         }
         .pt-title {
-          color: #f6f5f1;
+          color: #f4f4f2;
           max-width: 16em;
           margin: 20px 0 0;
         }
@@ -86,7 +82,7 @@ export default function ProduktTueren() {
           font-family: var(--rr-font-display);
           font-weight: 700;
           font-size: clamp(22px, 2.6vw, 30px);
-          color: #f6f5f1;
+          color: #f4f4f2;
           margin: 0 0 14px;
         }
         .pt-website__text {
@@ -99,7 +95,7 @@ export default function ProduktTueren() {
         /* Kontrast-Fix wie website.css (.lw-cta .rr-btn-sweep): rr-btn-sweep
            hat im Ruhezustand Ink-Text, auf Teal muss er hell sein. */
         .pt-website .rr-btn-sweep {
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
 
         /* ---- Kleinere, eingebettete Navy-Karte "Talos" ---- */
@@ -118,7 +114,7 @@ export default function ProduktTueren() {
           font-family: var(--rr-font-display);
           font-weight: 700;
           font-size: clamp(18px, 1.8vw, 22px);
-          color: #f6f5f1;
+          color: #f4f4f2;
           margin: 0 0 10px;
         }
         .pt-talos__text {

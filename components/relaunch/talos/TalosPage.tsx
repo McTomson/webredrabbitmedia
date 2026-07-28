@@ -849,7 +849,7 @@ const CSS = `
 .tal-choice{
   text-align:left; cursor:pointer;
   font-family:var(--font-grotesk),"Instrument Sans",sans-serif; font-size:1.02rem; font-weight:500; color:#23262e;
-  background:#f6f5f1; border:1px solid #e4e4e0; padding:15px 18px;
+  background:#f4f4f2; border:1px solid #e4e4e0; padding:15px 18px;
   transition:transform .2s var(--rr-ease,cubic-bezier(.6,0,.4,1)), border-color .2s, background .2s;
 }
 .tal-choice:hover{ transform:translateX(4px); border-color:#f12032; background:#ffffff; }
@@ -877,8 +877,8 @@ const CSS = `
 .tal-step-eyebrow{ font-family:var(--font-grotesk),"Instrument Sans",sans-serif; font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; color:#5a5e68; }
 .tal-step-label{ font-family:var(--font-dmsans),"DM Sans",sans-serif; font-weight:700; font-size:clamp(1.1rem,1.8vw,1.4rem); color:#23262e; margin-top:14px; }
 .tal-step-sub{ font-family:var(--font-grotesk),"Instrument Sans",sans-serif; font-size:.9rem; color:#5a5e68; margin-top:6px; }
-.tal-cta{ background:#23262e; color:#f6f5f1; padding:clamp(40px,7vw,80px) clamp(26px,5vw,64px); text-align:center; }
-.tal-cta-h2{ font-family:var(--font-crimson),"Crimson Pro",Georgia,serif; font-weight:500; color:#f6f5f1; font-size:clamp(1.7rem,3.6vw,2.8rem); line-height:1.15; max-width:22ch; margin:0 auto; }
+.tal-cta{ background:#23262e; color:#f4f4f2; padding:clamp(40px,7vw,80px) clamp(26px,5vw,64px); text-align:center; }
+.tal-cta-h2{ font-family:var(--font-crimson),"Crimson Pro",Georgia,serif; font-weight:500; color:#f4f4f2; font-size:clamp(1.7rem,3.6vw,2.8rem); line-height:1.15; max-width:22ch; margin:0 auto; }
 .tal-cta-actions{ display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap; margin-top:clamp(26px,4vh,40px); }
 
 /* Buttons (Eckig-Gesetz) */
@@ -892,7 +892,7 @@ const CSS = `
 .tal-btn:focus-visible{ outline:2px solid #f12032; outline-offset:3px; }
 .tal-btn--red{ background:#f12032; color:#ffffff; }
 .tal-btn--white{ background:#ffffff; color:#23262e; }
-.tal-btn--ghost{ background:transparent; color:#f6f5f1; border-color:rgba(246,245,241,.5); }
+.tal-btn--ghost{ background:transparent; color:#f4f4f2; border-color:rgba(246,245,241,.5); }
 
 /* Orientierung: Kapitel-Punkte rechts */
 .tal-dots{ position:fixed; right:clamp(14px,2vw,28px); top:50%; transform:translateY(-50%); z-index:40; display:none; flex-direction:column; gap:16px; }

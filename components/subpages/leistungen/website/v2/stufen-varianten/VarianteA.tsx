@@ -491,7 +491,7 @@ export default function VarianteA() {
 
       <style jsx>{`
         .eac {
-          background: #f6f5f1;
+          background: #f4f4f2;
           color: var(--rr-ink);
           padding: var(--rr-section-y, clamp(96px, 12vw, 180px))
             var(--rr-gutter, clamp(20px, 4vw, 64px));

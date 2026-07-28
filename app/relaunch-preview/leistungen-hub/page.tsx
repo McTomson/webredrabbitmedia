@@ -55,7 +55,7 @@ export default async function LeistungenHubPage() {
         <RelaunchMenu />
       </div>
 
-      <div className={rrFonts} style={{ background: "#ffffff" }}>
+      <div className={rrFonts} style={{ background: "var(--rr-surface, #f4f4f2)" }}>
         <main className="lh">
           {/* 1 — HERO */}
           <section className="lh-hero">
@@ -267,9 +267,9 @@ const CSS = `
   padding-left:16px; border-left:2px solid #39c2d7; }
 
 /* Sektionen */
-.lh-section{ padding:clamp(80px,11vw,160px) var(--rr-gutter,clamp(20px,4.6vw,72px)); }
+.lh-section{ padding:var(--rr-section-y,clamp(96px,12vw,180px)) var(--rr-gutter,clamp(20px,4.6vw,72px)); }
 .lh-section--surface{ background:var(--rr-surface,#f4f4f2); }
-.lh-section--close{ background:var(--rr-navy,#1c2837); color:#f6f5f1; }
+.lh-section--close{ background:var(--rr-navy,#23262e); color:#f4f4f2; }
 .lh-section--close .lh-h2{ color:#fff; }
 .lh-section--close .lh-sub{ color:#c9d2dc; }
 
@@ -292,8 +292,8 @@ const CSS = `
 .lh-btn--red:hover{ background:var(--rr-red-deep,#c81222); }
 .lh-btn--ghost{ background:transparent; color:var(--rr-ink,#23262e); border-color:var(--rr-line,#e4e4e0); }
 .lh-btn--ghost:hover{ border-color:var(--rr-ink,#23262e); }
-.lh-section--close .lh-btn--ghost{ color:#f6f5f1; border-color:rgba(246,245,241,.4); }
-.lh-section--close .lh-btn--ghost:hover{ border-color:#f6f5f1; }
+.lh-section--close .lh-btn--ghost{ color:#f4f4f2; border-color:rgba(246,245,241,.4); }
+.lh-section--close .lh-btn--ghost:hover{ border-color:#f4f4f2; }
 
 /* Zwei Haelften */
 .lh-halves{ margin-top:clamp(40px,5vw,72px); display:grid; grid-template-columns:1fr 1fr; gap:clamp(20px,2.6vw,34px); }

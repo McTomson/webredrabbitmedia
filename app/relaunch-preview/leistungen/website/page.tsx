@@ -21,7 +21,7 @@ import TalosDashboard from '@/components/subpages/leistungen/website/v2/TalosDas
 // "Was Kunden sagen" = die neue Hub-Sektion, 1:1 wiederverwendet (Thomas 21.07.).
 import KundenSagen from '@/components/subpages/leistungen/KundenSagen';
 import WebsiteFaq from '@/components/subpages/leistungen/website/WebsiteFaq';
-import SchlussCta from '@/components/subpages/leistungen/website/SchlussCta';
+import SiteClosing from '@/components/relaunch/SiteClosing';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
@@ -126,7 +126,13 @@ export default function LeistungenWebsitePreviewPage() {
         <KundenSagen />
         <ReferenzenTeaser />
         <WebsiteFaq />
-        <SchlussCta />
+        <SiteClosing
+          lines={[
+            'Gefunden werden ist der Anfang.',
+            'Was deine Website danach für dich erledigt, zeigen wir dir gern.',
+            'Reden wir.',
+          ]}
+        />
       </div>
 
       <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>

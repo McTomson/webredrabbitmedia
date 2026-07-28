@@ -12,9 +12,10 @@ import { RabbitMark } from "@/components/relaunch/RabbitMark";
  *   - helle, halbtransparente Overlay-Flaeche, Seite dahinter unscharf
  *     (backdrop-filter: blur), KEIN Panel, KEIN Navy.
  *   - zentral gestapelte Grosschrift-Menuepunkte.
- *   - Hover: vier Eck-Klammern (Reticle) blenden um den Punkt ein
- *     (opacity 0 -> 1), plus ein kleiner runder Punkt-Akzent.
- * Bei uns: Klammern + Punkt in Marken-Rot, Text in Display-Font/Ink.
+ *   - Hover/Fokus/aktiv: kleiner roter Punkt blendet links vor dem Text ein
+ *     (opacity 0 -> 1) — passt zum roten Cursor-Punkt der Site (Thomas'
+ *     Entscheidung 28.07.: Eck-Klammern komplett weg, Punkt statt Reticle).
+ * Bei uns: Punkt + Text in Marken-Rot / Display-Font/Ink.
  *
  * WICHTIG (Groessen-Regel): Schriftgroesse ist VH-basiert (min(vh, vw)), so dass
  * alle 8 Punkte + aufgeklapptes Leistungen-Dropdown + Social-Zeile auch bei
@@ -40,7 +41,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { label: "Referenzen", href: "/relaunch-preview/referenzen" },
-  { label: "Preise", href: "/preise" },
+  { label: "Preise", href: "/relaunch-preview/preise" },
   { label: "Tipps", href: "/relaunch-preview/tipps" },
   { label: "FAQ", href: "/relaunch-preview/faq" },
   { label: "Über uns", href: "/relaunch-preview/ueber-uns" },
@@ -54,20 +55,10 @@ const CONTACTS: { label: string; href: string; external?: boolean }[] = [
   { label: "Anrufen", href: "tel:+436769000955" },
 ];
 
-/** Vier Eck-Klammern (Reticle) + Punkt-Akzent, wie beim Vorbild. */
-function Reticle() {
-  return (
-    <span className="rrmenu-corners" aria-hidden="true">
-      <span className="rrmenu-corners-row">
-        <span className="rrmenu-c rrmenu-c--tl" />
-        <span className="rrmenu-c rrmenu-c--tr" />
-      </span>
-      <span className="rrmenu-corners-row">
-        <span className="rrmenu-c rrmenu-c--bl" />
-        <span className="rrmenu-c rrmenu-c--br" />
-      </span>
-    </span>
-  );
+/** Kleiner roter Punkt vor dem aktiven/gehoverten Menuepunkt (ersetzt die
+ * fruehere Eck-Klammer/Reticle-Mechanik, Thomas' Entscheidung 28.07.). */
+function AccentDot() {
+  return <span className="rrmenu-dot" aria-hidden="true" />;
 }
 
 export default function RelaunchMenu() {
@@ -239,7 +230,7 @@ export default function RelaunchMenu() {
                         onClick={() => setServicesOpen((v) => !v)}
                       >
                         <span className="rrmenu-link-text">{item.label}</span>
-                        <Reticle />
+                        <AccentDot />
                       </button>
 
                       <div
@@ -257,7 +248,7 @@ export default function RelaunchMenu() {
                                   onClick={close}
                                 >
                                   <span className="rrmenu-sublink-text">{sub.label}</span>
-                                  <Reticle />
+                                  <AccentDot />
                                 </Link>
                               </li>
                             ))}
@@ -271,7 +262,7 @@ export default function RelaunchMenu() {
                   <li key={item.href} className="rrmenu-item" style={delayVar}>
                     <Link href={item.href} className="rrmenu-link" onClick={close}>
                       <span className="rrmenu-link-text">{item.label}</span>
-                      <Reticle />
+                      <AccentDot />
                     </Link>
                   </li>
                 );
@@ -356,7 +347,7 @@ export default function RelaunchMenu() {
           inset: 0;
           z-index: 1000;
           /* Deckend weiss (Thomas 22.07.: nicht durchsichtig) */
-          background: var(--rr-offwhite, #f6f5f1);
+          background: var(--rr-offwhite, #f4f4f2);
           display: flex;
           opacity: 0;
           transition: opacity 320ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
@@ -494,46 +485,27 @@ export default function RelaunchMenu() {
           z-index: 1;
         }
 
-        /* Eck-Klammern (Reticle) — opacity 0 -> 1 bei Hover (Vorbild-Mechanik) */
-        .rrmenu-overlay :global(.rrmenu-corners) {
+        /* Roter Punkt vor dem Text — opacity 0 -> 1 bei Hover/Fokus/aktiv
+           (ersetzt die fruehere Eck-Klammer/Reticle-Mechanik, Thomas 28.07.).
+           Absolut positioniert links neben der Box, daher kein Text-Sprung. */
+        .rrmenu-overlay :global(.rrmenu-dot) {
           position: absolute;
-          inset: 0;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
+          left: -0.95rem;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 9px;
+          height: 9px;
+          border-radius: 50%;
+          background: var(--rr-red, #f12032);
           pointer-events: none;
           opacity: 0;
-          transition: opacity 300ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
-        }
-        .rrmenu-overlay :global(.rrmenu-corners-row) {
-          display: flex;
-          justify-content: space-between;
-        }
-        .rrmenu-overlay :global(.rrmenu-c) {
-          width: 0.75rem;
-          height: 0.75rem;
-        }
-        .rrmenu-overlay :global(.rrmenu-c--tl) {
-          border-top: 1px solid var(--rr-red, #f12032);
-          border-left: 1px solid var(--rr-red, #f12032);
-        }
-        .rrmenu-overlay :global(.rrmenu-c--tr) {
-          border-top: 1px solid var(--rr-red, #f12032);
-          border-right: 1px solid var(--rr-red, #f12032);
-        }
-        .rrmenu-overlay :global(.rrmenu-c--bl) {
-          border-bottom: 1px solid var(--rr-red, #f12032);
-          border-left: 1px solid var(--rr-red, #f12032);
-        }
-        .rrmenu-overlay :global(.rrmenu-c--br) {
-          border-bottom: 1px solid var(--rr-red, #f12032);
-          border-right: 1px solid var(--rr-red, #f12032);
+          transition: opacity 200ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
         }
 
-        /* Hover / Fokus / aktiver Dropdown -> Klammern + Punkt sichtbar */
-        .rrmenu-overlay :global(.rrmenu-link:hover .rrmenu-corners),
-        .rrmenu-overlay :global(.rrmenu-link:focus-visible .rrmenu-corners),
-        .rrmenu-overlay :global(.rrmenu-link.is-active .rrmenu-corners) {
+        /* Hover / Fokus / aktiver Dropdown -> Punkt sichtbar */
+        .rrmenu-overlay :global(.rrmenu-link:hover .rrmenu-dot),
+        .rrmenu-overlay :global(.rrmenu-link:focus-visible .rrmenu-dot),
+        .rrmenu-overlay :global(.rrmenu-link.is-active .rrmenu-dot) {
           opacity: 1;
         }
         .rrmenu-overlay :global(.rrmenu-link:focus-visible) {
@@ -583,13 +555,14 @@ export default function RelaunchMenu() {
           position: relative;
           z-index: 1;
         }
-        .rrmenu-overlay :global(.rrmenu-sublink:hover .rrmenu-corners),
-        .rrmenu-overlay :global(.rrmenu-sublink:focus-visible .rrmenu-corners) {
+        .rrmenu-overlay :global(.rrmenu-sublink:hover .rrmenu-dot),
+        .rrmenu-overlay :global(.rrmenu-sublink:focus-visible .rrmenu-dot) {
           opacity: 1;
         }
-        .rrmenu-overlay :global(.rrmenu-sublink .rrmenu-c) {
-          width: 0.5rem;
-          height: 0.5rem;
+        .rrmenu-overlay :global(.rrmenu-sublink .rrmenu-dot) {
+          left: -0.75rem;
+          width: 6px;
+          height: 6px;
         }
         .rrmenu-overlay :global(.rrmenu-sublink:focus-visible) {
           outline: none;
@@ -634,7 +607,6 @@ export default function RelaunchMenu() {
           .rrmenu-contact,
           .rrmenu-overlay :global(.rrmenu-link),
           .rrmenu-overlay :global(.rrmenu-sublink),
-          .rrmenu-overlay :global(.rrmenu-corners),
           .rrmenu-overlay :global(.rrmenu-dot) {
             transition-duration: 0.01ms;
           }

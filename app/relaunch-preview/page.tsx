@@ -35,7 +35,7 @@ export default function RelaunchPreviewPage() {
 
       {/* Sektion 4: nur Weissraum als Atempause vor dem ersten Panel
           (Ueberleitungs-Satz entfernt, Tomson 25.07.). */}
-      <div aria-hidden style={{ height: "clamp(160px, 26vh, 360px)" }} />
+      <div aria-hidden style={{ height: "var(--rr-section-y)" }} />
 
       {/* Sektion 5: Case-Panels (Referenz-Auswahl = Vorschlag, Tomson-Gate) */}
       <CasePanels />

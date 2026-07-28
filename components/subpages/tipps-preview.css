@@ -249,8 +249,8 @@
 .rrt-body blockquote p { font-style: italic; }
 
 /* Das Wichtigste (Key Takeaways) */
-.rrt-takeaways { margin: 6vh 0; background: var(--rrt-navy); color: #f6f5f1; padding: 2.2rem 2.4rem; }
-.rrt-takeaways .rrt-label { color: #f6f5f1; opacity: 0.9; display: block; margin-bottom: 1.2rem; }
+.rrt-takeaways { margin: 6vh 0; background: var(--rrt-navy); color: #f4f4f2; padding: 2.2rem 2.4rem; }
+.rrt-takeaways .rrt-label { color: #f4f4f2; opacity: 0.9; display: block; margin-bottom: 1.2rem; }
 .rrt-takeaways ol { list-style: none; counter-reset: rrt-tk; }
 .rrt-takeaways li {
   counter-increment: rrt-tk; display: grid; grid-template-columns: 2.6rem 1fr;

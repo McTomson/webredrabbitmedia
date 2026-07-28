@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import UeberUnsDemoClient from '@/components/subpages/UeberUnsDemoClient';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import CornerLogo from '@/components/relaunch/CornerLogo';
+import FooterReassembly from '@/components/relaunch/FooterReassembly';
+import SiteClosing from '@/components/relaunch/SiteClosing';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 
@@ -47,6 +49,21 @@ export default function UeberUnsPage() {
           blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
       <CornerLogo />
       <UeberUnsDemoClient css={css} html={html} js={js} />
+
+      {/* Abschluss-Block + ECHTER Footer (28.07., Design-Vereinheitlichung):
+          der Nachbau-Footer und der zentrierte Schluss-CTA im demo.body.html
+          sind raus, hier stehen die gemeinsamen Bauteile. Wrapper liefert nur
+          die .rr-Font-Variablen (Muster wie beim Menue oben). */}
+      <div className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
+        <SiteClosing
+          lines={[
+            'Jetzt kennst du uns.',
+            'Wir würden gern erfahren, was du vorhast.',
+            'Reden wir.',
+          ]}
+        />
+        <FooterReassembly />
+      </div>
     </>
   );
 }

@@ -46,6 +46,7 @@
   --rr-font-display: var(--font-dmsans), "DM Sans", system-ui, sans-serif; /* 06.07.: Fraunces -> DM Sans (Wortmarke + Headlines) */
   --rr-font-serif: var(--font-crimson), Georgia, serif; /* Statements/Claims, Heldane-Gegenstueck */
   --rr-font-ui: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --rr-font-sans: var(--rr-font-ui); /* Alias: CasePanels referenziert --rr-font-sans, das es sonst nicht gibt */
 
   --rr-fs-display-1: clamp(58px, 9.4vw, 135px);  /* Case-Headline */
   --rr-fs-display-2: clamp(44px, 6.2vw, 89px);   /* Abschluss-CTA */
@@ -143,6 +144,28 @@
   text-transform: uppercase;
   margin: 0;
 }
+/* Themen-Eyebrow — EIN Standard (docs/DESIGN_STANDARD.md, Abschnitt "Eyebrow"):
+   rote Grossbuchstaben-Zeile MIT runden Klammern "( Thema )". Die Klammern sind
+   Stil, nicht Inhalt, und kommen als Pseudo-Content (Vorbild: .wd-eyebrow in
+   components/subpages/leistungen/wd-eyebrow.css) — der Text wird also OHNE
+   Klammern uebergeben. Schrift = --rr-font-ui, weil Eyebrows laut
+   Typografie-Abschnitt zur UI-Rolle gehoeren. Gilt ueberall: Homepage-Panels,
+   Preise-Bumper, Unterseiten. */
+.rr .rr-eyebrow-theme {
+  font-family: var(--rr-font-ui);
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--rr-red);
+  margin: 0;
+}
+.rr .rr-eyebrow-theme::before { content: "( "; }
+.rr .rr-eyebrow-theme::after { content: " )"; }
+/* Auf Navy faellt reines Markenrot unter 4.5:1 (~3.55:1) -> helleres Rot,
+   identisch zu .wd-eyebrow--ondark (dort geprueft ~5.5:1, AA fuer Kleintext). */
+.rr .rr-eyebrow-theme--ondark { color: #f77480; }
+
 .rr .rr-body-lg { font-size: var(--rr-fs-body-lg); line-height: 1.5; margin: 0; }
 .rr .rr-body    { font-size: 17px; line-height: 1.55; margin: 0; }
 .rr .rr-meta    { font-size: var(--rr-fs-meta); line-height: 1.45; color: var(--rr-ink-soft); margin: 0; }
@@ -152,7 +175,7 @@
    Token-basiert, ruecwaertskompatibel: primary / secondary /
    ondark bleiben die alten Klassennamen, jetzt ECKIG (border-radius 0).
    Rolle: rr-btn (eckig solid) = Formular-/Utility-Button. Primaer-CTA =
-   rr-btn-sweep, Sekundaer = rr-btn-frame (siehe DESIGN.md §8).
+   rr-btn-sweep, Sekundaer = rr-btn-outline (Button-System 28.07.).
    Jede Variante setzt --rr-btn-fg (Text + Spinnerfarbe), damit
    der Loading-Spinner ohne Sonderfall die richtige Farbe hat.
    ============================================================ */
@@ -491,8 +514,8 @@
 }
 
 /* ---- Eck-Rahmen-Variante (.rr-select-frame) — Akzent, Tomson 2026-07-07 ----
-   Vier Eck-Winkel wie rr-btn-frame; beim Hover/Oeffnen wachsen sie auf 50/50
-   und schliessen den VOLLEN Rahmen (keine Luecken) in Rot. <details>-basiert. */
+   Vier Eck-Winkel (eigenstaendiges Muster); beim Hover/Oeffnen wachsen sie auf
+   50/50 und schliessen den VOLLEN Rahmen (keine Luecken) in Rot. <details>-basiert. */
 .rr .rr-select-frame { position: relative; display: inline-block; width: 260px; font-family: var(--rr-font-ui); }
 .rr .rr-select-frame > summary {
   list-style: none;
@@ -784,6 +807,13 @@
 .rr .rr-btn-sweep--navy { --c: var(--rr-navy); }
 .rr .rr-btn-sweep--red { --c: var(--rr-red); }
 
+/* Helle Variante fuer dunklen Hintergrund (Button-System 28.07.: Sweep primaer +
+   Outline sekundaer, Farbe je nach Hintergrund). Balken/Hover-Fuellung Off-White,
+   Text hell in Ruhe, auf der Fuellung dunkel. */
+.rr .rr-btn-sweep--light { --c: #f4f4f2; color: #f4f4f2; }
+.rr .rr-btn-sweep--light:hover { color: #23262e; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34); }
+.rr .rr-btn-sweep--light:focus-visible { box-shadow: 0 0 0 2px #23262e, 0 0 0 4.5px var(--c); }
+
 /* Sekundaerer Rahmen-Button (matched pair zum roten Sweep, Tomson 25.07.):
    duenner Rahmen, Ink-Schrift; Hover fuellt dunkel. Gleiche Schrift/Groesse
    wie der Sweep, damit beide als Paar wirken. */
@@ -806,66 +836,19 @@
 .rr .rr-btn-outline:hover { background: var(--rr-ink); color: #fff; }
 .rr .rr-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--rr-paper), 0 0 0 4.5px var(--rr-ink); }
 
+/* Helle Variante fuer dunklen Hintergrund (Button-System 28.07., matched pair
+   zu rr-btn-sweep--light): heller Rahmen, Text hell, Hover fuellt hell mit
+   dunklem Text. */
+.rr .rr-btn-outline--light { color: #f4f4f2; border-color: rgba(244, 244, 242, 0.6); }
+.rr .rr-btn-outline--light:hover { background: #f4f4f2; color: #23262e; }
+.rr .rr-btn-outline--light:focus-visible { outline: none; box-shadow: 0 0 0 2px #23262e, 0 0 0 4.5px #f4f4f2; }
+
 /* KundenSagen im dunklen Beweis-Panel (Tomson 26.07.): Grund transparent (Panel-
    Dunkel bleibt), Ink-Tokens auf hell -> Titel/Zitat/Namen werden hell lesbar. */
-.rr .ks-ondark { --rr-ink: #f6f5f1; --rr-ink-soft: rgba(246,245,241,0.62); --rr-line: rgba(255,255,255,0.14); }
+.rr .ks-ondark { --rr-ink: #f4f4f2; --rr-ink-soft: rgba(246,245,241,0.62); --rr-line: rgba(255,255,255,0.14); }
 .rr .ks-ondark .ks-section { background: transparent; --ks-tile-bg: rgba(255,255,255,0.09); }
 /* Inaktive Avatar-Kachel dunkel -> helle Initialen bleiben lesbar (Tomson 26.07.) */
 .rr .ks-ondark .ks-tile-initials { color: rgba(246,245,241,0.9); }
-
-/* ---- Eck-Rahmen (uiverse-Idee, auf Marke) ----
-   Ruhe: nur vier Eck-Winkel (<i class="c1..c4">) + Schrift in --c,
-   Grund bleibt Seitenfarbe. Hover: die Winkel wachsen auf 50% und
-   schliessen den vollen Rahmen. Modifier --fill: statt Rahmen faehrt
-   eine farbige Fuellung hoch, Schrift wird weiss. Farbe --navy / --red. */
-.rr .rr-btn-frame {
-  --c: var(--rr-navy);
-  position: relative;
-  display: inline-block;
-  padding: 18px 38px;
-  font-family: var(--rr-font-ui);
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--c);
-  text-decoration: none;
-  background: transparent;
-  cursor: pointer;
-  transition: color 0.35s var(--rr-ease);
-}
-.rr .rr-btn-frame__t { position: relative; z-index: 2; }
-.rr .rr-btn-frame i {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border: 0 solid var(--c);
-  z-index: 2;
-  pointer-events: none;
-  transition: width 0.4s var(--rr-ease), height 0.4s var(--rr-ease);
-}
-.rr .rr-btn-frame .c1 { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
-.rr .rr-btn-frame .c2 { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
-.rr .rr-btn-frame .c3 { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
-.rr .rr-btn-frame .c4 { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
-.rr .rr-btn-frame:hover i,
-.rr .rr-btn-frame:focus-visible i { width: 50%; height: 50%; }
-.rr .rr-btn-frame:focus-visible { outline: none; }
-.rr .rr-btn-frame--navy { --c: var(--rr-navy); }
-.rr .rr-btn-frame--red { --c: var(--rr-red); }
-.rr .rr-btn-frame--fill::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: var(--c);
-  transform: scaleY(0);
-  transform-origin: bottom center;
-  transition: transform 0.4s var(--rr-ease);
-}
-.rr .rr-btn-frame--fill:hover::before { transform: scaleY(1); }
-.rr .rr-btn-frame--fill:hover { color: #fff; }
 
 /* ============================================================
    Formular-System (aufgebaut auf rr-field/rr-label, 2026-07-06)
@@ -1123,7 +1106,7 @@
 /* ---- Neumorph eckig (.rr-formcard-neu) ----
    uiverse-Vorlage, originalgetreu, auf Marke + ECKIG (Tomson-Wunsch).
    Wanderndes Label wird beim Fokus/Inhalt ein roter eckiger Block,
-   Submit = Eck-Rahmen-Button (rr-btn-frame--red--fill). --tx je Feld. */
+   Submit = rr-btn-sweep--red. --tx je Feld. */
 .rr .rr-formcard-neu {
   display: flex;
   flex-direction: column;
@@ -1257,16 +1240,16 @@
 .rr .rr-faq__eyebrow { font-family: var(--rr-font-display); font-weight: 700; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; margin: 0 0 36px; }
 
 /* ---- A · Farbwelt-Panel (rr-faq--panel; --dark / --blue) ---- */
-.rr .rr-faq--panel { background: var(--rr-world-1-bg); color: #f6f5f1; }
+.rr .rr-faq--panel { background: var(--rr-world-1-bg); color: #f4f4f2; }
 .rr .rr-faq--panel.rr-faq--dark { background: var(--rr-world-2-bg); }
 .rr .rr-faq--panel.rr-faq--blue { background: var(--rr-world-3-bg); }
 .rr .rr-faq--panel .rr-faq__inner { max-width: 1000px; margin: 0 auto; padding: 96px 40px 104px; }
-.rr .rr-faq--panel .rr-faq__eyebrow { color: #f6f5f1; opacity: 0.7; }
+.rr .rr-faq--panel .rr-faq__eyebrow { color: #f4f4f2; opacity: 0.7; }
 .rr .rr-faq--panel details { border-top: 1px solid rgba(246, 245, 241, 0.28); }
 .rr .rr-faq--panel details:last-of-type { border-bottom: 1px solid rgba(246, 245, 241, 0.28); }
-.rr .rr-faq--panel summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 30px 0; font-family: var(--rr-font-display); font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.08; letter-spacing: -0.02em; color: #f6f5f1; }
+.rr .rr-faq--panel summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 30px 0; font-family: var(--rr-font-display); font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.08; letter-spacing: -0.02em; color: #f4f4f2; }
 .rr .rr-faq__plus { position: relative; flex: 0 0 auto; width: 28px; height: 28px; margin-top: 4px; }
-.rr .rr-faq__plus::before, .rr .rr-faq__plus::after { content: ""; position: absolute; left: 50%; top: 50%; background: #f6f5f1; transition: transform 0.35s var(--rr-ease); }
+.rr .rr-faq__plus::before, .rr .rr-faq__plus::after { content: ""; position: absolute; left: 50%; top: 50%; background: #f4f4f2; transition: transform 0.35s var(--rr-ease); }
 .rr .rr-faq__plus::before { width: 26px; height: 3px; transform: translate(-50%, -50%); }
 .rr .rr-faq__plus::after { width: 3px; height: 26px; transform: translate(-50%, -50%); }
 .rr .rr-faq--panel details[open] .rr-faq__plus::after { transform: translate(-50%, -50%) scaleY(0); }
@@ -1286,7 +1269,7 @@
 .rr .rr-faq--editorial .rr-faq__answer-in p { max-width: 62ch; font-family: var(--rr-font-ui); font-size: 17px; line-height: 1.62; color: var(--rr-ink-soft); margin: 0; padding: 0 0 40px 52px; }
 
 /* ---- E · Konversation (rr-faq--chat), Chat auf dunklem Panel ---- */
-.rr .rr-faq--chat { background: var(--rr-world-2-bg); color: #f6f5f1; }
+.rr .rr-faq--chat { background: var(--rr-world-2-bg); color: #f4f4f2; }
 .rr .rr-faq--chat .rr-faq__inner { max-width: 820px; margin: 0 auto; padding: 80px 40px 92px; }
 .rr .rr-faq--chat .rr-faq__eyebrow { color: #ff5f6d; }
 .rr .rr-faq--chat details { margin-bottom: 14px; }
@@ -1349,7 +1332,7 @@
 .rr .rr-quote {
   position: relative;
   background: var(--rr-world-1-bg);
-  color: #f6f5f1;
+  color: #f4f4f2;
   padding: clamp(40px, 6vw, 72px) clamp(28px, 5vw, 64px);
   overflow: hidden;
 }
@@ -1366,12 +1349,12 @@
   font-style: italic;
   font-size: clamp(28px, 4vw, 44px);
   line-height: 1.3;
-  color: #f6f5f1;
+  color: #f4f4f2;
   margin: 0 0 32px;
   max-width: 46ch;
 }
 .rr .rr-quote__attr { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-.rr .rr-quote__name { font-family: var(--rr-font-ui); font-weight: 650; font-size: 15px; color: #f6f5f1; }
+.rr .rr-quote__name { font-family: var(--rr-font-ui); font-weight: 650; font-size: 15px; color: #f4f4f2; }
 .rr .rr-quote__stars { color: #fcfbc9; letter-spacing: 2px; font-size: 15px; }
 .rr .rr-quote__src { font-family: var(--rr-font-ui); font-size: 13px; color: rgba(246, 245, 241, 0.65); }
 
@@ -1532,8 +1515,8 @@
   transition: color 220ms var(--rr-ease), -webkit-text-stroke-color 220ms var(--rr-ease);
 }
 .rr .rr-outline-word:hover, .rr .rr-outline-word:focus-visible { color: var(--rr-red); -webkit-text-stroke-color: var(--rr-red); }
-.rr .rr-outline-word--ondark { -webkit-text-stroke-color: #f6f5f1; }
-.rr .rr-outline-word--ondark:hover, .rr .rr-outline-word--ondark:focus-visible { color: #f6f5f1; -webkit-text-stroke-color: #f6f5f1; }
+.rr .rr-outline-word--ondark { -webkit-text-stroke-color: #f4f4f2; }
+.rr .rr-outline-word--ondark:hover, .rr .rr-outline-word--ondark:focus-visible { color: #f4f4f2; -webkit-text-stroke-color: #f4f4f2; }
 
 /* ---- P3 · Shatter (Variante B: alt zerfaellt, neu setzt sich zusammen) ----
    3x3-Fragment-Raster ueber background-position; Eintritt via

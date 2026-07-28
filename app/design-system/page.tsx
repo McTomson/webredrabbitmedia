@@ -123,16 +123,12 @@ function Specimen({ label, children }: { label: string; children: React.ReactNod
   );
 }
 
-/* Eck-Rahmen-Button (aufgenommen 13) — vier Eck-Winkel als <i>, dann der Text.
-   Ruhe zeigt nur die Winkel, Hover schliesst sie zum Rahmen (oder --fill). */
-function FrameBtn({ variant, fill, label }: { variant: string; fill?: boolean; label: string }) {
+/* Sekundaerer Outline-Button (Button-System 28.07.) — Rahmen duenn, Hover
+   fuellt. `light` fuer dunklen Grund. */
+function OutlineBtn({ light, label }: { light?: boolean; label: string }) {
   return (
-    <a className={`rr-btn-frame rr-btn-frame--${variant}${fill ? " rr-btn-frame--fill" : ""}`} href="#">
-      <i className="c1" />
-      <i className="c2" />
-      <i className="c3" />
-      <i className="c4" />
-      <span className="rr-btn-frame__t">{label}</span>
+    <a className={`rr-btn-outline${light ? " rr-btn-outline--light" : ""}`} href="#">
+      {label}
     </a>
   );
 }
@@ -797,13 +793,12 @@ export default function DesignSystemPage() {
       {/* ---------------------------------------------------------- */}
       {/* 13 · Buttons - Aufgenommen (Sweep + Eck-Rahmen) */}
       {/* ---------------------------------------------------------- */}
-      <Section n="13" title="Buttons - Aufgenommen (Sweep + Eck-Rahmen)">
+      <Section n="13" title="Buttons - Sweep primaer + Outline sekundaer">
         <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 760 }}>
-          Von Tomson bestaetigt (2026-07-06). Sweep-Fill als Haupt-CTA in Rot: eckig, transparenter
-          Grund, der rote Balken waechst von links zur Vollflaeche. Dazu der Eck-Rahmen in vier
-          Versionen: die Ruhe zeigt nur die vier Eck-Winkel, beim Hover schliessen sich die Linien
-          zum Rahmen (Navy/Rot) oder der Inhalt fuellt sich (Navy/Rot). Zum Pruefen mit der Maus
-          drueberfahren.
+          Button-System (28.07.2026): nur noch zwei Buttons. Sweep-Fill als Haupt-CTA in Rot: eckig,
+          transparenter Grund, der rote Balken waechst von links zur Vollflaeche. Outline als
+          Sekundaer-Button: duenner Rahmen, Hover fuellt. Farbe je nach Hintergrund — dunkel/Ink auf
+          hellem Grund, <code>--light</code> auf dunklem Grund. Zum Pruefen mit der Maus drueberfahren.
         </p>
         <div style={dsBtnGrid}>
           <div style={dsPairCol}>
@@ -828,15 +823,24 @@ export default function DesignSystemPage() {
             marginTop: 24,
           }}
         >
-          <FrameBtn variant="navy" label="Projekt anfragen" />
-          <FrameBtn variant="red" label="Projekt anfragen" />
-          <FrameBtn variant="navy" fill label="Projekt anfragen" />
-          <FrameBtn variant="red" fill label="Projekt anfragen" />
+          <OutlineBtn label="Projekt anfragen" />
         </div>
-        <p className="rr-meta" style={{ marginTop: 14 }}>
-          rr-btn-frame--navy / --red (Linien schliessen sich) · zusaetzlich --fill (Inhalt faehrt
-          hoch, Schrift weiss)
-        </p>
+        <p className="rr-meta" style={{ marginTop: 14 }}>rr-btn-outline · Sekundaer auf hellem Grund</p>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "48px 40px",
+            alignItems: "center",
+            background: "var(--rr-navy)",
+            borderRadius: 16,
+            padding: "56px 40px",
+            marginTop: 24,
+          }}
+        >
+          <OutlineBtn light label="Projekt anfragen" />
+        </div>
+        <p className="rr-meta" style={{ marginTop: 14 }}>rr-btn-outline--light · Sekundaer auf dunklem Grund</p>
       </Section>
 
       {/* ---------------------------------------------------------- */}
@@ -982,7 +986,7 @@ export default function DesignSystemPage() {
         <p className="rr-meta" style={{ marginBottom: 28, maxWidth: 800 }}>
           Von Tomson bestaetigt (2026-07-07). Zwei Anfrage-Karten. Die Neumorph-Karte ist die
           uiverse-Vorlage originalgetreu, aber ECKIG: das Label wandert beim Tippen/Fokus als roter
-          eckiger Block nach oben, Submit ist der Eck-Rahmen-Button (fuellt rot). Die Split-Karte
+          eckiger Block nach oben, Submit ist der Sweep-Button (rot). Die Split-Karte
           nutzt das rr-field/rr-label-System mit Navy-Statement-Panel. Felder sind echt: reinklicken
           und tippen.
         </p>
@@ -1004,12 +1008,8 @@ export default function DesignSystemPage() {
                 <input type="text" required />
                 <span>Nachricht</span>
               </div>
-              <button className="rr-btn-frame rr-btn-frame--red rr-btn-frame--fill" type="submit" style={{ marginBottom: "1.2em" }}>
-                <i className="c1" />
-                <i className="c2" />
-                <i className="c3" />
-                <i className="c4" />
-                <span className="rr-btn-frame__t">Senden</span>
+              <button className="rr-btn-sweep rr-btn-sweep--red" type="submit" style={{ marginBottom: "1.2em" }}>
+                Senden
               </button>
             </form>
           </div>
@@ -1039,7 +1039,7 @@ export default function DesignSystemPage() {
           </div>
         </div>
         <p className="rr-meta" style={{ marginTop: 18 }}>
-          rr-formcard-neu (+ rr-btn-frame--red--fill) · rr-formcard-split (+ rr-field / rr-btn-sweep--red)
+          rr-formcard-neu (+ rr-btn-sweep--red) · rr-formcard-split (+ rr-field / rr-btn-sweep--red)
         </p>
       </Section>
 

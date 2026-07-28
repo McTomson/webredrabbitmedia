@@ -357,12 +357,8 @@ export default function Faehigkeiten() {
 
             <div className="tlfg-modal__cta">
               {open.invers ? (
-                <Link href={KONTAKT} className="rr-btn-frame tlfg-frame--teal">
-                  <i className="c1" />
-                  <i className="c2" />
-                  <i className="c3" />
-                  <i className="c4" />
-                  <span className="rr-btn-frame__t">Sonderanfertigung besprechen</span>
+                <Link href={KONTAKT} className="rr-btn-outline rr-btn-outline--light">
+                  Sonderanfertigung besprechen
                 </Link>
               ) : (
                 <Link href={KONTAKT} className="rr-btn-sweep rr-btn-sweep--red">
@@ -494,8 +490,8 @@ const CSS = `
    Caret + Plus in Tuerkis. */
 .rr .tlfg-cell--invers { background: #23262e; }
 .rr .tlfg-cell--invers:hover { background: #16202c; }
-.rr .tlfg-cell--invers:focus-visible { box-shadow: inset 0 0 0 2px #f6f5f1; }
-.rr .tlfg-cell--invers .tlfg-name { color: #f6f5f1; }
+.rr .tlfg-cell--invers:focus-visible { box-shadow: inset 0 0 0 2px #f4f4f2; }
+.rr .tlfg-cell--invers .tlfg-name { color: #f4f4f2; }
 .rr .tlfg-cell--invers .tlfg-caret { background: #f12032; }
 .rr .tlfg-cell--invers .tlfg-plus { color: #6fd4e5; }
 .rr .tlfg-cell--invers:hover .tlfg-plus { color: #f12032; transform: scale(1.12); }
@@ -562,7 +558,7 @@ const CSS = `
 }
 .rr .tlfg-close:hover { background: var(--rr-red); color: #fff; border-color: var(--rr-red); }
 .rr .tlfg-close:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--rr-paper), 0 0 0 4px var(--rr-red); }
-.rr .tlfg-modal--invers .tlfg-close { color: #f6f5f1; border-color: rgba(246, 245, 241, 0.3); }
+.rr .tlfg-modal--invers .tlfg-close { color: #f4f4f2; border-color: rgba(246, 245, 241, 0.3); }
 .rr .tlfg-modal--invers .tlfg-close:hover { background: #f12032; color: #23262e; border-color: #f12032; }
 
 .rr .tlfg-modal__idx {
@@ -585,7 +581,7 @@ const CSS = `
   overflow-wrap: break-word;
   hyphens: auto;
 }
-.rr .tlfg-modal--invers .tlfg-modal__name { color: #f6f5f1; }
+.rr .tlfg-modal--invers .tlfg-modal__name { color: #f4f4f2; }
 
 /* Kopf: Name links, Fähigkeiten-Akkordeon rechts. */
 .rr .tlfg-modal__head {
@@ -667,7 +663,7 @@ const CSS = `
 }
 .rr .tlfg-modal--invers .tlfg-mx__titel { color: rgba(246, 245, 241, 0.8); }
 .rr .tlfg-mx__cell.is-active .tlfg-mx__titel { color: var(--rr-navy); font-weight: 600; }
-.rr .tlfg-modal--invers .tlfg-mx__cell.is-active .tlfg-mx__titel { color: #f6f5f1; }
+.rr .tlfg-modal--invers .tlfg-mx__cell.is-active .tlfg-mx__titel { color: #f4f4f2; }
 /* Ausklapp-Zeichen (+): signalisiert Klickbarkeit; offen rotiert es zu x. */
 .rr .tlfg-mx__sign {
   margin-left: auto;
@@ -752,9 +748,6 @@ const CSS = `
 .rr .tlfg-says::after { content: '\\201C'; }
 .rr .tlfg-modal--invers .tlfg-says { color: rgba(246, 245, 241, 0.92); }
 .rr .tlfg-modal__cta { margin-top: clamp(24px, 3.2vw, 32px); }
-
-/* Tuerkis-Eck-Rahmen fuer die Invers-CTA (rr-btn-frame, nur Farbe --c). */
-.rr .tlfg-frame--teal { --c: #f12032; }
 
 @keyframes tlfg-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes tlfg-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { isBumperDegraded } from '@/lib/relaunch/scroll-standard';
 
 /**
  * Onboarding "So zieht Talos ein" (Copy v2 Sektion 6). 1:1-Klon der
@@ -43,9 +44,12 @@ export default function Onboarding() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [reduced, setReduced] = useState(false);
 
+  // Degradiert nach Scroll-Standard (lib/relaunch/scroll-standard.ts):
+  // prefers-reduced-motion ODER schmaler Viewport (<= MOBILE_BREAKPOINT).
+  // Muss deckungsgleich mit der Media Query der Sticky-Szene in talos-v2.css
+  // bleiben, sonst laeuft der rAF-Loop gegen ein Layout, das gar nicht sticky ist.
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return;
-    setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    setReduced(isBumperDegraded());
   }, []);
 
   useEffect(() => {

@@ -201,7 +201,7 @@ export default function MehrwertRechner() {
 
       <style>{`
         .mwr-section {
-          background: var(--rr-paper, #f6f5f1);
+          background: var(--rr-paper, #f4f4f2);
         }
         .mwr-head {
           margin-bottom: clamp(28px, 4vw, 48px);

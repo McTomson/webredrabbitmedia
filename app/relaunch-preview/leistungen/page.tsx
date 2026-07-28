@@ -12,7 +12,7 @@ import Scharnierzeile from '@/components/subpages/leistungen/Scharnierzeile';
 import TalosDashboard from '@/components/subpages/leistungen/website/v2/TalosDashboard';
 import KundenSagen from '@/components/subpages/leistungen/KundenSagen';
 import LeistungenFaq from '@/components/subpages/leistungen/LeistungenFaq';
-import SchlussCta from '@/components/subpages/leistungen/SchlussCta';
+import SiteClosing from '@/components/relaunch/SiteClosing';
 import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
@@ -166,7 +166,7 @@ export default function LeistungenPreviewPage() {
           Layout (Paar/Interlude/Paar/Einzel, versetzt), Marke Red Rabbit. Steht
           direkt nach dem Hero als Ueberblick ueber die Gesamtleistung; die
           Detailtiefe liegt auf den Unterseiten (Website, Agenten). */}
-      <div className={rrFonts} style={{ background: '#ffffff' }}>
+      <div className={rrFonts} style={{ background: 'var(--rr-surface, #f4f4f2)' }}>
         <LeistungenUeberblick />
       </div>
 
@@ -175,7 +175,7 @@ export default function LeistungenPreviewPage() {
           in den 6 Punkten des Ueberblicks. Eine Aussage pro Sektion, gleich-
           maessiger Rhythmus): Scharnierzeile -> Talos (der eine Teal-Moment)
           -> KundenSagen -> FAQ -> CTA. */}
-      <div className={rrFonts} style={{ background: '#ffffff' }}>
+      <div className={rrFonts} style={{ background: 'var(--rr-surface, #f4f4f2)' }}>
         {/* 3 · Scharnier-Zeile — Kipp-Punkt vom Bau zur mitarbeitenden Website */}
         <Scharnierzeile />
 
@@ -191,8 +191,16 @@ export default function LeistungenPreviewPage() {
         {/* 6 · FAQ zweispaltig */}
         <LeistungenFaq />
 
-        {/* 7 · Schluss-CTA — produktbezogen, Preise auf /preise */}
-        <SchlussCta />
+        {/* 7 · Schluss-CTA — geteilter Abschluss-Block SiteClosing (DESIGN_STANDARD
+            28.07.: gleicher Aufbau wie Homepage, Text pro Seite aus
+            brand/copy-closing-cta.md). */}
+        <SiteClosing
+          lines={[
+            'Du weißt jetzt, was deine Website alles übernehmen kann.',
+            'Die Frage ist nur, wann sie damit anfängt.',
+            'Reden wir.',
+          ]}
+        />
       </div>
 
       {/* Footer der Hauptseite (opak, deckt die fixe Buehne beim Herunterscrollen). */}

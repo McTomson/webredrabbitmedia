@@ -19,7 +19,7 @@
 }
 
 .ks-title {
-  font-family: var(--font-dmsans), 'DM Sans', system-ui, sans-serif;
+  font-family: var(--rr-font-display);
   font-size: 42px;
   font-weight: 300;
   line-height: 1.2;
@@ -81,7 +81,7 @@
 }
 
 .ks-badge-label {
-  font-family: var(--font-dmsans), 'DM Sans', system-ui, sans-serif;
+  font-family: var(--rr-font-display);
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -90,7 +90,7 @@
 
 .ks-quote {
   margin: 0;
-  font-family: var(--font-dmsans), 'DM Sans', system-ui, sans-serif;
+  font-family: var(--rr-font-display);
   font-size: 32px;
   font-weight: 300;
   line-height: 1.28;
@@ -130,7 +130,7 @@
 
 .ks-name {
   margin: 0;
-  font-family: var(--font-dmsans), 'DM Sans', system-ui, sans-serif;
+  font-family: var(--rr-font-display);
   font-size: 24px;
   font-weight: 600;
   color: var(--rr-ink, #23262e);
@@ -139,7 +139,7 @@
 
 .ks-role {
   margin: 0;
-  font-family: var(--font-dmsans), 'DM Sans', system-ui, sans-serif;
+  font-family: var(--rr-font-display);
   font-size: 18px;
   font-weight: 300;
   color: var(--rr-ink-soft, #5a5e68);
@@ -172,7 +172,7 @@
 }
 
 .ks-tile-initials {
-  font-family: var(--font-dmsans), 'DM Sans', system-ui, sans-serif;
+  font-family: var(--rr-font-display);
   font-weight: 600;
   font-size: 28px;
   color: var(--rr-ink-soft, #5a5e68);

@@ -12,7 +12,7 @@ import FragTalos from '@/components/relaunch/talos/FragTalos';
  * Teal-Welt) — hier in BLAU (#f12032, das etablierte, barrierefreie --blue).
  * Der Assistent sitzt OHNE weisse Panel-Box DIREKT auf dem Blau: die
  * Antwort-Reihen sind durchscheinende, umrandete Zeilen (Rahmen Off-White,
- * Hover-Fuellung), Text Off-White #f6f5f1. HARTE REGEL: niemals Rot auf Blau
+ * Hover-Fuellung), Text Off-White #f4f4f2. HARTE REGEL: niemals Rot auf Blau
  * — alle roten Elemente aus FragTalos (Start-Button, Fortschritt, Ergebnis-
  * Label, Buttons) sind scoped auf Off-White/Tuerkis umgestellt.
  *
@@ -85,7 +85,7 @@ export default function FragTalosAnmoderation() {
    hier erfundene kleinere Groesse (28-48px) war nur angenaehert (Thomas
    24.07.) -- jetzt 1:1 uebernommen, max-width/margin bleiben die
    Seiten-Basiswerte aus .tl-title (talos-v2.css, 16em / 0 0 clamp(20,3vw,28)). */
-.rr .tlfrag-section .tl-title { color: #f6f5f1; }
+.rr .tlfrag-section .tl-title { color: #f4f4f2; }
 
 /* Subline EXAKT wie .wd-diag__intro (Diagnose.tsx): eigene Groessen-Rezeptur,
    NICHT rr-body-lg (23px). max-width bleibt die hiesige Spalten-Breite
@@ -104,13 +104,13 @@ export default function FragTalosAnmoderation() {
 /* ---- FragTalos DIREKT auf Blau (kein weisses Panel), im Diagnose-Look.
    Alle Overrides scoped ueber .rr .tlfrag-section .ft-* (3 Klassen), damit
    FragTalos.tsx SELBST unveraendert bleibt (wird evtl. woanders genutzt).
-   Off-White = #f6f5f1, Akzent = Tuerkis #f12032. NIE Rot auf Blau. ---- */
+   Off-White = #f4f4f2, Akzent = Tuerkis #f12032. NIE Rot auf Blau. ---- */
 
 .rr .tlfrag-section .tlfrag-quiz { max-width: 620px; }
 
 /* Start-Button (war rot) -> primaerer Off-White-Button, dunkler Text. */
 .rr .tlfrag-section .ft-start {
-  background: #f6f5f1;
+  background: #f4f4f2;
   color: var(--rr-ink, #23262e);
   border-color: transparent;
   box-shadow: 0 10px 26px rgba(6, 34, 48, 0.24);
@@ -147,7 +147,7 @@ export default function FragTalosAnmoderation() {
    letter-spacing (Basis -.015em), margin-bottom clamp(20px,3vw,32px)
    (Basis fix 20px). line-height 1.12 war schon identisch. */
 .rr .tlfrag-section .ft-question {
-  color: #f6f5f1;
+  color: #f4f4f2;
   font-weight: 800;
   font-size: clamp(1.5rem, 2.6vw, 2.2rem);
   line-height: 1.12;
@@ -265,23 +265,23 @@ export default function FragTalosAnmoderation() {
   border-color: rgba(246, 245, 241, 0.24);
   border-left: 3px solid #f12032;
 }
-.rr .tlfrag-section .ft-result-title { color: #f6f5f1; }
+.rr .tlfrag-section .ft-result-title { color: #f4f4f2; }
 .rr .tlfrag-section .ft-result-text { color: rgba(246, 245, 241, 0.82); }
 
 /* Talos-Sprechzeile im Ergebnis: Off-White (Border ist schon Tuerkis). */
-.rr .tlfrag-section .ft-say { color: #f6f5f1; }
+.rr .tlfrag-section .ft-say { color: #f4f4f2; }
 
 /* Ergebnis-Buttons: primaer Off-White (war rot), sekundaer Off-White-Ghost. */
 .rr .tlfrag-section .ft-btn--red {
-  background: #f6f5f1;
+  background: #f4f4f2;
   color: var(--rr-ink, #23262e);
 }
 .rr .tlfrag-section .ft-btn--red:hover { background: #ffffff; }
 .rr .tlfrag-section .ft-btn--ghost {
-  color: #f6f5f1;
+  color: #f4f4f2;
   border-color: rgba(246, 245, 241, 0.4);
 }
-.rr .tlfrag-section .ft-btn--ghost:hover { border-color: #f6f5f1; }
+.rr .tlfrag-section .ft-btn--ghost:hover { border-color: #f4f4f2; }
 .rr .tlfrag-section .ft-btn:focus-visible {
   outline: 2px solid #f12032;
   outline-offset: 3px;

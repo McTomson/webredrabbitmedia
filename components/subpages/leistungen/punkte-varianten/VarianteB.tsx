@@ -162,7 +162,7 @@ function MockAgenten() {
             <path
               d="M2.5 8.5l3.5 3.5 7.5-8"
               fill="none"
-              stroke="#f6f5f1"
+              stroke="#f4f4f2"
               strokeWidth="2.2"
             />
           </svg>
@@ -487,7 +487,7 @@ export default function VarianteB() {
           background: var(--rr-navy);
         }
         .pvb-sw--paper {
-          background: #f6f5f1;
+          background: #f4f4f2;
         }
         .pvb-typo {
           display: flex;

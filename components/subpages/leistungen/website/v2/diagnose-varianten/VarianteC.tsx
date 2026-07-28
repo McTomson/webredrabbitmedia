@@ -279,7 +279,7 @@ export default function VarianteC() {
 
       <style jsx>{`
         .sp {
-          background: var(--rr-world-1-bg, #1d8c98);
+          background: var(--rr-world-1-bg, #23262e);
           padding: var(--rr-section-y, clamp(96px, 12vw, 180px))
             var(--rr-gutter, clamp(20px, 4vw, 64px));
         }
@@ -291,7 +291,7 @@ export default function VarianteC() {
           max-width: 780px;
         }
         .sp__statement {
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .sp__intro {
           margin-top: 22px;
@@ -354,7 +354,7 @@ export default function VarianteC() {
           display: flex;
           align-items: center;
           justify-content: center;
-          color: var(--rr-world-1-bg, #1d8c98);
+          color: var(--rr-world-1-bg, #23262e);
           margin-top: 2px;
           transition: background 0.3s ease, border-color 0.3s ease;
         }
@@ -380,7 +380,7 @@ export default function VarianteC() {
           font-style: italic;
           font-size: clamp(0.95rem, 1.1vw, 1.08rem);
           line-height: 1.3;
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .sp__because {
           margin-top: clamp(18px, 2.4vw, 26px);
@@ -433,7 +433,7 @@ export default function VarianteC() {
           font-weight: 800;
           font-size: clamp(1.5rem, 2.6vw, 2.2rem);
           line-height: 1.12;
-          color: #f6f5f1;
+          color: #f4f4f2;
           margin-bottom: clamp(20px, 3vw, 32px);
           max-width: 18em;
         }
@@ -583,7 +583,7 @@ export default function VarianteC() {
         .sp__altbtn.is-open {
           background: var(--rr-navy, #23262e);
           border-color: var(--rr-navy, #23262e);
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .sp__alttext {
           margin-top: 18px;

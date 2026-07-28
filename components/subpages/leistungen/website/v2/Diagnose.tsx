@@ -202,7 +202,7 @@ export default function Diagnose() {
           /* Teal-Welt: die Hauptseite fuehrt mit genau diesem Tuerkis zur
              Website-Leistung; hier antwortet die Seite mit EINER Teal-Sektion
              als Herzstueck. Farben = --rr-world-1-bg/-accent aus dem Styleguide. */
-          background: var(--rr-world-1-bg, #1d8c98);
+          background: var(--rr-world-1-bg, #23262e);
           padding: var(--rr-section-y, clamp(96px, 12vw, 180px)) var(--rr-gutter, clamp(20px, 4vw, 64px));
         }
         .wd-diag__inner {
@@ -213,7 +213,7 @@ export default function Diagnose() {
           max-width: 760px;
         }
         .wd-diag__statement {
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .wd-diag__intro {
           margin-top: 22px;
@@ -269,7 +269,7 @@ export default function Diagnose() {
           font-weight: 800;
           font-size: clamp(1.5rem, 2.6vw, 2.2rem);
           line-height: 1.12;
-          color: #f6f5f1;
+          color: #f4f4f2;
           margin-bottom: clamp(20px, 3vw, 32px);
         }
         .wd-diag__opts {
@@ -355,7 +355,7 @@ export default function Diagnose() {
         }
         /* gewaehlte Antwort blitzt kurz weiss auf, dann naechste Frage */
         .wd-diag__opt.is-flash {
-          border-color: #f6f5f1;
+          border-color: #f4f4f2;
           background: #fff;
           box-shadow: inset 4px 0 0 0 var(--rr-navy, #23262e);
         }
@@ -441,7 +441,7 @@ export default function Diagnose() {
         .wd-diag__altbtn.is-open {
           background: var(--rr-navy, #23262e);
           border-color: var(--rr-navy, #23262e);
-          color: #f6f5f1;
+          color: #f4f4f2;
         }
         .wd-diag__alttext {
           margin-top: 18px;

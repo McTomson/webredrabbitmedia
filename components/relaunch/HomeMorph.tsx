@@ -431,11 +431,13 @@ export default function HomeMorph() {
               transform: "translate(-50%, -50%)",
               textAlign: "center",
               whiteSpace: "nowrap",
+              maxWidth: "92vw",
+              overflow: "visible",
               fontFamily: "var(--rr-font-ui)",
               fontSize: "clamp(10px, 0.9vw, 13px)",
               fontWeight: 500,
-              letterSpacing: "0.34em",
-              textIndent: "0.34em", // optische Zentrierung trotz Sperrung
+              letterSpacing: "clamp(0.12em, 0.3vw, 0.34em)",
+              textIndent: "clamp(0.12em, 0.3vw, 0.34em)", // optische Zentrierung trotz Sperrung
               color: "#8a8d94",
               zIndex: 5,
               opacity: 0,

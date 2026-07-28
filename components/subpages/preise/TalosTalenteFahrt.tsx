@@ -3,6 +3,11 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { clamp01 } from '@/lib/relaunch/morph/grammar';
+import {
+  BUMPER_TRACK_VH_PER_WINDOW,
+  isBumperDegraded,
+  snapUnits,
+} from '@/lib/relaunch/scroll-standard';
 
 /**
  * Sektion 5 — TALOS-TALENTE-FAHRT (brand/PREISE_SEITE_BRIEF.md Abschnitt 5.5):
@@ -57,14 +62,20 @@ const STATIONEN: Station[] = [
 
 const SLIDES = STATIONEN.length + 1; // + Abschluss-Panel
 
+/**
+ * Degradations-Schalter nach Scroll-Standard (lib/relaunch/scroll-standard.ts):
+ * Bumper/Pan werden auf schmalen Viewports und bei prefers-reduced-motion zu
+ * normalem vertikalem Scrollen. Der Standard-Breakpoint ist 820px; hier gilt
+ * die schaerfere Grenze 899px, weil das Slide-Layout (.tf-slide__inner mit
+ * min(46vw, 560px) + 12vw Aussenabstand) schon frueher bricht und auch die
+ * Intro-Figur per CSS ab 900px verschwindet.
+ */
+const FAHRT_BREAKPOINT = 899;
+
 function useResponsiveMotion() {
   const [fallback, setFallback] = useState(true); // SSR-sicher: erst nach Mount pruefen
   useEffect(() => {
-    const check = () => {
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const narrow = window.innerWidth < 900;
-      setFallback(reduce || narrow);
-    };
+    const check = () => setFallback(isBumperDegraded(FAHRT_BREAKPOINT));
     check();
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
@@ -224,12 +235,8 @@ function StaticStations() {
           kein Credit-System, das du erst durchrechnen musst.
         </p>
         <div className="tf-static__cta">
-          <Link href="#rechner" className="rr-btn-frame rr-btn-frame--red">
-            <i className="c1" />
-            <i className="c2" />
-            <i className="c3" />
-            <i className="c4" />
-            <span className="rr-btn-frame__t">Zum Rechner</span>
+          <Link href="#rechner" className="rr-btn-outline rr-btn-outline--light">
+            Zum Rechner
           </Link>
           <Link href="/relaunch-preview/kontakt" className="tf-static__link">
             Talos-Gespräch
@@ -308,9 +315,13 @@ function TalosFahrt() {
       const total = r.height - window.innerHeight;
       const p = total > 0 ? clamp01(-r.top / total) : 0;
       const vw = window.innerWidth;
-      const dist = (SLIDES - 1) * vw;
-      stage.style.transform = `translate3d(${-p * dist}px, 0, 0)`;
-      giant.style.transform = `translate3d(${-p * dist * 1.15}px, 0, 0)`;
+      // Snap-Dwell statt linearem Durchfahren (Standard 28.07.): jede Station
+      // steht den grossen Teil ihrer Etappe still, der Wechsel passiert im
+      // schmalen Uebergangsfenster. Mathe zentral in scroll-standard.ts,
+      // identisch zur Referenz CasePanels.
+      const units = snapUnits(p * (SLIDES - 1), SLIDES);
+      stage.style.transform = `translate3d(${-units * vw}px, 0, 0)`;
+      giant.style.transform = `translate3d(${-units * vw * 1.15}px, 0, 0)`;
     }
     function loop() {
       if (destroyed) return;
@@ -366,12 +377,8 @@ function TalosFahrt() {
                 Fähigkeit, kein Credit-System, das du erst durchrechnen musst.
               </p>
               <div className="tf-slide__cta">
-                <Link href="#rechner" className="rr-btn-frame rr-btn-frame--red">
-                  <i className="c1" />
-                  <i className="c2" />
-                  <i className="c3" />
-                  <i className="c4" />
-                  <span className="rr-btn-frame__t">Zum Rechner</span>
+                <Link href="#rechner" className="rr-btn-outline rr-btn-outline--light">
+                  Zum Rechner
                 </Link>
                 <Link href="/relaunch-preview/kontakt" className="tf-slide__link">
                   Talos-Gespräch
@@ -386,11 +393,12 @@ function TalosFahrt() {
           "styled-jsx im Relaunch meiden"). */}
       <style>{`
         .tf-track {
-          /* 105vh je Slide statt 100vh: die Buehne haelt 100vh, die zusaetzlichen
-             5vh sind Scroll-Puffer, damit die letzte Station nicht exakt im
-             Moment des Sticky-Endes umschaltet (sonst wirkt der Ausstieg
-             abgehackt). Gleiche Groessenordnung wie CasePanels' ~380vh/Thema. */
-          height: calc(${SLIDES} * 105vh);
+          /* Scroll-Strecke je Slide aus dem Scroll-Standard
+             (BUMPER_TRACK_VH_PER_WINDOW, lib/relaunch/scroll-standard.ts):
+             ~1 Viewport Standbild pro Station plus Uebergangs-Reserve. Vorher
+             105vh je Slide bei linearem Durchfahren — mit dem Snap-Dwell braucht
+             jede Station ihre volle Etappe, sonst waere das Standbild weg. */
+          height: calc(${SLIDES} * ${BUMPER_TRACK_VH_PER_WINDOW}vh);
           position: relative;
           /* Full-bleed wie CasePanels: aus dem rr-section-Seitenpadding
              (72px) ausbrechen, die Navy-Buehne traegt bis an beide Kanten. */
@@ -500,7 +508,7 @@ function TalosFahrt() {
           gap: 18px 28px;
           margin-top: 30px;
         }
-        .tf-slide__cta .rr-btn-frame {
+        .tf-slide__cta .rr-btn-outline {
           align-self: flex-start;
         }
         .tf-slide__link {
