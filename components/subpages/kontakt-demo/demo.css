@@ -195,7 +195,14 @@
   /* (Partner-/"Was hier nicht passiert"-Raster ist RAUS, 29.07. — Thomas.) */
 
   /* ================= SEKTION 6 : FAQ (zweispaltig, Referenz pixelperfektion) ============ */
-  .scene-faq{background:var(--offwhite);padding:14vh 6vw 12vh}
+  /* Voller Viewport + vertikal zentriert: die Sektion war kuerzer als der Screen,
+     dadurch lugte die SiteClosing-Zeile unten rein (Thomas 29.07.). */
+  .scene-faq{
+    background:var(--offwhite);padding:14vh 6vw 12vh;
+    min-height:100vh;min-height:100dvh;
+    display:flex;align-items:center;
+  }
+  .faq-wrap{width:100%}
   .faq-wrap{max-width:1180px;margin:0 auto}
   /* Punkt4: linke Spalte (Label + Riesen-Ueberschrift) | rechte Spalte (Akkordeon) */
   .faq-grid{

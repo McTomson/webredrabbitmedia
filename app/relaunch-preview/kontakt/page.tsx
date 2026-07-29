@@ -63,12 +63,12 @@ export default function KontaktPage() {
           sind raus, hier stehen die gemeinsamen Bauteile. Wrapper liefert nur
           die .rr-Font-Variablen (Muster wie beim Menue oben). */}
       <div className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
+        {/* Volle Bauhoehe wie auf der Homepage (Thomas 29.07.: compact war zu klein). */}
         <SiteClosing
           lines={[
             'Du schreibst lieber nicht?',
             'Dann reden wir einfach.',
           ]}
-          compact
         />
         <div data-rr-snap>
           <FooterReassembly />
