@@ -9,6 +9,18 @@
 - Laufend testen + `review-it` bei groesseren Schritten. Nichts als "fertig" melden ohne verifiziertes Ergebnis.
 - Bei langen Agenten-/Hintergrund-Laeufen ALLE 15 MIN Health-Check + Stichprobe (TaskList/BashOutput/Monitor). Bricht ein Tool ein → STOPP + fixen, keine kaputten Daten schreiben. Nicht endlos haengen.
 
+## UPDATE 29.07. abends — Kontakt-Umbau IST PASSIERT (Commit 9d46e61, gepusht, live auf v2)
+
+Der untenstehende Alt-Stand ist damit groesstenteils ERLEDIGT. Neuer Stand siehe Claude-Memory
+`project_kontakt_hero_formular_2026_07_29.md` + Review-Log `docs/reviews/kontakt-hero-formular-2026-07-29.md`.
+Kurz: Formular im Hero neben der Gluehbirne (Einfahrt + Pflicht-Stopp via __rrDynamicSnapTops),
+Kontaktdaten-Bumper (Grabnergasse 8/8), rotes Raster + alte CTA-Sektion raus, FAQ neu (6 Fragen),
+Mobile-Andock-Mechanik (.sculpt-layer.docked), echtes h1. Offen fuer die naechste Runde:
+Thomas-Abnahme + Geraete-Handtest (Stopp-Gefuehl, starker-Wisch-Skip, Wheel im internen
+Formular-Scroll), deferred Review-Findings (consent/message serverseitig, Adress-Angleichung
+"Grabnergasse 8" -> "8/8" projektweit im Schema), echter Formular-POST nie getestet,
+noindex/canonical-Entscheidung.
+
 ## Stand dieser Session (29./30.07., Vorsession: /relaunch-preview/ueber-uns)
 
 Diese Session hat NICHT an Kontakt gearbeitet, sondern an `/relaunch-preview/ueber-uns` (siehe
