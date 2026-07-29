@@ -6,6 +6,12 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-07-30 (spaet abends) — Kontakt-Seite komplett umgebaut (Hero-Formular)
+- /relaunch-preview/kontakt: Formular im Hero neben der Gluehbirne (Einfahrt + Pflicht-Stopp via __rrDynamicSnapTops, distanz-gegated — Gate noetig, sonst faehrt finishDynamicBoundary jede Hero-Geste zum Formular durch), Kontaktdaten-Bumper (Grabnergasse 8/8 laut Impressum; layout.tsx-Schema sagt noch "8"), rotes Raster + alte CTA-Sektion raus, FAQ neu (6 Fragen, volle Viewport-Hoehe), SiteClosing ohne compact, Mobile-Andocken der Skulptur (.sculpt-layer.docked, nur <768px).
+- Commits 9d46e61 / 26ceaec / d1b5c8e gepusht, Vercel Ready, live auf v2 verifiziert. Review: docs/reviews/kontakt-hero-formular-2026-07-29.md (deferred: starker-Wisch-Skip des Stopps, consent/message serverseitig, Adress-Angleichung projektweit).
+- QA-Werkzeug: Chrome-Extension-Tab hat fixen 1800x807-Viewport + rAF-Drosselung im Hintergrund — Mobile-/Viewport-QA headless via python3 playwright (installiert). Lenis-Snap synthetisch nicht testbar.
+- Naechste Session: Tipps-Seite — ZUERST docs/handoffs/NEXT_SESSION_tipps.md.
+
 ## Stand 2026-07-30 — Ueber-uns SEO/E-E-A-T-Regression gefixt + Kundenliste rot->weiss
 
 Committet + gepusht (`1b022c5`, Branch `relaunch`). Details: Claude-Memory
