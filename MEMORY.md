@@ -6,6 +6,41 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-07-29 (abends) — Scroll-Standard site-weit neu: Pflicht-Stopp + nativ-schnell (Thomas freigegeben)
+
+Strang `/relaunch-preview/leistungen/website`, committet + gepusht (`7a2e5db`, Branch `relaunch`).
+Kanonisch dokumentiert in `docs/DESIGN_STANDARD.md` § "Scroll & Bumper" (Detail dort lesen,
+hier nur der Kurzstand). Vorgeschichte/Vorlaeufer-Problem: [[feedback_scroll_snap_verifikation_unreliable]].
+
+- **Fertig + von Thomas live freigegeben ("supper passt jetzt"):** Hero-Ankunft (data-rr-snap
+  auf dem hero+belief-Wrapper) + alle 4 Ehrlich-gesagt-Statements in
+  `components/subpages/website-demo/demo.engine.jstext` bekommen ueber den neuen
+  `window.__rrDynamicSnapTops`-Hook (registriert in `types.d.ts`) garantierte
+  Ein-Scroll-Checkpoints via `finishDynamicBoundary()` in `ScrollExperience.tsx`. Mehrfach
+  live mit Konsolen-Instrumentierung bewiesen (vor+rueckwaerts, schwacher und starker Scroll).
+- **SITE_LERP von 0.065 auf 1** (ScrollExperience.tsx) — kein spuerbares Nachziehen mehr,
+  Scrollen fuehlt sich nativ an. Das war Thomas' Kernbeschwerde ("dieser sticky Effekt").
+- **Bugfix unterwegs gefunden:** der generische Idle-Snap darf dynamische Checkpoints NICHT
+  mit anfassen (`trySnap` zieht "naechstgelegen" ohne Richtung — hat bei zu grosser Distanz
+  faelschlich RUECKWAERTS gezogen). Jetzt sauber getrennt: `trySnap` nur fuer echte
+  `[data-rr-snap]`-Elemente, `finishDynamicBoundary` nur fuer die Gesten-Richtung.
+- **OFFEN / naechste Schritte (Thomas will das explizit, nicht nur diese eine Seite):**
+  1. Dieselbe Sektion, Bild 4-7 aus Thomas' Screenshot-Walkthrough (SoBauenWir/Diagnose/
+     Ablauf/Fundament) — laufen schon ueber `data-rr-snap`, pruefen ob SITE_LERP=1 allein
+     reicht oder ob dort auch ein Sticky-Scrubbing-Rest sitzt.
+  2. **Site-weit ausrollen**, nicht nur diese Seite: `components/relaunch/HomeMorph.tsx`
+     (Homepage) hat noch eine EIGENE Lenis-Instanz mit hartcodiertem `lerp:0.065` —
+     NICHT in dieser Session angefasst (ausserhalb des besprochenen Scopes), gehoert aber
+     laut Thomas jetzt mit dazu. Jede andere Seite mit eigenem scroll-gebundenem
+     Mehr-Schritt-Track (falls vorhanden) nach demselben Muster (`window.__rrDynamicSnapTops`)
+     umbauen, NIE einen zweiten Wheel-Listener bauen.
+  3. **Standing-Regel (siehe docs/DESIGN_STANDARD.md, gilt dauerhaft, nicht nur fuer diese
+     Aufgabe):** kein kuenstliches Verlangsamen mehr irgendwo auf der Site; Pflicht-Stopp
+     pro Sektion beim Reinscrollen egal wie schnell/viel gescrollt wird; scroll-gebundene
+     Checkpoints IMMER ueber den zentralen Hook, nie eigene Engine.
+- ZUERST `docs/handoffs/NEXT_SESSION_leistungen-website-scroll.md` lesen fuer den vollen
+  Uebergabe-Prompt.
+
 ## Stand 2026-07-19 — fuch.ai Roboter-Choreografie aus Production-Code extrahiert (fuer TALOS)
 
 Referenz-Analyse fuer TALOS-Bewegung (Thomas will fuchs Bewegungs-Idee mit UNSERER TALOS-Figur nachbauen).

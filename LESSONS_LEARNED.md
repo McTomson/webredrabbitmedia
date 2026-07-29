@@ -4,6 +4,41 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+## 2026-07-29 (abends) — Scroll-Pflicht-Stopp fuer Checkpoints: Distanz-Gate reicht nicht
+
+- **Ein distanz-gegateter Idle-Snap ("nur wenn nah genug") garantiert KEIN "1 Scroll = 1
+  Schritt".** Bei fein getakteten Checkpoints (hier: 4 Statement-Mitten ~650px auseinander)
+  faellt ein normaler, nicht-extremer Fingerwisch oft ausserhalb des Fangbereichs
+  (CATCH_RATIO) — dann greift der generische Snap gar nicht, User braucht einen zweiten
+  Scroll. Fix: bei bewusst gesetzten Gesten-Zielen (nicht "naechstgelegene Kante", sondern
+  "die Kante, auf die DIESE Geste zielt") IMMER zu Ende fahren, unabhaengig von der Distanz.
+- **Zwei Scroll-Mechanismen, die beide `lenis.scrollTo()` rufen, fahren sich in die Parade.**
+  Erster Versuch: dynamische Checkpoints in den generischen "naechstgelegene Kante"-Idle-Snap
+  miteinbezogen — der kennt aber keine Richtung und hat bei zu grosser Vorwaerts-Distanz
+  faelschlich RUECKWAERTS zur naeheren (bereits verlassenen) Kante gezogen. Lehre: ein neuer
+  Anwendungsfall braucht eine EIGENE, zum Anwendungsfall passende Funktion (hier: die Geste
+  kennt ihr Ziel bereits aus `beginGesture()` — das nutzen, nicht "irgendwas Nahes" suchen),
+  statt ihn in eine bestehende, andersartig gebaute Funktion reinzuquetschen.
+- **Next.js Fast-Refresh reicht nicht immer, um Closure-State in einem `useEffect` mit
+  mutablen lokalen Variablen (Timer, Boundary-State) sauber neu zu booten** — nach jeder
+  Aenderung an `ScrollExperience.tsx` einen ECHTEN `navigate()`/Reload gemacht, sonst testet
+  man gegen alten Code und die Befunde widersprechen sich (mehrfach passiert in dieser
+  Session, kostete Zeit bis erkannt).
+- **`console.debug()` wird vom Browser-Automation-Consolen-Reader NICHT zurueckgegeben**
+  (vermutlich Log-Level-Filter) — fuer Debug-Instrumentierung, die per Tool ausgelesen werden
+  soll, `console.log()` verwenden. Ausserdem: Objekt-Argumente (`console.log("x", {a,b})`)
+  kommen im Tool nur als Platzhalter `Object` an, nicht expandiert — Werte per
+  String-Konkatenation/`JSON.stringify` direkt in den Log-String einbetten.
+- **`window.scrollTo(x, y)` per JS-Injection zum schnellen Positionieren im Test desynct
+  Lenis' internen `targetScroll`/`animatedScroll`** (Lenis weiss nichts von der externen
+  Aenderung) — fuehrte zu widerspruechlichem Verhalten beim naechsten Wheel-Event. Fuer Tests
+  IMMER echte Scroll-Gesten (Tool-`scroll`-Action) verwenden, nie `window.scrollTo` zum
+  Vorspulen, wenn danach die Scroll-Engine weiter beobachtet werden soll.
+- Lenis-Doku (Context7) vor dem Aendern der Daempfung gezogen statt geraten: `lerp` ist
+  dokumentiert im Bereich 0..1 (Default 0.1); `duration`+`easing` sind mutually exclusive zu
+  `lerp` (README) — bestaetigt, dass `SITE_LERP=1` im dokumentierten Rahmen bleibt statt
+  ins Undefinierte zu gehen.
+
 ## 2026-07-16 — Referenzen phantom.land Iteration 2 (Strang relaunch-referenzen)
 
 - Ortho-Picking (Screen-UV -> Welt) MUSS `camera.zoom` einrechnen — updateProjectionMatrix()

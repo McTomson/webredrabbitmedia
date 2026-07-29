@@ -56,22 +56,40 @@ Entscheidung von Thomas, dann hier nachziehen. Plan/Herleitung:
   Zwischenabstand; einheitliches Innen-Padding der Fenster.
 - Uebergang A↔B: exakt Klasse-A-Abstand.
 
-## Scroll & Bumper — EIN System
-- **Soft-Snap site-weit ("Umblaettern", Thomas 28.07.):** jede grosse Sektion traegt
-  `data-rr-snap`; beim Scroll-Idle (~150ms) zieht die Seite sanft zur naechsten
-  Sektionsoberkante, wenn sie im Fangbereich (~28% Viewport) liegt. Ueberhohe Sektionen:
-  Stopp an der Oberkante, danach frei. Sticky-Strecken (Bumper/Pan/Demo-Heroes) tragen
-  `data-rr-snap-exempt` — innen regiert ihr Dwell. Engine:
-  components/relaunch/ScrollExperience.tsx (auf jeder Seite eingebunden; Homepage nutzt
-  die HomeMorph-Lenis-Instanz via window.__rrLenis). Aus bei reduced-motion und <=820px.
-- Ein Site-Tempo (Lenis lerp ~0.08 site-weit), eine Easing-Kurve, zentrale Dwell-Konstanten.
+## Scroll & Bumper — EIN System (Stand 29.07., Pflicht-Stopp + nativ-schnell)
+- **Kein kuenstliches Verlangsamen, nirgendwo.** Lenis bleibt technisch aktiv (der
+  Pflicht-Stopp unten braucht sein Wheel-Hijacking, um sauber zu kappen statt hinterher
+  zurueckzuspringen), aber OHNE spuerbare Traegheit: `SITE_LERP = 1` in
+  `components/relaunch/ScrollExperience.tsx` (oberes Ende des dokumentierten 0..1-Bereichs
+  der Lenis-Lib — de facto natives Scroll-Gefuehl). Frueher 0.065 (traeger als Lenis' eigener
+  Default 0.1) — das war genau der von Thomas gemeldete "sticky"-Effekt. Diese Referenz gilt
+  fuer JEDE eigene Lenis-Instanz auf der Site (auch HomeMorph.tsx auf der Homepage — dort noch
+  NICHT nachgezogen, siehe naechste Session).
+- **Pflicht-Stopp statt Soft-Snap (seit 29.07., 2. Iteration):** jede grosse Sektion traegt
+  `data-rr-snap`. Ein Scroll-GESTE (Wheel-Events gruppiert per Luecke/Richtungswechsel/Spike,
+  Konstanten in ScrollExperience.tsx) kommt maximal bis zur naechsten Sektionsoberkante —
+  dort wird die Lenis-Ziel-Position gekappt, EGAL wie schnell/kraeftig gescrollt wird. Erst
+  eine NEUE Geste faehrt weiter. Idle-Soft-Snap bleibt als Aufraeumer fuer Gesten, die
+  zwischen zwei Kanten enden (Fangbereich CATCH_RATIO ~60% Viewport). Sticky-Strecken
+  (Bumper/Pan/Demo-Heroes) tragen `data-rr-snap-exempt` — innen regiert ihr eigenes Dwell;
+  der Track-ANFANG darf zusaetzlich `data-rr-snap` tragen (Einstieg haelt einmal, dann frei).
+  Engine: components/relaunch/ScrollExperience.tsx (auf jeder Seite eingebunden; Homepage
+  nutzt die HomeMorph-Lenis-Instanz via window.__rrLenis). Aus bei reduced-motion und <=820px.
+- **Scroll-gebundene Mehr-Schritt-Animationen INNERHALB eines Exempt-Tracks** (z.B. ein
+  Statement-Karussell wie die Ehrlich-gesagt-Sektion in website-demo): registriert seine
+  Zwischen-Checkpoints ueber `window.__rrDynamicSnapTops` (Typ in `types.d.ts`), NICHT ueber
+  einen eigenen zweiten Wheel-Listener/Lenis-Konsumenten (Race-Gefahr — zwei Systeme, die
+  beide `lenis.scrollTo()` rufen, ueberschreiben sich gegenseitig). ScrollExperience.tsx
+  garantiert dann per `finishDynamicBoundary()`: EIN Scroll bringt IMMER genau einen
+  Checkpoint weiter, unabhaengig von der Scroll-Distanz (nicht nur "wenn nah genug" wie beim
+  generischen Idle-Snap — sonst braucht es bei einem normalen Fingerwisch teils zwei Versuche).
 - Bumper-Regel: 1 Scroll-Schwung = 1 Fenster, haelt — NUR fuer Kurz-Inhalte (Wort, Headline,
   1-2 Saetze). Lange Absaetze nie im Snap gefangen (NN/g-belegt).
 - Jede Bumper-Strecke traegt oben die rote `( Thema )`-Zeile.
 - Mobile (<= ~820px): Bumper/Pan degradieren zu normalem vertikalem Scrollen (Muster:
   reduced-motion-Fallbacks). `prefers-reduced-motion` immer respektieren.
 - AUSNAHME: kanonische Subpage-Heroes (Wisch-Reveal + MorphSculpture) sind KEIN Bumper und
-  bleiben unangetastet.
+  bleiben unangetastet — ausser ihrer eigenen `data-rr-snap`-Einstiegskante (siehe oben).
 
 ## Copy-Regeln (Kurzfassung)
 - Zielgruppe: oesterr. Mittelstand/KMU breit (NICHT Handwerker-verengt). Quelle:
