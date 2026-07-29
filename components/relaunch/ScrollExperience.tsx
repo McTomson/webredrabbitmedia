@@ -38,8 +38,15 @@ import { isBumperDegraded } from "@/lib/relaunch/scroll-standard";
 
 /** Ruhezeit ohne Scroll-Input, bevor das Einrasten ausgeloest wird (ms). */
 const IDLE_MS = 150;
-/** Fangbereich um die Ziel-Oberkante, als Anteil der Viewport-Hoehe. */
-const CATCH_RATIO = 0.35;
+/**
+ * Fangbereich um die Ziel-Oberkante, als Anteil der Viewport-Hoehe.
+ * 0.35 -> 0.6 (Thomas 29.07.: scrollt mit Trackpad-Schwung, ein normaler
+ * Wisch legt oft mehrere hundert Pixel zurueck und ueberspringt den engen
+ * 35%-Fangbereich komplett — dann fuehlt sich der Uebergang wie gar kein
+ * Stop an, obwohl der data-rr-snap-Punkt technisch da ist. Mechanismus
+ * bleibt sanftes Einrasten, nur deutlich grosszuegiger.
+ */
+const CATCH_RATIO = 0.6;
 /** Dauer der Einrast-Fahrt (Sekunden, Lenis-Einheit). */
 const SNAP_DURATION = 1.1;
 /** Ruhe nach einer programmatischen Fahrt, damit nichts in Schleife geraet. */
