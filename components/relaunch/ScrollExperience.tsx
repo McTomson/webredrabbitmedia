@@ -258,10 +258,21 @@ export default function ScrollExperience() {
      * zurueckgezogen). Fuer dynamische Kanten uebernimmt stattdessen
      * finishDynamicBoundary() bei Gesten-Ende — die kennt die Richtung, weil
      * sie die Kante der GESTE zu Ende faehrt, nicht die naechstgelegene.
+     *
+     * ZWEITER FUND (29.07. abends, dringend, Thomas): derselbe Rueckwaerts-
+     * Fehler existiert auch fuer ganz normale [data-rr-snap]-Sektionen, wenn
+     * sie INNEN hoeher sind als CATCH_RATIO*vh, aber die eigene Eintritts-
+     * Oberkante noch im Fangbereich liegt (z.B. FAQ-Liste: mehrere Fragen
+     * runtergescrollt, Pause -> wurde zur eigenen Oberkante zurueckgezogen,
+     * obwohl die Geste eindeutig abwaerts ging). Fix: nur Kanten IN
+     * Gesten-Richtung gelten als Kandidat (gleiche Disziplin wie
+     * findBoundary/finishDynamicBoundary) — eine bereits passierte Kante
+     * hinter der Bewegungsrichtung wird nie mehr angezogen.
      */
     function trySnap() {
       if (disposed || !lenis) return;
       if (performance.now() < cooldownUntil) return;
+      if (gestureDir === 0) return;
 
       const scrollY = window.scrollY;
       const vh = window.innerHeight;
@@ -271,6 +282,8 @@ export default function ScrollExperience() {
       let bestDist = Infinity;
       let found = false;
       for (const top of collectTops(scrollY)) {
+        if (gestureDir > 0 && top <= scrollY + BOUNDARY_EPS_PX) continue;
+        if (gestureDir < 0 && top >= scrollY - BOUNDARY_EPS_PX) continue;
         const dist = Math.abs(top - scrollY);
         if (dist < bestDist) {
           bestDist = dist;

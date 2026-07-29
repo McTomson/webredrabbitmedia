@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { clamp01 } from "@/lib/relaunch/morph/grammar";
 import {
@@ -22,7 +22,7 @@ import KundenSagen from "@/components/subpages/leistungen/KundenSagen";
 type PanelWindow = {
   eyebrow?: string;
   headline?: string;
-  body?: string;
+  body?: ReactNode;
   linkText?: string;
   href?: string;
   kind?: "lighthouse" | "kundensagen";
@@ -84,7 +84,14 @@ const THEMES: Theme[] = [
       {
         eyebrow: "Der Beweis",
         headline: "Messbare technische Perfektion.",
-        body: "Bevor dein digitaler Mitarbeiter für dich verkaufen kann, braucht er das perfekte Fundament. Wir bauen Websites, die von Google und modernen KI-Suchen geliebt werden. Das ist keine Behauptung, das sind harte, messbare Fakten.",
+        body: (
+          <>
+            Ohne perfektes Fundament geht es nicht. Wir bauen Websites, die von{" "}
+            <span style={{ color: "var(--rr-red)" }}>Google</span> und modernen{" "}
+            <span style={{ color: "var(--rr-red)" }}>KI-Suchen</span> geliebt werden. Das ist
+            keine Behauptung, das sind harte, messbare Fakten.
+          </>
+        ),
         kind: "lighthouse",
       },
       { kind: "kundensagen" },
