@@ -6,6 +6,31 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-07-30 — Ueber-uns SEO/E-E-A-T-Regression gefixt + Kundenliste rot->weiss
+
+Committet + gepusht (`1b022c5`, Branch `relaunch`). Details: Claude-Memory
+`project_ueber_uns_seo_kundenliste_2026_07_30.md`, Handoff `docs/handoffs/NEXT_SESSION_kontakt.md`.
+
+- SEO-Audit von `/relaunch-preview/ueber-uns` gegen die alte, noch live geschaltete
+  Platzhalter-Seite `app/ueber-uns/page.tsx` ergab: der Relaunch-Umbau hatte gegenueber dem
+  Platzhalter drei Dinge verloren — echtes `<h1>` (war `role="heading"`-Div), `alternates.canonical`,
+  Person-Schema. Alle drei in `app/relaunch-preview/ueber-uns/page.tsx` +
+  `components/subpages/ueber-uns-demo/demo.body.html` nachgezogen, dazu FAQPage-JSON-LD ergaenzt
+  (Inhalte provisorisch, Thomas schreibt die FAQ noch komplett neu) und einen toten
+  `href="#projekte"`-Link auf `/relaunch-preview/referenzen` korrigiert.
+- Kundenliste ("Ausschnitt aus unserer Kundenliste") auf Ueber-uns UND
+  `components/relaunch/KundenGrid.tsx` (Hauptseite) synchron: Panel von Rot auf Weiss/Off-White
+  (Thomas-Wunsch, Referenz = Hauptseiten-Screenshot), `K2 Dach- & Bau` (kein echter Kunde) raus,
+  `Global Insights` (ruderes-insights.at) rein, Tipp-Animation schreibt jetzt einen ANDEREN Namen
+  statt denselben zurueck.
+- NICHT angefasst, separat zu klaeren: Dmitry/Pashlov steht noch in 12 Dateien projektweit
+  (u. a. `app/layout.tsx` globales Schema) — laut Thomas nicht mehr im Team, in Beitraegen darf er
+  bleiben; `K2 Dach- & Bau` steht noch in 4 weiteren Dateien (Portfolio/Referenzen/Projects); vier
+  `<title>`-Tags im SSR-HTML (vermutlich Next-Streaming-Artefakt) ungeklaert.
+- Naechste Session: Kontakt-Seite (`docs/handoffs/NEXT_SESSION_kontakt.md`) — hat denselben h1-Bug,
+  aber die dortige `scene-partner`-Sektion ist ein anderes Feature (Was-hier-nicht-passiert-Raster),
+  nicht blind mit auf Weiss umstellen.
+
 ## Stand 2026-07-29 (abends) — Scroll-Standard site-weit neu: Pflicht-Stopp + nativ-schnell (Thomas freigegeben)
 
 Strang `/relaunch-preview/leistungen/website`, committet + gepusht (`7a2e5db`, Branch `relaunch`).
