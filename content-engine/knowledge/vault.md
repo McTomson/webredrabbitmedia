@@ -2237,3 +2237,48 @@ quelle: https://www.it-recht-kanzlei.de/webdesign-vertrag-haftungsrisiken-absich
 quelle_name: IT-Recht Kanzlei - Webdesign-Leistungen: Rechtsrisiken und Haftungsfragen
 geprueft_am: 2026-07-28
 recheck_nach: 2027-01-24
+
+## t54-2026-07-29-249
+cluster: 2
+keywords: warum, scheitern, traditionelle, systeme, google, core, vitals
+aussage: WordPress-Websites erreichen auf Mobilgeräten nur eine Core-Web-Vitals-Bestehensquote von rund 46%, während vollständig gehostete Plattformen wie Duda (84,9%), Wix (74,9%) und Squarespace (70,4%) deutlich besser abschneiden – WordPress ist trotz Marktführerschaft technisches Schlusslicht bei den CWV-Passraten.
+quelle: https://wptavern.com/new-core-web-vitals-technology-report-shows-overall-pass-rate-for-wordpress-sites-decreases-with-newer-versions
+quelle_name: CoreWebVitals.io Technology Report (zitiert in WP Tavern)
+geprueft_am: 2026-07-29
+recheck_nach: 2027-01-25
+
+## t54-2026-07-29-250
+cluster: 2
+keywords: warum, scheitern, traditionelle, systeme, google, core, vitals
+aussage: Der Hauptschwachpunkt von WordPress bei den Core Web Vitals ist nicht die Interaktivität (INP besteht mit 85,9%), sondern der Largest Contentful Paint (LCP) – verursacht durch langsame Time to First Byte (TTFB): Nur 32% der WordPress-Seiten erreichen laut Chrome-UX-Report einen guten TTFB-Wert, weil klassische CMS-Architekturen Seiten bei jeder Anfrage serverseitig aus PHP + Datenbank neu zusammensetzen, statt wie gehostete Plattformen die Auslieferung auf Infrastrukturebene zu lösen.
+quelle: https://www.corewebvitals.io/core-web-vitals/wordpress-guide
+quelle_name: CoreWebVitals.io - Core Web Vitals for WordPress: Optimization Guide
+geprueft_am: 2026-07-29
+recheck_nach: 2027-01-25
+
+## t54-2026-07-29-251
+cluster: 2
+keywords: warum, scheitern, traditionelle, systeme, google, core, vitals
+aussage: Eine durchschnittliche WordPress-Website läuft mit 20-30 aktiven Plugins, von denen jedes eigenes CSS und JavaScript einbindet; diese Skripte konkurrieren im Browser um Ressourcen und verschlechtern nachweislich LCP- und INP-Werte – teils selbst auf Seiten, auf denen die jeweilige Plugin-Funktion (z. B. Social-Sharing) gar nicht sichtbar ist.
+quelle: https://www.zavabuild.com/blog/javascript-performance-for-wordpress-sites
+quelle_name: Zava Build - JavaScript Performance for WordPress Sites
+geprueft_am: 2026-07-29
+recheck_nach: 2027-01-25
+
+## t54-2026-07-29-252
+cluster: 2
+keywords: warum, scheitern, traditionelle, systeme, google, core, vitals
+aussage: Der HTTP-Archive-Web-Almanac 2025 (CMS-Kapitel) zeigt: Je schwerer eine Seite (Bildlast, JavaScript, global geladene Assets), desto wahrscheinlicher verfehlt sie die Core-Web-Vitals-Schwellenwerte, besonders mobil. Plattformen, die Anpassbarkeit einschränken, sorgen durch konsistente Defaults für bessere Werte, während offen erweiterbare Systeme wie klassische CMS die Verantwortung für Performance komplett an Seitenbetreiber und Plugin-/Theme-Entwickler abgeben.
+quelle: https://almanac.httparchive.org/en/2025/cms
+quelle_name: HTTP Archive - Web Almanac 2025, Kapitel CMS
+geprueft_am: 2026-07-29
+recheck_nach: 2027-01-25
+
+## t54-2026-07-29-253
+cluster: 2
+keywords: warum, scheitern, traditionelle, systeme, google, core, vitals
+aussage: Google verwendet die Core Web Vitals (u. a. LCP < 2,5 Sek., INP < 200 ms, CLS < 0,1) als Teil des Page-Experience-Rankingsignals – technische Performance-Schwächen eines CMS wirken sich damit direkt auf die Sichtbarkeit in der organischen Suche aus.
+quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
+quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
+geprueft_am: 2026-07-29
+recheck_nach: 2027-01-25
