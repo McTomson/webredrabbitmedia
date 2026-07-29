@@ -48,7 +48,7 @@ const FAQ_ITEMS: FaqItem[] = [
 
 export default function TalosFaqV2() {
   return (
-    <section className="rr-section tl-section tl-faq">
+    <section className="rr-section tl-section tl-faq" data-rr-snap>
       <div className="rr-wrap rr-narrow tl-faq__grid">
         <div className="tl-faq__label">
           <p className="wd-eyebrow">Häufige Fragen</p>

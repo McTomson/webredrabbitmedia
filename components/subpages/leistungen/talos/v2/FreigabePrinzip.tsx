@@ -8,7 +8,12 @@ export default function FreigabePrinzip() {
     /* Sticky-Szene: Track 180vh, Inhalt bleibt einen Moment stehen (lesbar,
        und der Companion-Talos hat Zeit fuer seine Verbeugung). Grund bewusst
        TRANSPARENT: Talos laeuft hier auf der "back"-Ebene HINTER dem Text. */
-    <section className="rr-section tl-section tl-sticky-track">
+    // Native CSS-Sticky-Halte-Strecke (Track = dieses Section-Element, 180vh):
+    // data-rr-snap-exempt auf dem TALLEN Root (wie CasePanels), NICHT auf dem
+    // inneren position:sticky-Element selbst — dessen eigenes BoundingRect
+    // waere waehrend des Pins nur ~100vh und wuerde insideExempt() falsch
+    // (zirkulaer auf den aktuellen Scroll bezogen) berechnen lassen.
+    <section className="rr-section tl-section tl-sticky-track" data-rr-snap data-rr-snap-exempt>
       <div className="tl-sticky">
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow tl-eyebrow">Du hast das Sagen</p>

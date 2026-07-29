@@ -59,7 +59,7 @@ const FAQ_ITEMS: FaqItem[] = [
 
 export default function PreiseFaq() {
   return (
-    <section className="rr-section rp-faq">
+    <section className="rr-section rp-faq" data-rr-snap>
       <div className="rr-wrap rr-narrow rp-faq__grid">
         <div className="rp-faq__label">
           <p className="wd-eyebrow">Häufige Fragen</p>

@@ -105,7 +105,7 @@ export default function Ablauf() {
   }, [reduced]);
 
   return (
-    <section className="wd-abl" aria-labelledby="wd-abl-title">
+    <section className="wd-abl" aria-labelledby="wd-abl-title" data-rr-snap>
       <div className="wd-abl__head">
         <p className="wd-eyebrow">SO LÄUFT DAS AB</p>
         <h2 id="wd-abl-title" className="rr-statement">
@@ -117,7 +117,10 @@ export default function Ablauf() {
         </p>
       </div>
 
-      <div ref={trackRef} className="wd-abl__track">
+      {/* Gepinnter Track (100vh sticky + rAF-Fortschritt): vom site-weiten
+          Soft-Snap ausgenommen, das eigene Dwell-System regiert innen
+          (ScrollExperience.tsx, Muster wie CasePanels/TalosFahrt). */}
+      <div ref={trackRef} className="wd-abl__track" data-rr-snap-exempt>
         <div className="wd-abl__stage">
           <div className="wd-abl__circles" aria-hidden="true">
             <div className="wd-abl__linetrack">

@@ -96,7 +96,7 @@ export default function MehrwertRechner() {
   }, [active]);
 
   return (
-    <section className="rr-section mwr-section" id="rechner">
+    <section className="rr-section mwr-section" id="rechner" data-rr-snap>
       <div className="rr-wrap rr-narrow mwr-head">
         <p className="wd-eyebrow">Was dir das bringt</p>
         <h2 className="rr-statement mwr-h2">

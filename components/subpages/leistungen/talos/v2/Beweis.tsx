@@ -20,7 +20,7 @@ export default function Beweis() {
   }
 
   return (
-    <section className="rr-section tl-section">
+    <section className="rr-section tl-section" data-rr-snap>
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow tl-eyebrow">Der Beweis</p>
         <h2 className="rr-statement tl-title">Diese Seite hier ist der Beweis.</h2>

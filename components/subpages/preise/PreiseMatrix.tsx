@@ -111,7 +111,7 @@ function StufeMatrix({
 
 export default function PreiseMatrix() {
   return (
-    <section className="rr-section rp-matrix" id="pakete">
+    <section className="rr-section rp-matrix" id="pakete" data-rr-snap>
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow">Drei Pakete</p>
         <h2 className="rr-statement rp-matrix__h2">

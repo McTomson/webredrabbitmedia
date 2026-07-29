@@ -71,16 +71,26 @@ export default function ScrollExperience() {
       return el.getBoundingClientRect().top + scrollY;
     }
 
-    /** Liegt die aktuelle Scroll-Position INNERHALB einer Sticky-Strecke? */
-    function insideExempt(scrollY: number) {
+    /**
+     * Liegt die aktuelle Scroll-Position INNERHALB einer Sticky-Strecke?
+     * Am ENDE des Tracks (letzte CATCH_RATIO*vh) gilt das NICHT mehr: dort
+     * sitzt in aller Regel schon die naechste Sektion, deren Oberkante genau
+     * dort beginnt, wo der Track endet. Ohne diesen Ausschnitt blockiert
+     * insideExempt() den Einrast-Check bis zur letzten Pixelreihe des Tracks
+     * — die naechste Sektion ist dann schon durchgescrollt, bevor ihr Snap
+     * je greifen konnte (QA-Fund 29.07.: KundenGrid direkt nach CasePanels
+     * auf der Homepage wurde nie abgefangen).
+     */
+    function insideExempt(scrollY: number, vh: number) {
       const nodes = Array.from(
         document.querySelectorAll<HTMLElement>("[data-rr-snap-exempt]"),
       );
+      const tailReach = vh * CATCH_RATIO;
       for (const el of nodes) {
         const rect = el.getBoundingClientRect();
         const top = rect.top + scrollY;
         const bottom = top + rect.height;
-        if (scrollY > top + EXEMPT_TOP_TOLERANCE_PX && scrollY < bottom) return true;
+        if (scrollY > top + EXEMPT_TOP_TOLERANCE_PX && scrollY < bottom - tailReach) return true;
       }
       return false;
     }
@@ -91,7 +101,7 @@ export default function ScrollExperience() {
 
       const scrollY = window.scrollY;
       const vh = window.innerHeight;
-      if (insideExempt(scrollY)) return;
+      if (insideExempt(scrollY, vh)) return;
 
       let bestTop = 0;
       let bestDist = Infinity;

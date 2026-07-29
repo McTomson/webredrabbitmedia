@@ -267,7 +267,7 @@ function StufeMatrix({
 
 export default function DreiStufenMatrix() {
   return (
-    <section className="fmx">
+    <section className="fmx" data-rr-snap>
       <div className="fmx__wrap">
         <p className="wd-eyebrow">DREI PAKETE</p>
         <h2 className="fmx__h2">Drei Pakete, je nachdem wie viel du brauchst.</h2>

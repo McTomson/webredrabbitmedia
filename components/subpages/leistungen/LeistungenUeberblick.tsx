@@ -158,7 +158,7 @@ export default function LeistungenUeberblick() {
   }, []);
 
   return (
-    <div className="lu-wrap" ref={rootRef}>
+    <div className="lu-wrap" ref={rootRef} data-rr-snap>
       <div className="lu-inner">
         <div className="lu-intro lu-reveal">
           <p className="wd-eyebrow">Was wir anders machen</p>

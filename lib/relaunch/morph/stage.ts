@@ -156,10 +156,15 @@ export function buildStagePlan(
 
   // ---- Szenen-Fenster -------------------------------------------------------
   // Szene 0: Build [U_B0, U_B1], harter Schnitt bei uCut0 = U_HERO + 1.
-  // Szene s>=1: us = U_HERO + s; Build [us, us+0.75]; Schnitt us+1
+  // Szene s>=1: us = U_HERO + s; Build [us, us+0.85]; Schnitt us+1
   //             (Szene 4: kein Ende, bleibt bis U_TOTAL).
+  // Bauzeit 0.75 -> 0.85 (Thomas 29.07.: die Formationen setzen sich beim
+  // Scrollen noch zu schnell zusammen, losgeloest vom bereits getunten
+  // Figuren-Gesamttempo/U_SPAN). Erster, konservativer Schritt (+13% Bauzeit,
+  // 0.15 Einheiten Stand-/Uebergangszeit bleiben vor dem naechsten Schnitt);
+  // live auf v2 pruefen, ob das reicht oder weiter gestreckt werden muss.
   const uB0 = (s: number) => (s === 0 ? U_B0 : U_HERO + s);
-  const winW = (s: number) => (s === 0 ? U_B1 - U_B0 : 0.75);
+  const winW = (s: number) => (s === 0 ? U_B1 - U_B0 : 0.85);
   const uCutOf = (s: number) =>
     s === 0 ? U_HERO + 1 : s < 4 ? U_HERO + s + 1 : U_TOTAL + 1;
 

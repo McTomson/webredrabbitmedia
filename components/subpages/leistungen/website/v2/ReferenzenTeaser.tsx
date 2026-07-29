@@ -12,6 +12,7 @@ export default function ReferenzenTeaser() {
     <section
       className="rr-section"
       aria-labelledby="wd-refs-title"
+      data-rr-snap
       style={{
         padding: 'var(--rr-section-y, clamp(96px, 12vw, 180px)) var(--rr-gutter, clamp(20px, 4vw, 64px))',
       }}

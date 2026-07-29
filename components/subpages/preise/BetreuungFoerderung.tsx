@@ -7,7 +7,7 @@
  */
 export default function BetreuungFoerderung() {
   return (
-    <section className="rr-section rp-bf">
+    <section className="rr-section rp-bf" data-rr-snap>
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow">Förderung</p>
         <p className="rr-body-lg rp-bf__p">

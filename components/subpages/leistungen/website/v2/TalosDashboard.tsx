@@ -54,7 +54,7 @@ export default function TalosDashboard() {
   const spark = [34, 52, 41, 68, 57, 79, 63, 48];
 
   return (
-    <section className="wda">
+    <section className="wda" data-rr-snap>
       <div className="wda__wrap">
         {/* Buehne: Browser-Frame + darueber ragender Talos */}
         <div className={`wda__stageArea ${inView ? "is-in" : ""}`} ref={rootRef}>

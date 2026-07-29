@@ -10,7 +10,7 @@ import FloatingReview from './FloatingReview';
  */
 export default function RisikoBand() {
   return (
-    <section className="rr-section rp-risiko">
+    <section className="rr-section rp-risiko" data-rr-snap>
       {/* FloatingReview VOR dem Inhalt im DOM: ihr sticky-Bereich ("Anschlagpunkt"
           bis Section-Ende) muss ab Section-Anfang reichen, sonst haette sie kaum
           Sticky-Weg (QA-Fix: Karte war in keinem Scroll-Sample sichtbar). */}

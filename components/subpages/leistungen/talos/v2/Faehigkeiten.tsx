@@ -196,7 +196,7 @@ export default function Faehigkeiten() {
   }, [openIndex, close]);
 
   return (
-    <section className="rr-section tl-section" ref={sectionRef}>
+    <section className="rr-section tl-section" ref={sectionRef} data-rr-snap>
       <style>{CSS}</style>
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow tl-eyebrow">Wenn du mehr willst</p>

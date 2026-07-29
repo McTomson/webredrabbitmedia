@@ -31,7 +31,7 @@ const PAARE: Paar[] = [
 
 export default function SoBauenWir() {
   return (
-    <section className="wd-hand" aria-labelledby="wd-hand-title">
+    <section className="wd-hand" aria-labelledby="wd-hand-title" data-rr-snap>
       <div className="wd-hand__inner rr-reveal">
         <p className="wd-eyebrow">SO BAUEN WIR</p>
         <h2 id="wd-hand-title" className="rr-statement wd-hand__statement">

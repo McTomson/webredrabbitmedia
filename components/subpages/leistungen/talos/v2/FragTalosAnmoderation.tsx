@@ -33,7 +33,7 @@ import FragTalos from '@/components/relaunch/talos/FragTalos';
  */
 export default function FragTalosAnmoderation() {
   return (
-    <section className="rr-section tl-section tl-frag tlfrag-section">
+    <section className="rr-section tl-section tl-frag tlfrag-section" data-rr-snap>
       <div className="rr-wrap rr-narrow">
         <div className="tlfrag-col">
           <p className="wd-eyebrow tl-eyebrow tlfrag-eyebrow">Noch unsicher?</p>

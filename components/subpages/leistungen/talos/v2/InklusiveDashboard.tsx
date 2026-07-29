@@ -70,7 +70,7 @@ export default function InklusiveDashboard() {
   const shown = Math.max(0, active);
 
   return (
-    <section className="rr-section tl-section tl-section--surface">
+    <section className="rr-section tl-section tl-section--surface" data-rr-snap>
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow tl-eyebrow">Bei jeder Website dabei</p>
         <h2 className="rr-statement tl-title">

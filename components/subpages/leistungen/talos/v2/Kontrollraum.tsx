@@ -74,7 +74,7 @@ export default function Kontrollraum() {
   }, []);
 
   return (
-    <section className="rr-section tl-section tl-section--surface">
+    <section className="rr-section tl-section tl-section--surface" data-rr-snap>
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow tl-eyebrow">Der Kontrollraum</p>
         <h2 className="rr-statement tl-title">

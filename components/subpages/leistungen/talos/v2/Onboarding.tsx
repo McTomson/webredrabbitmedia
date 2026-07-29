@@ -92,7 +92,7 @@ export default function Onboarding() {
   }, [reduced]);
 
   return (
-    <section className="rr-section tl-section tl-ob" aria-labelledby="tl-ob-title">
+    <section className="rr-section tl-section tl-ob" aria-labelledby="tl-ob-title" data-rr-snap>
       <div className="rr-wrap rr-narrow tl-ob__head">
         <p className="wd-eyebrow tl-eyebrow">So zieht Talos ein</p>
         <h2 id="tl-ob-title" className="rr-statement tl-title">
@@ -104,7 +104,9 @@ export default function Onboarding() {
         </p>
       </div>
 
-      <div ref={trackRef} className="tl-ob__track">
+      {/* Gepinnter rAF-Track: vom Soft-Snap ausgenommen, eigenes Dwell-System
+          regiert innen (Muster wie Ablauf.tsx / CasePanels). */}
+      <div ref={trackRef} className="tl-ob__track" data-rr-snap-exempt>
         <div className="tl-ob__stage">
           <div className="tl-ob__circles" aria-hidden="true">
             <div className="tl-ob__linetrack">

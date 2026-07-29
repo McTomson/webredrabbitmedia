@@ -9,7 +9,9 @@
  */
 export default function WerIstTalos() {
   return (
-    <section className="rr-section tl-section tl-sticky-track tl-sticky-track--tall">
+    // Track = dieses Section-Element (200vh); Exempt auf dem tallen Root wie
+    // CasePanels, nicht auf dem inneren position:sticky-Element.
+    <section className="rr-section tl-section tl-sticky-track tl-sticky-track--tall" data-rr-snap data-rr-snap-exempt>
       <div className="tl-sticky">
         <div className="rr-wrap tl-wer__grid">
           <div className="tl-wer__text">

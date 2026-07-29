@@ -109,7 +109,7 @@ export default function Diagnose() {
   );
 
   return (
-    <section className="wd-diag" aria-labelledby="wd-diag-title">
+    <section className="wd-diag" aria-labelledby="wd-diag-title" data-rr-snap>
       <div className="wd-diag__inner">
         <div className="wd-diag__head">
           <p className="wd-eyebrow">WAS DU WIRKLICH BRAUCHST</p>

@@ -114,7 +114,7 @@ export default function KundenSagen() {
   };
 
   return (
-    <section className="ks-section">
+    <section className="ks-section" data-rr-snap>
       <div className="ks-wrap">
         <h2 className="ks-title">Was unsere Kunden sagen</h2>
 

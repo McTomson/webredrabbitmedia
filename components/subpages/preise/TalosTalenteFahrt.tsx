@@ -222,6 +222,7 @@ function TalosIntro() {
 function StaticStations() {
   return (
     <div className="tf-static">
+      <p className="rr-eyebrow-theme rr-eyebrow-theme--ondark tf-static__label">Talos-Talente</p>
       {STATIONEN.map((s) => (
         <div className="tf-static__card" key={s.name}>
           <p className="tf-static__name">{s.name}</p>
@@ -254,6 +255,14 @@ function StaticStations() {
           background: rgba(255, 255, 255, 0.08);
           width: 100vw;
           margin-left: calc(50% - 50vw);
+        }
+        /* Rote Themen-Zeile ueber dem statischen (mobil/reduced-motion)
+           Kartenstapel, analog ScrollBumper .sb-section--static .sb-label
+           (DESIGN_STANDARD: "Jede Bumper-Strecke traegt oben die rote
+           ( Thema )-Zeile"). */
+        .tf-static__label {
+          padding: clamp(32px, 5vw, 56px) var(--rr-gutter, clamp(20px, 5vw, 48px)) 0;
+          background: var(--rr-navy);
         }
         .tf-static__card {
           background: var(--rr-navy);
@@ -337,6 +346,8 @@ function TalosFahrt() {
     // ein, innen regiert das eigene Dwell-System.
     <div ref={trackRef} className="tf-track" data-rr-snap data-rr-snap-exempt>
       <section aria-label="Talos-Talente" className="tf-sticky">
+        <p className="rr-eyebrow-theme rr-eyebrow-theme--ondark tf-label">Talos-Talente</p>
+
         {/* Riesenwort "Talos", Parallax-Ebene hinter der Buehne. WIEDERHOLT
             (nicht nur einmal): bei 8 Slides legt die Buehne bis zu 700vw
             zurueck, das Wort bewegt sich mit 1.15x noch schneller (~805vw) —
@@ -414,6 +425,15 @@ function TalosFahrt() {
           overflow: hidden;
           background: var(--rr-navy);
           color: #fff;
+        }
+        /* Rote Themen-Zeile, fix oben links im Fenster ueber die ganze Fahrt
+           (DESIGN_STANDARD: "Jede Bumper-Strecke traegt oben die rote
+           ( Thema )-Zeile"), Position identisch zu ScrollBumper .sb-label. */
+        .tf-label {
+          position: absolute;
+          top: clamp(96px, 14vh, 150px);
+          left: 8vw;
+          z-index: 2;
         }
         .tf-giant {
           position: absolute;

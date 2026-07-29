@@ -36,7 +36,7 @@ const FAQ_ITEMS: FaqItem[] = [
 
 export default function WebsiteFaq() {
   return (
-    <section className="rr-section lw-faq">
+    <section className="rr-section lw-faq" data-rr-snap>
       <div className="rr-wrap rr-narrow lw-faq__grid">
         <div className="lw-faq__label">
           <p className="wd-eyebrow">HÄUFIGE FRAGEN</p>

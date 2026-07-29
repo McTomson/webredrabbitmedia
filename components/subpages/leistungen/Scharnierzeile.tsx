@@ -8,7 +8,7 @@
  */
 export default function Scharnierzeile() {
   return (
-    <section className="lh-scharnier">
+    <section className="lh-scharnier" data-rr-snap>
       <div className="rr-wrap rr-narrow">
         <p className="rr-statement lh-scharnier__text">
           Und dann hört deine Seite auf, nur schön dazustehen, und fängt an,
