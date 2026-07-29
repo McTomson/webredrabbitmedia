@@ -50,7 +50,7 @@ export default function BackToTop() {
     // Site-weite Lenis-Instanz (HomeMorph/ScrollExperience) uebernehmen,
     // falls vorhanden, damit die Fahrt zum Anfang genauso gedaempft wirkt
     // wie der Rest des Scroll-Gefuehls. Sonst nativer smooth scroll.
-    const lenis = (window as any).__rrLenis;
+    const lenis = window.__rrLenis;
     if (!reduced && lenis && typeof lenis.scrollTo === "function") {
       lenis.scrollTo(0, { duration: 1.2 });
     } else {
