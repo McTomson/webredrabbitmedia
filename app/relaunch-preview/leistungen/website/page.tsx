@@ -112,8 +112,14 @@ export default function LeistungenWebsitePreviewPage() {
           AUSSERHALB des .rr-Font-Scopes (kein Style-Leak in demo.css), wie bei
           der ueber-uns-Seite. Story/Haltung/FAQ/CTA sind jetzt echte
           React-Sektionen darunter (rr-*-Bauteile). */}
-      {/* data-rr-snap-exempt: eigene Scroll-Dramaturgie, kein Soft-Snap darin. */}
-      <div data-rr-snap-exempt>
+      {/* data-rr-snap-exempt: eigene Scroll-Dramaturgie, kein Soft-Snap darin.
+          ZUSAETZLICH data-rr-snap auf demselben Element (von ScrollExperience.tsx
+          bewusst erlaubt, siehe deren Kommentar zum Track-Root): ein Scroll, der
+          von OBEN in die Szene hineinlaeuft, haelt einmal an ihrem Anfang, bevor
+          die Wisch/Zahnrad-Animation losgeht (Thomas 29.07., "erstens stehen
+          bleiben"). Die vier Ehrlich-gesagt-Statements bekommen ihre eigenen
+          Zwischenstopps ueber window.__rrDynamicSnapTops (siehe demo.engine). */}
+      <div data-rr-snap-exempt data-rr-snap>
         <WebsiteDemoClient css={heroCss} html={heroHtml} js={heroJs} />
       </div>
 

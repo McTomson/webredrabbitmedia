@@ -582,6 +582,25 @@
     bCta.style.pointerEvents=cp>0.6?"auto":"none";
   }
 
+  // R4-Stopps (Thomas 29.07.): jedes der vier Statements ist ein eigener
+  // Halt -- ein bewusster Scroll bringt genau das naechste, egal wie viel
+  // Wegstrecke die Geste mitbringt. Diese Szene liegt in einem
+  // data-rr-snap-exempt-Track (eigene Scroll-Dramaturgie), darum kennt
+  // ScrollExperience.tsx ihre Fortschritts-Mitten nicht von selbst -- wir
+  // melden sie ueber window.__rrDynamicSnapTops (types.d.ts), das sowohl die
+  // Gesten-Klammer als auch den Idle-Snap dort greifen laesst. Frisch
+  // berechnet bei jedem Aufruf (nicht gecacht): Resize aendert rect.height/top.
+  function beliefCheckpointTops(){
+    if(!sceneBelief || !sceneBelief.isConnected) return [];
+    const rect=sceneBelief.getBoundingClientRect();
+    const vh=window.innerHeight;
+    const span=rect.height-vh;
+    if(span<=0) return [];
+    const top=rect.top+window.scrollY;
+    return B_CENTERS.map(c=>top+c*span);
+  }
+  if(sceneBelief){ window.__rrDynamicSnapTops=beliefCheckpointTops; }
+
   /* ================================================================ */
   /* SEKTION 5 — Partner-Raster mit Tipp-Animation                    */
   /* ================================================================ */
