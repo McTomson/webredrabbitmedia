@@ -7,7 +7,7 @@
 </div>
 
 <!-- ============ HAUPT-SZENE (Hero + Uebergang + Story in EINEM Sticky) ============ -->
-<section class="scene-main" id="sceneMain">
+<section class="scene-main" id="sceneMain" data-rr-snap data-rr-snap-exempt>
   <!-- data-active startet auf 0: die Deck-Maske (mask:url(#mask-v1)) greift erst,
        wenn die Engine bootet. Beim HTML-Streaming ist das masksvg (steht weiter
        unten) sonst noch nicht geparst -> leere Maske -> weisses Deck unsichtbar
@@ -17,7 +17,7 @@
       <div class="reveal-msg">Gibt es die überhaupt:<br>eine Agentur<br>ohne Blabla?</div>
     </div>
     <div class="layer-deck">
-      <div class="hero-title" id="htitle" role="heading" aria-level="1" aria-label="Über uns"><span class="ltr ue" data-l="0" aria-hidden="true">U</span><span class="ltr" data-l="1" aria-hidden="true">b</span><span class="ltr" data-l="2" aria-hidden="true">e</span><span class="ltr" data-l="3" aria-hidden="true">r</span><span class="ltr sp" data-l="4" aria-hidden="true">&nbsp;</span><span class="ltr" data-l="5" aria-hidden="true">u</span><span class="ltr" data-l="6" aria-hidden="true">n</span><span class="ltr" data-l="7" aria-hidden="true">s</span><span class="ltr dot" data-l="8" aria-hidden="true">.</span></div>
+      <h1 class="hero-title" id="htitle" aria-label="Über uns"><span class="ltr ue" data-l="0" aria-hidden="true">U</span><span class="ltr" data-l="1" aria-hidden="true">b</span><span class="ltr" data-l="2" aria-hidden="true">e</span><span class="ltr" data-l="3" aria-hidden="true">r</span><span class="ltr sp" data-l="4" aria-hidden="true">&nbsp;</span><span class="ltr" data-l="5" aria-hidden="true">u</span><span class="ltr" data-l="6" aria-hidden="true">n</span><span class="ltr" data-l="7" aria-hidden="true">s</span><span class="ltr dot" data-l="8" aria-hidden="true">.</span></h1>
     </div>
 
     <div class="story-grid">
@@ -61,7 +61,7 @@
 </section>
 
 <!-- ============ SEKTION 4 : HALTUNGS-STATEMENTS ============ -->
-<section class="scene-belief" id="sceneBelief">
+<section class="scene-belief" id="sceneBelief" data-rr-snap data-rr-snap-exempt>
   <div class="belief-sticky">
     <div class="belief-backing" aria-hidden="true"></div>
     <div class="b-label">(Woran wir glauben)</div>
@@ -73,7 +73,7 @@
 </section>
 
 <!-- ============ SEKTION 5 : PARTNER / REFERENZEN ============ -->
-<section class="scene-partner" id="scenePartner">
+<section class="scene-partner" id="scenePartner" data-rr-snap>
   <div class="p-head">
     <div class="p-label">(Stationen und Projekte)</div>
     <h2 class="p-title">Ausschnitt aus unserer Kundenliste</h2>
@@ -98,14 +98,14 @@
     <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
     <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
     <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <a class="p-cell p-cta" href="#projekte" id="pCta" aria-label="Alle Projekte ansehen">
+    <a class="p-cell p-cta" href="/relaunch-preview/referenzen" id="pCta" aria-label="Alle Projekte ansehen">
       <svg class="p-chev" viewBox="0 0 128 64" aria-hidden="true"><g class="chevwrap" id="chevWrap"></g></svg>
     </a>
   </div>
 </section>
 
 <!-- ============ SEKTION 6 : FAQ ============ -->
-<section class="scene-faq" id="sceneFaq">
+<section class="scene-faq" id="sceneFaq" data-rr-snap>
   <div class="faq-wrap">
     <div class="faq-grid">
     <div class="faq-left">

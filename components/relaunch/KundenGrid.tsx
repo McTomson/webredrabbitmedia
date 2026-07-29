@@ -21,8 +21,9 @@ import { useEffect, useRef } from "react";
  * CHEV-Array) ist 1:1 aus Zeilen 748-774 uebernommen.
  */
 
-// GENAU diese 13 verifizierten Kundennamen (demo.engine.jstext Zeile 593) —
-// feste Reihenfolge, kein Ersatz-Pool.
+// GENAU diese 13 verifizierten Kundennamen (Thomas 30.07.: K2 Dach- & Bau raus,
+// kein Kunde von uns; Global Insights/ruderes-insights.at neu rein — synchron mit
+// components/subpages/ueber-uns-demo/demo.engine.jstext halten).
 const POOL = [
   "SIGNA",
   "6B47",
@@ -36,8 +37,18 @@ const POOL = [
   "Therme Warten",
   "Lashes by Danesh",
   "ReRo Heizsysteme",
-  "K2 Dach- & Bau",
+  "Global Insights",
 ];
+
+// Tipp-Animation tippt beim Neu-Schreiben einen ANDEREN Namen aus dem POOL
+// (Thomas 30.07.: "durcheinander", nie derselbe Name an derselben Stelle neu).
+function pickOtherName(exclude: string): string {
+  let n: string;
+  do {
+    n = POOL[Math.floor(Math.random() * POOL.length)];
+  } while (n === exclude && POOL.length > 1);
+  return n;
+}
 
 const DEL_MS = 42;
 const TYPE_MS = 78;
@@ -159,7 +170,7 @@ export default function KundenGrid() {
             rrIndex = (rrIndex + k + 1) % cells.length;
             c.state = "del";
             c.t0 = now;
-            c.target = c.cur; // eigenen Namen neu tippen (kein Fremdname)
+            c.target = pickOtherName(c.cur); // anderen Namen aus dem Pool tippen (durcheinander)
             cellRefs.current[idx]?.classList.add("typing");
             break;
           }

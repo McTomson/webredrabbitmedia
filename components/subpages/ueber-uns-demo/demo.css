@@ -239,43 +239,41 @@
   .rr-btn-sweep--red{--c:var(--red)}
 
   /* ================= SEKTION 5 : PARTNER / REFERENZEN (Navy-Panel) ================= */
+  /* Weiss statt Rot (Thomas 30.07.): 1:1 an components/relaunch/KundenGrid.tsx
+     (Hauptseiten-Version derselben Sektion) angeglichen — Off-White Panel, weisse
+     Zellen, Ink-Text, roter Label/Caret/Chevron-Akzent. Grain-Overlay (war fuers
+     alte Anthrazit-Panel gedacht) faellt damit weg, kein Aequivalent in der
+     Referenz. */
   .scene-partner{
     position:relative;isolation:isolate;
-    background:var(--blue);color:var(--offwhite);
+    background:var(--offwhite);color:var(--ink);
     padding:14vh 6vw 16vh;
   }
-  /* P7-Grain: feines Rauschen ueber dem Anthrazit-Panel */
-  .scene-partner::after{
-    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-    opacity:.05;mix-blend-mode:overlay;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  }
-  .scene-partner > *{position:relative;z-index:1}
   .p-head{max-width:1240px;margin:0 auto 6vh}
   .p-label{
     font-family:"DM Sans",sans-serif;
     font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--offwhite);opacity:.95;font-weight:700;margin-bottom:1.4rem;
+    color:var(--red);font-weight:700;margin-bottom:1.4rem;
     user-select:none;-webkit-user-select:none;
   }
   /* R6: grosse Ueberschrift ueber dem Raster (Referenz pixelperfektion) */
   .p-title{
     font-family:"DM Sans",sans-serif;font-weight:700;
     font-size:clamp(2.1rem,5vw,4rem);line-height:1.02;letter-spacing:-.025em;
-    color:var(--offwhite);text-wrap:balance;max-width:16ch;
+    color:var(--ink);text-wrap:balance;max-width:16ch;
     margin:0 0 1.5rem;
   }
   .p-stats{
     font-family:"Instrument Sans",sans-serif;font-weight:400;
     font-size:clamp(.95rem,1.15vw,1.1rem);letter-spacing:.04em;
-    color:var(--offwhite);opacity:.72;
+    color:var(--ink-soft);
     user-select:none;-webkit-user-select:none;
   }
   .p-grid{
     max-width:1240px;margin:0 auto;
     display:grid;grid-template-columns:repeat(3,1fr);
-    gap:1px;background:var(--hairline);
-    border:1px solid var(--hairline);
+    gap:1px;background:var(--line);
+    border:1px solid var(--line);
     user-select:none;-webkit-user-select:none;
   }
   /* Zellen 1:1 an pixelperfektion (ul.list--clients) angeglichen:
@@ -285,16 +283,16 @@
      Einheitliches 5x3-Raster: alle 13 Namenszellen uniform (140px), die ">>"-Zelle
      spannt Reihe 4+5 in der rechten Spalte (siehe .p-cta). */
   .p-cell{
-    background:var(--blue);border-radius:0;
+    background:#ffffff;border-radius:0;
     min-height:140px;display:flex;align-items:center;
     padding:clamp(2rem,2.6vw,3.1rem);
     font-family:"DM Sans",sans-serif;font-weight:300;
     font-size:clamp(1.4rem,1.85vw,1.7rem);letter-spacing:-.01em;
-    line-height:1.2;color:var(--offwhite);
+    line-height:1.2;color:var(--ink);
     overflow:hidden;
   }
   /* Namen: DM Sans Light 300 — real duennerer Render als Instrument Sans (das kein echtes 300 hat;
-     Google clampt 300->400). DM Sans ist Marken-Displayschrift; Off-White #f4f4f2 auf #f12032 ~4.9:1 (>= 4.5). */
+     Google clampt 300->400). DM Sans ist Marken-Displayschrift. */
   .p-name{font-family:"DM Sans",sans-serif;font-weight:300}
   .p-caret{
     display:none;flex:none;

@@ -586,12 +586,16 @@
   /* SEKTION 5 — Partner-Raster mit Tipp-Animation                    */
   /* ================================================================ */
   const scenePartner=document.getElementById("scenePartner");
-  /* GENAU diese 13 verifizierten Kundennamen (feste Reihenfolge, exakte Schreibweise).
-     Es gibt keinen Ersatz-Pool: die 13 Namen sind IMMER sichtbar. Die Tipp-Animation
-     schreibt eine Zelle neu, indem sie den EIGENEN Namen loescht und wieder tippt
-     (roter Cursor, max. 2 Zellen gleichzeitig) — nie erscheint ein anderer/doppelter Name.
-     Reihenfolge = 3x3-Block (0-8) + untere Reihe (9-12), passend zum Grid. */
-  const POOL=["SIGNA","6B47","Tillmann & Kraus","MBT","Sans Souci","Die Vorsorgewohnungs GmbH","Phils.place","Auritas","Almtal Invest","Therme Warten","Lashes by Danesh","ReRo Heizsysteme","K2 Dach- & Bau"];
+  /* GENAU diese 13 verifizierten Kundennamen (Thomas 30.07.: K2 Dach- & Bau raus,
+     kein Kunde von uns; Global Insights/ruderes-insights.at neu rein).
+     Tipp-Animation loescht den aktuellen Namen einer Zelle und tippt einen ANDEREN
+     Namen aus dem POOL neu (Thomas 30.07.: "durcheinander", nie derselbe Name an
+     derselben Stelle neu tippen) — roter Cursor, max. 2 Zellen gleichzeitig. */
+  const POOL=["SIGNA","6B47","Tillmann & Kraus","MBT","Sans Souci","Die Vorsorgewohnungs GmbH","Phils.place","Auritas","Almtal Invest","Therme Warten","Lashes by Danesh","ReRo Heizsysteme","Global Insights"];
+  function pickOtherName(exclude){
+    let n; do{ n=POOL[Math.floor(Math.random()*POOL.length)]; }while(n===exclude&&POOL.length>1);
+    return n;
+  }
   const cells=[...document.querySelectorAll("#pGrid .p-cell:not(.p-cta)")].map(c=>({
     el:c, name:c.querySelector(".p-name"), cur:"", state:"idle", t0:0, target:""
   }));
@@ -612,7 +616,7 @@
         if(c.state==="idle"){
           rrIndex=(rrIndex+k+1)%cells.length;
           c.state="del"; c.t0=now;
-          c.target=c.cur;               /* eigenen Namen neu tippen (kein Fremdname) */
+          c.target=pickOtherName(c.cur); /* anderen Namen aus dem Pool tippen (durcheinander) */
           c.el.classList.add("typing");
           break;
         }
