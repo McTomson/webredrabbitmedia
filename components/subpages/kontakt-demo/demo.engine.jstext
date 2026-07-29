@@ -59,7 +59,7 @@
   const P_SHRINK1=0.20;
   const P_SCAT0=0.20, P_SCAT1=0.44;   /* Buchstaben fliegen raus (langsamer) */
   const A_A0=0.20, A_A1=0.54;         /* C1: rote Fragmente kommen frueh HEREIN, ueberlappen den Buchstaben-Scatter (0.20-0.44) deutlich */
-  const TXT0=0.55, TXT1=0.90;         /* C3: Story-Text startet direkt wenn das letzte Fragment sitzt (Kopf fertig bei A_A1) */
+  const TXT0=0.55, TXT1=0.78;         /* Formular faehrt ein sobald die Gluehbirne sitzt, STOPPT bei TXT1 zentriert */
   const DIS0=0.92;                    /* C4: Kopf zerfaellt frueher/laenger -> ueberlappt mit dem Eintritt der Haltungs-Sektion */
 
   /* ---- Maske + Mal-Zone (Blobs nur OBERHALB der Titel-Oberkante) ---- */
@@ -427,31 +427,24 @@
 
   /* ---- Story-Text (laeuft erst NACH dem fertigen Kopf) ---- */
   let winH=0, blockH=0, startY=0, endY=0;
-  const textMoveBlocks=[...textMove.children];
   function measureStory(){
     winH=textWindow.clientHeight;
     blockH=textMove.scrollHeight;
     startY=winH;
-    endY=-blockH;
+    /* Formular STOPPT zentriert im Fenster (statt durchzulaufen wie der
+       fruehere Lesetext). Ist es hoeher als das Fenster, oben buendig. */
+    endY=Math.max((winH-blockH)/2,0);
   }
   function applyStoryText(sp){
     const ty=startY+(endY-startY)*sp;
     textMove.style.transform="translateY("+ty.toFixed(1)+"px)";
-    const wr=textWindow.getBoundingClientRect();
-    const wc=wr.top+winH/2;
-    for(const b of textMoveBlocks){
-      const r=b.getBoundingClientRect();
-      const c=r.top+r.height/2;
-      const d=Math.abs(c-wc)/(winH*0.5);
-      const o=d<1?1:Math.max(0.3,1-(d-1)*0.85);
-      b.style.opacity=o.toFixed(2);
-    }
   }
 
   /* ================================================================ */
   /* Haupt-Choreografie                                               */
   /* ================================================================ */
   let lastPainting=true;
+  let sculptLayer=null;
   function applyMain(Pm){
     // Titel: Anschnitt (Basislinie) -> Aufstieg+Schrumpf -> klein mittig
     let s, ty;
@@ -517,125 +510,39 @@
     // (0.55) -> Aufloesen (bB 0->1 -> progress 1). MorphSculpture liest window.__sculptProgress.
     window.__sculptProgress = bB>0 ? 0.55 + bB*0.45 : aA*0.55;
 
-    // Story-Text erst NACH fertigem Kopf
+    // Formular erst NACH fertiger Gluehbirne
     const sp=clamp((Pm-TXT0)/(TXT1-TXT0),0,1);
     applyStoryText(sp);
-    textCol.style.pointerEvents=(Pm>TXT0-0.03&&Pm<TXT1+0.03)?"auto":"none";
+    textCol.style.pointerEvents=(Pm>TXT0-0.03)?"auto":"none";
+    // Mobile-Andocken der Skulptur (CSS wirkt nur <768px): sobald das
+    // Formular einfaehrt, wandert die Gluehbirne klein in die Kopfzeile.
+    if(!sculptLayer||!sculptLayer.isConnected) sculptLayer=document.querySelector(".sculpt-layer");
+    if(sculptLayer) sculptLayer.classList.toggle("docked", sp>0.04);
   }
 
-  /* ================================================================ */
-  /* SEKTION 4 — Haltungs-Statements                                  */
-  /* ================================================================ */
-  const sceneBelief=document.getElementById("sceneBelief");
-  const beliefSticky=sceneBelief.querySelector(".belief-sticky");
-  const stmts=[...sceneBelief.querySelectorAll(".stmt")];
-  const bCta=document.getElementById("bCta");
-  const B_CENTERS=[0.13,0.37,0.61,0.85], B_W=0.24;
-  const smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
-  // R4: gemessene Satzhoehen -> Kontakt-Abstand ist eine leichte Beruehrung (~10% Ueberlappung),
-  // kein vollflaechiges Uebereinander. In boot()/resize gefuellt.
-  function measureStmts(){
-    stmts.forEach(el=>{
-      const prev=el.style.transform, po=el.style.opacity;
-      el.style.transform="translate(-50%,-50%)"; el.style.opacity="0";
-      el._h=el.getBoundingClientRect().height;
-      el.style.transform=prev; el.style.opacity=po;
-    });
-  }
-  // R4: Sticky-Stups-Mechanik. Jeder Satz "besitzt" ein Slot von einem halben Nachbar-
-  // abstand (|d|<=0.5). Innerhalb der Haltezone (|d|<=HOLD) steht er zentral und voll
-  // lesbar; genau EIN Satz ist so zentral. Nur am Slot-Rand (HOLD..EDGE) beruehren sich
-  // der wegziehende und der von unten aufsteigende Satz KURZ und LEICHT (~10%), danach
-  // faehrt der alte verblassend nach oben raus. Ausserhalb (|d|>EDGE+FADE) unsichtbar ->
-  // NIE drei Saetze gleichzeitig, nie vollflaechiges Uebereinander.
-  const B_HOLD=0.34, B_EDGE=0.5, B_FADE=0.12;
-  function applyBelief(bp){
+  /* (Haltungs-Statements + Partner-Raster sind RAUS, 29.07. — die Seite hat
+     jetzt Hero+Formular -> Kontaktdaten-Bumper -> FAQ. Siehe demo.body.html.) */
+
+  /* Dynamic-Snap-Checkpoint (ScrollExperience.tsx): die Formular-Ankunft
+     (Pm=TXT1) ist ein Pflicht-Halt IM exempt-Sticky — "kommt von unten,
+     oben angekommen: Stopp". Frisch berechnet (Resize aendert Geometrie). */
+  function formCheckpointTops(){
+    if(!sceneMain || !sceneMain.isConnected) return [];
+    const rect=sceneMain.getBoundingClientRect();
     const vh=window.innerHeight;
-    // C4: Sektion blendet ueber die erste Scroll-Strecke langsam ein, waehrend der
-    // Kopf (scene-main) noch zerfaellt -> ueberlappender Uebergang.
-    if(beliefSticky){ beliefSticky.style.opacity=clamp(bp/0.07,0,1).toFixed(3); }
-    const EXIT=vh*0.62;   // nach oben ganz aus dem Bild
-    const PARK=vh*0.42;   // unter dem Bild wartend
-    for(let i=0;i<stmts.length;i++){
-      const el=stmts[i];
-      let d=(B_CENTERS[i]-bp)/B_W;   // d>0: noch unter der Mitte (kommt von unten); d<0: ueber der Mitte (raus)
-      if(i===3) d=Math.max(d,0);     // Pointe wird nie nach oben rausgestupst, bleibt zuletzt zentral
-      const ad=Math.abs(d), sgn=d<0?-1:1;   // sgn=+1: unten, sgn=-1: oben
-      const touch=(el._h||vh*0.24)*0.45;    // Beruehrungsversatz am Slot-Rand -> ~10% Ueberlappung
-      let y,o;
-      if(ad<=B_HOLD){ y=0; o=1; }                         // zentral gehalten, voll lesbar
-      else if(ad<=B_EDGE){                                // leichtes Anstupsen am Slot-Rand
-        const k=smooth((ad-B_HOLD)/(B_EDGE-B_HOLD));
-        y=sgn*k*touch; o=1;
-      } else if(ad<=B_EDGE+B_FADE){                       // raus (oben) bzw. rein-verblassen (unten)
-        const m=smooth((ad-B_EDGE)/B_FADE);
-        const far=sgn<0?EXIT:PARK;
-        y=sgn*(touch+(far-touch)*m); o=1-m;
-      } else { y=sgn*(sgn<0?EXIT:PARK); o=0; }            // ausserhalb: unsichtbar geparkt
-      el.style.transform="translate(-50%,-50%) translateY("+y.toFixed(1)+"px)";
-      el.style.opacity=o.toFixed(3);
-    }
-    const cp=clamp((bp-(B_CENTERS[3]+0.05))/0.08,0,1);
-    const ce=easeInOut(cp);
-    bCta.style.opacity=ce.toFixed(3);
-    bCta.style.transform="translateY("+((1-ce)*28).toFixed(1)+"px)";
-    bCta.style.pointerEvents=cp>0.6?"auto":"none";
+    const span=rect.height-vh;
+    if(span<=0) return [];
+    const top=rect.top+window.scrollY;
+    const cp=top+TXT1*span;
+    /* WICHTIG: erst melden, wenn der Scroll nah genug dran ist (ab Beginn der
+       Formular-Einfahrt). ScrollExperience faehrt dynamische Kanten IMMER zu
+       Ende (finishDynamicBoundary, distanzunabhaengig) — eine frueh gemeldete
+       Kante wuerde sonst schon beim ERSTEN Wheel-Tick im Hero die komplette
+       Gluehbirnen-Choreografie im Schnelldurchlauf ueberspringen. */
+    if(window.scrollY < cp - vh*2.4) return [];
+    return [cp];
   }
-
-  /* ================================================================ */
-  /* SEKTION 5 — Partner-Raster mit Tipp-Animation                    */
-  /* ================================================================ */
-  const scenePartner=document.getElementById("scenePartner");
-  /* GENAU diese 13 verifizierten Kundennamen (feste Reihenfolge, exakte Schreibweise).
-     Es gibt keinen Ersatz-Pool: die 13 Namen sind IMMER sichtbar. Die Tipp-Animation
-     schreibt eine Zelle neu, indem sie den EIGENEN Namen loescht und wieder tippt
-     (roter Cursor, max. 2 Zellen gleichzeitig) — nie erscheint ein anderer/doppelter Name.
-     Reihenfolge = 3x3-Block (0-8) + untere Reihe (9-12), passend zum Grid. */
-  const POOL=["Kein Verkaufsanruf","Kein Newsletter","Kein Callcenter","Keine Warteschleife","Kein Stundensatz-Poker","Kein Kleingedrucktes","Kein Fachchinesisch","Kein Blabla","Keine Vorkasse","Kein Spam","Kein Druck","Kein Ghosting","Keine Massenmail"];
-  const cells=[...document.querySelectorAll("#pGrid .p-cell:not(.p-cta)")].map(c=>({
-    el:c, name:c.querySelector(".p-name"), cur:"", state:"idle", t0:0, target:""
-  }));
-  function initCells(){
-    cells.forEach((c,i)=>{ c.cur=POOL[i%POOL.length]; c.name.textContent=c.cur; });
-  }
-  let nextLaunch=1500, rrIndex=0;
-  const DEL_MS=42, TYPE_MS=78, PAUSE_MS=320;
-  function partnerTick(now){
-    if(reduced) return;
-    const r=scenePartner.getBoundingClientRect();
-    if(r.bottom<0||r.top>window.innerHeight) return;
-    let active=0;
-    for(const c of cells) if(c.state!=="idle") active++;
-    if(active<2&&now>nextLaunch){
-      for(let k=0;k<cells.length;k++){
-        const c=cells[(rrIndex+k)%cells.length];
-        if(c.state==="idle"){
-          rrIndex=(rrIndex+k+1)%cells.length;
-          c.state="del"; c.t0=now;
-          c.target=c.cur;               /* eigenen Namen neu tippen (kein Fremdname) */
-          c.el.classList.add("typing");
-          break;
-        }
-      }
-      nextLaunch=now+2600+Math.random()*1600;
-    }
-    for(const c of cells){
-      if(c.state==="del"){
-        const n=Math.max(0,c.cur.length-Math.floor((now-c.t0)/DEL_MS));
-        c.name.textContent=c.cur.slice(0,n);
-        if(n===0){ c.state="pause"; c.t0=now; }
-      } else if(c.state==="pause"){
-        if(now-c.t0>PAUSE_MS){ c.state="type"; c.t0=now; }
-      } else if(c.state==="type"){
-        const n=Math.min(c.target.length,Math.floor((now-c.t0)/TYPE_MS)+1);
-        c.name.textContent=c.target.slice(0,n);
-        if(n>=c.target.length){
-          c.cur=c.target; c.state="idle";
-          c.el.classList.remove("typing");
-        }
-      }
-    }
-  }
+  window.__rrDynamicSnapTops=formCheckpointTops;
 
   /* ================================================================ */
   /* Haupt-Loop                                                       */
@@ -645,7 +552,7 @@
      website-demo/demo.engine.jstext fuer die volle Begruendung): Navigation
      bleibt schnell, die Zahnrad-/Buchstaben-Teile gleiten weiterhin sanft. */
   const PIECE_LERP=0.065;
-  let smPm=null, smBp=null;
+  let smPm=null;
   function tick(now){
     /* Teardown-Guard: nach Soft-Navigation (App Router) ist die Szene aus dem
        Dokument entfernt -> Loop beenden statt ewig gegen detached DOM laufen. */
@@ -657,24 +564,6 @@
       smPm=smPm===null?rawPm:smPm+(rawPm-smPm)*PIECE_LERP;
       applyMain(smPm);
     }
-    const br=sceneBelief.getBoundingClientRect();
-    if(inView(br)){
-      const rawBp=clamp((-br.top)/(br.height-vh),0,1);
-      smBp=smBp===null?rawBp:smBp+(rawBp-smBp)*PIECE_LERP;
-      const bp=smBp;
-      applyBelief(bp);
-      // FIX2: Sobald die Belief-Sektion einblendet (bp>0), den Kopf ausblenden.
-      // Der Kopf ist an diesem Punkt bereits (fast) vollstaendig zerfallen und aus
-      // dem Bild geflogen (Pm>=0.97); sein Aufbau + Zerfall in der Story-Sektion
-      // (bp==0) bleibt unberuehrt und voll deckend. Das verhindert, dass restliche
-      // wegfliegende Fragmente in die zentrierten Statements hineinragen.
-      const g=clamp(bp/0.04,0,1);
-      if(g>=1){ headSvg.style.display="none"; }
-      else{ headSvg.style.display=""; headSvg.style.opacity=((parseFloat(headSvg.style.opacity)||0)*(1-g)).toFixed(3); }
-    } else {
-      headSvg.style.display="";
-    }
-    partnerTick(now);
     requestAnimationFrame(tick);
   }
 
@@ -682,20 +571,18 @@
   /* Boot                                                             */
   /* ================================================================ */
   function boot(){
-    initCells();
     computeShifts();
     fitMask();
     placeUeDots();
     measureStory();
     measureHeadStarts();
-    measureStmts();
     /* Font-Timing: boot laeuft oft VOR dem DM-Sans-Load -> Titel-Fit/Ue-Punkte
        messen mit Fallback-Font (Titel leicht beschnitten, Punkte falsch/fehlend).
        Nach fonts.ready einmal komplett nachmessen (idempotent, wie Resize). */
     if(document.fonts&&document.fonts.ready){
       document.fonts.ready.then(function(){
         computeShifts(); fitMask(); placeUeDots();
-        measureStory(); measureHeadStarts(); measureStmts();
+        measureStory(); measureHeadStarts();
       });
     }
 
@@ -705,9 +592,7 @@
       renderHead(1,0);
       headSvg.style.opacity="1";
       textMove.style.transform="none";
-      for(const b of textMoveBlocks) b.style.opacity="1";
-      for(const st of stmts){ st.style.transform="none"; st.style.opacity="1"; }
-      bCta.style.opacity="1"; bCta.style.transform="none"; bCta.style.pointerEvents="auto";
+      textCol.style.pointerEvents="auto";
       return;
     }
 
@@ -737,7 +622,7 @@
     if(!sceneMain.isConnected){ window.removeEventListener("resize",onRz); return; }
     clearTimeout(rz);
     rz=setTimeout(()=>{
-      computeShifts(); fitMask(); placeUeDots(); measureStory(); measureHeadStarts(); measureStmts();
+      computeShifts(); fitMask(); placeUeDots(); measureStory(); measureHeadStarts();
     },150);
   };
   window.addEventListener("resize",onRz);
@@ -755,55 +640,6 @@
   }
 
   /* ================================================================ */
-  /* K12 — ">>" aus roten Zahnrad-Fragmenten (comp1), setzt sich beim   */
-  /*        Einscrollen der Partner-Sektion zusammen                    */
-  /* ================================================================ */
-  const chevWrap=document.getElementById("chevWrap");
-  const pCta=document.getElementById("pCta");
-  const ARM="M9.75 16.66 C9.75 23.0 10.94 24.12 12.05 25.23 C13.16 26.43 14.17 26.77 14.77 27.28 C14.77 27.28 14.77 27.45 14.77 27.45 C14.77 27.45 7.62 27.45 7.62 27.45 C-2.17 27.45 -9.23 22.74 -9.15 10.49 C-9.15 10.49 -9.15 -9.64 -9.15 -9.64 C-9.15 -20.86 -10.51 -26.0 -14.77 -27.2 C-14.77 -27.2 -14.77 -27.45 -14.77 -27.45 C1.32 -27.02 9.75 -21.63 9.75 -8.78 C9.75 -8.78 9.75 16.66 9.75 16.66 Z";
-  const WEDGE1="M-17.8 -16.06 C-17.8 -16.06 -17.8 -16.99 -17.8 -16.99 C-1.01 -14.58 5.81 -13.08 17.8 -17.54 C17.8 -17.54 17.8 17.54 17.8 17.54 C17.8 17.54 16.33 17.54 16.33 17.54 C9.69 3.25 -1.56 -11.05 -17.8 -16.06 Z";
-  const WEDGE2="M-17.25 -17.54 C-17.25 -17.54 -15.77 -17.54 -15.77 -17.54 C-9.31 -3.8 2.86 10.12 17.25 15.13 C17.25 15.13 17.25 16.06 17.25 16.06 C-1.02 13.09 -9.69 12.9 -17.25 17.54 C-17.25 17.54 -17.25 -17.54 -17.25 -17.54 Z";
-  // C9: grosses ">>" aus GENAU 4 Teilen (viewBox 0 0 128 64) — pro ">" zwei
-  // Zahnrad-Arme: oben-diagonal + unten-diagonal, treffen sich an der rechten Spitze.
-  // R7: die zwei OBEREN Arme werden horizontal gespiegelt (fx:-1), damit ihre Enden
-  // sauber an die Enden der unteren Arme anschliessen und jedes ">" eine geschlossene
-  // Chevron-Form bildet (Spitzen treffen sich).
-  const CHEV=[
-    {d:ARM, cx:40,cy:19,rot:-54,sc:.62,fx:-1},   // Chevron 1 oben (gespiegelt)
-    {d:ARM, cx:40,cy:45,rot: 54,sc:.62,fx: 1},   // Chevron 1 unten
-    {d:ARM, cx:86,cy:19,rot:-54,sc:.62,fx:-1},   // Chevron 2 oben (gespiegelt)
-    {d:ARM, cx:86,cy:45,rot: 54,sc:.62,fx: 1}    // Chevron 2 unten
-  ];
-  const chevFrags=[];
-  if(chevWrap){
-    CHEV.forEach((c,i)=>{
-      const p=document.createElementNS(SVGNS,"path");
-      p.setAttribute("class","chev-frag");
-      p.setAttribute("d",c.d);
-      c.home="translate("+c.cx+"px,"+c.cy+"px) rotate("+c.rot+"deg) scale("+(c.fx*c.sc)+","+c.sc+")";
-      const sdx=34+(i%3)*6, sdy=(i%2?1:-1)*12;
-      c.scat="translate("+(c.cx+sdx)+"px,"+(c.cy+sdy)+"px) rotate("+(c.rot+150)+"deg) scale("+(c.fx*c.sc*0.5)+","+(c.sc*0.5)+")";
-      p.style.transform=c.scat;
-      chevWrap.appendChild(p);
-      chevFrags.push(p);
-    });
-  }
-  let chevDone=false;
-  function assembleChev(){
-    if(chevDone) return; chevDone=true;
-    chevFrags.forEach((p,i)=>{
-      p.style.transitionDelay=(i*70)+"ms";
-      p.style.transform=CHEV[i].home;
-      p.style.opacity="1";
-    });
-  }
-  if(reduced){ chevFrags.forEach((p,i)=>{p.style.transform=CHEV[i].home;p.style.opacity="1";}); }
-  else if(pCta && "IntersectionObserver" in window){
-    const io=new IntersectionObserver(es=>{es.forEach(e=>{ if(e.isIntersecting){ assembleChev(); io.disconnect(); } });},{threshold:0.5});
-    io.observe(pCta);
-  } else { assembleChev(); }
-
-  /* ================================================================ */
   /* C10 — FAQ: pro Frage faehrt eine Hairline von links nach rechts    */
   /*        ein, die Frage blendet mit ihr auf (details/summary bleibt) */
   /* ================================================================ */
@@ -815,19 +651,6 @@
     });},{threshold:0.25,rootMargin:"0px 0px -8% 0px"});
     faqItems.forEach(f=>fio.observe(f));
   } else { faqItems.forEach(f=>f.classList.add("revealed")); }
-
-  /* ================================================================ */
-  /* K13 — Footer-Wortmarke setzt sich beim Eintritt zusammen (verein-  */
-  /*        fachte Reassembly)                                          */
-  /* ================================================================ */
-  const rrFoot=document.getElementById("rrFoot");
-  if(rrFoot){
-    if(reduced){ rrFoot.classList.add("in"); }
-    else if("IntersectionObserver" in window){
-      const io=new IntersectionObserver(es=>{es.forEach(e=>{ if(e.isIntersecting){ rrFoot.classList.add("in"); io.disconnect(); } });},{threshold:0.25});
-      io.observe(document.getElementById("rrFootWord")||rrFoot);
-    } else { rrFoot.classList.add("in"); }
-  }
 
   if(document.fonts && document.fonts.ready){ document.fonts.ready.then(boot); }
   else { window.addEventListener("load",boot); }

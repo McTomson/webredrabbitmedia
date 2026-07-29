@@ -51,8 +51,10 @@ export default function KontaktPage() {
           blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
       <CornerLogo />
       <BackToTop />
-      {/* data-rr-snap-exempt: eigene Scroll-Dramaturgie, kein Soft-Snap darin. */}
-      <div data-rr-snap-exempt>
+      {/* Stopps pro Szene: data-rr-snap/-exempt sitzen seit 29.07. direkt an
+          den <section>-Tags im demo.body.html (Sticky-Szenen exempt, normale
+          Szenen = Pflicht-Stopp-Ziele). Kein pauschaler Exempt mehr. */}
+      <div>
         <KontaktDemoClient css={css} html={html} js={js} />
       </div>
 

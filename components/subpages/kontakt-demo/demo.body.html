@@ -7,7 +7,7 @@
 </div>
 
 <!-- ============ HAUPT-SZENE (Hero + Uebergang + Story in EINEM Sticky) ============ -->
-<section class="scene-main" id="sceneMain">
+<section class="scene-main" id="sceneMain" data-rr-snap data-rr-snap-exempt>
   <!-- data-active startet auf 0: die Deck-Maske (mask:url(#mask-v1)) greift erst,
        wenn die Engine bootet. Beim HTML-Streaming ist das masksvg (steht weiter
        unten) sonst noch nicht geparst -> leere Maske -> weisses Deck unsichtbar
@@ -17,7 +17,7 @@
       <div class="reveal-msg">Keine Sorge:<br>hier ruft dich<br>kein Verkäufer an.</div>
     </div>
     <div class="layer-deck">
-      <div class="hero-title" id="htitle" role="heading" aria-level="1" aria-label="Kontakt"><span class="ltr" data-l="0" aria-hidden="true">K</span><span class="ltr" data-l="1" aria-hidden="true">o</span><span class="ltr" data-l="2" aria-hidden="true">n</span><span class="ltr" data-l="3" aria-hidden="true">t</span><span class="ltr" data-l="4" aria-hidden="true">a</span><span class="ltr" data-l="5" aria-hidden="true">k</span><span class="ltr" data-l="6" aria-hidden="true">t</span><span class="ltr dot" data-l="7" aria-hidden="true">.</span></div>
+      <h1 class="hero-title" id="htitle" aria-label="Kontakt"><span class="ltr" data-l="0" aria-hidden="true">K</span><span class="ltr" data-l="1" aria-hidden="true">o</span><span class="ltr" data-l="2" aria-hidden="true">n</span><span class="ltr" data-l="3" aria-hidden="true">t</span><span class="ltr" data-l="4" aria-hidden="true">a</span><span class="ltr" data-l="5" aria-hidden="true">k</span><span class="ltr" data-l="6" aria-hidden="true">t</span><span class="ltr dot" data-l="7" aria-hidden="true">.</span></h1>
     </div>
 
     <div class="story-grid">
@@ -26,14 +26,30 @@
       </div>
       <div class="text-col">
         <div class="text-window" id="textWindow">
+          <!-- Das Formular faehrt (scroll-gebunden) von unten ein und STOPPT
+               zentriert im Fenster (Engine: endY = zentriert, Dynamic-Snap-
+               Checkpoint bei Ankunft). Ab da normal bedienbar. -->
           <div class="text-move" id="textMove">
-            <div class="t-eyebrow">(Die Frage)</div>
-            <p class="t-statement">Was passiert, wenn du auf Absenden drückst?</p>
-            <p class="t-ch">Du kennst das. Einmal irgendwo ein Kontaktformular ausgefüllt, und zwei Stunden später ruft ein Verkäufer an, der deinen Namen falsch ausspricht und dir ein Paket verkaufen will, nach dem du nie gefragt hast. Seitdem überlegst du zweimal, bevor du irgendwo auf Absenden drückst.</p>
-            <p class="t-ch">Verstehen wir. Bei den meisten Agenturen startet dieser Knopf nämlich einen Prozess: Lead angelegt, Verkäufer zugeteilt, Follow-up terminiert. Du bist ab da keine Person mehr, sondern eine Nummer in einem Trichter. Genau deshalb schieben so viele Betriebe ihre Anfrage monatelang vor sich her, während die alte Website weiter keine Kunden bringt.</p>
-            <p class="t-ch">Bei uns ist dieser Knopf harmloser, als du denkst. Was wir von dir brauchen, ist wenig: wer du bist und wo es gerade hakt. Zwei Minuten, kein Fachchinesisch, keine Unterlagen. Du musst nicht einmal wissen, was du genau willst. Das herauszufinden ist unser Teil der Arbeit, nicht deiner.</p>
-            <p class="t-close">Und was der Knopf dann wirklich auslöst? Steht ganz unten auf dieser Seite. Versprochen.</p>
-            <div class="t-byline">Thomas Uhlir<span>Gründer</span></div>
+            <div class="t-eyebrow">(Sag kurz hallo)</div>
+            <p class="k-title">Erzähl uns, wo es hakt<span class="kdot">.</span></p>
+            <form id="kForm" class="k-form" novalidate>
+              <div class="k-row">
+                <div class="k-field"><label for="kName">Name <span class="k-req">*</span></label><input id="kName" name="name" type="text" autocomplete="name" placeholder="Wie heißt du?"></div>
+                <div class="k-field"><label for="kCompany">Betrieb</label><input id="kCompany" name="company" type="text" autocomplete="organization" placeholder="Wie heißt dein Betrieb?"></div>
+              </div>
+              <div class="k-row">
+                <div class="k-field"><label for="kEmail">E-Mail <span class="k-req">*</span></label><input id="kEmail" name="email" type="email" autocomplete="email" placeholder="Wohin dürfen wir antworten?"></div>
+                <div class="k-field"><label for="kPhone">Telefon</label><input id="kPhone" name="phone" type="tel" autocomplete="tel" placeholder="+43 ... (wenn du magst)"></div>
+              </div>
+              <div class="k-field"><label for="kMsg">Worum geht es? <span class="k-req">*</span></label><textarea id="kMsg" name="message" placeholder="Zwei Sätze reichen. Was machst du, und wo hakt es gerade?"></textarea></div>
+              <input class="k-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <label class="k-dsgvo"><input id="kDsgvo" type="checkbox"> <span>Passt für mich, dass ihr meine Angaben zum Beantworten der Anfrage verwendet. Details in der <a href="/relaunch-preview/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span></label>
+              <div class="k-send">
+                <button class="rr-btn-sweep rr-btn-sweep--red" type="submit">Absenden</button>
+                <span class="k-sendnote">Kein Verkaufsanruf danach. Versprochen.</span>
+              </div>
+              <div id="kFormNote" class="k-note" role="status" aria-live="polite"></div>
+            </form>
           </div>
         </div>
       </div>
@@ -60,52 +76,27 @@
   </div>
 </section>
 
-<!-- ============ SEKTION 4 : HALTUNGS-STATEMENTS ============ -->
-<section class="scene-belief" id="sceneBelief">
-  <div class="belief-sticky">
-    <div class="belief-backing" aria-hidden="true"></div>
-    <div class="b-label">(Keine Sorge)</div>
-    <div class="stmt" data-s="0">Du kaufst hier noch nichts. Du zeigst uns eine Idee<span style="color:var(--red)">.</span></div>
-    <div class="stmt" data-s="1">Eine Anfrage ist kein Vertrag. Bei uns ist sie nicht einmal ein Angebot<span style="color:var(--red)">.</span></div>
-    <div class="stmt" data-s="2">Der Entwurf kommt zuerst. Dein Geld bleibt, wo es ist<span style="color:var(--red)">.</span></div>
-    <div class="stmt pointe" data-s="3">Zwei Minuten schreiben statt zwei Monate aufschieben<span style="color:var(--red)">?</span><span class="pointe-cta"><a class="rr-btn-sweep rr-btn-sweep--red" id="bCta" href="#sceneCta">Zum Formular</a></span></div>
-  </div>
-</section>
-
-<!-- ============ SEKTION 5 : PARTNER / REFERENZEN ============ -->
-<section class="scene-partner" id="scenePartner">
-  <div class="p-head">
-    <div class="p-label">(Was hier nicht passiert)</div>
-    <h2 class="p-title">Womit du hier nicht rechnen musst</h2>
-    <div class="p-stats">Eine Anfrage &nbsp;·&nbsp; zwei Minuten &nbsp;·&nbsp; eine ehrliche Antwort</div>
-  </div>
-  <!-- Einheitliches 5x3-Raster: 13 uniforme Namenszellen + 1 hohe ">>"-Zelle (Kind 14),
-       die per grid-column:3 / grid-row:4 span 2 die rechte Spalte in Reihe 4+5 belegt.
-       Die 13 Namen fliessen (auto-flow) um die fest platzierte ">>"-Zelle herum:
-       Reihe4 = Therme, Lashes | Reihe5 = ReRo, K2 (rechts jeweils die hohe ">>"-Zelle).
-       DOM-Reihenfolge = POOL-Reihenfolge (siehe JS). -->
-  <div class="p-grid" id="pGrid">
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
-    <a class="p-cell p-cta" href="#sceneCta" id="pCta" aria-label="Zum Formular">
-      <svg class="p-chev" viewBox="0 0 128 64" aria-hidden="true"><g class="chevwrap" id="chevWrap"></g></svg>
-    </a>
+<!-- ============ SEKTION 4 : KONTAKTDATEN (Bumper-Stil) ============
+     Ersetzt Haltungs-Statements + rotes "(Was hier nicht passiert)"-Raster
+     (Thomas 29.07.: roter Bereich weg, Daten als ruhiger Bumper wie die
+     "(Keine Sorge)"-Optik). Voll-Viewport, zentriert, Pflicht-Stopp. -->
+<section class="scene-daten" id="sceneDaten" data-rr-snap>
+  <div class="daten-inner cta-inner" id="ctaInner">
+    <div class="d-label">(So erreichst du uns)</div>
+    <p class="d-firma">Red Rabbit GmbH<span class="ddot">.</span></p>
+    <!-- Adresse laut Impressum/AGB/Datenschutz: 8/8 (Tuernummer), nicht "8"
+         wie im (aelteren) layout.tsx-Schema. Rechtsseiten = autoritativ. -->
+    <p class="d-line">Grabnergasse 8/8, 1060 Wien</p>
+    <p class="d-line"><a class="d-mail" href="mailto:office@redrabbit.media">office@redrabbit.media</a></p>
+    <div class="d-actions">
+      <a class="rr-btn-sweep rr-btn-sweep--red" href="tel:+436769000955">Anrufen</a>
+      <a class="rr-btn-sweep rr-btn-sweep--red" href="https://www.google.com/maps/search/?api=1&amp;query=Red%20Rabbit%20GmbH%2C%20Grabnergasse%208%2F8%2C%201060%20Wien" target="_blank" rel="noopener">Auf Google Maps öffnen</a>
+    </div>
   </div>
 </section>
 
 <!-- ============ SEKTION 6 : FAQ ============ -->
-<section class="scene-faq" id="sceneFaq">
+<section class="scene-faq" id="sceneFaq" data-rr-snap>
   <div class="faq-wrap">
     <div class="faq-grid">
     <div class="faq-left">
@@ -114,8 +105,12 @@
     </div>
     <div class="faq-right">
     <details class="faq-item">
-      <summary>Kostet mich das Erstgespräch etwas?<span class="pm"></span></summary>
-      <p class="faq-a">Nein. Fünfzehn Minuten am Telefon, du erzählst, wir hören zu. Danach weißt du, ob wir zusammenpassen. Das kostet dich nichts außer der Zeit, und verkauft wird dir dabei auch nichts.</p>
+      <summary>Kostet mich die Anfrage etwas?<span class="pm"></span></summary>
+      <p class="faq-a">Nein. Anfrage und Erstgespräch sind kostenlos und unverbindlich. Auch danach gilt: Der erste Entwurf entsteht ohne Vorkasse. Was ein Projekt kostet, steht offen auf unserer <a href="/relaunch-preview/preise">Preisseite</a>.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Wer liest meine Anfrage?<span class="pm"></span></summary>
+      <p class="faq-a">Red Rabbit ist eine Agentur unter der Leitung von Thomas Uhlir MBA. Deine Anfrage landet nicht bei einem Vertriebsteam, sondern bei den Leuten, die dein Projekt nachher auch wirklich umsetzen.</p>
     </details>
     <details class="faq-item">
       <summary>Wie schnell meldet ihr euch?<span class="pm"></span></summary>
@@ -126,42 +121,21 @@
       <p class="faq-a">Nein. Ein Satz wie „meine Website ist alt und bringt nichts" reicht völlig. Was daraus werden soll, finden wir gemeinsam heraus. Dafür ist das Erstgespräch da.</p>
     </details>
     <details class="faq-item">
-      <summary>Was, wenn ihr mir gar nicht helfen könnt?<span class="pm"></span></summary>
-      <p class="faq-a">Dann sagen wir dir das. Ehrlich und bevor es dich einen Euro kostet. Wir nehmen nicht jedes Projekt an, und genau deshalb funktionieren die, die wir annehmen.</p>
-    </details>
-    <details class="faq-item">
       <summary>Ruft mich jetzt ein Verkäufer an?<span class="pm"></span></summary>
       <p class="faq-a">Nein. Hier gibt es keinen Vertrieb, der auf Formulare lauert. Es meldet sich die Person, die dein Projekt nachher auch wirklich macht.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Was passiert mit meinen Daten?<span class="pm"></span></summary>
+      <p class="faq-a">Wir verwenden deine Angaben nur, um deine Anfrage zu beantworten. Kein Newsletter, keine Weitergabe an Dritte. Details stehen in der <a href="/relaunch-preview/datenschutz">Datenschutzerklärung</a>.</p>
     </details>
     </div>
     </div>
   </div>
 </section>
 
-<!-- ============ SEKTION 7 : SCHLUSS-CTA ============ -->
-<section class="scene-cta" id="sceneCta">
-  <div class="cta-inner" id="ctaInner">
-    <div class="cta-label">(Die Auflösung)</div>
-    <h2 class="cta-h">Das passiert, wenn du drückst<span style="color:var(--red)">.</span></h2>
-    <p class="cta-p">Deine Nachricht landet in unserem Postfach, nicht in einem Vertriebs-Trichter. Wir lesen sie, schauen uns deinen Betrieb an und schreiben dir zurück. Meistens geht sich davor gerade noch ein Kaffee aus. Mehr löst der Knopf nicht aus.</p>
-    <form id="kForm" class="k-form" novalidate>
-      <div class="k-row">
-        <div class="k-field"><label for="kName">Name *</label><input id="kName" name="name" type="text" autocomplete="name" placeholder="Wie heißt du?"></div>
-        <div class="k-field"><label for="kCompany">Betrieb</label><input id="kCompany" name="company" type="text" autocomplete="organization" placeholder="Wie heißt dein Betrieb?"></div>
-      </div>
-      <div class="k-row">
-        <div class="k-field"><label for="kEmail">E-Mail *</label><input id="kEmail" name="email" type="email" autocomplete="email" placeholder="Wohin dürfen wir antworten?"></div>
-        <div class="k-field"><label for="kPhone">Telefon</label><input id="kPhone" name="phone" type="tel" autocomplete="tel" placeholder="+43 ... (wenn du magst)"></div>
-      </div>
-      <div class="k-field"><label for="kMsg">Worum geht es? *</label><textarea id="kMsg" name="message" placeholder="Zwei Sätze reichen. Was machst du, und wo hakt es gerade?"></textarea></div>
-      <input class="k-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <label class="k-dsgvo"><input id="kDsgvo" type="checkbox"> <span>Passt für mich, dass ihr meine Angaben zum Beantworten der Anfrage verwendet. Details in der <a href="/relaunch-preview/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span></label>
-      <button class="rr-btn-sweep rr-btn-sweep--red" type="submit">Absenden</button>
-      <div id="kFormNote" class="k-note" role="status" aria-live="polite"></div>
-    </form>
-    <p class="k-direct">Lieber direkt? <a href="mailto:office@redrabbit.media">office@redrabbit.media</a> &nbsp;·&nbsp; <a href="tel:+436769000955">Anrufen</a></p>
-  </div>
-</section>
+<!-- SEKTION 7 (Schluss-CTA mit Formular) ist RAUS (29.07.): das Formular
+     steht jetzt oben im Hero neben der Gluehbirne, die Kontaktdaten in der
+     Daten-Sektion. Danach kommen direkt FAQ -> SiteClosing -> Footer. -->
 
 <!-- FOOTER: der frühere Nachbau von FooterReassembly ist RAUS (28.07.,
      Design-Vereinheitlichung). Die Seite rendert stattdessen die ECHTE

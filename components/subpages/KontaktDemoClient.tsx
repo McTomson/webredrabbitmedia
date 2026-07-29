@@ -11,9 +11,12 @@ import MorphSculpture from '@/components/subpages/MorphSculpture';
  *
  * Unterschiede zu ueber-uns:
  * - comp={1} = GLUEHBIRNE (at-shapes-comp2) statt Kopf; Figur steht rechts,
- *   Story-Text links (Spaltentausch in kontakt-demo/demo.css).
- * - scene-cta enthaelt das Kontakt-Formular (plain HTML + Engine-Handler,
- *   gleicher Endpunkt POST /api/contact wie KontaktForm.tsx).
+ *   FORMULAR links (Spaltentausch in kontakt-demo/demo.css). Das Formular
+ *   sitzt seit 29.07. im Hero-Fenster (faehrt ein + stoppt, Dynamic-Snap),
+ *   nicht mehr in einer Schluss-CTA-Sektion; Endpunkt POST /api/contact
+ *   wie KontaktForm.tsx (Submit-IIFE am Ende von demo.engine.jstext).
+ * - .sculpt-layer-Klasse am Portal: Mobile dockt die Gluehbirne beim
+ *   Formular-Einflug klein in die Kopfzeile (Engine toggelt .docked).
  */
 export default function KontaktDemoClient({
   css,
@@ -71,6 +74,7 @@ export default function KontaktDemoClient({
         createPortal(
           <div
             aria-hidden
+            className="sculpt-layer"
             style={{
               position: 'absolute',
               inset: 0,
