@@ -528,6 +528,11 @@
   /* Haupt-Loop                                                       */
   /* ================================================================ */
   function inView(rect){ return rect.bottom>-window.innerHeight*0.5 && rect.top<window.innerHeight*1.5; }
+  /* Teile-Fortschritt (Pm/bp) unabhaengig von SITE_LERP daempfen (siehe
+     website-demo/demo.engine.jstext fuer die volle Begruendung): Navigation
+     bleibt schnell, die Zahnrad-/Buchstaben-Teile gleiten weiterhin sanft. */
+  const PIECE_LERP=0.065;
+  let smPm=null;
   function tick(now){
     /* Teardown-Guard: nach Soft-Navigation (App Router) ist die Szene aus dem
        Dokument entfernt -> Loop beenden statt ewig gegen detached DOM laufen. */
@@ -535,8 +540,9 @@
     const vh=window.innerHeight;
     const mr=sceneMain.getBoundingClientRect();
     if(inView(mr)){
-      const Pm=clamp((-mr.top)/(mr.height-vh),0,1);
-      applyMain(Pm);
+      const rawPm=clamp((-mr.top)/(mr.height-vh),0,1);
+      smPm=smPm===null?rawPm:smPm+(rawPm-smPm)*PIECE_LERP;
+      applyMain(smPm);
     }
     /* Der ueber-uns-Block, der den Kopf beim Eintritt der Haltungs-Sektion
        ausblendete, entfaellt hier: diese Szene hat keine Folgeszene in der Engine,

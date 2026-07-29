@@ -661,6 +661,14 @@
   /* Haupt-Loop                                                       */
   /* ================================================================ */
   function inView(rect){ return rect.bottom>-window.innerHeight*0.5 && rect.top<window.innerHeight*1.5; }
+  /* Teile-Fortschritt (Pm/bp) wurde bisher indirekt ueber Lenis' traege
+     Scroll-Position geglaettet (SITE_LERP war 0.065). Seit SITE_LERP=1
+     (Pflicht-Stopp-Umbau, 29.07.) ist die echte Scroll-Position sofort da —
+     die Zahnrad-/Buchstaben-Teile wuerden sonst hart springen statt zu
+     gleiten. Deshalb hier eine EIGENE, von der Navigation unabhaengige
+     Daempfung nur fuer den Render-Fortschritt (gleiche Rate wie vorher). */
+  const PIECE_LERP=0.065;
+  let smPm=null, smBp=null;
   function tick(now){
     /* Teardown-Guard: nach Soft-Navigation (App Router) ist die Szene aus dem
        Dokument entfernt -> Loop beenden statt ewig gegen detached DOM laufen. */
@@ -668,12 +676,15 @@
     const vh=window.innerHeight;
     const mr=sceneMain.getBoundingClientRect();
     if(inView(mr)){
-      const Pm=clamp((-mr.top)/(mr.height-vh),0,1);
-      applyMain(Pm);
+      const rawPm=clamp((-mr.top)/(mr.height-vh),0,1);
+      smPm=smPm===null?rawPm:smPm+(rawPm-smPm)*PIECE_LERP;
+      applyMain(smPm);
     }
     const br=sceneBelief?sceneBelief.getBoundingClientRect():null;
     if(br&&inView(br)){
-      const bp=clamp((-br.top)/(br.height-vh),0,1);
+      const rawBp=clamp((-br.top)/(br.height-vh),0,1);
+      smBp=smBp===null?rawBp:smBp+(rawBp-smBp)*PIECE_LERP;
+      const bp=smBp;
       applyBelief(bp);
       // FIX2: Sobald die Belief-Sektion einblendet (bp>0), den Kopf ausblenden.
       // Der Kopf ist an diesem Punkt bereits (fast) vollstaendig zerfallen und aus
