@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { crimson, dmsans, grotesk } from "@/lib/relaunch/fonts";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
 import CornerLogo from "@/components/relaunch/CornerLogo";
+import BackToTop from "@/components/relaunch/BackToTop";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import { SPHERE_PROJECTS } from "@/lib/relaunch/projects";
 import "../../../styleguide/styleguide.css";
@@ -53,6 +54,7 @@ export default async function ReferenzProjektPage({
 
       {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil. */}
       <CornerLogo />
+      <BackToTop />
 
       <section className="rr-section" style={{ background: "var(--rr-navy)" }}>
         <div className="rr-wrap" style={{ maxWidth: 880 }}>

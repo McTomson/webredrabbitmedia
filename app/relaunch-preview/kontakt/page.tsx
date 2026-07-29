@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import KontaktDemoClient from '@/components/subpages/KontaktDemoClient';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import CornerLogo from '@/components/relaunch/CornerLogo';
+import BackToTop from '@/components/relaunch/BackToTop';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import SiteClosing from '@/components/relaunch/SiteClosing';
 import ScrollExperience from '@/components/relaunch/ScrollExperience';
@@ -49,6 +50,7 @@ export default function KontaktPage() {
       {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
           blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
       <CornerLogo />
+      <BackToTop />
       {/* data-rr-snap-exempt: eigene Scroll-Dramaturgie, kein Soft-Snap darin. */}
       <div data-rr-snap-exempt>
         <KontaktDemoClient css={css} html={html} js={js} />

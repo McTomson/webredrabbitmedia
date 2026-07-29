@@ -3,6 +3,7 @@ import path from 'node:path';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { RabbitMark } from '@/components/relaunch/RabbitMark';
+import BackToTop from '@/components/relaunch/BackToTop';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import LeistungenHero2Client from '@/components/subpages/LeistungenHero2Client';
@@ -147,6 +148,8 @@ export default function LeistungenPreviewPage() {
       >
         <RabbitMark style={{ display: 'block', width: 'clamp(18px, 1.8vw, 21px)', height: 'auto' }} />
       </Link>
+
+      <BackToTop />
 
       {/* Hamburger-Menue der Hauptseite; .rr-Wrapper liefert nur Font-Variablen. */}
       <div className={rrFonts} style={{ background: 'transparent' }}>

@@ -11,6 +11,7 @@ import HeroldComparisonTable from '@/components/HeroldComparisonTable';
 import RegionComparisonTable from '@/components/RegionComparisonTable';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import CornerLogo from '@/components/relaunch/CornerLogo';
+import BackToTop from '@/components/relaunch/BackToTop';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
@@ -98,6 +99,7 @@ export default async function TippsArticlePreview({ params }: Props) {
       </div>
       {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil. */}
       <CornerLogo />
+      <BackToTop />
       <div className="rrt">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />

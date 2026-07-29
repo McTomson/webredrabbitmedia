@@ -23,7 +23,7 @@ export default function SiteClosing({
 }) {
   return (
     <section
-      className="rr-section"
+      className={`rr-section${compact ? "" : " sc-full"}`}
       // Soft-Snap-Ziel (components/relaunch/ScrollExperience.tsx): gilt damit
       // automatisch auf jeder Seite, die den Abschluss-Block einbindet.
       data-rr-snap
@@ -33,6 +33,26 @@ export default function SiteClosing({
         paddingBottom: compact ? "clamp(56px, 8vw, 120px)" : "var(--rr-section-y)",
       }}
     >
+      {/* Volle Bildschirmhoehe + vertikale Zentrierung (Thomas 29.07.: soll wie
+          eine eigene volle Bildschirmseite wirken statt kleine Textinsel).
+          Nur wenn NICHT compact — compact ist bewusst die kleinere Bauhoehe
+          fuer die Kontakt-Seite (Formular liegt darueber), das bleibt so.
+          Plain globales style-Tag statt <style jsx> (LESSONS_LEARNED.md
+          "styled-jsx im Relaunch meiden"). Breakpoint = MOBILE_BREAKPOINT
+          (lib/relaunch/scroll-standard.ts, 820px). */}
+      <style>{`
+        .sc-full {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        @media (max-width: 820px) {
+          .sc-full {
+            min-height: 0;
+          }
+        }
+      `}</style>
       <div className="rr-wrap">
         <p
           className="rr-display-2"

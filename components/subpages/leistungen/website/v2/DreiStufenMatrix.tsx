@@ -1,8 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { STUFEN } from "./stufen-varianten/VarianteA";
+import {
+  BUMPER_TRACK_VH_PER_WINDOW,
+  isBumperDegraded,
+  snapUnits,
+} from "@/lib/relaunch/scroll-standard";
 
 /**
  * Drei Stufen — LIVE (Thomas' Wahl 21.07. aus /stufen-varianten): Variante B,
@@ -14,6 +19,16 @@ import { STUFEN } from "./stufen-varianten/VarianteA";
  * importiert, damit die Vorschau-Route unberuehrt bleibt und nichts doppelt
  * gepflegt wird. Sektions-Rahmen (Eyebrow/H2/Abschluss/Padding) an die
  * Live-Seite angeglichen.
+ *
+ * Sticky-Fahrt (Thomas 29.07.: "jede Stufe soll ihre eigene Bildschirmseite
+ * mit Stopp sein, wie die anderen Bumper auch"): die drei Stufen laufen jetzt
+ * als kanonische Bumper-Strecke (lib/relaunch/scroll-standard.ts, Referenz
+ * ScrollBumper.tsx/CasePanels.tsx) statt normal untereinander zu stehen — ein
+ * Sticky-100vh-Fenster pro Stufe, snapUnits-Dwell-Mathe. Inhalt jeder Stufe
+ * ist bewusst kurz (Name + 8-10 Ein-Wort-Merkmale, Detail-Saetze <20 Woerter)
+ * — kein Fliesstext, verletzt also nicht die "nie Absatz im Snap"-Regel.
+ * Mobile/reduced-motion (isBumperDegraded): faellt auf die alte, normal
+ * gestapelte Darstellung zurueck.
  */
 
 function StufeMatrix({
@@ -265,10 +280,127 @@ function StufeMatrix({
   );
 }
 
+/**
+ * Sticky-Fahrt: 3 Stufen als eigene 100vh-Fenster, snapUnits-Dwell wie
+ * ScrollBumper/CasePanels. Track-Root traegt data-rr-snap (Einstieg rastet
+ * ein) + data-rr-snap-exempt (innen regiert das eigene Dwell-System,
+ * Muster components/relaunch/ScrollExperience.tsx).
+ */
+function StufenFahrt() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [degraded, setDegraded] = useState(true); // SSR-sicher: erst nach Mount pruefen
+
+  useEffect(() => {
+    setDegraded(isBumperDegraded());
+  }, []);
+
+  useEffect(() => {
+    if (degraded) return;
+    const track = trackRef.current;
+    const stage = stageRef.current;
+    if (!track || !stage) return;
+
+    let rafId = 0;
+    let destroyed = false;
+    const n = STUFEN.length;
+
+    function render() {
+      const vh = window.innerHeight;
+      const rect = track!.getBoundingClientRect();
+      const total = rect.height - vh;
+      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+      const units = snapUnits(p * (n - 1), n);
+      stage!.style.transform = `translate3d(0, ${-units * vh}px, 0)`;
+    }
+    function loop() {
+      if (destroyed) return;
+      render();
+      rafId = requestAnimationFrame(loop);
+    }
+    rafId = requestAnimationFrame(loop);
+    return () => {
+      destroyed = true;
+      cancelAnimationFrame(rafId);
+    };
+  }, [degraded]);
+
+  if (degraded) {
+    return (
+      <div className="fmx__static">
+        {STUFEN.map((s, i) => (
+          <StufeMatrix key={s.name} stufe={s} defaultActive={i === 0 ? 0 : null} />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={trackRef}
+      className="fmx__fahrt-track"
+      data-rr-snap
+      data-rr-snap-exempt
+      style={{ height: `${STUFEN.length * BUMPER_TRACK_VH_PER_WINDOW}vh` }}
+    >
+      <div className="fmx__fahrt-sticky">
+        <div ref={stageRef} className="fmx__fahrt-stage" style={{ height: `${STUFEN.length * 100}vh` }}>
+          {STUFEN.map((s, i) => (
+            <div className="fmx__fahrt-window" key={s.name} style={{ top: `${i * 100}vh` }}>
+              <StufeMatrix stufe={s} defaultActive={i === 0 ? 0 : null} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Plain globales style-Tag statt <style jsx>: die Fahrt-Klassen werden
+          von DIESER Komponente gerendert, nicht von der aeusseren
+          DreiStufenMatrix — ein <style jsx> dort haette (hat es auch, Bug
+          29.07.) die styled-jsx-Scope-Grenze nie ueberschritten und wirkungslos
+          im Leeren gestanden. Klassen bleiben fmx__fahrt-* namespaced. */}
+      <style>{`
+        .fmx__fahrt-track {
+          position: relative;
+          width: 100%;
+        }
+        .fmx__fahrt-sticky {
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          overflow: hidden;
+        }
+        .fmx__fahrt-stage {
+          position: relative;
+          width: 100%;
+          will-change: transform;
+        }
+        .fmx__fahrt-window {
+          position: absolute;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          overflow-y: auto;
+          display: flex;
+          align-items: center;
+          padding: 0 var(--rr-gutter, clamp(20px, 4vw, 64px));
+        }
+        .fmx__fahrt-window > .fmx__stufe {
+          max-width: 1180px;
+          margin: 0 auto;
+          width: 100%;
+          border-top: 0 !important;
+          border-bottom: 0 !important;
+          padding: clamp(24px, 4vw, 48px) 0;
+        }
+      `}</style>
+    </div>
+  );
+}
+
 export default function DreiStufenMatrix() {
   return (
     <section className="fmx" data-rr-snap>
-      <div className="fmx__wrap">
+      <div className="fmx__wrap fmx__wrap--intro">
         <p className="wd-eyebrow">DREI PAKETE</p>
         <h2 className="fmx__h2">Drei Pakete, je nachdem wie viel du brauchst.</h2>
         <p className="fmx__intro">
@@ -278,11 +410,11 @@ export default function DreiStufenMatrix() {
           entscheidest dich für eines. Und wer klein anfängt, kann später
           jederzeit wachsen.
         </p>
+      </div>
 
-        {STUFEN.map((s, i) => (
-          <StufeMatrix key={s.name} stufe={s} defaultActive={i === 0 ? 0 : null} />
-        ))}
+      <StufenFahrt />
 
+      <div className="fmx__wrap">
         <p className="rr-meta fmx__meta">
           Was die Pakete kosten, steht schwarz auf weiß auf der{" "}
           <Link href="/preise" className="rr-link rr-link--text">
@@ -296,12 +428,17 @@ export default function DreiStufenMatrix() {
         .fmx {
           background: #ffffff;
           color: var(--rr-ink);
-          padding: var(--rr-section-y, clamp(96px, 12vw, 180px))
-            var(--rr-gutter, clamp(20px, 4vw, 64px));
         }
         .fmx__wrap {
           max-width: 1180px;
           margin: 0 auto;
+          padding: 0 var(--rr-gutter, clamp(20px, 4vw, 64px));
+        }
+        .fmx__wrap--intro {
+          padding-top: var(--rr-section-y, clamp(96px, 12vw, 180px));
+        }
+        .fmx__meta {
+          padding-bottom: var(--rr-section-y, clamp(96px, 12vw, 180px));
         }
         .fmx__h2 {
           font-family: var(--rr-font-display);

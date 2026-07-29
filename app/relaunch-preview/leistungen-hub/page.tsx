@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog/posts";
 import CornerLogo from "@/components/relaunch/CornerLogo";
+import BackToTop from "@/components/relaunch/BackToTop";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import ScrollExperience from "@/components/relaunch/ScrollExperience";
@@ -51,6 +52,7 @@ export default async function LeistungenHubPage() {
       {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
           blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
       <CornerLogo />
+      <BackToTop />
 
       <div className={rrFonts} style={{ background: "transparent" }}>
         <RelaunchMenu />

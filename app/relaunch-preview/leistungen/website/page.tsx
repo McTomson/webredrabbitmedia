@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Metadata } from 'next';
 import CornerLogo from '@/components/relaunch/CornerLogo';
+import BackToTop from '@/components/relaunch/BackToTop';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import WebsiteDemoClient from '@/components/subpages/WebsiteDemoClient';
@@ -99,6 +100,7 @@ export default function LeistungenWebsitePreviewPage() {
       {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
           blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
       <CornerLogo />
+      <BackToTop />
 
       {/* Hamburger-Menue der Hauptseite; .rr-Wrapper liefert nur Font-Variablen. */}
       <div className={rrFonts} style={{ background: 'transparent' }}>

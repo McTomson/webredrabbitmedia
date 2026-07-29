@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
 import CornerLogo from "@/components/relaunch/CornerLogo";
+import BackToTop from "@/components/relaunch/BackToTop";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import { crimson, dmsans, fraunces, grotesk } from "@/lib/relaunch/fonts";
 import "@/app/styleguide/styleguide.css";
@@ -28,6 +29,7 @@ export default function AGBPreviewPage() {
 
       {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil. */}
       <CornerLogo />
+      <BackToTop />
 
       <div className="rrl">
         <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -5,6 +5,7 @@ import { getAllPosts } from '@/lib/blog/posts';
 import TippsHeroClient from '@/components/subpages/TippsHeroClient';
 import TippsTunnel from '@/components/relaunch/TippsTunnel';
 import CornerLogo from '@/components/relaunch/CornerLogo';
+import BackToTop from '@/components/relaunch/BackToTop';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import SiteClosing from '@/components/relaunch/SiteClosing';
@@ -68,6 +69,7 @@ export default async function TippsPreviewPage() {
       {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
           blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
       <CornerLogo />
+      <BackToTop />
 
       {/* Hamburger-Menue der Hauptseite. Bewusst AUSSERHALB von .rrt (dessen
           Universal-Reset wuerde sonst mit den Menue-/Footer-Styles ringen);

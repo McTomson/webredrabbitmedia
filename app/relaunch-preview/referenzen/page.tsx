@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { crimson, dmsans, grotesk } from "@/lib/relaunch/fonts";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
 import CornerLogo from "@/components/relaunch/CornerLogo";
+import BackToTop from "@/components/relaunch/BackToTop";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import SiteClosing from "@/components/relaunch/SiteClosing";
 import SphereGallery from "@/components/relaunch/SphereGallery";
@@ -54,6 +55,7 @@ export default function ReferenzenPreviewPage() {
           blendet erst nach etwas Scrollen ein (ersetzt das fruehere
           GalleryChrome-Logo, damit Groesse/Position seitenweit identisch sind). */}
       <CornerLogo />
+      <BackToTop />
 
       {/* Buehne: viewportfuellende Galerie. H1 wie der Original-Claim als
           kleiner Textblock oben Mitte (SSR, SEO), Chrome = Logo/Let's talk/Nav. */}

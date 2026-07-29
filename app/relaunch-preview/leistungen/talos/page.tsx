@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Metadata } from 'next';
 import CornerLogo from '@/components/relaunch/CornerLogo';
+import BackToTop from '@/components/relaunch/BackToTop';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import TalosDemoClient from '@/components/subpages/TalosDemoClient';
@@ -103,6 +104,7 @@ export default function TalosLeistungPreviewPage() {
 
       {/* Ecken-Logo (rote Hasen-Marke oben links). */}
       <CornerLogo />
+      <BackToTop />
 
       {/* Hamburger-Menue der Hauptseite; .rr-Wrapper liefert nur Font-Variablen. */}
       <div className={rrFonts} style={{ background: 'transparent' }}>

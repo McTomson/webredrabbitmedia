@@ -10,13 +10,35 @@ import Link from 'next/link';
 export default function ReferenzenTeaser() {
   return (
     <section
-      className="rr-section"
+      className="rr-section wd-refs-section"
       aria-labelledby="wd-refs-title"
       data-rr-snap
       style={{
         padding: 'var(--rr-section-y, clamp(96px, 12vw, 180px)) var(--rr-gutter, clamp(20px, 4vw, 64px))',
       }}
     >
+      {/* Volle Bildschirmhoehe + vertikale Zentrierung (Thomas 29.07.: eigen-
+          staendige Bloecke sollen wie eine volle Bildschirmseite wirken statt
+          als kleine Textinsel in viel Leerraum). Plain globales style-Tag statt
+          <style jsx> (LESSONS_LEARNED.md "styled-jsx im Relaunch meiden") — hier
+          unproblematisch, weil es nur EINE Root-Komponente in diesem File gibt,
+          aber Konvention bleibt gleich. Breakpoint = MOBILE_BREAKPOINT
+          (lib/relaunch/scroll-standard.ts, 820px): darunter bleibt der Streifen
+          bei natuerlicher Hoehe, sonst reisst 100vh-Zwang Leerraum unter den
+          kurzen mobilen Inhalt (Eyebrow + ein Satz + Button). */}
+      <style>{`
+        .wd-refs-section {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        @media (max-width: 820px) {
+          .wd-refs-section {
+            min-height: 0;
+          }
+        }
+      `}</style>
       <div
         className="rr-reveal"
         style={{

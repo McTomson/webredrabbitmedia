@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Metadata } from 'next';
 import CornerLogo from '@/components/relaunch/CornerLogo';
+import BackToTop from '@/components/relaunch/BackToTop';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import TalosCompanionStage from '@/components/relaunch/talos/TalosCompanionStage';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
@@ -98,6 +99,7 @@ export default function PreisePreviewPage() {
       />
 
       <CornerLogo />
+      <BackToTop />
 
       {/* Talos-3D-Companion, stationsOnly = ueberspringt den Hero (die Seite hat
           selbst ein #sceneMain/__sculptProgress-Hero mit der Chart-Figur). Er

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { crimson, dmsans, fraunces, grotesk } from "@/lib/relaunch/fonts";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
 import CornerLogo from "@/components/relaunch/CornerLogo";
+import BackToTop from "@/components/relaunch/BackToTop";
 import HomeMorph from "@/components/relaunch/HomeMorph";
 import CasePanels from "@/components/relaunch/CasePanels";
 import HomeClosing from "@/components/relaunch/HomeClosing";
@@ -29,6 +30,7 @@ export default function RelaunchPreviewPage() {
           blendet erst nach dem Zerlegen der Hero-Woerter ein. Bleibt bei
           z-index 43 unter dem Menue-Overlay (z-index 1000). */}
       <CornerLogo />
+      <BackToTop />
 
       {/* Sektionen 0-3: Marken-Auftakt (Statement + Hasenkopf-Lockup) direkt in die
           durchgehende Morph-Buehne integriert (Hero + 5 Leistungs-Szenen) */}

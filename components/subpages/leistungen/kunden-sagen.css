@@ -11,6 +11,14 @@
   /* KEINE Trennlinien: Thomas 22.07. "die Linie gehoert dort nicht hin" —
      Sektionsgrenzen laufen linienlos ineinander, Abstand kommt vom Padding. */
   padding: 100px 30px;
+  /* Volle Bildschirmhoehe + vertikale Zentrierung (Thomas 29.07.: soll wie eine
+     eigene volle Bildschirmseite wirken statt kleine Textinsel in Leerraum).
+     Auf Mobil (siehe @media unten) wieder aufgehoben, sonst reisst der Zwang
+     Leerraum unter dem kuerzeren mobilen Inhalt. */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .ks-wrap {
@@ -257,6 +265,7 @@
 @media (max-width: 768px) {
   .ks-section {
     padding: 64px 20px;
+    min-height: 0;
   }
 
   .ks-title {
