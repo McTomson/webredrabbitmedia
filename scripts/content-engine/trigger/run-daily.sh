@@ -251,17 +251,32 @@ if [ -n "${ADMIN_API_TOKEN:-}" ]; then
   ' 2>/dev/null)
   [ -z "$REVIEW_PAYLOAD" ] && REVIEW_PAYLOAD="{\"slug\":\"$SLUG\"}"
   echo "review-payload: $REVIEW_PAYLOAD"
-  CODE=$(curl -s -o "$RESPFILE" -w '%{http_code}' --max-time 30 -X POST "$SITE_URL/api/review-notify" \
-    -H "Authorization: Bearer $ADMIN_API_TOKEN" -H 'Content-Type: application/json' \
-    -d "$REVIEW_PAYLOAD")
-  BODY=$(cat "$RESPFILE" 2>/dev/null); rm -f "$RESPFILE"
+  # Retry on HTTP 404 "article not found": review-notify reads content/blog/<slug>.mdx off the
+  # SERVERLESS FUNCTION's own bundled filesystem (app/api/review-notify/route.ts). The 200-check
+  # on $SITE_URL/tipps/$SLUG above only proves ONE edge node has the new deployment; this call can
+  # still land on a different, not-yet-propagated function instance without the brand-new file in
+  # its bundle -> spurious 404 even though the article is safely pushed. Observed 3x in 3 weeks
+  # (16./20./23.07.2026), always on freshly-generated high-risk/legal articles, always silently
+  # dropping the review mail with NO retry (root cause found 29.07.2026 auditing stuck drafts).
+  # Retry with the same short-backoff pattern already used for the git-fetch step above.
+  CODE=""; BODY=""
+  for attempt in 1 2 3 4 5; do
+    CODE=$(curl -s -o "$RESPFILE" -w '%{http_code}' --max-time 30 -X POST "$SITE_URL/api/review-notify" \
+      -H "Authorization: Bearer $ADMIN_API_TOKEN" -H 'Content-Type: application/json' \
+      -d "$REVIEW_PAYLOAD")
+    BODY=$(cat "$RESPFILE" 2>/dev/null); rm -f "$RESPFILE"
+    [ "$CODE" = "200" ] && break
+    echo "WARN: review-notify Versuch $attempt HTTP $CODE — $BODY (evtl. Deploy-Propagation, warte 20s) ..."
+    sleep 20
+  done
   if [ "$CODE" = "200" ]; then
     echo "review-mail ausgeloest: $BODY"
   else
     # Article exists + is pushed, so we still stamp (a re-run would generate a DUPLICATE article);
-    # but the mail failed -> alert so the day isn't silent and Thomas can approve from the dashboard.
-    echo "FEHLER: Review-Mail HTTP $CODE — $BODY"
-    notify "alert" "Review-Mail-Versand fehlgeschlagen" "Der Artikel '$SLUG' wurde erstellt und nach main gepusht, aber der Versand der Review-Mail schlug fehl (HTTP $CODE: $BODY). Bitte im Dashboard freigeben. Log: $LOG"
+    # but the mail failed after retries -> alert so the day isn't silent. No dashboard approval UI
+    # exists (checked 29.07.2026) — recovery is a manual re-POST to /api/review-notify with this slug.
+    echo "FEHLER: Review-Mail HTTP $CODE nach 5 Versuchen — $BODY"
+    notify "alert" "Review-Mail-Versand fehlgeschlagen" "Der Artikel '$SLUG' wurde erstellt und nach main gepusht, aber der Versand der Review-Mail schlug nach 5 Versuchen fehl (HTTP $CODE: $BODY). Es gibt keine Dashboard-Freigabe — bitte manuell /api/review-notify fuer '$SLUG' erneut ausloesen. Log: $LOG"
   fi
 else
   echo "WARN: ADMIN_API_TOKEN fehlt, keine Review-Mail gesendet."
