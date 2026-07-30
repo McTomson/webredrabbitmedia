@@ -26,7 +26,8 @@ import '@/components/subpages/leistungen/wd-eyebrow.css';
  * Preise, Preview, noindex — Server-Komponente nach docs/UNTERSEITEN_STIL.md,
  * Muster 1:1 aus app/relaunch-preview/leistungen/website/page.tsx. Inhalt/
  * Preise/Reihenfolge sind mit Thomas fixiert (brand/PREISE_SEITE_BRIEF.md) —
- * NICHT umdesignen. Preise NUR 950 / 2.900 / ab 4.900, nie 790.
+ * NICHT umdesignen. Preise NUR 1.250 / 2.850 / ab 4.900 (Thomas 30.07.,
+ * brand/decisions-log.md) — nie 790, nie die alten 950/2.900.
  *
  * Hero = eigener demo-Ordner-Klon (components/subpages/preise-demo/), analog
  * website-demo: Wort "Preise" + Wisch + MorphSculpture comp={3} (Chart,
@@ -38,7 +39,7 @@ import '@/components/subpages/leistungen/wd-eyebrow.css';
 export const metadata: Metadata = {
   title: 'Preise · Red Rabbit Media',
   description:
-    'Klare Pakete ab 950 Euro. Den Entwurf siehst du zuerst, ganz ohne Vorkasse. Dashboard ab dem Business-Paket gratis, Betreuung ohne Bindung, KMU.DIGITAL-förderbar.',
+    'Klare Pakete ab 1.250 Euro. Den Entwurf siehst du zuerst, ganz ohne Vorkasse. Dein Cockpit ist bei jedem Paket dabei, Betreuung ohne Bindung, KMU.DIGITAL-förderbar.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/preise' },
 };
@@ -72,8 +73,8 @@ export default function PreisePreviewPage() {
               provider: { '@type': 'Organization', name: 'Red Rabbit Media' },
               areaServed: 'AT',
               offers: [
-                { '@type': 'Offer', name: 'Starter', priceCurrency: 'EUR', price: '950' },
-                { '@type': 'Offer', name: 'Business', priceCurrency: 'EUR', price: '2900' },
+                { '@type': 'Offer', name: 'Starter', priceCurrency: 'EUR', price: '1250' },
+                { '@type': 'Offer', name: 'Business', priceCurrency: 'EUR', price: '2850' },
                 {
                   '@type': 'Offer',
                   name: 'Premium',
@@ -129,7 +130,7 @@ export default function PreisePreviewPage() {
           statements={[
             { text: 'Wir bauen dir eine ganze Website.' },
             { text: 'Von Grund auf. Nicht von der Stange.' },
-            { text: 'Dazu ein Dashboard: Talos, dein persönlicher Helfer.' },
+            { text: 'Dazu dein Cockpit: alle wichtigen Infos an einem Ort.' },
             { text: 'Grundfunktionen immer dabei. Mehr per Abo, wenn du willst.' },
             { text: 'Erst überzeugt, dann bezahlt.', pointe: true },
           ]}

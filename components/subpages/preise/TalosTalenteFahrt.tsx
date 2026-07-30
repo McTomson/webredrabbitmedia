@@ -100,6 +100,12 @@ function TalosIntro() {
             Über die Grundausstattung hinaus kannst du Talos einzelne Aufgaben übergeben. Nimm,
             was dein Betrieb gerade braucht, und lass den Rest weg.
           </p>
+          {/* Ehrlichkeit zum Produktstand (Thomas 30.07.): zum Start ist das
+              Cockpit dabei, Talos und die KI-Agenten folgen. */}
+          <p className="rp-talos-intro__soon">
+            Dein Cockpit ist ab dem ersten Tag dabei, die Talos-Talente schalten wir
+            Schritt für Schritt frei.
+          </p>
           <p className="rp-talos-intro__pos">
             Unser Team hat zusammen 135 Jahre Erfahrung. Dieses Wissen steckt in Talos. Du
             bekommst also nicht nur eine KI, sondern alles, was wir können, und wir sitzen
@@ -168,6 +174,28 @@ function TalosIntro() {
           color: rgba(255, 255, 255, 0.82);
           max-width: 52ch;
           margin: 0 0 26px;
+        }
+        .rp-talos-intro__soon {
+          font-family: var(--rr-font-ui);
+          font-size: clamp(0.9rem, 1.1vw, 1rem);
+          line-height: 1.55;
+          color: rgba(255, 255, 255, 0.82);
+          max-width: 52ch;
+          margin: 0 0 26px;
+        }
+        .rp-talos-intro__soon::before {
+          content: "Bald verfügbar";
+          display: inline-block;
+          border: 1px solid var(--rr-red);
+          color: #fff;
+          background: var(--rr-red);
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          padding: 3px 9px;
+          margin-right: 10px;
+          vertical-align: middle;
         }
         .rp-talos-intro__pos {
           font-family: var(--rr-font-ui);

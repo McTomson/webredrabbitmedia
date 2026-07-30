@@ -41,6 +41,11 @@ export const STUFEN: Stufe[] = [
           "Eine Seite, sauber und schnell. Alles Wichtige an einem Ort, damit du erstmal online bist und gefunden wirst.",
       },
       {
+        titel: "Dein Cockpit",
+        detail:
+          "Dein persönliches Dashboard: sammelt die wichtigsten Infos zu deinem Auftritt aus Google und anderen Quellen an einem Ort. Talos und die KI-Agenten kommen bald dazu.",
+      },
+      {
         titel: "Individuelles Design",
         detail: "Individuelles Design, gebaut auf deinen Betrieb.",
       },
@@ -82,6 +87,11 @@ export const STUFEN: Stufe[] = [
         titel: "Mehrseitig",
         detail:
           "Mehrere Seiten statt einer, mit Platz für Leistungen, Team und alles, was dein Betrieb zeigen will.",
+      },
+      {
+        titel: "Dein Cockpit",
+        detail:
+          "Dein persönliches Dashboard: sammelt die wichtigsten Infos zu deinem Auftritt aus Google und anderen Quellen an einem Ort. Talos und die KI-Agenten kommen bald dazu.",
       },
       {
         titel: "Lokale Sichtbarkeit",
@@ -135,6 +145,11 @@ export const STUFEN: Stufe[] = [
         titel: "Umfangreich",
         detail:
           "Die umfangreichste Stufe. Für alle, deren Seite wirklich arbeiten soll.",
+      },
+      {
+        titel: "Dein Cockpit",
+        detail:
+          "Dein persönliches Dashboard: sammelt die wichtigsten Infos zu deinem Auftritt aus Google und anderen Quellen an einem Ort. Talos und die KI-Agenten kommen bald dazu.",
       },
       {
         titel: "Dauerhafte Sichtbarkeit",

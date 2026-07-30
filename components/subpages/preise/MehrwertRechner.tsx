@@ -105,7 +105,8 @@ export default function MehrwertRechner() {
         </h2>
         <p className="rr-body-lg mwr-intro">
           Stell dir dein Talos-Team zusammen. Rechts siehst du, was dieselbe Arbeit
-          klassisch kostet, wenn du sie extern einkaufst.
+          klassisch kostet, wenn du sie extern einkaufst. Die Talos-Talente starten
+          in Kürze, dein Cockpit ist schon jetzt bei jedem Paket dabei.
         </p>
       </div>
 

@@ -12,8 +12,8 @@ import FloatingReview from './FloatingReview';
  * jetzt MIT grossem Preis pro Stufe"): links sticky Stufenname + Preis +
  * Badges, rechts die 2-spaltige Merkmal-Matrix mit aufklappbaren Panels,
  * Stufen UNTEREINANDER. Merkmale + Aufklapp-Verhalten 1:1 aus dem Original
- * (STUFEN-Daten importiert, nichts dupliziert). Preise NUR 950 / 2.900 /
- * ab 4.900 — nie andere Zahlen, nie 790.
+ * (STUFEN-Daten importiert, nichts dupliziert). Preise NUR 1.250 / 2.850 /
+ * ab 4.900 (Thomas 30.07., brand/decisions-log.md) — nie andere Zahlen.
  *
  * Styling: plain globales <style>-Tag statt <style jsx> (LESSONS_LEARNED.md
  * "styled-jsx im Relaunch meiden" — 3 dokumentierte Faelle, in denen
@@ -24,8 +24,8 @@ import FloatingReview from './FloatingReview';
  */
 
 const PREIS: Record<string, string> = {
-  Starter: '950 €',
-  Business: '2.900 €',
+  Starter: '1.250 €',
+  Business: '2.850 €',
   Premium: 'ab 4.900 €',
 };
 
@@ -41,7 +41,7 @@ if (STUFEN_OHNE_PREIS.length > 0) {
   throw new Error(
     `PreiseMatrix: kein Preis fuer Stufe(n) ${STUFEN_OHNE_PREIS.join(', ')}. ` +
       'PREIS-Map und STUFEN (leistungen/website/v2/stufen-varianten/VarianteA.tsx) ' +
-      'sind auseinandergelaufen — Preise NUR 950 / 2.900 / ab 4.900.',
+      'sind auseinandergelaufen — Preise NUR 1.250 / 2.850 / ab 4.900.',
   );
 }
 

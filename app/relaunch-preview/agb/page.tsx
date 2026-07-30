@@ -69,7 +69,8 @@ export default function AGBPreviewPage() {
                 Ein Vertrag kommt durch das Absenden des vollständig ausgefüllten Kontaktformulars auf
                 unserer Website zustande.
               </p>
-              <p>Nur in diesem Fall gilt der vergünstigte Fixpreis ab 950 € netto.</p>
+              {/* Preisstand 30.07.2026 (brand/decisions-log.md): Einstieg 1.250. */}
+              <p>Nur in diesem Fall gilt der vergünstigte Fixpreis ab 1.250 € netto.</p>
               <ul>
                 <li>
                   Das Angebot ist 30 Tage gültig. Danach kann die Red Rabbit GmbH das Angebot einseitig
