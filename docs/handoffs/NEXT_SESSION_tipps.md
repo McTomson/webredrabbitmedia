@@ -1,5 +1,25 @@
 # Naechste Session — Tipps-Seite (30.07.2026)
 
+## UPDATE 30.07. vormittags — TIPPS-UMBAU ERLEDIGT (Commit 75eb812, gepusht, live auf v2 verifiziert)
+- Uebersicht: Filter-Bug gefixt (WeakMap-Style-Cache; Klick scrollt zur ersten scharfen Karte,
+  Suche debounced 450ms), Empty-State mit Anrufen/E-Mail-Buttons, CollectionPage/ItemList/
+  Breadcrumb-Schema. Artikel-Template KOMPLETT neu: Sticky-Rail (Scrollspy-TOC ohne Kappung,
+  Weiterlesen, HELLE Analyse-CTA), E-E-A-T-Kopf, Hero-Bild, Instrument-Sans-Lesetext,
+  Sweep/Outline-Buttons, volle Schemas, /tipps/-Links Preview-gemappt. Thomas hat abgesegnet;
+  "hell statt dunkel + Instrument-Sans-Lesetext" ist jetzt STANDARD (docs/DESIGN_STANDARD.md,
+  Abschnitt Inhalts-Kaesten). Review-Log: docs/reviews/tipps-uebersicht-artikel-2026-07-30.md.
+- PREISE NEU (Thomas 30.07., decisions-log): Einstieg 1.250, Business 2.850 — in 9 Artikeln
+  umgestellt ("790" existiert nicht mehr in content/blog/). OFFEN fuer naechste Runde:
+  (a) 1.990-Nennungen in website-10-seiten-kosten + herold-vergleich (gilt 1.990 noch?),
+  (b) ROI-Beispiel 2.500 in was-kostet-eine-website:103 (auf 2.850?),
+  (c) GROSS: Preise-Seite + lib/config PRICING ("ab 790") + brand/pricing.md auf
+  1.250/2.850-Stand angleichen — Widerspruch zu 950/2.900/4.900 dokumentiert im decisions-log,
+  (d) DIY-TCO-Spalte 8.080 in website-selbst-erstellen (rechnet sich aus der Tabelle nicht),
+  (e) Emoji-artige Zeichen in conclusionStats einzelner Artikel (Content-Runde).
+- Der Rest dieses Handoffs (unten) ist damit ABGEARBEITET; nur die Blocker-/QA-Notizen gelten weiter.
+
+---
+
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, STATE.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
 - NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.
