@@ -1,7 +1,6 @@
 {
   "slug": "wie-lassen-sich-prozesse-ueber-die-unternehmenswebsite-automatisieren",
-  "requestedAt": "2026-07-29",
-  "status": "requested",
-  "chosenHook": "website statt telefon, geht das?",
-  "hookIndex": 3
+  "status": "needs-video",
+  "reason": "notebooklm GENERATION_FAILED 3x hintereinander (30.07.)",
+  "requestedAt": "2026-07-30"
 }
