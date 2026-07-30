@@ -2282,3 +2282,39 @@ quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
 quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
 geprueft_am: 2026-07-29
 recheck_nach: 2027-01-25
+
+## t55-2026-07-30-254
+cluster: 2
+keywords: versteht, unter, headless, lohnt, sich
+aussage: Ein Headless CMS ist ein API-first Content-Management-System: Es stellt nur das Backend zur Inhaltspflege bereit und liefert Inhalte ueber Schnittstellen (typischerweise REST oder GraphQL) an beliebige Frontends aus — Website, App oder andere Kanaele. Die Trennung von Inhaltsverwaltung und Praesentation ist das Kernprinzip; ein mitgeliefertes Frontend ('Head') wie bei WordPress gibt es nicht.
+quelle: https://strapi.io/blog/why-choose-headless-cms
+quelle_name: Strapi (Open-Source Headless CMS) - Why Choose a Headless CMS?
+geprueft_am: 2026-07-30
+recheck_nach: 2027-01-26
+
+## t55-2026-07-30-255
+cluster: 2
+keywords: versteht, unter, headless, lohnt, sich
+aussage: Einer der international fuehrenden Headless-CMS-Anbieter kommt aus Oesterreich: Storyblok mit Hauptsitz in Linz. Das 2017 gegruendete Unternehmen schloss im Juni 2024 eine Series-C-Finanzierung ueber 80 Mio. US-Dollar ab (gesamt 138 Mio. USD) und wuchs von 74.000 Nutzern (2022) auf rund 200.000 Nutzer. Storyblok positioniert sich bewusst zwischen starren Template-Baukaesten und komplett selbst gebauten Frontend-Stacks.
+quelle: https://techcrunch.com/2024/06/04/storyblok-raises-80m-to-bring-more-ai-into-its-headless-cms-aimed-at-non-technical-people
+quelle_name: TechCrunch - Storyblok raises $80M for its headless CMS
+geprueft_am: 2026-07-30
+recheck_nach: 2027-01-26
+
+## t55-2026-07-30-256
+cluster: 2
+keywords: versteht, unter, headless, lohnt, sich
+aussage: Der Headless-CMS-Markt waechst laut Market Research Future von rund 3,95 Mrd. USD (2025) auf prognostizierte 26,66 Mrd. USD bis 2035 — eine jaehrliche Wachstumsrate (CAGR) von rund 21 %. Haupttreiber sind Omnichannel-Content-Auslieferung und API-Oekosysteme; Cloud-Deployment dominiert.
+quelle: https://www.marketresearchfuture.com/reports/headless-cms-software-market-34090
+quelle_name: Market Research Future - Headless CMS Software Market Report
+geprueft_am: 2026-07-30
+recheck_nach: 2027-01-26
+
+## t55-2026-07-30-257
+cluster: 2
+keywords: versteht, unter, headless, lohnt, sich
+aussage: Der Hauptschwachpunkt klassischer WordPress-Seiten bei den Core Web Vitals ist der Largest Contentful Paint, verursacht durch langsame Time to First Byte: Nur 32 % der WordPress-Seiten erreichen laut Chrome-UX-Report einen guten TTFB-Wert, weil klassische CMS-Architekturen jede Seite bei Anfrage serverseitig aus PHP + Datenbank zusammensetzen. Headless-Setups mit statisch vorgerenderten Frontends (z. B. Next.js ueber CDN) loesen genau dieses Problem auf Architekturebene — das ist das staerkste technische Pro-Headless-Argument.
+quelle: https://www.corewebvitals.io/core-web-vitals/wordpress-guide
+quelle_name: CoreWebVitals.io - Core Web Vitals for WordPress: Optimization Guide
+geprueft_am: 2026-07-30
+recheck_nach: 2027-01-26

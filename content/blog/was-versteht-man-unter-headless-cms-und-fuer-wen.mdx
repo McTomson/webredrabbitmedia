@@ -1,0 +1,165 @@
+---
+title: "Headless CMS 2026: Was es ist und für wen es sich lohnt"
+slug: "was-versteht-man-unter-headless-cms-und-fuer-wen"
+excerpt: "Ein Headless CMS trennt Inhaltspflege und Darstellung und liefert Inhalte per Schnittstelle an beliebige Kanäle. Wir erklären, wie das funktioniert und für welche Unternehmen sich der Umstieg 2026 wirklich rechnet."
+featuredSnippetTitle: "Was versteht man unter einem Headless CMS?"
+featuredSnippet: "Ein Headless CMS ist ein Content-Management-System ohne mitgeliefertes Frontend. Es stellt nur das Backend zur Inhaltspflege bereit und liefert Inhalte über Schnittstellen (meist REST oder GraphQL) an beliebige Ausgabekanäle aus, etwa Website, App, Online-Shop oder digitale Displays. Es lohnt sich vor allem für Unternehmen mit mehreren Kanälen, hohen Performance-Anforderungen und eigenem Entwicklerteam."
+author: "Dmitry Pashlov"
+publishedAt: "2026-07-30"
+updatedAt: "2026-07-30"
+category: "Technik & Performance"
+cluster: 2
+tags:
+  - "Headless CMS"
+  - "CMS Vergleich"
+  - "Core Web Vitals"
+  - "WordPress"
+  - "Website Technik"
+featuredImage: "/images/blog/was-versteht-man-unter-headless-cms-und-fuer-wen.png"
+status: draft
+aiAssisted: true
+sources:
+  - name: "Strapi (Open-Source Headless CMS) - Why Choose a Headless CMS?"
+    url: "https://strapi.io/blog/why-choose-headless-cms"
+  - name: "TechCrunch - Storyblok raises $80M for its headless CMS"
+    url: "https://techcrunch.com/2024/06/04/storyblok-raises-80m-to-bring-more-ai-into-its-headless-cms-aimed-at-non-technical-people"
+  - name: "W3Techs - Usage statistics of content management systems"
+    url: "https://w3techs.com/technologies/overview/content_management"
+  - name: "Market Research Future - Headless CMS Software Market Report"
+    url: "https://www.marketresearchfuture.com/reports/headless-cms-software-market-34090"
+  - name: "Google Search Central - Understanding Core Web Vitals and Google search results"
+    url: "https://developers.google.com/search/docs/appearance/core-web-vitals"
+  - name: "CoreWebVitals.io - Core Web Vitals for WordPress: Optimization Guide"
+    url: "https://www.corewebvitals.io/core-web-vitals/wordpress-guide"
+keyTakeaways:
+  - "Ein Headless CMS trennt Inhaltspflege und Darstellung: Das Backend liefert Inhalte per Schnittstelle an beliebige Frontends, ein mitgeliefertes Frontend wie bei WordPress gibt es nicht."
+  - "Der Markt wächst mit rund 21 Prozent pro Jahr von 3,95 Milliarden (2025) auf prognostizierte 26,66 Milliarden US-Dollar (2035), mit Storyblok aus Linz als österreichischem Vorzeigeanbieter."
+  - "Das stärkste technische Argument sind die Core Web Vitals: Nur 32 Prozent der WordPress-Seiten erreichen einen guten TTFB-Wert, Headless-Setups mit vorgerendertem Frontend lösen das Problem auf Architekturebene."
+  - "Headless lohnt sich bei mehreren Ausgabekanälen, geschäftskritischer Performance und vorhandener Entwicklerkapazität. Ohne diese Voraussetzungen bleibt das klassische CMS die vernünftigere Wahl."
+  - "WordPress ist mit 59,3 Prozent Marktanteil unter CMS-Websites weiterhin der Standard, die Entscheidung ist also kein Entweder-oder aus Prinzip, sondern eine nüchterne Einzelfallrechnung."
+conclusionStats:
+  - label: "WordPress-Anteil unter CMS-Websites"
+    value: "59,3 %"
+  - label: "WordPress-Seiten mit gutem TTFB"
+    value: "nur 32 %"
+  - label: "Headless-CMS-Markt 2035 (Prognose)"
+    value: "26,66 Mrd. USD"
+  - label: "Jährliches Marktwachstum"
+    value: "ca. 21 %"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Was ist der Unterschied zwischen einem Headless CMS und WordPress?"
+    answer: "WordPress liefert Backend und Frontend als ein System: Inhalte werden gepflegt und über Themes direkt dargestellt. Ein Headless CMS stellt nur das Backend bereit und gibt Inhalte über Schnittstellen (REST oder GraphQL) aus. Die Darstellung übernimmt ein separat entwickeltes Frontend, zum Beispiel eine Next.js-Anwendung."
+  - question: "Ist ein Headless CMS schneller als ein klassisches CMS?"
+    answer: "Nicht automatisch, aber architektonisch begünstigt. Ein Headless-Setup mit vorgerendertem Frontend über ein CDN vermeidet die langsame Server-Antwortzeit klassischer Systeme. Laut Chrome-UX-Report erreichen nur 32 Prozent der WordPress-Seiten einen guten TTFB-Wert. Ein schlecht gebautes Headless-Frontend kann trotzdem langsam sein."
+  - question: "Für wen lohnt sich ein Headless CMS?"
+    answer: "Für Unternehmen, die Inhalte auf mehreren Kanälen ausspielen (Website, App, Portale), für die Performance und SEO geschäftskritisch sind, und die eigene Entwicklerkapazität oder einen langfristigen Technikpartner haben. Treffen mindestens zwei dieser drei Punkte zu, ist Headless eine ernsthafte Option."
+  - question: "Was kostet ein Headless CMS im Vergleich zu WordPress?"
+    answer: "Die Anfangskosten liegen höher, weil das Frontend eine echte Entwicklungsleistung ist und kein fertiges Theme. Dafür entfallen doppelte Inhaltspflege über mehrere Kanäle und typische Plugin-Probleme. Ob sich das rechnet, hängt von Kanalzahl, SEO-Abhängigkeit und verfügbarem Budget für den laufenden Betrieb ab."
+  - question: "Brauche ich für ein Headless CMS zwingend Entwickler?"
+    answer: "Ja, zumindest einen verlässlichen Technikpartner. Anders als bei WordPress gibt es keinen Katalog fertiger Themes zum Anklicken. Das Frontend muss entwickelt und dauerhaft betreut werden. Ohne eigenes Team oder Agentur ist ein Headless-Projekt nicht sinnvoll umsetzbar."
+---
+
+Stellen Sie sich ein Restaurant vor, bei dem Küche und Gastraum fix zusammengebaut sind. Die Küche kann nur genau diesen einen Gastraum bedienen, mit genau dieser Einrichtung. Wollen Sie zusätzlich einen Foodtruck am Naschmarkt betreiben, brauchen Sie eine komplett neue Küche. Genau so funktioniert ein klassisches CMS wie WordPress: Inhalte und Darstellung stecken in einem einzigen System.
+
+Ein Headless CMS reißt diese Wand ein. Die Küche bleibt eine zentrale Profiküche, aber sie liefert über ein Bestellsystem an beliebige Orte aus, in den Gastraum genauso wie in den Foodtruck. Übersetzt in die Web-Welt heißt das: Ihre Inhalte werden einmal zentral gepflegt und über Schnittstellen an jeden Kanal ausgespielt, der sie braucht.
+
+Klingt technisch. Ist aber am Ende eine ziemlich handfeste Geschäftsentscheidung. Sehen wir uns an, was dahintersteckt und ob sich das für Ihr Unternehmen auszahlt.
+
+![Schematische Darstellung eines Headless CMS: ein zentrales Backend liefert Inhalte über Schnittstellen an Website, App und Online-Shop](/images/blog/was-versteht-man-unter-headless-cms-und-fuer-wen.png)
+
+## Die kurze Antwort: Was ist ein Headless CMS?
+
+Ein Headless CMS ist ein Content-Management-System ohne mitgeliefertes Frontend. Es stellt nur das Backend zur Inhaltspflege bereit und liefert Inhalte über Schnittstellen (meist REST oder GraphQL) an beliebige Ausgabekanäle aus, etwa Website, App, Online-Shop oder digitale Displays. Es lohnt sich vor allem für Unternehmen mit mehreren Kanälen, hohen Performance-Anforderungen und eigenem Entwicklerteam.
+
+Das "Head" im Namen steht für die Präsentationsschicht, also das, was Besucher sehen. Bei WordPress ist dieser Kopf fix dran: Theme und Templates, die ganze Darstellung kommt aus einem System. Ein Headless CMS wie das Open-Source-System [Strapi](https://strapi.io/blog/why-choose-headless-cms) liefert diesen Kopf bewusst nicht mit. Die Trennung von Inhaltsverwaltung und Präsentation ist das Kernprinzip. Was Sie mit den Inhalten anzeigen, entscheidet ein separat gebautes Frontend, zum Beispiel eine Next.js-Anwendung.
+
+Für die Redakteurin ändert sich im Alltag gar nicht so viel. Sie pflegt Texte und Bilder weiterhin in einer Eingabemaske. Der Unterschied passiert dahinter: Die Inhalte liegen als strukturierte Daten bereit und jeder Kanal holt sich ab, was er braucht.
+
+## Der eigentliche Unterschied zum klassischen CMS
+
+Beim klassischen, sogenannten monolithischen CMS setzt der Server jede Seite bei Anfrage frisch zusammen. Ein Besucher ruft Ihre Seite auf, WordPress startet PHP, fragt die Datenbank ab, baut das HTML und schickt es zurück. Das funktioniert seit zwanzig Jahren und funktioniert auch heute noch für Millionen von Websites.
+
+Und zwar für sehr viele Millionen. Laut den laufenden Erhebungen von [W3Techs](https://w3techs.com/technologies/overview/content_management) läuft WordPress auf rund 59,3 Prozent aller Websites mit bekanntem CMS, das sind 41,5 Prozent aller Websites überhaupt. Dahinter folgen Shopify mit 7,5 Prozent, Wix mit 6,1 Prozent und Squarespace mit 3,5 Prozent. Der Vergleichsmaßstab für die Frage "lohnt sich Headless" ist also fast immer das klassische WordPress, nicht irgendein exotisches System.
+
+Headless dreht die Architektur um. Das CMS ist nur noch die Datenquelle. Das Frontend wird separat entwickelt und kann Seiten schon vorab fertig rendern und über ein weltweites Auslieferungsnetz (CDN) verteilen. Der Besucher bekommt dann kein frisch gekochtes, sondern ein perfekt vorbereitetes Gericht, das nur noch serviert wird. Das ist der Kern des Performance-Arguments, zu dem wir gleich kommen.
+
+Der Preis dafür: Sie brauchen jemanden, der dieses Frontend baut und wartet. Es gibt keinen Theme-Katalog mit zehntausend fertigen Designs zum Anklicken. Genau hier trennt sich, für wen Headless ein Gewinn ist und für wen ein teurer Umweg.
+
+## Warum das Thema gerade jetzt so groß wird
+
+Headless ist gemessen am WordPress-Marktanteil noch ein Nischensegment, aber eines mit bemerkenswertem Tempo. [Market Research Future](https://www.marketresearchfuture.com/reports/headless-cms-software-market-34090) beziffert den Headless-CMS-Markt für 2025 auf rund 3,95 Milliarden US-Dollar und prognostiziert bis 2035 ein Wachstum auf 26,66 Milliarden US-Dollar. Das entspricht einer jährlichen Wachstumsrate von rund 21 Prozent. Haupttreiber sind laut dem Report die Auslieferung von Inhalten über viele Kanäle gleichzeitig und der Ausbau von API-Ökosystemen.
+
+Ein Detail, das in Österreich gerne übersehen wird: Einer der international führenden Anbieter sitzt in Linz. Storyblok, gegründet 2017, hat laut [TechCrunch](https://techcrunch.com/2024/06/04/storyblok-raises-80m-to-bring-more-ai-into-its-headless-cms-aimed-at-non-technical-people) im Juni 2024 eine Series-C-Finanzierung über 80 Millionen US-Dollar abgeschlossen, insgesamt stecken 138 Millionen US-Dollar in dem Unternehmen. Die Nutzerbasis wuchs von 74.000 im Jahr 2022 auf rund 200.000. Storyblok positioniert sich dabei bewusst zwischen den starren Template-Baukästen und den komplett selbst gebauten Frontend-Stacks, also genau in der Lücke, in der viele Mittelständler stecken.
+
+Was heißt das für Sie? Die Technologie ist keine Spielerei von Konzern-IT-Abteilungen mehr. Die Werkzeuge sind ausgereift und die Anbieter etabliert. Mit Storyblok gibt es sogar einen Player mit Hauptsitz eine Zugstunde von Wien entfernt. Ob Headless seriös ist, muss also niemand mehr diskutieren. Die Frage ist, ob es zu Ihrem Betrieb passt.
+
+## Das stärkste technische Argument: Core Web Vitals
+
+Google bewertet Seiten unter anderem nach den Core Web Vitals, das sind messbare Nutzererfahrungswerte. Die wichtigsten Schwellen laut [Google Search Central](https://developers.google.com/search/docs/appearance/core-web-vitals): Der größte sichtbare Inhalt soll in unter 2,5 Sekunden geladen sein (LCP), Interaktionen sollen in unter 200 Millisekunden reagieren (INP), und das Layout darf beim Laden kaum springen (CLS unter 0,1). Diese Werte fließen als Teil des Page-Experience-Signals ins Ranking ein. Die technische Architektur Ihres CMS wirkt sich damit direkt auf Ihre Sichtbarkeit in der Google-Suche aus.
+
+Und hier hat das klassische Modell eine bekannte Schwachstelle. Der Hauptgrund, warum WordPress-Seiten beim LCP scheitern, ist die langsame Zeit bis zum ersten Byte (TTFB). Laut Auswertungen des Chrome-UX-Reports, aufbereitet von [CoreWebVitals.io](https://www.corewebvitals.io/core-web-vitals/wordpress-guide), erreichen nur 32 Prozent der WordPress-Seiten einen guten TTFB-Wert. Der Grund liegt in der Architektur selbst, denn jede Seite wird bei Anfrage serverseitig aus PHP und Datenbank zusammengesetzt, und das kostet Zeit, bevor überhaupt das erste Byte beim Besucher ankommt.
+
+Ein Headless-Setup mit statisch vorgerendertem Frontend, etwa Next.js über ein CDN, löst genau dieses Problem auf Architekturebene. Die Seite liegt fertig gebaut auf Servern nahe beim Besucher und muss nicht mehr live berechnet werden. Das ist kein Optimierungs-Trick, den ein Plugin nachrüsten kann, sondern ein struktureller Vorteil.
+
+Ehrlicherweise gehört dazu auch: Eine schlecht gebaute Headless-Seite kann trotzdem langsam sein, und eine sorgfältig optimierte WordPress-Seite kann gute Werte erreichen. Die Architektur macht gute Performance nur deutlich wahrscheinlicher und dauerhaft stabiler. Wenn organische Sichtbarkeit für Ihr Geschäft ein relevanter Kanal ist, sollte dieses Argument in Ihrer Abwägung ganz oben stehen.
+
+## Für wen lohnt sich ein Headless CMS?
+
+Aus den Fakten lassen sich drei klare Fälle ableiten, in denen Headless mehr bringt als kostet.
+
+**Fall 1: Sie spielen Inhalte auf mehreren Kanälen aus.** Ein Möbelhersteller mit Website, Händler-Portal und App pflegt heute jeden Produkttext dreimal. Mit einem Headless CMS pflegt er ihn einmal, und alle Kanäle holen sich die Daten über die Schnittstelle. Das Omnichannel-Szenario ist laut Marktforschung der Haupttreiber des ganzen Segments, und zwar aus gutem Grund: Doppelte Inhaltspflege ist teuer und fehleranfällig.
+
+**Fall 2: Performance und SEO sind für Sie geschäftskritisch.** Wenn Ihre Website ein zentraler Vertriebskanal ist und Sie in umkämpften Suchbegriffen ranken wollen, ist der strukturelle Core-Web-Vitals-Vorteil bares Geld wert. Rechnen wir das als reine Hausnummer durch: Angenommen, Ihre Website bringt einen relevanten Teil Ihrer Anfragen über Google. Dann entscheidet die Ladezeit mit darüber, ob Sie auf Seite eins stehen und ob Besucher bleiben. Ein Architekturproblem, das nur 32 Prozent der WordPress-Seiten sauber lösen, wollen Sie dann nicht mitschleppen.
+
+**Fall 3: Sie haben Entwicklerkapazität oder einen langfristigen Technikpartner.** Headless ohne Entwickler ist wie die Profiküche ohne Koch. Wenn Ihr Unternehmen ein eigenes Team hat oder mit einer Agentur arbeitet, die das Frontend baut und betreut, spielt Headless seine Stärken aus. Das Frontend lässt sich dann exakt auf Ihre Marke und Ihre Abläufe zuschneiden, ohne Kompromisse durch Theme-Korsetts.
+
+Treffen zwei dieser drei Fälle auf Sie zu, ist Headless eine ernsthafte Option. Trifft keiner zu, sparen Sie sich die Übung.
+
+## Für wen lohnt es sich nicht?
+
+Hier dürfen wir ehrlich sein. Wenn fast 60 Prozent aller Websites mit bekanntem CMS auf WordPress laufen, dann deshalb, weil es für sehr viele Anwendungsfälle schlicht reicht.
+
+**Der klassische Betrieb mit einer überschaubaren Website.** Ein Installateur in Graz mit acht Seiten, Kontaktformular und Referenzfotos braucht keine API-Architektur. Er braucht eine schnelle, saubere Website, die jemand verlässlich wartet. Die bekommt er mit einem gut umgesetzten klassischen Setup oder einer schlanken modernen Lösung, ohne die Zusatzkosten eines separat entwickelten Frontends.
+
+**Unternehmen ohne technischen Partner.** Bei WordPress können Sie im Notfall aus tausenden Dienstleistern wählen, das Ökosystem ist riesig. Ein Headless-Stack bindet Sie stärker an Menschen, die genau diese Architektur beherrschen. Wer keinen verlässlichen Partner hat, kauft sich mit Headless eine Abhängigkeit, die er nicht steuern kann.
+
+**Projekte, bei denen das Budget nur für den Start reicht.** Ein Headless-Projekt hat höhere Anfangskosten, weil das Frontend eine echte Entwicklungsleistung ist. Wenn das Budget danach für Betrieb und Weiterentwicklung fehlt, steht am Ende eine moderne Architektur, die niemand pflegt. Dann wäre das Geld in einer soliden klassischen Lösung besser angelegt gewesen, oder?
+
+Die Abwägung ähnelt übrigens der Frage, ob man eine Website selbst baut oder eine Agentur beauftragt. Wer die Denkweise dahinter vertiefen will, findet sie in unserem Beitrag [Website selbst erstellen vs. Agentur](/tipps/website-selbst-erstellen-vs-agentur).
+
+## Häufige Irrtümer rund um Headless CMS
+
+**Irrtum 1: "Headless ist automatisch schneller."** Nein. Headless macht Geschwindigkeit architektonisch leichter erreichbar, weil das Frontend vorgerendert über ein CDN laufen kann. Wer das Frontend aber mit Skripten überlädt, ist wieder langsam. Die Architektur macht Tempo möglich, garantieren tut sie es nicht.
+
+**Irrtum 2: "WordPress ist veraltet."** Ein System, das 41,5 Prozent aller Websites antreibt, ist nicht veraltet, es ist der Standard. Die berechtigte Kritik betrifft die Architektur bei hohen Performance-Ansprüchen, nicht das System als Ganzes. Für viele Projekte bleibt es die vernünftigste Wahl.
+
+**Irrtum 3: "Mit Headless spare ich mir die Wartung."** Das Gegenteil trifft eher zu. Sie warten künftig zwei Dinge, das CMS und das Frontend. Was wegfällt, sind typische Monolith-Probleme wie Plugin-Konflikte. Was dazukommt, ist ein eigener Entwicklungs-Stack mit eigenen Update-Zyklen.
+
+**Irrtum 4: "Das ist nur etwas für Konzerne."** Auch das stimmt so nicht mehr. Dass Storyblok von 74.000 auf rund 200.000 Nutzer gewachsen ist, zeigt, wie breit die Anwenderbasis geworden ist. Entscheidend ist nicht die Unternehmensgröße, sondern ob die drei Lohnt-sich-Fälle von oben zutreffen.
+
+## Schritt für Schritt: So treffen Sie die Entscheidung
+
+Damit die Abwägung nicht im Bauchgefühl endet, hier ein konkreter Ablauf, den Sie in einer Woche durchziehen können.
+
+1. **Kanäle auflisten.** Schreiben Sie auf, wo Ihre Inhalte heute erscheinen und wo sie in drei Jahren erscheinen sollen. Website, App, Portale, Displays. Steht dort nur "Website", verliert Headless sofort an Dringlichkeit.
+2. **Ist-Performance messen.** Prüfen Sie Ihre aktuellen Core Web Vitals mit Googles PageSpeed Insights. Liegt Ihr LCP deutlich über 2,5 Sekunden und die Ursache im Server (TTFB), haben Sie ein Architekturthema, kein Plugin-Thema.
+3. **SEO-Abhängigkeit beziffern.** Wie viel Ihres Umsatzes hängt an organischen Google-Besuchern? Je höher der Anteil, desto schwerer wiegt das Performance-Argument.
+4. **Technikpartner klären.** Wer würde das Frontend bauen und wer betreut es in fünf Jahren? Ohne belastbare Antwort auf diese Frage ist die Entscheidung bereits gefallen, und zwar gegen Headless.
+5. **Gesamtkosten vergleichen.** Stellen Sie den Mehrkosten für Entwicklung und Betrieb den konkreten Nutzen gegenüber, also eingesparte Doppelpflege und bessere Rankings. Erst wenn diese Rechnung aufgeht, lohnt der Umstieg.
+
+Wenn Sie bei Schritt 2 hängen bleiben oder die Rechnung in Schritt 5 nicht alleine aufstellen wollen, holen Sie sich eine zweite Meinung. Genau dafür gibt es Erstgespräche.
+
+## Key Takeaways
+
+- Ein Headless CMS trennt Inhaltspflege und Darstellung: Das Backend liefert Inhalte per Schnittstelle an beliebige Frontends, ein mitgeliefertes "Head" wie bei WordPress gibt es nicht.
+- Der Markt wächst mit rund 21 Prozent pro Jahr von 3,95 Milliarden (2025) auf prognostizierte 26,66 Milliarden US-Dollar (2035), mit Storyblok aus Linz als österreichischem Vorzeigeanbieter.
+- Das stärkste technische Argument sind die Core Web Vitals: Nur 32 Prozent der WordPress-Seiten erreichen einen guten TTFB-Wert, Headless-Setups mit vorgerendertem Frontend lösen das Problem auf Architekturebene.
+- Headless lohnt sich bei mehreren Ausgabekanälen, geschäftskritischer Performance und vorhandener Entwicklerkapazität. Ohne diese Voraussetzungen bleibt das klassische CMS die vernünftigere Wahl.
+- WordPress ist mit 59,3 Prozent Marktanteil unter CMS-Websites weiterhin der Standard, die Entscheidung ist also kein Entweder-oder aus Prinzip, sondern eine nüchterne Einzelfallrechnung.
+
+## Fazit: Erst rechnen, dann entscheiden
+
+Headless CMS ist keine Modeerscheinung, das zeigen Marktwachstum und Anbieterlandschaft deutlich. Es ist aber auch kein Pflichtprogramm. Die Architektur löst zwei konkrete Probleme, nämlich die Inhaltspflege über mehrere Kanäle und die strukturelle Performance-Schwäche klassischer Systeme. Wer eines dieser Probleme wirklich hat, bekommt mit Headless ein starkes Werkzeug. Wer keines hat, bezahlt für Komplexität, die er nie nutzt.
+
+Sie sind unsicher, in welche Kategorie Ihr Projekt fällt? Wir sehen uns Ihre bestehende Website und Ihre Messwerte gerne gemeinsam an und rechnen die Varianten ehrlich durch, auch wenn am Ende herauskommt, dass Ihr aktuelles System völlig ausreicht. [Melden Sie sich einfach für ein unverbindliches Erstgespräch](/kontakt).
