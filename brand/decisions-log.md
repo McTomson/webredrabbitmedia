@@ -215,3 +215,5 @@ DARSTELLUNG auf der Preisseite:
 
 MERKEN (Thomas, separat): Sales-One-Pager/Produktseiten mit Talos + Ads als eigenes Angebot —
 beim naechsten Mal ansprechen (Memory project_redrabbit_sales_onepager_talos).
+
+- **PREIS-UPDATE Artikel-Anker (Thomas 30.07.2026, im Chat waehrend Tipps-Session):** Einstiegs-/Minimum-Preis ist **1.250 Euro** (ersetzt 790 in den Blog-Artikeln), zweite Stufe/Business **2.850 Euro** (ersetzt 2.500 in den Artikeln). OFFEN: Verhaeltnis zum bisherigen Paket-Stand 950 / 2.900 / ab 4.900 (decisions-log 05.-24.07., Preise-Seite) ist NICHT geklaert — Preise-Seite, lib/config.ts PRICING (baseline "ab 790") und brand/pricing.md muessen in einer eigenen Runde mit Thomas angeglichen werden. Bis dahin gilt fuer Artikel-Content: 1.250 / 2.850.

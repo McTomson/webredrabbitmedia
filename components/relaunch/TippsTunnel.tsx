@@ -5,7 +5,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * TippsTunnel — 3D-Karten-Tunnel fuer die Tipps-Uebersicht (Vorbild:
@@ -118,6 +118,21 @@ function layout(posts: TunnelPost[]): Laid[] {
   });
 }
 
+// Leere Treffermenge: Satz in Crimson (bleibt, Thomas 29.07.) + direkte
+// Kontakt-Buttons darunter (Anrufen/E-Mail). Telefon NIE im Klartext,
+// nur hinter dem tel:-Link (Standard).
+const EmptyState = () => (
+  <div className="rrtn-empty">
+    <p>
+      Nichts gefunden. <Link href="/relaunch-preview/kontakt">Frag uns direkt.</Link>
+    </p>
+    <div className="rrtn-empty-actions">
+      <a className="rrtn-ebtn" href="tel:+436769000955">Anrufen</a>
+      <a className="rrtn-ebtn rrtn-ebtn--outline" href="mailto:office@redrabbit.media">E-Mail senden</a>
+    </div>
+  </div>
+);
+
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="square" strokeLinejoin="miter" aria-hidden="true">
     <path d="M7 17 17 7" />
@@ -170,7 +185,8 @@ export default function TippsTunnel({ posts }: { posts: TunnelPost[] }) {
   const cardRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const layoutRef = useRef<Laid[]>([]);
   const measureRef = useRef<(() => void) | null>(null);
-  const didInit = useRef(false);
+  const didInitCat = useRef(false);
+  const didInitQuery = useRef(false);
 
   const [mounted, setMounted] = useState(false);
   const [reduced, setReduced] = useState(false);
@@ -226,23 +242,64 @@ export default function TippsTunnel({ posts }: { posts: TunnelPost[] }) {
     return () => cancelAnimationFrame(raf);
   }, [laid]);
 
-  // Bei Filter-/Suchaenderung sanft an den Tunnel-Anfang scrollen (nicht beim
-  // ersten Mount — da steht der Nutzer noch im Hero).
-  useEffect(() => {
-    if (!didInit.current) {
-      didInit.current = true;
-      return;
-    }
+  // Scroll-Ziel nach Filter-/Suchaenderung. Liest nur Refs/DOM — stabil per
+  // useCallback, damit die beiden Ausloeser-Effects unten schlanke Deps haben.
+  const scrollToFocus = useCallback(() => {
     const root = rootRef.current;
     if (!root) return;
-    // Absolute Dokument-Position der Wurzel + Hero-Pin-Strecke (0.6vh): der
-    // Root ueberlappt den Hero, der sichtbare Tunnel-Anfang liegt am Ende der
-    // Hero-Pin-Strecke. Erst nach dem Re-Layout messen.
+    // Erst nach dem Re-Layout messen (rAF nach React-Commit).
     requestAnimationFrame(() => {
-      const top = root.getBoundingClientRect().top + window.scrollY + window.innerHeight * 0.6;
-      window.scrollTo({ top, behavior: "smooth" });
+      // Ziel: die ERSTE gefilterte Karte scharf im Fokus (z=0). Der alte
+      // Anlauf (Tunnel-Anfang, 0.6vh) landete noch UNTER dem "Tipps."-
+      // Deckwort des Heros — fuer den Nutzer sah der Filter dann nach
+      // "nichts passiert" aus (Thomas 29.07.). Bei LEERER Treffermenge:
+      // hinter die Hero-Pin-Strecke (1.7vh), wo die "Nichts gefunden"-
+      // Meldung samt Kontakt-Buttons frei liegt.
+      const vh = window.innerHeight;
+      const rect = root.getBoundingClientRect();
+      const rootTop = rect.top + window.scrollY;
+      const n = layoutRef.current.length;
+      let top: number;
+      if (n === 0) {
+        top = rootTop + vh * 1.7;
+      } else {
+        // Scroll-Fortschritt p, bei dem Karte 0 z=0 erreicht (Timeline-
+        // Mapping wie im Loop: T = p * totalDur, T laeuft ab LEAD_VH).
+        const lead = LEAD_VH * vh;
+        const scrollable = Math.max(1, rect.height - vh - lead);
+        const totalDur = (n - 1) * STAGGER + Z_DURATION;
+        const tSharp = ((0 - Z_START_FIRST) / (Z_END - Z_START_FIRST)) * Z_DURATION;
+        top = rootTop + lead + (tSharp / totalDur) * scrollable;
+      }
+      // Lenis (ScrollExperience) besitzt das Scrollen — natives smooth-scrollTo
+      // kaempft sonst gegen sein Wheel-Hijacking und bleibt teils stehen.
+      const lenis = window.__rrLenis;
+      if (lenis) lenis.scrollTo(top, { duration: 0.7 });
+      else window.scrollTo({ top, behavior: "smooth" });
     });
-  }, [activeCat, query]);
+  }, []);
+
+  // Kategorie-Klick: sofort scrollen (bewusste Einzel-Aktion). Nicht beim
+  // ersten Mount — da steht der Nutzer noch im Hero.
+  useEffect(() => {
+    if (!didInitCat.current) {
+      didInitCat.current = true;
+      return;
+    }
+    scrollToFocus();
+  }, [activeCat, scrollToFocus]);
+
+  // Sucheingabe: DEBOUNCED (450ms) — sonst feuert jeder Tastendruck eine
+  // eigene 0.7s-Scrollfahrt und die Seite kaempft beim Tippen gegen sich
+  // selbst (Logic-Review 30.07.).
+  useEffect(() => {
+    if (!didInitQuery.current) {
+      didInitQuery.current = true;
+      return;
+    }
+    const t = window.setTimeout(scrollToFocus, 450);
+    return () => window.clearTimeout(t);
+  }, [query, scrollToFocus]);
 
   // Selbst-tippender, rotierender Platzhalter im Suchfeld.
   useEffect(() => {
@@ -320,13 +377,20 @@ export default function TippsTunnel({ posts }: { posts: TunnelPost[] }) {
 
     // Style-Caches pro Karte: filter/opacity/visibility nur schreiben, wenn
     // sich der Wert wirklich aendert (staendige filter-Updates erzwingen
-    // sonst Repaints -> ruckelt).
-    const lastBlur: number[] = [];
-    const lastOp: string[] = [];
-    const lastVis: boolean[] = [];
-    const lastTf: string[] = [];
+    // sonst Repaints -> ruckelt). WICHTIG: am ELEMENT verankert (WeakMap),
+    // nicht am Index — beim Filtern rendert React neue <a>-Elemente (per CSS
+    // visibility:hidden) an denselben Indizes; ein Index-Cache haelt die dann
+    // faelschlich fuer "schon sichtbar geschaltet" und die Karten bleiben
+    // unsichtbar (Bug Thomas 29.07.: "Filter tut nichts").
+    type StyleCache = { blur?: number; op?: string; vis?: boolean; tf?: string };
+    const styleCache = new WeakMap<HTMLAnchorElement, StyleCache>();
 
-    const applyCard = (l: Laid, el: HTMLAnchorElement, T: number, i: number) => {
+    const applyCard = (l: Laid, el: HTMLAnchorElement, T: number) => {
+      let c = styleCache.get(el);
+      if (!c) {
+        c = {};
+        styleCache.set(el, c);
+      }
       // z
       let z: number;
       if (T <= l.startTime) z = l.zStart;
@@ -360,23 +424,23 @@ export default function TippsTunnel({ posts }: { posts: TunnelPost[] }) {
       blur = blur < 0.3 ? 0 : Math.round(blur * 2) / 2;
 
       const tf = `translate3d(-50%, -50%, ${z.toFixed(1)}px) rotate(${l.rot}deg)`;
-      if (lastTf[i] !== tf) {
-        lastTf[i] = tf;
+      if (c.tf !== tf) {
+        c.tf = tf;
         el.style.transform = tf;
       }
       const opStr = op.toFixed(3);
-      if (lastOp[i] !== opStr) {
-        lastOp[i] = opStr;
+      if (c.op !== opStr) {
+        c.op = opStr;
         el.style.opacity = opStr;
         el.style.pointerEvents = op > 0.02 ? "auto" : "none";
       }
-      if (lastBlur[i] !== blur) {
-        lastBlur[i] = blur;
+      if (c.blur !== blur) {
+        c.blur = blur;
         el.style.filter = blur > 0 ? `blur(${blur}px)` : "";
       }
       const vis = op > 0.001;
-      if (lastVis[i] !== vis) {
-        lastVis[i] = vis;
+      if (c.vis !== vis) {
+        c.vis = vis;
         el.style.visibility = vis ? "visible" : "hidden";
       }
     };
@@ -398,7 +462,7 @@ export default function TippsTunnel({ posts }: { posts: TunnelPost[] }) {
 
       for (let i = 0; i < n; i++) {
         const el = cardRefs.current[i];
-        if (el) applyCard(lay[i], el, T, i);
+        if (el) applyCard(lay[i], el, T);
       }
 
       // Maus-Parallaxe weich nachfuehren.
@@ -428,11 +492,7 @@ export default function TippsTunnel({ posts }: { posts: TunnelPost[] }) {
             <Card key={l.post.slug} l={l} />
           ))}
         </div>
-        {laid.length === 0 && (
-          <p className="rrtn-empty">
-            Nichts gefunden. <Link href="/relaunch-preview/kontakt">Frag uns direkt.</Link>
-          </p>
-        )}
+        {laid.length === 0 && <EmptyState />}
         <FilterBar
           cats={cats}
           activeCat={activeCat}
@@ -490,11 +550,7 @@ export default function TippsTunnel({ posts }: { posts: TunnelPost[] }) {
             ))}
           </div>
 
-          {laid.length === 0 && (
-            <p className="rrtn-empty">
-              Nichts gefunden. <Link href="/relaunch-preview/kontakt">Frag uns direkt.</Link>
-            </p>
-          )}
+          {laid.length === 0 && <EmptyState />}
         </div>
       </div>
 
@@ -648,10 +704,30 @@ const CSS = `
 .rrtn-empty{
   position:absolute; left:0; right:0; top:34%;
   text-align:center; padding:0 6vw; z-index:2;
+}
+.rrtn-empty p{
   font-family:var(--font-crimson),"Crimson Pro",Georgia,serif;
-  font-size:clamp(1.4rem,3vw,2.1rem); color:#23262e;
+  font-size:clamp(1.4rem,3vw,2.1rem); color:#23262e; margin:0;
 }
 .rrtn-empty a{ color:#f12032; text-underline-offset:4px; }
+.rrtn-empty-actions{
+  display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+  margin-top:28px;
+}
+.rrtn-ebtn{
+  display:inline-block; background:#f12032; color:#fff !important;
+  font-family:var(--font-dmsans),"DM Sans",sans-serif; font-weight:700;
+  font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase;
+  padding:0.95rem 2rem; text-decoration:none; border-radius:0;
+  transition:background .2s, color .2s;
+}
+.rrtn-ebtn:hover{ background:#23262e; }
+.rrtn-ebtn--outline{
+  background:transparent; color:#23262e !important;
+  box-shadow:inset 0 0 0 1px #23262e;
+}
+.rrtn-ebtn--outline:hover{ background:#23262e; color:#fff !important; }
+.rrtn-ebtn:focus-visible{ outline:2px solid #f12032; outline-offset:3px; }
 
 /* ===== Filter-/Suchleiste: fix unten rechts, Navy, eckig ===== */
 .rrtn-bar{

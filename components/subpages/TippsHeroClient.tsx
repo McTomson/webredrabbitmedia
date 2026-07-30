@@ -7,9 +7,9 @@ import { useEffect, useMemo, useRef } from 'react';
  * KontaktDemoClient fuer die Architektur-Doku: stabiler innerHTML-Container,
  * Engine als echtes <script>). Wie FAQ hat diese Seite KEINE MorphSculpture
  * und keine roten Fragmente — nur die Hero-Szene (Titel-Anschnitt + Malen).
- * Die Engine (tipps-hero-demo/demo.engine.jstext) treibt die Hero-Choreografie
- * UND die dezente Scroll-Reveal-Staffelung des darunter server-gerenderten
- * rrt-Index (querySelectorAll auf .rrt-*, gated per data-reveal).
+ * Die Engine (tipps-hero-demo/demo.engine.jstext) treibt NUR die Hero-
+ * Choreografie. (Der fruehere rrt-Index-Reveal ist raus — die Uebersicht
+ * ist seit dem Tunnel-Umbau rrtn-*, es gibt dort kein .rrt mehr.)
  */
 export default function TippsHeroClient({
   css,

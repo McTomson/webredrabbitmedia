@@ -358,27 +358,9 @@
   };
   window.addEventListener("resize",onRz);
 
-  /* ================================================================ */
-  /* rrt-Index: dezente Scroll-Reveal-Staffelung (Hairline zeichnet    */
-  /* sich, Zeile faehrt minimal hoch + opacity). CSS-only-Zustand ist   */
-  /* per data-reveal auf .rrt gegated: faellt JS aus, bleibt alles      */
-  /* sichtbar (fail-open, kein Content-Verlust fuer SEO/LLM).           */
-  /* ================================================================ */
-  const rrtRoot=document.querySelector(".rrt");
-  if(rrtRoot && !reduced && "IntersectionObserver" in window){
-    rrtRoot.setAttribute("data-reveal","on");
-    // Pro Themen-Sektion die Reihen leicht kaskadieren lassen.
-    rrtRoot.querySelectorAll(".rrt-section").forEach(sec=>{
-      [...sec.querySelectorAll(".rrt-row")].forEach((r,i)=>{
-        r.style.transitionDelay=Math.min(i,5)*55+"ms";
-      });
-    });
-    const targets=[...rrtRoot.querySelectorAll(".rrt-lead, .rrt-section > .rrt-label, .rrt-row")];
-    const rio=new IntersectionObserver((es)=>{es.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add("is-in"); rio.unobserve(e.target); }
-    });},{threshold:0.18,rootMargin:"0px 0px -6% 0px"});
-    targets.forEach(el=>rio.observe(el));
-  }
+  /* (Der fruehere rrt-Index-Reveal-Block ist raus: die Uebersicht hat seit
+     dem Tunnel-Umbau kein .rrt-Element mehr, das zugehoerige CSS wurde
+     entfernt — der Block war ein garantierter No-op. 30.07.) */
 
   if(document.fonts && document.fonts.ready){ document.fonts.ready.then(boot); }
   else { window.addEventListener("load",boot); }

@@ -13,6 +13,17 @@ Entscheidung von Thomas, dann hier nachziehen. Plan/Herleitung:
   (`#F6F5F1` ist abgeschafft.)
 - Weiss `#FFFFFF` (`--rr-paper`): nur als bewusste Wechsel-Flaeche im Sektions-Rhythmus.
 
+## Inhalts-Kaesten (Artikel/Unterseiten) — hell, kein Duester (Thomas 30.07.)
+- CTA-Boxen, Takeaway-/Info-Kaesten und Sidebar-Module im INHALT sind HELL:
+  Off-White-Flaeche (`--rr-surface`) + roter Akzent-Balken oben (3px) + roter
+  Sweep-Button. KEINE dunklen Panels in Inhalts-Kaesten — soll freundlich/
+  motivierend wirken, nicht duester. Dunkel bleibt nur Site-Chrome (Footer,
+  SiteClosing) und bewusste Vollbild-Panels der Homepage.
+- Kein Rahmen-Kasten-Look: Module trennen sich ueber 2px-Ink-Regel + Eyebrow
+  und Hairlines (Referenz: Tipps-Artikel-Template, tipps-preview.css).
+- Lesetext ist IMMER Instrument Sans (Body-Rolle) — Crimson nie fuer
+  Fliesstext/Artikel (schlecht lesbar, Thomas 30.07.).
+
 ## Typografie (3 Rollen, streng)
 - DM Sans (`--rr-font-display`, 700): alle Headlines.
 - Crimson Pro (`--rr-font-serif`, 500): Hero-/Statement-Saetze.

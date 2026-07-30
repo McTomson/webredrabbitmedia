@@ -1,18 +1,22 @@
 /* ============================================================
-   TIPPS im Relaunch-Look (Preview) — redaktioneller Index +
-   Lese-Template. Gleiche Sprache wie die Template-Seiten:
-   DM Sans (Headlines), Crimson Pro (Lesetext), Instrument Sans
-   (Meta), Weiss + Ink + Rot, Hairlines statt Karten-Schatten.
+   TIPPS im Relaunch-Look (Preview) — Artikel-Template.
+   Typo-Rollen wie DESIGN_STANDARD/Hauptseite (Thomas 30.07.):
+   DM Sans (Headlines/Meta), Instrument Sans (ALLER Lesetext —
+   Crimson ist Hero-/Statement-Schrift, im Artikel war sie
+   schlecht lesbar), Weiss + Ink + Rot, Hairlines + Ink-Regeln
+   statt Rahmen-Kaesten, Buttons = Sweep/Outline wie Hauptseite.
    Alle Klassen rrt-* (scoped, kollidiert nicht mit Live-CSS).
    ============================================================ */
 .rrt {
   --rrt-paper: #ffffff;
+  --rrt-surface: #f4f4f2;
   --rrt-ink: #23262e;
   --rrt-ink-soft: #6a6e78;
   --rrt-navy: #23262e;
   --rrt-red: #f12032;
-  --rrt-blue: #f12032;
+  --rrt-red-deep: #c9182a;
   --rrt-line: #e4e4e0;
+  --rrt-ease: cubic-bezier(0.6, 0, 0.4, 1);
   background: var(--rrt-paper);
   color: var(--rrt-ink);
   font-family: "Instrument Sans", system-ui, sans-serif;
@@ -45,52 +49,20 @@
 }
 .rrt-back:hover { opacity: 1; color: var(--rrt-red); }
 
-/* ---------- Klammer-Label (wie auf allen Bereichen) ---------- */
+/* ---------- Eyebrow-Label ( Thema ) — Standard der Hauptseite ---------- */
 .rrt-label {
   font-family: "DM Sans", sans-serif; font-weight: 700;
   font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase;
   color: var(--rrt-red);
 }
 
-/* ---------- Uebersicht: Hero ---------- */
-.rrt-hero { padding: 12vh 0 6vh; }
-.rrt-hero h1 {
-  font-family: "DM Sans", sans-serif; font-weight: 700;
-  font-size: clamp(2.6rem, 7vw, 5.6rem); line-height: 0.98;
-  letter-spacing: -0.03em; margin: 1.4rem 0 2rem; max-width: 14ch;
-}
-.rrt-hero h1 em { font-style: normal; color: var(--rrt-red); }
-.rrt-hero p {
-  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
-  font-size: clamp(1.25rem, 1.9vw, 1.6rem); line-height: 1.45;
-  max-width: 46ch; color: var(--rrt-ink);
-}
-.rrt-hero p .rrt-dot { color: var(--rrt-red); }
-
-/* ---------- Lead-Artikel (neuester) ---------- */
-.rrt-lead {
-  display: block; border-top: 2px solid var(--rrt-ink);
-  padding: 2.4rem 0 2.6rem; margin-top: 4vh;
-}
-.rrt-lead-kicker { display: flex; gap: 1.2rem; align-items: baseline; margin-bottom: 1rem; }
 .rrt-meta {
   font-family: "DM Sans", sans-serif; font-weight: 700;
   font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--rrt-ink-soft);
 }
-.rrt-lead h2 {
-  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
-  font-size: clamp(1.9rem, 4.2vw, 3.4rem); line-height: 1.08;
-  letter-spacing: -0.01em; max-width: 22ch; transition: color 0.22s;
-}
-.rrt-lead:hover h2 { color: var(--rrt-red); }
-.rrt-lead-excerpt {
-  margin-top: 1.1rem; max-width: 62ch;
-  font-size: 1.02rem; line-height: 1.6; color: var(--rrt-ink-soft);
-}
 
-/* ---------- Themen-Sektion + Index-Reihen ---------- */
-.rrt-section { padding: 5vh 0 2vh; }
+/* ---------- Index-Reihen (im Artikel: Weiterlesen mobil) ---------- */
 .rrt-row {
   display: grid; grid-template-columns: 3.4rem 1fr auto;
   gap: 1.4rem; align-items: baseline;
@@ -105,9 +77,9 @@
 }
 .rrt-row:hover .rrt-num { color: var(--rrt-red); }
 .rrt-row h3 {
-  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
-  font-size: clamp(1.15rem, 2vw, 1.55rem); line-height: 1.25;
-  letter-spacing: -0.005em; transition: transform 0.22s ease, color 0.22s;
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: clamp(1.02rem, 1.6vw, 1.3rem); line-height: 1.3;
+  letter-spacing: -0.015em; transition: transform 0.22s ease, color 0.22s;
 }
 .rrt-row:hover h3 { color: var(--rrt-red); transform: translateX(6px); }
 .rrt-row .rrt-meta { white-space: nowrap; }
@@ -118,66 +90,55 @@
   opacity: 0; transition: opacity 0.2s, left 0.25s ease;
 }
 .rrt-row:hover::after { opacity: 1; left: -1.4rem; }
-.rrt-section .rrt-label { display: block; margin-bottom: 1.2rem; }
 
-/* ---------- Schluss-CTA ---------- */
-.rrt-cta { padding: 10vh 0 12vh; text-align: center; }
-.rrt-cta h2 {
-  font-family: "DM Sans", sans-serif; font-weight: 700;
-  font-size: clamp(2rem, 4.6vw, 3.6rem); letter-spacing: -0.03em;
-  margin: 1.2rem 0 1rem;
-}
-.rrt-cta h2 span { color: var(--rrt-red); }
-.rrt-cta p {
-  font-family: "Crimson Pro", Georgia, serif; font-size: 1.2rem;
-  line-height: 1.5; max-width: 42ch; margin: 0 auto 2rem;
-}
+/* ============================================================
+   BUTTONS — 1:1 nach dem Hauptseiten-System (styleguide.css,
+   Button-System 28.07.): Primaer = Sweep (transparenter Grund,
+   roter Balken links waechst beim Hover zur Vollflaeche),
+   Sekundaer = Outline. Hier rrt-gescoped nachgebaut, weil das
+   Artikel-Template ausserhalb des .rr-Scopes lebt.
+   ============================================================ */
 .rrt-btn {
-  display: inline-block; background: var(--rrt-red); color: #fff;
-  font-family: "DM Sans", sans-serif; font-weight: 700;
-  font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
-  padding: 1rem 2.2rem; transition: background 0.2s, transform 0.2s;
+  --c: var(--rrt-red);
+  position: relative; z-index: 1;
+  display: inline-block; text-align: center; min-width: 150px;
+  font-family: "Instrument Sans", sans-serif;
+  font-size: 17px; font-weight: 700; line-height: 1.2;
+  padding: 12px 26px;
+  color: var(--rrt-ink); text-decoration: none;
+  background: transparent; border: none; cursor: pointer;
+  overflow: hidden;
+  transition: color 0.4s var(--rrt-ease), box-shadow 0.35s var(--rrt-ease);
 }
-.rrt-btn:hover { background: var(--rrt-navy); transform: translateY(-2px); }
+.rrt-btn::before {
+  content: ""; position: absolute; top: 0; left: 0;
+  width: 5px; height: 100%; z-index: -1;
+  background: var(--c);
+  transition: width 0.4s var(--rrt-ease);
+}
+.rrt-btn:hover::before { width: 100%; }
+.rrt-btn:hover { color: #fff; box-shadow: 0 10px 26px rgba(241, 32, 50, 0.34); }
+.rrt-btn:active::before { background: var(--rrt-red-deep); }
+.rrt-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--rrt-paper), 0 0 0 4.5px var(--c);
+}
+.rrt-btn--block { display: block; text-align: center; }
 
-/* ---------- Intro-Bruecke Hero -> Index (ersetzt rrt-hero-Textblock) ---------- */
-.rrt-intro { padding: 8vh 0 2vh; }
-.rrt-intro .rrt-label { display: block; margin-bottom: 1.2rem; }
-.rrt-intro p {
-  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
-  font-size: clamp(1.35rem, 2.4vw, 2rem); line-height: 1.4;
-  max-width: 30ch; color: var(--rrt-ink);
+.rrt-btn-outline {
+  display: inline-block; text-align: center; min-width: 150px;
+  font-family: "Instrument Sans", sans-serif;
+  font-size: 17px; font-weight: 600; line-height: 1.2;
+  padding: 11px 26px;
+  color: var(--rrt-ink); border: 1.5px solid var(--rrt-ink);
+  background: transparent; text-decoration: none; cursor: pointer;
+  transition: background 0.3s var(--rrt-ease), color 0.3s var(--rrt-ease);
 }
-.rrt-intro p .rrt-dot { color: var(--rrt-red); }
-
-/* ---------- Scroll-Reveal-Staffelung des Index ----------
-   Nur aktiv, wenn die Engine .rrt[data-reveal] setzt (JS lebt).
-   Faellt JS aus, bleibt alles sofort sichtbar (fail-open, SEO/LLM
-   verlieren nichts). prefers-reduced-motion: Engine setzt data-reveal
-   erst gar nicht -> statisch. */
-.rrt[data-reveal] .rrt-lead,
-.rrt[data-reveal] .rrt-row,
-.rrt[data-reveal] .rrt-section > .rrt-label {
-  opacity: 0; transform: translateY(16px);
-  transition: opacity 0.7s cubic-bezier(0.6, 0, 0.4, 1),
-              transform 0.7s cubic-bezier(0.6, 0, 0.4, 1);
+.rrt-btn-outline:hover { background: var(--rrt-ink); color: #fff; }
+.rrt-btn-outline:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--rrt-paper), 0 0 0 4.5px var(--rrt-ink);
 }
-.rrt[data-reveal] .rrt-lead.is-in,
-.rrt[data-reveal] .rrt-row.is-in,
-.rrt[data-reveal] .rrt-section > .rrt-label.is-in {
-  opacity: 1; transform: none;
-}
-/* Hairline zeichnet sich pro Reihe von links nach rechts ein. */
-.rrt[data-reveal] .rrt-row { border-top-color: transparent; }
-.rrt[data-reveal] .rrt-row::before {
-  content: ""; position: absolute; left: 0; top: 0; height: 1px; width: 100%;
-  background: var(--rrt-line);
-  transform: scaleX(0); transform-origin: left center;
-  transition: transform 0.8s cubic-bezier(0.6, 0, 0.4, 1);
-}
-.rrt[data-reveal] .rrt-row.is-in::before { transform: scaleX(1); }
-.rrt[data-reveal] .rrt-row:last-child { border-bottom-color: transparent; }
-.rrt[data-reveal] .rrt-row.is-in:last-child { border-bottom-color: var(--rrt-line); }
 
 /* ============================================================
    ARTIKEL-TEMPLATE
@@ -191,19 +152,21 @@
 .rrt-article-head h1 .rrt-dot { color: var(--rrt-red); }
 .rrt-byrow { display: flex; flex-wrap: wrap; gap: 1.6rem; align-items: baseline; }
 
-/* Schnellantwort — der SEO/KI-Block, editorial gerahmt */
+/* Schnellantwort — SEO/KI-Block als Off-White-Flaeche (Sektions-Rhythmus
+   der Hauptseite) mit rotem Auftakt-Balken, kein Rahmen-Kasten. */
 .rrt-snippet {
   margin: 4.5vh 0 0; padding: 1.8rem 2rem;
-  border: 1px solid var(--rrt-line); border-left: 3px solid var(--rrt-red);
+  background: var(--rrt-surface);
+  border-left: 3px solid var(--rrt-red);
 }
 .rrt-snippet .rrt-label { display: block; margin-bottom: 0.8rem; }
 .rrt-snippet p {
-  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
-  font-size: 1.25rem; line-height: 1.5;
+  font-family: "Instrument Sans", sans-serif; font-weight: 500;
+  font-size: 1.12rem; line-height: 1.6;
 }
 
-/* Lesetext */
-.rrt-body { padding: 5vh 0 2vh; max-width: 720px; }
+/* Lesetext — Instrument Sans (Standard: Body-Rolle; gut lesbar) */
+.rrt-body { padding: 5vh 0 2vh; max-width: 720px; counter-reset: rrt-h2; }
 .rrt-body h2 {
   font-family: "DM Sans", sans-serif; font-weight: 700;
   font-size: clamp(1.5rem, 2.6vw, 2.1rem); letter-spacing: -0.02em;
@@ -214,21 +177,20 @@
   display: block; margin-bottom: 0.5rem;
   font-size: 0.72rem; letter-spacing: 0.28em; color: var(--rrt-red);
 }
-.rrt-body { counter-reset: rrt-h2; }
 .rrt-body h3 {
   font-family: "DM Sans", sans-serif; font-weight: 700;
   font-size: 1.15rem; letter-spacing: -0.01em; margin: 2.2rem 0 0.8rem;
 }
 .rrt-body p {
-  font-family: "Crimson Pro", Georgia, serif; font-weight: 500;
-  font-size: 1.22rem; line-height: 1.62; margin: 0 0 1.4rem;
+  font-family: "Instrument Sans", sans-serif; font-weight: 400;
+  font-size: 1.06rem; line-height: 1.7; margin: 0 0 1.35rem;
 }
 .rrt-body a { color: var(--rrt-red); border-bottom: 1px solid currentColor; }
 .rrt-body strong { font-weight: 700; }
 .rrt-body ul, .rrt-body ol { margin: 0 0 1.6rem 1.2rem; }
 .rrt-body li {
-  font-family: "Crimson Pro", Georgia, serif; font-size: 1.18rem;
-  line-height: 1.55; margin-bottom: 0.55rem; padding-left: 0.3rem;
+  font-family: "Instrument Sans", sans-serif; font-size: 1.03rem;
+  line-height: 1.62; margin-bottom: 0.55rem; padding-left: 0.3rem;
 }
 .rrt-body ul li::marker { content: "— "; color: var(--rrt-red); }
 .rrt-body ol li::marker { color: var(--rrt-red); font-weight: 700; }
@@ -248,20 +210,21 @@
 }
 .rrt-body blockquote p { font-style: italic; }
 
-/* Das Wichtigste (Key Takeaways) */
-.rrt-takeaways { margin: 6vh 0; background: var(--rrt-navy); color: #f4f4f2; padding: 2.2rem 2.4rem; }
-.rrt-takeaways .rrt-label { color: #f4f4f2; opacity: 0.9; display: block; margin-bottom: 1.2rem; }
+/* Das Wichtigste (Key Takeaways) — helle Off-White-Flaeche mit rotem
+   Auftakt (Thomas 30.07.: keine dunklen Panels im Artikel). */
+.rrt-takeaways { margin: 6vh 0; background: var(--rrt-surface); color: var(--rrt-ink); padding: 2.2rem 2.4rem; border-top: 3px solid var(--rrt-red); }
+.rrt-takeaways .rrt-label { display: block; margin-bottom: 1.2rem; }
 .rrt-takeaways ol { list-style: none; counter-reset: rrt-tk; }
 .rrt-takeaways li {
   counter-increment: rrt-tk; display: grid; grid-template-columns: 2.6rem 1fr;
-  gap: 0.6rem; font-family: "Crimson Pro", Georgia, serif;
-  font-size: 1.15rem; line-height: 1.5; padding: 0.65rem 0;
-  border-top: 1px solid rgba(246, 245, 241, 0.18);
+  gap: 0.6rem; font-family: "Instrument Sans", sans-serif;
+  font-size: 1.02rem; line-height: 1.55; padding: 0.65rem 0;
+  border-top: 1px solid var(--rrt-line);
 }
 .rrt-takeaways li::before {
   content: counter(rrt-tk, decimal-leading-zero);
   font-family: "DM Sans", sans-serif; font-weight: 800; font-size: 0.8rem;
-  color: var(--rrt-red); padding-top: 0.35rem;
+  color: var(--rrt-red); padding-top: 0.3rem;
 }
 
 /* Zahlen-Zeile (conclusionStats) */
@@ -287,11 +250,11 @@
 .rrt-faq summary::after { content: "+"; color: var(--rrt-red); font-weight: 800; }
 .rrt-faq details[open] summary::after { content: "–"; }
 .rrt-faq details p {
-  font-family: "Crimson Pro", Georgia, serif; font-size: 1.15rem;
-  line-height: 1.55; padding: 0 0 1.3rem; max-width: 60ch;
+  font-family: "Instrument Sans", sans-serif; font-size: 1.02rem;
+  line-height: 1.62; padding: 0 0 1.3rem; max-width: 62ch;
 }
 
-/* Quellen + Byline */
+/* Quellen */
 .rrt-sources { margin: 5vh 0 0; }
 .rrt-sources .rrt-label { display: block; margin-bottom: 0.8rem; }
 .rrt-sources a {
@@ -299,12 +262,217 @@
   color: var(--rrt-ink-soft); padding: 0.35rem 0; border-top: 1px solid var(--rrt-line);
 }
 .rrt-sources a:hover { color: var(--rrt-red); }
-.rrt-byline { margin: 6vh 0 0; display: flex; gap: 1rem; align-items: baseline; }
-.rrt-byline b { font-family: "DM Sans", sans-serif; font-weight: 700; }
-.rrt-byline span { color: var(--rrt-ink-soft); font-size: 0.9rem; }
 
 /* Weiterlesen */
 .rrt-related { margin: 8vh 0 0; padding-top: 2rem; border-top: 2px solid var(--rrt-ink); }
+
+/* ============================================================
+   ARTIKEL: Breadcrumbs, E-E-A-T-Kopf, Grid + Sticky-Rail
+   (Struktur-Vorbild Live-Seite app/tipps/[slug], 29.07.)
+   ============================================================ */
+/* Artikel-Seiten duerfen breiter bauen (Inhalt + 320px-Rail). */
+.rrt-wrap--article { max-width: 1240px; }
+
+.rrt-crumbs {
+  display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: baseline;
+  padding-top: 3.2rem;
+  font-family: "Instrument Sans", sans-serif; font-size: 0.8rem;
+  color: var(--rrt-ink-soft);
+}
+.rrt-crumbs a { transition: color 0.2s; }
+.rrt-crumbs a:hover { color: var(--rrt-red); }
+.rrt-crumbs span[aria-current] {
+  color: var(--rrt-ink);
+  max-width: 38ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* Artikel-Kopf sitzt nach den Crumbs hoeher als auf der Uebersicht. */
+.rrt-wrap--article .rrt-article-head { padding-top: 5vh; }
+
+/* E-E-A-T-Zeile */
+.rrt-byrow { row-gap: 0.7rem; }
+.rrt-author { display: inline-flex; gap: 0.7rem; align-items: baseline; }
+.rrt-author b { font-family: "DM Sans", sans-serif; font-weight: 700; font-size: 0.95rem; }
+.rrt-author a {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--rrt-red); border-bottom: 1px solid currentColor;
+}
+.rrt-checked { color: var(--rrt-ink); }
+.rrt-checked::before { content: "✓ "; color: var(--rrt-red); }
+
+/* Grid: Inhalt + 320px-Rail ab 1100px */
+.rrt-grid { display: grid; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 1100px) {
+  .rrt-grid {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    column-gap: clamp(3rem, 5vw, 5.5rem);
+    /* KEIN align-items:start — die Rail muss die volle Spaltenhoehe
+       aufspannen, sonst hat position:sticky keinen Laufweg. */
+  }
+}
+.rrt-main { min-width: 0; }
+
+/* Hero-Bild des Artikels */
+.rrt-hero-img {
+  display: block; width: 100%; height: auto; margin: 5vh 0 0;
+  box-shadow: 1px 1px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- Rail (Desktop-Sidebar) ----------
+   Kein Rahmen-Kasten-Look (Thomas 30.07.): Module trennen sich wie auf
+   der Hauptseite ueber eine 2px-Ink-Regel + Eyebrow, Inhalte haengen an
+   Hairlines. Einzige Flaeche: die dunkle CTA-Box (Panel-Muster). */
+.rrt-rail { display: none; }
+@media (min-width: 1100px) {
+  .rrt-rail { display: block; padding-top: 5vh; }
+}
+.rrt-rail-box { border-top: 2px solid var(--rrt-ink); padding: 1.2rem 0 0.4rem; margin-bottom: 2.2rem; }
+.rrt-rail-box .rrt-label { display: block; margin-bottom: 0.9rem; }
+.rrt-rail-about p {
+  font-family: "Instrument Sans", sans-serif; font-weight: 500;
+  font-size: 0.96rem; line-height: 1.55; margin-bottom: 1rem;
+}
+.rrt-rail-about ul { list-style: none; margin: 0 0 1.1rem; }
+.rrt-rail-about li {
+  font-family: "Instrument Sans", sans-serif; font-size: 0.86rem;
+  padding: 0.42rem 0; border-top: 1px solid var(--rrt-line);
+}
+.rrt-rail-about li::before { content: "— "; color: var(--rrt-red); }
+.rrt-rail-link {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--rrt-ink); border-bottom: 1px solid var(--rrt-red);
+  transition: color 0.2s;
+}
+.rrt-rail-link:hover { color: var(--rrt-red); }
+
+/* Sticky-Block: Inhaltsverzeichnis + CTA wandern beim Lesen mit.
+   KEIN hartes Abschneiden (Thomas 30.07.): das TOC hat keine fixe
+   max-height mehr; passt der ganze Block auf kleinen Screens nicht in
+   den Viewport, scrollt er intern (sichtbarer, duenner Scrollbalken)
+   statt Zeilen zu kappen. */
+.rrt-rail-sticky {
+  position: sticky; top: 24px;
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto; scrollbar-width: thin;
+}
+
+/* Inhaltsverzeichnis (Scrollspy) */
+.rrt-toc ol { list-style: none; }
+.rrt-toc li { border-top: 1px solid var(--rrt-line); }
+.rrt-toc li:first-child { border-top: 0; }
+.rrt-toc a {
+  display: flex; gap: 0.7rem; align-items: baseline;
+  padding: 0.5rem 0; font-family: "Instrument Sans", sans-serif;
+  font-size: 0.86rem; line-height: 1.35; color: var(--rrt-ink-soft);
+  transition: color 0.2s;
+}
+.rrt-toc a:hover { color: var(--rrt-ink); }
+.rrt-toc a.is-active { color: var(--rrt-red); }
+.rrt-toc-num {
+  font-family: "DM Sans", sans-serif; font-weight: 800; font-size: 0.68rem;
+  letter-spacing: 0.06em; color: var(--rrt-ink-soft); flex: none;
+}
+.rrt-toc a.is-active .rrt-toc-num { color: var(--rrt-red); }
+
+/* Weiterlesen in der Rail */
+.rrt-rail-related a {
+  display: block; padding: 0.6rem 0;
+  border-top: 1px solid var(--rrt-line);
+  font-family: "Instrument Sans", sans-serif; font-weight: 600;
+  font-size: 0.92rem; line-height: 1.4; transition: color 0.2s;
+}
+.rrt-rail-related a:first-of-type { border-top: 0; }
+.rrt-rail-related a:hover { color: var(--rrt-red); }
+.rrt-rail-related a span {
+  display: block; margin-top: 0.25rem;
+  font-family: "DM Sans", sans-serif; font-weight: 700; font-size: 0.62rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--rrt-ink-soft);
+}
+
+/* Analyse-/Kontakt-Box — HELL und freundlich (Thomas 30.07.: das dunkle
+   Panel wirkte zu duester zum Anfragen): Off-White-Flaeche im Sektions-
+   Rhythmus der Hauptseite, roter Akzent-Balken oben, roter Sweep-Button. */
+.rrt-rail-cta {
+  border-top: 3px solid var(--rrt-red); background: var(--rrt-surface);
+  color: var(--rrt-ink); padding: 1.6rem 1.5rem 1.5rem; margin-bottom: 0;
+}
+.rrt-rail-cta-h {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 1.25rem; line-height: 1.15; letter-spacing: -0.02em;
+  margin-bottom: 0.7rem;
+}
+.rrt-rail-cta-p {
+  font-family: "Instrument Sans", sans-serif; font-size: 0.94rem;
+  line-height: 1.55; color: var(--rrt-ink); margin-bottom: 1.2rem;
+}
+.rrt-rail-cta-alt { display: flex; gap: 1.4rem; margin-top: 1.1rem; }
+.rrt-rail-cta-alt a {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--rrt-ink); border-bottom: 1px solid rgba(35, 38, 46, 0.35);
+  transition: color 0.2s, border-color 0.2s;
+}
+.rrt-rail-cta-alt a:hover { color: var(--rrt-red); border-color: var(--rrt-red); }
+/* Sweep-Button auf der Off-White-Flaeche: Fokus-Ring gegen Surface statt Paper. */
+.rrt-rail-cta .rrt-btn:focus-visible { box-shadow: 0 0 0 2px var(--rrt-surface), 0 0 0 4.5px var(--c); }
+
+/* ---------- Mobile-TOC (Rail-Ersatz) ---------- */
+.rrt-toc-mobile { margin: 4vh 0 0; border-top: 2px solid var(--rrt-ink); border-bottom: 1px solid var(--rrt-line); }
+.rrt-toc-mobile summary {
+  cursor: pointer; list-style: none; padding: 1rem 0;
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--rrt-red); display: flex; justify-content: space-between;
+}
+.rrt-toc-mobile summary::-webkit-details-marker { display: none; }
+.rrt-toc-mobile summary::after { content: "+"; font-weight: 800; }
+.rrt-toc-mobile[open] summary::after { content: "–"; }
+.rrt-toc-mobile ol { list-style: none; padding-bottom: 0.8rem; }
+.rrt-toc-mobile a {
+  display: block; padding: 0.5rem 0; border-top: 1px solid var(--rrt-line);
+  font-family: "Instrument Sans", sans-serif; font-size: 0.92rem;
+  color: var(--rrt-ink-soft);
+}
+.rrt-toc-mobile a:hover { color: var(--rrt-red); }
+@media (min-width: 1100px) {
+  .rrt-toc-mobile { display: none; }
+  .rrt-mobile-extras { display: none; }
+}
+
+/* ---------- Experten-Profil (E-E-A-T) — Sektion mit Ink-Regel ---------- */
+.rrt-bio {
+  margin: 8vh 0 4vh; padding: 2rem 0 0;
+  border-top: 2px solid var(--rrt-ink);
+  display: grid; grid-template-columns: 4.6rem 1fr; gap: 1.6rem;
+}
+.rrt-bio-initials {
+  width: 4.6rem; height: 4.6rem; display: grid; place-items: center;
+  background: var(--rrt-red); color: #fff;
+  font-family: "DM Sans", sans-serif; font-weight: 800; font-size: 1.3rem;
+  letter-spacing: 0.04em;
+}
+.rrt-bio .rrt-label { display: block; margin-bottom: 0.7rem; }
+.rrt-bio h2 {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 1.4rem; letter-spacing: -0.02em; margin-bottom: 0.2rem;
+}
+.rrt-bio-role {
+  font-family: "DM Sans", sans-serif; font-weight: 700;
+  font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--rrt-ink-soft); margin-bottom: 1rem;
+}
+.rrt-bio > div > p:not(.rrt-bio-role) {
+  font-family: "Instrument Sans", sans-serif; font-weight: 400;
+  font-size: 1.02rem; line-height: 1.65; margin-bottom: 1.4rem; max-width: 60ch;
+}
+.rrt-bio-actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+
+@media (max-width: 640px) {
+  .rrt-bio { grid-template-columns: 1fr; }
+  .rrt-crumbs span[aria-current] { max-width: 22ch; }
+}
 
 /* Mobil */
 @media (max-width: 640px) {
