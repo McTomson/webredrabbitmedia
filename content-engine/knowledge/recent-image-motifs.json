@@ -1,5 +1,6 @@
 {
   "heroes": [
+    "A friendly Austrian craftswoman in her thirties holding a freshly printed slip of overnight appointment bookings with both hands, a pleasantly surprised and satisfied smile as if just discovering new customers booked themselves in during the night, upper body and hands only, soft natural early-morning light on her face and hands, no text, no logos",
     "A friendly Austrian winegrower in his early fifties, wearing a simple work shirt, carefully tying a young grapevine shoot to a wire trellis with both hands, a patient and quietly focused expression as if tending something that needs time to mature, upper body and hands only, soft natural daylight on his face and hands, no text, no logos",
     "A friendly Austrian sign painter in his early forties, carefully painting the first gold letter of a new shop name onto a glass window pane using a fine brush, focused and precise expression, upper body and hands only, soft natural daylight on his face and hands, no text, no logos",
     "A friendly Austrian web designer, a woman in her late thirties with her hair in a loose bun, turning her open laptop around with both hands so the screen faces the viewer, presenting it with a proud, trust-inspiring smile like a shopkeeper showing a freshly polished storefront window, the screen showing only a clean bright blurred layout, upper body only, soft natural daylight on her face and hands, no text, no logos",
@@ -10,11 +11,9 @@
     "A friendly Austrian marketing consultant, a man in his mid-thirties, holding up a single printed web page in one hand and pointing with his other hand at the one large button on it, gesturing as if to say 'only this one action', confident and focused expression, upper body only, soft natural daylight on his face and hands, no text, no logos",
     "A friendly Austrian woman in her early thirties, holding her smartphone in both hands and looking at its screen with a spontaneous, freshly-formed reaction on her face - the split-second gut judgement of a first impression, eyebrows slightly raised as if instantly deciding whether something appeals to her, upper body only, soft natural daylight on her face and hands, no text, no logos",
     "A friendly Austrian small-business owner, a woman in her mid-forties, holding her smartphone up in one hand while ticking off items on a small paper checklist with a pen in the other hand, calmly verifying her company website against a list of quality criteria, proud and focused expression, upper body only, soft natural daylight on her face and hands, no text, no logos",
-    "A friendly Austrian web consultant, a woman in her early thirties, holding up two printed website homepage mockups side by side, one in each hand, looking at the viewer with an open helpful expression as if inviting a comparison between two options, upper body only, soft natural daylight on her face and hands, no text, no logos",
-    "A small-business owner in their late forties looking thoughtfully at the wristwatch on their slightly raised wrist while cradling a slim folder of project documents against their chest with the other arm, quietly weighing how much of their own time a website project will demand, calm and focused expression, foreground subject only, soft natural daylight on face and hands, no text, no logos"
+    "A friendly Austrian web consultant, a woman in her early thirties, holding up two printed website homepage mockups side by side, one in each hand, looking at the viewer with an open helpful expression as if inviting a comparison between two options, upper body only, soft natural daylight on her face and hands, no text, no logos"
   ],
   "layouts": [
-    "keypoints",
     "comparison",
     "keypoints",
     "comparison",
@@ -25,7 +24,8 @@
     "keypoints",
     "comparison",
     "keypoints",
-    "comparison"
+    "comparison",
+    "keypoints"
   ],
-  "colorCursor": 11
+  "colorCursor": 12
 }
