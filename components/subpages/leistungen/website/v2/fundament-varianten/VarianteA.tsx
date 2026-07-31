@@ -188,7 +188,8 @@ export default function VarianteA() {
           }
         }
       },
-      { rootMargin: "-48% 0px -48% 0px", threshold: 0 }
+      // Horizontal zentrierte Karte erkennen (Deck wischt seitwaerts), nicht vertikal.
+      { rootMargin: "0px -48% 0px -48%", threshold: 0 }
     );
 
     els.forEach((el) => observer.observe(el));
@@ -492,9 +493,40 @@ export default function VarianteA() {
             transform-origin: left;
             transition: transform 0.3s ease;
           }
+          /* Horizontales Wisch-Deck statt langer vertikaler Liste (Thomas 01.08.:
+             "eine lange Liste, unuebersichtlich, viel zu viel" -> Dashboard-Karten,
+             eine pro Screen, wischen; wie die freigegebene CasePanel-Mechanik).
+             scroll-snap-x, Karte ~82% mit Peek der naechsten als Wisch-Hinweis. */
+          .lwa__details {
+            display: flex;
+            flex-direction: row;
+            gap: 16px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scroll-padding-left: 6vw;
+            scroll-padding-right: 6vw;
+            padding: 10px 6vw 22px;
+            margin: 4px calc(-1 * var(--rr-gutter, clamp(20px, 4vw, 64px)));
+            scrollbar-width: none;
+          }
+          .lwa__details::-webkit-scrollbar {
+            display: none;
+          }
           .lwa__detail {
-            min-height: auto;
-            padding: clamp(26px, 7vw, 34px) 0;
+            flex: 0 0 82%;
+            scroll-snap-align: center;
+            min-height: 42vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 16px;
+            padding: clamp(26px, 6.5vw, 34px);
+            background: #ffffff;
+            border: 1px solid rgba(28, 40, 55, 0.1);
+            border-radius: 22px;
+            box-shadow: 0 20px 44px -30px rgba(28, 40, 55, 0.45);
           }
         }
 
