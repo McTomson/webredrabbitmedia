@@ -35,18 +35,47 @@ wachsen nie. Auf einem SICHTBAREN Geraet laeuft rAF normal. Debug am Geraet:
 Canvas-Pfad auf beliebigem Geraet/Emulator erzwingbar: `localStorage.setItem('rrCanvasRevealBP','2000')`
 + Reload (sonst Schwelle 1024). Zum Zuruecksetzen `removeItem`.
 
-## OFFEN — ZUERST: Geraete-Verifikation mit Thomas
-Thomas soll auf seinem iPhone `/leistungen/website` (v2.redrabbit.media) oeffnen und
-Screenshot/Video schicken: Deckt die Auto-Malanimation jetzt den Satz auf? Ist der dunkle
-Balken weg? Malt der Finger? Wenn JA -> fertig. Wenn NEIN -> `window.__revealDiag()`-Ausgabe
-holen und den **Video-Fallback** bauen (Option 3 Punkt 2, siehe unten). NICHT vorab bauen.
+## STAND: Canvas-Reveal LAEUFT auf dem Geraet (bestaetigt Thomas 31.07. spaet)
+Die Auto-Malanimation deckt den Satz auf dem iPhone auf (Canvas-2D war richtig, iOS-SVG-
+Theorie war Nebensache — Kern war der Auto-Play-Trigger). Danach iterativ getunt (Commits
+8cc1af7, 3bd305c, 99ac595): scharfe Kanten statt blurry Halo (drawReveal Radial voll bis
+88% Radius), EIN durchgehender Pfad statt 3 getrennte, langsamer (DUR bis 11000ms),
+wandernde Enthuellung (Blobs LIFE ~4.6s < Lauf -> hinten blendet aus), Satz groesser
+(~35px, clamp(2rem,9vw,3.4rem), max-width 96vw), Pfad ueber fast den ganzen Screen
+(x0.06-0.94, y0.09-0.71). Auto-Loop-Intervall 2500ms.
 
-### Video-Fallback (nur falls Canvas am Geraet scheitert — bewusst zurueckgestellt)
-Der Canvas-Pfad nutzt nur universell iOS-sichere APIs (Canvas-2D, destination-out,
-Radial-Gradient) -> sollte laufen. Falls doch nicht: autoplay/muted/playsinline-Video der
-Desktop-Animation aufnehmen (agent-browser Frames -> ffmpeg -> webm/mp4) und im Canvas-Modus
-statt/ueber dem Canvas einblenden. Umschalt-Hook: an die Stelle, wo getContext scheitert,
-ODER eine leichte "hat der Canvas je erasiert?"-Pruefung.
+## OFFEN — NEUES Thomas-Feedback (22:15, Bild IMG_8747 = ganzer Screen navy):
+1. **ENDLOSSCHLEIFE mit Rueckweg:** Wenn der Lauf endet, soll der Punkt den Weg ZURUECK
+   machen (vor -> zurueck -> vor ...), dauerhaft, nahtlos. NICHT von vorne neu starten
+   (aktuell: runAuto laeuft 1x vorwaerts, autoLoop startet nach ~1s neu von vorne). Umbau in
+   runAuto: ping-pong (te vorwaerts, dann rueckwaerts) ODER Endlos-rAF ohne autoRunning-Ende,
+   der die Pfad-Phase hin- und herpendelt.
+2. **"SCHWARZER BILDSCHIRM" — Reveal deckt ZU VIEL zu (Bild IMG_8747):** die grosse
+   Full-Screen-Abdeckung laesst den GANZEN Screen navy werden -> wirkt wie schwarzer
+   Bildschirm. Soll NICHT komplett zulaufen. Balance: genug aufdecken (Satz gut sichtbar,
+   grossflaechig) aber der off-white-Deck-Charakter muss erhalten bleiben / es darf nie 100%
+   navy sein. Hebel: Pfad-Abdeckung/Blob-Groesse/`r*1.2` reduzieren ODER die Enthuellung
+   staerker "wandern" lassen (kuerzere LIFE/HOLD -> weniger gleichzeitig offen) ODER max.
+   gleichzeitige Erase-Flaeche begrenzen.
+3. **SCHWARZER BILDSCHIRM beim WEITERSCROLLEN:** "wenn ich gleich weiter gehe kommt ein
+   schwarzer Bildschirm". Der Reveal/Canvas raeumt beim Verlassen des Heros nicht sauber auf
+   -> navy layer-base scheint voll durch. `revealFade` (aus applyMain) soll die Loecher beim
+   Wegscrollen heilen (Canvas voll off-white). Pruefen: greift revealFade im Canvas-Pfad
+   korrekt? drawReveal muss bei revealFade->1 den Canvas VOLL off-white fuellen (k=1-fade->0,
+   keine Loecher). Vermutlich Bug in der fade/scroll-Kopplung oder der Canvas wird nicht mehr
+   gezeichnet, waehrend layer-base sichtbar bleibt. Am Geraet mit `window.__revealDiag()`
+   (fade-Wert beim Scrollen) diagnostizieren.
+
+### Video-Fallback (NICHT noetig — Canvas laeuft; nur als Notnagel dokumentiert)
+autoplay/muted/playsinline-Video der Desktop-Animation, falls je noetig. Aktuell obsolet.
+
+## DANN: dieselbe Animations-Umstellung auf ALLEN anderen Seiten (Thomas: "da ist auch
+ueberall das Problem"). Alle Seiten, die den Website-Demo-Hero-Mechanismus ODER die
+SVG-Masken-Reveal-Technik nutzen (MorphSculpture/SubpageHero-Heroes der Unterseiten:
+/leistungen, /leistungen/website, /preise, /ueber-uns, /kontakt, ...), muessen mobil auf
+den iOS-sicheren Canvas-Reveal + die getunte Animation (Endlos-Ping-Pong, kein Full-Cover,
+sauberes Scroll-Cleanup) umgestellt werden. Erst /leistungen/website fertig machen, dann
+Muster ausrollen.
 
 ## DANACH (weitere "grundlegende Dinge", Thomas bestaetigt)
 - **CSS-Scroll-Snap** pro Sektion, Mobile/Tablet: fester Stopp am ANFANG jeder Sektion
