@@ -393,16 +393,20 @@
     // EIN durchgehender Schwung (Thomas 31.07.: nicht 3x neu ansetzen "wo anders",
     // sondern in EINEM Fluss, und langsamer). Alle Punkte fliessen ohne Sprung
     // ineinander; ein einziger Zeitstrahl mit sanftem Ein-/Ausschwung (easeInOut).
+    // GANZER Bildschirm (Thomas 31.07.: "der Punkt soll ueber den ganzen
+    // Bildschirm gehen"): Weg deckt fast die volle Breite (0.06-0.94) UND Hoehe
+    // bis knapp ueber den Titel (paintMaxY ~0.86) ab, in EINEM durchgehenden
+    // Fluss von oben nach unten und zurueck.
     const pts=[
-      [0.14,0.30],[0.28,0.24],[0.44,0.29],[0.60,0.24],[0.76,0.28],[0.86,0.36],
-      [0.76,0.44],[0.60,0.40],[0.44,0.45],[0.28,0.41],[0.16,0.46],[0.30,0.36],
-      [0.48,0.33],[0.66,0.38],[0.80,0.34]
+      [0.08,0.13],[0.30,0.09],[0.54,0.13],[0.78,0.10],[0.93,0.21],
+      [0.78,0.31],[0.54,0.27],[0.30,0.32],[0.07,0.40],[0.26,0.50],
+      [0.52,0.44],[0.77,0.52],[0.93,0.62],[0.67,0.70],[0.40,0.64],[0.13,0.71]
     ];
     // Langsam + lang (Thomas 31.07.: "viel zu schnell", "laenger, langsamer,
     // fliessend-harmonisch, damit Teile hinten wieder verschwinden"). Bei ~9s
     // Lauf sterben frueh gemalte Blobs (LIFE ~4.6s), waehrend der Punkt weiter-
     // zieht -> wandernde Enthuellung, die hinten sanft ausblendet, kein Sprung.
-    const START=performance.now(), DUR=9000;
+    const START=performance.now(), DUR=11000;   // groesserer Weg -> gleiche ruhige Fahrt
     let prev={x:pts[0][0],y:pts[0][1]};
     function step(now){
       const t=(now-START)/DUR;

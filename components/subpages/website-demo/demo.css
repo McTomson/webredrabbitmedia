@@ -63,9 +63,10 @@
      Kleiner + volle Breite nutzen, damit die Zeilen sauber reinpassen. */
   @media (max-width:640px){
     .reveal-msg{
-      font-size:clamp(1.25rem,6.4vw,2rem);
-      max-width:94vw;
-      transform:translateY(-5vh);
+      /* Groesse zentral in der Mobile-Query (<=768px) unten; hier nur Breite+
+         Position, damit es EINE Wahrheitsquelle fuer die Schriftgroesse gibt. */
+      max-width:96vw;
+      transform:translateY(-4vh);
     }
   }
 
@@ -566,7 +567,9 @@
   /* ---------- Mobile ---------- */
   @media (max-width:768px){
     .hero-title{font-size:30vw}
-    .reveal-msg{font-size:clamp(1.6rem,7.6vw,3rem)}
+    /* Groesser (Thomas 31.07.: "die Schrift muss groesser sein"); darf umbrechen,
+       max-width 96vw haelt es im Bild. Einzige Wahrheitsquelle fuer mobile Groesse. */
+    .reveal-msg{font-size:clamp(2rem,9vw,3.4rem)}
     .autobtn{bottom:calc(28vw + 1.4rem)}
     .hint{bottom:calc(28vw + 6rem)}
     .story-grid{
