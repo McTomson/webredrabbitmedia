@@ -287,11 +287,15 @@
         const a0=Math.min(1,k);
         for(let i=0;i<particles.length;i++){
           const p=particles[i];
-          const r=p.r*1.35;            /* etwas groesser -> Loecher verschmelzen (Gooey) */
+          const r=p.r*1.2;             /* Ueberlappung -> Loecher verschmelzen (Gooey) */
           if(r<=0.5) continue;
+          /* Scharfe Kante (Thomas 31.07., Bild: Original hat KEINE blurry Ecken):
+             voll deckend bis 88% Radius, dann nur schmaler Anti-Alias-Rand -> die
+             ueberlappenden Kreise verschmelzen zu einer Form mit DEFINIERTER Kante
+             statt eines weichen Wolken-Halos. */
           const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
           g.addColorStop(0,"rgba(0,0,0,"+a0+")");
-          g.addColorStop(0.55,"rgba(0,0,0,"+(a0*0.9)+")");
+          g.addColorStop(0.88,"rgba(0,0,0,"+a0+")");
           g.addColorStop(1,"rgba(0,0,0,0)");
           ctx.fillStyle=g;
           ctx.beginPath(); ctx.arc(p.x,p.y,r,0,6.2832); ctx.fill();
@@ -386,33 +390,30 @@
     if(reduced||!heroFeed||autoRunning||!painting) return;
     autoRunning=true;
     if(btn){btn.disabled=true;btn.textContent="Läuft …";}
-    const paths=[
-      [[0.10,0.30],[0.45,0.38],[0.82,0.28]],
-      [[0.86,0.52],[0.55,0.44],[0.16,0.55]],
-      [[0.30,0.18],[0.5,0.4],[0.7,0.6]]
+    // EIN durchgehender Schwung (Thomas 31.07.: nicht 3x neu ansetzen "wo anders",
+    // sondern in EINEM Fluss, und langsamer). Alle Punkte fliessen ohne Sprung
+    // ineinander; ein einziger Zeitstrahl mit sanftem Ein-/Ausschwung (easeInOut).
+    const pts=[
+      [0.15,0.30],[0.33,0.23],[0.53,0.29],[0.73,0.24],[0.86,0.34],
+      [0.73,0.45],[0.53,0.40],[0.33,0.47],[0.16,0.42],[0.33,0.35],
+      [0.55,0.37],[0.76,0.42]
     ];
-    const START=performance.now(), DUR=1000, GAP=250;
-    let prev={x:0,y:0};
+    const START=performance.now(), DUR=4800;   // langsamer, ein Fluss
+    let prev={x:pts[0][0],y:pts[0][1]};
     function step(now){
-      let done=true;
-      paths.forEach((pts,i)=>{
-        const t0=START+i*(DUR+GAP);
-        const t=(now-t0)/DUR;
-        if(t<0){done=false;return;}
-        if(t>1)return;
-        done=false;
-        const seg=(pts.length-1)*t;
-        const si=Math.min(Math.floor(seg),pts.length-2);
-        const f=seg-si;
-        const a=pts[si],b=pts[si+1];
-        const nx=a[0]+(b[0]-a[0])*f, ny=a[1]+(b[1]-a[1])*f;
-        const r=sticky.getBoundingClientRect();
-        const speed=Math.hypot((nx-prev.x)*r.width,(ny-prev.y)*r.height)*0.4+22;
-        prev={x:nx,y:ny};
-        heroFeed(nx,ny,speed);
-      });
-      if(!done) requestAnimationFrame(step);
-      else{ if(heroFeedEnd)heroFeedEnd(); autoRunning=false; if(btn){btn.disabled=false;btn.textContent="Auto abspielen";} }
+      const t=(now-START)/DUR;
+      if(t>=1){ if(heroFeedEnd)heroFeedEnd(); autoRunning=false; if(btn){btn.disabled=false;btn.textContent="Auto abspielen";} return; }
+      const te=t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;   // easeInOutQuad -> sanfter Start/Stopp
+      const seg=(pts.length-1)*te;
+      const si=Math.min(Math.floor(seg),pts.length-2);
+      const f=seg-si;
+      const a=pts[si],b=pts[si+1];
+      const nx=a[0]+(b[0]-a[0])*f, ny=a[1]+(b[1]-a[1])*f;
+      const r=sticky.getBoundingClientRect();
+      const speed=Math.hypot((nx-prev.x)*r.width,(ny-prev.y)*r.height)*0.4+22;
+      prev={x:nx,y:ny};
+      heroFeed(nx,ny,speed);
+      requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   }
