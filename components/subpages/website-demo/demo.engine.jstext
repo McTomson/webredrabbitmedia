@@ -941,7 +941,15 @@
 
     // iOS-sicherer Reveal: schmaler Viewport (<=CANVAS_BP) -> Canvas-2D statt SVG-Maske.
     // Klasse steuert die CSS-Umschaltung (SVG-Maske aus, Deck transparent).
-    useCanvas = window.innerWidth <= CANVAS_BP;
+    /* Canvas-Reveal NUR auf ECHTEN Touch-Geraeten (Handy/Tablet) UND schmalem
+       Viewport. Ein schmales DESKTOP-Fenster (Laptop, Maus, kein Touch) bleibt
+       beim SVG-Hover-Reveal -> Thomas' Desktop-Funktion wird NIE ersetzt, egal
+       wie schmal das Fenster ist. Reine Breiten-Kopplung hatte ein schmales
+       Laptop-Fenster (<=1024 CSS, Retina) faelschlich als Tablet behandelt.
+       localStorage rrCanvasRevealBP erzwingt Canvas zum Testen (Touch-Bypass). */
+    const forceCanvas = Number.isFinite(parseInt((window.localStorage&&localStorage.getItem("rrCanvasRevealBP"))||"",10));
+    const isTouchDevice = (navigator.maxTouchPoints||0) > 0 || "ontouchstart" in window || window.matchMedia("(pointer: coarse)").matches;
+    useCanvas = window.innerWidth <= CANVAS_BP && (isTouchDevice || forceCanvas);
     if(useCanvas) sticky.classList.add("canvas-reveal");
     initFluid();
     /* Mobile/Canvas: Reveal ist scroll-getrieben -> Auto-Button + Maus-Hinweis
@@ -963,15 +971,10 @@
     // die VIEWPORT-BREITE koppeln. Schmal (<=1024px) = mobil/tablet, dort soll
     // die Mal-Animation IMMER von selbst laufen. Breiten-Trigger ist im
     // Emulator verifizierbar (Touch-Media-Queries sind es nicht).
-    const isTouch = window.innerWidth <= 1024
-      || noHover
-      || window.matchMedia("(pointer: coarse)").matches
-      || (navigator.maxTouchPoints || 0) > 0
-      || "ontouchstart" in window;
-    /* Mobile/Canvas: KEIN zeitgesteuertes Auto mehr — der Reveal folgt jetzt dem
-       Scrollen (scrollRevealA in applyMain). Auto-Loop nur noch fuer den seltenen
-       Fall eines Touch-Geraets breiter als CANVAS_BP (SVG-Masken-Pfad). */
-    if(isTouch && !useCanvas){
+    /* Auto-Play (SVG-Pfad) NUR auf echten Touch-Geraeten ohne Canvas - NICHT auf
+       einem schmalen DESKTOP-Fenster (dort bleibt reines Hover-Malen erhalten,
+       kein Auto). isTouchDevice ist oben (useCanvas) bereits ermittelt. */
+    if(isTouchDevice && !useCanvas){
       const autoLoop=()=>{
         if(!sceneMain.isConnected){ return; }
         if(painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.6){ runAuto(autobtn); }
