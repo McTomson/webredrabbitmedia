@@ -128,8 +128,16 @@ function TextBlock({ w, onDark }: { w: PanelWindow; onDark?: boolean }) {
 }
 
 /** Ein 100vw-breites Segment auf der horizontalen Buehne. */
-function Segment({ w, onDark, index }: { w: PanelWindow; onDark?: boolean; index: number }) {
+function Segment({ w, onDark, index, themeKey, narrow }: { w: PanelWindow; onDark?: boolean; index: number; themeKey?: string; narrow?: boolean }) {
   const base: React.CSSProperties = { position: "absolute", left: `${index * 100}vw`, top: 0, width: "100vw", height: "100%" };
+  // Mobile/Tablet (Thomas 31.07.): bei Problem + Loesung NUR den langen Body-
+  // Text (das Fenster mit CTA "Was wir anders machen") UNTEN verankern — genau
+  // wie die Morph-Statements, unmittelbar ueber dem Nach-oben-Pfeil (Ueberlappung
+  // mit dem Riesen-Thema-Wort ist ok). Die kurzen Headline-Anfaenge (nur Eyebrow +
+  // Headline, kein linkText) bleiben ZENTRIERT wie zuvor (Thomas: "der Anfang soll
+  // wieder hoeher"). Beweis (nicht genannt) bleibt komplett zentriert.
+  const lowerText = !!narrow && (themeKey === "problem" || themeKey === "loesung") && !!w.linkText;
+  const lowerPad = "max(13vh, calc(env(safe-area-inset-bottom, 0px) + 88px))";
 
   if (w.kind === "kundensagen") {
     // Dunkel statt Weiss (Tomson 26.07.): Grund transparent -> Panel-Dunkel bleibt,
@@ -157,7 +165,7 @@ function Segment({ w, onDark, index }: { w: PanelWindow; onDark?: boolean; index
     );
   }
   return (
-    <div style={{ ...base, display: "flex", alignItems: "center", padding: "0 8vw" }}>
+    <div style={{ ...base, display: "flex", alignItems: lowerText ? "flex-end" : "center", paddingLeft: "8vw", paddingRight: "8vw", paddingTop: 0, paddingBottom: lowerText ? lowerPad : 0 }}>
       <TextBlock w={w} onDark={onDark} />
     </div>
   );
@@ -238,7 +246,7 @@ function PanelTrack({ t }: { t: Theme }) {
         {/* Horizontale Buehne: N Segmente nebeneinander, translateX beim Scrollen */}
         <div ref={stageRef} style={{ position: "absolute", inset: 0, width: `${N * 100}vw`, willChange: "transform", zIndex: 1 }}>
           {segments.map((w, i) => (
-            <Segment key={i} w={w} onDark={t.onDark} index={i} />
+            <Segment key={i} w={w} onDark={t.onDark} index={i} themeKey={t.key} narrow={narrow} />
           ))}
         </div>
       </section>

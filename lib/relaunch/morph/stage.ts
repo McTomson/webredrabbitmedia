@@ -127,6 +127,19 @@ export function buildStagePlan(
     const xs = c.pieces.filter((p) => !p.hidden).map((p) => p.x);
     return xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0.5;
   });
+  // Szene 3 (Chart/Dashboard, comp4) — Sonderfall (Thomas 31.07., Bild #20:
+  // "das Dreieck ist nicht mittig, geht etwas nach links"). Diese Formation ist
+  // ein rechtwinkliges Dreieck: dichte Balken rechts + eine DUENNE Trend-Linie,
+  // die weit nach links-oben ragt. Der Schwerpunkt (0.786) zentriert die dichte
+  // Balken-Masse, laesst aber die Gesamt-Formation nach links haengen (rechts
+  // grosser Leerraum). Empirisch gemessen (rote Pixel im gerenderten Frame,
+  // iPhone-Viewport): Masse-Zentrum ~mittig (-7px), aber die BOUNDING-BOX -42px
+  // links. Die sichtbare Formations-Mitte (Extent) sitzt bei xN≈0.719
+  // (viewport-unabhaengig: gerenderte Groesse ~ k, normalisiert k-invariant).
+  // Darauf zentrieren -> Bounding-Box mittig, gleiche Raender links/rechts.
+  // Nur Szene 3; die anderen 4 sind per Schwerpunkt bereits extent- UND
+  // masse-zentriert (gemessen). Greift nur narrow (offX ist sonst 0).
+  if (sceneCenterX.length > 3) sceneCenterX[3] = 0.719;
   const sceneCenterY = COMPS.map((c) => {
     const ys = c.pieces.filter((p) => !p.hidden).map((p) => p.y);
     return ys.length ? ys.reduce((a, b) => a + b, 0) / ys.length : 0.5;
@@ -270,8 +283,16 @@ export function buildStagePlan(
     const segs: Seg[] = [];
     // a) unsichtbar am Entry geparkt bis Sichtbarkeitsbeginn
     if (uVis0 > 1e-9) segs.push({ u0: 0, u1: uVis0, a: { ...entry, o: 0 }, b: { ...entry, o: 0 } });
-    // c) sichtbar am Entry geparkt bis Flugbeginn (nur wenn fs > uVis0)
-    if (fs > uVis0 + 1e-9) segs.push({ u0: uVis0, u1: fs, a: entry, b: entry });
+    // c) am Entry geparkt bis Flugbeginn (nur wenn fs > uVis0).
+    // Mobile (narrow): UNSICHTBAR parken (o=0). Sonst kleben die Teile als
+    // sichtbares "Band" knapp ausserhalb/an der Bildkante, bevor der Aufbau
+    // beginnt (Thomas 31.07., Bild #19 — dichter roter Streifen oben ueber
+    // "Dashboard & Talos"). Sie sollen ausserhalb + unsichtbar liegen und erst
+    // beim Einflug materialisieren (flightStart hat bereits o=0). Desktop 1:1.
+    if (fs > uVis0 + 1e-9) {
+      const parked = narrow ? { ...entry, o: 0 } : entry;
+      segs.push({ u0: uVis0, u1: fs, a: parked, b: parked });
+    }
 
     // d) Flug entry -> slot. Verschwindet ein Teil mid-flight (Reveal-Fenster),
     // wird der Flug bei uVis1 gekuerzt (b bleibt slot, der o-Snap folgt sofort).

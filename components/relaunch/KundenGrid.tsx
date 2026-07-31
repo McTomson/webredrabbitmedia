@@ -237,7 +237,7 @@ export default function KundenGrid() {
           </div>
         ))}
         <Link className="rrkg-cell rrkg-cta" href="/relaunch-preview/referenzen" aria-label="Alle Projekte ansehen" ref={ctaRef}>
-          <span className="rrkg-cta-label">Alle Projekte ansehen</span>
+          <span className="rrkg-cta-label">Alle Projekte<span className="rrkg-cta-more"> ansehen</span></span>
           <svg className="rrkg-chev" viewBox="0 0 128 64" aria-hidden="true">
             <g ref={chevWrapRef} />
           </svg>
@@ -316,6 +316,13 @@ export default function KundenGrid() {
 
         @media (min-width:769px) and (max-width:1120px){
           .rrkg-cell{min-height:122px;padding:clamp(1.5rem,2.2vw,2.2rem);font-size:clamp(1.2rem,2.15vw,1.42rem)}
+        }
+        /* Mobile + Tablet (Thomas 31.07., Bild #22): CTA-Wort "ansehen" weg
+           (nur "Alle Projekte") und Label eine Spur kleiner — am Handy wirkte
+           es zu gross. Desktop behaelt "Alle Projekte ansehen". */
+        @media (max-width:1024px){
+          .rrkg-cta-more{display:none}
+          .rrkg-cta-label{font-size:.72rem;letter-spacing:.12em}
         }
         @media (max-width:768px){
           .rrkg-scene{padding:10vh 5vw 12vh}

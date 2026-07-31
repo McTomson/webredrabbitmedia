@@ -261,6 +261,21 @@
   }
 }
 
+/* Mobile/Tablet (Thomas 31.07., Bild "Was unsere Kunden sagen"): die Kreise um
+   die Prev/Next-Pfeile weg ("das ist zu viel") — nur die Pfeil-Glyphe, kein Ring.
+   Die 50x50-Flaeche bleibt als Touch-Ziel erhalten. Desktop behaelt die Kreise. */
+@media (max-width: 1024px) {
+  .ks-arrow {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+  .ks-arrow:hover,
+  .ks-arrow:focus-visible {
+    border-color: transparent;
+  }
+}
+
 /* Mobil (<768px): Titel 28px, Zitat 22px, Kacheln 84x84; Name-Rolle zentriert. */
 @media (max-width: 768px) {
   .ks-section {

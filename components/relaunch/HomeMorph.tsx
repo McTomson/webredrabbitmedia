@@ -196,7 +196,12 @@ export default function HomeMorph() {
           el.style.left = "24px";
           el.style.right = "24px";
           el.style.top = "auto";
-          el.style.bottom = "7vh";
+          // Statement eine Spur hoeher (Thomas 31.07., Bild "Webdesign": der Text
+          // sass zu weit unten, letzte Zeile klebte an der Browser-Leiste). Gilt
+          // fuer ALLE Morph-Szenen (alle nutzen diese eine Position). Safe-Area
+          // absichern, damit die dynamische Handy-Toolbar die Unterkante nicht
+          // ueberdeckt.
+          el.style.bottom = "max(13vh, calc(env(safe-area-inset-bottom, 0px) + 88px))";
           el.style.maxWidth = "none";
         } else {
           const side = sceneLayouts[s].textSide;
