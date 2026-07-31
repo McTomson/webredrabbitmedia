@@ -44,27 +44,33 @@ wandernde Enthuellung (Blobs LIFE ~4.6s < Lauf -> hinten blendet aus), Satz groe
 (~35px, clamp(2rem,9vw,3.4rem), max-width 96vw), Pfad ueber fast den ganzen Screen
 (x0.06-0.94, y0.09-0.71). Auto-Loop-Intervall 2500ms.
 
-## OFFEN — NEUES Thomas-Feedback (22:15, Bild IMG_8747 = ganzer Screen navy):
-1. **ENDLOSSCHLEIFE mit Rueckweg:** Wenn der Lauf endet, soll der Punkt den Weg ZURUECK
-   machen (vor -> zurueck -> vor ...), dauerhaft, nahtlos. NICHT von vorne neu starten
-   (aktuell: runAuto laeuft 1x vorwaerts, autoLoop startet nach ~1s neu von vorne). Umbau in
-   runAuto: ping-pong (te vorwaerts, dann rueckwaerts) ODER Endlos-rAF ohne autoRunning-Ende,
-   der die Pfad-Phase hin- und herpendelt.
-2. **"SCHWARZER BILDSCHIRM" — Reveal deckt ZU VIEL zu (Bild IMG_8747):** die grosse
-   Full-Screen-Abdeckung laesst den GANZEN Screen navy werden -> wirkt wie schwarzer
-   Bildschirm. Soll NICHT komplett zulaufen. Balance: genug aufdecken (Satz gut sichtbar,
-   grossflaechig) aber der off-white-Deck-Charakter muss erhalten bleiben / es darf nie 100%
-   navy sein. Hebel: Pfad-Abdeckung/Blob-Groesse/`r*1.2` reduzieren ODER die Enthuellung
-   staerker "wandern" lassen (kuerzere LIFE/HOLD -> weniger gleichzeitig offen) ODER max.
-   gleichzeitige Erase-Flaeche begrenzen.
-3. **SCHWARZER BILDSCHIRM beim WEITERSCROLLEN:** "wenn ich gleich weiter gehe kommt ein
-   schwarzer Bildschirm". Der Reveal/Canvas raeumt beim Verlassen des Heros nicht sauber auf
-   -> navy layer-base scheint voll durch. `revealFade` (aus applyMain) soll die Loecher beim
-   Wegscrollen heilen (Canvas voll off-white). Pruefen: greift revealFade im Canvas-Pfad
-   korrekt? drawReveal muss bei revealFade->1 den Canvas VOLL off-white fuellen (k=1-fade->0,
-   keine Loecher). Vermutlich Bug in der fade/scroll-Kopplung oder der Canvas wird nicht mehr
-   gezeichnet, waehrend layer-base sichtbar bleibt. Am Geraet mit `window.__revealDiag()`
-   (fade-Wert beim Scrollen) diagnostizieren.
+## GELOEST diese Session (Commit 86f99e8): scroll-getriebener Splash statt Auto-Loop
+Referenz ashleybrookecs.com/about im Browser inspiziert: KEIN Finger-Malen (touch-action
+auto, kein Canvas), sondern ein SCROLL-GETRIEBENER Gooey-Masken-Splash (mask url(#mask) +
+filter url(#gooey), GSAP ScrollTrigger + Lenis). Genau das auf unseren Canvas-Pfad
+uebertragen (Mobile/Tablet <=1024; Desktop bleibt SVG-Hover, unveraendert):
+- **Reveal folgt dem Scrollen** statt Zeit: `scrollRevealA = Pm/P_PAINT` (P_PAINT=0.05 =
+  erste 5% des gepinnten Scrollens). Runter = auf, hoch = zu -> ENDLOS-RUECKWEG automatisch
+  (Feedback 1). Kein runAuto/autoLoop/heroFeed mehr auf Mobile.
+- **Kein Vollbild-navy** (Feedback 2): der Reveal ist auf die Satz-Region begrenzt
+  (`buildRevealPath` misst `.reveal-msg`, serpentiner Blob-Pfad; Raender bleiben off-white).
+- **Kein schwarzer Screen beim Weiterscrollen** (Feedback 3): der bestehende `revealFade`
+  heilt ueber das Budget hinaus; die Loop-Bedingung zeichnet EINE Solid-Fill-Frame beim
+  Kantenfall revealFade->1 (`prevFade`) -> solide off-white, kein navy-Leck.
+- Morph (Titel/Kopf/Story) hinter das Reveal-Budget geschoben (Pm-Remap in applyMain), damit
+  der Titel waehrend des Splashs ruhig steht.
+
+**Emulator-verifiziert** (scroll-getrieben -> im Hidden-Tab per Frame-Wake + Debug-Hebel
+`window.__snapScroll=true` testbar, umgeht die smPm-Glaettung): a=0 off-white/Satz versteckt,
+a=0.5 progressiver Mal-Wisch ueber den Satz, a=1 voll aufgedeckt mit Gooey-Kante, danach
+solide off-white ohne navy-Leck. Diag: `window.__revealDiag()` liefert jetzt {a, fade,
+pathLen, ...}. Der Emulator klemmt bei 1788px (Fenster-Mindestbreite) -> ECHTES Mobile-
+Layout (Satzgroesse/-position) verifiziert Thomas am Geraet.
+
+### Naechster konkreter Schritt: am Geraet bewerten + tunen
+- P_PAINT=0.05 (Reveal-Budget) ggf. anpassen, wenn der Splash zu lang/kurz scrollt.
+- buildRevealPath-Abdeckung (rows=3, cols=8, r-Faktor 0.78, padY 0.34) ggf. an die echte
+  Mobile-Satzbox angleichen, falls Raender zu viel/zu wenig navy zeigen.
 
 ### Video-Fallback (NICHT noetig — Canvas laeuft; nur als Notnagel dokumentiert)
 autoplay/muted/playsinline-Video der Desktop-Animation, falls je noetig. Aktuell obsolet.
