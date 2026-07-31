@@ -36,7 +36,7 @@ const SCHRITTE: Schritt[] = [
   },
   {
     titel: 'Du schaust sie dir in Ruhe an.',
-    text: 'Das ist der Punkt, an dem andere Agenturen längst die halbe Rechnung geschickt hätten. Wir nicht. Du legst dich erst fest, wenn die Seite vor dir steht und sitzt. Wir zeigen sie dir zuerst, weil wir ziemlich sicher sind, dass sie dich überzeugt. Gefällt sie dir nicht, hat es dich nichts gekostet.',
+    text: 'Andere hätten längst die halbe Rechnung geschickt. Wir zeigen dir die fertige Seite zuerst. Du legst dich erst fest, wenn sie sitzt. Gefällt sie nicht, hat es dich nichts gekostet.',
     ergebnis: 'Du entscheidest mit dem Ergebnis vor Augen, nicht auf gut Glück.',
   },
   {
