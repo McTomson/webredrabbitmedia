@@ -58,6 +58,16 @@
     max-width:15em;text-wrap:balance;
     transform:translateY(-9vh);
   }
+  /* Mobile (Thomas 31.07.): der enthuellte Satz war mit der Desktop-Groesse
+     (clamp-min 2rem) breiter als der Viewport -> links/rechts abgeschnitten.
+     Kleiner + volle Breite nutzen, damit die Zeilen sauber reinpassen. */
+  @media (max-width:640px){
+    .reveal-msg{
+      font-size:clamp(1.25rem,6.4vw,2rem);
+      max-width:94vw;
+      transform:translateY(-5vh);
+    }
+  }
 
   /* Ebene A (Deck): Off-White + Titel */
   .layer-deck{
