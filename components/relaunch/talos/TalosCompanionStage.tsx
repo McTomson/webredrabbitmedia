@@ -282,7 +282,9 @@ export default function TalosCompanionStage({
 
       if (!waved && p >= P_WAVE && ep <= 0) {
         waved = true;
-        motion?.triggerGreeting("primary");
+        // Thomas 25.07.: Hero-Gruss mit der ANDEREN Hand (die alte "primary"
+        // war die falsche Seite; "other" ist die korrigierte Hand).
+        motion?.triggerGreeting("other");
       }
       if (waved && p < P_WALK1 - 0.06) waved = false;
 
@@ -359,8 +361,11 @@ export default function TalosCompanionStage({
         if (lastStation !== best) { lastStation = best; gestureDone = false; }
         if (!gestureDone && bestScore > 0.45 && !walking) {
           gestureDone = true;
-          if (best.gesture === "wave") motion?.triggerGreeting("primary");
-          else if (best.gesture === "wave2") motion?.triggerGreeting("other");
+          // Thomas 25.07.: "wave" (Standard-Markup an allen Stationen) mit der
+          // korrigierten Hand ("other"); "wave2" bleibt fuer Sonderfaelle die
+          // alte Hand ("primary"), falls irgendwo bewusst gebraucht.
+          if (best.gesture === "wave") motion?.triggerGreeting("other");
+          else if (best.gesture === "wave2") motion?.triggerGreeting("primary");
           else if (best.gesture === "bow") motion?.triggerBow();
         }
       } else {
@@ -400,11 +405,11 @@ export default function TalosCompanionStage({
     // sichtbar ist — sonst nichts, damit normale Seiten-Klicks bzw. Text-
     // Selektion per Doppelklick keine Geste ausloesen.
     const GESTURES: Array<() => void> = [
-      () => motion?.triggerGreeting("primary"),
+      () => motion?.triggerGreeting("other"),
       () => motion?.triggerNod(),
       () => motion?.triggerWink(),
       () => motion?.triggerBow(),
-      () => motion?.triggerGreeting("other"),
+      () => motion?.triggerGreeting("primary"),
     ];
     let gestureCycle = 0;
     const onDblClick = (e: MouseEvent) => {
