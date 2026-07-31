@@ -57,6 +57,8 @@
   let revealCanvas=null, revealCtx=null, revealDpr=1, revealW=0, revealH=0;
   let revealFade=0;             /* 0 = voll aufdeckbar, 1 = Loecher geheilt (aus applyMain) */
   const OFFWHITE="#f4f4f2";     /* == --offwhite; Deckflaeche des Canvas */
+  let revealPath=null;          /* Mobile-Splash: Blob-Pfad ueber dem Satz (scroll-getrieben) */
+  let scrollRevealA=0;          /* 0..1 wie weit der Satz aufgedeckt ist (= Scroll, aus applyMain) */
 
   const letterEls=[...htitle.querySelectorAll(".ltr:not(.sp)")];
   letterEls.forEach((el,k)=>{
@@ -72,6 +74,12 @@
 
   /* ---- Phasen der Haupt-Szene (Fortschritt P: 0..1) ---- */
   const P_REVEAL=0.011;               /* K5: Titel schrumpft ab dem ersten Scroll (~100px); Paint-Reveal nur ganz oben */
+  /* Mobile/Canvas: der Satz-Reveal ist SCROLL-GETRIEBEN wie das Vorbild
+     ashleybrookecs (kein zeitgesteuertes Auto). Die ersten P_PAINT des gepinnten
+     Scrollens decken den Satz progressiv auf (runter = auf, hoch = zu -> Rueckweg
+     automatisch), begrenzt auf die Satz-Region (nie Vollbild-navy). Danach heilt
+     der bestehende revealFade und der Morph laeuft (Pm wird dahinter geschoben). */
+  const P_PAINT=0.05;
   const P_SHRINK1=0.20;
   const P_SCAT0=0.20, P_SCAT1=0.44;   /* Buchstaben fliegen raus (langsamer) */
   const A_A0=0.20, A_A1=0.54;         /* C1: rote Fragmente kommen frueh HEREIN, ueberlappen den Buchstaben-Scatter (0.20-0.44) deutlich */
@@ -94,6 +102,74 @@
       revealCanvas.style.height=r.height+"px";
       if(revealCtx) revealCtx.setTransform(revealDpr,0,0,revealDpr,0,0);   /* in CSS-px zeichnen */
     }
+    if(useCanvas) buildRevealPath();
+  }
+
+  /* Mobile-Splash: einen Blob-Pfad ueber die Satz-Region (.reveal-msg) legen.
+     Reihenweise-serpentiner Verlauf mit ueberlappenden Kreisen -> beim Aufdecken
+     wandert der "Pinsel" ueber den Satz (Gooey-Optik), deckt am Ende die GANZE
+     Satz-Flaeche ab, aber NIE den ganzen Bildschirm (Raender bleiben off-white =
+     kein schwarzer/navy Vollbild). */
+  function buildRevealPath(){
+    const sr=sticky.getBoundingClientRect();
+    if(!sr.width||!sr.height){ revealPath=null; return; }
+    const msg=sticky.querySelector(".reveal-msg");
+    let rx,ry,rw,rh;
+    if(msg){ const m=msg.getBoundingClientRect(); rx=m.left-sr.left; ry=m.top-sr.top; rw=m.width; rh=m.height; }
+    else { rw=sr.width*0.9; rh=sr.height*0.34; rx=sr.width*0.05; ry=sr.height*0.24; }
+    if(!(rw>0)||!(rh>0)){ revealPath=null; return; }
+    const padX=rw*0.12, padY=rh*0.34;
+    rx-=padX; ry-=padY; rw+=padX*2; rh+=padY*2;
+    if(rx<0){ rw+=rx; rx=0; }
+    if(ry<0){ rh+=ry; ry=0; }
+    /* Satz sitzt ueber dem Titel -> Region-Unterkante auf die Mal-Grenze deckeln. */
+    if(paintMaxY>0 && ry+rh>paintMaxY) rh=Math.max(rh*0.4,paintMaxY-ry);
+    const rows=3, cols=8;
+    const rowH=rh/rows, colW=cols>1?rw/(cols-1):rw;
+    const r=Math.max(rowH,colW)*0.78;      /* Ueberlappung -> Kreise verschmelzen + volle Deckung */
+    const pts=[];
+    for(let ri=0;ri<rows;ri++){
+      const y=ry+rowH*(ri+0.5);
+      for(let ci=0;ci<cols;ci++){
+        const cc=(ri%2)?(cols-1-ci):ci;    /* serpentin: links->rechts->links */
+        pts.push({x:rx+colW*cc, y:y, r:r});
+      }
+    }
+    revealPath=pts;
+  }
+
+  /* Canvas-Splash zeichnen: off-white Deck voll fuellen, dann entlang revealPath
+     bis zum Anteil scrollRevealA Loecher erasieren (destination-out) -> darunter
+     scheint layer-base (navy + Satz) durch. Staerke k=1-revealFade: beim
+     Weiterscrollen (revealFade->1) schliessen sich alle Loecher gleichmaessig ->
+     solide off-white, kein navy-Rest (kein schwarzer Bildschirm). */
+  function drawRevealScroll(){
+    const ctx=revealCtx; if(!ctx) return;
+    ctx.globalCompositeOperation="source-over";
+    ctx.clearRect(0,0,revealW,revealH);
+    ctx.fillStyle=OFFWHITE;
+    ctx.fillRect(0,0,revealW,revealH);
+    const k=1-revealFade;
+    const path=revealPath;
+    if(k<=0.002 || !path || !path.length || scrollRevealA<=0) return;   /* solide off-white */
+    const a0=Math.min(1,k);
+    const reveal=scrollRevealA*path.length;   /* wie viele Blobs aufgedeckt (fraktional) */
+    ctx.globalCompositeOperation="destination-out";
+    for(let i=0;i<path.length;i++){
+      const e=reveal-i;                       /* >=1 voll, (0,1) Front waechst rein, <=0 zu */
+      if(e<=0) break;
+      const grow=e>=1?1:e;
+      const p=path[i];
+      const r=p.r*grow;
+      if(r<=0.5) continue;
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
+      g.addColorStop(0,"rgba(0,0,0,"+a0+")");
+      g.addColorStop(0.86,"rgba(0,0,0,"+a0+")");   /* scharfe Kante wie Original (kein blurry Halo) */
+      g.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle=g;
+      ctx.beginPath(); ctx.arc(p.x,p.y,r,0,6.2832); ctx.fill();
+    }
+    ctx.globalCompositeOperation="source-over";
   }
 
   /* ---- Ü-Punkte: Umlaut-Geometrie EINMAL per Canvas messen (Punkt-Groesse, vertikale
@@ -250,6 +326,7 @@
     const dot=dotCtl();
     const mouse={x:0,y:0,sx:0,sy:0,diff:0,has:false,init:false};
     const particles=[];
+    let prevFade=1;               /* Kantenfall revealFade->1: EINE Solid-Fill-Frame raeumt navy-Reste weg */
     const GROW=430, HOLD=2500;
     const LIFE=GROW+HOLD+1700;
 
@@ -352,22 +429,30 @@
 
     function loop(now){
       if(!sceneMain.isConnected){ return; }
-      if(mouse.has&&painting){
-        mouse.sx+=(mouse.x-mouse.sx)*0.16;
-        mouse.sy+=(mouse.y-mouse.sy)*0.16;
-        dot.move(mouse.sx,mouse.sy);
-        mouse.diff=Math.hypot(mouse.x-mouse.sx,mouse.y-mouse.sy);
-        if(mouse.diff>0.6 && mouse.sy<=paintMaxY){   /* K2: keine Blob-Zentren unterhalb der weichen Grenze */
-          particles.push(new Particle(mouse.sx,mouse.sy,mouse.diff*1.5+34));
+      /* Desktop (SVG-Maske): Maus/Touch malt frei per Partikel.
+         Mobile (Canvas): Reveal ist SCROLL-GETRIEBEN (drawRevealScroll aus
+         scrollRevealA), keine Maus-Partikel. */
+      if(!useCanvas){
+        if(mouse.has&&painting){
+          mouse.sx+=(mouse.x-mouse.sx)*0.16;
+          mouse.sy+=(mouse.y-mouse.sy)*0.16;
+          dot.move(mouse.sx,mouse.sy);
+          mouse.diff=Math.hypot(mouse.x-mouse.sx,mouse.y-mouse.sy);
+          if(mouse.diff>0.6 && mouse.sy<=paintMaxY){   /* K2: keine Blob-Zentren unterhalb der weichen Grenze */
+            particles.push(new Particle(mouse.sx,mouse.sy,mouse.diff*1.5+34));
+          }
         }
+        for(let i=particles.length-1;i>=0;i--){
+          if(!particles[i].update(now)){ particles[i].kill(); particles.splice(i,1); }
+        }
+      } else {
+        /* Zeichnen, solange auf-/zugedeckt wird (revealFade<1); die erste Frame NACH
+           Erreichen von revealFade=1 (prevFade<1) fuellt einmal solide off-white ->
+           kein navy-Rest beim Weiterscrollen. Danach steht der Canvas solide und wir
+           sparen den Full-Fill pro Frame ueber die ganze gepinnte Strecke. */
+        if(revealFade<1 || prevFade<1) drawRevealScroll();
+        prevFade=revealFade;
       }
-      for(let i=particles.length-1;i>=0;i--){
-        if(!particles[i].update(now)){ particles[i].kill(); particles.splice(i,1); }
-      }
-      /* Nur zeichnen, solange es was aufzudecken/heilen gibt (revealFade<1) oder noch
-         Partikel leben. Danach steht der Canvas solide off-white -> spart auf Handys
-         den ~4-Mpx-Full-Fill pro Frame ueber die ganze 1600vh-Strecke. */
-      if(useCanvas && (revealFade<1 || particles.length)) drawReveal();
       requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
@@ -382,7 +467,7 @@
       if(mouse.sy<=paintMaxY){ particles.push(new Particle(mouse.sx,mouse.sy,speed*1.5+34)); }
     };
     heroFeedEnd=()=>{ mouse.has=false; dot.hide(); };
-    window.__revealDiag=()=>({n:particles.length, fade:revealFade, painting, useCanvas, autoRunning});
+    window.__revealDiag=()=>({n:particles.length, fade:+revealFade.toFixed(3), a:+scrollRevealA.toFixed(3), pathLen:revealPath?revealPath.length:0, painting, useCanvas, autoRunning});
   }
 
   let autoRunning=false;
@@ -545,6 +630,16 @@
   /* ================================================================ */
   let lastPainting=true;
   function applyMain(Pm){
+    /* Mobile/Canvas: Reveal scroll-getrieben. scrollRevealA = wie weit der Satz
+       aufgedeckt ist (erste P_PAINT des Scrollens: runter=auf, hoch=zu). Den
+       restlichen Morph hinter den Reveal schieben (remap), damit Titel + Kopf
+       waehrend des Splashs ruhig stehen. Der bestehende revealFade weiter unten
+       nutzt das remap-Pm -> heilt automatisch NACH dem Reveal-Budget. Desktop:
+       useCanvas=false -> Pm unveraendert, alles wie bisher. */
+    if(useCanvas){
+      scrollRevealA = clamp(Pm / P_PAINT, 0, 1);
+      Pm = clamp((Pm - P_PAINT) / (1 - P_PAINT), 0, 1);
+    }
     // Titel: Anschnitt (Basislinie) -> Aufstieg+Schrumpf -> klein mittig
     let s, ty;
     if(Pm<=P_REVEAL){ s=1; ty=tyCut; }
@@ -770,7 +865,7 @@
     const mr=sceneMain.getBoundingClientRect();
     if(inView(mr)){
       const rawPm=clamp((-mr.top)/(mr.height-vh),0,1);
-      smPm=smPm===null?rawPm:smPm+(rawPm-smPm)*PIECE_LERP;
+      smPm=(smPm===null||window.__snapScroll)?rawPm:smPm+(rawPm-smPm)*PIECE_LERP;
       applyMain(smPm);
     }
     const br=sceneBelief?sceneBelief.getBoundingClientRect():null;
@@ -832,6 +927,12 @@
     useCanvas = window.innerWidth <= CANVAS_BP;
     if(useCanvas) sticky.classList.add("canvas-reveal");
     initFluid();
+    /* Mobile/Canvas: Reveal ist scroll-getrieben -> Auto-Button + Maus-Hinweis
+       ("Maus ueber das Bild bewegen") sind dort irrefuehrend, weg damit. */
+    if(useCanvas){
+      if(autobtn) autobtn.style.display="none";
+      if(hint) hint.style.display="none";
+    }
     if(autobtn) autobtn.addEventListener("click",()=>runAuto(autobtn));
     // Touch-Geraete koennen nicht hover-malen -> Auto-Play spielt die Mal-
     // animation selbst ab. WICHTIG (Thomas 31.07., Bild echtes Geraet: roter
@@ -850,7 +951,10 @@
       || window.matchMedia("(pointer: coarse)").matches
       || (navigator.maxTouchPoints || 0) > 0
       || "ontouchstart" in window;
-    if(isTouch){
+    /* Mobile/Canvas: KEIN zeitgesteuertes Auto mehr — der Reveal folgt jetzt dem
+       Scrollen (scrollRevealA in applyMain). Auto-Loop nur noch fuer den seltenen
+       Fall eines Touch-Geraets breiter als CANVAS_BP (SVG-Masken-Pfad). */
+    if(isTouch && !useCanvas){
       const autoLoop=()=>{
         if(!sceneMain.isConnected){ return; }
         if(painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.6){ runAuto(autobtn); }
