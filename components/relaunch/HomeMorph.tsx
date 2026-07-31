@@ -27,6 +27,15 @@ const COMPS = [atShapes1, atShapes2, atShapes3, atShapes4, atShapes5];
  */
 const U_INTRO = 1.6;
 const U_SPAN = U_INTRO + U_TOTAL;
+/**
+ * Scroll-Laenge pro u-Einheit (vh). Der Fortschritt p normalisiert auf die
+ * Track-Hoehe, d.h. dieselbe Choreografie laeuft ueber mehr oder weniger Scroll.
+ * Desktop = lange, ruhige Fahrt. Mobile (<=820px) deutlich kuerzer -> snappier
+ * und kein endloses Scrollen (31.07., Effekt bleibt erhalten, nur gestrafft).
+ * Umschaltung per Media-Query auf --rr-morph-track-h (SSR-sicher, kein Layout-Jump).
+ */
+const TRACK_VH_PER_U = 260;
+const TRACK_VH_PER_U_MOBILE = 110;
 /** Hoehe des Hasenkopfs (konstant, ~50% kleiner als frueher). */
 const HEAD_VH = 30;
 /**
@@ -369,7 +378,7 @@ export default function HomeMorph() {
   }, []);
 
   return (
-    <div ref={trackRef} data-rr-snap-exempt style={{ height: `${U_SPAN * 260 + 100}vh`, position: "relative" }}>
+    <div ref={trackRef} data-rr-snap-exempt className="rr-morph-track" style={{ height: "var(--rr-morph-track-h)", position: "relative" }}>
       <span ref={probeRef} aria-hidden style={{ fontFamily: "var(--rr-font-display)", position: "absolute", opacity: 0, pointerEvents: "none" }}>probe</span>
       <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", background: "#F4F4F2" }}>
         {/* Teile-Buehne: Origin = Viewport-Zentrum (Wortmarke -> Shatter) */}
@@ -466,7 +475,11 @@ export default function HomeMorph() {
           </div>
         )}
 
-        <style>{`.rr-heromark{display:block;width:100%;height:100%}`}</style>
+        <style>{`
+          .rr-morph-track{--rr-morph-track-h:${U_SPAN * TRACK_VH_PER_U + 100}vh}
+          @media (max-width:820px){.rr-morph-track{--rr-morph-track-h:${U_SPAN * TRACK_VH_PER_U_MOBILE + 100}vh}}
+          .rr-heromark{display:block;width:100%;height:100%}
+        `}</style>
 
         {/* Statements (SEO-Text immer im DOM), Seite = Gegenseite der Formation */}
         {!reduced && SCENE_TEXTS.map((t, i) => (

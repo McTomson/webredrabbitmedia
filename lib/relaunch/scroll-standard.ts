@@ -109,3 +109,14 @@ export function isBumperDegraded(breakpoint: number = MOBILE_BREAKPOINT): boolea
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
 }
+
+/**
+ * Nur reduzierte Bewegung (KEINE Breiten-Degradation). Fuer Strecken, deren
+ * horizontale Mechanik auch auf Handy/Tablet erhalten bleiben soll (Thomas
+ * 31.07.: die Karten-Sektion muss mobil GENAUSO horizontal scrollen wie am
+ * Desktop). Nur im Browser aufrufen (nach Mount).
+ */
+export function prefersReducedMotion(): boolean {
+  if (typeof window === "undefined" || !window.matchMedia) return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}

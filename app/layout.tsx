@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
@@ -74,6 +74,17 @@ export const metadata: Metadata = {
   verification: {
     google: 'Z8sJwBHULpdZo5gD7gglo4G_tmQHTKYeAuF2F8jX8cM',
   }
+};
+
+// Viewport: bis 31.07. fehlte ein expliziter Export -> Next-Default ohne
+// viewport-fit=cover, d.h. env(safe-area-inset-*) lieferten 0 (kein Notch-/
+// Home-Indicator-Handling auf iPhones). viewport-fit=cover aktiviert die Insets;
+// das Safe-Area-Padding setzen die Fixed-Chrome-Elemente selbst (CornerLogo,
+// Menue-Overlay, Nach-oben-Button).
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 const jsonLd = {

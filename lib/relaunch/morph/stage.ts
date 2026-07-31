@@ -109,18 +109,27 @@ export function buildStagePlan(
   const rng = makeRng(opts?.seed ?? 53);
   const narrow = opts?.narrow ?? vp.w < 900;
   /** Massstab: all-turtles skaliert breiten-orientiert -> vh/810 statt vh/1080. */
-  const k = Math.min(vp.w / 1920, vp.h / 810) * (narrow ? 1.15 : 1);
+  // Narrow-Boost 31.07.: auf dem Handy sollen die roten Formationen die Breite
+  // FUELLEN (Thomas, Referenz-Video all-turtles) statt klein in der Mitte zu
+  // sitzen. 2.1x bringt sie auf ~volle Viewport-Breite; Fly-in/Streuung gehen
+  // dabei bewusst weit ueber den Rand hinaus (Teile stroemen von aussen herein).
+  const k = Math.min(vp.w / 1920, vp.h / 810) * (narrow ? 1.6 : 1);
   const diag = Math.hypot(vp.w, vp.h);
   const halfW = vp.w / 2, halfH = vp.h / 2;
 
   // ---- Formations-Zentrum pro Szene (fuer Mobile-Zentrierung) ---------------
+  // Zentrierung ueber den SCHWERPUNKT (Mittel aller Teil-Positionen), NICHT die
+  // Bounding-Box-Mitte (Thomas 31.07., Bild #9): Formationen mit einer duennen
+  // ausreissenden Linie (z.B. das Balken-Diagramm mit Trend-Linie nach rechts-oben)
+  // wurden von der Bbox-Mitte nach links geschoben. Der Schwerpunkt zentriert nach
+  // der sichtbaren Masse -> die Formation sitzt optisch mittig.
   const sceneCenterX = COMPS.map((c) => {
     const xs = c.pieces.filter((p) => !p.hidden).map((p) => p.x);
-    return xs.length ? (Math.min(...xs) + Math.max(...xs)) / 2 : 0.5;
+    return xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0.5;
   });
   const sceneCenterY = COMPS.map((c) => {
     const ys = c.pieces.filter((p) => !p.hidden).map((p) => p.y);
-    return ys.length ? (Math.min(...ys) + Math.max(...ys)) / 2 : 0.5;
+    return ys.length ? ys.reduce((a, b) => a + b, 0) / ys.length : 0.5;
   });
 
   // ---- Canvas-Mapping. Desktop: GLOBAL (Original-Koordinaten -> Szene s+1
@@ -225,12 +234,17 @@ export function buildStagePlan(
       scale: slotScale * jp.fromScale, o: 1,
     };
 
-    // Szene 0: Einflug von AUSSERHALB des Bildschirms statt Aufpoppen am
-    // Original-Entry (das oft im Bild liegt). Startpunkt = slot in Original-
-    // Einflugrichtung verlaengert bis ueber den Rand -> die Teile stroemen
-    // sichtbar von aussen herein, waehrend die Wortmarke hinausfliegt.
-    // Der Halte-Frame (slot) bleibt exakt 1:1.
-    if (s === 0) {
+    // Mobile (narrow): wie am Desktop von AUSSERHALB einfliegen, aber symmetrisch
+    // zur zentrierten Formation — Startpunkt liegt off-screen in RADIALER Richtung
+    // (Slot-Position vom Zentrum aus). So stroemen die Teile von allen Seiten zur
+    // Mitte, ohne aus den links-lastigen Kompositions-fromX zu driften
+    // (Thomas 31.07., Referenz-Video all-turtles).
+    if (narrow) {
+      let dx = slot.x, dy = slot.y;
+      if (Math.hypot(dx, dy) < 1) { const a = rng() * Math.PI * 2; dx = Math.cos(a); dy = Math.sin(a); }
+      const start = offscreenFrom(slot.x, slot.y, dx, dy, 0.06 + rng() * 0.12);
+      entry = { ...entry, x: start.x, y: start.y };
+    } else if (s === 0) {
       let dx = entry.x - slot.x, dy = entry.y - slot.y;
       if (Math.hypot(dx, dy) < 1) { dx = slot.x; dy = slot.y; }
       if (Math.hypot(dx, dy) < 1) { const a = rng() * Math.PI * 2; dx = Math.cos(a); dy = Math.sin(a); }
@@ -263,7 +277,11 @@ export function buildStagePlan(
     // wird der Flug bei uVis1 gekuerzt (b bleibt slot, der o-Snap folgt sofort).
     const flightEnd = Math.min(ar, uVis1);
     if (flightEnd > fs + 1e-9) {
-      segs.push({ u0: fs, u1: flightEnd, a: entry, b: slot });
+      // Mobile: waehrend des Einflugs von o=0 hochblenden -> die Teile
+      // MATERIALISIEREN sich beim Zusammensetzen, statt vorher als sichtbares
+      // "Band" am Bildrand zu kleben (Thomas 31.07., Bild #16). Desktop 1:1.
+      const flightStart = narrow ? { ...entry, o: 0 } : entry;
+      segs.push({ u0: fs, u1: flightEnd, a: flightStart, b: slot });
     } else {
       // Kein echter Flug (entryT==arriveT / Reveal am Slot): sichtbar am Slot
       // halten. Der o-Snap auf 1 passiert am Uebergang von Segment a.

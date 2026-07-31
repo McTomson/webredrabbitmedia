@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { clamp01 } from "@/lib/relaunch/morph/grammar";
 import {
   BUMPER_TRACK_VH_PER_WINDOW,
-  isBumperDegraded,
+  prefersReducedMotion,
   snapUnits,
 } from "@/lib/relaunch/scroll-standard";
 import LighthouseCarousel from "@/components/relaunch/LighthouseCarousel";
@@ -25,7 +25,7 @@ type PanelWindow = {
   body?: ReactNode;
   linkText?: string;
   href?: string;
-  kind?: "lighthouse" | "kundensagen";
+  kind?: "lighthouse" | "kundensagen" | "lighthouse-solo";
 };
 
 type Theme = {
@@ -140,6 +140,14 @@ function Segment({ w, onDark, index }: { w: PanelWindow; onDark?: boolean; index
       </div>
     );
   }
+  if (w.kind === "lighthouse-solo") {
+    // Mobile/Tablet: die 93-Animation auf eigenem Panel, zentriert (Thomas 31.07.).
+    return (
+      <div style={{ ...base, display: "flex", alignItems: "center", justifyContent: "center", padding: "6vh 6vw" }}>
+        <LighthouseCarousel />
+      </div>
+    );
+  }
   if (w.kind === "lighthouse") {
     return (
       <div style={{ ...base, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "clamp(24px, 4vw, 64px)", padding: "8vh 8vw" }}>
@@ -159,12 +167,36 @@ function PanelTrack({ t }: { t: Theme }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const giantRef = useRef<HTMLDivElement>(null);
-  const N = t.windows.length;
+
+  // Mobile/Tablet (Thomas 31.07.): die "Beweis"-Lighthouse-Kachel in ZWEI
+  // Panels aufteilen -> erst der Text, dann (weiterscrollen) die 93-Animation.
+  // Nur schmale Viewports; Desktop behaelt Text + Gauge nebeneinander in EINEM
+  // Panel. Am Mount entschieden (kein Live-Umschalten, sonst Scroll-Sprung).
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    setNarrow(typeof window !== "undefined" && window.matchMedia("(max-width: 1024px)").matches);
+  }, []);
+  const segments = useMemo<PanelWindow[]>(() => {
+    if (!narrow) return t.windows;
+    const out: PanelWindow[] = [];
+    for (const w of t.windows) {
+      if (w.kind === "lighthouse") {
+        out.push({ eyebrow: w.eyebrow, headline: w.headline, body: w.body }); // Text-Panel
+        out.push({ kind: "lighthouse-solo" }); // 93-Animation eigenes Panel
+      } else {
+        out.push(w);
+      }
+    }
+    return out;
+  }, [narrow, t.windows]);
+  const N = segments.length;
 
   useEffect(() => {
-    // Sicherheitsnetz: der Elternteil rendert bei degradiertem Zustand ohnehin
-    // die vertikalen Sektionen, hier bleibt der rAF-Loop trotzdem still.
-    if (isBumperDegraded()) return;
+    // Sicherheitsnetz: nur bei reduzierter Bewegung stillhalten. Die horizontale
+    // Karten-Fahrt bleibt auf Handy/Tablet erhalten (Thomas 31.07.: muss mobil
+    // GENAUSO horizontal scrollen wie am Desktop) — der Antrieb ist scroll-
+    // positionsbasiert (getBoundingClientRect), also touch-tauglich.
+    if (prefersReducedMotion()) return;
     const track = trackRef.current!, stage = stageRef.current!, giant = giantRef.current!;
     let raf = 0, destroyed = false;
 
@@ -205,7 +237,7 @@ function PanelTrack({ t }: { t: Theme }) {
 
         {/* Horizontale Buehne: N Segmente nebeneinander, translateX beim Scrollen */}
         <div ref={stageRef} style={{ position: "absolute", inset: 0, width: `${N * 100}vw`, willChange: "transform", zIndex: 1 }}>
-          {t.windows.map((w, i) => (
+          {segments.map((w, i) => (
             <Segment key={i} w={w} onDark={t.onDark} index={i} />
           ))}
         </div>
@@ -221,7 +253,7 @@ export default function CasePanels() {
   // mitten im Scroll wuerde die Scroll-Position der Seite zerreissen.
   const [degraded, setDegraded] = useState(false);
   useEffect(() => {
-    setDegraded(isBumperDegraded());
+    setDegraded(prefersReducedMotion());
   }, []);
 
   if (degraded) {
@@ -233,7 +265,7 @@ export default function CasePanels() {
               {w.kind === "kundensagen" ? (
                 <div className="ks-ondark" style={{ width: "100%" }}><KundenSagen /></div>
               ) : (
-                <div className="rr-wrap" style={{ position: "relative", width: "100%", padding: "var(--rr-section-y) 0", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "clamp(24px, 4vw, 56px)" }}>
+                <div className="rr-wrap" style={{ position: "relative", width: "100%", padding: "var(--rr-section-y, clamp(96px,12vw,180px)) clamp(28px, 7vw, 72px)", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "clamp(24px, 4vw, 56px)" }}>
                   <TextBlock w={w} onDark={t.onDark} />
                   {w.kind === "lighthouse" && <LighthouseCarousel />}
                 </div>

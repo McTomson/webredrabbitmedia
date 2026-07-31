@@ -132,14 +132,30 @@ body {
   color: black !important;
 }
 
-/* Focus indicator for accessibility */
-/* REMOVED GLOBAL RED OUTLINE - AGGRESSIVE OVERRIDE */
-*:focus,
-*:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
-  border-color: transparent !important;
-  /* Optional: prevents border color changes if any */
+/* Fokus (31.07.): Vorher killte ein globales *:focus/*:focus-visible{outline:none
+   !important} JEDEN Fokus-Indikator (A11y-Regression gegen DESIGN_STANDARD:42 und
+   CLAUDE.md; schaltete sogar die eigenen :focus-visible-Styles im Menue aus).
+   Jetzt: Maus-Klick-Fokus bleibt ringfrei, Tastatur-Fokus (:focus-visible)
+   bekommt einen dezenten, markenroten Ring. */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+/* Roten Fokus-Ring NUR auf Maus/Tastatur-Geraeten (Desktop). Auf Touch
+   (Handy/Tablet) erzeugte der Ring einen unerwuenschten roten Rahmen, u.a. um
+   das geoeffnete Burger-Menue (Thomas 31.07.) — Touch braucht keinen
+   Tastatur-Fokus-Ring. */
+@media (hover: hover) and (pointer: fine) {
+  :focus-visible {
+    outline: 2px solid var(--rr-red, #f12032);
+    outline-offset: 2px;
+  }
+}
+/* Touch: programmatisch fokussierte Container (z.B. Menue-Dialog) bekommen
+   keinen sichtbaren Rahmen. */
+@media (hover: none), (pointer: coarse) {
+  :focus-visible {
+    outline: none;
+  }
 }
 
 /* Custom slider styling - Robust Cross-Browser Fix */

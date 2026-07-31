@@ -353,6 +353,14 @@ export default function RelaunchMenu() {
           transition: opacity 320ms var(--rr-ease, cubic-bezier(0.6, 0, 0.4, 1));
           overflow: hidden;
         }
+        /* Der Dialog-Container bekommt beim Oeffnen programmatisch Fokus
+           (overlayRef.focus()) und wuerde sonst den globalen Fokus-Ring zeigen
+           -> roter Rahmen ums Menue. NIE erwuenscht (Thomas 31.07.), auf keinem
+           Geraet. Interaktive Elemente IM Menue behalten ihren Fokus-Stil. */
+        .rrmenu-overlay:focus,
+        .rrmenu-overlay:focus-visible {
+          outline: none !important;
+        }
         .rrmenu-cursor {
           position: fixed;
           left: 0;
@@ -378,7 +386,14 @@ export default function RelaunchMenu() {
           max-width: var(--rr-max, 1680px);
           height: 100%;
           margin: 0 auto;
-          padding: clamp(20px, 3vh, 34px) var(--rr-gutter, clamp(22px, 5vw, 56px));
+          /* Safe-Area (31.07.): Vollflaechen-Overlay -> Logo/Close (oben) und
+             Footer-Zeile (unten) muessen Notch bzw. Home-Indicator klaeren.
+             max() laesst Desktop/0-Inset unveraendert. */
+          padding:
+            max(clamp(20px, 3vh, 34px), env(safe-area-inset-top))
+            max(var(--rr-gutter, clamp(22px, 5vw, 56px)), env(safe-area-inset-right))
+            max(clamp(20px, 3vh, 34px), env(safe-area-inset-bottom))
+            max(var(--rr-gutter, clamp(22px, 5vw, 56px)), env(safe-area-inset-left));
           display: flex;
           flex-direction: column;
           justify-content: space-between;

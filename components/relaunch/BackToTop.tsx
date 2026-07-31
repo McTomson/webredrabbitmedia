@@ -66,8 +66,10 @@ export default function BackToTop() {
       tabIndex={shown ? 0 : -1}
       style={{
         position: "fixed",
-        bottom: "clamp(18px, 2.4vw, 34px)",
-        left: "clamp(20px, 4vw, 64px)",
+        // Safe-Area (31.07.): unten-links liegt in der Home-Indicator-Zone;
+        // max() haelt Desktop unveraendert, hebt den Button auf iPhones ueber den Indicator.
+        bottom: "max(clamp(18px, 2.4vw, 34px), env(safe-area-inset-bottom))",
+        left: "max(clamp(20px, 4vw, 64px), env(safe-area-inset-left))",
         zIndex: 43,
         display: "flex",
         alignItems: "center",

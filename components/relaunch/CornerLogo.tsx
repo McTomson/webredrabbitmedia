@@ -56,8 +56,10 @@ export default function CornerLogo() {
       tabIndex={shown ? 0 : -1}
       style={{
         position: "fixed",
-        top: "clamp(18px, 2.4vw, 34px)",
-        left: "clamp(20px, 4vw, 64px)",
+        // Safe-Area (31.07.): max() haelt den Wert auf Desktop/0-Inset unveraendert,
+        // klaert aber Notch/Rundecke auf iPhones (env liefert nur mit viewport-fit=cover).
+        top: "max(clamp(18px, 2.4vw, 34px), env(safe-area-inset-top))",
+        left: "max(clamp(20px, 4vw, 64px), env(safe-area-inset-left))",
         zIndex: 43,
         display: "block",
         lineHeight: 0,
