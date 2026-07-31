@@ -394,11 +394,15 @@
     // sondern in EINEM Fluss, und langsamer). Alle Punkte fliessen ohne Sprung
     // ineinander; ein einziger Zeitstrahl mit sanftem Ein-/Ausschwung (easeInOut).
     const pts=[
-      [0.15,0.30],[0.33,0.23],[0.53,0.29],[0.73,0.24],[0.86,0.34],
-      [0.73,0.45],[0.53,0.40],[0.33,0.47],[0.16,0.42],[0.33,0.35],
-      [0.55,0.37],[0.76,0.42]
+      [0.14,0.30],[0.28,0.24],[0.44,0.29],[0.60,0.24],[0.76,0.28],[0.86,0.36],
+      [0.76,0.44],[0.60,0.40],[0.44,0.45],[0.28,0.41],[0.16,0.46],[0.30,0.36],
+      [0.48,0.33],[0.66,0.38],[0.80,0.34]
     ];
-    const START=performance.now(), DUR=4800;   // langsamer, ein Fluss
+    // Langsam + lang (Thomas 31.07.: "viel zu schnell", "laenger, langsamer,
+    // fliessend-harmonisch, damit Teile hinten wieder verschwinden"). Bei ~9s
+    // Lauf sterben frueh gemalte Blobs (LIFE ~4.6s), waehrend der Punkt weiter-
+    // zieht -> wandernde Enthuellung, die hinten sanft ausblendet, kein Sprung.
+    const START=performance.now(), DUR=9000;
     let prev={x:pts[0][0],y:pts[0][1]};
     function step(now){
       const t=(now-START)/DUR;
@@ -846,7 +850,10 @@
       const autoLoop=()=>{
         if(!sceneMain.isConnected){ return; }
         if(painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.6){ runAuto(autobtn); }
-        setTimeout(autoLoop,7000);
+        // Haeufiger pruefen als der ~9s-Lauf dauert -> nach Lauf-Ende startet die
+        // Enthuellung ~1s spaeter neu (autoRunning-Sperre verhindert Ueberlappung),
+        // statt bis zu 7s Totzeit. Wirkt durchgehend/harmonisch.
+        setTimeout(autoLoop,2500);
       };
       setTimeout(autoLoop,900);
     }
