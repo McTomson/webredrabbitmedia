@@ -1,3 +1,39 @@
+# Naechste Session — Preise-Seite (Stand 2026-07-31)
+
+## UPDATE 31.07. (diese Session, aufbauend auf 30.07.)
+- **Punkt C (Talos-Hand-Fix) erledigt** (Commit `073b89f`): Hero-Wave, Stations-Wave
+  (`data-talos-gesture="wave"`) und der erste Doppelklick-Zyklus-Eintrag in
+  `TalosCompanionStage.tsx` riefen `triggerGreeting("primary")` — die von Thomas
+  am 25.07. als falsche Seite markierte Hand. `talosMotion.ts` dokumentiert
+  "primary" explizit als "bit-identisch zum bisherigen (falschen) Verhalten";
+  die korrigierte "other"-Armkette existierte seit 22.-24.07. im Modell, war
+  aber nie als Default verdrahtet. Jetzt: wave/Hero -> "other" (korrigiert),
+  wave2/letzter Zyklus-Eintrag -> "primary" (alte Hand bleibt erreichbar).
+  "Einmal winken, danach nur bei Klick" war bereits korrekt implementiert
+  (gestureDone/waved-Flags) — nur die Hand war falsch.
+- **Blog-Preis-Fragen geklaert + committet** (Commit `6fe2814`, drei Rueckfragen
+  an Thomas beantwortet): website-10-seiten-kosten.mdx + herold-webseite-vs-
+  agentur-vergleich.mdx 1.990 -> **2.850** (10-Seiten/Boutique = Business-Umfang,
+  nicht Starter); `HeroldComparisonTable.tsx` hatte denselben Vergleich noch mit
+  dem NOCH AELTEREN 790-Preis (vom 30.07.-Update uebersehen, da .tsx statt .mdx) —
+  auf 2.850 nachgezogen. Die Ersparnis-Ableitung war bei 2.850 gegenueber Herolds
+  guenstigstem Tarif (65 EUR/Monat) nach 3 Jahren rechnerisch NEGATIV (-510 EUR) —
+  Horizont auf 4 Jahre gestreckt (Thomas-Entscheidung), Zeile jetzt "Kosten nach
+  48 Monaten (4 Jahre)", Ersparnis "270-3.870 EUR". was-kostet-eine-website.mdx
+  ROI-Beispiel 2.500 -> **1.250** (Starter, generisches Einsteiger-Beispiel),
+  Break-Even-Punkt neu gerechnet (6. -> 3. Neukunde).
+- Beide Commits: nur eigene Dateien gestaged (FAQ-Seite + Talos-Choreo-WIP
+  anderer Straenge weiterhin unberuehrt, siehe Blocker unten), lokal per
+  ESLint + curl (HTTP 200 auf allen betroffenen Artikeln) verifiziert.
+- Modell-Frage (Thomas, nicht projektbezogen): `/model` zeigt nur Opus 5, kein
+  aelteres Opus mehr im Picker — normales Verhalten (Picker zeigt nur aktuelle
+  Generation); `settings.json`-Feld `"model"` existiert nachweislich und
+  akzeptiert einen String (aktuell `"sonnet"`), Aelteres darueber pinnen ist
+  ungetestet. Empfehlung: Sonnet 5 + `/effort medium` fuers Tokensparen statt
+  einer alten Opus-Version hinterherzujagen.
+
+---
+
 # Naechste Session — Preise-Seite (Stand 2026-07-30, vormittags)
 
 ## Arbeitsregeln (verbindlich)
@@ -45,10 +81,8 @@
    unveraendert gelassen. Falls sich der auch aendert: `PREIS`-Map in
    `PreiseMatrix.tsx`, JSON-LD-Offer in `page.tsx`, ggf. `PreiseFaq.tsx`-Antwort
    "Was bedeutet 'ab 4.900' beim Premium-Paket?" anpassen.
-2. **Blog-Artikel-Preis-Fragen aus der Tipps-Session** (siehe
-   `NEXT_SESSION_tipps.md` UPDATE-Block): 1.990-Nennungen in
-   `website-10-seiten-kosten.mdx` + `herold-webseite-vs-agentur-vergleich.mdx`,
-   ROI-Beispiel 2.500 in `was-kostet-eine-website.mdx:103`.
+2. ~~Blog-Artikel-Preis-Fragen aus der Tipps-Session~~ — **ERLEDIGT 31.07.**
+   (Commit `6fe2814`, siehe UPDATE-Block oben).
 3. **FAQ-Seite** (`app/relaunch-preview/faq/page.tsx`,
    `components/subpages/faq-demo/demo.body.html`) nennt noch "Starter ab 950,
    Business ab 2.900" — NICHT angefasst, weil eine ANDERE parallele Session
@@ -78,9 +112,7 @@ Die seitwaerts-Fahrt (TalosTalenteFahrt.tsx) zeigt aktuell 7 Faehigkeits-Slides 
 Aktuell vergleicht MehrwertRechner.tsx nur gegen "klassisch extern". Neu: zwei Vergleiche neben unserem Paket-Preis: (1) was EIGENES Personal brutto kostet (inkl. AT-Lohnnebenkosten ~+30%), (2) was Agenturen/Dienste verlangen (Anker aus dem Research schon belegt).
 - **ZUERST die Brutto-Zahlen an echten AT-Gehaltsdaten verifizieren** (nicht erfinden — Ehrlichkeits-Regel). Team-Summe vs. Personal-Summe ehrlich framen (ein Modul != ein ganzer Mitarbeiter).
 
-### C) Talos-Figur-Fixes
-- Winkt mit der FALSCHEN Hand -> andere Hand.
-- **Einmal** winken beim Ankommen reicht, danach NUR bei Klick (aktuell offenbar mehr). Gesten-Logik in TalosCompanionStage.tsx (GESTURES-Array, data-talos-gesture, Doppelklick-Zyklus).
+### C) Talos-Figur-Fixes — ERLEDIGT 31.07. (Commit `073b89f`, siehe UPDATE-Block oben)
 
 ### Kleinere offene Copy-/Brand-Punkte (aus review-it Security, 25.07.)
 - SchlussCta "ohne Risiko" — starke Aussage, gedeckt; bei Bindungs-Einfuehrung neu pruefen.
