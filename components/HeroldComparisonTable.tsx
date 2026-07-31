@@ -6,7 +6,7 @@ const heroldComparisonData = [
     {
         criterion: 'Einmalige Kosten',
         herold: '0 € (oft Einrichtungsgebühr 200-500 €)',
-        agency: 'ab 790 €'
+        agency: 'ab 2.850 €'
     },
     {
         criterion: 'Monatliche Kosten',
@@ -16,12 +16,12 @@ const heroldComparisonData = [
     {
         criterion: 'Kosten nach 12 Monaten',
         herold: '780-1.680 € + Einrichtung',
-        agency: '790 € (einmalig)'
+        agency: '2.850 € (einmalig)'
     },
     {
-        criterion: 'Kosten nach 36 Monaten',
-        herold: '2.340-5.040 €',
-        agency: '790 € (einmalig)'
+        criterion: 'Kosten nach 48 Monaten (4 Jahre)',
+        herold: '3.120-6.720 €',
+        agency: '2.850 € (einmalig)'
     },
     {
         criterion: 'Eigentum am Code',
@@ -118,8 +118,8 @@ export default function HeroldComparisonTable() {
                 title="Detaillierter Kosten- und Leistungsvergleich"
             />
             <p style={{ marginTop: '1.5rem', fontWeight: 600, fontSize: '1.1rem' }}>
-                <strong>Langzeit-Ersparnis:</strong> Nach 3 Jahren sparen Sie mit Red Rabbit Media durchschnittlich{' '}
-                <span style={{ color: '#16a34a', fontWeight: 700 }}>1.550-4.250 €</span> gegenüber Herold –
+                <strong>Langzeit-Ersparnis:</strong> Nach 4 Jahren sparen Sie mit Red Rabbit Media durchschnittlich{' '}
+                <span style={{ color: '#16a34a', fontWeight: 700 }}>270-3.870 €</span> gegenüber Herold –
                 und besitzen eine technisch überlegene Website ohne monatliche Kosten.
             </p>
         </>
