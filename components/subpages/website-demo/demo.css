@@ -98,9 +98,27 @@
     will-change:transform,opacity;
   }
   .masksvg{position:absolute;width:0;height:0;pointer-events:none}
-  .main-sticky[data-active="1"] .layer-deck{
+  /* Desktop-Pfad: der Reveal laeuft ueber die SVG-Maske auf dem Deck. Greift NUR,
+     wenn NICHT im Canvas-Modus (iOS-sicherer Ersatz-Pfad, siehe .canvas-reveal). */
+  .main-sticky:not(.canvas-reveal)[data-active="1"] .layer-deck{
     -webkit-mask:var(--mask);mask:var(--mask);
     -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  }
+
+  /* ---- iOS-sicherer Reveal-Pfad (Mobile/Tablet, Canvas-2D) ----
+     iOS Safari rendert die Kette CSS-mask -> SVG-<mask> -> SVG-Gooey-Filter NICHT
+     (roter Punkt schwirrt, nichts wird aufgedeckt, dunkler Balken). Deshalb schaltet
+     die Engine per innerWidth<=1024 in den Canvas-Modus: .main-sticky bekommt die
+     Klasse .canvas-reveal, die SVG-Maske wird deaktiviert und ein <canvas.reveal-canvas>
+     uebernimmt das off-white Deck. Das Deck selbst wird transparent (nur der Titel
+     bleibt), damit der Canvas das Aufdecken (destination-out) allein steuert. */
+  .reveal-canvas{
+    position:absolute;inset:0;z-index:1;   /* ueber layer-base(z1, navy), unter layer-deck(z2, Titel) */
+    pointer-events:none;display:block;
+  }
+  .main-sticky.canvas-reveal .layer-deck{
+    background:transparent;                 /* Canvas ist jetzt die off-white Deckflaeche */
+    -webkit-mask:none!important;mask:none!important;
   }
   .autobtn{
     position:absolute;right:1rem;bottom:calc(16.5vw + 1.6rem);z-index:7;pointer-events:auto;

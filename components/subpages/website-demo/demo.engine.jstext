@@ -42,6 +42,22 @@
   const textCol=sticky.querySelector(".text-col");
   const blobsGroup=sticky.querySelector(".blobs");
 
+  /* ---- iOS-sicherer Reveal: Canvas-2D statt SVG-Maske (Mobile/Tablet) ----
+     iOS Safari rendert die CSS-mask -> SVG-<mask> -> SVG-Gooey-Filter-Kette nicht.
+     Bei schmalem Viewport (<=CANVAS_BP) uebernimmt ein <canvas> das off-white Deck
+     und erasiert per globalCompositeOperation="destination-out" weiche Loecher an den
+     Pinsel-Positionen -> darunter scheint layer-base (navy + Satz) durch. Kein SVG-
+     Filter (ctx.filter ist auf iOS unzuverlaessig) -> weiche Radial-Gradients bilden
+     den Gooey-Look nach. Der Breiten-Trigger ist im Emulator verifizierbar (Touch-
+     Media-Queries sind es nicht, siehe Lesson). CANVAS_BP per localStorage
+     ueberschreibbar, damit sich der Canvas-Pfad auf jedem Geraet/Emulator erzwingen
+     laesst (rrCanvasRevealBP), sonst 1024. */
+  const CANVAS_BP=(function(){ const v=parseInt((window.localStorage&&localStorage.getItem("rrCanvasRevealBP"))||"",10); return Number.isFinite(v)&&v>0?v:1024; })();
+  let useCanvas=false;          /* endgueltig in boot() gesetzt (nach reduced-Guard) */
+  let revealCanvas=null, revealCtx=null, revealDpr=1, revealW=0, revealH=0;
+  let revealFade=0;             /* 0 = voll aufdeckbar, 1 = Loecher geheilt (aus applyMain) */
+  const OFFWHITE="#f4f4f2";     /* == --offwhite; Deckflaeche des Canvas */
+
   const letterEls=[...htitle.querySelectorAll(".ltr:not(.sp)")];
   letterEls.forEach((el,k)=>{
     const ang=k*GOLDEN+0.7;
@@ -69,6 +85,15 @@
     if(rect){ rect.setAttribute("width",r.width); rect.setAttribute("height",r.height); }
     const pr=document.getElementById("paintRect");
     if(pr){ pr.setAttribute("width",r.width); pr.setAttribute("height",Math.max(60,paintMaxY)); }
+    if(revealCanvas){
+      revealDpr=Math.min(window.devicePixelRatio||1,2);   /* 2 reicht, spart Fill-Rate auf Handys */
+      revealW=r.width; revealH=r.height;
+      revealCanvas.width=Math.round(r.width*revealDpr);
+      revealCanvas.height=Math.round(r.height*revealDpr);
+      revealCanvas.style.width=r.width+"px";
+      revealCanvas.style.height=r.height+"px";
+      if(revealCtx) revealCtx.setTransform(revealDpr,0,0,revealDpr,0,0);   /* in CSS-px zeichnen */
+    }
   }
 
   /* ---- Ü-Punkte: Umlaut-Geometrie EINMAL per Canvas messen (Punkt-Groesse, vertikale
@@ -228,15 +253,67 @@
     const GROW=430, HOLD=2500;
     const LIFE=GROW+HOLD+1700;
 
+    /* Canvas-Modus: <canvas> als off-white Deck zwischen layer-base(navy) und
+       layer-deck(Titel) einhaengen. getContext scheitert -> zurueck auf SVG-Pfad. */
+    if(useCanvas){
+      revealCanvas=document.createElement("canvas");
+      revealCanvas.className="reveal-canvas";
+      revealCanvas.setAttribute("aria-hidden","true");
+      const deck=sticky.querySelector(".layer-deck");
+      sticky.insertBefore(revealCanvas,deck);   /* DOM: layer-base, canvas, layer-deck */
+      revealCtx=revealCanvas.getContext("2d");
+      if(!revealCtx){
+        revealCanvas.remove(); revealCanvas=null; useCanvas=false;
+        sticky.classList.remove("canvas-reveal");   /* SVG-Maske greift wieder (Best effort) */
+      } else {
+        fitMask();
+        /* sofort voll off-white -> kein navy-Flash vor dem ersten drawReveal */
+        revealCtx.setTransform(revealDpr,0,0,revealDpr,0,0);
+        revealCtx.fillStyle=OFFWHITE; revealCtx.fillRect(0,0,revealW,revealH);
+      }
+    }
+    /* Deck (off-white) rahmenfrei erasieren: full-fill off-white, dann an den
+       Pinsel-Positionen weiche Loecher (destination-out) -> layer-base scheint durch.
+       revealFade (aus applyMain) heilt die Loecher beim Wegscrollen wie die SVG-Maske. */
+    function drawReveal(){
+      const ctx=revealCtx; if(!ctx) return;
+      ctx.globalCompositeOperation="source-over";
+      ctx.clearRect(0,0,revealW,revealH);
+      ctx.fillStyle=OFFWHITE;
+      ctx.fillRect(0,0,revealW,revealH);
+      const k=1-revealFade;
+      if(k>0.002 && particles.length){
+        ctx.globalCompositeOperation="destination-out";
+        const a0=Math.min(1,k);
+        for(let i=0;i<particles.length;i++){
+          const p=particles[i];
+          const r=p.r*1.35;            /* etwas groesser -> Loecher verschmelzen (Gooey) */
+          if(r<=0.5) continue;
+          const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
+          g.addColorStop(0,"rgba(0,0,0,"+a0+")");
+          g.addColorStop(0.55,"rgba(0,0,0,"+(a0*0.9)+")");
+          g.addColorStop(1,"rgba(0,0,0,0)");
+          ctx.fillStyle=g;
+          ctx.beginPath(); ctx.arc(p.x,p.y,r,0,6.2832); ctx.fill();
+        }
+        ctx.globalCompositeOperation="source-over";
+      }
+    }
+
     class Particle{
       constructor(x,y,base){
+        this.x=x; this.y=y;                 /* fixe Position (fuer Canvas-Erase) */
         this.base=Math.max(30,Math.min(base,92));
         this.born=performance.now();
         this.life=LIFE+Math.random()*400;
-        this.el=document.createElementNS(SVGNS,"circle");
-        this.el.setAttribute("cx",x);this.el.setAttribute("cy",y);
-        this.el.setAttribute("r",DOTR);this.el.setAttribute("fill","#000");
-        group.appendChild(this.el);
+        this.r=DOTR;
+        /* SVG-Kreis nur im Desktop-Masken-Pfad; im Canvas-Modus zeichnet drawReveal(). */
+        if(!useCanvas){
+          this.el=document.createElementNS(SVGNS,"circle");
+          this.el.setAttribute("cx",x);this.el.setAttribute("cy",y);
+          this.el.setAttribute("r",DOTR);this.el.setAttribute("fill","#000");
+          group.appendChild(this.el);
+        }
       }
       update(now){
         const age=now-this.born;
@@ -245,10 +322,11 @@
         if(age<GROW){ env=Math.pow(age/GROW,0.6); }
         else if(age<GROW+HOLD){ env=1+0.1*((age-GROW)/HOLD); }
         else{ env=1.1*Math.pow(1-(age-GROW-HOLD)/(this.life-GROW-HOLD),1.7); }
-        this.el.setAttribute("r",(DOTR+(this.base-DOTR)*env).toFixed(1));
+        this.r=DOTR+(this.base-DOTR)*env;
+        if(this.el) this.el.setAttribute("r",this.r.toFixed(1));
         return true;
       }
-      kill(){ this.el.remove(); }
+      kill(){ if(this.el) this.el.remove(); }
     }
     function setXY(e){
       if(!painting) return;
@@ -282,6 +360,10 @@
       for(let i=particles.length-1;i>=0;i--){
         if(!particles[i].update(now)){ particles[i].kill(); particles.splice(i,1); }
       }
+      /* Nur zeichnen, solange es was aufzudecken/heilen gibt (revealFade<1) oder noch
+         Partikel leben. Danach steht der Canvas solide off-white -> spart auf Handys
+         den ~4-Mpx-Full-Fill pro Frame ueber die ganze 1600vh-Strecke. */
+      if(useCanvas && (revealFade<1 || particles.length)) drawReveal();
       requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
@@ -296,6 +378,7 @@
       if(mouse.sy<=paintMaxY){ particles.push(new Particle(mouse.sx,mouse.sy,speed*1.5+34)); }
     };
     heroFeedEnd=()=>{ mouse.has=false; dot.hide(); };
+    window.__revealDiag=()=>({n:particles.length, fade:revealFade, painting, useCanvas, autoRunning});
   }
 
   let autoRunning=false;
@@ -486,6 +569,7 @@
     // Reveal-Fade + Interaktion (viewport-fix; faded beim Verlassen des Heros)
     const fade=clamp((Pm-P_REVEAL)/0.07,0,1);
     blobsGroup.setAttribute("opacity",(1-fade).toFixed(3));
+    revealFade=fade;   /* Canvas-Pfad: gleiche Heilung der Loecher beim Wegscrollen */
     const nowPainting=Pm<P_REVEAL+0.01;
     if(nowPainting!==lastPainting){
       lastPainting=nowPainting;
@@ -734,6 +818,10 @@
       return;
     }
 
+    // iOS-sicherer Reveal: schmaler Viewport (<=CANVAS_BP) -> Canvas-2D statt SVG-Maske.
+    // Klasse steuert die CSS-Umschaltung (SVG-Maske aus, Deck transparent).
+    useCanvas = window.innerWidth <= CANVAS_BP;
+    if(useCanvas) sticky.classList.add("canvas-reveal");
     initFluid();
     if(autobtn) autobtn.addEventListener("click",()=>runAuto(autobtn));
     // Touch-Geraete koennen nicht hover-malen -> Auto-Play spielt die Mal-
