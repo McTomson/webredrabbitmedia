@@ -1,76 +1,73 @@
-# Naechste Session — Website-Hero Canvas-Reveal (2026-07-31)
+# Naechste Session — Website-Hero Canvas-Reveal (Stand 2026-07-31 abends)
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
 - NIE raten — immer verifizieren (Code/Browser/Docs). Bei Unsicherheit fragen oder fail-closed.
-- Erst Plan (TodoWrite), dann ausfuehren. Laufend im Browser testen.
+- Erst Plan, dann ausfuehren. Laufend im Browser testen.
 - Autonom, voller Browser-Zugriff. commit/push/deploy zwischen Schritten (Thomas will das).
 - Nichts als "fertig" melden ohne verifiziertes Ergebnis.
 
-## Kontext / Entschiedene Richtung
-Mobile/Tablet-Ueberarbeitung der Relaunch-Unterseiten, Start mit `/leistungen/website`
-(Host v2.redrabbit.media, lokal `/relaunch-preview/leistungen/website`, dev :9000).
-Thomas' Grundsatz: Effekte behalten + fuer Mobile robust machen. NUR Mobile/Tablet (<=1024px),
-Desktop unangetastet.
+## ERLEDIGT diese Session: Canvas-2D-Reveal (Commit 9be8372, gepusht)
+Der Hero-Mal-Reveal von `/leistungen/website` laeuft auf Mobile/Tablet (innerWidth<=1024)
+jetzt ueber **Canvas-2D** statt SVG-Maske (iOS-Fix, Thomas' Option 3). Desktop (>1024)
+bleibt bei der SVG-Maske.
 
-## DER OFFENE HAUPT-TASK: Hero-Mal-Reveal auf Canvas umbauen (Thomas: Option 3)
-**Diagnose (verifiziert):** Der Hero (`components/subpages/website-demo/`) deckt beim "Malen"
-eine navy-Ebene mit Satz hinter einem off-white Deck auf. Technik = CSS `mask:url(#mask-v1)`
-auf `.layer-deck` (demo.css:101-104) -> SVG-`<mask id="mask-v1">` mit `<g class="blobs">`
-+ Gooey-Filter (`feGaussianBlur`+`feColorMatrix`, demo.body.html:49-62). Blobs sind SVG-
-`<circle>`, die die Engine live hinzufuegt (demo.engine.jstext:236-239, Particle-Klasse).
-**iOS Safari rendert diese CSS-Maske->SVG-Maske->SVG-Filter-Kette NICHT** -> auf Thomas'
-Geraet: roter Punkt schwirrt (JS/Canvas laeuft), aber NICHTS wird aufgedeckt + ein dunkler
-Balken unten (navy-Ebene scheint durch, weil die kaputte Maske das Deck nicht abdeckt).
-Im Emulator (Chrome) rendert die SVG-Maske sauber -> NICHT reproduzierbar im Emulator.
-WICHTIG: Canvas-2D funktioniert auf Thomas' Geraet (der rote Punkt = Canvas). Der Fluid-Sim
-nutzt schon `getContext("2d")` (demo.engine.jstext:90,178) -> Canvas ist der iOS-sichere Weg.
+**Wie:** Die Engine setzt bei schmalem Viewport die Klasse `.canvas-reveal` auf
+`.main-sticky`. CSS reagiert (eine Wahrheitsquelle): SVG-Maske aus, `.layer-deck`
+Hintergrund transparent. Ein `<canvas.reveal-canvas>` (z-index 1, zwischen layer-base
+navy und layer-deck Titel) fuellt off-white und erasiert per
+`globalCompositeOperation="destination-out"` weiche Radial-Gradient-Loecher an den
+Pinsel-Positionen -> layer-base (navy + Satz "Schoen kann fast jeder...") scheint durch.
+KEIN `ctx.filter` (auf iOS unzuverlaessig) -> Radial-Gradients bilden den Gooey-Look nach.
+`revealFade` (aus applyMain) heilt die Loecher beim Wegscrollen exakt wie die SVG-Maske.
 
-**Thomas' Entscheidung (Option 3, nur Mobile/Tablet <=1024px):**
-1. Reveal auf Mobile auf **reines Canvas-2D** umbauen (Blobs als Canvas statt SVG-Maske).
-   - Die Particle-Radien/Positionen existieren schon (demo.engine.jstext:231-287 loop, heroFeed:289).
-   - Ansatz: ein `<canvas>` ueber `.layer-base` (navy+Satz), das das off-white Deck darstellt
-     und per `globalCompositeOperation="destination-out"` an den Particle-Positionen Loecher
-     erasiert (mit Blur fuer Gooey). Der Hero-Titel "Website" MUSS ueber dem Canvas bleiben
-     (sonst wird er wegerasiert) — Titel-Kopplung an `.layer-deck` beachten.
-   - Gooey-Look: `ctx.filter="blur(...)"` beim Erase ODER 2-Pass (alpha-threshold).
-   - Auto-Animation laeuft schon (runAuto, per innerWidth<=1024 getriggert, demo.engine.jstext
-     ~739) -> Punkt faehrt durch, deckt auf = "Film". Finger-Malen via vorhandene touch-Handler
-     (demo.engine.jstext:266-269) soll dann auch gehen (Thomas-Wunsch).
-2. **Automatischer Video-Fallback:** Falls Canvas auf dem Geraet wider Erwarten nicht laeuft,
-   auf ein autoplay/muted/playsinline-Video umschalten. (Video ggf. aus der Desktop-Animation
-   aufnehmen — ffmpeg vorhanden; agent-browser Frames -> mp4/webm.)
-3. Desktop (>1024px) BLEIBT bei der SVG-Maske (funktioniert dort). Alles hinter `innerWidth<=1024`.
+**Verifiziert (Emulator + Unit):**
+- Erase-Technik: destination-out radial -> Pixel von off-white(244,244,242,255) auf (0,0,0,0). OK.
+- Layering: mit ausgeblendetem Canvas erscheint der navy layer-base + Satz voll & korrekt
+  positioniert, KEIN dunkler Balken. OK.
+- Desktop-Regression: ohne Klasse bleibt `mask:url(#mask-v1)` aktiv, Deck off-white. OK.
+- Graceful degrade: getContext scheitert -> Klasse weg, SVG-Pfad greift wieder.
 
-**Verifizierbar im Emulator:** Canvas-Rendering + Auto-Animation bei 390px (Breiten-getriggert).
-NICHT im Emulator pruefbar: echtes iOS-Verhalten -> Thomas testet am Geraet (Screenshot/Video-Loop).
+**NICHT im Emulator verifizierbar (Lesson):** die ANIMIERTE Bewegung. Der Automations-Tab
+laeuft mit `visibilityState:"hidden"` -> `requestAnimationFrame` pausiert -> Partikel
+wachsen nie. Auf einem SICHTBAREN Geraet laeuft rAF normal. Debug am Geraet:
+`window.__revealDiag()` (Partikel-Zahl/fade/painting/useCanvas) in der Safari-Konsole.
+Canvas-Pfad auf beliebigem Geraet/Emulator erzwingbar: `localStorage.setItem('rrCanvasRevealBP','2000')`
++ Reload (sonst Schwelle 1024). Zum Zuruecksetzen `removeItem`.
 
-## Schon ERLEDIGT diese Session (committet + live auf v2)
-- 7bbfefd Mobile-Feinschliff Morph/CasePanels/KundenSagen (Band, Chart-Zentrierung, Burger-Fokus,
-  CTA "Alle Projekte", Problem/Loesung-Body unten, KundenSagen-Pfeile ohne Kreise).
-- cd3ed62 Hero reveal-msg mobil nicht mehr abgeschnitten (demo.css @media<=640px).
-- 9856f3d + 09c1248 Hero-Auto-Malanimation-Trigger robust (Touch-Erkennung + innerWidth<=1024).
-  -> Auto-Play FEUERT jetzt (Punkt schwirrt), aber Reveal rendert nicht auf iOS = der offene Task.
+## OFFEN — ZUERST: Geraete-Verifikation mit Thomas
+Thomas soll auf seinem iPhone `/leistungen/website` (v2.redrabbit.media) oeffnen und
+Screenshot/Video schicken: Deckt die Auto-Malanimation jetzt den Satz auf? Ist der dunkle
+Balken weg? Malt der Finger? Wenn JA -> fertig. Wenn NEIN -> `window.__revealDiag()`-Ausgabe
+holen und den **Video-Fallback** bauen (Option 3 Punkt 2, siehe unten). NICHT vorab bauen.
 
-## Danach (weitere "grundlegende Dinge", Thomas bestaetigt)
+### Video-Fallback (nur falls Canvas am Geraet scheitert — bewusst zurueckgestellt)
+Der Canvas-Pfad nutzt nur universell iOS-sichere APIs (Canvas-2D, destination-out,
+Radial-Gradient) -> sollte laufen. Falls doch nicht: autoplay/muted/playsinline-Video der
+Desktop-Animation aufnehmen (agent-browser Frames -> ffmpeg -> webm/mp4) und im Canvas-Modus
+statt/ueber dem Canvas einblenden. Umschalt-Hook: an die Stelle, wo getContext scheitert,
+ODER eine leichte "hat der Canvas je erasiert?"-Pruefung.
+
+## DANACH (weitere "grundlegende Dinge", Thomas bestaetigt)
 - **CSS-Scroll-Snap** pro Sektion, Mobile/Tablet: fester Stopp am ANFANG jeder Sektion
   (`scroll-snap-type:y mandatory` + `scroll-snap-align:start` + `scroll-snap-stop:always`),
   lange Sektionen frei scrollbar. Desktop-Snap ist Rad-basiert (ScrollExperience.tsx onWheel)
-  und greift auf Touch NICHT -> CSS-Scroll-Snap ist der Touch-Weg. Effekt-Sektionen (Ablauf/
-  Fundament/DreiStufen) behalten ihre Animation, Snap faengt nur den Anfang.
-- **Vollbild-Sektionen** auf Mobile: aktuell schalten die einzigen 100vh-Sektionen
-  (ReferenzenTeaser.tsx:31-38, SiteClosing.tsx:44-62) Vollhoehe unter 820px AB; Content-Sektionen
-  haben nie 100vh (nur `--rr-section-y`). Hebel dort.
+  und greift auf Touch NICHT -> CSS-Scroll-Snap ist der Touch-Weg. Effekt-Sektionen behalten
+  ihre Animation, Snap faengt nur den Anfang.
+- **Vollbild-Sektionen** auf Mobile: aktuell schalten nur ReferenzenTeaser.tsx / SiteClosing.tsx
+  Vollhoehe unter 820px; Content-Sektionen haben nie 100vh. Hebel dort.
 - Dann auf weitere Seiten + Homepage ausrollen (Homepage auch = Thomas bestaetigt).
 
 ## Relevante Dateien
-- `components/subpages/website-demo/demo.engine.jstext` (Fluid/Reveal-Engine, ~861 Z.)
-- `components/subpages/website-demo/demo.css` (Hero-CSS, Masken-Anwendung :101-104)
-- `components/subpages/website-demo/demo.body.html` (Struktur + SVG-Maske :49-62)
-- `components/subpages/WebsiteDemoClient.tsx` (React-Wrapper, portalt MorphSculpture)
-- `app/relaunch-preview/leistungen/website/page.tsx` (Sektions-Reihenfolge)
-- Snap: `components/relaunch/ScrollExperience.tsx`, `lib/relaunch/scroll-standard.ts` (MOBILE_BREAKPOINT=820)
+- `components/subpages/website-demo/demo.engine.jstext` — Canvas-Reveal: CANVAS_BP/useCanvas
+  (~Z.45), fitMask Canvas-Sizing (~Z.86), initFluid Canvas+drawReveal (~Z.256), Particle-Umbau,
+  loop drawReveal-Call, applyMain revealFade (~Z.571), boot useCanvas+Klasse (~Z.821).
+- `components/subpages/website-demo/demo.css` — `.reveal-canvas`, `.canvas-reveal`-Regeln,
+  Desktop-Maske jetzt `:not(.canvas-reveal)` gegated (~Z.100).
+- `components/subpages/WebsiteDemoClient.tsx` — React-Wrapper (unveraendert).
+- `app/relaunch-preview/leistungen/website/page.tsx` — liest die 3 demo-Dateien pro Request.
 
 ## Deploy
-`vercel deploy` -> `vercel inspect <url>` bis Ready -> `vercel alias set <url> v2.redrabbit.media`.
-NUR eigene Dateien committen (fremde WIP im Tree). Post-commit-Hook pusht automatisch.
+Push triggert Preview-Build (git-relaunch-Alias). v2.redrabbit.media ist MANUELLER Alias ->
+nach "Ready": `vercel alias set <ready-deploy-url> v2.redrabbit.media`. NUR eigene Dateien
+committen (fremde WIP im Tree: faq/page.tsx, SiteClosing.tsx, faq-demo/demo.body.html u.a.).
