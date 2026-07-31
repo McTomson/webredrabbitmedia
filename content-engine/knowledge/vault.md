@@ -2318,3 +2318,39 @@ quelle: https://www.corewebvitals.io/core-web-vitals/wordpress-guide
 quelle_name: CoreWebVitals.io - Core Web Vitals for WordPress: Optimization Guide
 geprueft_am: 2026-07-30
 recheck_nach: 2027-01-26
+
+## t56-2026-07-31-258
+cluster: 2
+keywords: beeinflusst, webhosting, ladegeschwindigkeit, einer, seite
+aussage: Time to First Byte (TTFB) misst die Zeit vom Start der Navigation bis zum Eintreffen des ersten Response-Bytes (DNS-Lookup, TCP-/TLS-Handshake, Serververarbeitung, Netzwerk-Laufzeit) und damit direkt, wie schnell das Webhosting antwortet. Google stuft einen TTFB von 0,8 Sekunden oder weniger als 'gut' ein, 0,8-1,8 Sekunden als verbesserungswuerdig und ueber 1,8 Sekunden als schlecht.
+quelle: https://web.dev/articles/ttfb
+quelle_name: web.dev (Google) - Time to First Byte (TTFB)
+geprueft_am: 2026-07-31
+recheck_nach: 2027-01-27
+
+## t56-2026-07-31-259
+cluster: 2
+keywords: beeinflusst, webhosting, ladegeschwindigkeit, einer, seite
+aussage: Google selbst schreibt in seinem offiziellen TTFB-Optimierungsleitfaden, dass Shared Hosting generell langsamer ist als leistungsfaehigere Hosting-Formen, und dass Nutzer, die geografisch weit vom Ursprungsserver entfernt sind, unabhaengig von anderen Optimierungen einen hohen TTFB erleben - ein CDN mit Servern naeher am Nutzer senkt die Serverantwortzeit spuerbar.
+quelle: https://web.dev/articles/optimize-ttfb
+quelle_name: web.dev (Google) - Optimize Time to First Byte
+geprueft_am: 2026-07-31
+recheck_nach: 2027-01-27
+
+## t56-2026-07-31-260
+cluster: 2
+keywords: beeinflusst, webhosting, ladegeschwindigkeit, einer, seite
+aussage: Core Web Vitals (u.a. Largest Contentful Paint, das massgeblich von der Serverantwortzeit/Hosting abhaengt) werden von Googles Ranking-Systemen fuer die Google-Suche herangezogen; Google empfiehlt einen LCP von unter 2,5 Sekunden und einen INP (Interaktivitaet) von unter 200 Millisekunden fuer eine gute Nutzererfahrung.
+quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
+quelle_name: Google Search Central - Core Web Vitals und Google-Suchergebnisse
+geprueft_am: 2026-07-31
+recheck_nach: 2027-01-27
+
+## t56-2026-07-31-261
+cluster: 2
+keywords: beeinflusst, webhosting, ladegeschwindigkeit, einer, seite
+aussage: In Oesterreich liegen die monatlichen Kosten fuer solides Webhosting fuer eine typische KMU-Website meist zwischen rund 5 und 30 Euro (z.B. World4You Paket 'Grow' 7,00 Euro/Monat inkl. USt, easyname 'Medium' 7,90 Euro/Monat inkl. USt) - der Hosting-Tarif selbst ist damit meist kein grosser Kostentreiber, aber Billig-/Massen-Shared-Hosting am unteren Preisende korreliert typischerweise mit den langsameren Antwortzeiten, vor die Google warnt.
+quelle: https://www.hosttest.at/vs/easyname-world4you
+quelle_name: hosttest.at - easyname vs. World4You Vergleich
+geprueft_am: 2026-07-31
+recheck_nach: 2027-01-27
