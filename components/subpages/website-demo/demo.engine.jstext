@@ -736,13 +736,24 @@
 
     initFluid();
     if(autobtn) autobtn.addEventListener("click",()=>runAuto(autobtn));
-    if(noHover){
+    // Touch-Geraete koennen nicht hover-malen -> Auto-Play spielt die Mal-
+    // animation selbst ab. WICHTIG (Thomas 31.07., Bild echtes Geraet: roter
+    // Pinsel-Punkt da, aber NICHTS gemalt, kein Satz): sich NICHT nur auf
+    // matchMedia("(hover:none)") verlassen -> manche mobile Browser (und der
+    // Emulator) melden faelschlich hover:hover, dann wurde der Auto-Play nie
+    // eingerichtet. Robuste Touch-Erkennung, frueher + oefter ausloesen,
+    // Scroll-Gate gelockert.
+    const isTouch = noHover
+      || window.matchMedia("(pointer: coarse)").matches
+      || (navigator.maxTouchPoints || 0) > 0
+      || "ontouchstart" in window;
+    if(isTouch){
       const autoLoop=()=>{
         if(!sceneMain.isConnected){ return; }
-        if(painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.3){ runAuto(autobtn); }
-        setTimeout(autoLoop,9000);
+        if(painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.6){ runAuto(autobtn); }
+        setTimeout(autoLoop,7000);
       };
-      setTimeout(autoLoop,1400);
+      setTimeout(autoLoop,900);
     }
 
     renderHead(0,0);
