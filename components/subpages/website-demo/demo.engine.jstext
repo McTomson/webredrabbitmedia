@@ -743,7 +743,13 @@
     // Emulator) melden faelschlich hover:hover, dann wurde der Auto-Play nie
     // eingerichtet. Robuste Touch-Erkennung, frueher + oefter ausloesen,
     // Scroll-Gate gelockert.
-    const isTouch = noHover
+    // Ausloeser fuer den Auto-Play: NICHT nur Touch-Erkennung (manche mobile
+    // Browser + der Emulator melden faelschlich hover:hover) -> zusaetzlich an
+    // die VIEWPORT-BREITE koppeln. Schmal (<=1024px) = mobil/tablet, dort soll
+    // die Mal-Animation IMMER von selbst laufen. Breiten-Trigger ist im
+    // Emulator verifizierbar (Touch-Media-Queries sind es nicht).
+    const isTouch = window.innerWidth <= 1024
+      || noHover
       || window.matchMedia("(pointer: coarse)").matches
       || (navigator.maxTouchPoints || 0) > 0
       || "ontouchstart" in window;
