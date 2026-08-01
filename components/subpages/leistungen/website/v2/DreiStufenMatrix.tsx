@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import Diagnose from "./Diagnose";
 import { STUFEN } from "./stufen-varianten/VarianteA";
 import {
   BUMPER_TRACK_VH_PER_WINDOW,
@@ -428,6 +429,21 @@ function StufenFahrt() {
 }
 
 export default function DreiStufenMatrix() {
+  const [quizOpen, setQuizOpen] = useState(false);
+  useEffect(() => {
+    if (!quizOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setQuizOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [quizOpen]);
+
   return (
     <section className="fmx" data-rr-snap>
       <div className="fmx__wrap fmx__wrap--intro">
@@ -440,6 +456,16 @@ export default function DreiStufenMatrix() {
           entscheidest dich für eines. Und wer klein anfängt, kann später
           jederzeit wachsen.
         </p>
+        {/* Oeffnet den Kurz-Quiz (Diagnose) als Popup. Auf Mobile ist die
+            Diagnose-Sektion ausgeblendet und kommt nur hierueber; auf Desktop
+            steht sie zusaetzlich inline weiter oben. */}
+        <button
+          type="button"
+          className="fmx__quizbtn"
+          onClick={() => setQuizOpen(true)}
+        >
+          Welches Paket passt zu mir?
+        </button>
       </div>
 
       <StufenFahrt />
@@ -453,6 +479,30 @@ export default function DreiStufenMatrix() {
           . Fixpreis, kein Stundensatz-Ratespiel.
         </p>
       </div>
+
+      {quizOpen && (
+        <div
+          className="fmx__quizoverlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Welches Paket passt zu dir?"
+          onClick={() => setQuizOpen(false)}
+        >
+          <div className="fmx__quizpanel" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="fmx__quizclose"
+              onClick={() => setQuizOpen(false)}
+              aria-label="Schließen"
+            >
+              &times;
+            </button>
+            <div className="fmx__quizbody">
+              <Diagnose />
+            </div>
+          </div>
+        </div>
+      )}
 
       <style jsx>{`
         .fmx {
@@ -490,6 +540,72 @@ export default function DreiStufenMatrix() {
         }
         .fmx__meta {
           margin-top: clamp(40px, 5vw, 64px);
+        }
+
+        /* Quiz-Button bei den Paketen (oeffnet Diagnose als Popup) */
+        .fmx__quizbtn {
+          margin-top: 6px;
+          display: inline-flex;
+          align-items: center;
+          font-family: var(--rr-font-ui);
+          font-size: 0.95rem;
+          font-weight: 700;
+          color: var(--rr-navy, #23262e);
+          background: none;
+          border: 1px solid var(--rr-navy, #23262e);
+          border-radius: 0;
+          padding: 13px 24px;
+          cursor: pointer;
+          transition: background 0.2s ease, color 0.2s ease;
+        }
+        .fmx__quizbtn:hover {
+          background: var(--rr-navy, #23262e);
+          color: #fff;
+        }
+
+        /* Popup: Overlay + Panel (Diagnose-Quiz), inline position:fixed damit
+           Fonts/Tokens aus dem .rr-Scope geerbt werden. */
+        .fmx__quizoverlay {
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+          background: rgba(20, 26, 34, 0.55);
+          -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: clamp(10px, 4vw, 40px);
+          overflow-y: auto;
+        }
+        .fmx__quizpanel {
+          position: relative;
+          width: min(760px, 100%);
+          max-height: 92vh;
+          overflow-y: auto;
+          background: #ffffff;
+          border: 1px solid rgba(28, 40, 55, 0.14);
+          box-shadow: 0 40px 90px -40px rgba(20, 26, 34, 0.6);
+        }
+        .fmx__quizclose {
+          position: absolute;
+          top: 10px;
+          right: 12px;
+          z-index: 2;
+          width: 42px;
+          height: 42px;
+          font-size: 26px;
+          line-height: 1;
+          color: var(--rr-navy, #23262e);
+          background: #ffffff;
+          border: 1px solid rgba(28, 40, 55, 0.18);
+          border-radius: 50%;
+          cursor: pointer;
+        }
+        /* Section-Padding der eingebetteten Diagnose fuer den Modal-Kontext
+           verkleinern (sonst riesige Leerraeume). */
+        .fmx__quizbody :global(.wd-diag) {
+          padding: clamp(30px, 5vw, 52px) clamp(20px, 4vw, 36px) !important;
         }
       `}</style>
     </section>
