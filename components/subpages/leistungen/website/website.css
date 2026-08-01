@@ -224,4 +224,21 @@
     flex-direction: column;
     justify-content: center;
   }
+
+  /* Stopp an jedem Paket (Thomas 01.08.: "das einzige was ich wollte war, dass
+     da ein Stop ist, mehr nicht — kein neues Design"). Rein additiv: die drei
+     Pakete (Starter/Business/Premium, .fmx__stufe) bleiben visuell unveraendert
+     und werden nur zu Snap-Zielen. scroll-snap-stop:always heisst, ein Wisch
+     kann kein Paket ueberspringen — die Seite haelt an jedem Paket-Anfang.
+     Nur diese Elemente tragen snap-align, alles andere (Hero, Ablauf,
+     Dashboard, Vollbild-Sektionen) scrollt frei weiter. Auf dem Desktop laeuft
+     stattdessen die gepinnte Stufen-Fahrt; dieser Block ist mobil-only. */
+  html {
+    scroll-snap-type: y proximity;
+  }
+  .fmx__stufe {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    scroll-margin-top: 0;
+  }
 }

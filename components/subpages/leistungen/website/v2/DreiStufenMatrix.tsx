@@ -6,11 +6,7 @@ import Diagnose from "./Diagnose";
 import { STUFEN } from "./stufen-varianten/VarianteA";
 import {
   BUMPER_TRACK_VH_PER_WINDOW,
-  MOBILE_BREAKPOINT,
-  STEP_TRACK_VH_PER_STEP,
-  TRANSITION_EASING,
-  TRANSITION_MS,
-  prefersReducedMotion,
+  isBumperDegraded,
   snapUnits,
 } from "@/lib/relaunch/scroll-standard";
 
@@ -310,72 +306,22 @@ function StufeMatrix({
 }
 
 /**
- * Kompakte Paket-Karte fuer die MOBILE Stop-Station (Thomas 01.08.: "einen
- * Stop bei jedem der Pakete, Starter/Business, wie beim Ablauf"). Bewusst ohne
- * das Accordion der Desktop-Matrix: Name + "ab"-Preis prominent, Merkmale als
- * kompaktes 2-Spalten-Titel-Raster (nur Ueberschriften, kein Aufklapp-Detail),
- * damit ein ganzes Paket garantiert in EINE Bildschirmhoehe (100svh) passt und
- * nichts intern scrollen muss. Die Merkmals-Details bleiben auf dem Desktop
- * (StufeMatrix) und ueber die Preisseite erreichbar.
- */
-function StufeMobileCard({ stufe }: { stufe: (typeof STUFEN)[number] }) {
-  const preis = PREISE[stufe.name];
-  return (
-    <div className={"fmx__mc" + (stufe.featured ? " fmx__mc--featured" : "")}>
-      {stufe.featured && <span className="fmx__mtag">MEISTGEWÄHLT</span>}
-      <div className="fmx__mhead">
-        <h3 className="fmx__mname">
-          {stufe.name}
-          {stufe.featured && <span className="fmx__mnamedot" aria-hidden="true" />}
-        </h3>
-        {preis && <p className="fmx__mpreis">{preis}</p>}
-      </div>
-      <p className="fmx__mtext">{stufe.text}</p>
-      <ul className="fmx__mlist">
-        {stufe.merkmale.map((m) => (
-          <li className="fmx__mitem" key={m.titel}>
-            <span className="fmx__mmark" aria-hidden="true" />
-            {m.titel}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-/**
  * Sticky-Fahrt: 3 Stufen als eigene 100vh-Fenster, snapUnits-Dwell wie
  * ScrollBumper/CasePanels. Track-Root traegt data-rr-snap (Einstieg rastet
  * ein) + data-rr-snap-exempt (innen regiert das eigene Dwell-System,
  * Muster components/relaunch/ScrollExperience.tsx).
- *
- * Drei Modi (Thomas 01.08.):
- *  - "static"  reduced-motion: gestapelte StufeMatrix, keine Fahrt.
- *  - "desktop" > MOBILE_BREAKPOINT: die bestehende translate-Fahrt (2-Spalten-
- *              Matrix je Fenster). UNVERAENDERT.
- *  - "mobile"  <= MOBILE_BREAKPOINT (kein reduced-motion): jede Stufe eine
- *              gepinnte Crossfade-Station (Ablauf-Mechanik: opacity-Blende
- *              statt translate), damit man an jedem Paket haelt und der
- *              vh/svh-Pixelversatz eines translate-Pins auf Handy entfaellt.
  */
 function StufenFahrt() {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  // SSR-sicher: erst nach Mount entscheiden. Start "static" = kein Layout-Sprung.
-  const [mode, setMode] = useState<"static" | "desktop" | "mobile">("static");
+  const [degraded, setDegraded] = useState(true); // SSR-sicher: erst nach Mount pruefen
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
-      setMode("static");
-      return;
-    }
-    const mobile = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`).matches;
-    setMode(mobile ? "mobile" : "desktop");
+    setDegraded(isBumperDegraded());
   }, []);
 
-  // Desktop-Fahrt: translate-Stage mit snapUnits-Dwell (unveraendert).
   useEffect(() => {
-    if (mode !== "desktop") return;
+    if (degraded) return;
     const track = trackRef.current;
     const stage = stageRef.current;
     if (!track || !stage) return;
@@ -402,50 +348,12 @@ function StufenFahrt() {
       destroyed = true;
       cancelAnimationFrame(rafId);
     };
-  }, [mode]);
+  }, [degraded]);
 
-  // Mobile-Station: aktive Stufe aus dem Scroll-Fortschritt (Ablauf-Muster).
-  const activeIdxRef = useRef(0);
-  const [activeIdx, setActiveIdx] = useState(0);
-  useEffect(() => {
-    if (mode !== "mobile") return;
-    const track = trackRef.current;
-    if (!track) return;
-
-    let rafId = 0;
-    let destroyed = false;
-    const n = STUFEN.length;
-
-    function render() {
-      const rect = track!.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      const q = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      const idx = Math.min(n - 1, Math.max(0, Math.floor(q * n)));
-      if (idx !== activeIdxRef.current) {
-        activeIdxRef.current = idx;
-        setActiveIdx(idx);
-      }
-    }
-    function loop() {
-      if (destroyed) return;
-      render();
-      rafId = requestAnimationFrame(loop);
-    }
-    rafId = requestAnimationFrame(loop);
-    window.addEventListener("scroll", render, { passive: true });
-    window.addEventListener("resize", render);
-    return () => {
-      destroyed = true;
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("scroll", render);
-      window.removeEventListener("resize", render);
-    };
-  }, [mode]);
-
-  if (mode === "static") {
-    // reduced-motion: statisch gestapelt. Gutter-Padding hier direkt, weil die
-    // Fahrt-Route (mit .fmx__wrap) hier nicht greift -- sonst klebten die
-    // Stufen am Bildschirmrand (Thomas 01.08.).
+  if (degraded) {
+    // Mobile/reduced-motion: statisch gestapelt. Gutter-Padding hier direkt,
+    // weil die Fahrt-Route (mit .fmx__wrap) hier nicht greift -- sonst klebten
+    // die Stufen am Bildschirmrand (Thomas 01.08.).
     return (
       <div
         className="fmx__static"
@@ -454,196 +362,6 @@ function StufenFahrt() {
         {STUFEN.map((s, i) => (
           <StufeMatrix key={s.name} stufe={s} defaultActive={i === 0 ? 0 : null} />
         ))}
-      </div>
-    );
-  }
-
-  if (mode === "mobile") {
-    return (
-      <div
-        ref={trackRef}
-        className="fmx__mtrack"
-        data-rr-snap
-        data-rr-snap-exempt
-        style={{
-          height: `calc(100svh + ${STUFEN.length * STEP_TRACK_VH_PER_STEP}vh)`,
-        }}
-      >
-        <div className="fmx__msticky">
-          {STUFEN.map((s, i) => (
-            <div
-              className={"fmx__mslot" + (i === activeIdx ? " is-active" : "")}
-              key={s.name}
-              aria-hidden={i !== activeIdx}
-            >
-              <StufeMobileCard stufe={s} />
-            </div>
-          ))}
-          <div className="fmx__mdots" aria-hidden="true">
-            {STUFEN.map((s, i) => (
-              <span
-                className={"fmx__mdot" + (i === activeIdx ? " is-on" : "")}
-                key={s.name}
-              />
-            ))}
-          </div>
-        </div>
-
-        <style>{`
-          .fmx__mtrack {
-            position: relative;
-            width: 100%;
-          }
-          .fmx__msticky {
-            position: sticky;
-            top: 0;
-            height: 100svh;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 var(--rr-gutter, clamp(20px, 4vw, 64px));
-          }
-          .fmx__mslot {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 var(--rr-gutter, clamp(20px, 4vw, 64px));
-            opacity: 0;
-            transform: translateY(10px);
-            pointer-events: none;
-            transition: opacity ${TRANSITION_MS}ms ${TRANSITION_EASING},
-              transform ${TRANSITION_MS}ms ${TRANSITION_EASING};
-          }
-          .fmx__mslot.is-active {
-            opacity: 1;
-            transform: none;
-            pointer-events: auto;
-          }
-          .fmx__mc {
-            width: 100%;
-            max-width: 560px;
-          }
-          .fmx__mc--featured {
-            /* Featured-Rahmen als ruhige Klammer um die ganze Karte. */
-            border: 1px solid var(--rr-red);
-            padding: clamp(20px, 5vw, 30px);
-          }
-          .fmx__mtag {
-            display: inline-block;
-            border: 1px solid var(--rr-red);
-            color: var(--rr-red);
-            font-family: var(--rr-font-ui);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            padding: 4px 10px;
-            margin-bottom: 14px;
-          }
-          .fmx__mhead {
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 6px 16px;
-            margin-bottom: 8px;
-          }
-          .fmx__mname {
-            font-family: var(--rr-font-display);
-            font-weight: 800;
-            font-size: clamp(2.2rem, 11vw, 3rem);
-            line-height: 1;
-            color: var(--rr-navy);
-            margin: 0;
-            display: inline-flex;
-            align-items: flex-end;
-            gap: 0.24em;
-            opacity: 0.72;
-          }
-          .fmx__mc--featured .fmx__mname {
-            opacity: 1;
-          }
-          .fmx__mnamedot {
-            width: 0.15em;
-            height: 0.15em;
-            border-radius: 50%;
-            background: var(--rr-red);
-            margin-bottom: 0.2em;
-          }
-          .fmx__mpreis {
-            font-family: var(--rr-font-display);
-            font-weight: 800;
-            font-size: clamp(1.4rem, 6.4vw, 1.9rem);
-            line-height: 1;
-            letter-spacing: -0.01em;
-            color: var(--rr-navy);
-            margin: 0;
-          }
-          .fmx__mc--featured .fmx__mpreis {
-            color: var(--rr-red);
-          }
-          .fmx__mtext {
-            font-family: var(--rr-font-ui);
-            font-size: clamp(0.95rem, 3.8vw, 1.05rem);
-            line-height: 1.5;
-            color: var(--rr-ink-soft);
-            margin: 0 0 clamp(16px, 4vw, 22px);
-          }
-          .fmx__mlist {
-            list-style: none;
-            margin: 0;
-            padding: clamp(14px, 4vw, 18px) 0 0;
-            border-top: 1px solid rgba(28, 40, 55, 0.14);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: clamp(9px, 2.4vw, 13px) clamp(14px, 4vw, 22px);
-          }
-          .fmx__mitem {
-            display: flex;
-            align-items: baseline;
-            gap: 9px;
-            font-family: var(--rr-font-display);
-            font-weight: 500;
-            font-size: clamp(0.9rem, 3.6vw, 1rem);
-            line-height: 1.24;
-            letter-spacing: -0.005em;
-            color: var(--rr-navy);
-          }
-          .fmx__mmark {
-            flex: none;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--rr-red);
-            transform: translateY(-1px);
-          }
-          .fmx__mdots {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: clamp(18px, 5vh, 34px);
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-          }
-          .fmx__mdot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: rgba(28, 40, 55, 0.24);
-            transition: background ${TRANSITION_MS}ms ${TRANSITION_EASING},
-              transform ${TRANSITION_MS}ms ${TRANSITION_EASING};
-          }
-          .fmx__mdot.is-on {
-            background: var(--rr-red);
-            transform: scale(1.3);
-          }
-        `}</style>
       </div>
     );
   }
