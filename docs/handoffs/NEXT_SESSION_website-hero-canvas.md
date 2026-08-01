@@ -1,108 +1,42 @@
-# Naechste Session — Website-Hero Canvas-Reveal (Stand 2026-07-31 abends)
+# Naechste Session — /leistungen/website Mobile (Stand 2026-08-01 nachts)
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
 - NIE raten — immer verifizieren (Code/Browser/Docs). Bei Unsicherheit fragen oder fail-closed.
-- Erst Plan, dann ausfuehren. Laufend im Browser testen.
-- Autonom, voller Browser-Zugriff. commit/push/deploy zwischen Schritten (Thomas will das).
-- Nichts als "fertig" melden ohne verifiziertes Ergebnis.
+- Erst Plan, dann ausfuehren. Laufend im Browser testen. commit/push/deploy ZWISCHEN Schritten (Thomas will das).
+- Nichts als "fertig" melden ohne verifiziertes Ergebnis; visuelle Fixes erst fertig, wenn Thomas es auf SEINEM Geraet bestaetigt.
+- Branch `relaunch` ist GETEILT: `git fetch` + `git log` vor Arbeit, NUR eigene Dateien mit Pfad committen (NIE `git add .`/`-u`). Fremde WIP im Tree: app/relaunch-preview/faq/page.tsx, components/relaunch/SiteClosing.tsx, faq-demo/demo.body.html, docs/handoffs/NEXT_SESSION_leistungen.md, docs/seo-monitor-log.md.
 
-## ERLEDIGT diese Session: Canvas-2D-Reveal (Commit 9be8372, gepusht)
-Der Hero-Mal-Reveal von `/leistungen/website` laeuft auf Mobile/Tablet (innerWidth<=1024)
-jetzt ueber **Canvas-2D** statt SVG-Maske (iOS-Fix, Thomas' Option 3). Desktop (>1024)
-bleibt bei der SVG-Maske.
+## GROSSER UNTERBAU-GEWINN (merken!): Mobile IST im Emulator sichtbar
+Das agent-browser/claude-in-chrome-Fenster laesst sich per `resize_window` auf **min. 500px CSS-Breite** verkleinern (OS-Minimum; 414 wird auf 500 geklemmt). 500px triggert die Mobile-Media-Queries (<=768/<=860/<=1024). Damit sind die SEKTIONEN-Layouts (reine CSS-Media-Queries) im Emulator VERIFIZIERBAR — Sektionen NICHT mehr blind bauen. Ablauf: resize auf 500x1000 -> `sec.scrollIntoView` zur Ziel-Sektion -> screenshot.
+- ABER: rAF-getriebene Animationen bleiben im Hidden-Tab pausiert (Screenshot weckt 1 Frame); Touch wird weiter FALSCH gemeldet (maxTouchPoints=0). Fuer den Canvas-Hero-Reveal weiter `localStorage rrCanvasRevealBP=2000` erzwingen.
 
-**Wie:** Die Engine setzt bei schmalem Viewport die Klasse `.canvas-reveal` auf
-`.main-sticky`. CSS reagiert (eine Wahrheitsquelle): SVG-Maske aus, `.layer-deck`
-Hintergrund transparent. Ein `<canvas.reveal-canvas>` (z-index 1, zwischen layer-base
-navy und layer-deck Titel) fuellt off-white und erasiert per
-`globalCompositeOperation="destination-out"` weiche Radial-Gradient-Loecher an den
-Pinsel-Positionen -> layer-base (navy + Satz "Schoen kann fast jeder...") scheint durch.
-KEIN `ctx.filter` (auf iOS unzuverlaessig) -> Radial-Gradients bilden den Gooey-Look nach.
-`revealFade` (aus applyMain) heilt die Loecher beim Wegscrollen exakt wie die SVG-Maske.
+## ERLEDIGT diese Session (alles live auf v2.redrabbit.media, gepusht)
+1. **Hero-Reveal scroll-getrieben** (86f99e8): kein zeitgesteuertes Auto mehr; `scrollRevealA = Pm/P_PAINT` (P_PAINT=0.05). Runter=auf, hoch=zu (Endlos-Rueckweg automatisch), begrenzt auf Satz-Region (kein Vollbild-navy), revealFade heilt sauber (kein schwarzer Screen). Vorbild ashleybrookecs.com/about (im Browser inspiziert: kein Finger-Malen, scroll-getriebener Gooey-Masken-Splash).
+2. **Reveal gleichmaessig** (00b7955): Offscreen-Maske (`revealMaskCanvas`) — Kreise erst flach zu EINER Maske verschmelzen (source-over, Kerne alpha 1 -> kein Compounding), dann in EINEM destination-out-Zug loeschen. Behebt das graue Hell-Dunkel-Muster; nur Aussenkante gooey.
+3. **Desktop-Schutz** (b86a3c7): useCanvas jetzt an ECHTES Touch gekoppelt, NICHT nur Breite: `innerWidth<=CANVAS_BP && (maxTouchPoints>0 || ontouchstart || pointer:coarse || forceOverride)`. Grund: Thomas' Retina-Laptop meldet CSS-Breite <=1024 -> wurde faelschlich als Tablet behandelt, Canvas erschien auf dem Desktop. Jetzt: Nicht-Touch = IMMER SVG-Hover-Reveal (die stundenlang gebaute Desktop-Funktion), egal wie schmal. Auto-Play-Gate ebenso auf `isTouchDevice`. Lesson aktualisiert: [[reference_relaunch_ios_svgmask_und_emulator_touch]].
+4. **Ablauf Schritt 3 Copy gestrafft** (b1b1b1d, Thomas freigegeben): langer Absatz -> knappe Stichsaetze, gleiche Risiko-Umkehr.
+5. **Fundament (VarianteA) auf Mobile = horizontales Karten-Deck** (6b09e5e): 12 gestapelte Punkte -> Wisch-Deck (scroll-snap-x, weisse Dashboard-Karten ~82% mit Peek, Sticky X/12-Bar). Nur `@media (max-width:860px)` + IntersectionObserver-rootMargin vertikal->horizontal. Desktop-Ledger unberuehrt. Bei 500px verifiziert (Zaehler laeuft beim Wischen mit).
 
-**Verifiziert (Emulator + Unit):**
-- Erase-Technik: destination-out radial -> Pixel von off-white(244,244,242,255) auf (0,0,0,0). OK.
-- Layering: mit ausgeblendetem Canvas erscheint der navy layer-base + Satz voll & korrekt
-  positioniert, KEIN dunkler Balken. OK.
-- Desktop-Regression: ohne Klasse bleibt `mask:url(#mask-v1)` aktiv, Deck off-white. OK.
-- Graceful degrade: getContext scheitert -> Klasse weg, SVG-Pfad greift wieder.
+## OFFEN — HIER WEITERMACHEN (Thomas: "schritt fuer schritt durchgehen")
+**ZUERST: Thomas' Geraete-Feedback zu Fundament abwarten** (Karten-Groesse? Ruhe? 1 Punkt pro Karte oder 2? Farbe?). Er sagt "passt, mach die anderen" ODER Aenderungswuensche. NICHT ungefragt ausrollen.
 
-**NICHT im Emulator verifizierbar (Lesson):** die ANIMIERTE Bewegung. Der Automations-Tab
-laeuft mit `visibilityState:"hidden"` -> `requestAnimationFrame` pausiert -> Partikel
-wachsen nie. Auf einem SICHTBAREN Geraet laeuft rAF normal. Debug am Geraet:
-`window.__revealDiag()` (Partikel-Zahl/fade/painting/useCanvas) in der Safari-Konsole.
-Canvas-Pfad auf beliebigem Geraet/Emulator erzwingbar: `localStorage.setItem('rrCanvasRevealBP','2000')`
-+ Reload (sonst Schwelle 1024). Zum Zuruecksetzen `removeItem`.
+Dann, Sektion fuer Sektion (jede bei 500px pruefen, commit/push/deploy, Geraete-Check):
+- **A) Muster ausrollen** auf die anderen Multi-Item-Sektionen mit demselben Wisch-Deck:
+  - `Ablauf.tsx` (5 Schritte) -> ein Schritt pro Karte, grosse Nummer.
+  - `DreiStufenMatrix.tsx` -> ein Paket pro Karte.
+  - ggf. Diagnose / SoBauenWir pruefen (auch gestaucht?).
+  - Referenz-Vorbild fuer die gute Optik = `TalosDashboard.tsx` ("wda", Browser-Frame + Karten), das Thomas gefaellt.
+- **B) Grundlegend (Thomas bestaetigt), noch OFFEN:** (1) CSS-Scroll-Snap pro Sektion auf Touch (`scroll-snap-type:y` + `scroll-snap-align:start` + `scroll-snap-stop:always`) — ScrollExperience.tsx ist RAD-basiert, greift auf Touch NICHT; VORSICHT mit dem gepinnten Hero (scene-main, data-rr-snap-exempt). (2) Sektionen bildschirmfuellend auf Mobile (min-height:100svh, zentriert) — aktuell nur ReferenzenTeaser/SiteClosing <820px. (3) Danach auf ALLE anderen Unterseiten + Homepage ausrollen.
+- **C) Hero-Rollout:** dieselbe scroll-getriebene Canvas-Reveal-Mechanik auf allen Seiten mit SVG-Masken-Hero (MorphSculpture/SubpageHero-Heroes: /leistungen, /preise, /ueber-uns, /kontakt...) — mobil auf Canvas umstellen. Erst wenn /leistungen/website komplett rund ist.
 
-## STAND: Canvas-Reveal LAEUFT auf dem Geraet (bestaetigt Thomas 31.07. spaet)
-Die Auto-Malanimation deckt den Satz auf dem iPhone auf (Canvas-2D war richtig, iOS-SVG-
-Theorie war Nebensache — Kern war der Auto-Play-Trigger). Danach iterativ getunt (Commits
-8cc1af7, 3bd305c, 99ac595): scharfe Kanten statt blurry Halo (drawReveal Radial voll bis
-88% Radius), EIN durchgehender Pfad statt 3 getrennte, langsamer (DUR bis 11000ms),
-wandernde Enthuellung (Blobs LIFE ~4.6s < Lauf -> hinten blendet aus), Satz groesser
-(~35px, clamp(2rem,9vw,3.4rem), max-width 96vw), Pfad ueber fast den ganzen Screen
-(x0.06-0.94, y0.09-0.71). Auto-Loop-Intervall 2500ms.
-
-## GELOEST diese Session (Commit 86f99e8): scroll-getriebener Splash statt Auto-Loop
-Referenz ashleybrookecs.com/about im Browser inspiziert: KEIN Finger-Malen (touch-action
-auto, kein Canvas), sondern ein SCROLL-GETRIEBENER Gooey-Masken-Splash (mask url(#mask) +
-filter url(#gooey), GSAP ScrollTrigger + Lenis). Genau das auf unseren Canvas-Pfad
-uebertragen (Mobile/Tablet <=1024; Desktop bleibt SVG-Hover, unveraendert):
-- **Reveal folgt dem Scrollen** statt Zeit: `scrollRevealA = Pm/P_PAINT` (P_PAINT=0.05 =
-  erste 5% des gepinnten Scrollens). Runter = auf, hoch = zu -> ENDLOS-RUECKWEG automatisch
-  (Feedback 1). Kein runAuto/autoLoop/heroFeed mehr auf Mobile.
-- **Kein Vollbild-navy** (Feedback 2): der Reveal ist auf die Satz-Region begrenzt
-  (`buildRevealPath` misst `.reveal-msg`, serpentiner Blob-Pfad; Raender bleiben off-white).
-- **Kein schwarzer Screen beim Weiterscrollen** (Feedback 3): der bestehende `revealFade`
-  heilt ueber das Budget hinaus; die Loop-Bedingung zeichnet EINE Solid-Fill-Frame beim
-  Kantenfall revealFade->1 (`prevFade`) -> solide off-white, kein navy-Leck.
-- Morph (Titel/Kopf/Story) hinter das Reveal-Budget geschoben (Pm-Remap in applyMain), damit
-  der Titel waehrend des Splashs ruhig steht.
-
-**Emulator-verifiziert** (scroll-getrieben -> im Hidden-Tab per Frame-Wake + Debug-Hebel
-`window.__snapScroll=true` testbar, umgeht die smPm-Glaettung): a=0 off-white/Satz versteckt,
-a=0.5 progressiver Mal-Wisch ueber den Satz, a=1 voll aufgedeckt mit Gooey-Kante, danach
-solide off-white ohne navy-Leck. Diag: `window.__revealDiag()` liefert jetzt {a, fade,
-pathLen, ...}. Der Emulator klemmt bei 1788px (Fenster-Mindestbreite) -> ECHTES Mobile-
-Layout (Satzgroesse/-position) verifiziert Thomas am Geraet.
-
-### Naechster konkreter Schritt: am Geraet bewerten + tunen
-- P_PAINT=0.05 (Reveal-Budget) ggf. anpassen, wenn der Splash zu lang/kurz scrollt.
-- buildRevealPath-Abdeckung (rows=3, cols=8, r-Faktor 0.78, padY 0.34) ggf. an die echte
-  Mobile-Satzbox angleichen, falls Raender zu viel/zu wenig navy zeigen.
-
-### Video-Fallback (NICHT noetig — Canvas laeuft; nur als Notnagel dokumentiert)
-autoplay/muted/playsinline-Video der Desktop-Animation, falls je noetig. Aktuell obsolet.
-
-## DANN: dieselbe Animations-Umstellung auf ALLEN anderen Seiten (Thomas: "da ist auch
-ueberall das Problem"). Alle Seiten, die den Website-Demo-Hero-Mechanismus ODER die
-SVG-Masken-Reveal-Technik nutzen (MorphSculpture/SubpageHero-Heroes der Unterseiten:
-/leistungen, /leistungen/website, /preise, /ueber-uns, /kontakt, ...), muessen mobil auf
-den iOS-sicheren Canvas-Reveal + die getunte Animation (Endlos-Ping-Pong, kein Full-Cover,
-sauberes Scroll-Cleanup) umgestellt werden. Erst /leistungen/website fertig machen, dann
-Muster ausrollen.
-
-## DANACH (weitere "grundlegende Dinge", Thomas bestaetigt)
-- **CSS-Scroll-Snap** pro Sektion, Mobile/Tablet: fester Stopp am ANFANG jeder Sektion
-  (`scroll-snap-type:y mandatory` + `scroll-snap-align:start` + `scroll-snap-stop:always`),
-  lange Sektionen frei scrollbar. Desktop-Snap ist Rad-basiert (ScrollExperience.tsx onWheel)
-  und greift auf Touch NICHT -> CSS-Scroll-Snap ist der Touch-Weg. Effekt-Sektionen behalten
-  ihre Animation, Snap faengt nur den Anfang.
-- **Vollbild-Sektionen** auf Mobile: aktuell schalten nur ReferenzenTeaser.tsx / SiteClosing.tsx
-  Vollhoehe unter 820px; Content-Sektionen haben nie 100vh. Hebel dort.
-- Dann auf weitere Seiten + Homepage ausrollen (Homepage auch = Thomas bestaetigt).
+## Kuerzen-Frage (Thomas' Frage, beantwortet)
+Meistens NICHT loeschen, sondern STRUKTUR (2026-Konsens: horizontale Karten-Slider / progressive disclosure, nicht Textwand). Nur die laengsten Texte straffen — Ablauf Schritt 3 erledigt. Fundament-Copy bleibt (nur Struktur). Wenn eine Sektion zu voll wirkt: 2 Punkte pro Karte statt 1 anbieten, NICHT eigenmaechtig Anzahl kuerzen (Copy = Thomas' Hoheit, vorher zeigen).
 
 ## Relevante Dateien
-- `components/subpages/website-demo/demo.engine.jstext` — Canvas-Reveal: CANVAS_BP/useCanvas
-  (~Z.45), fitMask Canvas-Sizing (~Z.86), initFluid Canvas+drawReveal (~Z.256), Particle-Umbau,
-  loop drawReveal-Call, applyMain revealFade (~Z.571), boot useCanvas+Klasse (~Z.821).
-- `components/subpages/website-demo/demo.css` — `.reveal-canvas`, `.canvas-reveal`-Regeln,
-  Desktop-Maske jetzt `:not(.canvas-reveal)` gegated (~Z.100).
-- `components/subpages/WebsiteDemoClient.tsx` — React-Wrapper (unveraendert).
-- `app/relaunch-preview/leistungen/website/page.tsx` — liest die 3 demo-Dateien pro Request.
+- Hero: `components/subpages/website-demo/demo.engine.jstext` (P_PAINT, buildRevealPath, drawRevealScroll + Offscreen-Maske, applyMain Pm-Remap ~Z.560, boot useCanvas/isTouchDevice ~Z.945). Debug: `window.__revealDiag()` {a,fade,pathLen,...}; Force-Canvas `localStorage rrCanvasRevealBP=2000`.
+- Sektionen: `components/subpages/leistungen/website/v2/` — Fundament=`fundament-varianten/VarianteA.tsx` (Muster fuer Karten-Deck!), `Ablauf.tsx`, `DreiStufenMatrix.tsx`, `TalosDashboard.tsx` (Optik-Vorbild). Seite: `app/relaunch-preview/leistungen/website/page.tsx`.
+- styled-jsx im Relaunch meiden (neue Komponenten), ABER bestehende Sektionen nutzen es schon -> dort im @media anpassen, nicht neu bauen.
 
 ## Deploy
-Push triggert Preview-Build (git-relaunch-Alias). v2.redrabbit.media ist MANUELLER Alias ->
-nach "Ready": `vercel alias set <ready-deploy-url> v2.redrabbit.media`. NUR eigene Dateien
-committen (fremde WIP im Tree: faq/page.tsx, SiteClosing.tsx, faq-demo/demo.body.html u.a.).
+`vercel deploy --yes` -> letzte stdout-Zeile = URL -> `vercel alias set <url> v2.redrabbit.media`. Push triggert zusaetzlich einen Preview-Build (post-commit-Hook auto-pusht + graphify). Dev-Server: `npm run dev -- --port 9000` (KEIN `npm run build` bei laufendem dev).
