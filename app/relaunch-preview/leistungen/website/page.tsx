@@ -145,10 +145,15 @@ export default function LeistungenWebsitePreviewPage() {
         className={rrFonts}
         style={{ background: 'var(--rr-surface, #f4f4f2)', position: 'relative', zIndex: 2 }}
       >
-        <div data-rr-snap>
+        {/* Mobile ausgeblendet (Thomas 01.08.): "kein Baukasten" faellt am
+            Handy weg, damit die Seite kuerzer wird. Desktop unveraendert. */}
+        <div data-rr-snap className="rr-hide-mobile">
           <SoBauenWir />
         </div>
-        <div data-rr-snap>
+        {/* Mobile ausgeblendet: der "wer du bist"-Quiz (Diagnose) kommt am
+            Handy als Popup ueber einen Button bei den 3 Paketen zurueck
+            (Folge-Schritt). Desktop unveraendert. */}
+        <div data-rr-snap className="rr-hide-mobile">
           <Diagnose />
         </div>
         <div data-rr-snap style={{ background: 'var(--rr-paper, #ffffff)' }}>

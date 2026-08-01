@@ -326,8 +326,14 @@ function StufenFahrt() {
   }, [degraded]);
 
   if (degraded) {
+    // Mobile/reduced-motion: statisch gestapelt. Gutter-Padding hier direkt,
+    // weil die Fahrt-Route (mit .fmx__wrap) hier nicht greift -- sonst klebten
+    // die Stufen am Bildschirmrand (Thomas 01.08.).
     return (
-      <div className="fmx__static">
+      <div
+        className="fmx__static"
+        style={{ padding: "0 var(--rr-gutter, clamp(20px, 4vw, 64px))" }}
+      >
         {STUFEN.map((s, i) => (
           <StufeMatrix key={s.name} stufe={s} defaultActive={i === 0 ? 0 : null} />
         ))}

@@ -203,3 +203,11 @@
    wd-eyebrow.css (Thomas 22.07.), von Hub UND dieser Unterseite importiert
    (website.css importiert selbst keine CSS-Dateien, Kontrakt) — keine
    Doppel-Definition mehr. Siehe dort fuer Herkunft/Modifikatoren. */
+
+/* ---- Mobile-only ausblenden (Thomas 01.08.): auf Handy/Tablet fallen
+   Sektionen weg, die die Seite zu lang machen ("kein Baukasten" = SoBauenWir)
+   oder als Popup an anderer Stelle wiederkommen ("wer du bist" = Diagnose).
+   Desktop unveraendert. */
+@media (max-width: 860px) {
+  .rr .rr-hide-mobile { display: none; }
+}
