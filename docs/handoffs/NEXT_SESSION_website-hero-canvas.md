@@ -1,42 +1,37 @@
-# Naechste Session — /leistungen/website Mobile (Stand 2026-08-01 nachts)
+# Naechste Session — /leistungen/website Mobile-Umbau (Stand 2026-08-01 nachts, sehr spaet)
 
 ## Arbeitsregeln (verbindlich)
-- Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
-- NIE raten — immer verifizieren (Code/Browser/Docs). Bei Unsicherheit fragen oder fail-closed.
-- Erst Plan, dann ausfuehren. Laufend im Browser testen. commit/push/deploy ZWISCHEN Schritten (Thomas will das).
-- Nichts als "fertig" melden ohne verifiziertes Ergebnis; visuelle Fixes erst fertig, wenn Thomas es auf SEINEM Geraet bestaetigt.
-- Branch `relaunch` ist GETEILT: `git fetch` + `git log` vor Arbeit, NUR eigene Dateien mit Pfad committen (NIE `git add .`/`-u`). Fremde WIP im Tree: app/relaunch-preview/faq/page.tsx, components/relaunch/SiteClosing.tsx, faq-demo/demo.body.html, docs/handoffs/NEXT_SESSION_leistungen.md, docs/seo-monitor-log.md.
+- Lies ZUERST diesen Handoff, MEMORY.md, betroffene Dateien. Nicht ohne Kontext loslegen.
+- NIE raten — immer verifizieren (Code/Browser/decisions-log). Preise/Marken-Begriffe NIE erfinden (decisions-log ist Quelle).
+- Erst Plan, dann bauen. Laufend im Browser bei 500px testen. commit/push/deploy ZWISCHEN Schritten.
+- Visuelle Fixes erst "fertig", wenn Thomas es auf SEINEM Geraet bestaetigt.
+- Branch `relaunch` GETEILT: `git fetch` + `git log` vor Arbeit, NUR eigene Dateien mit Pfad committen (NIE `git add .`/`-u`). Fremde WIP nicht anfassen: app/relaunch-preview/faq/page.tsx, components/relaunch/SiteClosing.tsx, faq-demo/demo.body.html, docs/handoffs/NEXT_SESSION_leistungen.md, docs/seo-monitor-log.md.
+- Deploy: `vercel deploy --yes` -> letzte URL -> `vercel alias set <url> v2.redrabbit.media`.
+- Dev-Server neu starten falls verklemmt: `lsof -ti tcp:9000 | xargs kill -9` dann `npm run dev -- --port 9000` (Hintergrund). Er verklemmt bei dieser schweren Seite gern; ~21s bis ready.
 
-## GROSSER UNTERBAU-GEWINN (merken!): Mobile IST im Emulator sichtbar
-Das agent-browser/claude-in-chrome-Fenster laesst sich per `resize_window` auf **min. 500px CSS-Breite** verkleinern (OS-Minimum; 414 wird auf 500 geklemmt). 500px triggert die Mobile-Media-Queries (<=768/<=860/<=1024). Damit sind die SEKTIONEN-Layouts (reine CSS-Media-Queries) im Emulator VERIFIZIERBAR — Sektionen NICHT mehr blind bauen. Ablauf: resize auf 500x1000 -> `sec.scrollIntoView` zur Ziel-Sektion -> screenshot.
-- ABER: rAF-getriebene Animationen bleiben im Hidden-Tab pausiert (Screenshot weckt 1 Frame); Touch wird weiter FALSCH gemeldet (maxTouchPoints=0). Fuer den Canvas-Hero-Reveal weiter `localStorage rrCanvasRevealBP=2000` erzwingen.
+## Emulator-Faehigkeiten (wichtig)
+- `resize_window(500,1000)` -> ~606px CSS-Breite -> Mobile-Media-Queries -> SEKTIONEN-Layout PRUEFBAR.
+- ABER: rAF + CSS-Transitions + 3D-Canvas sind im Hidden-Tab EINGEFROREN. Scroll-getriebene Animationen (Ablauf, Dashboard-Pan) + 3D-Talos rendern NICHT von selbst. Test: `window.dispatchEvent(new Event('scroll'))` nach `window.scrollTo(...)` treibt die rAF-`render()` manuell; Transition-Zielwerte per `el.style.transition='none'`. Finger-Scroll + 3D nur am Geraet.
+- Screenshots timen bei geladenem 3D-Talos oft aus (Renderer traege). DOM-Abfragen (getComputedStyle, rects) funktionieren dann noch.
 
-## ERLEDIGT diese Session (alles live auf v2.redrabbit.media, gepusht)
-1. **Hero-Reveal scroll-getrieben** (86f99e8): kein zeitgesteuertes Auto mehr; `scrollRevealA = Pm/P_PAINT` (P_PAINT=0.05). Runter=auf, hoch=zu (Endlos-Rueckweg automatisch), begrenzt auf Satz-Region (kein Vollbild-navy), revealFade heilt sauber (kein schwarzer Screen). Vorbild ashleybrookecs.com/about (im Browser inspiziert: kein Finger-Malen, scroll-getriebener Gooey-Masken-Splash).
-2. **Reveal gleichmaessig** (00b7955): Offscreen-Maske (`revealMaskCanvas`) — Kreise erst flach zu EINER Maske verschmelzen (source-over, Kerne alpha 1 -> kein Compounding), dann in EINEM destination-out-Zug loeschen. Behebt das graue Hell-Dunkel-Muster; nur Aussenkante gooey.
-3. **Desktop-Schutz** (b86a3c7): useCanvas jetzt an ECHTES Touch gekoppelt, NICHT nur Breite: `innerWidth<=CANVAS_BP && (maxTouchPoints>0 || ontouchstart || pointer:coarse || forceOverride)`. Grund: Thomas' Retina-Laptop meldet CSS-Breite <=1024 -> wurde faelschlich als Tablet behandelt, Canvas erschien auf dem Desktop. Jetzt: Nicht-Touch = IMMER SVG-Hover-Reveal (die stundenlang gebaute Desktop-Funktion), egal wie schmal. Auto-Play-Gate ebenso auf `isTouchDevice`. Lesson aktualisiert: [[reference_relaunch_ios_svgmask_und_emulator_touch]].
-4. **Ablauf Schritt 3 Copy gestrafft** (b1b1b1d, Thomas freigegeben): langer Absatz -> knappe Stichsaetze, gleiche Risiko-Umkehr.
-5. **Fundament (VarianteA) auf Mobile = horizontales Karten-Deck** (6b09e5e): 12 gestapelte Punkte -> Wisch-Deck (scroll-snap-x, weisse Dashboard-Karten ~82% mit Peek, Sticky X/12-Bar). Nur `@media (max-width:860px)` + IntersectionObserver-rootMargin vertikal->horizontal. Desktop-Ledger unberuehrt. Bei 500px verifiziert (Zaehler laeuft beim Wischen mit).
+## ERLEDIGT + LIVE auf v2 (diese Session, alles gepusht, HEAD 7bd391c)
+1. **Ablauf mobil = horizontale Kreiskette** (07f8b9a) — Desktop-Szene auf Mobile freigeschaltet (prefersReducedMotion + svh).
+2. **Copilot-Dashboard mobil = gepinnte Auto-Scroll-Szene + Talos-Overlay** (6a85a4b, Talos-Breite 7bd391c) — vertikal scrollen pannt das Dashboard automatisch nach rechts (rAF translateX), Talos blendet in der 2. Haelfte ein, liegt UEBER dem Dashboard. FUNKTIONIERT am Geraet (Thomas bestaetigt). OFFEN: Talos' ausgestreckte Hand ist am Geraet noch nicht GANZ drin (Canvas 7bd391c auf clamp(250px,66vw,390px) verbreitert -> "mehr sichtbar, aber noch nicht alles"). 3D-Framing via camPos/camTgt in `TalosEntranceStage`; evtl. Canvas noch breiter ODER Kamera nur fuer diese Instanz zoomen (Achtung: camPos/camTgt sind fuer Desktop+Mobile dieselbe Instanz — Mobile-only nur ueber Canvas-Aspect steuerbar, nicht ueber die geteilten Kamera-Props).
+3. **SoBauenWir + Diagnose auf Mobile ausgeblendet** (edd45d0) — `.rr-hide-mobile` in website.css.
+4. **Pakete**: Rand-Padding gefixt + **Preise mit "ab"** (7ef5cc4 + 7bd391c): ab 1.250 / ab 2.850 / ab 4.900 (PREISE-Map in DreiStufenMatrix). Akkordeon war schon da.
+5. **Vollbild-Sektionen** (e770297) — `.rr-fullscreen-mobile` (min-height 100svh + zentriert) an KundenSagen/ReferenzenTeaser/WebsiteFaq/SiteClosing-Wrapper in page.tsx.
+6. **Fundament mobil = zwei Wisch-Decks je Gruppe** (74c05ef) — "Was auf der Seite steckt" / "Was im Hintergrund fuer dich mitlaeuft", je horizontales Deck. `.lwa__deck` Desktop display:contents (Reveal unveraendert), Mobile flex scroll-snap.
+7. **Diagnose-Popup** (175b6a8) — Button "Welches Paket passt zu mir?" in der Paket-Intro oeffnet Modal (inline position:fixed) mit `<Diagnose />`. Escape/Backdrop/X schliessen. NOCH NICHT am Geraet bestaetigt (Runtime-Oeffnen konnte lokal nicht getestet werden, Server war eingefroren) — beim naechsten Mal am Geraet pruefen: oeffnet sauber, Fonts korrekt, mittig?
+8. **Begriff "Copilot" statt "Cockpit"** (decisions-log e5ee6de) — Thomas 01.08. gekippt. NICHT wieder aufrollen.
 
-## OFFEN — HIER WEITERMACHEN (Thomas: "schritt fuer schritt durchgehen")
-**ZUERST: Thomas' Geraete-Feedback zu Fundament abwarten** (Karten-Groesse? Ruhe? 1 Punkt pro Karte oder 2? Farbe?). Er sagt "passt, mach die anderen" ODER Aenderungswuensche. NICHT ungefragt ausrollen.
-
-Dann, Sektion fuer Sektion (jede bei 500px pruefen, commit/push/deploy, Geraete-Check):
-- **A) Muster ausrollen** auf die anderen Multi-Item-Sektionen mit demselben Wisch-Deck:
-  - `Ablauf.tsx` (5 Schritte) -> ein Schritt pro Karte, grosse Nummer.
-  - `DreiStufenMatrix.tsx` -> ein Paket pro Karte.
-  - ggf. Diagnose / SoBauenWir pruefen (auch gestaucht?).
-  - Referenz-Vorbild fuer die gute Optik = `TalosDashboard.tsx` ("wda", Browser-Frame + Karten), das Thomas gefaellt.
-- **B) Grundlegend (Thomas bestaetigt), noch OFFEN:** (1) CSS-Scroll-Snap pro Sektion auf Touch (`scroll-snap-type:y` + `scroll-snap-align:start` + `scroll-snap-stop:always`) — ScrollExperience.tsx ist RAD-basiert, greift auf Touch NICHT; VORSICHT mit dem gepinnten Hero (scene-main, data-rr-snap-exempt). (2) Sektionen bildschirmfuellend auf Mobile (min-height:100svh, zentriert) — aktuell nur ReferenzenTeaser/SiteClosing <820px. (3) Danach auf ALLE anderen Unterseiten + Homepage ausrollen.
-- **C) Hero-Rollout:** dieselbe scroll-getriebene Canvas-Reveal-Mechanik auf allen Seiten mit SVG-Masken-Hero (MorphSculpture/SubpageHero-Heroes: /leistungen, /preise, /ueber-uns, /kontakt...) — mobil auf Canvas umstellen. Erst wenn /leistungen/website komplett rund ist.
-
-## Kuerzen-Frage (Thomas' Frage, beantwortet)
-Meistens NICHT loeschen, sondern STRUKTUR (2026-Konsens: horizontale Karten-Slider / progressive disclosure, nicht Textwand). Nur die laengsten Texte straffen — Ablauf Schritt 3 erledigt. Fundament-Copy bleibt (nur Struktur). Wenn eine Sektion zu voll wirkt: 2 Punkte pro Karte statt 1 anbieten, NICHT eigenmaechtig Anzahl kuerzen (Copy = Thomas' Hoheit, vorher zeigen).
+## OFFEN — HIER WEITERMACHEN (Thomas' Prioritaet)
+- **A) HERO-BUG beim Zurueckscrollen (WICHTIG, zuerst).** Beim Hochscrollen zum Hero legen sich die roten Morph-Formen (das Wort->Zahnrad-Figur-Morph) UEBER die Reveal-Schrift ("Schoen kann fast jeder. Die Frage ist: ruft bei dir auch wer an?") — kaputte Ueberlappung (Thomas Geraete-Foto). Steckt im **Hero-Morph-Motor** `components/subpages/website-demo/demo.engine.jstext` (der fragile, stundenlang gebaute Teil — NICHT blind anfassen, mit laufendem Dev-Server reproduzieren + verifizieren). Vermutung: der Rueckwaerts-Zustand (scroll up) resettet das Morph/Reveal-Zusammenspiel nicht sauber. Zusammenhang: scrollRevealA (P_PAINT=0.05) + MorphSculpture/Figur. Reproduzieren: Hero runter, dann wieder hoch scrollen.
+- **B) Stop bei JEDEM Paket (Starter/Business/Premium).** Aktuell stehen die 3 Pakete auf Mobile gestapelt-statisch (DreiStufenMatrix `.fmx__static`). Thomas will je Paket eine bildschirmfuellende Station MIT Halt (wie beim Ablauf die 4 Schritte = gepinnte Kreiskette, ODER scroll-snap pro Stufe + 100svh je Stufe). Muster: entweder die Desktop-Fahrt (StufenFahrt, snapUnits) auch mobil aktivieren (analog Ablauf-Freischaltung), ODER jede `.fmx__stufe` mobil auf min-height:100svh + scroll-snap-align. Verifiziert bauen.
+- **C) Talos-Hand ganz zeigen** (Punkt 2 oben) — Canvas-Breite/Framing weiter tunen bis die Hand komplett drin ist. Geraete-Check.
+- **D) Diagnose-Popup am Geraet bestaetigen** (Punkt 7).
+- **E) OPTIONAL / Thomas' Idee (Feasibility bestaetigt = mittel-schwer, machbar): Hero-Reveal im Pinsel-Stil.** Statt links->rechts: Pfad wie ein Pinselstrich — Start oben-links, Zickzack nach unten, in der Mitte breiter dann schmaler, leicht asymmetrisch/zufaellig, sodass die Schrift wie handgemalt aufgedeckt wird. Machbar: der Canvas-Mal-Mechanismus existiert (buildRevealPath -> drawRevealScroll in demo.engine); nur die Pfad-Generierung neu (Zickzack+variable Breite+Jitter). Erst bauen, wenn Thomas es ausdruecklich will; ein paar Geraete-Runden fuers Feintuning.
+- **F) Konsistenz (eigene Runde): "Cockpit" -> "Copilot"** auf /preise (Merkmal "Dein Cockpit" in allen Paketen) + ueberall sonst.
 
 ## Relevante Dateien
-- Hero: `components/subpages/website-demo/demo.engine.jstext` (P_PAINT, buildRevealPath, drawRevealScroll + Offscreen-Maske, applyMain Pm-Remap ~Z.560, boot useCanvas/isTouchDevice ~Z.945). Debug: `window.__revealDiag()` {a,fade,pathLen,...}; Force-Canvas `localStorage rrCanvasRevealBP=2000`.
-- Sektionen: `components/subpages/leistungen/website/v2/` — Fundament=`fundament-varianten/VarianteA.tsx` (Muster fuer Karten-Deck!), `Ablauf.tsx`, `DreiStufenMatrix.tsx`, `TalosDashboard.tsx` (Optik-Vorbild). Seite: `app/relaunch-preview/leistungen/website/page.tsx`.
-- styled-jsx im Relaunch meiden (neue Komponenten), ABER bestehende Sektionen nutzen es schon -> dort im @media anpassen, nicht neu bauen.
-
-## Deploy
-`vercel deploy --yes` -> letzte stdout-Zeile = URL -> `vercel alias set <url> v2.redrabbit.media`. Push triggert zusaetzlich einen Preview-Build (post-commit-Hook auto-pusht + graphify). Dev-Server: `npm run dev -- --port 9000` (KEIN `npm run build` bei laufendem dev).
+- Hero-Motor: `components/subpages/website-demo/demo.engine.jstext` (Zeile 7 ist eine 76k-Zeichen-Datenzeile -> via `sed` lesen, nicht Read). Debug: `window.__revealDiag()`.
+- Sektionen: `components/subpages/leistungen/website/v2/` — `TalosDashboard.tsx` (Copilot-Auto-Scroll, Talos-Overlay), `DreiStufenMatrix.tsx` (Pakete + Preise + Diagnose-Popup + PREISE-Map + StufenFahrt fuer die Stop-Frage), `fundament-varianten/VarianteA.tsx` (2 Wisch-Decks), `Ablauf.tsx` (Kreiskette-Muster fuer B), `Diagnose.tsx` (im Popup). Seite: `app/relaunch-preview/leistungen/website/page.tsx`. Utilities: `.rr-hide-mobile` + `.rr-fullscreen-mobile` in `website.css`.
