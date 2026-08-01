@@ -2354,3 +2354,39 @@ quelle: https://www.hosttest.at/vs/easyname-world4you
 quelle_name: hosttest.at - easyname vs. World4You Vergleich
 geprueft_am: 2026-07-31
 recheck_nach: 2027-01-27
+
+## t57-2026-08-01-262
+cluster: 2
+keywords: warum, time, first, byte, ttfb, eine, kritische, metrik
+aussage: Google/web.dev stuft einen TTFB von 0,8 Sekunden oder weniger als 'gut' ein, 0,8-1,8 Sekunden als verbesserungswuerdig und ueber 1,8 Sekunden als schlecht. TTFB misst die Zeit vom Navigationsstart bis zum Eintreffen des ersten Response-Bytes (DNS, TCP/TLS-Handshake, Serververarbeitung, Netzwerk-Laufzeit) und zeigt damit direkt, wie schnell das Hosting antwortet.
+quelle: https://web.dev/articles/ttfb
+quelle_name: web.dev (Google) - Time to First Byte (TTFB)
+geprueft_am: 2026-08-01
+recheck_nach: 2027-01-28
+
+## t57-2026-08-01-263
+cluster: 2
+keywords: warum, time, first, byte, ttfb, eine, kritische, metrik
+aussage: TTFB geht den nutzerzentrierten Metriken First Contentful Paint (FCP) und Largest Contentful Paint (LCP) zeitlich voraus - eine langsame Serverantwort verzoegert damit unmittelbar den Bildaufbau und die wahrgenommene Ladezeit, weil bis zum ersten Byte gar nichts gerendert werden kann.
+quelle: https://web.dev/articles/ttfb
+quelle_name: web.dev (Google) - Time to First Byte (TTFB)
+geprueft_am: 2026-08-01
+recheck_nach: 2027-01-28
+
+## t57-2026-08-01-264
+cluster: 2
+keywords: warum, time, first, byte, ttfb, eine, kritische, metrik
+aussage: Google koppelt die Crawl-Frequenz direkt an die Serverantwortzeit inklusive TTFB: 'If the site responds consistently and its response times (including latency and Time-to-First-Byte) remain stable or improve, the limit goes up, meaning more connections can be used to crawl.' Umgekehrt drosselt Google das Crawling bei steigender Latenz oder 5xx/429-Antworten - schlechter TTFB kostet also Indexierungs-Reichweite, besonders bei groesseren Sites.
+quelle: https://developers.google.com/search/docs/crawling-indexing/large-site-managing-crawl-budget
+quelle_name: Google Search Central - Managing crawl budget for large sites
+geprueft_am: 2026-08-01
+recheck_nach: 2027-01-28
+
+## t57-2026-08-01-265
+cluster: 2
+keywords: warum, time, first, byte, ttfb, eine, kritische, metrik
+aussage: Nur rund 32 % der WordPress-Seiten erreichen laut Chrome-UX-Report einen 'guten' TTFB-Wert, weil klassische CMS-Architekturen jede Seite bei Anfrage serverseitig aus PHP + Datenbank neu zusammensetzen. TTFB ist damit kein Detail, sondern der Architektur-Engpass, der ueber gute oder schlechte Core Web Vitals entscheidet.
+quelle: https://www.corewebvitals.io/core-web-vitals/wordpress-guide
+quelle_name: CoreWebVitals.io - Core Web Vitals for WordPress: Optimization Guide
+geprueft_am: 2026-08-01
+recheck_nach: 2027-01-28

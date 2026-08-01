@@ -1,0 +1,140 @@
+---
+title: "Time to First Byte (TTFB): warum sie 2026 entscheidet"
+slug: warum-ist-time-to-first-byte-ttfb-eine-kritische
+excerpt: "Time to First Byte (TTFB) misst, wie schnell Ihr Server antwortet, und entscheidet 2026 mit über Ladezeit, Google-Crawling und Sichtbarkeit Ihrer Website."
+featuredSnippetTitle: "Warum ist Time to First Byte (TTFB) eine kritische Kennzahl?"
+featuredSnippet: "Time to First Byte (TTFB) misst die Zeit vom Klick bis zum ersten Antwort-Byte des Servers. Sie ist kritisch, weil der Browser vorher nichts anzeigt und Google die Crawl-Frequenz an diese Antwortzeit koppelt. Ein schlechter TTFB kostet damit gleichzeitig Besucher und organische Sichtbarkeit Ihrer Website."
+author: Dmitry Pashlov
+publishedAt: "2026-08-01"
+updatedAt: "2026-08-01"
+category: "Technik & Performance"
+tags:
+  - TTFB
+  - Core Web Vitals
+  - Website Performance
+  - SEO
+  - WordPress
+featuredImage: /images/blog/warum-ist-time-to-first-byte-ttfb-eine-kritische.png
+status: draft
+aiAssisted: true
+sources:
+  - name: "web.dev (Google) - Time to First Byte (TTFB)"
+    url: "https://web.dev/articles/ttfb"
+  - name: "Google Search Central - Managing crawl budget for large sites"
+    url: "https://developers.google.com/search/docs/crawling-indexing/large-site-managing-crawl-budget"
+  - name: "CoreWebVitals.io - Core Web Vitals for WordPress: Optimization Guide"
+    url: "https://www.corewebvitals.io/core-web-vitals/wordpress-guide"
+keyTakeaways:
+  - "TTFB ist der Startschuss. Es misst die Zeit vom Klick bis zum ersten Antwort-Byte, inklusive DNS, TLS-Handshake, Serververarbeitung und Netzwerk-Laufzeit. Vorher rendert der Browser gar nichts."
+  - "Die Schwellen sind klar. Bis 0,8 Sekunden gut, 0,8 bis 1,8 Sekunden verbesserungswürdig, über 1,8 Sekunden schlecht. Behandeln Sie 0,8 Sekunden als Obergrenze, nicht als Ziel."
+  - "TTFB bremst alles danach. Er geht FCP und LCP voraus, eine langsame Serverantwort verzögert unmittelbar den sichtbaren Bildaufbau."
+  - "Google bestraft langsame Server doppelt. Die Crawl-Frequenz hängt an der Antwortzeit inklusive TTFB. Schlechte Werte kosten Sichtbarkeit und Indexierungs-Reichweite, besonders bei großen Sites."
+  - "Nur rund 32 Prozent der WordPress-Seiten erreichen einen guten TTFB, weil klassische CMS jede Seite pro Anfrage neu aus PHP und Datenbank bauen. Caching, CDN und eine statisch vorgerenderte Architektur lösen das Problem an der Wurzel."
+conclusionStats:
+  - label: "Guter TTFB bis"
+    value: "0,8 s"
+  - label: "Schlecht ab"
+    value: "1,8 s"
+  - label: "WordPress-Seiten mit gutem TTFB"
+    value: "32 %"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Was ist ein guter TTFB-Wert?"
+    answer: "Google stuft einen TTFB bis 0,8 Sekunden als gut ein. Zwischen 0,8 und 1,8 Sekunden gilt der Wert als verbesserungswürdig, alles über 1,8 Sekunden als schlecht. Wer geschäftlich auf seine Website angewiesen ist, sollte 0,8 Sekunden als Obergrenze behandeln und deutlich darunter zielen."
+  - question: "Was ist der Unterschied zwischen TTFB und Ladezeit?"
+    answer: "TTFB ist nicht die Ladezeit der ganzen Seite, sondern nur der allererste Schritt. Es misst, wie schnell der Server das erste Byte schickt. Erst danach kann der Browser überhaupt anfangen zu rendern. TTFB trennt damit Serverprobleme sauber von Problemen, die erst beim Rendern im Browser entstehen."
+  - question: "Beeinflusst TTFB das Google-Ranking?"
+    answer: "Ja, indirekt und direkt. Google koppelt die Crawl-Frequenz an die Serverantwortzeit inklusive TTFB. Antwortet der Server schnell, crawlt Google intensiver. Zusätzlich verzögert ein langsamer TTFB Core Web Vitals wie den Largest Contentful Paint, die als Ranking-Signale zählen."
+  - question: "Warum haben viele WordPress-Seiten einen schlechten TTFB?"
+    answer: "Nur rund 32 Prozent der WordPress-Seiten erreichen laut Chrome-UX-Report einen guten TTFB. Der Grund liegt in der Architektur: Klassische CMS bauen jede Seite bei jeder Anfrage neu aus Datenbank und PHP zusammen. Bei Last oder günstigem Shared-Hosting staut sich diese Verarbeitung und der TTFB steigt."
+  - question: "Wie kann ich meinen TTFB verbessern?"
+    answer: "Messen Sie zuerst den Ausgangswert, etwa mit PageSpeed Insights. Prüfen Sie dann das Hosting, schalten Sie Caching ein und schalten Sie ein CDN vor. Bei Neubauten senkt eine statisch vorgerenderte Architektur, zum Beispiel mit Next.js über ein CDN, den TTFB an der Wurzel."
+hookCandidates:
+  - "warum lädt meine website so langsam?"
+  - "ttfb: warum wartet der browser?"
+  - "langsamer server? das kostet ranking"
+---
+
+Stellen Sie sich vor, Sie läuten an einer Wohnungstür und warten darauf, dass jemand aufmacht. Solange niemand öffnet, stehen Sie im Treppenhaus und können gar nichts tun. Genau so verhält sich ein Besucher, der Ihre Website aufruft. Time to First Byte, kurz TTFB, ist die Zeit, bis der Server das erste Mal reagiert und das erste Byte einer Antwort schickt. Vorher passiert im Browser des Nutzers buchstäblich nichts. Kein Text, kein Bild. Deshalb ist diese eine Zahl, die viele für ein technisches Detail halten, in Wahrheit einer der Punkte, an denen ein Web-Projekt leise scheitert oder gelingt.
+
+Viele Projekte stecken das ganze Budget in Design und Texte und sparen dann ausgerechnet an der Serverantwort. Das ist ungefähr so, als würden Sie ein Schaufenster im 7. Bezirk liebevoll dekorieren, aber die Eingangstür klemmt. Die Leute sehen von außen nichts und gehen weiter. In diesem Artikel erkläre ich Ihnen, was TTFB genau misst, welche Werte gut oder schlecht sind, warum Google diese Zahl bis in die Indexierung hinein bestraft und was Sie konkret tun, um sie in den Griff zu bekommen.
+
+![Diagramm zur Time to First Byte (TTFB) mit den Schritten DNS, TLS-Handshake, Serververarbeitung und Netzwerk-Laufzeit für eine schnelle Website](/images/blog/warum-ist-time-to-first-byte-ttfb-eine-kritische.png)
+
+## Was TTFB eigentlich misst (und was nicht)
+
+TTFB misst die Zeit vom Navigationsstart, also dem Moment, in dem der Nutzer auf den Link klickt oder die Adresse eintippt, bis das erste Byte der Server-Antwort im Browser eintrifft. In dieser Spanne stecken mehrere Schritte hintereinander: die DNS-Auflösung, der TCP-Verbindungsaufbau samt TLS-Handshake für die verschlüsselte Verbindung, die eigentliche Serververarbeitung und die Netzwerk-Laufzeit, bis das Byte wieder beim Nutzer ankommt. Das schreibt Google in der [Dokumentation zu TTFB auf web.dev](https://web.dev/articles/ttfb) unmissverständlich. TTFB zeigt damit sehr direkt, wie schnell Ihr Hosting überhaupt antwortet.
+
+Wichtig ist die Abgrenzung. TTFB ist nicht die Ladezeit der ganzen Seite. Es ist der allererste Schritt, sozusagen der Startschuss. Erst wenn dieses erste Byte da ist, kann der Browser anfangen zu arbeiten. Genau deshalb ist die Zahl so aussagekräftig. Sie trennt sauber zwischen Problemen, die auf dem Server liegen, und Problemen, die im Browser beim Rendern entstehen. Wenn Ihre Seite langsam ist und der TTFB hoch ist, brauchen Sie gar nicht erst anfangen, Bilder zu optimieren. Dann steckt der Engpass davor, in der Infrastruktur.
+
+## Welche Werte sind gut, welche sind schlecht?
+
+Hier lohnt es sich, konkret zu werden, denn Google hat klare Schwellen definiert. Ein TTFB von 0,8 Sekunden oder weniger gilt als gut. Zwischen 0,8 und 1,8 Sekunden ist der Wert verbesserungswürdig. Alles über 1,8 Sekunden stuft web.dev als schlecht ein. Das sind keine willkürlichen Hausnummern, sondern die offizielle Bewertung von Google selbst.
+
+Rechnen wir das einmal durch, damit die Größenordnung greifbar wird. Nehmen wir eine typische Wiener Handwerker-Website, die pro Monat rund 5.000 Besucher hat. Liegt der TTFB bei 1,8 Sekunden statt bei 0,4 Sekunden, verlieren Sie pro Aufruf grob 1,4 Sekunden, in denen der Nutzer eine weiße Seite anstarrt. Über den Monat gerechnet sind das 5.000 mal 1,4 Sekunden, also fast zwei Stunden reine Wartezeit, die sich auf Ihre Besucher verteilt. Ein Teil dieser Leute wartet nicht und ist wieder weg, bevor überhaupt etwas zu sehen war. Jede dieser Sekunden am Anfang wirkt besonders hart, weil in dieser Zeit eben noch gar nichts auf dem Bildschirm steht.
+
+Meine Empfehlung an dieser Stelle ist einfach. Behandeln Sie 0,8 Sekunden nicht als Ziel, sondern als Obergrenze. Wer geschäftlich auf seine Website angewiesen ist, sollte klar darunter liegen, oder?
+
+## Warum langsame Serverantwort die ganze Seite ausbremst
+
+Der Grund, warum TTFB so entscheidend ist, liegt in der Reihenfolge der Dinge. TTFB geht den nutzerzentrierten Metriken First Contentful Paint und Largest Contentful Paint zeitlich voraus. First Contentful Paint ist der Moment, in dem der erste Inhalt sichtbar wird. Largest Contentful Paint ist der Moment, in dem das größte sichtbare Element geladen ist, meist ein Hero-Bild oder eine Überschrift. Beide Werte gelten als zentrale Signale dafür, wie schnell sich eine Seite anfühlt.
+
+Und beide hängen am TTFB, weil sie erst danach kommen können. Eine langsame Serverantwort verzögert unmittelbar den Bildaufbau und damit die wahrgenommene Ladezeit, denn bis zum ersten Byte kann der Browser schlicht nichts rendern. Das ist der Punkt, den viele unterschätzen. Sie können Ihr Frontend noch so schlank bauen und jedes Bild sauber komprimieren. Wenn der Server zwei Sekunden braucht, um überhaupt zu antworten, starten alle diese Optimierungen erst mit zwei Sekunden Verspätung. Der TTFB ist quasi der Sockel, auf dem alles andere steht. Ist der Sockel zu hoch, hilft kein noch so schönes Haus darüber.
+
+## Der Google-Faktor: schlechter TTFB kostet Sichtbarkeit
+
+Jetzt wird es für den Projekterfolg richtig ernst. TTFB beeinflusst nicht bloß, was der Besucher sieht. Es entscheidet auch mit, wie gut Google Ihre Seite überhaupt findet. Google koppelt die Crawl-Frequenz direkt an die Serverantwortzeit inklusive TTFB. In der [offiziellen Dokumentation zum Crawl-Budget](https://developers.google.com/search/docs/crawling-indexing/large-site-managing-crawl-budget) steht wörtlich: "If the site responds consistently and its response times (including latency and Time-to-First-Byte) remain stable or improve, the limit goes up, meaning more connections can be used to crawl."
+
+Auf Deutsch heißt das: Antwortet Ihr Server schnell und zuverlässig, schickt Google mehr Verbindungen und crawlt Ihre Seite intensiver. Steigt dagegen die Latenz oder häufen sich Serverfehler wie 5xx- oder 429-Antworten, drosselt Google das Crawling. Ein schlechter TTFB kostet Sie damit doppelt. Erstens Besucher, die abspringen. Zweitens Indexierungs-Reichweite, weil Google schlicht weniger von Ihren Seiten sieht. Das trifft besonders größere Sites mit vielen Unterseiten, etwa einen Onlineshop mit hunderten Produkten oder ein Immobilienportal mit vielen Objektseiten. Wenn dort neue Seiten langsam oder gar nicht in den Index kommen, liegt das oft an genau dieser Bremse, ohne dass es jemand mit dem Hosting in Verbindung bringt.
+
+Die Empfehlung ist klar. Wer auf organische Sichtbarkeit setzt, muss TTFB als SEO-Thema behandeln, nicht bloß als netten Komfort.
+
+## Warum viele WordPress-Seiten hier ins Straucheln kommen
+
+An dieser Stelle wird es unangenehm für die verbreitetste Website-Technik überhaupt. Laut [Chrome-UX-Report](https://www.corewebvitals.io/core-web-vitals/wordpress-guide) erreichen nur rund 32 Prozent der WordPress-Seiten einen guten TTFB-Wert. Zwei von drei WordPress-Seiten liegen also außerhalb des grünen Bereichs. Das ist keine Kleinigkeit, das ist die Mehrheit.
+
+Der Grund liegt in der Architektur, nicht in einzelnen Fehlern. Klassische Content-Management-Systeme wie WordPress bauen jede Seite bei jeder Anfrage serverseitig neu zusammen. Der Server holt Daten aus der Datenbank, führt PHP-Code aus, setzt die Seite zusammen und schickt sie dann los. Das passiert bei jedem einzelnen Aufruf aufs Neue. Kommen viele Besucher gleichzeitig oder ist der Server günstig und geteilt, staut sich diese Verarbeitung, und der TTFB steigt. Deshalb ist TTFB bei WordPress kein Detail, das man mit einem Plugin wegschaltet, sondern der eigentliche Architektur-Engpass, der über gute oder schlechte Core Web Vitals entscheidet.
+
+Passend dazu ist der Largest Contentful Paint der Hauptschwachpunkt klassischer WordPress-Seiten bei den Core Web Vitals, und der wird direkt durch die langsame Time to First Byte verursacht. Die Kette ist also durchgehend: Architektur erzeugt langsamen TTFB, langsamer TTFB erzeugt schlechten LCP, schlechter LCP erzeugt eine Seite, die sich zäh anfühlt und schlechter rankt.
+
+Das heißt ausdrücklich nicht, dass WordPress per se schlecht ist. Es heißt, dass die Standard-Bauweise diesen Engpass eingebaut hat und man ihn aktiv angehen muss.
+
+## So bringen Sie den TTFB konkret in den grünen Bereich
+
+Genug Theorie, hier ist die praktische Reihenfolge, in der Sie vorgehen sollten. Nicht alles auf einmal, sondern von der größten Wirkung nach unten.
+
+**Erstens, messen, bevor Sie irgendetwas ändern.** Prüfen Sie Ihren aktuellen TTFB, zum Beispiel mit den PageSpeed Insights von Google oder in den Entwicklertools des Browsers unter dem Reiter Netzwerk. Ohne Ausgangswert wissen Sie später nicht, ob eine Maßnahme etwas gebracht hat.
+
+**Zweitens, das Hosting ehrlich anschauen.** Ein günstiges Shared-Hosting um ein paar Euro im Monat teilt sich einen Server mit vielen anderen Seiten. Wenn die Nachbarn Last erzeugen, leidet Ihr TTFB, ohne dass Sie etwas falsch gemacht haben. Ein Wechsel auf ein besseres Paket oder einen dedizierten Ressourcen-Tarif ist oft der Hebel mit der größten sofortigen Wirkung.
+
+**Drittens, Caching einschalten.** Wenn Ihre Seite nicht bei jeder Anfrage neu aus Datenbank und PHP zusammengebaut wird, sondern eine fertige Version zwischengespeichert ausliefert, fällt der TTFB oft drastisch. Bei WordPress geht das über etablierte Caching-Mechanismen, idealerweise ergänzt um serverseitiges Caching beim Hoster.
+
+**Viertens, ein CDN vorschalten.** Ein Content Delivery Network legt Kopien Ihrer Seite auf Servern in ganz Europa ab. Ein Besucher aus Graz bekommt die Antwort dann von einem nahen Server statt einmal quer über den Kontinent. Das senkt vor allem die Netzwerk-Laufzeit, einen der TTFB-Bestandteile.
+
+**Fünftens, bei Neubauten die Architektur überdenken.** Statt jede Seite pro Anfrage neu zu erzeugen, kann man Seiten einmal vorab statisch rendern und über ein CDN ausliefern. Genau das leisten headless oder statisch vorgerenderte Frontends, etwa mit Next.js über ein CDN. Diese Bauweise löst das Serverantwort-Problem auf Infrastrukturebene, statt es bei jedem Aufruf neu zu produzieren. Der teure Schritt fällt weg, bevor der erste Besucher da ist.
+
+Wenn Sie unsicher sind, an welchem dieser Punkte Ihr Projekt hängt, schauen wir uns Ihren TTFB gerne an und sagen Ihnen ehrlich, ob es am Hosting, am Caching oder an der Grundarchitektur liegt. Sie erreichen uns über unsere [Kontaktseite](/kontakt).
+
+## Häufige Irrtümer, die Zeit und Geld kosten
+
+Ein paar Denkfehler tauchen in der Praxis besonders oft auf, und die kosten echtes Geld.
+
+Der erste Irrtum: "Bei mir zu Hause lädt die Seite doch schnell." Das liegt oft am Browser-Cache auf Ihrem eigenen Gerät. Ein neuer Besucher, der die Seite zum ersten Mal öffnet, erlebt den vollen TTFB. Testen Sie deshalb immer im privaten Fenster oder mit geleertem Cache.
+
+Der zweite Irrtum: "Ein größeres Bild-Optimierungs-Plugin macht die Seite schnell." Bildkompression hilft dem LCP, aber nicht dem TTFB. Wenn der Server erst nach 1,8 Sekunden antwortet, ist das schöne komprimierte Bild trotzdem zu spät dran. Erst den Sockel senken, dann das Frontend feilen.
+
+Der dritte Irrtum: "TTFB ist reine Technik, das interessiert meine Kunden nicht." Das stimmt nur auf dem Papier. Ihre Kunden merken nichts von der Zahl, aber sie spüren die Sekunden. Und Google übersetzt diese Sekunden in Ranking und Crawl-Budget. Beides landet am Ende direkt auf Ihrem Umsatz.
+
+## Key-Takeaways
+
+- **TTFB ist der Startschuss.** Es misst die Zeit vom Klick bis zum ersten Antwort-Byte, inklusive DNS, TLS-Handshake, Serververarbeitung und Netzwerk-Laufzeit. Vorher rendert der Browser gar nichts.
+- **Die Schwellen sind klar.** Bis 0,8 Sekunden gut, 0,8 bis 1,8 Sekunden verbesserungswürdig, über 1,8 Sekunden schlecht. Behandeln Sie 0,8 Sekunden als Obergrenze, nicht als Ziel.
+- **TTFB bremst alles danach.** Er geht FCP und LCP voraus, eine langsame Serverantwort verzögert unmittelbar den sichtbaren Bildaufbau.
+- **Google bestraft langsame Server doppelt.** Die Crawl-Frequenz hängt an der Antwortzeit inklusive TTFB. Schlechte Werte kosten Sichtbarkeit und Indexierungs-Reichweite, besonders bei großen Sites.
+- **Nur rund 32 Prozent der WordPress-Seiten erreichen einen guten TTFB,** weil klassische CMS jede Seite pro Anfrage neu aus PHP und Datenbank bauen. Caching, CDN und bei Neubauten eine statisch vorgerenderte Architektur lösen das Problem an der Wurzel.
+
+## Fazit
+
+Time to First Byte ist keine Kennzahl nur für Technik-Nerds. Es ist der Punkt, an dem sich entscheidet, ob Ihre Website überhaupt eine Chance bekommt. Sie steht vor allem anderen. Sie beeinflusst, wie schnell sich die Seite anfühlt, und sie bestimmt mit, wie gut Google Ihre Inhalte findet. Wer diese Zahl kennt und im grünen Bereich hält, hat einen echten Vorsprung, weil so viele Mitbewerber sie ignorieren.
+
+Wenn Sie wissen wollen, wo Ihr Projekt beim TTFB steht und welcher der Hebel bei Ihnen am meisten bringt, melden Sie sich einfach. Wir messen nach und sagen Ihnen klar, was sich lohnt und was nicht.
