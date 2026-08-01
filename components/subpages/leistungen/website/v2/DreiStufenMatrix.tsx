@@ -37,8 +37,8 @@ import {
 // Bewusst hier als Anzeige-Strings, solange es keine gemeinsame PRICING-Config
 // gibt (siehe decisions-log "OFFEN: brand/pricing.md + lib/config.ts angleichen").
 const PREISE: Record<string, string> = {
-  Starter: "1.250 €",
-  Business: "2.850 €",
+  Starter: "ab 1.250 €",
+  Business: "ab 2.850 €",
   Premium: "ab 4.900 €",
 };
 

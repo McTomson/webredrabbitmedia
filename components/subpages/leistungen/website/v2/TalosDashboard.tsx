@@ -679,12 +679,16 @@ export default function TalosDashboard() {
           /* Talos liegt UEBER dem Dashboard (z-index), rechts in der gepinnten
              Szene; JS blendet ihn ein, sobald nach rechts gepannt wird
              (opacity 0 -> 1). */
+          /* Breiter + rechts verankert (waechst nach links), damit Talos'
+             ausgestreckter Arm/Hand nicht am Canvas-Rand abgeschnitten wird
+             (Thomas 01.08., Geraete-Foto). Nur Mobile-Aspect, Desktop-Canvas
+             unberuehrt (eigene Breite weiter oben). */
           .wda__talos {
             position: absolute;
-            right: 2%;
+            right: 0;
             bottom: 0;
-            width: clamp(190px, 48vw, 300px);
-            height: clamp(300px, 62vh, 440px);
+            width: clamp(250px, 66vw, 390px);
+            height: clamp(340px, 66vh, 480px);
             margin-top: 0;
             z-index: 5;
             opacity: 0;
