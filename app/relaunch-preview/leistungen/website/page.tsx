@@ -168,22 +168,28 @@ export default function LeistungenWebsitePreviewPage() {
         <div data-rr-snap>
           <TalosDashboard />
         </div>
-        <div data-rr-snap style={{ background: 'var(--rr-paper, #ffffff)' }}>
+        {/* Vollbild-Sektionen auf Mobile (Thomas 01.08.): min-height 100svh +
+            vertikal zentriert ueber den Wrapper (rr-fullscreen-mobile). Nur
+            Nicht-gepinnte Inhalts-Sektionen; Ablauf + TalosDashboard sind
+            gepinnte Track-Szenen und bleiben ausgenommen. */}
+        <div data-rr-snap className="rr-fullscreen-mobile" style={{ background: 'var(--rr-paper, #ffffff)' }}>
           <KundenSagen />
         </div>
-        <div data-rr-snap>
+        <div data-rr-snap className="rr-fullscreen-mobile">
           <ReferenzenTeaser />
         </div>
-        <div data-rr-snap style={{ background: 'var(--rr-paper, #ffffff)' }}>
+        <div data-rr-snap className="rr-fullscreen-mobile" style={{ background: 'var(--rr-paper, #ffffff)' }}>
           <WebsiteFaq />
         </div>
-        <SiteClosing
-          lines={[
-            'Gefunden werden ist der Anfang.',
-            'Was deine Website danach für dich erledigt, zeigen wir dir gern.',
-            'Reden wir.',
-          ]}
-        />
+        <div className="rr-fullscreen-mobile">
+          <SiteClosing
+            lines={[
+              'Gefunden werden ist der Anfang.',
+              'Was deine Website danach für dich erledigt, zeigen wir dir gern.',
+              'Reden wir.',
+            ]}
+          />
+        </div>
       </div>
 
       <div className={rrFonts} data-rr-snap style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>

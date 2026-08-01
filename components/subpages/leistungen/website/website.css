@@ -210,4 +210,18 @@
    Desktop unveraendert. */
 @media (max-width: 860px) {
   .rr .rr-hide-mobile { display: none; }
+
+  /* Vollbild-Sektionen (Thomas 01.08.: "jeder Bereich mindestens so gross wie
+     der Bildschirm"): der Wrapper wird mindestens bildschirmhoch und zentriert
+     seinen Inhalt vertikal. Nur auf Nicht-gepinnte Inhalts-Sektionen anwenden
+     (NICHT auf Hero/Ablauf/Dashboard-Track — die steuern ihre Hoehe selbst).
+     Ist die Sektion ohnehin hoeher als der Screen, waechst der Wrapper mit und
+     die Zentrierung hat keinen Effekt. Aendert nur den Wrapper, nie die
+     (teils fremden) Sektions-Komponenten selbst. */
+  .rr .rr-fullscreen-mobile {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
