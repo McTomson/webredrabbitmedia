@@ -681,14 +681,21 @@ export default function TalosDashboard() {
              (opacity 0 -> 1). */
           /* Breiter + rechts verankert (waechst nach links), damit Talos'
              ausgestreckter Arm/Hand nicht am Canvas-Rand abgeschnitten wird
-             (Thomas 01.08., Geraete-Foto). Nur Mobile-Aspect, Desktop-Canvas
-             unberuehrt (eigene Breite weiter oben). */
+             (Thomas 01.08., Geraete-Foto). Steuer-Hebel ist bewusst das
+             Canvas-ASPECT, nicht die Kamera: TalosEntranceStage haelt das
+             vertikale FOV fix (40 Grad, ganze Figur immer drin) und leitet das
+             horizontale FOV aus width/height ab. Der abgeschnittene Winkarm ist
+             also ein HORIZONTALES Problem -> Aspect verbreitern (mehr Breite,
+             etwas weniger Hoehe) auf ~1.0. 7bd391c (66vw, Aspect ~0.78) zeigte
+             schon "mehr aber nicht alles"; hier weiter in dieselbe Richtung.
+             onResize zieht camera.aspect live nach. Nur Mobile-Aspect,
+             Desktop-Canvas unberuehrt (eigene Breite weiter oben). */
           .wda__talos {
             position: absolute;
             right: 0;
             bottom: 0;
-            width: clamp(250px, 66vw, 390px);
-            height: clamp(340px, 66vh, 480px);
+            width: clamp(300px, 86vw, 450px);
+            height: clamp(300px, 48vh, 430px);
             margin-top: 0;
             z-index: 5;
             opacity: 0;
