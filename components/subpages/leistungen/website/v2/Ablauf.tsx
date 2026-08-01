@@ -7,7 +7,7 @@ import {
   STEP_TRACK_VH_PER_STEP,
   TRANSITION_EASING,
   TRANSITION_MS,
-  isBumperDegraded,
+  prefersReducedMotion,
 } from '@/lib/relaunch/scroll-standard';
 
 /**
@@ -57,12 +57,13 @@ export default function Ablauf() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [reduced, setReduced] = useState(false);
 
-  // Degradiert nach Scroll-Standard (lib/relaunch/scroll-standard.ts):
-  // prefers-reduced-motion ODER schmaler Viewport (<= MOBILE_BREAKPOINT).
-  // Muss deckungsgleich mit der Media Query der Sticky-Szene unten bleiben,
+  // Nur prefers-reduced-motion degradiert zur statischen Liste (Thomas
+  // 01.08.: die Kreis-Ketten-Szene aus Bild #34 soll auch auf Handy/Tablet
+  // laufen, nicht nur ab 821px). Deckungsgleich mit der Media Query der
+  // Sticky-Szene unten (dort ebenfalls nur no-preference, keine min-width),
   // sonst laeuft der rAF-Loop gegen ein Layout, das gar nicht sticky ist.
   useEffect(() => {
-    setReduced(isBumperDegraded());
+    setReduced(prefersReducedMotion());
   }, []);
 
   useEffect(() => {
@@ -346,7 +347,10 @@ export default function Ablauf() {
           transform: translateY(0);
           pointer-events: auto;
         }
-        @media (max-width: ${MOBILE_BREAKPOINT}px) {
+        /* Statische Liste (nur reduced-motion): CTA immer sichtbar, linksbuendig.
+           Ohne reduced-motion laeuft auch auf Mobile die Szene, dort erscheint
+           der CTA wie am Desktop erst bei Schritt 4 (.is-show). */
+        @media (max-width: ${MOBILE_BREAKPOINT}px) and (prefers-reduced-motion: reduce) {
           .wd-abl__cta {
             opacity: 1;
             transform: none;
@@ -363,10 +367,12 @@ export default function Ablauf() {
           }
         }
 
-        /* Desktop-Szene: Sticky-Scroll, nur wenn Platz da ist und Motion erlaubt.
-           Breakpoint aus dem Scroll-Standard (MOBILE_BREAKPOINT = 820px), damit
-           er deckungsgleich mit isBumperDegraded() im rAF-Loop ist. */
-        @media (min-width: ${MOBILE_BREAKPOINT + 1}px) and (prefers-reduced-motion: no-preference) {
+        /* Sticky-Szene: Kreis-Kette mit Scroll-Fortschritt (Bild #34). Laeuft
+           auf ALLEN Breiten, solange Motion erlaubt ist (Thomas 01.08.: auch
+           Handy/Tablet, nicht nur Desktop). Deckungsgleich mit
+           prefersReducedMotion() im rAF-Loop. Schmale Feinheiten fuers Handy
+           im @media (max-width: MOBILE_BREAKPOINT) darunter. */
+        @media (prefers-reduced-motion: no-preference) {
           .wd-abl__track {
             /* Thomas 22.07.: "ein Scroll = ein Punkt". 100vh Sticky-Pin +
                STEP_TRACK_VH_PER_STEP je Schritt Scroll-Strecke. Der Fortschritt
@@ -424,6 +430,47 @@ export default function Ablauf() {
           }
           .wd-abl__erg {
             justify-content: center;
+          }
+        }
+
+        /* Schmale Feinheiten fuer die Szene auf Handy/Tablet: kleinster
+           Viewport (svh) gegen URL-Leisten-Sprung, engere Abstaende, Schrift
+           runter, damit jeder Schritt (auch der laengere Schritt 3) in EINE
+           Bildschirmhoehe passt. */
+        @media (max-width: ${MOBILE_BREAKPOINT}px) and (prefers-reduced-motion: no-preference) {
+          .wd-abl {
+            padding-top: var(--rr-section-y, clamp(96px, 12vw, 180px));
+          }
+          .wd-abl__stage {
+            height: 100svh;
+            gap: clamp(18px, 4vh, 30px);
+          }
+          .wd-abl__circles {
+            --circle: clamp(50px, 15vw, 70px);
+            width: min(440px, 88vw);
+          }
+          .wd-abl__list {
+            /* Platz fuer die absolut positionierten Schritt-Texte reservieren
+               (Schritt 3 ist der laengste); sonst kollabiert der Container und
+               der CTA rutscht in den Text. Kleiner als Desktop, damit alles in
+               100svh bleibt. */
+            min-height: clamp(280px, 42vh, 360px);
+            margin-top: clamp(12px, 3vh, 22px);
+          }
+          .wd-abl__body {
+            padding: 0 clamp(4px, 2vw, 14px);
+          }
+          .wd-abl__titel {
+            font-size: clamp(1.5rem, 6.2vw, 2rem);
+          }
+          .wd-abl__text {
+            font-size: clamp(1rem, 4vw, 1.12rem);
+            line-height: 1.55;
+            margin-top: 12px;
+          }
+          .wd-abl__erg {
+            font-size: clamp(0.98rem, 3.6vw, 1.1rem);
+            margin-top: 14px;
           }
         }
       `}</style>
