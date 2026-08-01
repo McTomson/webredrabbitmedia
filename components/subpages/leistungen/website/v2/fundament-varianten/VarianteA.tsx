@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import {
   TRANSITION_EASING,
   TRANSITION_MS,
@@ -262,26 +262,41 @@ export default function VarianteA() {
             </ol>
           </aside>
 
-          {/* Scrollende Detail-Bloecke rechts */}
+          {/* Detail-Bloecke: Desktop = scrollendes Reveal (active). Mobile =
+              zwei Wisch-Decks (je Gruppe eins) mit Gruppen-Ueberschrift; Karten
+              horizontal wischbar (Thomas 01.08.: "zum Wischen, aber aufgeteilt").
+              .lwa__deck ist auf Desktop display:contents (transparent), die
+              Reihenfolge bleibt also die FLAT-Ledger-Reihenfolge. */}
           <div className="lwa__details">
-            {FLAT.map((it, idx) => (
-              <div
-                key={it.tag}
-                data-idx={idx}
-                ref={(el) => {
-                  detailRefs.current[idx] = el;
-                }}
-                className={
-                  "lwa__detail" +
-                  (idx === active || active === -1 ? " is-on" : "")
-                }
-              >
-                <p className="lwa__detailTag">
-                  {String(it.n).padStart(2, "0")} · {it.tag}
-                </p>
-                <p className="lwa__detailText">{it.text}</p>
-              </div>
-            ))}
+            {GROUPS.map((g, gi) => {
+              const base = gi === 0 ? 0 : GROUPS[0].items.length;
+              return (
+                <Fragment key={g.heading}>
+                  <p className="lwa__mobilegroup">{g.heading}</p>
+                  <div className="lwa__deck">
+                    {g.items.map((it, ii) => {
+                      const idx = base + ii;
+                      const isOn = idx === active || active === -1;
+                      return (
+                        <div
+                          key={it.tag}
+                          data-idx={idx}
+                          ref={(el) => {
+                            detailRefs.current[idx] = el;
+                          }}
+                          className={"lwa__detail" + (isOn ? " is-on" : "")}
+                        >
+                          <p className="lwa__detailTag">
+                            {String(idx + 1).padStart(2, "0")} · {it.tag}
+                          </p>
+                          <p className="lwa__detailText">{it.text}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Fragment>
+              );
+            })}
             </div>
           </div>
         </div>
@@ -441,6 +456,15 @@ export default function VarianteA() {
         .lwa__mobilebar {
           display: none;
         }
+        /* Desktop: Deck-Wrapper transparent (display:contents -> Reihenfolge =
+           FLAT-Ledger, Reveal unveraendert), Gruppen-Ueberschrift versteckt.
+           Beides wird nur auf Mobile aktiv (siehe @media). */
+        .lwa__deck {
+          display: contents;
+        }
+        .lwa__mobilegroup {
+          display: none;
+        }
         @media (max-width: 860px) {
           .lwa__grid {
             grid-template-columns: 1fr;
@@ -493,40 +517,64 @@ export default function VarianteA() {
             transform-origin: left;
             transition: transform 0.3s ease;
           }
-          /* Horizontales Wisch-Deck statt langer vertikaler Liste (Thomas 01.08.:
-             "eine lange Liste, unuebersichtlich, viel zu viel" -> Dashboard-Karten,
-             eine pro Screen, wischen; wie die freigegebene CasePanel-Mechanik).
-             scroll-snap-x, Karte ~82% mit Peek der naechsten als Wisch-Hinweis. */
+          /* Zwei Wisch-Decks, je Gruppe eins, mit Gruppen-Ueberschrift
+             (Thomas 01.08.: "zum Wischen, aber aufgeteilt"). .lwa__details
+             stapelt die zwei Decks vertikal; jedes .lwa__deck ist ein
+             horizontaler scroll-snap-Streifen, Karte ~78% mit Peek der
+             naechsten als Wisch-Hinweis. Die globale Fortschritts-Leiste
+             faellt weg (die zwei Gruppen-Titel geben die Orientierung). */
+          .lwa__mobilebar {
+            display: none;
+          }
           .lwa__details {
+            display: block;
+          }
+          .lwa__mobilegroup {
+            display: block;
+            font-family: var(--rr-font-ui);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--rr-red);
+            margin: 30px 0 10px;
+          }
+          .lwa__mobilegroup:first-of-type {
+            margin-top: 6px;
+          }
+          .lwa__deck {
             display: flex;
             flex-direction: row;
-            gap: 16px;
+            gap: 14px;
             overflow-x: auto;
             overflow-y: hidden;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             scroll-padding-left: 6vw;
-            scroll-padding-right: 6vw;
-            padding: 10px 6vw 22px;
-            margin: 4px calc(-1 * var(--rr-gutter, clamp(20px, 4vw, 64px)));
+            padding: 6px 6vw 18px;
+            margin: 0 calc(-1 * var(--rr-gutter, clamp(20px, 4vw, 64px)));
             scrollbar-width: none;
           }
-          .lwa__details::-webkit-scrollbar {
+          .lwa__deck::-webkit-scrollbar {
             display: none;
           }
           .lwa__detail {
-            flex: 0 0 82%;
+            flex: 0 0 78%;
             scroll-snap-align: center;
-            min-height: 42vh;
+            min-height: 34vh;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            gap: 16px;
-            padding: clamp(26px, 6.5vw, 34px);
+            gap: 14px;
+            padding: clamp(22px, 6vw, 30px);
             background: #ffffff;
             border: 1px solid rgba(28, 40, 55, 0.1);
-            border-radius: 22px;
+            border-top: 0;
+            border-radius: 20px;
             box-shadow: 0 20px 44px -30px rgba(28, 40, 55, 0.45);
+          }
+          .lwa__detailText {
+            font-size: clamp(1.15rem, 4.6vw, 1.5rem);
           }
         }
 
