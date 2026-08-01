@@ -58,7 +58,16 @@ export default function TalosDashboard() {
       <div className="wda__wrap">
         {/* Buehne: Browser-Frame + darueber ragender Talos */}
         <div className={`wda__stageArea ${inView ? "is-in" : ""}`} ref={rootRef}>
-          <div className="wda__browser">
+          {/* Mobile/Tablet: der Browser-Rahmen ist doppelt so breit wie das
+              Sichtfenster und wird horizontal gewischt -- linke Haelfte, dann
+              nach rechts die zweite Haelfte (Thomas 01.08.). Die zwei
+              Snap-Marker halten an beiden Haelften. Auf dem Desktop ist der
+              Scroller ein transparenter Wrapper (alle Regeln stehen unter
+              @media max-width:860px), Layout also unveraendert. */}
+          <div className="wda__scroller">
+            <span className="wda__snap wda__snap--a" aria-hidden="true" />
+            <span className="wda__snap wda__snap--b" aria-hidden="true" />
+            <div className="wda__browser">
             {/* Browser-Chrome */}
             <div className="wda__chrome">
               <span className="wda__lights" aria-hidden="true">
@@ -162,6 +171,14 @@ export default function TalosDashboard() {
               </div>
             </div>
           </div>
+          </div>
+
+          {/* Mobile-Hinweis: nach rechts wischen fuer die zweite Haelfte.
+              Nur unter @media max-width:860px sichtbar. */}
+          <p className="wda__panhint" aria-hidden="true">
+            <span>Wisch nach rechts für die zweite Hälfte</span>
+            <span className="wda__panarrow">&rarr;</span>
+          </p>
 
           {/* Talos ragt von rechts halb ueber den Rahmen, winkt bei Klick erneut.
               Erscheint NACH dem Dashboard (autoplayDelayMs): erst Panels rein,
@@ -187,14 +204,14 @@ export default function TalosDashboard() {
         <div className="wda__info">
           <p className="wd-eyebrow wda__eyebrow">NICHT NUR EINE SEITE</p>
           <h2 className="rr-statement wda__title">
-            Zu einer gewöhnlichen Website bekommst du bei uns einen Helfer dazu.
-            Er heisst <span className="wda__name">Talos</span>.
+            Zu einer gewöhnlichen Website bekommst du bei uns einen Copiloten
+            dazu. Er heisst <span className="wda__name">Talos</span>.
           </h2>
           <p className="rr-body-lg wda__lead">
-            Du bekommst ein Dashboard. Dort tauschst du Texte und Bilder selbst.
-            Und Talos hilft dir aktiv: Du bekommst eine Nachricht, wenn auf deiner
-            Seite etwas nicht stimmt. Du siehst, wie viele Leute da waren und wo sie
-            hingeklickt haben.
+            Talos ist bei jeder Website dabei und zeigt dir, wie sie läuft: ob
+            alles online ist, wie viele Leute da waren, wo sie herkommen und wo
+            sie hinklicken. Seine Infos zieht er aus Google Search, deiner Heatmap
+            und dem Google Tag. Und er meldet sich, wenn etwas nicht stimmt.
           </p>
 
           <div className="wda__cols">
@@ -567,41 +584,101 @@ export default function TalosDashboard() {
           }
         }
 
-        /* ---- Responsive ---- */
+        /* Pan-Hinweis (nur Mobile sichtbar, siehe @media unten) */
+        .wda__panhint {
+          display: none;
+        }
+
+        /* ---- Responsive: Mobile/Tablet = horizontaler Pan ueber 2 Haelften ----
+           Thomas 01.08.: Dashboard in der Mitte teilen; man sieht die linke
+           Haelfte, wischt nach rechts und sieht die zweite. Der Browser bleibt
+           im Desktop-2-Spalter (nicht stapeln), ist aber doppelt so breit wie
+           das Sichtfenster; scroll-snap haelt an linker und rechter Haelfte. */
         @media (max-width: 860px) {
           .wda__stageArea {
             padding-right: 0;
           }
+          .wda__scroller {
+            position: relative;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+          }
+          .wda__scroller::-webkit-scrollbar {
+            display: none;
+          }
+          .wda__snap {
+            position: absolute;
+            top: 0;
+            width: 1px;
+            height: 1px;
+            pointer-events: none;
+            scroll-snap-align: start;
+          }
+          .wda__snap--a {
+            left: 0;
+          }
+          /* Start der zweiten Haelfte = eine volle Sichtfenster-Breite nach
+             rechts. left ist prozentual zur Scroller-Breite (100% = 1 Fenster),
+             der Browser darin ist 200% = zwei Fenster. */
+          .wda__snap--b {
+            left: 100%;
+          }
+          /* Doppelte Sichtfenster-Breite = zwei Haelften; Desktop-Layout drin
+             bleibt erhalten (Sidebar + 2 Panel-Spalten). */
+          .wda__browser {
+            width: 200%;
+          }
           .wda__screen {
-            grid-template-columns: 1fr;
+            grid-template-columns: 128px 1fr;
           }
           .wda__side {
-            flex-direction: row;
-            flex-wrap: wrap;
-            align-items: center;
-            border-right: none;
-            border-bottom: 1px solid rgba(28, 40, 55, 0.12);
-          }
-          .wda__sideLine {
-            width: 56px;
+            padding: 16px 12px;
           }
           .wda__panels {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 14px;
           }
           .wda__card--note {
-            grid-column: auto;
+            grid-column: 1 / -1;
           }
+          /* Talos unter dem gewischten Dashboard, dann kommt die Beschreibung. */
           .wda__talos {
             position: relative;
             right: auto;
             bottom: auto;
             width: 100%;
-            height: 340px;
-            margin-top: 8px;
+            height: 300px;
+            margin-top: 16px;
           }
           .wda__cols {
             grid-template-columns: 1fr;
           }
+          .wda__panhint {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0 0;
+            font-family: var(--rr-font-ui);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: var(--rr-ink-soft);
+          }
+          .wda__panarrow {
+            color: var(--rr-red);
+            font-size: 16px;
+            animation: wda-nudge 1.6s ease-in-out infinite;
+          }
+        }
+        @keyframes wda-nudge {
+          0%, 100% { transform: translateX(0); }
+          50% { transform: translateX(5px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .wda__panarrow { animation: none; }
         }
       `}</style>
     </section>
