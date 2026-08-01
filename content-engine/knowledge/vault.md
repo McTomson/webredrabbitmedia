@@ -2390,3 +2390,39 @@ quelle: https://www.corewebvitals.io/core-web-vitals/wordpress-guide
 quelle_name: CoreWebVitals.io - Core Web Vitals for WordPress: Optimization Guide
 geprueft_am: 2026-08-01
 recheck_nach: 2027-01-28
+
+## t58-2026-08-01-266
+cluster: 2
+keywords: serverseitiges, rendering, welche, vorteile, bietet
+aussage: Bei Server-side Rendering (SSR) in Next.js wird das HTML fuer jede Anfrage auf dem Server neu erzeugt; dazu exportiert man aus einer Seite eine async-Funktion getServerSideProps, die der Server bei jedem Request aufruft, um die Daten zu holen und das initiale HTML zu rendern. Das ist sinnvoll fuer haeufig wechselnde Inhalte.
+quelle: https://nextjs.org/docs/pages/building-your-application/rendering/server-side-rendering
+quelle_name: Next.js Documentation - Rendering: Server-side Rendering (SSR)
+geprueft_am: 2026-08-01
+recheck_nach: 2027-01-28
+
+## t58-2026-08-01-267
+cluster: 2
+keywords: serverseitiges, rendering, welche, vorteile, bietet
+aussage: Google hat Dynamic Rendering als Workaround eingestuft und empfiehlt stattdessen serverseitiges Rendering, statisches Rendering oder Hydration, weil Dynamic Rendering zusaetzliche Komplexitaet und Ressourcen erfordert. Fuer such-sichtbare, oeffentliche Inhalte ist SSR/SSG damit der empfohlene Default.
+quelle: https://developers.google.com/search/docs/crawling-indexing/javascript/dynamic-rendering
+quelle_name: Google Search Central - Dynamic rendering as a workaround
+geprueft_am: 2026-08-01
+recheck_nach: 2027-01-28
+
+## t58-2026-08-01-268
+cluster: 2
+keywords: serverseitiges, rendering, welche, vorteile, bietet
+aussage: Laut Next.js-Dokumentation erzeugt Static Site Generation das HTML bereits zur Build-Zeit und liefert es ueber ein CDN aus, sodass Seiten und ihre Metadaten ohne JavaScript sofort beim Laden verfuegbar sind — entscheidend dafuer, dass Suchmaschinen Inhalte zuverlaessig crawlen und Seiten schnell laden; die Rendering-Strategie (SSG/SSR/ISR) laesst sich pro Seite einzeln waehlen.
+quelle: https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation
+quelle_name: Next.js Documentation - Static Site Generation (SSG)
+geprueft_am: 2026-08-01
+recheck_nach: 2027-01-28
+
+## t58-2026-08-01-269
+cluster: 2
+keywords: serverseitiges, rendering, welche, vorteile, bietet
+aussage: getServerSideProps erlaubt es, serverseitigen Code (inkl. Datenbankzugriff) direkt beim Request auszufuehren und die Daten in das initiale HTML einzubauen; so ist der noetige Content und die Metadaten schon im ausgelieferten HTML enthalten, statt erst per Client-JavaScript nachgeladen zu werden.
+quelle: https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props
+quelle_name: Next.js Documentation - Data Fetching: getServerSideProps
+geprueft_am: 2026-08-01
+recheck_nach: 2027-01-28
