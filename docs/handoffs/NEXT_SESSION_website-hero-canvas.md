@@ -1,5 +1,25 @@
 # Naechste Session — /leistungen/website Mobile-Umbau (Stand 2026-08-01 nachts, sehr spaet)
 
+## NACHTRAG 2026-08-02 (Folge-Session)
+- **B (Paket-Stopp) ERLEDIGT + LIVE auf v2, aber ANDERS als unten geplant.** Erst als
+  gepinnte Crossfade-Station mit kompakten Karten gebaut (ecc155c) -> Thomas hat das als
+  ungewolltes REDESIGN abgelehnt: "das einzige was ich wollte war das da ein stop ist, mehr
+  nicht, kein neues design". Zurueckgesetzt (03e61ee) auf das Original-Design (gestapelte
+  Pakete, voller Accordion, alle Merkmale) und den Stopp REIN ADDITIV per nativem CSS
+  scroll-snap ergaenzt (website.css, mobile-only): `html{scroll-snap-type:y proximity}` +
+  `.fmx__stufe{scroll-snap-align:start; scroll-snap-stop:always}`. LEHRE: kleine konkrete
+  Bitte = genau das, kein Umbau (Memory feedback_minimal_nur_das_erbetene_kein_redesign).
+  DEVICE-CHECK offen: haelt es sauber an jedem Paket UND scrollt der Rest (Hero/Ablauf/
+  Dashboard/Vollbild-Sektionen) am Handy weiter normal (globales html-Snap)? Falls dort
+  Ruckeln: snap enger fassen.
+- **C (Talos-Hand) weiter getuned + LIVE (6e5cc8f):** Mobile-Canvas-Aspect von ~0.78 auf ~1.0
+  (width clamp(300px,86vw,450px) / height clamp(300px,48vh,430px)). Hebel ist bewusst das
+  Canvas-Aspect, NICHT die Kamera (TalosEntranceStage liest camPos/camTgt nur beim Mount +
+  vertikales FOV ist fix -> Winkarm ist ein HORIZONTALES Problem). Am Geraet final bestaetigen.
+- **A (Hero-Bug) NICHT angefasst** — bleibt Prioritaet, siehe unten. Emulator friert bei dieser
+  schweren 3D-Seite ein/crasht den Tab -> animierten Zurueckscroll-Bug hier nicht reproduzierbar.
+  Fuer A: leichte Hero-only-Testroute (ohne Talos/Dashboard) bauen ODER Handy-Aufnahme von Thomas.
+
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST diesen Handoff, MEMORY.md, betroffene Dateien. Nicht ohne Kontext loslegen.
 - NIE raten — immer verifizieren (Code/Browser/decisions-log). Preise/Marken-Begriffe NIE erfinden (decisions-log ist Quelle).
