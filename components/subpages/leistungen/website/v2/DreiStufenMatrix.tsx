@@ -31,6 +31,16 @@ import {
  * gestapelte Darstellung zurueck.
  */
 
+// Preise deckungsgleich mit der /preise-Seite (decisions-log 30.07.2026,
+// Thomas bestaetigt 01.08.): Starter 1.250 / Business 2.850 / Premium ab 4.900.
+// Bewusst hier als Anzeige-Strings, solange es keine gemeinsame PRICING-Config
+// gibt (siehe decisions-log "OFFEN: brand/pricing.md + lib/config.ts angleichen").
+const PREISE: Record<string, string> = {
+  Starter: "1.250 €",
+  Business: "2.850 €",
+  Premium: "ab 4.900 €",
+};
+
 function StufeMatrix({
   stufe,
   defaultActive = null,
@@ -39,6 +49,7 @@ function StufeMatrix({
   defaultActive?: number | null;
 }) {
   const [active, setActive] = useState<number | null>(defaultActive);
+  const preis = PREISE[stufe.name];
 
   return (
     <div className={"fmx__stufe" + (stufe.featured ? " fmx__stufe--featured" : "")}>
@@ -49,6 +60,7 @@ function StufeMatrix({
             {stufe.name}
             {stufe.featured && <span className="fmx__namedot" aria-hidden="true" />}
           </h3>
+          {preis && <p className="fmx__preis">{preis}</p>}
           <p className="fmx__text">{stufe.text}</p>
         </div>
       </aside>
@@ -144,6 +156,18 @@ function StufeMatrix({
           border-radius: 50%;
           background: var(--rr-red);
           margin-bottom: 0.2em;
+        }
+        .fmx__preis {
+          font-family: var(--rr-font-display);
+          font-weight: 800;
+          font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+          line-height: 1;
+          letter-spacing: -0.01em;
+          color: var(--rr-navy);
+          margin: 2px 0 2px;
+        }
+        .fmx__stufe--featured .fmx__preis {
+          color: var(--rr-red);
         }
         .fmx__text {
           font-family: var(--rr-font-ui);
