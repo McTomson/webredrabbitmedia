@@ -55,6 +55,7 @@
   const CANVAS_BP=(function(){ const v=parseInt((window.localStorage&&localStorage.getItem("rrCanvasRevealBP"))||"",10); return Number.isFinite(v)&&v>0?v:1024; })();
   let useCanvas=false;          /* endgueltig in boot() gesetzt (nach reduced-Guard) */
   let revealCanvas=null, revealCtx=null, revealDpr=1, revealW=0, revealH=0;
+  let revealVideo=null, revealVideoOk=false;   /* Mobile/Touch: Video ersetzt das Live-Malen (Thomas 02.08.); liegt ueber revealCanvas, blendet mit fade aus. Ok-Flag: erst zeigen wenn es WIRKLICH spielt (sonst bleibt der gemalte Canvas als Fallback). */
   let revealMaskCanvas=null, revealMaskCtx=null;   /* Offscreen: Kreise zu EINER flachen Maske verschmelzen (kein Hell-Dunkel-Compounding) */
   let revealFade=0;             /* 0 = voll aufdeckbar, 1 = Loecher geheilt (aus applyMain) */
   const OFFWHITE="#f4f4f2";     /* == --offwhite; Deckflaeche des Canvas */
@@ -382,6 +383,28 @@
         /* sofort voll off-white -> kein navy-Flash vor dem ersten drawReveal */
         revealCtx.setTransform(revealDpr,0,0,revealDpr,0,0);
         revealCtx.fillStyle=OFFWHITE; revealCtx.fillRect(0,0,revealW,revealH);
+
+        /* Thomas 02.08.: auf Touch/Mobile das Live-Malen durch das Video ersetzen,
+           das den Mal-Effekt nachmacht. Das Video liegt UEBER dem revealCanvas
+           (verdeckt das gemalte Deck) und UNTER dem layer-deck (Wort "Website"
+           bleibt oben). Blendet mit `fade` aus, sobald die Zahnrad-Phase beginnt
+           (siehe applyMain). Faellt das Video aus (iOS/Netz), bleibt der gemalte
+           revealCanvas als Fallback darunter sichtbar. */
+        revealVideo=document.createElement("video");
+        revealVideo.className="reveal-video";
+        revealVideo.src="/hero/website-hero-mobile.mp4";
+        revealVideo.muted=true; revealVideo.defaultMuted=true;
+        revealVideo.loop=true; revealVideo.autoplay=true;
+        revealVideo.playsInline=true; revealVideo.setAttribute("playsinline","");
+        revealVideo.setAttribute("preload","auto");
+        revealVideo.setAttribute("aria-hidden","true");
+        revealVideo.style.cssText="position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;background:"+OFFWHITE+";";
+        /* Erst einblenden, wenn das Video WIRKLICH laeuft (sonst bleibt der gemalte
+           Canvas darunter sichtbar). applyMain uebernimmt dann die fade-Deckkraft. */
+        revealVideo.addEventListener("playing",function(){ revealVideoOk=true; },{once:true});
+        sticky.insertBefore(revealVideo,deck);   /* DOM: layer-base, revealCanvas, revealVideo, layer-deck */
+        const _pv=revealVideo.play&&revealVideo.play(); if(_pv&&_pv.catch)_pv.catch(function(){});
+        window.addEventListener("touchstart",function(){ const p=revealVideo&&revealVideo.play&&revealVideo.play(); if(p&&p.catch)p.catch(function(){}); },{once:true,passive:true});
       }
     }
     /* Deck (off-white) rahmenfrei erasieren: full-fill off-white, dann an den
@@ -709,6 +732,7 @@
     const fade=clamp((Pm-P_REVEAL)/0.07,0,1);
     blobsGroup.setAttribute("opacity",(1-fade).toFixed(3));
     revealFade=fade;   /* Canvas-Pfad: gleiche Heilung der Loecher beim Wegscrollen */
+    if(revealVideo&&revealVideoOk)revealVideo.style.opacity=(1-fade).toFixed(3);   /* Video (Mal-Ersatz) blendet mit der Mal-Phase aus, bevor der Zahnrad kommt; nur wenn es wirklich spielt */
     const nowPainting=Pm<P_REVEAL+0.01;
     if(nowPainting!==lastPainting){
       lastPainting=nowPainting;

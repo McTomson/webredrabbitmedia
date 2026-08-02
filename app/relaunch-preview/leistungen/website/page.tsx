@@ -5,7 +5,7 @@ import CornerLogo from '@/components/relaunch/CornerLogo';
 import BackToTop from '@/components/relaunch/BackToTop';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
-import WebsiteHeroSwitch from '@/components/subpages/leistungen/website/v2/WebsiteHeroSwitch';
+import WebsiteDemoClient from '@/components/subpages/WebsiteDemoClient';
 import SoBauenWir from '@/components/subpages/leistungen/website/v2/SoBauenWir';
 // Fundament-Sektion = Variante A "Sticky-Ledger mit wanderndem Fokus"
 // (Thomas' Wahl 21.07. aus /fundament-varianten; ersetzt das Karten-Grid).
@@ -119,15 +119,9 @@ export default function LeistungenWebsitePreviewPage() {
           die Wisch/Zahnrad-Animation losgeht (Thomas 29.07., "erstens stehen
           bleiben"). Die vier Ehrlich-gesagt-Statements bekommen ihre eigenen
           Zwischenstopps ueber window.__rrDynamicSnapTops (siehe demo.engine). */}
-      {/* Hero-Weiche (Thomas 02.08.): Desktop = interaktiver Canvas-Hero
-          (unveraendert, mit data-rr-snap-exempt/snap im Switcher), Mobile/Tablet
-          = stumm geschleiftes Video + Zahnrad-Figur/Story-Text darunter. */}
-      <WebsiteHeroSwitch
-        css={heroCss}
-        html={heroHtml}
-        js={heroJs}
-        videoSrc="/hero/website-hero-mobile.mp4"
-      />
+      <div data-rr-snap-exempt data-rr-snap>
+        <WebsiteDemoClient css={heroCss} html={heroHtml} js={heroJs} />
+      </div>
 
       {/* 2-11 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope.
           Dramaturgie: nach dem Hero-Hook erst das WARUM (Handwerk + Bumper),

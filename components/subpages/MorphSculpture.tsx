@@ -35,19 +35,12 @@ export default function MorphSculpture({
   className,
   style,
   navyPiece = false,
-  ignoreGlobalProgress = false,
 }: {
   comp: number;
   /** 0..1. Wenn nicht gesetzt, liest die Komponente `window.__sculptProgress` (Default 0.55 = gehalten). */
   progress?: number;
   className?: string;
   style?: React.CSSProperties;
-  /** Den QA-/Engine-Global `window.__sculptProgress` IGNORIEREN und stattdessen
-      `progress` (bzw. Default 0.55 = gehalten) verwenden. Fuer Standalone-Instanzen
-      ohne treibende Demo-Engine (z.B. der Mobile-Video-Hero), auf Seiten wo ein
-      anderer Init den Global auf 0 gesetzt hat -> sonst bliebe die Figur aufgeloest.
-      Default false = bisheriges Verhalten (Global gewinnt). */
-  ignoreGlobalProgress?: boolean;
   /** Das eine Navy-Akzent-Fragment (groesstes Seitenverhaeltnis) rendern? Beim Kopf
       (comp 4) ist es das Auge und gehoert dazu; beim Zahnrad (comp 0) wirkt der lange
       dunkle Balken wie eine Fremd-Linie (Thomas 21.07.) -> Seiten koennen es mit
@@ -57,8 +50,6 @@ export default function MorphSculpture({
   const stageRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<number | undefined>(progress);
   progressRef.current = progress;
-  const ignoreGlobalRef = useRef(ignoreGlobalProgress);
-  ignoreGlobalRef.current = ignoreGlobalProgress;
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -243,12 +234,10 @@ export default function MorphSculpture({
       const g = window as unknown as { __sculptProgress?: number };
       // Reihenfolge: QA-Global gewinnt, dann Prop, dann Default 0.55 (= gehalten).
       // Reduced-Motion => immer statisch gehalten.
-      const useGlobal =
-        !ignoreGlobalRef.current && typeof g.__sculptProgress === "number";
       const target = reduced
         ? 0.55
-        : useGlobal
-          ? (g.__sculptProgress as number)
+        : typeof g.__sculptProgress === "number"
+          ? g.__sculptProgress
           : typeof prop === "number"
             ? prop
             : 0.55;
