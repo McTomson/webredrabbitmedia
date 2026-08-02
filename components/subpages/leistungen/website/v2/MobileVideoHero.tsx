@@ -26,11 +26,23 @@ export default function MobileVideoHero({ src }: { src: string }) {
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
+    // React setzt das `muted`-ATTRIBUT, aber nicht immer die muted-PROPERTY ->
+    // iOS/Chrome sehen das Video dann als "mit Ton" und blocken Autoplay.
+    // Property hier explizit setzen (bekannte React-Eigenheit).
+    v.muted = true;
+    v.defaultMuted = true;
     const tryPlay = () => {
       const p = v.play();
       if (p && typeof p.catch === "function") p.catch(() => {});
     };
     tryPlay();
+    // iOS-Stromsparmodus blockt Autoplay ganz -> beim ersten Antippen der Seite
+    // nachstarten (dann laeuft es, sonst bleibt das Poster stehen).
+    const onFirst = () => {
+      tryPlay();
+    };
+    window.addEventListener("touchstart", onFirst, { once: true, passive: true });
+    return () => window.removeEventListener("touchstart", onFirst);
   }, []);
 
   // Fade beim Scrollen: das Video haelt kurz voll, blendet dann ueber die
@@ -77,6 +89,7 @@ export default function MobileVideoHero({ src }: { src: string }) {
             ref={videoRef}
             className="mvh__video"
             src={src}
+            poster="/hero/website-hero-poster.jpg"
             autoPlay
             muted
             loop
@@ -147,6 +160,7 @@ export default function MobileVideoHero({ src }: { src: string }) {
           align-items: center;
           justify-content: center;
           overflow: hidden;
+          background: var(--rr-surface, #f4f4f2);
           will-change: opacity;
         }
         .mvh__video {
@@ -154,6 +168,7 @@ export default function MobileVideoHero({ src }: { src: string }) {
           height: 100%;
           object-fit: contain;
           display: block;
+          background: var(--rr-surface, #f4f4f2);
         }
         /* sichtbar-versteckt (SEO/A11y), nicht display:none */
         .mvh__sr {
