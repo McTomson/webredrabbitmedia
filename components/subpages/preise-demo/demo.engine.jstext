@@ -37,6 +37,7 @@
   const hint=document.getElementById("hint");
   const autobtn=sticky.querySelector("[data-auto]");
   const headSvg=document.getElementById("headSvg");
+  let revealVideo=null, revealVideoOk=false;   /* Touch/Tablet/Mobile: Video ersetzt das Live-Malen (Thomas 02.08.), blendet mit fade aus; Ok-Flag erst wenn es WIRKLICH spielt (sonst Auto-Reveal als Fallback). */
   const textWindow=document.getElementById("textWindow");
   const textMove=document.getElementById("textMove");
   const textCol=sticky.querySelector(".text-col");
@@ -496,6 +497,9 @@
     hint.style.opacity=(fade>0?0:0.55);
     autobtn.style.opacity=(1-fade).toFixed(2);
     autobtn.style.pointerEvents=fade>0.5?"none":"auto";
+    /* Touch/Mobile-Video (falls aktiv): blendet mit derselben fade-Kurve aus wie das
+       Malen -> ist weg, bevor die Skulptur-Phase beginnt (Thomas 02.08.). */
+    if(revealVideo&&revealVideoOk)revealVideo.style.opacity=(1-fade).toFixed(3);
 
     // Kopf-Aufbau (alle Fragmente von ausserhalb des Viewports)
     const aA=clamp((Pm-A_A0)/(A_A1-A_A0),0,1);
@@ -715,9 +719,37 @@
     initFluid();
     if(autobtn) autobtn.addEventListener("click",()=>runAuto(autobtn));
     if(noHover){
+      /* Thomas 02.08.: auf Touch/Tablet/Mobile das Live-Malen durch das gelieferte
+         Video ersetzen, das den Mal-Effekt nachmacht (genau wie /leistungen/website).
+         Das Video liegt UEBER der Mal-/Deck-Flaeche (z4) und blendet mit `fade` aus
+         (applyMain), bevor die Skulptur-Phase (story-grid z3) erscheint. Faellt es aus
+         (iOS-Stromsparmodus/Netz), bleibt der Auto-Reveal runAuto als Fallback
+         (daher !revealVideoOk in der autoLoop-Bedingung). */
+      revealVideo=document.createElement("video");
+      revealVideo.className="reveal-video";
+      revealVideo.src="/hero/preise-hero-mobile.mp4";
+      revealVideo.muted=true; revealVideo.defaultMuted=true;
+      revealVideo.loop=true; revealVideo.autoplay=true;
+      revealVideo.playsInline=true; revealVideo.setAttribute("playsinline","");
+      revealVideo.setAttribute("preload","auto");
+      revealVideo.setAttribute("aria-hidden","true");
+      revealVideo.style.cssText="position:absolute;inset:0;z-index:4;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;background:var(--offwhite,#f4f4f2);";
+      revealVideo.addEventListener("playing",function(){
+        revealVideoOk=true;
+        /* Mal-Artefakte weg (Pinsel-Punkt, Hinweis, Auto-Button) + das navy layer-base
+           ausblenden: das Video zeigt Botschaft + Malen ohnehin, sonst blitzt beim
+           Uebergang das navy Bild durch (wie bei /leistungen/website geloest). */
+        const _lb=sticky.querySelector(".layer-base"); if(_lb)_lb.style.display="none";
+        const _cd=sticky.querySelector(".cursor-dot"); if(_cd)_cd.style.display="none";
+        if(hint)hint.style.display="none";
+        if(autobtn)autobtn.style.display="none";
+      },{once:true});
+      sticky.appendChild(revealVideo);
+      const _pv=revealVideo.play&&revealVideo.play(); if(_pv&&_pv.catch)_pv.catch(function(){});
+      window.addEventListener("touchstart",function(){ const p=revealVideo&&revealVideo.play&&revealVideo.play(); if(p&&p.catch)p.catch(function(){}); },{once:true,passive:true});
       const autoLoop=()=>{
         if(!sceneMain.isConnected){ return; }
-        if(painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.3){ runAuto(autobtn); }
+        if(!revealVideoOk&&painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.3){ runAuto(autobtn); }
         setTimeout(autoLoop,9000);
       };
       setTimeout(autoLoop,1400);
