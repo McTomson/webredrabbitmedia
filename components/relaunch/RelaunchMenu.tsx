@@ -106,6 +106,16 @@ export default function RelaunchMenu() {
     const dot = cursorRef.current;
     if (!dot) return;
     const onMove = (e: MouseEvent) => {
+      // AUSNAHME (Thomas 02.08.): ueber der aktiven Hero-Mal-Flaeche
+      // (.main-sticky.painting) malt der Hero seinen EIGENEN roten Pinsel-Punkt
+      // (geglaettet, laeuft der Maus hinterher). Der globale Punkt folgt der
+      // ECHTEN Mausposition und liefe ihm voraus -> zwei rote Punkte. Dort den
+      // globalen Punkt ausblenden; der Pinsel ist an dieser Stelle der Cursor.
+      const t = e.target;
+      if (t instanceof Element && t.closest(".main-sticky.painting")) {
+        dot.style.opacity = "0";
+        return;
+      }
       dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
       dot.style.opacity = "1";
     };
