@@ -142,26 +142,16 @@ export default function UeberUnsPage() {
           der Nachbau-Footer und der zentrierte Schluss-CTA im demo.body.html
           sind raus, hier stehen die gemeinsamen Bauteile. Wrapper liefert nur
           die .rr-Font-Variablen (Muster wie beim Menue oben). */}
-      {/* Mobile (Thomas 02.08.): Abschluss-Bereich soll am Handy die volle
-          Fensterhoehe einnehmen (wie die Home-Seite gedacht ist). Das geteilte
-          SiteClosing setzt <=820px bewusst min-height:0 — hier NUR fuer ueber-uns
-          per hoeher spezifischer Klasse zurueck auf volle (small) Viewport-Hoehe;
-          das geteilte Bauteil bleibt unangetastet. */}
-      <style>{`
-        @media (max-width: 820px) {
-          .uu-closing .sc-full { min-height: 100vh; min-height: 100svh; }
-        }
-      `}</style>
+      {/* Abschluss am Handy fensterhoch: site-weite Regel .rr-section.sc-full in
+          styleguide.css (Thomas 02.08.) — kein Seiten-Sonderfall mehr noetig. */}
       <div className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
-        <div className="uu-closing">
-          <SiteClosing
-            lines={[
-              'Jetzt kennst du uns.',
-              'Wir würden gern erfahren, was du vorhast.',
-              'Reden wir.',
-            ]}
-          />
-        </div>
+        <SiteClosing
+          lines={[
+            'Jetzt kennst du uns.',
+            'Wir würden gern erfahren, was du vorhast.',
+            'Reden wir.',
+          ]}
+        />
         <div data-rr-snap>
           <FooterReassembly />
         </div>
