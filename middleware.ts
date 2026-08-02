@@ -34,7 +34,12 @@ export function middleware(request: NextRequest) {
     //     = Talos-Seite, ohne /relaunch-preview in der sichtbaren URL. Interner Rewrite
     //     (kein Redirect) — nur auf v2.*, die Live-Domain web.redrabbit.media ist unberuehrt.
     //     Bereits /relaunch-preview-Pfade werden NICHT doppelt praefixiert.
-    if (isTestHost && !url.pathname.startsWith('/relaunch-preview')) {
+    //     WICHTIG: statische /public-Dateien (mit Datei-Endung, z.B. /hero/x.mp4,
+    //     /favicon.png, /file.svg) duerfen NICHT umgeschrieben werden — sonst zeigt
+    //     der Rewrite auf /relaunch-preview/hero/x.mp4, das es nicht gibt (404).
+    //     Nur echte Routen (ohne Endung) bekommen das /relaunch-preview-Praefix.
+    const isPublicFile = /\.[^/]+$/.test(url.pathname);
+    if (isTestHost && !url.pathname.startsWith('/relaunch-preview') && !isPublicFile) {
         const target = url.clone();
         target.pathname = '/relaunch-preview' + (url.pathname === '/' ? '' : url.pathname);
         const rewritten = NextResponse.rewrite(target);
