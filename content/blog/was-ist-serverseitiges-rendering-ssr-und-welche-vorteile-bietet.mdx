@@ -1,73 +1,126 @@
 ---
-title: "Serverseitiges Rendering (SSR): SEO-Vorteile 2026"
+title: 'Serverseitiges Rendering (SSR): SEO-Vorteile 2026'
 slug: was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet
-excerpt: "Serverseitiges Rendering (SSR) liefert fertiges HTML vom Server, damit Suchmaschinen den Inhalt sofort sehen. So verbessern Sie Sichtbarkeit und Ladezeit Ihrer Website."
-featuredSnippetTitle: "Was ist serverseitiges Rendering (SSR) und welche Vorteile bietet es?"
-featuredSnippet: "Serverseitiges Rendering (SSR) bedeutet, dass der Server das fertige HTML einer Seite erzeugt und ausliefert, bevor es beim Besucher ankommt. Inhalt und Metadaten stehen dadurch sofort im Dokument, statt erst per JavaScript nachgeladen zu werden. Für SEO ist das ein Vorteil, weil Suchmaschinen den Inhalt zuverlässig und schnell erfassen."
-author: "Dmitry Pashlov"
-publishedAt: "2026-08-01"
-updatedAt: "2026-08-02"
-category: "Technik & Performance"
+excerpt: >-
+  Serverseitiges Rendering (SSR) liefert fertiges HTML vom Server, damit
+  Suchmaschinen den Inhalt sofort sehen. So verbessern Sie Sichtbarkeit und
+  Ladezeit Ihrer Website.
+featuredSnippetTitle: Was ist serverseitiges Rendering (SSR) und welche Vorteile bietet es?
+featuredSnippet: >-
+  Serverseitiges Rendering (SSR) bedeutet, dass der Server das fertige HTML
+  einer Seite erzeugt und ausliefert, bevor es beim Besucher ankommt. Inhalt und
+  Metadaten stehen dadurch sofort im Dokument, statt erst per JavaScript
+  nachgeladen zu werden. Für SEO ist das ein Vorteil, weil Suchmaschinen den
+  Inhalt zuverlässig und schnell erfassen.
+author: Dmitry Pashlov
+publishedAt: '2026-08-01'
+updatedAt: '2026-08-02'
+category: Technik & Performance
 cluster: 2
 tags:
-  - "Serverseitiges Rendering"
-  - "SSR"
-  - "SEO"
-  - "Next.js"
-  - "Core Web Vitals"
-featuredImage: /images/blog/was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet.png
-status: "published"
-chosenHook: "was ist serverseitiges rendering?"
+  - Serverseitiges Rendering
+  - SSR
+  - SEO
+  - Next.js
+  - Core Web Vitals
+featuredImage: >-
+  /images/blog/was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet.png
+status: published
+chosenHook: was ist serverseitiges rendering?
 aiAssisted: true
 sources:
-  - name: "Next.js Documentation - Rendering: Server-side Rendering (SSR)"
-    url: "https://nextjs.org/docs/pages/building-your-application/rendering/server-side-rendering"
-  - name: "Google Search Central - Dynamic rendering as a workaround"
-    url: "https://developers.google.com/search/docs/crawling-indexing/javascript/dynamic-rendering"
-  - name: "Next.js Documentation - Static Site Generation (SSG)"
-    url: "https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation"
-  - name: "Google Search Central - Understanding Core Web Vitals and Google search results"
-    url: "https://developers.google.com/search/docs/appearance/core-web-vitals"
-  - name: "Next.js Documentation - Data Fetching: getServerSideProps"
-    url: "https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props"
+  - name: 'Next.js Documentation - Rendering: Server-side Rendering (SSR)'
+    url: >-
+      https://nextjs.org/docs/pages/building-your-application/rendering/server-side-rendering
+  - name: Google Search Central - Dynamic rendering as a workaround
+    url: >-
+      https://developers.google.com/search/docs/crawling-indexing/javascript/dynamic-rendering
+  - name: Next.js Documentation - Static Site Generation (SSG)
+    url: >-
+      https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation
+  - name: >-
+      Google Search Central - Understanding Core Web Vitals and Google search
+      results
+    url: 'https://developers.google.com/search/docs/appearance/core-web-vitals'
+  - name: 'Next.js Documentation - Data Fetching: getServerSideProps'
+    url: >-
+      https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props
 keyTakeaways:
-  - "SSR liefert fertiges HTML vom Server, sodass Inhalt und Metadaten sofort da sind, statt erst per Browser-JavaScript nachgeladen zu werden."
-  - "Suchmaschinen profitieren direkt davon, weil der Crawler den Inhalt zuverlässig sieht. Google empfiehlt SSR oder statisches Rendering und stuft Dynamic Rendering nur als Workaround ein."
-  - "Die Ladewerte verbessern sich, konkret bei den Core Web Vitals (LCP unter 2,5 s, INP unter 200 ms, CLS unter 0,1), die als Ranking-Signal und Tiebreaker dienen."
-  - "Nicht alles braucht SSR. In Next.js wählen Sie pro Seite: SSG für selten geänderte Inhalte, SSR für häufig wechselnde, ISR als Mittelweg."
-  - "getServerSideProps erlaubt Datenbankzugriff beim Request, sodass auch dynamische Inhalte crawlbar im HTML stehen."
+  - >-
+    SSR liefert fertiges HTML vom Server, sodass Inhalt und Metadaten sofort da
+    sind, statt erst per Browser-JavaScript nachgeladen zu werden.
+  - >-
+    Suchmaschinen profitieren direkt davon, weil der Crawler den Inhalt
+    zuverlässig sieht. Google empfiehlt SSR oder statisches Rendering und stuft
+    Dynamic Rendering nur als Workaround ein.
+  - >-
+    Die Ladewerte verbessern sich, konkret bei den Core Web Vitals (LCP unter
+    2,5 s, INP unter 200 ms, CLS unter 0,1), die als Ranking-Signal und
+    Tiebreaker dienen.
+  - >-
+    Nicht alles braucht SSR. In Next.js wählen Sie pro Seite: SSG für selten
+    geänderte Inhalte, SSR für häufig wechselnde, ISR als Mittelweg.
+  - >-
+    getServerSideProps erlaubt Datenbankzugriff beim Request, sodass auch
+    dynamische Inhalte crawlbar im HTML stehen.
 conclusionStats:
-  - label: "LCP-Schwelle (guter Wert)"
-    value: "unter 2,5 s"
-  - label: "INP-Schwelle (guter Wert)"
-    value: "unter 200 ms"
-  - label: "CLS-Schwelle (guter Wert)"
-    value: "unter 0,1"
+  - label: LCP-Schwelle (guter Wert)
+    value: 'unter 2,5 s'
+  - label: INP-Schwelle (guter Wert)
+    value: unter 200 ms
+  - label: CLS-Schwelle (guter Wert)
+    value: 'unter 0,1'
 autoGenerateFAQs: false
 customFAQs:
-  - question: "Was ist der Unterschied zwischen SSR und CSR?"
-    answer: "Bei SSR erzeugt der Server das fertige HTML, bevor es beim Besucher ankommt. Bei CSR (Client-Side Rendering) schickt der Server nur ein Gerüst, das der Browser erst per JavaScript mit Inhalt füllt. Für Suchmaschinen ist SSR im Vorteil, weil der Inhalt sofort im ausgelieferten Dokument steht."
-  - question: "Ist SSR immer besser für SEO als statisches Rendering?"
-    answer: "Nicht unbedingt. Für Inhalte, die sich selten ändern, ist statisches Rendering (SSG) oft schneller und günstiger, weil die Seite nicht bei jedem Aufruf neu gebaut wird. Beide Wege liefern den Inhalt schon im HTML. SSR spielt seine Stärke bei häufig wechselnden Inhalten aus."
-  - question: "Macht serverseitiges Rendering meine Website automatisch schneller?"
-    answer: "SSR verbessert vor allem die frühen Ladewerte, weil fertiges HTML ankommt. Der Server muss aber bei jedem Aufruf arbeiten. Für Seiten, die sich nie ändern, ist statisches Rendering per SSG oft schneller. SSR ist ein Werkzeug für den richtigen Fall, kein pauschaler Turbo."
-  - question: "Warum empfiehlt Google kein Dynamic Rendering mehr?"
-    answer: "Beim Dynamic Rendering liefert man Crawlern und normalen Besuchern getrennte Versionen aus. Google stuft das offiziell als Workaround ein, weil es zusätzliche Komplexität und Ressourcen kostet. Empfohlen werden stattdessen serverseitiges Rendering, statisches Rendering oder Hydration."
-  - question: "Welches Framework eignet sich für SSR?"
-    answer: "Next.js ist eine verbreitete Wahl, weil sich die Rendering-Strategie dort pro Seite frei wählen lässt. Sie können SSR, SSG und ISR kombinieren und für jede Seite die passende Methode nach Änderungshäufigkeit einsetzen, ohne sich für die ganze Website festzulegen."
+  - question: Was ist der Unterschied zwischen SSR und CSR?
+    answer: >-
+      Bei SSR erzeugt der Server das fertige HTML, bevor es beim Besucher
+      ankommt. Bei CSR (Client-Side Rendering) schickt der Server nur ein
+      Gerüst, das der Browser erst per JavaScript mit Inhalt füllt. Für
+      Suchmaschinen ist SSR im Vorteil, weil der Inhalt sofort im ausgelieferten
+      Dokument steht.
+  - question: Ist SSR immer besser für SEO als statisches Rendering?
+    answer: >-
+      Nicht unbedingt. Für Inhalte, die sich selten ändern, ist statisches
+      Rendering (SSG) oft schneller und günstiger, weil die Seite nicht bei
+      jedem Aufruf neu gebaut wird. Beide Wege liefern den Inhalt schon im HTML.
+      SSR spielt seine Stärke bei häufig wechselnden Inhalten aus.
+  - question: Macht serverseitiges Rendering meine Website automatisch schneller?
+    answer: >-
+      SSR verbessert vor allem die frühen Ladewerte, weil fertiges HTML ankommt.
+      Der Server muss aber bei jedem Aufruf arbeiten. Für Seiten, die sich nie
+      ändern, ist statisches Rendering per SSG oft schneller. SSR ist ein
+      Werkzeug für den richtigen Fall, kein pauschaler Turbo.
+  - question: Warum empfiehlt Google kein Dynamic Rendering mehr?
+    answer: >-
+      Beim Dynamic Rendering liefert man Crawlern und normalen Besuchern
+      getrennte Versionen aus. Google stuft das offiziell als Workaround ein,
+      weil es zusätzliche Komplexität und Ressourcen kostet. Empfohlen werden
+      stattdessen serverseitiges Rendering, statisches Rendering oder Hydration.
+  - question: Welches Framework eignet sich für SSR?
+    answer: >-
+      Next.js ist eine verbreitete Wahl, weil sich die Rendering-Strategie dort
+      pro Seite frei wählen lässt. Sie können SSR, SSG und ISR kombinieren und
+      für jede Seite die passende Methode nach Änderungshäufigkeit einsetzen,
+      ohne sich für die ganze Website festzulegen.
 hookCandidates:
-  - "ssr: warum liebt google das?"
-  - "wie pusht ssr dein seo-ranking?"
-  - "was ist serverseitiges rendering?"
+  - 'ssr: warum liebt google das?'
+  - wie pusht ssr dein seo-ranking?
+  - was ist serverseitiges rendering?
 ---
+
+<SimpleAudioPlayer src="/audio/was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet-podcast.mp3" title="Podcast: Serverseitiges Rendering (SSR): SEO-Vorteile 2026" />
+
+<VideoEmbed src="/videos/was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet-video.mp4" poster="/videos/was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet-poster.jpg" id="vRt9wSZZEIA" title="Video: Serverseitiges Rendering (SSR): SEO-Vorteile 2026" />
 
 Stellen Sie sich vor, Sie bestellen im Wiener Beisl ein Schnitzel. In der einen Variante bekommen Sie einen fertig panierten, gebratenen Teller an den Tisch gestellt. In der anderen bringt Ihnen der Kellner rohes Fleisch, Mehl, Ei und eine Pfanne und sagt: "Machen Sie sich selbst." Beides führt am Ende zum Schnitzel. Aber der erste Weg ist der, bei dem der Gast sofort essen kann, und der zweite der, bei dem erst einmal jeder selbst kochen muss.
 
 Genau dieser Unterschied steckt hinter serverseitigem Rendering. Bei der einen Methode kommt die fertige Seite beim Besucher an. Bei der anderen kommt ein halbfertiges Paket, das der Browser erst selbst zusammenbauen muss. Und für Suchmaschinen macht das einen sehr konkreten Unterschied, den viele erst bemerken, wenn Seiten trotz guter Inhalte nicht ranken.
 
-![Serverseitiges Rendering (SSR) im Vergleich zum Rendering im Browser und der Vorteil für die SEO-Sichtbarkeit](/images/blog/was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet.png)
-
 ## Was ist serverseitiges Rendering überhaupt?
+
+
+![Kellner stellt ein fertig serviertes Wiener Schnitzel vor einen Gast im Beisl - Sinnbild fuer serverseitiges Rendering, bei dem die fertige Seite ankommt](/images/blog/was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet-ctx1-r3ls7.png)
 
 Serverseitiges Rendering, kurz SSR, bedeutet, dass das HTML für eine Seite direkt auf dem Server erzeugt wird, bevor es beim Besucher ankommt. Der Server holt die nötigen Daten und baut daraus die vollständige Seite, bevor er das fertige HTML an den Browser schickt. Alles Wichtige steht also schon im ausgelieferten Dokument, statt erst per JavaScript im Browser nachgeladen zu werden.
 
@@ -76,6 +129,9 @@ Im Framework Next.js läuft das über eine Funktion namens [`getServerSideProps`
 Das ist der Kern, und den sollten Sie im Kopf behalten, bevor wir in die Details gehen: Wo das Rendering passiert, entscheidet darüber, was ankommt. Auf dem Server heißt fertig. Im Browser heißt: erst nach dem Kochen.
 
 ## Warum das für SEO so entscheidend ist
+
+
+![Warum SSR bei der Suche vorne liegt](/images/blog/was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet-infografik-r3lse.png)
 
 Kommen wir zur eigentlichen Frage. Suchmaschinen wie Google schicken Programme los, sogenannte Crawler, die Seiten besuchen und ihren Inhalt einlesen. Damit eine Seite ranken kann, muss der Crawler zuverlässig sehen, was auf ihr steht. Und hier liegt das Problem bei Seiten, die ihren Inhalt erst im Browser per JavaScript aufbauen: Der Text und die wichtigen Informationen sind im ersten Moment schlicht noch nicht da.
 
@@ -86,6 +142,9 @@ Google selbst ist an diesem Punkt übrigens ziemlich deutlich. Der sogenannte An
 Meine klare Empfehlung an diesem Punkt: Wenn eine Seite in der Suche sichtbar sein soll, sollte ihr Inhalt schon im ersten HTML stehen. Alles andere ist eine Wette darauf, dass der Crawler geduldig genug ist.
 
 ## Auch die Ladezeit ist Teil der SEO-Rechnung
+
+
+![Fahrgast in der Wiener U-Bahn wartet auf das Laden einer Website am Smartphone - Ladezeit als Teil der SEO-Bewertung](/images/blog/was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet-ctx2-r3may.png)
 
 SEO ist längst mehr als nur "kann der Crawler den Text lesen". Google bewertet auch, wie schnell und stabil eine Seite lädt. Dafür gibt es die sogenannten [Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals), drei sehr konkrete Messwerte:
 
@@ -121,6 +180,9 @@ Für Sie als Unternehmer heißt das konkret: Auch dynamische, datengetriebene In
 
 ## Schritt für Schritt: Was Sie konkret tun sollten
 
+
+![Webentwickler erklaert einer Unternehmerin am Laptop Schritt fuer Schritt die richtige Rendering-Strategie fuer bessere SEO](/images/blog/was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet-ctx3-r3maz.png)
+
 Genug Theorie. Wenn Sie eine neue Website planen oder eine bestehende prüfen wollen, gehen Sie am besten so vor:
 
 1. **Prüfen Sie, was im Quelltext steht.** Öffnen Sie Ihre Seite im Browser und schauen Sie sich den Seitenquelltext an, also das rohe HTML. Steht Ihr Haupttext dort schon drin? Dann ist die Seite serverseitig oder statisch gerendert. Ist der Bereich weitgehend leer und der Text taucht erst auf, wenn JavaScript geladen hat, haben Sie ein potenzielles SEO-Problem.
@@ -152,3 +214,15 @@ Die Falle hinter all dem ist immer dieselbe: Eine Website sieht im Browser gut a
 ## Ihr nächster Schritt
 
 Wenn Sie unsicher sind, ob Ihre Website ihren Inhalt für Google sichtbar ausliefert oder ob wertvoller Text im JavaScript versteckt bleibt, schauen wir uns das gerne an. Senden Sie uns einfach die URL, wir prüfen den Rendering-Ansatz und die Core Web Vitals und sagen Ihnen ehrlich, wo es klemmt und ob sich ein Eingriff überhaupt lohnt. Nehmen Sie dazu unverbindlich über unser [Kontaktformular](/kontakt) Verbindung auf.
+
+{/* cluster-links:start */}
+
+## Das könnte Sie auch interessieren
+
+Passend dazu aus unserem Ratgeber:
+
+- [Statische vs. dynamische Website: Unterschied 2026](/tipps/statische-vs-dynamische-website)
+- [10 tödliche Fehler beim Website-Erstellen 2026](/tipps/10-fehler-beim-website-erstellen)
+- [Core Web Vitals 2026: Warum WordPress schlecht abschneidet](/tipps/warum-scheitern-traditionelle-cms-systeme-oft-bei-den-google)
+
+{/* cluster-links:end */}
