@@ -294,6 +294,15 @@
     .faq-left{position:static;top:auto}
   }
 
+  /* Mobile + Tablet (Thomas 02.08.): Hero-Scrollweg um 1/3 kuerzer (1150 -> 767vh) -
+     am Handy war der Weg zu langsam mit dem Finger durchzugehen. Timings sind Bruchteile
+     der Szenen-Hoehe (Pm 0..1) -> Choreografie identisch, nur die Scroll-Strecke der
+     Hero-Szene schrumpft (Inhalt nach der Figur bleibt normal). Desktop (>1024)
+     unveraendert. Steht VOR dem Reduced-Motion-Block, damit dessen height:auto gewinnt. */
+  @media (max-width:1024px){
+    .scene-main{height:767vh}
+  }
+
   /* ---------- Reduced Motion: alles statisch ---------- */
   @media (prefers-reduced-motion:reduce){
     .cursor-dot,.autobtn,.hint{display:none}
