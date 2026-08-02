@@ -16,10 +16,40 @@
   (width clamp(300px,86vw,450px) / height clamp(300px,48vh,430px)). Hebel ist bewusst das
   Canvas-Aspect, NICHT die Kamera (TalosEntranceStage liest camPos/camTgt nur beim Mount +
   vertikales FOV ist fix -> Winkarm ist ein HORIZONTALES Problem). Am Geraet final bestaetigen.
-- **Video-Idee (Hero als Video statt Canvas) BESPROCHEN, verworfen:** Thomas fragte, ob ein
-  abgefilmtes Video den Canvas ersetzen soll. Meine Empfehlung (angenommen): nein — Video
-  bricht Scroll-Kopplung, echten Text/SEO, LCP, festes Seitenverhaeltnis; tauscht einen
-  fixbaren Bug gegen strukturelle Nachteile. Code-Hero bleibt.
+- **Video-Idee: erst besprochen/verworfen, dann von Thomas UMGEDREHT -> UMGESETZT.** Ich hatte
+  von Video abgeraten (Scroll-Kopplung, SEO, LCP). Thomas will es trotzdem: auf MOBILE/TABLET
+  das Video statt Canvas, Desktop bleibt Canvas. Entscheidungen (02.08.): nur Mobile; Video
+  gepinnt + faded beim Scrollen (bleibt am Ort); Zahnrad-Figur + Story-Text bleiben als
+  Abschnitt DRUNTER (kein Inhaltsverlust).
+  UMGESETZT (aeec5e8 + dccf51d):
+  - Video optimiert: 4,4 MB -> 324 KB, stumm (-an), nahtloser Crossfade-Loop, **CFR 30fps /
+    Main-Profil / yuv420p / faststart** (Quelle war krumme VFR ~52fps -> iOS-Dekodierfehler).
+    public/hero/website-hero-mobile.mp4 + Poster public/hero/website-hero-poster.jpg.
+  - `WebsiteHeroSwitch.tsx` (Weiche): SSR/Desktop = Demo unveraendert; useLayoutEffect schaltet
+    mobil VOR dem Paint um -> kein Flash, Demo-Engine bootet mobil nie. `MobileVideoHero.tsx`:
+    Video (autoplay/muted/loop/playsInline, muted-PROPERTY per ref gesetzt = React-Eigenheit,
+    Poster, Off-White-BG) gepinnt + Fade, darunter MorphSculpture comp0 progress0.55 + Story.
+  - **iOS-Falle:** Stromsparmodus (gelbe Batterie im Foto) BLOCKT Video-Autoplay generell ->
+    Poster (aufgedeckter Satz) zeigt dann die Botschaft, erster Touch startet nach.
+  - **Reveal-Zickzack (buildRevealPath, 8da2c43) ist mobil jetzt UNGENUTZT** (Video statt
+    Canvas). Harmloser toter Code; bei Bedarf entfernen.
+- **>>> BLOCKER, HIER ZUERST (02.08. Abend, Thomas: "problem nicht geloest"): v2.redrabbit.media
+  liefert ALLE statischen Assets als 404** (Video, Poster, sogar favicon.png/file.svg) ->
+  auf dem Handy schwarzer "nicht abspielbar"-Screen. Die DEPLOYMENT ist FEHLERFREI: dieselbe
+  Deployment auf den .vercel.app-Aliassen serviert alles 200 (Video CFR-Format live bestaetigt).
+  Isoliert: reines v2.redrabbit.media-CUSTOM-DOMAIN-/Edge-Problem, NICHT Code/Video.
+  - Funktionierender Test-Link (gleicher Build): https://webredrabbitmedia-mctomson-toms-projects-17d37f0b.vercel.app/relaunch-preview/leistungen/website
+  - Was probiert: `vercel alias set` (mehrfach, zeigt v2->62l2q3qob per `vercel inspect`, aber
+    v2 servt trotzdem 404 mit x-vercel-cache HIT + x-matched-path /404); Query-Param-Cachebust
+    (404); no-cache-Header (404); frischer Alias v3.redrabbit.media (scheitert: kein DNS/Cert).
+  - Memory-Hinweis: v2 wird per Git-Push-Preview gefuettert (reference_v2_deploy...), nicht per
+    CLI-Alias -> evtl. wartet v2 auf die Git-Preview ODER die Domain-Edge haengt.
+  - NAECHSTE SCHRITTE: (1) pruefen ob v2 sich selbst gefangen hat (curl v2 favicon.png). (2)
+    Falls nicht: Vercel-Dashboard -> Domain v2.redrabbit.media Cache purgen / Domain neu
+    zuweisen / pruefen an welche Deployment/Environment v2 wirklich haengt (Prod vs Preview).
+    (3) NICHT `vercel --prod` (das trifft web.redrabbit.media = Live-Seite!).
+  - OFFEN unabhaengig von v2: das VIDEO selbst am iPhone (ohne Stromsparmodus) bestaetigen —
+    laeuft die Schleife, sitzt der Fade beim Scrollen, ist die Figur/Story drunter ok.
 - **Pinsel-Reveal ERLEDIGT + LIVE (8da2c43):** buildRevealPath in demo.engine.jstext neu —
   statt zeilenweise links->rechts jetzt Zickzack (vertikaler Serpentin nach rechts), zur
   Mitte breiter (widthK), stabile Hash-Asymmetrie (kein Math.random). Deckung OFFLINE zu 100%
