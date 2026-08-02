@@ -499,7 +499,7 @@
     autobtn.style.pointerEvents=fade>0.5?"none":"auto";
     /* Touch/Mobile-Video (falls aktiv): blendet mit derselben fade-Kurve aus wie das
        Malen -> ist weg, bevor die Skulptur-Phase beginnt (Thomas 02.08.). */
-    if(revealVideo&&revealVideoOk)revealVideo.style.opacity=(1-fade).toFixed(3);
+    if(revealVideo)revealVideo.style.opacity=(1-fade).toFixed(3);   /* Poster/Video sofort sichtbar, nicht erst wenn 'playing' feuerte */
 
     // Kopf-Aufbau (alle Fragmente von ausserhalb des Viewports)
     const aA=clamp((Pm-A_A0)/(A_A1-A_A0),0,1);
@@ -728,28 +728,38 @@
       revealVideo=document.createElement("video");
       revealVideo.className="reveal-video";
       revealVideo.src="/hero/preise-hero-mobile.mp4";
-      revealVideo.muted=true; revealVideo.defaultMuted=true;
+      revealVideo.muted=true; revealVideo.defaultMuted=true; revealVideo.setAttribute("muted","");
       revealVideo.loop=true; revealVideo.autoplay=true;
-      revealVideo.playsInline=true; revealVideo.setAttribute("playsinline","");
+      revealVideo.playsInline=true; revealVideo.setAttribute("playsinline",""); revealVideo.setAttribute("webkit-playsinline","");
       revealVideo.setAttribute("preload","auto");
       revealVideo.setAttribute("aria-hidden","true");
+      revealVideo.poster="/hero/preise-hero-poster.jpg";   /* Sofort-Bild, falls Autoplay zoegert */
       revealVideo.style.cssText="position:absolute;inset:0;z-index:4;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;background:var(--offwhite,#f4f4f2);";
-      revealVideo.addEventListener("playing",function(){
-        revealVideoOk=true;
-        /* Mal-Artefakte weg (Pinsel-Punkt, Hinweis, Auto-Button) + das navy layer-base
-           ausblenden: das Video zeigt Botschaft + Malen ohnehin, sonst blitzt beim
-           Uebergang das navy Bild durch (wie bei /leistungen/website geloest). */
+      /* SOFORT (nicht erst bei 'playing') die Mal-Artefakte ausblenden: der rote
+         Cursor-Punkt liegt z6 UEBER dem Video und wuerde sonst durchscheinen; dazu
+         Auto-Button/Hinweis und das navy layer-base (Video/Poster zeigt Botschaft +
+         Malen ohnehin). So kein Ruckeln, falls das Autoplay verzoegert startet. */
+      const _hideArtifacts=function(){
         const _lb=sticky.querySelector(".layer-base"); if(_lb)_lb.style.display="none";
         const _cd=sticky.querySelector(".cursor-dot"); if(_cd)_cd.style.display="none";
         if(hint)hint.style.display="none";
         if(autobtn)autobtn.style.display="none";
-      },{once:true});
+      };
+      _hideArtifacts();
+      revealVideo.addEventListener("playing",function(){ revealVideoOk=true; _hideArtifacts(); },{once:true});
       sticky.appendChild(revealVideo);
-      const _pv=revealVideo.play&&revealVideo.play(); if(_pv&&_pv.catch)_pv.catch(function(){});
-      window.addEventListener("touchstart",function(){ const p=revealVideo&&revealVideo.play&&revealVideo.play(); if(p&&p.catch)p.catch(function(){}); },{once:true,passive:true});
+      /* Robuste iOS-Wiedergabe: mehrere Ausloeser statt nur ein touchstart-once. */
+      const tryPlay=function(){ const p=revealVideo&&revealVideo.play&&revealVideo.play(); if(p&&p.catch)p.catch(function(){}); };
+      revealVideo.addEventListener("loadeddata",tryPlay);
+      revealVideo.addEventListener("canplay",tryPlay);
+      try{ revealVideo.load(); }catch(e){}
+      tryPlay();
+      ["touchstart","touchend","pointerdown","click","scroll"].forEach(function(ev){
+        window.addEventListener(ev,tryPlay,{once:true,passive:true});
+      });
       const autoLoop=()=>{
         if(!sceneMain.isConnected){ return; }
-        if(!revealVideoOk&&painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.3){ runAuto(autobtn); }
+        if(!revealVideo&&painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.3){ runAuto(autobtn); }
         setTimeout(autoLoop,9000);
       };
       setTimeout(autoLoop,1400);
