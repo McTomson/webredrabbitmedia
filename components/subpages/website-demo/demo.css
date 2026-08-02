@@ -564,13 +564,13 @@
     .p-cell{min-height:122px;padding:clamp(1.5rem,2.2vw,2.2rem);font-size:clamp(1.2rem,2.15vw,1.42rem)}
   }
 
-  /* Mobile + Tablet (Thomas 02.08.): Hero-Scrollweg um 1/3 kuerzer (1600 -> 1067vh) -
+  /* Mobile + Tablet (Thomas 02.08.): Hero-Scrollweg kuerzer, Ziel ~5 statt 8 Fingerscrolls bis zum Text (Wert unten) -
      auf dem Handy war der Weg zu lang. Die Animations-Timings sind Bruchteile der
      Szenen-Hoehe (Pm 0..1) -> die Choreografie bleibt identisch, nur die Scroll-
      Strecke schrumpft. Desktop (>1024) unveraendert. Steht VOR dem Reduced-Motion-
      Block, damit dessen height:auto fuer diese Nutzer weiter gewinnt. */
   @media (max-width:1024px){
-    .scene-main{height:1067vh}
+    .scene-main{height:667vh}
   }
 
   /* ---------- Mobile ---------- */
