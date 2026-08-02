@@ -16,9 +16,27 @@
   (width clamp(300px,86vw,450px) / height clamp(300px,48vh,430px)). Hebel ist bewusst das
   Canvas-Aspect, NICHT die Kamera (TalosEntranceStage liest camPos/camTgt nur beim Mount +
   vertikales FOV ist fix -> Winkarm ist ein HORIZONTALES Problem). Am Geraet final bestaetigen.
-- **A (Hero-Bug) NICHT angefasst** — bleibt Prioritaet, siehe unten. Emulator friert bei dieser
-  schweren 3D-Seite ein/crasht den Tab -> animierten Zurueckscroll-Bug hier nicht reproduzierbar.
-  Fuer A: leichte Hero-only-Testroute (ohne Talos/Dashboard) bauen ODER Handy-Aufnahme von Thomas.
+- **Video-Idee (Hero als Video statt Canvas) BESPROCHEN, verworfen:** Thomas fragte, ob ein
+  abgefilmtes Video den Canvas ersetzen soll. Meine Empfehlung (angenommen): nein — Video
+  bricht Scroll-Kopplung, echten Text/SEO, LCP, festes Seitenverhaeltnis; tauscht einen
+  fixbaren Bug gegen strukturelle Nachteile. Code-Hero bleibt.
+- **Pinsel-Reveal ERLEDIGT + LIVE (8da2c43):** buildRevealPath in demo.engine.jstext neu —
+  statt zeilenweise links->rechts jetzt Zickzack (vertikaler Serpentin nach rechts), zur
+  Mitte breiter (widthK), stabile Hash-Asymmetrie (kein Math.random). Deckung OFFLINE zu 100%
+  verifiziert (scratchpad-Skript, kein Browser noetig, da reine Geometrie). Am Geraet Look
+  bestaetigen; Parameter (cols=11,rowsN=4,baseR=cell*1.24,widthK=0.72+0.6*sin) leicht drehbar.
+- **Doppel-Punkt beim Malen BEHOBEN + LIVE (3d3e6fa):** War KEIN Hero-Bug. RelaunchMenu.tsx
+  rendert den site-weiten roten Maus-Cursor an der ECHTEN Mausposition (ungeglaettet -> laeuft
+  voraus); der Hero hat zusaetzlich seinen geglaetteten Pinsel-Punkt -> zwei rote Punkte. Fix
+  in RelaunchMenu onMove: ueber `.main-sticky.painting` (aktive Hero-Mal-Flaeche) den globalen
+  Punkt ausblenden (dort ist der Pinsel der Cursor). Diagnose kam von Thomas (Farbe rot +
+  Position "vor dem Pinsel") -> kein Raten. Am Geraet bestaetigen (nur noch 1 Punkt).
+- **A (Zurueckscroll-Overlap-Bug) WEITER OFFEN — nicht angefasst.** Emulator friert bei dieser
+  schweren Seite ein/crasht den Tab (auch eine leichte Hero-only-Testroute crasht — die rAF-
+  Loops der Engine reichen). Animierten Zurueckscroll-Bug hier nicht reproduzierbar. Fuer A:
+  Handy-Aufnahme von Thomas (Frames per ffmpeg) ODER an einem Nicht-Emulator-Browser.
+  Vermutung weiter: Rueckwaerts-Reset von Morph/Reveal (smPm-Glaettung + __sculptProgress)
+  raeumt die Formen nicht sauber hinter die Reveal-Schrift. NICHT blind anfassen.
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST diesen Handoff, MEMORY.md, betroffene Dateien. Nicht ohne Kontext loslegen.
