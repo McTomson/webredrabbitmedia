@@ -409,6 +409,11 @@
         revealVideo.addEventListener("playing",function(){
           revealVideoOk=true;
           if(revealCtx){ revealCtx.setTransform(revealDpr,0,0,revealDpr,0,0); revealCtx.globalCompositeOperation="source-over"; revealCtx.fillStyle=OFFWHITE; revealCtx.fillRect(0,0,revealW,revealH); }
+          /* Das navy layer-base (Botschaft) ausblenden: das Video zeigt Malen +
+             Botschaft ohnehin. Sonst scheint beim Zahnrad/Resize das navy Bild
+             durch (Thomas 02.08.: "blaues Hintergrundbild"). Ohne layer-base bleibt
+             der transparente Sticky -> die off-white Seite dahinter. */
+          const _lb=sticky.querySelector(".layer-base"); if(_lb)_lb.style.display="none";
           const _cd=sticky.querySelector(".cursor-dot"); if(_cd)_cd.style.display="none";
           if(hint)hint.style.display="none";
           if(autobtn)autobtn.style.display="none";
