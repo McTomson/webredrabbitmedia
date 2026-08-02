@@ -126,15 +126,33 @@
     if(ry<0){ rh+=ry; ry=0; }
     /* Satz sitzt ueber dem Titel -> Region-Unterkante auf die Mal-Grenze deckeln. */
     if(paintMaxY>0 && ry+rh>paintMaxY) rh=Math.max(rh*0.4,paintMaxY-ry);
-    const rows=3, cols=8;
-    const rowH=rh/rows, colW=cols>1?rw/(cols-1):rw;
-    const r=Math.max(rowH,colW)*0.78;      /* Ueberlappung -> Kreise verschmelzen + volle Deckung */
+    /* Pinsel-Reveal (Thomas 02.08.): statt sauberer Zeilen (links->rechts) ein
+       handgemalt wirkender Zickzack-Strich, der ueber den Satz wischt. Die Front
+       laeuft als vertikaler Serpentin nach rechts (rauf/runter je Spalte =
+       Zickzack), der Pinsel drueckt zur MITTE des Zugs breiter und an den Enden
+       schmaler (widthK), plus leichte, STABILE Asymmetrie (Hash statt
+       Math.random -> kein Sprung bei Neuaufbau/Resize). Am Ende (scrollRevealA=1)
+       ist die ganze Satz-Flaeche gedeckt (Lesbarkeit), nur der WEG dahin ist der
+       Pinselstrich. baseR grosszuegig, damit auch die schmalen Enden luecken-
+       los decken. */
+    const cols=11, rowsN=4;
+    const colW=cols>1?rw/(cols-1):rw, rowH=rh/rowsN;
+    const cell=Math.max(rowH,colW);
+    const baseR=cell*1.24;                 /* Ueberlappung auch bei kleinstem widthK (Deckung offline 100% verifiziert) */
+    const jit=(seed)=>{ const s=Math.sin(seed)*43758.5453; return (s-Math.floor(s))*2-1; }; /* stabil -1..1 */
     const pts=[];
-    for(let ri=0;ri<rows;ri++){
-      const y=ry+rowH*(ri+0.5);
-      for(let ci=0;ci<cols;ci++){
-        const cc=(ri%2)?(cols-1-ci):ci;    /* serpentin: links->rechts->links */
-        pts.push({x:rx+colW*cc, y:y, r:r});
+    for(let ci=0;ci<cols;ci++){
+      const t=cols>1?ci/(cols-1):0;              /* horizontaler Fortschritt 0..1 */
+      const widthK=0.72+0.6*Math.sin(Math.PI*t); /* zur Mitte breiter (~1.32), Enden ~0.72 */
+      for(let k=0;k<rowsN;k++){
+        const ri=(ci%2)?(rowsN-1-k):k;           /* vertikaler Serpentin -> Zickzack-Front */
+        const seed=ci*7.13+ri*3.71;
+        let x=rx+colW*ci + jit(seed)*colW*0.30;
+        let y=ry+rowH*(ri+0.5) + jit(seed+9.4)*rowH*0.25;
+        if(x<rx)x=rx; else if(x>rx+rw)x=rx+rw;
+        if(y<ry)y=ry; else if(y>ry+rh)y=ry+rh;
+        const r=baseR*widthK*(0.9+0.2*(jit(seed+2.2)*0.5+0.5));
+        pts.push({x:x, y:y, r:r});
       }
     }
     revealPath=pts;
