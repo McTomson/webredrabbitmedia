@@ -399,9 +399,20 @@
         revealVideo.setAttribute("preload","auto");
         revealVideo.setAttribute("aria-hidden","true");
         revealVideo.style.cssText="position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;background:"+OFFWHITE+";";
-        /* Erst einblenden, wenn das Video WIRKLICH laeuft (sonst bleibt der gemalte
-           Canvas darunter sichtbar). applyMain uebernimmt dann die fade-Deckkraft. */
-        revealVideo.addEventListener("playing",function(){ revealVideoOk=true; },{once:true});
+        /* Erst uebernehmen, wenn das Video WIRKLICH laeuft (sonst bleibt der gemalte
+           Canvas als Fallback). Sobald es laeuft: das Canvas als ruhige, SOLIDE
+           off-white Basis stehen lassen (kein Live-Malen mehr) -> (1) kein altes
+           Malen scheint durch, (2) beim Zahnrad blendet das Video zu Off-White aus
+           statt auf das navy layer-base (kein Navy-Sprung, keine ueberlagerte
+           Botschaft). Zusaetzlich die Mal-Artefakte ausblenden: roter Pinsel-Punkt,
+           Hinweis, Auto-Button. applyMain uebernimmt dann die fade-Deckkraft. */
+        revealVideo.addEventListener("playing",function(){
+          revealVideoOk=true;
+          if(revealCtx){ revealCtx.setTransform(revealDpr,0,0,revealDpr,0,0); revealCtx.globalCompositeOperation="source-over"; revealCtx.fillStyle=OFFWHITE; revealCtx.fillRect(0,0,revealW,revealH); }
+          const _cd=sticky.querySelector(".cursor-dot"); if(_cd)_cd.style.display="none";
+          if(hint)hint.style.display="none";
+          if(autobtn)autobtn.style.display="none";
+        },{once:true});
         sticky.insertBefore(revealVideo,deck);   /* DOM: layer-base, revealCanvas, revealVideo, layer-deck */
         const _pv=revealVideo.play&&revealVideo.play(); if(_pv&&_pv.catch)_pv.catch(function(){});
         window.addEventListener("touchstart",function(){ const p=revealVideo&&revealVideo.play&&revealVideo.play(); if(p&&p.catch)p.catch(function(){}); },{once:true,passive:true});
@@ -508,7 +519,9 @@
            Erreichen von revealFade=1 (prevFade<1) fuellt einmal solide off-white ->
            kein navy-Rest beim Weiterscrollen. Danach steht der Canvas solide und wir
            sparen den Full-Fill pro Frame ueber die ganze gepinnte Strecke. */
-        if(revealFade<1 || prevFade<1) drawRevealScroll();
+        /* Laeuft das Video, bleibt das Canvas die solide off-white Basis (kein
+           Live-Malen) -> das Video macht den Mal-Effekt, das Canvas nur Untergrund. */
+        if(!revealVideoOk && (revealFade<1 || prevFade<1)) drawRevealScroll();
         prevFade=revealFade;
       }
       requestAnimationFrame(loop);
