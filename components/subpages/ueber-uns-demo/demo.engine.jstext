@@ -733,7 +733,10 @@
       revealVideo.setAttribute("preload","metadata");
       revealVideo.setAttribute("aria-hidden","true");
       revealVideo.poster="/hero/ueber-uns-hero-poster.jpg";   /* Sofort-Bild, falls Autoplay zoegert */
-      revealVideo.style.cssText="position:absolute;inset:0;z-index:4;width:100%;height:100%;object-fit:contain;object-position:center;pointer-events:none;opacity:0;background:transparent;";
+      /* Thomas 04.08. (Test): Video in NATUERLICHER Groesse, oben angesetzt (top:0),
+         Hoehe nach Bild (height:auto) -> Eigen-Seitenverhaeltnis, nichts oben/unten
+         abgeschnitten. Kein object-fit noetig (keine Box-Zwaengung mehr). */
+      revealVideo.style.cssText="position:absolute;top:0;left:0;z-index:4;width:100%;height:auto;pointer-events:none;opacity:0;background:transparent;";
       /* SOFORT die Mal-Artefakte ausblenden: Cursor-Punkt (z6) liegt UEBER dem Video (z4)
          und wuerde sonst durchscheinen; dazu Auto-Button/Hinweis (und layer-base, falls da). */
       const _hideArtifacts=function(){
