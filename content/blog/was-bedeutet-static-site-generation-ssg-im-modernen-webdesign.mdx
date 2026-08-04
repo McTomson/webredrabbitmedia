@@ -1,0 +1,160 @@
+---
+title: "Static Site Generation (SSG) einfach erklärt 2026"
+slug: was-bedeutet-static-site-generation-ssg-im-modernen-webdesign
+excerpt: "Static Site Generation (SSG) erzeugt fertiges HTML schon zur Build-Zeit und macht Websites messbar schneller. Was das für Ladezeit, Ranking und Ihre Seitenstruktur bedeutet."
+featuredSnippetTitle: "Was bedeutet Static Site Generation (SSG)?"
+featuredSnippet: "Static Site Generation (SSG) bedeutet, dass das HTML einer Seite bereits zur Build-Zeit beim Ausführen von next build erzeugt wird und nicht erst beim Aufruf durch den Besucher. Das fertige HTML wird bei jedem Request wiederverwendet und lässt sich über ein CDN cachen. So sind Inhalt und Metadaten sofort verfügbar, ganz ohne clientseitiges JavaScript."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-04"
+updatedAt: "2026-08-04"
+category: "Technik & Performance"
+tags:
+  - "Static Site Generation"
+  - "SSG"
+  - "Next.js"
+  - "Core Web Vitals"
+  - "Webperformance"
+  - "Österreich"
+featuredImage: /images/blog/was-bedeutet-static-site-generation-ssg-im-modernen-webdesign.png
+status: draft
+aiAssisted: true
+sources:
+  - name: "Next.js Documentation - Static Site Generation (SSG)"
+    url: "https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation"
+  - name: "Next.js Documentation - generateStaticParams"
+    url: "https://nextjs.org/docs/app/api-reference/functions/generate-static-params"
+  - name: "Next.js Documentation - Incremental Static Regeneration (ISR)"
+    url: "https://nextjs.org/docs/app/guides/incremental-static-regeneration"
+  - name: "Google Search Central - Understanding Core Web Vitals and Google search results"
+    url: "https://developers.google.com/search/docs/appearance/core-web-vitals"
+keyTakeaways:
+  - "Static Site Generation erzeugt das HTML zur Build-Zeit mit next build, liefert es bei jedem Request wieder aus und lässt es über ein CDN cachen. Seiten und Metadaten sind ohne clientseitiges JavaScript sofort da."
+  - "Auch dynamische Routen wie Blog-Artikel lassen sich über generateStaticParams vorrendern, wahlweise komplett oder nur als Teilmenge, während der Rest beim ersten Aufruf dynamisch entsteht."
+  - "Incremental Static Regeneration aktualisiert statische Seiten nach dem Build im Hintergrund, ohne kompletten Rebuild. So bleiben Inhalte aktuell und schnell zugleich."
+  - "Vorgerendertes statisches HTML verbessert vor allem die Ladewerte und damit die Core Web Vitals: LCP unter 2,5 Sekunden, INP unter 200 Millisekunden, CLS unter 0,1, gemessen am 75. Perzentil."
+  - "Die Rendering-Strategie ist in Next.js pro Seite wählbar. Statische und dynamische Bereiche leben im selben Projekt, Sie entscheiden seitenweise."
+conclusionStats:
+  - label: "LCP-Zielwert (Largest Contentful Paint)"
+    value: "unter 2,5 s"
+  - label: "INP-Zielwert (Interaction to Next Paint)"
+    value: "unter 200 ms"
+  - label: "CLS-Zielwert (Cumulative Layout Shift)"
+    value: "unter 0,1"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Was bedeutet Static Site Generation (SSG)?"
+    answer: "SSG bedeutet, dass das HTML einer Seite bereits zur Build-Zeit mit next build erzeugt wird und nicht erst beim Aufruf durch den Besucher. Das fertige HTML wird bei jedem Request wiederverwendet und kann über ein CDN gecacht werden, wodurch Inhalt und Metadaten ohne clientseitiges JavaScript sofort verfügbar sind."
+  - question: "Was ist der Unterschied zwischen SSG und serverseitigem Rendering (SSR)?"
+    answer: "Bei SSR stellt der Server die Seite bei jedem einzelnen Aufruf frisch zusammen. Bei SSG passiert diese Arbeit ein einziges Mal beim Bauen der Website, danach wird für jeden Besucher dieselbe fertige HTML-Datei ausgeliefert. SSG ist dadurch in der Regel schneller, SSR ist nötig, wenn sich Inhalte pro Besucher unterscheiden."
+  - question: "Sind statische Seiten nicht zu unflexibel für aktuelle Inhalte?"
+    answer: "Nein. Mit Incremental Static Regeneration (ISR) lassen sich statisch erzeugte Seiten nach dem Build im Hintergrund aktualisieren, ohne einen kompletten Rebuild. So verbindet ISR die schnelle statische Auslieferung mit aktuellen Inhalten, etwa bei geänderten Preisen oder redaktionellen Korrekturen."
+  - question: "Kann ich dynamische Seiten wie Blog-Artikel statisch generieren?"
+    answer: "Ja. In Next.js übernimmt das die Funktion generateStaticParams. Damit werden Blog-Artikel oder Produktseiten bereits zur Build-Zeit vorgerendert. Optional lässt sich nur eine Teilmenge der Pfade statisch bauen, während selten aufgerufene Seiten erst beim ersten Request entstehen."
+  - question: "Beeinflusst SSG mein Google-Ranking?"
+    answer: "Indirekt ja. Google bewertet die reale Nutzererfahrung über die Core Web Vitals als Ranking-Signal. Vorgerendertes statisches HTML verbessert vor allem die Ladewerte wie Largest Contentful Paint, weil der sichtbare Inhalt früher erscheint. Bessere Vitals und geringere Absprungraten zahlen beide auf die Sichtbarkeit ein."
+hookCandidates:
+  - "static site generation: was bringt das?"
+  - "html schon fertig, bevor jemand klickt?"
+---
+
+Stellen Sie sich vor, ein Wiener Kaffeehaus würde jede Melange erst dann von Grund auf zubereiten, wenn ein Gast sie bestellt, inklusive Bohnen rösten und Milch aufschäumen. Der Gast wartet und das Personal hetzt. Bei Andrang bricht dann alles zusammen. Genau so arbeiten viele Websites im Hintergrund: Sie bauen jede Seite in dem Moment neu, in dem jemand sie aufruft. Static Site Generation dreht dieses Prinzip um. Die Seite ist längst fertig, bevor der erste Besucher überhaupt klickt.
+
+Für Unternehmer in Österreich klingt das nach einem technischen Detail, ist aber in Wahrheit eine Frage von Ladezeit und Ranking. Und ehrlich gesagt auch eine Frage der Nerven. Deshalb schauen wir uns an, was Static Site Generation konkret bedeutet, wann sie sich lohnt, wo die Fallen liegen und was Sie in der Praxis daraus mitnehmen.
+
+![Static Site Generation (SSG) Schema mit Build-Zeit und CDN-Auslieferung für schnelle Websites in Österreich](/images/blog/was-bedeutet-static-site-generation-ssg-im-modernen-webdesign.png)
+
+## Die kurze Antwort: Was Static Site Generation ist
+
+[Static Site Generation](https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation), kurz SSG, bedeutet, dass das HTML einer Seite bereits zur Build-Zeit erzeugt wird, also beim Ausführen von `next build`, und nicht erst beim Aufruf durch den Besucher. Dieses fertige HTML wird bei jedem Request wiederverwendet und lässt sich von einem CDN zwischenspeichern. Dadurch sind Seiteninhalt und Metadaten sofort verfügbar, ganz ohne clientseitiges JavaScript.
+
+Das ist die Grundidee in zwei Sätzen. Alles Weitere ist eine Auseinandersetzung mit der Frage, warum dieser scheinbar kleine Unterschied im Zeitpunkt so viel ausmacht.
+
+## Build-Zeit statt Request-Zeit: der entscheidende Unterschied
+
+Der Kern von SSG steckt in der Frage, wann die Arbeit passiert. Bei klassischem serverseitigem Rendering setzt sich der Server bei jedem einzelnen Aufruf hin und stellt die Seite frisch zusammen. Bei Static Site Generation geschieht diese Arbeit ein einziges Mal, nämlich beim Bauen der Website. Danach liegt eine fertige HTML-Datei bereit, die für jeden Besucher gleich ausgeliefert wird.
+
+Vergleichen Sie es mit einer Speisekarte. Ein Kaffeehaus druckt die Karte einmal und legt sie auf jeden Tisch. Es würde niemandem einfallen, für jeden Gast eine eigene Karte neu zu setzen und zu drucken. Die Inhalte ändern sich selten, also lohnt sich die einmalige Produktion. SSG behandelt Ihre Website-Seiten genau nach diesem Muster: einmal produzieren, unzählige Male ausliefern.
+
+Der praktische Effekt zeigt sich beim Tempo. Weil das HTML schon existiert und zusätzlich von einem CDN gecacht werden kann, muss beim Aufruf kein Server rechnen und keine Datenbank antworten. Der Besucher bekommt die fertige Seite quasi direkt aus dem Zwischenspeicher, oft von einem Server, der geografisch näher liegt als Ihr eigentliches Hosting. Für ein Unternehmen in Graz, dessen Kunden über ganz Österreich verteilt sind, ist das ein spürbarer Vorteil.
+
+**Empfehlung:** Wenn sich der Inhalt einer Seite nicht bei jedem Aufruf ändert, gehört sie mit hoher Wahrscheinlichkeit in die statische Kategorie. Fragen Sie sich bei jeder Seite ehrlich, wie oft sich ihr Inhalt tatsächlich ändert.
+
+## Warum das für Ihr Google-Ranking zählt
+
+Tempo ist bei Websites kein Luxus, sondern ein Rankingfaktor. Google misst die reale Nutzererfahrung über die sogenannten [Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals) und lässt diese Werte als Signal in seine Kern-Ranking-Systeme einfließen. Drei Kennzahlen stehen dabei im Vordergrund: der Largest Contentful Paint sollte unter 2,5 Sekunden liegen, der Interaction to Next Paint unter 200 Millisekunden und der Cumulative Layout Shift unter 0,1. Bewertet wird jeweils am 75. Perzentil der Seitenaufrufe, es zählt also nicht der Bestwert, sondern das, was drei von vier Besuchern erleben.
+
+Genau hier spielt Static Site Generation ihre Stärke aus. Vorgerendertes statisches HTML verbessert vor allem die Ladewerte, also First Contentful Paint und Largest Contentful Paint. Wenn die Seite bereits fertig ausgeliefert wird und der Browser nicht erst warten muss, bis JavaScript nachgeladen und ausgeführt ist, erscheint der sichtbare Inhalt früher. Das schlägt sich direkt in besseren Vitals nieder.
+
+Für Sie heißt das konkret: Eine schnelle, statisch ausgelieferte Startseite oder Landingpage arbeitet gleichzeitig an zwei Fronten. Sie hält Besucher, die bei langsamen Seiten sonst abspringen, und sie sendet ein positives Signal an die Suchmaschine. Beides zahlt auf dasselbe Ziel ein.
+
+**Empfehlung:** Behandeln Sie Ladezeit nicht als Kür, sondern als Teil Ihrer SEO-Grundausstattung. Die 2,5-Sekunden-Marke beim Largest Contentful Paint ist ein guter, messbarer Zielwert für die wichtigsten Seiten.
+
+## Nicht jede Seite ist von Natur aus statisch: generateStaticParams
+
+Ein häufiges Missverständnis lautet, SSG tauge nur für einzelne, feste Seiten wie das Impressum. Das stimmt so nicht. Auch dynamische Routen lassen sich statisch vorproduzieren. In Next.js übernimmt das die Funktion [`generateStaticParams`](https://nextjs.org/docs/app/api-reference/functions/generate-static-params). Damit werden zum Beispiel Blog-Artikel oder Produktseiten bereits zur Build-Zeit statisch vorgerendert, statt erst on-demand beim jeweiligen Request.
+
+Denken Sie an einen Ratgeber-Blog mit hundert Artikeln. Jeder Artikel hat seine eigene Adresse, aber der Inhalt steht fest, sobald der Text veröffentlicht ist. `generateStaticParams` sorgt dafür, dass alle hundert Seiten beim Build fertig gebacken werden und danach so schnell ausliefern wie eine einzelne statische Seite.
+
+Praktisch ist zudem, dass Sie nicht alles auf einmal statisch bauen müssen. Optional lässt sich nur eine Teilmenge der Pfade zur Build-Zeit erzeugen, während der Rest beim ersten Request dynamisch behandelt wird. Für einen Shop mit sehr vielen Produkten bedeutet das: Die wichtigsten Seiten sind sofort statisch verfügbar, die selten aufgerufenen entstehen erst dann, wenn sie zum ersten Mal gebraucht werden. So bleibt die Build-Zeit beherrschbar, auch wenn der Katalog wächst.
+
+**Empfehlung:** Prüfen Sie bei jeder Sammlung gleichartiger Seiten, ob sie sich über `generateStaticParams` vorrendern lässt. Bei sehr großen Katalogen bauen Sie die Top-Seiten statisch und überlassen den langen Rest der dynamischen Behandlung beim Erstaufruf.
+
+## Statisch heißt nicht eingefroren: Incremental Static Regeneration
+
+Der berechtigte Einwand gegen rein statische Seiten lautet: Was passiert, wenn sich Inhalte doch ändern? Ein Preis wird angepasst, ein Artikel wird korrigiert. Muss man dann jedes Mal die komplette Website neu bauen?
+
+Nein. Genau dafür gibt es [Incremental Static Regeneration](https://nextjs.org/docs/app/guides/incremental-static-regeneration), kurz ISR. Damit lassen sich statisch erzeugte Seiten nach dem Build aktualisieren, ohne dass ein kompletter Rebuild nötig ist. Die Revalidierung läuft im Hintergrund. So verbindet ISR die schnelle statische Auslieferung mit dem Anspruch, aktuelle Inhalte zu zeigen.
+
+Bildlich gesprochen ist das die Speisekarte, die sich selbst nachdruckt. Die Gäste bekommen weiterhin die schnelle, fertige Karte, aber im Hintergrund wird sie in definierten Abständen frisch gesetzt, sobald sich etwas geändert hat. Niemand muss dafür das ganze Lokal schließen. Für einen Betrieb, der etwa saisonale Angebote pflegt, ist das der Punkt, an dem der oft gehörte Vorwurf, statische Seiten seien starr, endgültig ins Leere läuft.
+
+**Empfehlung:** Wenn Ihre Sorge lautet, statische Seiten seien nicht aktuell genug, ist ISR die Antwort. Sie behalten das Tempo und geben die Frische trotzdem nicht auf.
+
+## Alles oder nichts? Warum SSG, SSR und ISR zusammen funktionieren
+
+Ein weiterer verbreiteter Irrtum ist der, man müsse sich für eine einzige Rendering-Methode für die ganze Website entscheiden. Das Gegenteil ist der Fall. Next.js erlaubt es, die Rendering-Strategie pro Seite einzeln zu wählen. Statische Seiten wie Startseite, Landingpages und Blog können im selben Projekt neben dynamischen Bereichen stehen, die serverseitig gerendert werden.
+
+Das ist der entscheidende Denkfehler, den viele machen. Sie glauben, eine schnelle statische Website und ein interaktiver, personalisierter Bereich schlössen einander aus. In der Praxis leben beide im selben Projekt. Die öffentlichen, für alle gleichen Seiten liefern Sie statisch aus, für maximales Tempo und beste Vitals. Den Kundenbereich oder das Dashboard mit nutzerspezifischen Inhalten rendern Sie dynamisch, weil sie sich pro Besucher unterscheiden.
+
+Stellen Sie sich einen Handwerksbetrieb in Linz vor. Die Startseite, die Leistungsübersicht, die Referenzen und der Ratgeber-Blog sind für jeden Besucher identisch und ändern sich selten. Diese Seiten gehören klar in die statische Auslieferung. Ein eingeloggter Kundenbereich, in dem jeder seinen eigenen Auftragsstatus sieht, gehört in die dynamische. Sie treffen die Entscheidung Seite für Seite, nicht ein für alle Mal.
+
+**Empfehlung:** Denken Sie nicht in einem Entweder-oder, sondern seitenweise. Ordnen Sie jede Seite bewusst der passenden Strategie zu, statt eine Methode über das ganze Projekt zu stülpen.
+
+## Schritt für Schritt: So gehen Sie es konkret an
+
+Damit das Ganze nicht abstrakt bleibt, hier ein pragmatischer Weg, wie Sie in einem realen Projekt vorgehen.
+
+Erstens, machen Sie eine ehrliche Inventur Ihrer Seiten. Listen Sie jede Seitenart auf und schreiben Sie dahinter, wie oft sich ihr Inhalt tatsächlich ändert und ob er für alle Besucher gleich ist.
+
+Zweitens, sortieren Sie. Alles, was für jeden gleich aussieht und sich selten ändert, wandert in die statische Kategorie. Das sind meistens Startseite, Über-uns, Leistungen, Kontaktseite und der Blog.
+
+Drittens, klären Sie bei den statischen Sammlungen, wo `generateStaticParams` zum Einsatz kommt. Blog-Artikel und Standard-Produktseiten lassen sich damit sauber zur Build-Zeit vorrendern.
+
+Viertens, entscheiden Sie bei sich ändernden, aber nicht personalisierten Inhalten über ISR. Preise, Verfügbarkeiten oder redaktionelle Inhalte, die aktuell sein sollen, ohne dass jeder Aufruf einen Server beschäftigt, sind typische ISR-Kandidaten.
+
+Fünftens, reservieren Sie das dynamische serverseitige Rendering für das, was wirklich pro Besucher unterschiedlich ist. Login-Bereiche und Warenkörbe zum Beispiel.
+
+Sechstens, messen Sie nach dem Livegang die Core Web Vitals. Erst die Zahlen zeigen Ihnen, ob die Zuordnung gepasst hat.
+
+**Empfehlung:** Fangen Sie mit der Inventur an, nicht mit der Technik. Wer zuerst sauber sortiert, welche Seite wie oft und für wen sich ändert, trifft danach fast automatisch die richtige Rendering-Entscheidung.
+
+## Häufige Irrtümer, die Sie sich sparen können
+
+Zum Abschluss die Fallen, die in Gesprächen immer wieder auftauchen. Der erste Irrtum lautet, statische Seiten seien für moderne, interaktive Websites zu unflexibel. Das war vielleicht vor Jahren so, ist es mit ISR und der seitengenauen Wahl der Strategie aber längst nicht mehr.
+
+Der zweite Irrtum ist die Annahme, man müsse sich global entscheiden. Wie beschrieben, wählen Sie die Strategie pro Seite. Der dritte Irrtum betrifft die Aktualität. Viele glauben, statisch bedeute veraltet. Mit Hintergrund-Revalidierung über ISR stimmt das schlicht nicht.
+
+Und der vierte, der teuerste: Ladezeit als reines Technikthema abzutun. Sie ist ein direkter Hebel auf Ranking und Absprungrate, weil Google die reale Nutzererfahrung bewertet und langsame Seiten Besucher vertreiben. Wer SSG richtig einsetzt, arbeitet nicht an einem Detail, sondern an der Grundlage seiner Sichtbarkeit.
+
+## Key Takeaways
+
+- Static Site Generation erzeugt das HTML zur Build-Zeit mit `next build`, liefert es bei jedem Request wieder aus und lässt es über ein CDN cachen. Ergebnis: Seiten und Metadaten sind ohne clientseitiges JavaScript sofort da.
+- Auch dynamische Routen wie Blog-Artikel lassen sich über `generateStaticParams` vorrendern, wahlweise komplett oder nur als Teilmenge, während der Rest beim ersten Aufruf dynamisch entsteht.
+- Incremental Static Regeneration aktualisiert statische Seiten nach dem Build im Hintergrund, ohne kompletten Rebuild. So bleiben Inhalte aktuell und schnell zugleich.
+- Vorgerendertes statisches HTML verbessert vor allem die Ladewerte und damit die Core Web Vitals: Largest Contentful Paint unter 2,5 Sekunden, Interaction to Next Paint unter 200 Millisekunden, Cumulative Layout Shift unter 0,1, gemessen am 75. Perzentil.
+- Die Rendering-Strategie ist in Next.js pro Seite wählbar. Statische und dynamische Bereiche leben im selben Projekt, Sie entscheiden seitenweise.
+
+## Fazit und nächster Schritt
+
+Static Site Generation ist kein Nischenthema für Entwickler, sondern eine geschäftliche Entscheidung mit direkter Wirkung auf Tempo und Ranking. Wer die eigenen Seiten sauber danach sortiert, wie oft und für wen sie sich ändern, holt aus derselben Website deutlich mehr heraus, ohne an Aktualität einzubüßen. Klingt nach viel Technik, ist am Ende aber eine ganz simple Sortierfrage, oder?
+
+Wenn Sie wissen möchten, welche Ihrer Seiten statisch, welche über ISR und welche dynamisch laufen sollten, sehen wir uns Ihr Projekt gerne an und geben eine ehrliche Einschätzung. Nehmen Sie dazu einfach über unsere [Kontaktseite](/kontakt) Verbindung mit uns auf.

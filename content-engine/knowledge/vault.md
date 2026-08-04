@@ -2426,3 +2426,48 @@ quelle: https://nextjs.org/docs/pages/building-your-application/data-fetching/ge
 quelle_name: Next.js Documentation - Data Fetching: getServerSideProps
 geprueft_am: 2026-08-01
 recheck_nach: 2027-01-28
+
+## t59-2026-08-04-270
+cluster: 2
+keywords: bedeutet, static, site, generation, modernen, webdesign
+aussage: Bei Static Site Generation (SSG) wird das HTML einer Seite bereits zur Build-Zeit (beim Ausfuehren von 'next build') erzeugt; dieses HTML wird dann bei jedem Request wiederverwendet und kann von einem CDN gecacht werden. Dadurch sind Seiten und Metadaten ohne clientseitiges JavaScript sofort verfuegbar.
+quelle: https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation
+quelle_name: Next.js Documentation - Static Site Generation (SSG)
+geprueft_am: 2026-08-04
+recheck_nach: 2027-01-31
+
+## t59-2026-08-04-271
+cluster: 2
+keywords: bedeutet, static, site, generation, modernen, webdesign
+aussage: Ueber die Funktion 'generateStaticParams' lassen sich in Next.js auch dynamische Routen (z. B. Blog-Artikel) bereits zur Build-Zeit statisch vorrendern statt erst on-demand beim Request; optional kann nur eine Teilmenge der Pfade statisch gebaut und der Rest beim ersten Request dynamisch behandelt werden.
+quelle: https://nextjs.org/docs/app/api-reference/functions/generate-static-params
+quelle_name: Next.js Documentation - generateStaticParams
+geprueft_am: 2026-08-04
+recheck_nach: 2027-01-31
+
+## t59-2026-08-04-272
+cluster: 2
+keywords: bedeutet, static, site, generation, modernen, webdesign
+aussage: Mit Incremental Static Regeneration (ISR) koennen statisch erzeugte Seiten nach dem Build ohne kompletten Rebuild aktualisiert werden (Revalidierung im Hintergrund) - so verbindet man die Vorteile statischer Auslieferung mit aktuellen Inhalten.
+quelle: https://nextjs.org/docs/app/guides/incremental-static-regeneration
+quelle_name: Next.js Documentation - Incremental Static Regeneration (ISR)
+geprueft_am: 2026-08-04
+recheck_nach: 2027-01-31
+
+## t59-2026-08-04-273
+cluster: 2
+keywords: bedeutet, static, site, generation, modernen, webdesign
+aussage: Core Web Vitals (LCP unter 2,5 s, INP unter 200 ms, CLS unter 0,1; Bewertung am 75. Perzentil der Seitenaufrufe) messen die reale Nutzererfahrung und fliessen als Signal in Googles Kern-Ranking-Systeme ein - vorgerenderte statische HTML-Seiten (SSG/SSR) verbessern insbesondere die Ladewerte (FCP/LCP).
+quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
+quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
+geprueft_am: 2026-08-04
+recheck_nach: 2027-01-31
+
+## t59-2026-08-04-274
+cluster: 2
+keywords: bedeutet, static, site, generation, modernen, webdesign
+aussage: Next.js erlaubt die Rendering-Strategie (SSG/SSR/ISR) pro Seite einzeln zu waehlen, sodass statische Seiten (z. B. Startseite, Landingpages, Blog) und dynamische Bereiche im selben Projekt kombiniert werden koennen.
+quelle: https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation
+quelle_name: Next.js Documentation - Static Site Generation (SSG)
+geprueft_am: 2026-08-04
+recheck_nach: 2027-01-31
