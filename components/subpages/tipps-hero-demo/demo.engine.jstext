@@ -347,7 +347,7 @@
       revealVideo.muted=true; revealVideo.defaultMuted=true; revealVideo.setAttribute("muted","");
       revealVideo.loop=true; revealVideo.autoplay=true;
       revealVideo.playsInline=true; revealVideo.setAttribute("playsinline",""); revealVideo.setAttribute("webkit-playsinline","");
-      revealVideo.setAttribute("preload","auto");
+      revealVideo.setAttribute("preload","metadata");
       revealVideo.setAttribute("aria-hidden","true");
       revealVideo.poster="/hero/tipps-hero-poster.jpg";   /* Sofort-Bild, falls Autoplay zoegert */
       revealVideo.style.cssText="position:absolute;inset:0;z-index:4;width:100%;height:100%;object-fit:contain;object-position:center top;pointer-events:none;opacity:0;background:transparent;";
