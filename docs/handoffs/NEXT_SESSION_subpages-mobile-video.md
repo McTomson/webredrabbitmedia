@@ -10,8 +10,11 @@
 - Keine Emojis, echte Umlaute im Content. Erst "fertig", wenn Thomas es am Geraet bestaetigt.
 - Dev-Server `:9000` verklemmt gern → `lsof -ti tcp:9000 | xargs kill -9`, dann `npm run dev -- --port 9000`. Kein `npm run build` bei laufendem dev.
 
-## Stand dieser Session (alles committet + gepusht + live auf v2, HEAD 84b2cc1)
-Kette: 5592697 → 6036675 → a51d758 → 50eaed4 → c4c7c54 → 84b2cc1.
+## Stand dieser Session (alles committet + gepusht + live auf v2, HEAD ff2444c)
+Kette: 5592697 → 6036675 → a51d758 → 50eaed4 → c4c7c54 → 84b2cc1 → dd19963 → ff2444c.
+
+### NEU 04.08. — ALLE Hero-Videos eingebaut (ff2444c)
+Thomas hat alle Videos geliefert. Encodiert (iOS-Spec H264/Main/L40/yuv420p/30fps CFR/+faststart/stumm, 498x656) nach `public/hero/<seite>-hero-mobile.mp4` + `-poster.jpg` und in die 5 SVG-Masken-Engines eingebaut (identisches Muster wie preise, via `scratchpad/integrate.py`, node --check gruen): ueber-uns, kontakt, tipps (tipps-hero-demo), talos (Route /relaunch-preview/leistungen/talos), faq. Preis-Hero-Video auf die NEUE Aufnahme (`Preis Aufnahme.mov`) getauscht. Nur `demo.engine.jstext` je Seite geaendert — KEIN html/css; `faq-demo/demo.body.html` (fremde WIP) NICHT angefasst. Video liegt z4 (in allen 5 Engines frei, gegen demo.css geprueft), `_hideArtifacts` blendet Cursor(z6)/hint/autobtn sofort aus, `!revealVideo`-Guard schaltet Auto-Malen ab. **Playback wie immer nur am Geraet pruefbar — Thomas testet alle 6 am iPhone.**
 
 ### ERLEDIGT + verifiziert
 1. **Hero-Scrollweg ~5 Fingerscrolls** auf allen Hero-Seiten. Kalibrierung: 1067vh = 8 Scrolls → 5/8 = **667vh**. Einheitlich `@media (max-width:1024px){ .scene-main{height:667vh} }` in jeder `components/subpages/<seite>-demo/demo.css` (website, ueber-uns, kontakt, preise, leistungen-hero2, talos). Timings sind Bruchteile der Szenen-Hoehe → Choreografie identisch, nur Strecke kuerzer. Desktop unveraendert. Der Block steht VOR dem Reduced-Motion-Block (dessen height:auto muss gewinnen).
@@ -22,8 +25,13 @@ Kette: 5592697 → 6036675 → a51d758 → 50eaed4 → c4c7c54 → 84b2cc1.
 ### OFFENER PUNKT (Thomas prueft am Geraet)
 - **Preis-Video Playback**: erster Bau spielte NICHT (Screen-Recording zeigte den ruckelnden Auto-Mal-Fallback, roter Cursor-Punkt, navy Botschaft — `'playing'` feuerte nie). Fix in 84b2cc1: Mal-Artefakte SOFORT aus (roter Cursor liegt z6 UEBER dem Video z4!), Auto-Malen aus sobald Video existiert, Poster als Sofort-Bild, Optik an Video-EXISTENZ statt an `'playing'` gekoppelt, robuste iOS-Wiedergabe (muted-Attribut, webkit-playsinline, load(), Play-Trigger auf loadeddata/canplay + touchstart/touchend/pointerdown/click/scroll). **Noch NICHT am Geraet bestaetigt.** Falls nur ein Standbild (Poster) kommt → iOS blockt Autoplay hart, dann naechster Schritt (z.B. Play strikt an erste Nutzer-Geste, evtl. sichtbarer Play-Hint).
 
-## NAECHSTE AUFGABE: Videos fuer die anderen Hero-Seiten einbauen
-**Thomas liefert als naechstes ALLE Videos** fuer die Mobile/Tablet-Version der uebrigen Seiten. Pro Seite:
+## NAECHSTE AUFGABE (04.08.): Geraete-Test + evtl. FAQ neu
+- **Thomas testet alle 6 Hero-Videos am iPhone** (ueber-uns, kontakt, tipps, talos, faq, preise-neu). Falls eines nur ein Standbild/Poster zeigt → iOS blockt Autoplay hart, dann Play strikt an erste Nutzer-Geste koppeln (evtl. sichtbarer Play-Hint). Rezept/Fallen unten.
+- **FAQ evtl. neu bauen**: Thomas sagte "eventuell muessen wir faq neu machen". Das FAQ-Video ist bereits im faq-Hero (faq-demo/demo.engine.jstext). `faq-demo/demo.body.html` bleibt fremde WIP — falls FAQ inhaltlich neu gebaut wird, das mit dem WIP-Eigentuemer klaeren.
+- Falls spaeter weitere/ersetzte Videos kommen: `scratchpad/encode.sh` (Mapping anpassen) + `scratchpad/integrate.py` (idempotent, ueberspringt Engines die schon `revealVideo` haben) wiederverwenden.
+
+## (ERLEDIGT 04.08.) Recipe fuer Hero-Videos — falls nochmal gebraucht
+**Thomas lieferte ALLE Videos** fuer die Mobile/Tablet-Version. Pro Seite:
 
 1. **Encodieren (iOS-Spec, exakt wie das Website/Preis-Video):**
    ```
