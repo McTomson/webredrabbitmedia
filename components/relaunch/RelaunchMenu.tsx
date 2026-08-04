@@ -320,19 +320,13 @@ export default function RelaunchMenu() {
           cursor: pointer;
           -webkit-tap-highlight-color: transparent;
         }
-        /* Roter Fokus-Ring nur fuer echte Zeiger/Tastatur (Desktop). Auf Touch
-           NIE (Thomas 31.07.: "roten Rahmen um den Burger will ich auf keinen
-           Fall"). Komponenten-Regel hat hoehere Spezifitaet als der globale
-           Touch-Off in globals.css, darum hier explizit geraeteabhaengig. */
+        /* KEIN Fokus-Rahmen um den Burger - auf KEINER Bildschirmgroesse, auch
+           nicht Desktop (Thomas 04.08.: "dieses rote Quadrat um das Menue muss
+           weg, immer, auf jeder Bildschirmgroesse, unsichtbar oder weg"). Der
+           fruehere Desktop-only :focus-visible-Ring ist bewusst entfernt. */
         .rrmenu-trigger:focus,
         .rrmenu-trigger:focus-visible {
           outline: none;
-        }
-        @media (hover: hover) and (pointer: fine) {
-          .rrmenu-trigger:focus-visible {
-            outline: 2px solid var(--rr-red, #f12032);
-            outline-offset: 3px;
-          }
         }
         .rrmenu-bars {
           position: relative;
