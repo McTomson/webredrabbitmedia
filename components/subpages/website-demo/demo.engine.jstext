@@ -396,9 +396,9 @@
         revealVideo.muted=true; revealVideo.defaultMuted=true;
         revealVideo.loop=true; revealVideo.autoplay=true;
         revealVideo.playsInline=true; revealVideo.setAttribute("playsinline","");
-        revealVideo.setAttribute("preload","auto");
+        revealVideo.setAttribute("preload","metadata");
         revealVideo.setAttribute("aria-hidden","true");
-        revealVideo.style.cssText="position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;background:"+OFFWHITE+";";
+        revealVideo.style.cssText="position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:contain;object-position:center top;pointer-events:none;opacity:0;background:transparent;";
         /* Erst uebernehmen, wenn das Video WIRKLICH laeuft (sonst bleibt der gemalte
            Canvas als Fallback). Sobald es laeuft: das Canvas als ruhige, SOLIDE
            off-white Basis stehen lassen (kein Live-Malen mehr) -> (1) kein altes
