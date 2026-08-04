@@ -13,6 +13,9 @@
 ## Stand dieser Session (alles committet + gepusht + live auf v2, HEAD ff2444c)
 Kette: 5592697 → 6036675 → a51d758 → 50eaed4 → c4c7c54 → 84b2cc1 → dd19963 → ff2444c.
 
+### NEU 04.08. (2) — Video-Layer-Fix nach Geraete-Feedback (ab58a10)
+Thomas' iPhone-Test: (a) Statement-Text abgeschnitten (Video per `cover` zu gross skaliert -> Seiten-Crop), (b) das grosse Wort unten (`.layer-deck` z2, z.B. "Über uns.") war vom Video verdeckt ("sollte davor sein"). WICHTIG gelernt: `.layer-deck` hat `background:var(--offwhite)` = OPAK -> Video MUSS z4 (ueber dem Deck) bleiben, sonst unsichtbar (z1 getestet+verworfen). Fix in allen 6 Engines: `object-fit:contain` (voller Text, kein Crop) + `object-position:center top` (Video oben = Statement-Bereich) + `background:transparent` (untere Letterbox gibt das Deck-Wort frei). Live v2, wartet auf erneuten Geraete-Test. OFFEN: **website** (image 1) hatte auch Crop, aber website-Engine = Canvas-Reveal (Video z1 unter Canvas, `cover` noetig fuer Alignment) -> NICHT mit contain anfassen, separates Thema.
+
 ### NEU 04.08. — ALLE Hero-Videos eingebaut (ff2444c)
 Thomas hat alle Videos geliefert. Encodiert (iOS-Spec H264/Main/L40/yuv420p/30fps CFR/+faststart/stumm, 498x656) nach `public/hero/<seite>-hero-mobile.mp4` + `-poster.jpg` und in die 5 SVG-Masken-Engines eingebaut (identisches Muster wie preise, via `scratchpad/integrate.py`, node --check gruen): ueber-uns, kontakt, tipps (tipps-hero-demo), talos (Route /relaunch-preview/leistungen/talos), faq. Preis-Hero-Video auf die NEUE Aufnahme (`Preis Aufnahme.mov`) getauscht. Nur `demo.engine.jstext` je Seite geaendert — KEIN html/css; `faq-demo/demo.body.html` (fremde WIP) NICHT angefasst. Video liegt z4 (in allen 5 Engines frei, gegen demo.css geprueft), `_hideArtifacts` blendet Cursor(z6)/hint/autobtn sofort aus, `!revealVideo`-Guard schaltet Auto-Malen ab. **Playback wie immer nur am Geraet pruefbar — Thomas testet alle 6 am iPhone.**
 
