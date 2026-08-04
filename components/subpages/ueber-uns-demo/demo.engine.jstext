@@ -717,53 +717,10 @@
       return;
     }
 
-    initFluid();
+    if(!noHover) initFluid();
     if(autobtn) autobtn.addEventListener("click",()=>runAuto(autobtn));
-    if(noHover){
-      /* Thomas 04.08.: auf Touch/Tablet/Mobile das Live-Malen durch das gelieferte
-         Video ersetzen (wie /leistungen/website + /preise). Video liegt UEBER der
-         Mal-/Deck-Flaeche (z4) und blendet mit `fade` aus (applyMain). Faellt es aus
-         (iOS-Stromsparmodus/Netz), bleibt runAuto als Fallback (daher !revealVideo). */
-      revealVideo=document.createElement("video");
-      revealVideo.className="reveal-video";
-      revealVideo.src="/hero/ueber-uns-hero-mobile.mp4";
-      revealVideo.muted=true; revealVideo.defaultMuted=true; revealVideo.setAttribute("muted","");
-      revealVideo.loop=true; revealVideo.autoplay=true;
-      revealVideo.playsInline=true; revealVideo.setAttribute("playsinline",""); revealVideo.setAttribute("webkit-playsinline","");
-      revealVideo.setAttribute("preload","metadata");
-      revealVideo.setAttribute("aria-hidden","true");
-      revealVideo.poster="/hero/ueber-uns-hero-poster.jpg";   /* Sofort-Bild, falls Autoplay zoegert */
-      /* Thomas 04.08. (Test): Video in NATUERLICHER Groesse, oben angesetzt (top:0),
-         Hoehe nach Bild (height:auto) -> Eigen-Seitenverhaeltnis, nichts oben/unten
-         abgeschnitten. Kein object-fit noetig (keine Box-Zwaengung mehr). */
-      revealVideo.style.cssText="position:absolute;top:0;left:0;z-index:4;width:100%;height:auto;pointer-events:none;opacity:0;background:transparent;";
-      /* SOFORT die Mal-Artefakte ausblenden: Cursor-Punkt (z6) liegt UEBER dem Video (z4)
-         und wuerde sonst durchscheinen; dazu Auto-Button/Hinweis (und layer-base, falls da). */
-      const _hideArtifacts=function(){
-        const _lb=sticky.querySelector(".layer-base"); if(_lb)_lb.style.display="none";
-        const _cd=sticky.querySelector(".cursor-dot"); if(_cd)_cd.style.display="none";
-        if(hint)hint.style.display="none";
-        if(autobtn)autobtn.style.display="none";
-      };
-      _hideArtifacts();
-      revealVideo.addEventListener("playing",function(){ revealVideoOk=true; _hideArtifacts(); },{once:true});
-      sticky.appendChild(revealVideo);
-      /* Robuste iOS-Wiedergabe: mehrere Ausloeser statt nur ein touchstart-once. */
-      const tryPlay=function(){ const p=revealVideo&&revealVideo.play&&revealVideo.play(); if(p&&p.catch)p.catch(function(){}); };
-      revealVideo.addEventListener("loadeddata",tryPlay);
-      revealVideo.addEventListener("canplay",tryPlay);
-      try{ revealVideo.load(); }catch(e){}
-      tryPlay();
-      ["touchstart","touchend","pointerdown","click","scroll"].forEach(function(ev){
-        window.addEventListener(ev,tryPlay,{once:true,passive:true});
-      });
-      const autoLoop=()=>{
-        if(!sceneMain.isConnected){ return; }
-        if(!revealVideo&&painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.3){ runAuto(autobtn); }
-        setTimeout(autoLoop,9000);
-      };
-      setTimeout(autoLoop,1400);
-    }
+    /* (Das Hero-Video wird auf Mobile jetzt GANZ OBEN in boot() erzeugt — fuer
+       einen fruehen LCP. Hier stand frueher der spaete Video-Block.) */
 
     renderHead(0,0);
     headSvg.style.opacity="1";
@@ -870,6 +827,40 @@
       const io=new IntersectionObserver(es=>{es.forEach(e=>{ if(e.isIntersecting){ rrFoot.classList.add("in"); io.disconnect(); } });},{threshold:0.25});
       io.observe(document.getElementById("rrFootWord")||rrFoot);
     } else { rrFoot.classList.add("in"); }
+  }
+
+  /* MOBILE/TABLET LCP-Fix (Thomas 04.08.): das Hero-Video SOFORT einhaengen —
+     NICHT auf document.fonts.ready warten (boot() tut das). Das Video braucht
+     keine Fonts; frueh gemountet paintet das Poster ~beim ersten Paint statt
+     erst nach dem (render-blockierenden) Font-Load -> LCP am Anfang. opacity:1
+     sichtbar ab Start; aspect-ratio reserviert die Hoehe (kein CLS). */
+  if(noHover){
+    revealVideo=document.createElement("video");
+    revealVideo.className="reveal-video";
+    revealVideo.src="/hero/ueber-uns-hero-mobile.mp4";
+    revealVideo.muted=true; revealVideo.defaultMuted=true; revealVideo.setAttribute("muted","");
+    revealVideo.loop=true; revealVideo.autoplay=true;
+    revealVideo.playsInline=true; revealVideo.setAttribute("playsinline",""); revealVideo.setAttribute("webkit-playsinline","");
+    revealVideo.setAttribute("preload","metadata");
+    revealVideo.setAttribute("aria-hidden","true");
+    revealVideo.poster="/hero/ueber-uns-hero-poster.jpg";
+    revealVideo.style.cssText="position:absolute;top:0;left:0;z-index:4;width:100%;height:auto;aspect-ratio:496/796;pointer-events:none;opacity:1;background:transparent;";
+    (function(){
+      const _lb=sticky.querySelector(".layer-base"); if(_lb)_lb.style.display="none";
+      const _cd=sticky.querySelector(".cursor-dot"); if(_cd)_cd.style.display="none";
+      if(hint)hint.style.display="none";
+      if(autobtn)autobtn.style.display="none";
+    })();
+    revealVideo.addEventListener("playing",function(){ revealVideoOk=true; },{once:true});
+    sticky.appendChild(revealVideo);
+    const tryPlay=function(){ const p=revealVideo&&revealVideo.play&&revealVideo.play(); if(p&&p.catch)p.catch(function(){}); };
+    revealVideo.addEventListener("loadeddata",tryPlay);
+    revealVideo.addEventListener("canplay",tryPlay);
+    try{ revealVideo.load(); }catch(e){}
+    tryPlay();
+    ["touchstart","touchend","pointerdown","click","scroll"].forEach(function(ev){
+      window.addEventListener(ev,tryPlay,{once:true,passive:true});
+    });
   }
 
   if(document.fonts && document.fonts.ready){ document.fonts.ready.then(boot); }

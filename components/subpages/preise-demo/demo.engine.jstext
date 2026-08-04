@@ -716,7 +716,7 @@
       return;
     }
 
-    initFluid();
+    if(!noHover) initFluid();
     if(autobtn) autobtn.addEventListener("click",()=>runAuto(autobtn));
     if(noHover){
       /* Thomas 02.08.: auf Touch/Tablet/Mobile das Live-Malen durch das gelieferte
@@ -735,7 +735,7 @@
       revealVideo.setAttribute("aria-hidden","true");
       revealVideo.poster="/hero/preise-hero-poster.jpg";   /* Sofort-Bild, falls Autoplay zoegert */
       /* Natuerliche Groesse, oben anliegend (Thomas 04.08.): echtes Seitenverhaeltnis, nichts abgeschnitten. */
-      revealVideo.style.cssText="position:absolute;top:0;left:0;z-index:4;width:100%;height:auto;pointer-events:none;opacity:0;background:transparent;";
+      revealVideo.style.cssText="position:absolute;top:0;left:0;z-index:4;width:100%;height:auto;aspect-ratio:496/796;pointer-events:none;opacity:0;background:transparent;";
       /* SOFORT (nicht erst bei 'playing') die Mal-Artefakte ausblenden: der rote
          Cursor-Punkt liegt z6 UEBER dem Video und wuerde sonst durchscheinen; dazu
          Auto-Button/Hinweis und das navy layer-base (Video/Poster zeigt Botschaft +

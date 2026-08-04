@@ -176,6 +176,17 @@ const nextConfig = {
   async headers() {
     return [
       {
+        // Hero-Videos/Poster haben stabile Dateinamen (bei Ersatz Query-Version
+        // anhaengen) -> langlebig immutable cachen (Repeat-View/Navigation, Thomas 04.08.).
+        source: '/hero/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
         source: '/:path*',
         headers: [
           // SEO Headers

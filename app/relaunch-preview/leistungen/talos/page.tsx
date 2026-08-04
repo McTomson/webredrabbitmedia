@@ -6,7 +6,7 @@ import BackToTop from '@/components/relaunch/BackToTop';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import TalosDemoClient from '@/components/subpages/TalosDemoClient';
-import TalosCompanionStage from '@/components/relaunch/talos/TalosCompanionStage';
+import TalosCompanionStage from '@/components/relaunch/talos/TalosCompanionStageLazy';
 import WerIstTalos from '@/components/subpages/leistungen/talos/v2/WerIstTalos';
 import InklusiveDashboard from '@/components/subpages/leistungen/talos/v2/InklusiveDashboard';
 import Faehigkeiten from '@/components/subpages/leistungen/talos/v2/Faehigkeiten';

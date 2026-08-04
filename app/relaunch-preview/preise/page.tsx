@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import CornerLogo from '@/components/relaunch/CornerLogo';
 import BackToTop from '@/components/relaunch/BackToTop';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
-import TalosCompanionStage from '@/components/relaunch/talos/TalosCompanionStage';
+import TalosCompanionStage from '@/components/relaunch/talos/TalosCompanionStageLazy';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import PreiseDemoClient from '@/components/subpages/PreiseDemoClient';
 import ScrollBumper from '@/components/subpages/leistungen/ScrollBumper';
