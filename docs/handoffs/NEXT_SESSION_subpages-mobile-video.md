@@ -10,6 +10,48 @@
 - Keine Emojis, echte Umlaute im Content. Erst "fertig", wenn Thomas es am Geraet bestaetigt.
 - Dev-Server `:9000` verklemmt gern → `lsof -ti tcp:9000 | xargs kill -9`, dann `npm run dev -- --port 9000`. Kein `npm run build` bei laufendem dev.
 
+## >>> HIER STARTEN (Stand 04.08. Abend, HEAD 4e8c2b8) <<<
+
+### ZIEL (Thomas woertlich)
+"Wir machen die Videos NEU — sie muessen nur so sein, dass sie NICHT abgeschnitten sind." Gewuenschter Look pro Hero-Seite (Mobile): Statement-Text **mittig**, wirkt als kaeme es **von oben herunter**, **vollflaechig** (randlos), das **grosse Wort unten bleibt** (Talos./Website./...), **Video laeuft hinter Logo/Menue** (Logo+Menue liegen drueber). Referenz: Thomas' Bild "IMG_8747" (zentrierter Text auf Navy).
+
+### KERN-PROBLEM (verifiziert, das ist der Knoten)
+Thomas' bisherige Aufnahmen sind **~500x656 px (fast quadratisch, 3:4)**. Ein Handy ist **hoch+schmal (~9:19.5)**. Damit gilt bei der Anzeige:
+- `object-fit:cover` (vollflaechig) → schneidet die **Seiten** ab (breite Textzeilen wie "RUFT BEI DIR AUCH" weg). Rechnung: cover skaliert nach Hoehe, Text 82% wird 617px auf 430px-Schirm → immer abgeschnitten, egal wie man positioniert.
+- `object-fit:contain` (nichts abgeschnitten) → **klein mit Rand oben/unten** (Letterbox), Thomas findet es zu klein/leer.
+**Kein object-fit loest das mit quadratischen Videos.** DIE LOESUNG IST DAS VIDEO-FORMAT.
+
+### LOESUNG (der Weg, auf den wir uns geeinigt haben)
+Thomas nimmt die Videos im **HANDY-FORMAT (hochkant, phone-aspect)** neu auf. Dann `object-fit:cover` (vollflaechig) → **kein Crop**, Text mittig, von oben, Wort unten, hinter Logo/Menue. Sobald das Video ~9:19.5 ist, fuellt cover exakt ohne abzuschneiden.
+
+### SACKGASSEN (NICHT nochmal reinlaufen — hier habe ich Zeit verbrannt)
+1. **`?record=1`-Aufnahmeseite / Paint am Handy rendern**: Die SVG-Masken-Paint-Animation **laeuft NICHT in Handy-Breite** (genau DER Grund, warum es die Videos gibt — iOS/SVG-Maske). Mein Versuch, sie im Geraete-Modus abspielbar zu machen, scheiterte (blobsChildren=0, kein Blob). NICHT weiter versuchen, die Paint am Handy/mobile-CSS zum Laufen zu bringen. (Die experimentellen ?record=1-Aenderungen wurden zurueckgesetzt, ueber-uns ist sauber = 4e8c2b8.)
+2. **Blind an object-fit/object-position/crop rumdrehen**: bringt nichts, weil das Video-Format das Problem ist. Erst neues Format, dann anzeigen.
+
+### CACHE-FALLE (wichtig!)
+v2 cached hart auf dem iPhone. Mehrere "abgeschnitten"-Screenshots von Thomas waren die **alte gecachte Version** (cover), obwohl auf dem Server schon contain deployt war. IMMER mit `?v=N` (neuer Query-Param) oder **privatem Tab** pruefen lassen, sonst jagt man Phantome.
+
+### WIE THOMAS AUFNIMMT (sein Constraint)
+Sein Browserfenster geht **nicht schmaeler als ein Handy** (~500px min). Optionen fuer phone-aspect:
+- Chrome **Geraete-Modus** (DevTools > Handy-Symbol > iPhone) — rendert Handy-Groesse im breiten Fenster. ABER: die Paint laeuft dort nicht (siehe Sackgasse 1) — er muesste also die NORMALE (Desktop-)Seite mit funktionierender Paint aufnehmen und dabei einen **hochkant-Bereich** mit `Cmd+Shift+5` (Ausgewaehlten Bereich) um den Blob croppen.
+- Damit der Text in den schmalen hochkant-Bereich passt: ggf. Statements **schmaeler umbrechen (max 3 Woerter/Zeile)** — das ist wenig Arbeit, in `components/subpages/<seite>-demo/demo.body.html`, Klasse `.reveal-msg` (aktuelle Texte stehen weiter unten im Handoff-Verlauf / einfach grep 'reveal-msg').
+
+### KONKRETE NAECHSTE SCHRITTE
+1. Mit Thomas 1 Satz klaeren: Wie genau nimmt er auf (Desktop-Paint + hochkant-Region croppen)? Und braucht er dafuer schmaelere Statements (≤3 Woerter/Zeile)?
+2. Falls ja: `.reveal-msg` in den 7 Hero-Seiten schmaeler umbrechen (nur `<br>`, Worte NICHT aendern, echte Umlaute). Betrifft auch Desktop-Umbruch — kurz gegenchecken.
+3. Thomas liefert 1 Test-Video (ueber-uns) im Handy-Format → mit `ffmpeg` iOS-Spec encodieren (H264/Main/L40/yuv420p/30fps CFR/+faststart/-an, gerade Maße) nach `public/hero/ueber-uns-hero-mobile.mp4` + Poster.
+4. Anzeige umstellen auf **vollflaechig ohne Crop**: `object-fit:cover; object-position:center` (bei phone-aspect Video = kein Crop), Video hinter Logo/Menue (die liegen z>Video). Grosses Wort unten sichtbar lassen — entweder Video-Hoehe endet knapp ueber dem Wort (z.B. `height:~84vh; top:0`) ODER Wort-Ebene ueber dem Video. **Am Geraet pruefen (Cache!).**
+5. Passt ueber-uns → gleiche Behandlung + Videos fuer die anderen 6.
+
+### AKTUELLER TECHNISCHER STAND (HEAD 4e8c2b8, live v2)
+- Alle 7 Hero-Videos sind die **normalisierten ~82%-Crop-Versionen** (aus b5dfb8d), Anzeige `object-fit:contain` + `background:transparent`.
+- `object-position`: **ueber-uns = `center`** (4e8c2b8), die anderen 6 = **`center top`** (uneinheitlich, weil ueber-uns der Test war — beim Umbau vereinheitlichen).
+- website nutzt `contain` (0f63168), neues zentriertes Video drin.
+- Dev-Server lief auf `:9000` (fuer den ?record-Versuch) — kann gestoppt werden.
+- Diese contain-Version schneidet NICHTS ab (per PIL-Render verifiziert), wirkt aber Thomas zu klein → daher der Neu-Aufnahme-Plan.
+
+---
+
 ## Stand dieser Session (alles committet + gepusht + live auf v2, HEAD ff2444c)
 Kette: 5592697 → 6036675 → a51d758 → 50eaed4 → c4c7c54 → 84b2cc1 → dd19963 → ff2444c.
 
