@@ -112,6 +112,9 @@ export default function UeberUnsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       {/* Fonts wie in der Demo (DM Sans, Instrument Sans, Crimson Pro). */}
+      {/* LCP-Poster mobil frueh laden (Thomas 04.08.): entfernt den Load-Delay,
+          bis der Inline-Engine das Video baut. Nur Mobile/Tablet. */}
+      <link rel="preload" as="image" href="/hero/ueber-uns-hero-poster.jpg" fetchPriority="high" media="(max-width: 1024px)" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       <link

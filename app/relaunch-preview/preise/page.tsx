@@ -92,6 +92,8 @@ export default function PreisePreviewPage() {
         }}
       />
 
+      {/* LCP-Poster mobil frueh laden (Thomas 04.08.), nur Mobile/Tablet. */}
+      <link rel="preload" as="image" href="/hero/preise-hero-poster.jpg" fetchPriority="high" media="(max-width: 1024px)" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       <link
