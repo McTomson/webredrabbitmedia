@@ -480,7 +480,8 @@
       revealVideo.setAttribute("preload","metadata");
       revealVideo.setAttribute("aria-hidden","true");
       revealVideo.poster="/hero/faq-hero-poster.jpg";   /* Sofort-Bild, falls Autoplay zoegert */
-      revealVideo.style.cssText="position:absolute;inset:0;z-index:4;width:100%;height:100%;object-fit:contain;object-position:center top;pointer-events:none;opacity:0;background:transparent;";
+      /* Natuerliche Groesse, oben anliegend (Thomas 04.08.): echtes Seitenverhaeltnis, nichts abgeschnitten. */
+      revealVideo.style.cssText="position:absolute;top:0;left:0;z-index:4;width:100%;height:auto;pointer-events:none;opacity:0;background:transparent;";
       /* SOFORT die Mal-Artefakte ausblenden: Cursor-Punkt (z6) liegt UEBER dem Video (z4)
          und wuerde sonst durchscheinen; dazu Auto-Button/Hinweis (und layer-base, falls da). */
       const _hideArtifacts=function(){
