@@ -20,6 +20,13 @@
       <h1 class="hero-title" id="htitle" aria-label="Über uns"><span class="ltr ue" data-l="0" aria-hidden="true">U</span><span class="ltr" data-l="1" aria-hidden="true">b</span><span class="ltr" data-l="2" aria-hidden="true">e</span><span class="ltr" data-l="3" aria-hidden="true">r</span><span class="ltr sp" data-l="4" aria-hidden="true">&nbsp;</span><span class="ltr" data-l="5" aria-hidden="true">u</span><span class="ltr" data-l="6" aria-hidden="true">n</span><span class="ltr" data-l="7" aria-hidden="true">s</span><span class="ltr dot" data-l="8" aria-hidden="true">.</span></h1>
     </div>
 
+    <!-- LCP-Poster (Thomas 06.08.): server-gerendertes <img> im Ausgangs-HTML,
+         damit das groesste Hero-Element schon beim ersten Paint steht (nicht erst
+         nachdem die Engine per JS das Video baut). NUR Mobile/Tablet (CSS via
+         hover:none, matcht die noHover-Bedingung der Engine). Das Video legt sich
+         drueber (gleiches z, spaeter im DOM) und faded synchron auf Scroll. -->
+    <img class="reveal-poster" src="/hero/ueber-uns-hero-poster.jpg" alt="" aria-hidden="true" fetchpriority="high" decoding="async" width="496" height="796">
+
     <div class="story-grid">
       <div class="head-col">
         <svg id="headSvg" viewBox="120 110 770 910" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
