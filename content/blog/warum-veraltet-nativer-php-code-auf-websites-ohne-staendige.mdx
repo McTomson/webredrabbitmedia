@@ -1,0 +1,149 @@
+---
+title: "PHP-Code veraltet ohne Updates: Warum und was tun 2026"
+slug: warum-veraltet-nativer-php-code-auf-websites-ohne-staendige
+excerpt: "Warum nativer PHP-Code auf Websites ohne laufende Updates zwangsläufig veraltet, unsicher und langsam wird, und welche Schritte Sie 2026 konkret dagegen setzen."
+featuredSnippetTitle: "Warum veraltet PHP-Code auf Websites ohne Updates?"
+featuredSnippet: "Nativer PHP-Code veraltet ohne ständige Updates, weil sein Unterbau nach einem festen Zeitplan aus dem Support fällt. PHP folgt einem 4-Jahres-Modell: zwei Jahre aktiver Support, dann zwei Jahre nur Sicherheitsfixes, danach End of Life ganz ohne Sicherheitsupdates. Bleibt die Seite stehen, wird sie unsicher und rutscht im Google-Ranking ab."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-06"
+updatedAt: "2026-08-06"
+category: "Technik & Performance"
+tags:
+  - "PHP"
+  - "Website-Wartung"
+  - "Sicherheit"
+  - "WordPress"
+  - "Core Web Vitals"
+  - "Österreich"
+featuredImage: "/images/blog/warum-veraltet-nativer-php-code-auf-websites-ohne-staendige.png"
+status: draft
+aiAssisted: true
+sources:
+  - name: "PHP.net - Supported Versions (offiziell)"
+    url: "https://www.php.net/supported-versions.php"
+  - name: "PHP.net - Unsupported Branches (EOL-Liste)"
+    url: "https://www.php.net/eol.php"
+  - name: "W3Techs - Usage statistics of PHP for websites"
+    url: "https://w3techs.com/technologies/details/pl-php"
+  - name: "SecurityWeek (auf Basis Patchstack State of WordPress Security 2025)"
+    url: "https://www.securityweek.com/8000-new-wordpress-vulnerabilities-reported-in-2024/"
+  - name: "Patchstack - State of WordPress Security in 2025"
+    url: "https://patchstack.com/whitepaper/state-of-wordpress-security-in-2025/"
+  - name: "CoreWebVitals.io - Core Web Vitals for WordPress: Optimization Guide"
+    url: "https://www.corewebvitals.io/core-web-vitals/wordpress-guide"
+keyTakeaways:
+  - "PHP folgt einem festen 4-Jahres-Modell: zwei Jahre aktiver Support, zwei Jahre nur Sicherheitsfixes, dann End of Life ohne jeden Schutz. PHP 8.1 ist seit 31.12.2025 EOL."
+  - "PHP 7 bekommt seit 28. November 2022 keine Sicherheitspatches mehr, trotzdem laufen noch 29,4 Prozent aller PHP-Seiten darauf und weitere rund 8 Prozent auf dem noch älteren PHP 5."
+  - "Das größte Risiko steckt im Fremdcode: 96 Prozent der 7.966 WordPress-Lücken von 2024 lagen in Plugins, 43 Prozent davon waren ohne Anmeldung ausnutzbar."
+  - "Rückstände lösen sich nicht von selbst: Rund 35 Prozent der 2024 offengelegten Lücken waren 2025 noch ungepatcht."
+  - "Veraltet heißt auch langsam: Nur etwa 32 Prozent der WordPress-Seiten erreichen einen guten TTFB-Wert, was direkt auf die Core Web Vitals und das Google-Ranking drückt."
+conclusionStats:
+  - label: "PHP 7 ohne Sicherheitspatches seit"
+    value: "28.11.2022"
+  - label: "PHP-Seiten noch auf PHP 7"
+    value: "29,4 %"
+  - label: "WordPress-Lücken 2024 in Plugins"
+    value: "96 %"
+  - label: "WordPress-Seiten mit gutem TTFB"
+    value: "32 %"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Woran erkenne ich, dass meine Website veraltet ist?"
+    answer: "Ein deutliches Zeichen ist eine alte PHP-Version. Prüfen Sie im Hosting-Panel oder beim Provider, ob eine 7er- oder 5er-Version läuft, denn diese bekommen seit Jahren keine Sicherheitsupdates. Auch lange nicht aktualisierte Plugins und eine träge Ladezeit sind Warnsignale."
+  - question: "Ist eine Website unsicher, nur weil PHP alt ist?"
+    answer: "Ja, das Risiko steigt spürbar. Fällt eine PHP-Version aus dem Support, gibt es keine Sicherheitsupdates mehr, auch für neu bekannte Lücken nicht. Dazu kommt der Fremdcode: 96 Prozent der WordPress-Lücken 2024 lagen in Plugins, 43 Prozent davon waren ohne Anmeldung ausnutzbar."
+  - question: "Wie oft sollte eine Website gewartet werden?"
+    answer: "Wartung ist kein einmaliger Akt, sondern eine laufende Aufgabe. Sinnvoll ist ein fester Rhythmus für Updates mit vorherigem Backup, dazu ein kontrollierter Versionssprung auf eine aktuelle PHP-Version, sobald die genutzte Version dem End of Life entgegengeht."
+  - question: "Beeinflusst eine alte Website mein Google-Ranking?"
+    answer: "Ja. Veraltete PHP- und CMS-Architekturen sind oft langsam, und nur rund 32 Prozent der WordPress-Seiten erreichen einen guten TTFB-Wert. Das drückt auf die Core Web Vitals, die direkt in das Google-Ranking einfließen, sodass gewartete Mitbewerber vorbeiziehen."
+  - question: "Bin ich als kleiner Betrieb überhaupt ein Ziel für Angriffe?"
+    answer: "Ja, denn Angriffe laufen automatisiert. Es wird flächendeckend nach bekannten Lücken gescannt, ob dahinter ein Konzern oder ein Ein-Mann-Betrieb steht, ist der Maschine egal. Bei 43 Prozent ohne Anmeldung ausnutzbaren Lücken sucht sich niemand gezielt Ihre Seite aus, sie wird einfach mitgefunden."
+---
+
+Stellen Sie sich vor, Sie kaufen ein Auto und stellen es in die Garage. Fünf Jahre lang fahren Sie damit, aber Sie bringen es nie zum Service und wechseln nie das Öl. Von außen sieht es noch tadellos aus. Trotzdem würde niemand behaupten, dass es genauso sicher unterwegs ist wie am ersten Tag. Bei einer Website mit nativem PHP-Code ist es genau dasselbe, nur dass man den Verschleiß eben nicht sieht.
+
+Als technischer Leiter bekomme ich diesen Fall regelmäßig auf den Tisch. Ein Wiener Betrieb hat vor vier oder fünf Jahren eine schöne Seite bauen lassen, alles hat funktioniert, und seither hat niemand mehr etwas angefasst. Die Seite läuft ja. Und genau das ist der Denkfehler. Denn PHP, die Sprache, auf der ein Großteil des Webs läuft, altert nach einem festen Fahrplan, ob man will oder nicht. In diesem Artikel erkläre ich Ihnen, warum eine einmal gebaute PHP-Website ohne laufende Wartung zwangsläufig veraltet und was Sie konkret dagegen tun sollten, um nicht in die Falle zu tappen.
+
+## Die kurze Antwort zuerst
+
+Nativer PHP-Code veraltet ohne ständige Updates, weil sein Unterbau nach einem festen Zeitplan aus dem Support fällt. PHP folgt einem 4-Jahres-Modell: zwei Jahre aktiver Support mit Bug- und Sicherheitsfixes, dann zwei Jahre reiner Security-Support, danach End of Life ganz ohne Sicherheitsupdates. Bleibt die Seite stehen, wird sie unsicher und rutscht im Google-Ranking ab.
+
+Das Entscheidende an diesem Satz ist das Wort "zwangsläufig". Es geht hier nicht um Nachlässigkeit einzelner Entwickler oder um schlechten Code. Es geht darum, dass die Grundlage, auf der Ihre Seite steht, ein Ablaufdatum hat. Und dieses Ablaufdatum kommt, egal ob Sie sich darum kümmern oder nicht.
+
+## PHP hat ein Ablaufdatum, und zwar ein hartes
+
+Schauen wir uns den [Lebenszyklus einer PHP-Version](https://www.php.net/supported-versions.php) genau an, denn hier liegt der Kern der ganzen Sache. Jede Version durchläuft drei Phasen. In den ersten zwei Jahren gibt es aktiven Support, das heißt, das Entwicklerteam behebt sowohl Programmfehler als auch Sicherheitslücken. In den darauf folgenden zwei Jahren bekommt die Version nur noch reine Security-Fixes, also ausschließlich Patches für Sicherheitsprobleme. Und danach kommt End of Life. Ab diesem Punkt erhält der Sprach-Unterbau überhaupt keine Sicherheitsupdates mehr, auch wenn morgen eine schwere Lücke bekannt wird.
+
+Das ist kein theoretisches Konstrukt. PHP 8.1 hat am 31. Dezember 2025 sein [End of Life](https://www.php.net/eol.php) erreicht, PHP 8.0 bereits im November 2023. Eine Seite, die 2021 auf PHP 8.0 gebaut wurde und seither nicht angefasst wurde, steht heute also auf einem Fundament, das seit über zwei Jahren keine Sicherheitsupdates mehr sieht. Der Code auf Ihrem Server ist derselbe wie am ersten Tag. Aber die Welt um ihn herum hat sich weitergedreht, und der Schutzschirm ist eingeklappt worden.
+
+Genau deshalb spreche ich lieber vom "Veralten" als vom "Kaputtgehen". Die Seite läuft ja weiter. Sie geht nicht mit einem Knall kaputt. Sie wird nur still und heimlich zu einem offenen Fenster, ohne dass Sie es merken.
+
+## Was passiert, wenn eine Version End of Life ist
+
+Nehmen wir PHP 7 als Beispiel, weil es besonders eindrücklich zeigt, wie langsam die Realität dem Fahrplan hinterherhinkt. PHP 7 wird seit dem 28. November 2022 nicht mehr unterstützt und bekommt seither keine Sicherheitspatches mehr. Das ist inzwischen mehr als drei Jahre her. Und trotzdem laufen laut den Erhebungen von [W3Techs](https://w3techs.com/technologies/details/pl-php) immer noch 29,4 Prozent aller PHP-Websites auf genau dieser abgekündigten Version. Weitere rund 8 Prozent laufen sogar noch auf PHP 5, das bereits 2018 aus dem Support gefallen ist.
+
+Rechnen wir das kurz zusammen. Fast vier von zehn PHP-Seiten im Netz stehen auf einer Grundlage, für die es keine Sicherheitsupdates mehr gibt. Und weil PHP von rund 70 Prozent aller Websites mit bekannter serverseitiger Sprache eingesetzt wird, reden wir hier nicht über einen Randfall, sondern über einen erheblichen Teil des gesamten Webs.
+
+Der Punkt ist: Diese Betreiber haben nichts falsch gemacht im Sinne von "sie haben etwas kaputt konfiguriert". Sie haben einfach nichts getan. Und "nichts tun" ist bei PHP eben keine neutrale Entscheidung, sondern eine aktive Bewegung Richtung veraltet. Die Zeit arbeitet gegen Sie, wenn Sie stillhalten.
+
+## Nicht der Kern ist das Problem, sondern alles drumherum
+
+Jetzt kommt der Teil, den viele unterschätzen. Die meisten Business-Websites laufen nicht auf reinem, handgeschriebenem PHP, sondern auf einem System wie WordPress, und darauf sitzen dann Plugins und Themes. Genau dort, in diesem erweiternden Fremdcode, entsteht der größte Teil des Risikos.
+
+Die Zahlen dazu sind deutlich. Im Jahr 2024 wurden im WordPress-Ökosystem [7.966 neue Sicherheitslücken](https://www.securityweek.com/8000-new-wordpress-vulnerabilities-reported-in-2024/) gemeldet. Davon entfielen rund 96 Prozent, also 7.633 Stück, auf Plugins und der Rest fast vollständig auf Themes. Fast alles davon steckte also nicht im WordPress-Kern selbst, sondern in dem PHP-Fremdcode, den man dazuinstalliert. Und 43 Prozent dieser Lücken waren ohne jede Anmeldung ausnutzbar. Das heißt, ein Angreifer braucht dafür kein Passwort und keinen Zugang. Er muss die Lücke nur kennen.
+
+Ich vergleiche das gern mit einem Haus, an das man über die Jahre einen Wintergarten und eine Garage anbaut. Die tragenden Mauern des Hauses sind solide. Aber jeder Anbau hat seine eigene Tür und sein eigenes Schloss, und je mehr Anbauten Sie haben, desto mehr Türen müssen Sie im Auge behalten. Ein Plugin, das seit zwei Jahren nicht aktualisiert wurde, ist so eine Tür, die vielleicht schon lange offen steht.
+
+## Warum ein Update-Rückstand nicht von selbst verschwindet
+
+Man könnte hoffen, dass sich solche Lücken mit der Zeit von allein schließen, weil ja irgendwann jemand einen Patch nachliefert. Diese Hoffnung trügt. Die Analyse von [Patchstack](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2025/) für 2025 zeigt, dass über die Hälfte der informierten Plugin-Entwickler eine gemeldete Schwachstelle nicht einmal vor der offiziellen Veröffentlichung behoben hat. Und rund 35 Prozent aller im Jahr 2024 offengelegten WordPress-Schwachstellen waren 2025 immer noch ungepatcht.
+
+Lesen Sie diesen letzten Satz ruhig zweimal. Ein gutes Drittel der bekannten Lücken aus dem Vorjahr war ein Jahr später noch immer offen. Das bedeutet für Ihre Seite konkret: Selbst wenn Sie brav jeden verfügbaren Update-Button drücken würden, gäbe es für einen Teil der Probleme schlicht keine Reparatur. Und wenn Sie gar nichts drücken, weil die Seite ja "eh läuft", bleiben diese Angriffsflächen dauerhaft offen. Ein Update-Rückstand ist eben kein Schnee, der im Frühling wegtaut. Er wächst.
+
+Genau deshalb ist laufende Wartung kein Wartungsvertrag, den man verkauft, weil es sich gut anhört. Es ist die einzige Antwort auf eine Angriffsfläche, die sich sonst Woche für Woche vergrößert.
+
+## Auch das Tempo leidet, und damit Ihr Google-Ranking
+
+Veraltet heißt nicht nur "unsicher". Es heißt oft auch "langsam", und das trifft Sie direkt beim Ranking. Klassische PHP- und CMS-Architekturen bauen jede Seite bei jedem Aufruf frisch zusammen. Der Server holt sich bei jeder Anfrage die Daten aus der Datenbank, jagt sie durch den PHP-Code und setzt daraus die fertige Seite zusammen. Das kostet Zeit, und diese Zeit misst Google.
+
+Der entscheidende Wert heißt TTFB, die Zeit bis zum ersten Byte, also wie lange der Server braucht, bis er überhaupt anfängt zu antworten. Laut [Chrome-UX-Report](https://www.corewebvitals.io/core-web-vitals/wordpress-guide) erreichen nur rund 32 Prozent der WordPress-Seiten hier einen als "gut" bewerteten Wert. Zwei von drei Seiten liegen also darunter. Ohne Modernisierung und ohne aktuelle PHP-Version, die in jeder Generation spürbar schneller geworden ist, wird diese technische Schuld mit der Zeit größer und drückt auf die Core Web Vitals, die direkt in das Google-Ranking einfließen.
+
+Für einen Wiener Handwerksbetrieb, der bei "Installateur 7. Bezirk" gefunden werden will, ist das kein akademisches Detail. Eine träge, veraltete Seite rutscht im Ranking ab, während der Mitbewerber mit der frisch gewarteten Seite vorbeizieht. Sicherheit und Geschwindigkeit hängen hier am selben Faden, und der Faden heißt aktuelle Version.
+
+## Schritt für Schritt: Was Sie konkret tun sollten
+
+Damit das nicht in einem "man müsste mal" endet, hier eine klare Reihenfolge, die Sie oder Ihre Betreuung abarbeiten können.
+
+Erstens, finden Sie heraus, auf welcher PHP-Version Ihre Seite überhaupt läuft. Das steht meistens im Hosting-Panel oder Sie fragen Ihren Provider direkt. Wenn dort eine 7er- oder gar 5er-Version steht, haben Sie akuten Handlungsbedarf, denn diese Versionen bekommen seit Jahren keine Sicherheitsupdates mehr.
+
+Zweitens, verschaffen Sie sich einen Überblick über Ihre Plugins und Themes. Wie viele sind installiert, wann wurden sie zuletzt aktualisiert, und brauchen Sie wirklich alle? Jedes Plugin, das Sie nicht nutzen, ist eine offene Tür ohne Nutzen. Weg damit.
+
+Drittens, richten Sie einen festen Rhythmus für Updates ein, nicht nach Lust und Laune, sondern regelmäßig, mit einem vorherigen Backup. Ein Backup vor dem Update ist Ihre Rückversicherung, falls doch einmal etwas hakt.
+
+Viertens, planen Sie den Versionssprung nicht in Panik, sondern kontrolliert. Ein Wechsel von einer alten PHP-Version auf eine aktuelle kann kleinere Anpassungen im Code nötig machen. Das gehört in ruhige Hände und auf eine Testumgebung, nicht spontan auf die Live-Seite am Freitagnachmittag.
+
+Fünftens, wenn Ihnen das alles zu viel ist, holen Sie sich jemanden, der die Wartung laufend übernimmt. Genau dafür sind wir da. Auf unserer [Kontaktseite](/kontakt) können Sie uns Ihre Seite schildern, und wir sehen uns den Stand ehrlich an, ohne Ihnen gleich etwas aufzuschwatzen.
+
+## Häufige Irrtümer, die teuer werden
+
+Der erste und größte Irrtum lautet: "Meine Seite läuft ja, also ist alles in Ordnung." Sie haben es jetzt gesehen, das Laufen sagt nichts über die Sicherheit aus, oder? Eine Seite auf PHP 7 läuft prima und ist trotzdem seit Ende 2022 ohne Schutzschirm.
+
+Der zweite Irrtum: "Ich bin zu klein, um interessant zu sein." Bei 43 Prozent der Lücken, die ohne Anmeldung ausnutzbar sind, sucht sich kein Mensch gezielt Ihre kleine Seite aus. Angriffe laufen automatisiert, es wird flächendeckend nach bekannten Lücken gescannt. Ob dahinter ein Konzern oder ein Ein-Mann-Betrieb aus Graz steht, ist der Maschine völlig egal.
+
+Der dritte Irrtum: "Einmal aktualisieren und dann habe ich Ruhe." Nein. Weil ständig neue Versionen aus dem Support fallen und ständig neue Lücken gemeldet werden, ist Wartung kein einmaliger Akt, sondern eine laufende Aufgabe. Das ist unbequem, aber es ist die Wahrheit.
+
+## Key Takeaways
+
+- PHP folgt einem festen 4-Jahres-Modell: zwei Jahre aktiver Support, zwei Jahre nur Sicherheitsfixes, dann End of Life ohne jeden Schutz. PHP 8.1 ist seit 31.12.2025 EOL.
+- PHP 7 bekommt seit 28. November 2022 keine Sicherheitspatches mehr, trotzdem laufen noch 29,4 Prozent aller PHP-Seiten darauf und weitere rund 8 Prozent auf dem noch älteren PHP 5.
+- Das größte Risiko steckt im Fremdcode: 96 Prozent der 7.966 WordPress-Lücken von 2024 lagen in Plugins, 43 Prozent davon waren ohne Anmeldung ausnutzbar.
+- Rückstände lösen sich nicht von selbst: Rund 35 Prozent der 2024 offengelegten Lücken waren 2025 noch ungepatcht.
+- Veraltet heißt auch langsam: Nur etwa 32 Prozent der WordPress-Seiten erreichen einen guten TTFB-Wert, was direkt auf die Core Web Vitals und das Google-Ranking drückt.
+
+## Fazit und nächster Schritt
+
+Eine PHP-Website ohne laufende Updates ist wie das Auto in der Garage: Sie sieht gut aus und springt an, aber ihr Unterbau altert nach einem Fahrplan, den Sie nicht aufhalten können, indem Sie wegsehen. Ob Ihre Seite sicher ist und im Ranking mithält, hängt am Ende an einer einzigen Frage, nämlich ob jemand sie aktuell hält oder nicht.
+
+Wenn Sie nicht genau wissen, auf welchem Stand Ihre Seite ist, dann lassen Sie es uns gemeinsam anschauen. Schicken Sie uns über die [Kontaktseite](/kontakt) kurz Ihre Website-Adresse, und wir sagen Ihnen ehrlich, wo Sie stehen und ob überhaupt Handlungsbedarf besteht. Kein Verkaufsgespräch, sondern eine ehrliche Einschätzung, mehr nicht.
+
+![Veralteter PHP-Code auf einer Website ohne Updates als Sicherheitsrisiko und Ranking-Nachteil](/images/blog/warum-veraltet-nativer-php-code-auf-websites-ohne-staendige.png)

@@ -2471,3 +2471,57 @@ quelle: https://nextjs.org/docs/pages/building-your-application/rendering/static
 quelle_name: Next.js Documentation - Static Site Generation (SSG)
 geprueft_am: 2026-08-04
 recheck_nach: 2027-01-31
+
+## t60-2026-08-06-275
+cluster: 2
+keywords: warum, veraltet, nativer, code, websites, ohne, ständige, updates
+aussage: PHP folgt einem 4-Jahres-Support-Modell: 2 Jahre aktiver Support (Bug- und Sicherheitsfixes), danach 2 Jahre reiner Security-Support, dann End of Life (EOL) - ab diesem Zeitpunkt erhaelt der Sprach-Runtime KEINE Sicherheitsupdates mehr. PHP 8.1 erreichte am 31.12.2025 EOL, PHP 8.0 im November 2023.
+quelle: https://www.php.net/supported-versions.php
+quelle_name: PHP.net - Supported Versions (offiziell)
+geprueft_am: 2026-08-06
+recheck_nach: 2027-02-02
+
+## t60-2026-08-06-276
+cluster: 2
+keywords: warum, veraltet, nativer, code, websites, ohne, ständige, updates
+aussage: PHP 7 wird seit dem 28. November 2022 nicht mehr unterstuetzt (EOL) und erhaelt seither keine Sicherheitspatches mehr. Trotzdem laufen laut W3Techs immer noch 29,4% aller PHP-Websites auf PHP 7 und weitere 8% auf dem bereits 2018 abgekuendigten PHP 5.
+quelle: https://www.php.net/eol.php
+quelle_name: PHP.net - Unsupported Branches (EOL-Liste)
+geprueft_am: 2026-08-06
+recheck_nach: 2027-02-02
+
+## t60-2026-08-06-277
+cluster: 2
+keywords: warum, veraltet, nativer, code, websites, ohne, ständige, updates
+aussage: PHP wird von rund 70,5% aller Websites mit bekannter serverseitiger Sprache eingesetzt; davon nutzen etwa 8,1% (PHP 4 und 5) nicht mehr gewartete Versionen. Eine einmal gebaute, nicht aktualisierte PHP-Website veraltet damit zwangslaeufig, weil ihr Runtime-Unterbau planmaessig aus dem Support faellt.
+quelle: https://w3techs.com/technologies/details/pl-php
+quelle_name: W3Techs - Usage statistics of PHP for websites
+geprueft_am: 2026-08-06
+recheck_nach: 2027-02-02
+
+## t60-2026-08-06-278
+cluster: 2
+keywords: warum, veraltet, nativer, code, websites, ohne, ständige, updates
+aussage: Im Jahr 2024 wurden 7.966 neue Sicherheitsluecken im WordPress-Oekosystem gemeldet, davon rund 96% (7.633) in Plugins und weitere 4% in Themes - also fast ausschliesslich in erweiterndem PHP-Fremdcode, nicht im Core. 43% dieser Luecken waren ohne Authentifizierung ausnutzbar.
+quelle: https://www.securityweek.com/8000-new-wordpress-vulnerabilities-reported-in-2024/
+quelle_name: SecurityWeek (auf Basis Patchstack State of WordPress Security 2025)
+geprueft_am: 2026-08-06
+recheck_nach: 2027-02-02
+
+## t60-2026-08-06-279
+cluster: 2
+keywords: warum, veraltet, nativer, code, websites, ohne, ständige, updates
+aussage: Ueber die Haelfte der von Patchstack informierten Plugin-Entwickler patchte eine gemeldete Schwachstelle nicht vor der offiziellen Veroeffentlichung, und rund 35% aller 2024 offengelegten WordPress-Schwachstellen waren 2025 noch immer ungepatcht - ein Beleg dafuer, dass fehlende laufende Updates offene Angriffsflaechen dauerhaft bestehen lassen.
+quelle: https://patchstack.com/whitepaper/state-of-wordpress-security-in-2025/
+quelle_name: Patchstack - State of WordPress Security in 2025
+geprueft_am: 2026-08-06
+recheck_nach: 2027-02-02
+
+## t60-2026-08-06-280
+cluster: 2
+keywords: warum, veraltet, nativer, code, websites, ohne, ständige, updates
+aussage: Nur rund 32% der WordPress-Seiten erreichen laut Chrome-UX-Report einen 'guten' TTFB-Wert, weil klassische PHP/CMS-Architekturen jede Seite bei Anfrage serverseitig aus PHP + Datenbank neu zusammensetzen - technische Schuld, die ohne Modernisierung/Updates mit der Zeit die Core Web Vitals und damit das Google-Ranking belastet.
+quelle: https://www.corewebvitals.io/core-web-vitals/wordpress-guide
+quelle_name: CoreWebVitals.io - Core Web Vitals for WordPress: Optimization Guide
+geprueft_am: 2026-08-06
+recheck_nach: 2027-02-02
