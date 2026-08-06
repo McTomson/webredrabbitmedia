@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChromeGate from "@/components/ChromeGate";
 import DeferredThirdParties from "@/components/DeferredThirdParties";
+import LeadProvider from "@/components/relaunch/lead/LeadProvider";
 import { aggregateRatingLd } from '@/lib/reviews';
 
 const inter = Inter({
@@ -266,6 +267,7 @@ export default function RootLayout({
           Zum Inhalt springen
         </a>
         <ContactFormProvider>
+          <LeadProvider>
           <AOSInit />
           <DeferredThirdParties gaId="G-09FNC6THTD" gtmId="GTM-MQXGT8FL" />
           <AnalyticsListener />
@@ -273,6 +275,7 @@ export default function RootLayout({
           <main id="main-content" tabIndex={-1} className="scroll-mt-20 focus:outline-none">{children}</main>
           <ChromeGate><Footer /></ChromeGate>
           <ContactFormWrapper />
+          </LeadProvider>
         </ContactFormProvider>
       </body>
     </html>

@@ -141,7 +141,7 @@ export default function TippsArticleRail({
             Wir schauen uns deinen Auftritt an und sagen dir ehrlich, wo du
             stehst. Kein Verkaufsanruf.
           </p>
-          <Link className="rrt-btn rrt-btn--block" href="/relaunch-preview/kontakt">
+          <Link className="rrt-btn rrt-btn--block" href="/relaunch-preview/kontakt" data-rr-lead="analyse">
             Analyse anfordern
           </Link>
           <div className="rrt-rail-cta-alt">

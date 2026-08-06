@@ -357,11 +357,21 @@ export default function Faehigkeiten() {
 
             <div className="tlfg-modal__cta">
               {open.invers ? (
-                <Link href={KONTAKT} className="rr-btn-outline rr-btn-outline--light">
+                <Link
+                  href={KONTAKT}
+                  data-rr-lead="talos"
+                  data-rr-lead-service="Talos Sonderanfertigung"
+                  className="rr-btn-outline rr-btn-outline--light"
+                >
                   Sonderanfertigung besprechen
                 </Link>
               ) : (
-                <Link href={KONTAKT} className="rr-btn-sweep rr-btn-sweep--red">
+                <Link
+                  href={KONTAKT}
+                  data-rr-lead="skill"
+                  data-rr-lead-service={`Talos-Fähigkeit: ${open.name}`}
+                  className="rr-btn-sweep rr-btn-sweep--red"
+                >
                   Diese Fähigkeit dazubuchen
                 </Link>
               )}

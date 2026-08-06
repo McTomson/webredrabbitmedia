@@ -267,7 +267,7 @@ function StaticStations() {
           <Link href="#rechner" className="rr-btn-outline rr-btn-outline--light">
             Zum Rechner
           </Link>
-          <Link href="/relaunch-preview/kontakt" className="tf-static__link">
+          <Link href="/relaunch-preview/kontakt" data-rr-lead="talos" className="tf-static__link">
             Talos-Gespräch
           </Link>
         </div>
@@ -421,7 +421,7 @@ function TalosFahrt() {
                 <Link href="#rechner" className="rr-btn-outline rr-btn-outline--light">
                   Zum Rechner
                 </Link>
-                <Link href="/relaunch-preview/kontakt" className="tf-slide__link">
+                <Link href="/relaunch-preview/kontakt" data-rr-lead="talos" className="tf-slide__link">
                   Talos-Gespräch
                 </Link>
               </div>

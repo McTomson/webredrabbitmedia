@@ -359,7 +359,7 @@ export default async function TippsArticlePreview({ params }: Props) {
                 <p>{authorBio}</p>
                 {/* Button-Paar wie Hauptseite: Sweep primaer + Outline sekundaer. */}
                 <div className="rrt-bio-actions">
-                  <Link className="rrt-btn" href="/relaunch-preview/kontakt">Beratung anfragen</Link>
+                  <Link className="rrt-btn" href="/relaunch-preview/kontakt" data-rr-lead="analyse">Beratung anfragen</Link>
                   <a className="rrt-btn-outline" href={author.linkedin} target="_blank" rel="noopener noreferrer">
                     LinkedIn-Profil
                   </a>

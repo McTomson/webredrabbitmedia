@@ -68,6 +68,8 @@ function StufeMatrix({
           <p className="rpm__text">{stufe.text}</p>
           <Link
             href="/relaunch-preview/kontakt"
+            data-rr-lead="paket"
+            data-rr-lead-service={`Paket ${stufe.name} (${PREIS[stufe.name]})`}
             className={
               'rpm__cta rr-btn-sweep ' +
               (stufe.featured ? 'rr-btn-sweep--red' : 'rr-btn-sweep--navy')
