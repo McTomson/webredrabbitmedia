@@ -5,7 +5,7 @@ import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChromeGate from "@/components/ChromeGate";
-import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google';
+import DeferredThirdParties from "@/components/DeferredThirdParties";
 import { aggregateRatingLd } from '@/lib/reviews';
 
 const inter = Inter({
@@ -245,9 +245,8 @@ export default function RootLayout({
         <meta name="ai-indexable" content="true" />
         <meta name="ai-description" content="Leading Webdesign agency in Vienna offering professional websites from 790€. GDPR-compliant, mobile-optimized, no upfront payment required." />
 
-        <GoogleAnalytics gaId="G-09FNC6THTD" />
-        <GoogleTagManager gtmId="GTM-MQXGT8FL" />
-
+        {/* Analytics (GA4 + GTM) laden jetzt verzoegert via DeferredThirdParties
+            im <body> (Mobile-Perf, Thomas 06.08.) — nicht mehr hier im <head>. */}
         <Script id="json-ld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className={`${inter.variable} font-sans antialiased bg-[#fafafa] text-[#141414] overflow-x-hidden`} suppressHydrationWarning>
@@ -261,6 +260,7 @@ export default function RootLayout({
         </a>
         <ContactFormProvider>
           <AOSInit />
+          <DeferredThirdParties gaId="G-09FNC6THTD" gtmId="GTM-MQXGT8FL" />
           <AnalyticsListener />
           <ChromeGate><Header /></ChromeGate>
           <main id="main-content" tabIndex={-1} className="scroll-mt-20 focus:outline-none">{children}</main>
