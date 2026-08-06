@@ -133,11 +133,7 @@ export default function TalosCompanionStage({
       webgl2 = false;
     }
     const mem = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
-    // Perf (Thomas 04.08.): auf Mobile/Tablet KEIN WebGL/Spline (deviceMemory ist
-    // auf iOS undefined). Der Lazy-Wrapper verhindert das Mounten meist schon;
-    // dies deckt weitere Einstiegspunkte ab.
-    const isMobile = window.matchMedia("(hover: none), (max-width: 899px)").matches;
-    if (isMobile || !webgl2 || (mem !== undefined && mem <= 4)) {
+    if (!webgl2 || (mem !== undefined && mem <= 4)) {
       setNo3d(true);
       // Ohne 3D bleibt wenigstens das Dashboard-Fenster im Hero sichtbar.
       // In stationsOnly (Fremdseite mit eigenem Hero) NICHT den fremden

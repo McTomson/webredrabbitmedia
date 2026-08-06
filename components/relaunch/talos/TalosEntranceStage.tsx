@@ -99,10 +99,7 @@ export default function TalosEntranceStage({ autoplay = true, waveOnClick = fals
       webgl2 = false;
     }
     const mem = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
-    // Perf (Thomas 04.08.): auf Mobile/Tablet KEIN WebGL/Spline — nur der Poster
-    // (deviceMemory ist auf iOS undefined, deckt das Gate sonst nicht ab).
-    const isMobile = window.matchMedia("(hover: none), (max-width: 899px)").matches;
-    if (isMobile || !webgl2 || (mem !== undefined && mem <= 4)) {
+    if (!webgl2 || (mem !== undefined && mem <= 4)) {
       setNo3d(true);
       return;
     }
