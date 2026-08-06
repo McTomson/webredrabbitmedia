@@ -6,12 +6,10 @@ import BackToTop from '@/components/relaunch/BackToTop';
 import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import WebsiteDemoClient from '@/components/subpages/WebsiteDemoClient';
-import SoBauenWir from '@/components/subpages/leistungen/website/v2/SoBauenWir';
 // Fundament-Sektion = Variante A "Sticky-Ledger mit wanderndem Fokus"
 // (Thomas' Wahl 21.07. aus /fundament-varianten; ersetzt das Karten-Grid).
 import Fundament from '@/components/subpages/leistungen/website/v2/fundament-varianten/VarianteA';
 import ReferenzenTeaser from '@/components/subpages/leistungen/website/v2/ReferenzenTeaser';
-import Diagnose from '@/components/subpages/leistungen/website/v2/Diagnose';
 import Ablauf from '@/components/subpages/leistungen/website/v2/Ablauf';
 // Drei Stufen = Variante B "Feature-Matrix mit Sticky-Stufe" (Thomas' Wahl
 // 21.07. aus /stufen-varianten; ersetzt die Editorial-Rows von DreiStufen).
@@ -119,16 +117,17 @@ export default function LeistungenWebsitePreviewPage() {
         <WebsiteDemoClient css={heroCss} html={heroHtml} js={heroJs} />
       </div>
 
-      {/* 2-11 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope.
-          Dramaturgie: nach dem Hero-Hook erst das WARUM (Handwerk + Bumper),
-          dann das Herzstueck Diagnose, dann die Fakten (Ablauf/Fundament/
-          Stufen), unten der Beweis-Block (Kollege, Testimonials, Referenzen).
+      {/* 2-9 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope.
+          Dramaturgie: nach dem Hero-Hook direkt in die Fakten (Ablauf/
+          Fundament/Stufen), unten der Beweis-Block (Testimonials, Referenzen).
+          SoBauenWir ("kein Baukasten") und die eigenstaendige Diagnose sind
+          ENTFERNT (Thomas 06.08., "Desktop 1:1 wie Mobile"): Der Fragebogen
+          kommt jetzt ueberall nur noch ueber den Button "Welches Paket passt
+          zu mir?" bei den 3 Paketen (DreiStufenMatrix -> Diagnose als Popup).
 
           GRUND-RHYTHMUS (Kunde 29.07., Regel docs/DESIGN_STANDARD.md):
           Grundflaeche ist Off-White #F4F4F2, reines Weiss NUR als bewusste
           Wechsel-Flaeche und nie zweimal hintereinander. Zuordnung:
-            SoBauenWir        Off-White  (erbt vom Wrapper)
-            Diagnose          Off-White  (in der Komponente, war Weiss)
             Ablauf            WEISS      (Prozess-Strecke, Wechsel 1)
             Fundament         Off-White  (in der Komponente)
             DreiStufenMatrix  WEISS      (Feature-Matrix, Wechsel 2)
@@ -141,17 +140,6 @@ export default function LeistungenWebsitePreviewPage() {
         className={rrFonts}
         style={{ background: 'var(--rr-surface, #f4f4f2)', position: 'relative', zIndex: 2 }}
       >
-        {/* Mobile ausgeblendet (Thomas 01.08.): "kein Baukasten" faellt am
-            Handy weg, damit die Seite kuerzer wird. Desktop unveraendert. */}
-        <div data-rr-snap className="rr-hide-mobile">
-          <SoBauenWir />
-        </div>
-        {/* Mobile ausgeblendet: der "wer du bist"-Quiz (Diagnose) kommt am
-            Handy als Popup ueber einen Button bei den 3 Paketen zurueck
-            (Folge-Schritt). Desktop unveraendert. */}
-        <div data-rr-snap className="rr-hide-mobile">
-          <Diagnose />
-        </div>
         <div data-rr-snap style={{ background: 'var(--rr-paper, #ffffff)' }}>
           <Ablauf />
         </div>
