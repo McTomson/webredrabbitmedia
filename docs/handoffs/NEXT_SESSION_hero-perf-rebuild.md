@@ -18,25 +18,26 @@
 - Achtung Maschinen-Rauschen: 2-3 Laeufe, Median. Lokaler `next start`-Score ist optimistischer als v2 (keine Netz-Latenz) — der FAIRE Vergleich zur Baseline ist Lighthouse gegen v2.
 - Baseline (v2, mobil, VOR dieser Session): Homepage 33, ueber-uns 31, TBT ~3,4s, LCP 7-10s.
 
-## Stand dieser Session (erledigt + verifiziert)
-- ALLE 7 Hero-Videos fertig (ueber-uns, kontakt, tipps, talos, faq, preise, website): Handy-Format 496x812 -> oben 16px gecroppt = 496x796 (entfernt eingebrannte rote Eck-Klammer), iOS-Spec encodiert, natuerliche Groesse (`top:0;height:auto;aspect-ratio:496/796`), Poster aus Mittelframe. Tools im scratchpad der Session.
-- Roter Fokus-Rahmen um Burger-Menue entfernt (alle Bildschirme) — `RelaunchMenu.tsx`.
-- Talos: Mobile-Aus-Versuch ZURUECKGENOMMEN (verursachte leere weisse Box auf /leistungen/website). Talos rendert wieder auf allen Viewports; `dynamic(ssr:false)`-Bundle-Split fuer three-spline BLEIBT (desktop-sicher, three nicht im Initial-Chunk) via `TalosCompanionStageLazy.tsx`.
-- Perf-Fixes LIVE: `initFluid` (SVG-Partikel-rAF) auf Mobile aus (6 Video-Engines), AOS auf Relaunch/v2 gar nicht geladen (dynamischer aos-Import, Alt-Site unberuehrt), `/hero/*` immutable Cache-Header, Poster-`fetchpriority`-Preload auf allen Video-Seiten.
-- Ergebnis v2 mobil JETZT: Homepage ~78, ueber-uns ~57-60, talos ~67. **TBT praktisch geloest** (ueber-uns 3.630 -> 110ms). CLS ueber-uns 0.
-- HEAD: 3c7edbb (== remote).
+## Stand SESSION 06.08. Abend (erledigt + verifiziert, HEAD 480f3ff == remote)
+Vier Perf-Commits, alle live auf v2, alle verifiziert (Desktop-Screenshots unveraendert, Typo identisch, 49 interne Links = 200, keine Konsolen-Fehler ausser MetaMask-Extension-Rauschen):
+- **f66db35 + 8ab6d4c — Phase A LCP-Poster** auf 5 Video-Heroes (ueber-uns, kontakt, tipps, preise, talos): server-gerendertes `<img class="reveal-poster">` im demo.body.html (nur Mobile via `@media (hover:none)`, z-index=Video-z, faded synchron ueber `revealPoster`-Ref in der Engine). LCP-Element ist jetzt das Poster (paintet aus dem HTML), CLS runter. **website BEWUSST AUSGELASSEN** (Canvas/z1-`insertBefore(video,deck)`-Layering ist DOM-Order-sensitiv und fragil -> Regressionsrisiko; sein Video funktioniert schon).
+- **9abdd31 — Analytics verzoegert**: `components/DeferredThirdParties.tsx` laedt GA4+GTM erst bei erster Interaktion ODER 3s nach load (statt afterInteractive). Entfernt ~283KB Analytics-JS aus dem Ladefenster. TBT ueber-uns ~2.040 -> ~780ms. Keine Events verloren (dataLayer-Queue), keine visuelle Aenderung. In `app/layout.tsx` verdrahtet.
+- **480f3ff — Fonts selbst-hosten**: `app/fonts-selfhosted.css` (@font-face aus Googles CSS 1:1, woertliche Namen, Variable Fonts als weight-range, self-hosted aus `public/fonts/*.woff2` = 10 Files/348KB), global in layout importiert, DM-Sans-latin preloadet. Der render-blockierende externe Google-`<link>` auf 12 EIGENEN Seiten entfernt (faq + Experiment-Seiten unveraendert). Ergebnis: **FCP warm 2,4s -> 1,3-1,6s** (externe Fonts raus aus dem kritischen Pfad, verifiziert `render-blocking: googleapis=false`). Typo pixel-identisch (Screenshot).
 
-## Offen / Naechste konkrete Schritte — HERO-UMBAU Richtung 98%
-Der verbleibende Blocker ist LCP 7-8s, strukturell. Ursachen (gemessen): 4 render-blockierende CSS-Dateien (~30KB gzip, groesste 100KB roh), 127KB Inline-Engine-Script (blockt Parse), externe render-blockierende Google-Fonts, LCP-Element (Video) wird per JS erst nach all dem erzeugt.
+### Gemessen v2 (mobil, Lighthouse-Sim) — MIT STARKEM MASCHINEN-RAUSCHEN
+- Baseline vor Session: ueber 38-43, Homepage 33.
+- Jetzt (best-of): ueber ~56, kontakt ~70, tipps ~58; FCP warm 1,3-1,6s; CLS niedrig/0.
+- WICHTIG: lokale Lighthouse-Sim schwankt brutal (TBT 250-2960ms je nach CPU-Last). **Die maßgebliche Zahl kommt aus `pagespeed.web.dev` (Google-Infra) — Thomas soll die selbst ziehen**, dann sauberer Startwert.
 
-FOKUS mobil/tablet (dort gemessen + Video-Heros), aber CSS/Font/Script-Fixes helfen Desktop mit; Desktop-Live-Paint bleibt funktional gleich.
+## DIE DECKE = LCP + TBT aus Hydration (nicht mehr FCP/Fonts)
+FCP ist mit dem Font-Umbau gebrochen. Neuer Blocker: **LCP 4,7-9,5s + TBT** kommen aus der **Hydration der schweren Hero-JS** (die ~119KB Inline-Engine wird als String-Prop an den Client-DemoClient gegeben und in `useEffect` NACH der Hydration als `<script>` ausgefuehrt -> Main-Thread blockiert -> LCP-Poster paintet spaet = "render delay"). Observed LCP ist real ~0,8s; die Sim bestraft die JS-Ausfuehrung.
 
-- **Phase A (groesster Hebel): LCP-Element server-rendern.** Poster als echtes `<img>` in die Hero-HTML (mobil-only, `fetchpriority=high`, feste Maße = CLS-sicher), Video legt sich drueber. Existiert im HTML -> paintet sobald CSS da ist, unabhaengig vom Inline-Script. (faq's demo.body.html = fremde WIP -> separat/klaeren.)
-- **Phase B: Inline-Engine auslagern/deferren.** 127KB-Script als externe `.js` mit `defer`; schwere Messung (getImageData/Reflows) auf Mobile hinter ersten Paint / `requestIdleCallback`.
-- **Phase C: Render-blockierendes CSS senken.** Kritisches Hero-CSS inlinen + Rest deferren (Next `experimental.optimizeCss`/Critters) oder demo.css verschlanken.
-- **Phase D (Risiko-Feld): Fonts sauber selbst-hosten.** demo.css nutzt Font-NAMEN (`"DM Sans"` etc.). Dieselben Namen als selbst-gehostetes `@font-face` hinterlegen -> DANN kann der render-blockierende Google-`<link>` raus, ohne die Typo zu brechen. Mit Fallback-Namen absichern.
-- **Phase E: moderne Browser targeten** (39KB Polyfill-Chunk droppen).
-- **Phase F: pro Seite messen + nachziehen.**
+## NAECHSTER HEBEL (riskant, Thomas-Bestaetigung noetig) = ENGINE-BOOT VERZOEGERN
+Analog zum Analytics-Defer: der Poster steht schon im HTML und paintet sofort; die schwere Engine (Video-Mount + Scroll-Animation + Canvas/Paint) muss NICHT im Metrik-Fenster booten.
+- **Idee**: In `*DemoClient.tsx` (UeberUnsDemoClient etc.) den Engine-`<script>`-Inject aus dem sofortigen `useEffect` heraus HINTER erste Interaktion (`pointerdown/scroll/mousemove/touchstart`) ODER `requestIdleCallback`/`load+delay` legen. Desktop bootet dann bei erster Mausbewegung (quasi sofort, unsichtbar); Mobile bei erstem Scroll/Touch oder nach idle. Der Poster/Erstzustand bleibt sichtbar bis dahin.
+- **RISIKO**: beruehrt Desktop-Timing (Hover-Paint startet minimal spaeter) + Scroll-Math wenn Boot nach bereits erfolgtem Scroll passiert. GENAU testen (Desktop-Hover-Paint, Scroll-Position, Auto-Play, MorphSculpture/Talos-Portal-Timing). Erst 1 Seite (ueber-uns) als Prototyp, messen, dann ausrollen. Rueckrollbar.
+- Sekundaer, falls Engine-Defer nicht reicht: **Inline-Engine als externe deferred `.js`** (raus aus dem HTML/Flight-String), **kritisches CSS** (styleguide.css 67KB render-blocking -> `experimental.optimizeCss`/Critters), moderne Browser targeten (Polyfill-Chunk droppen).
+- Font-PRELOAD als Tuning-Knopf: das `<link rel=preload>` fuer DM-Sans (62KB) KONKURRIERT evtl. mit dem LCP-Poster auf der Leitung. Testen: Preload droppen (Font laedt via display:swap nach CSS) -> evtl. bessere LCP, dafuer minimaler FOUT auf dem Hero-Titel (Thomas-Abwaegung).
 Jede Phase einzeln auf v2 messen, rueckrollbar.
 
 ## Weitere offene Punkte (Website, nicht Perf) — mit Thomas priorisieren
