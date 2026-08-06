@@ -2525,3 +2525,30 @@ quelle: https://www.corewebvitals.io/core-web-vitals/wordpress-guide
 quelle_name: CoreWebVitals.io - Core Web Vitals for WordPress: Optimization Guide
 geprueft_am: 2026-08-06
 recheck_nach: 2027-02-02
+
+## t61-2026-08-06-281
+cluster: 2
+keywords: welche, rolle, spielt, javascript, interaktive, elemente, high, websites
+aussage: Interaction to Next Paint (INP) wurde am 12. Maerz 2024 offiziell ein Core Web Vital und ersetzte First Input Delay (FID). INP misst die Reaktionsschnelligkeit einer Seite ueber die gesamte Interaktionsdauer (Input Delay, Verarbeitungszeit der Event-Handler, Praesentationszeit) und bewertet damit direkt, wie schnell JavaScript-getriebene interaktive Elemente auf Nutzereingaben reagieren.
+quelle: https://web.dev/blog/inp-cwv-march-12
+quelle_name: web.dev (Google) - Interaction to Next Paint becomes a Core Web Vital on March 12
+geprueft_am: 2026-08-06
+recheck_nach: 2027-02-02
+
+## t61-2026-08-06-282
+cluster: 2
+keywords: welche, rolle, spielt, javascript, interaktive, elemente, high, websites
+aussage: Jede Aufgabe im Browser, die laenger als 50 Millisekunden dauert, gilt als 'Long Task'. Da der Main Thread nur eine Aufgabe zugleich verarbeiten kann, blockieren zu lange JavaScript-Tasks den Thread und machen die Seite unresponsiv - Klicks und Taps wirken oft nicht, weil interaktive Features wie Event-Listener und Click-Handler noch nicht an die UI-Elemente gebunden sind. Deshalb empfiehlt Google, lange Tasks aufzuteilen und Skripte per Code-Splitting zu zerlegen.
+quelle: https://web.dev/articles/optimize-long-tasks
+quelle_name: web.dev (Google) - Optimize long tasks
+geprueft_am: 2026-08-06
+recheck_nach: 2027-02-02
+
+## t61-2026-08-06-283
+cluster: 2
+keywords: welche, rolle, spielt, javascript, interaktive, elemente, high, websites
+aussage: Mit JavaScript gebaute, benutzerdefinierte interaktive Elemente (Widgets) sind nicht automatisch fuer alle bedienbar: Laut MDN muss ein solches Element fokussierbar gemacht werden (tabindex), Aktivierung per Enter und Space unterstuetzen, die korrekte ARIA-Rolle tragen und seine ARIA-Zustaende (z. B. aria-expanded, aria-pressed, aria-selected) dynamisch aktuell halten - andernfalls ist es fuer Tastatur- und Screenreader-Nutzer nicht wirklich interaktiv.
+quelle: https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Keyboard-navigable_JavaScript_widgets
+quelle_name: MDN Web Docs - Keyboard-navigable JavaScript widgets
+geprueft_am: 2026-08-06
+recheck_nach: 2027-02-02
