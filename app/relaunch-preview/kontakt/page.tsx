@@ -31,6 +31,8 @@ export default function KontaktPage() {
   const js = readDemo('demo.engine.jstext');
   return (
     <>
+      {/* LCP-Poster mobil frueh laden (Thomas 06.08.), nur Mobile/Tablet. */}
+      <link rel="preload" as="image" href="/hero/kontakt-hero-poster.jpg" fetchPriority="high" media="(max-width: 1024px)" />
       {/* Fonts wie in der Demo (DM Sans, Instrument Sans, Crimson Pro). */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
