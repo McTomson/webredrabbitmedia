@@ -143,7 +143,10 @@ Gesendet von der Red Rabbit Media Website
 
         // Bestaetigungs-Mail an den Absender (Thomas 07.08.). Best effort: ein
         // Fehler hier darf die Lead-Erfassung NICHT scheitern lassen, die
-        // Team-Mail ist oben schon raus.
+        // Team-Mail ist oben schon raus. confirmationSent = Telemetrie fuers
+        // Monitoring; die Fehlermeldung nur hinter dem Debug-Header ausgeben.
+        let confirmationSent = false;
+        let confirmationError: string | null = null;
         try {
             await transporter.sendMail({
                 from: `"Red Rabbit Media" <${smtpFrom}>`,
@@ -177,11 +180,19 @@ ${message || 'Keine Nachricht'}
 </div>
 `
             });
+            confirmationSent = true;
         } catch (confirmErr) {
+            confirmationError = confirmErr instanceof Error ? confirmErr.message : String(confirmErr);
             console.error('Bestaetigungs-Mail an Absender fehlgeschlagen:', confirmErr);
         }
 
-        return NextResponse.json({ success: true, message: 'Email sent successfully' });
+        const debug = req.headers.get('x-rr-debug') === '1';
+        return NextResponse.json({
+            success: true,
+            message: 'Email sent successfully',
+            confirmationSent,
+            ...(debug ? { confirmationError } : {}),
+        });
 
     } catch (error) {
         console.error('Error sending email:', error);
