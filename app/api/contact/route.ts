@@ -148,6 +148,13 @@ Gesendet von der Red Rabbit Media Website
         let confirmationSent = false;
         let confirmationError: string | null = null;
         try {
+            // IONOS-Postfaecher (Mail Basic) verwerfen eine zweite, quasi
+            // gleichzeitig gesendete Mail vom selben Absender still (Anti-Flood):
+            // Der SMTP-Server quittiert mit 250 OK, stellt sie aber nie zu. Beweis
+            // 07.08.: Team-Mail (1. Send) kam 3/3 an, die Bestaetigung (2. Send,
+            // ms spaeter) 0/3 — obwohl sendMail nie warf. Ein Abstand zwischen den
+            // beiden Sends loest das. Die Team-/Lead-Mail bleibt bewusst zuerst.
+            await new Promise((r) => setTimeout(r, 2500));
             await transporter.sendMail({
                 from: `"Red Rabbit Media" <${smtpFrom}>`,
                 to: email,

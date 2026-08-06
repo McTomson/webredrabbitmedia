@@ -7,6 +7,7 @@ import {
   SERVICE_OPTIONS,
   type LeadOpenOpts,
 } from "@/lib/relaunch/leadPresets";
+import LeadSelect from "./LeadSelect";
 // Das Popup kann global (auch auf Seiten ohne eigenen styleguide-Import)
 // aufgehen. Es traegt sein eigenes .rr-Design-System mit, damit rr-field/
 // rr-label/rr-select-native/rr-btn-sweep IMMER greifen. Via LeadProvider
@@ -284,20 +285,13 @@ export default function LeadDialog({
                   <label className="rr-label" htmlFor={serviceId}>
                     Worum geht&apos;s?
                   </label>
-                  <select
+                  <LeadSelect
                     id={serviceId}
-                    className="rrlead-select"
                     value={form.service}
-                    onChange={(e) => update("service", e.target.value)}
-                    style={{ width: "100%", minWidth: 0 }}
-                  >
-                    <option value="">Bitte wählen</option>
-                    {serviceOptions.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
+                    options={serviceOptions}
+                    placeholder="Bitte wählen"
+                    onChange={(v) => update("service", v)}
+                  />
                 </div>
               </div>
 
@@ -491,25 +485,40 @@ export default function LeadDialog({
           background: linear-gradient(var(--rr-red, #f12032), var(--rr-red, #f12032)) left bottom / 100% 2px no-repeat;
         }
         .rrlead-area { min-height: 84px; line-height: 1.5; resize: vertical; }
-        .rrlead-select {
-          -webkit-appearance: none;
-          appearance: none;
+        /* Marken-Dropdown (LeadSelect): Trigger = Unterstrich wie die uebrigen
+           Felder; das offene Menue kommt aus styleguide.css (.rr-select__menu /
+           .rr-select__opt) statt aus dem dunklen OS-Menue (Thomas 07.08.). */
+        .rrlead-selectwrap { position: relative; display: block; width: 100%; }
+        .rrlead-trigger {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
           width: 100%;
           font-family: var(--rr-font-ui, "Instrument Sans"), sans-serif;
           font-size: 16px;
+          text-align: left;
           color: var(--rr-ink, #23262e);
           cursor: pointer;
           border: none;
           outline: none;
           border-radius: 0;
-          padding: 9px 28px 10px 2px;
+          padding: 9px 2px 10px;
           background:
-            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235a5e68' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") right 2px center / 14px no-repeat,
             linear-gradient(var(--rr-red, #f12032), var(--rr-red, #f12032)) left bottom / 0 2px no-repeat,
             linear-gradient(rgba(35, 38, 46, 0.2), rgba(35, 38, 46, 0.2)) left bottom / 100% 2px no-repeat;
           transition: background-size 0.45s var(--rr-ease, ease);
         }
-        .rrlead-select:focus { background-size: 14px, 100% 2px, 100% 2px; }
+        .rrlead-trigger:focus-visible,
+        .rrlead-trigger[aria-expanded="true"] { background-size: 100% 2px, 100% 2px; }
+        .rrlead-trigger-val { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .rrlead-trigger-val--ph { color: rgba(35, 38, 46, 0.35); }
+        .rrlead-trigger-chev {
+          flex: 0 0 auto;
+          color: var(--rr-ink-soft, #5a5e68);
+          transition: transform var(--rr-t-med, 0.3s) var(--rr-ease, ease);
+        }
+        .rrlead-trigger[aria-expanded="true"] .rrlead-trigger-chev { transform: rotate(180deg); }
         .rrlead-consent {
           font-family: var(--rr-font-ui, "Instrument Sans"), sans-serif;
           font-size: 13.5px;
