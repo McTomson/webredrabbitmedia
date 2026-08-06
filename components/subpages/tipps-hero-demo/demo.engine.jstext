@@ -32,6 +32,7 @@
   /* ================================================================ */
   const sceneMain=document.getElementById("sceneMain");
   let revealVideo=null, revealVideoOk=false;   /* Touch/Tablet/Mobile: Video ersetzt das Live-Malen (Thomas 04.08.), blendet mit fade aus; Fallback runAuto wenn es nicht spielt. */
+  let revealPoster=null;   /* Server-gerendertes LCP-Poster-<img> (Thomas 06.08.): steht schon im HTML, faded synchron mit dem Video. */
   const sticky=document.getElementById("mainSticky");
   const htitle=document.getElementById("htitle");
   const hint=document.getElementById("hint");
@@ -280,6 +281,7 @@
     const fade=clamp((Pm-P_REVEAL)/0.07,0,1);
     blobsGroup.setAttribute("opacity",(1-fade).toFixed(3));
     if(revealVideo)revealVideo.style.opacity=(1-fade).toFixed(3);   /* Poster/Video sofort sichtbar, faded mit dem Hero aus */
+    if(revealPoster)revealPoster.style.opacity=(1-fade).toFixed(3);   /* server-gerendertes LCP-Poster faded synchron mit dem Video */
     const nowPainting=Pm<P_REVEAL+0.01;
     if(nowPainting!==lastPainting){
       lastPainting=nowPainting;
@@ -341,6 +343,7 @@
          Video ersetzen (wie /leistungen/website + /preise). Video liegt UEBER der
          Mal-/Deck-Flaeche (z4) und blendet mit `fade` aus (applyMain). Faellt es aus
          (iOS-Stromsparmodus/Netz), bleibt runAuto als Fallback (daher !revealVideo). */
+      revealPoster=sticky.querySelector(".reveal-poster");   /* schon im HTML gerendert (LCP), Referenz fuer den Scroll-Fade */
       revealVideo=document.createElement("video");
       revealVideo.className="reveal-video";
       revealVideo.src="/hero/tipps-hero-mobile.mp4";

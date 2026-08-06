@@ -38,6 +38,7 @@
   const autobtn=sticky.querySelector("[data-auto]");
   const headSvg=document.getElementById("headSvg");
   let revealVideo=null, revealVideoOk=false;   /* Touch/Tablet/Mobile: Video ersetzt das Live-Malen (Thomas 02.08.), blendet mit fade aus; Ok-Flag erst wenn es WIRKLICH spielt (sonst Auto-Reveal als Fallback). */
+  let revealPoster=null;   /* Server-gerendertes LCP-Poster-<img> (Thomas 06.08.): steht schon im HTML, faded synchron mit dem Video. */
   const textWindow=document.getElementById("textWindow");
   const textMove=document.getElementById("textMove");
   const textCol=sticky.querySelector(".text-col");
@@ -500,6 +501,7 @@
     /* Touch/Mobile-Video (falls aktiv): blendet mit derselben fade-Kurve aus wie das
        Malen -> ist weg, bevor die Skulptur-Phase beginnt (Thomas 02.08.). */
     if(revealVideo)revealVideo.style.opacity=(1-fade).toFixed(3);   /* Poster/Video sofort sichtbar, nicht erst wenn 'playing' feuerte */
+    if(revealPoster)revealPoster.style.opacity=(1-fade).toFixed(3);   /* server-gerendertes LCP-Poster faded synchron mit dem Video */
 
     // Kopf-Aufbau (alle Fragmente von ausserhalb des Viewports)
     const aA=clamp((Pm-A_A0)/(A_A1-A_A0),0,1);
@@ -725,6 +727,7 @@
          (applyMain), bevor die Skulptur-Phase (story-grid z3) erscheint. Faellt es aus
          (iOS-Stromsparmodus/Netz), bleibt der Auto-Reveal runAuto als Fallback
          (daher !revealVideoOk in der autoLoop-Bedingung). */
+      revealPoster=sticky.querySelector(".reveal-poster");   /* schon im HTML gerendert (LCP), Referenz fuer den Scroll-Fade */
       revealVideo=document.createElement("video");
       revealVideo.className="reveal-video";
       revealVideo.src="/hero/preise-hero-mobile.mp4";

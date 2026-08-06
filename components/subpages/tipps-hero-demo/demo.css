@@ -82,6 +82,16 @@
     transform:translateY(-9vh);
   }
 
+  /* LCP-Poster: nur Mobile/Tablet (matcht Engine-noHover: hover:none). Desktop malt live -> Poster aus. Gleiche Box wie das reveal-video (z4), das sich drueberlegt; faded synchron auf Scroll. */
+  .reveal-poster{display:none}
+  @media (hover:none){
+    .reveal-poster{
+      display:block;position:absolute;top:0;left:0;z-index:4;
+      width:100%;height:auto;aspect-ratio:496/796;
+      pointer-events:none;background:transparent;
+    }
+  }
+
   /* Ebene A (Deck): Off-White + Titel */
   .layer-deck{
     position:absolute;inset:0;z-index:2;
