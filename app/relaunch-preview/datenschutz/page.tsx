@@ -32,12 +32,6 @@ export default function DatenschutzPreviewPage() {
       <BackToTop />
 
       <div className="rrl">
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=Instrument+Sans:wght@400;500;600&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
-        />
 
         <div className="rrl-wrap">
           <header className="rrl-head">

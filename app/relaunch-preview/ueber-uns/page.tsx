@@ -115,12 +115,6 @@ export default function UeberUnsPage() {
       {/* LCP-Poster mobil frueh laden (Thomas 04.08.): entfernt den Load-Delay,
           bis der Inline-Engine das Video baut. Nur Mobile/Tablet. */}
       <link rel="preload" as="image" href="/hero/ueber-uns-hero-poster.jpg" fetchPriority="high" media="(max-width: 1024px)" />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
-      />
       {/* Hamburger-Menue der Hauptseite. Wrapper liefert NUR die .rr-Font-Variablen
           fuer das styled-jsx-gekapselte Menue; der Demo-Inhalt bleibt bewusst
           AUSSERHALB des .rr-Scopes (keine Style-Leaks in demo.css). */}

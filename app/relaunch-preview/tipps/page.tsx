@@ -96,12 +96,6 @@ export default async function TippsPreviewPage() {
           .rrt DM Sans / Crimson bekommt). */}
       {/* LCP-Poster mobil frueh laden (Thomas 04.08.), nur Mobile/Tablet. */}
       <link rel="preload" as="image" href="/hero/tipps-hero-poster.jpg" fetchPriority="high" media="(max-width: 1024px)" />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=Instrument+Sans:wght@400;500;600&family=Crimson+Pro:ital,wght@0,500;1,500&display=swap"
-      />
 
       {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
           blendet erst nach dem Zerlegen der Hero-Woerter ein. */}

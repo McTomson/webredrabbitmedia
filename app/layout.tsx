@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+// Selbst-gehostete Fonts unter woertlichen Namen (Thomas 06.08.) -> ersetzt den
+// render-blockierenden externen Google-Fonts-<link> auf den Seiten (FCP-Hebel).
+import "./fonts-selfhosted.css";
 import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -236,6 +239,10 @@ export default function RootLayout({
       <head>
         {/* Priority Resource Hints */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        {/* Kritischen Font-Schnitt (DM Sans, Headlines/Wortmarke) vorladen, damit
+            der sichtbare Text ohne Flackern in der richtigen Schrift paintet
+            (selbst-gehostet, Thomas 06.08.). crossOrigin Pflicht auch same-origin. */}
+        <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossOrigin="" />
 
         {/* RSS Feed */}
         <link rel="alternate" type="application/rss+xml" title="Red Rabbit Media Website Tipps RSS Feed" href="/feed.xml" />
