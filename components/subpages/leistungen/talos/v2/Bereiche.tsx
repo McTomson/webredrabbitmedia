@@ -48,8 +48,10 @@ export default function Bereiche() {
           return (
             <div key={g.key} className="tl-br__gruppe">
               <p className="tl-br__grouphd">{g.label}</p>
+              {/* 2 pro Reihe ausser bei glatten 3ern (Thomas 07.08.: die
+                  4er-Gruppe "Wissen" als 2x2 statt 3+1 mit Leerflaeche). */}
               <div
-                className={`tl-br__grid${karten.length === 2 ? ' tl-br__grid--2' : ''}`}
+                className={`tl-br__grid${karten.length % 3 !== 0 ? ' tl-br__grid--2' : ''}`}
               >
                 {karten.map((b) => (
                   <article

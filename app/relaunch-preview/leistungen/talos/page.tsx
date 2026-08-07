@@ -15,7 +15,6 @@ import VorherNachher from '@/components/subpages/leistungen/talos/v2/VorherNachh
 import TalosTest from '@/components/subpages/leistungen/talos/v2/TalosTest';
 import Faehigkeiten from '@/components/subpages/leistungen/talos/v2/Faehigkeiten';
 import Kontrollraum from '@/components/subpages/leistungen/talos/v2/Kontrollraum';
-import Beweis from '@/components/subpages/leistungen/talos/v2/Beweis';
 import TalosFaqV2 from '@/components/subpages/leistungen/talos/v2/TalosFaqV2';
 import SiteClosing from '@/components/relaunch/SiteClosing';
 import ScrollExperience from '@/components/relaunch/ScrollExperience';
@@ -158,12 +157,8 @@ export default function TalosLeistungPreviewPage() {
             (Botschaft steckt in Faehigkeiten-Modal + FAQ), Onboarding (Kernsatz
             wandert in die SiteClosing-Zeilen), FragTalosAnmoderation (widerspricht
             dem ehrlichen "Kommt bald" des Assistenten; kommt zurueck, wenn der
-            Assistent real ist). Dateien bleiben fuer die Aufraeum-Etappe liegen. */}
-        {/* Beweis "front" (nicht back): sonst schneidet der Navy-Frame beim
-            Uebergang Kontrollraum->Beweis den Koerper an (Thomas 24.07., Bild 48/49). */}
-        <div data-rr-snap data-talos-station data-talos-anchor="0.8" data-talos-size="m" data-talos-appear="0.45" data-talos-layer="front">
-          <Beweis />
-        </div>
+            Assistent real ist), Beweis (zweite Runde: "den Bereich geben wir
+            auch weg"). Dateien bleiben fuer die Aufraeum-Etappe liegen. */}
         <div data-rr-snap>
           <TalosFaqV2 />
         </div>
