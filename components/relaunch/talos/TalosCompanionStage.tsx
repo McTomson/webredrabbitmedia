@@ -282,9 +282,9 @@ export default function TalosCompanionStage({
 
       if (!waved && p >= P_WAVE && ep <= 0) {
         waved = true;
-        // Thomas 25.07.: Hero-Gruss mit der ANDEREN Hand (die alte "primary"
-        // war die falsche Seite; "other" ist die korrigierte Hand).
-        motion?.triggerGreeting("other");
+        // Thomas 07.08. (Screenshot Hero): winkt mit der falschen Hand ->
+        // zurueck auf "primary" (die 25.07.-Drehung auf "other" war es nicht).
+        motion?.triggerGreeting("primary");
       }
       if (waved && p < P_WALK1 - 0.06) waved = false;
 
@@ -361,11 +361,11 @@ export default function TalosCompanionStage({
         if (lastStation !== best) { lastStation = best; gestureDone = false; }
         if (!gestureDone && bestScore > 0.45 && !walking) {
           gestureDone = true;
-          // Thomas 25.07.: "wave" (Standard-Markup an allen Stationen) mit der
-          // korrigierten Hand ("other"); "wave2" bleibt fuer Sonderfaelle die
-          // alte Hand ("primary"), falls irgendwo bewusst gebraucht.
-          if (best.gesture === "wave") motion?.triggerGreeting("other");
-          else if (best.gesture === "wave2") motion?.triggerGreeting("primary");
+          // Thomas 07.08. (Screenshots): winkt mit der falschen Hand ->
+          // "wave" wieder auf "primary" gedreht (war seit 25.07. "other");
+          // "wave2" bleibt als Sonderfall die jeweils andere Hand.
+          if (best.gesture === "wave") motion?.triggerGreeting("primary");
+          else if (best.gesture === "wave2") motion?.triggerGreeting("other");
           else if (best.gesture === "bow") motion?.triggerBow();
         }
       } else {
