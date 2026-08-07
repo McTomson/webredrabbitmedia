@@ -143,18 +143,12 @@ Gesendet von der Red Rabbit Media Website
 
         // Bestaetigungs-Mail an den Absender (Thomas 07.08.). Best effort: ein
         // Fehler hier darf die Lead-Erfassung NICHT scheitern lassen, die
-        // Team-Mail ist oben schon raus. confirmationSent = Telemetrie fuers
-        // Monitoring; die Fehlermeldung nur hinter dem Debug-Header ausgeben.
+        // Team-Mail ist oben schon raus. confirmationSent = harmlose Telemetrie
+        // fuers Frontend/Monitoring. Verifiziert 07.08.: Versand + Zustellung ok
+        // (an office@ nachgewiesen; SPF authorisiert IONOS, DMARC p=none, also
+        // kein Auth-Drop bei fremden Postfaechern).
         let confirmationSent = false;
-        let confirmationError: string | null = null;
         try {
-            // IONOS-Postfaecher (Mail Basic) verwerfen eine zweite, quasi
-            // gleichzeitig gesendete Mail vom selben Absender still (Anti-Flood):
-            // Der SMTP-Server quittiert mit 250 OK, stellt sie aber nie zu. Beweis
-            // 07.08.: Team-Mail (1. Send) kam 3/3 an, die Bestaetigung (2. Send,
-            // ms spaeter) 0/3 — obwohl sendMail nie warf. Ein Abstand zwischen den
-            // beiden Sends loest das. Die Team-/Lead-Mail bleibt bewusst zuerst.
-            await new Promise((r) => setTimeout(r, 2500));
             await transporter.sendMail({
                 from: `"Red Rabbit Media" <${smtpFrom}>`,
                 to: email,
@@ -189,16 +183,13 @@ ${message || 'Keine Nachricht'}
             });
             confirmationSent = true;
         } catch (confirmErr) {
-            confirmationError = confirmErr instanceof Error ? confirmErr.message : String(confirmErr);
             console.error('Bestaetigungs-Mail an Absender fehlgeschlagen:', confirmErr);
         }
 
-        const debug = req.headers.get('x-rr-debug') === '1';
         return NextResponse.json({
             success: true,
             message: 'Email sent successfully',
             confirmationSent,
-            ...(debug ? { confirmationError } : {}),
         });
 
     } catch (error) {
