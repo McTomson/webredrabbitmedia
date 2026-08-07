@@ -11,8 +11,7 @@ import WerIstTalos from '@/components/subpages/leistungen/talos/v2/WerIstTalos';
 import KennstDuDas from '@/components/subpages/leistungen/talos/v2/KennstDuDas';
 import Bereiche from '@/components/subpages/leistungen/talos/v2/Bereiche';
 import WertAnker from '@/components/subpages/leistungen/talos/v2/WertAnker';
-import VorherNachher from '@/components/subpages/leistungen/talos/v2/VorherNachher';
-import TalosTest from '@/components/subpages/leistungen/talos/v2/TalosTest';
+import TalosPanorama from '@/components/subpages/leistungen/talos/v2/TalosPanorama';
 import Faehigkeiten from '@/components/subpages/leistungen/talos/v2/Faehigkeiten';
 import Kontrollraum from '@/components/subpages/leistungen/talos/v2/Kontrollraum';
 import TalosFaqV2 from '@/components/subpages/leistungen/talos/v2/TalosFaqV2';
@@ -144,12 +143,10 @@ export default function TalosLeistungPreviewPage() {
         <div data-rr-snap>
           <WertAnker />
         </div>
-        <div data-rr-snap>
-          <VorherNachher />
-        </div>
-        <div data-rr-snap>
-          <TalosTest />
-        </div>
+        {/* Horizontale Fahrt (Thomas 07.08.): VorherNachher -> rechts scrollen
+            -> TalosTest, danach wieder normal vertikal. Track traegt selbst
+            data-rr-snap + exempt (Muster CasePanels). */}
+        <TalosPanorama />
         <div data-rr-snap>
           <Faehigkeiten />
         </div>
@@ -162,9 +159,10 @@ export default function TalosLeistungPreviewPage() {
         <div data-rr-snap>
           <TalosFaqV2 />
         </div>
-        {/* Anchor 0.8 = Talos RECHTS, Text links (Thomas 07.08., Screenshot:
-            bei 0.17 stand er ueber dem Text). */}
-        <div data-rr-snap data-talos-station data-talos-anchor="0.8" data-talos-size="sm" data-talos-gesture="wave" data-talos-layer="front">
+        {/* Talos RECHTS, Text links. Thomas 07.08. (2. Runde): bei anchor 0.8 +
+            sm ragte der Winke-Arm rechts aus dem Bild -> kleiner (size s) und
+            eine Spur weiter herein (0.76). */}
+        <div data-rr-snap data-talos-station data-talos-anchor="0.8" data-talos-size="s" data-talos-gesture="wave" data-talos-layer="front">
           <SiteClosing
             lines={[
               'Du hast Talos kennengelernt.',

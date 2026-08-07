@@ -44,7 +44,8 @@ export default function TalosTest() {
   };
 
   return (
-    <section className="rr-section tl-section tl-section--surface" data-rr-snap>
+    // KEIN data-rr-snap: lebt in der TalosPanorama-Buehne (Dwell-System regiert).
+    <section className="rr-section tl-section tl-section--surface">
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow tl-eyebrow">Mach den Test</p>
         <h2 className="rr-statement tl-title">

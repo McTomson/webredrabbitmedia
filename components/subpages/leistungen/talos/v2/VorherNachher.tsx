@@ -22,7 +22,8 @@ const MIT_TALOS = [
 
 export default function VorherNachher() {
   return (
-    <section className="rr-section tl-section tl-section--surface" data-rr-snap>
+    // KEIN data-rr-snap: lebt in der TalosPanorama-Buehne (Dwell-System regiert).
+    <section className="rr-section tl-section tl-section--surface">
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow tl-eyebrow">Der Unterschied im Alltag</p>
         <h2 className="rr-statement tl-title">
