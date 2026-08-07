@@ -1,4 +1,19 @@
-# Naechste Session — TALOS-Leistungsseite (Stand 24.07.2026, spaet)
+# Naechste Session — TALOS-Leistungsseite
+
+## >>> START HIER (Folgesession 07.08.2026) <<<
+- **Aufgabe:** Wir bearbeiten die Talos-Seite weiter. **Die konkrete Aufgabe/Infos gibt Thomas zu Beginn** — NICHT vorher raten oder umbauen. Erst zuhoeren, dann Plan (TodoWrite), dann tun.
+- **ZUERST LESEN:** dieser Handoff komplett (v.a. der rAF-Freeze-QA-Block unten — spart massiv Zeit), MEMORY.md, und die Talos-Memories: `project_talos_leistungen_3d_2026_07_17`, `reference_talos_companion_stage_kanonisch`, `reference_talos_kopf_zum_user_und_qa_tick`, `reference_talos_entrancestage_kamera_spiegelung`, `project_redrabbit_sales_onepager_talos`.
+- **Seite/Routen:** Haupt = `app/relaunch-preview/leistungen/talos/page.tsx`. Weitere Talos-Routen existieren (talos-choreo, talos-demo, talos-entrance, talos-intro) — vor Aenderung klaeren welche gemeint ist.
+- **Kontext erledigt:** Die Lead-Popups + IONOS-office@-Mailversand sind FERTIG und live auf v2 (Marken-Dropdown `LeadSelect.tsx`, kraeftiger CTA, E-Mail verifiziert). Nur Go-Live auf Production offen (Thomas-Entscheidung). Siehe `NEXT_SESSION_lead-popups.md`. Nicht mit Talos vermischen.
+
+## DEPLOY-METHODE (WICHTIG, 07.08. geaendert)
+- **git push -> v2 Auto-Deploy war ausgefallen** (nach manuellem `vercel --prod` + Host-Settings-Aenderung baute Vercel fuer neue `relaunch`-Pushes keine Preview mehr). NAECHSTE SESSION: erst pruefen ob's wieder von selbst baut (kleiner Push, `vercel ls` beobachten). Falls nicht, zuverlaessiger Workaround:
+  1. `git worktree add --detach <tmp-dir> <sha>` (sauberer Stand, fremder WIP bleibt draussen),
+  2. `.vercel/project.json` in den Worktree kopieren,
+  3. dort `vercel deploy --yes` (Preview, baut in der Cloud), Preview-URL merken,
+  4. `vercel alias set <preview-url> v2.redrabbit.media`, danach Worktree `git worktree remove --force`.
+- **NIE `vercel --prod`** (trifft die LIVE-Seite web.redrabbit.media). Online-Meldung nur bei `vercel inspect <url>` Status **Ready**.
+- Waehrend der 07.08.-Session lief ein manueller Production-Build unter Thomas' Account (nicht von mir) — im Zweifel rueckfragen bevor an Production etwas passiert.
 
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.

@@ -14,7 +14,8 @@
 ## STATUS-UPDATE Folgesession 07.08. — FERTIG bis auf Go-Live (HEAD `4835011` == remote)
 - **E-Mail-Versand v2 VERIFIZIERT.** Lead-Mail kommt zuverlaessig an (office@ + thomas.uhlir@gmail.com, Absender office@), 6/6 in Tests. **Bestaetigungs-Mail an Absender funktioniert ebenfalls** — Versand + Zustellung an office@ nachgewiesen ("Deine Anfrage bei Red Rabbit Media" kam an). Die scheinbaren Fehlschlaege beim Test auf `thomas.uhlir@gmail.com` als ABSENDER waren ein Test-Artefakt: office@ ist ein Alias/Weiterleitung genau dieses Gmail-Kontos, Gmail unterdrueckt eine Mail vom eigenen Alias. SPF autorisiert IONOS (`include:_spf-eu.ionos.com`), DMARC `p=none` -> kein Auth-Drop bei fremden Postfaechern. Fuer echte Kunden (normales Fremd-Postfach) kommt die Bestaetigung an. `/api/contact` gibt jetzt `confirmationSent` zurueck (harmlose Telemetrie).
 - **Design-Fix Popup FERTIG.** Neues `components/relaunch/lead/LeadSelect.tsx` (Custom-Listbox) ersetzt das native `<select>`. Trigger im Unterstrich-Feldstil, offenes Menue im Marken-`.rr-select`-Look (eckig, Paper, rote Auswahl + Haken), Tastatur/ARIA. Auf localhost UND auf v2 (`/datenschutz`) visuell verifiziert: kein dunkles OS-Menue mehr, Auswahl + Preset-Vorbefuellung funktionieren.
-- **v2 zeigt den finalen Build** (`18u6ltoq5`, HEAD 4835011) — via `vercel alias set` gesetzt (siehe Lesson unten).
+- **Primaerer CTA "Anfrage senden" kraeftiger** (voll rot gefuellt statt nur 5px-Balken, weisser Text) — auf v2 bestaetigt.
+- **v2 zeigt den finalen Build** (`bqv0zxfy9`, HEAD `6f89f2a`) — via `vercel alias set` gesetzt (siehe Lesson unten).
 - **OFFEN nur noch:** Go-Live auf Production (Schritt 4) — Thomas-Entscheidung ob Live-`SMTP_TO` auch office@+gmail wird. Nichts Blockierendes mehr.
 
 ## Stand 07.08. (Vorsession, HEAD `aca5205` == remote)
