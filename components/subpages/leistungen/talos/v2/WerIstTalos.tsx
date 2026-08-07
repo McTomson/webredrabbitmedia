@@ -17,26 +17,28 @@ export default function WerIstTalos() {
           <div className="tl-wer__text">
             <p className="wd-eyebrow tl-eyebrow">Wer ist Talos</p>
             <h2 className="rr-statement tl-title tl-wer__title">
-              Talos ist kein Programm, das du kaufst oder installierst.
+              Talos macht aus der verschlossenen Kiste deine Kommandozentrale.
             </h2>
             <p className="rr-body-lg tl-lead">
-              Talos ist nichts, das du extra kaufst oder installierst. Seine
-              Grundausstattung ist in deiner Website enthalten und fest
-              eingebaut. Er passt auf, dass die Seite läuft. Kommt eine Anfrage
-              rein, fängt er sie auf und sagt dir Bescheid. Braucht dein Betrieb
-              mehr, holst du dir einzelne Fähigkeiten dazu. Die sind als
-              monatliche Abos gebaut, die du jederzeit kündigen kannst, und du
-              nimmst nur, was du wirklich brauchst.
+              Talos ist nichts, das du extra kaufst oder installierst. Er
+              steckt fest in jeder Website von uns. Er zeigt dir, was auf
+              deiner Seite passiert: wie viele Leute da waren, wo sie klicken,
+              was sie dir schreiben. Texte und Bilder änderst du selbst, ohne
+              Anruf, ohne Wartezeit. Und alles hält sich von allein aktuell.
+              Einmal eingerichtet, läuft es. Jahr für Jahr.
             </p>
 
             <p className="tl-says">
               Schau ruhig genau hin, wie ich gebaut bin. So nah siehst du einen
               Mitarbeiter selten.
             </p>
-            <p className="tl-says">Als Programm kaufst du mich nicht. Meine Grundausstattung steckt schon in deiner Seite.</p>
             <p className="tl-says">
-              Ich halte deine Seite am Laufen und melde mich, sobald du etwas
-              wissen musst.
+              Ich zeige dir, was auf deiner Seite los ist. In normalen Worten,
+              ohne Fachchinesisch.
+            </p>
+            <p className="tl-says">
+              Und wenn etwas klemmt, sage ich dir Bescheid, bevor es ein Kunde
+              merkt.
             </p>
           </div>
 

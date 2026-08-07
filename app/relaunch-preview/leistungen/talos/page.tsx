@@ -8,7 +8,11 @@ import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import TalosDemoClient from '@/components/subpages/TalosDemoClient';
 import TalosCompanionStage from '@/components/relaunch/talos/TalosCompanionStageLazy';
 import WerIstTalos from '@/components/subpages/leistungen/talos/v2/WerIstTalos';
-import InklusiveDashboard from '@/components/subpages/leistungen/talos/v2/InklusiveDashboard';
+import KennstDuDas from '@/components/subpages/leistungen/talos/v2/KennstDuDas';
+import Bereiche from '@/components/subpages/leistungen/talos/v2/Bereiche';
+import WertAnker from '@/components/subpages/leistungen/talos/v2/WertAnker';
+import VorherNachher from '@/components/subpages/leistungen/talos/v2/VorherNachher';
+import TalosTest from '@/components/subpages/leistungen/talos/v2/TalosTest';
 import Faehigkeiten from '@/components/subpages/leistungen/talos/v2/Faehigkeiten';
 import FreigabePrinzip from '@/components/subpages/leistungen/talos/v2/FreigabePrinzip';
 import Onboarding from '@/components/subpages/leistungen/talos/v2/Onboarding';
@@ -26,32 +30,27 @@ import '@/components/subpages/leistungen/wd-eyebrow.css';
 import '@/components/subpages/leistungen/talos/v2/talos-v2.css';
 
 /**
- * Leistungen — Talos ("der digitale Mitarbeiter"), Preview, noindex —
- * GERUEST-Fassung (Etappe "Geruest", 22.07.2026). War bewusst eine 1:1-Kopie
- * von app/relaunch-preview/leistungen/website/page.tsx (Ausgangslage laut
- * Auftrag); jetzt auf die neuen v2-Sektionen dieses Ordners umgebaut. Chrome
- * (RelaunchMenu/CornerLogo/FooterReassembly, Fonts, styleguide.css) 1:1 aus
- * der Kopie uebernommen.
+ * Leistungen — Talos, Preview, noindex — PIVOT "Kommandozentrale"
+ * (Thomas 07.08.2026): Talos wird als Kommandozentrale der Website erzaehlt
+ * (selbst aendern + alles sehen + haelt sich von allein aktuell). Aufbau:
+ * Hero (geklonte Demo-Strecke) -> KennstDuDas (Einfuehlung) -> WerIstTalos
+ * (die Antwort) -> Bereiche (9 Karten, Herzstueck) -> Kontrollraum
+ * (Live-Beleg) -> WertAnker (Rechnung + Haken-Klaerung) -> VorherNachher ->
+ * TalosTest (Quiz) -> Faehigkeiten (optional dazubuchen) -> Bestand
+ * (Freigabe, Onboarding, Beweis, FragTalos, FAQ, Closing).
  *
- * Bewusst NICHT angefasst (Aufraeumen folgt separat, laut Auftrag): die
- * alten Talos-Komponenten in components/subpages/leistungen/talos/* und
- * components/relaunch/talos/TalosPresentation.tsx bleiben unveraendert
- * liegen, nur nicht mehr von dieser Seite importiert.
+ * Aufraeumen folgt separat: alte Talos-Komponenten in components/subpages/
+ * leistungen/talos/* und components/relaunch/talos/TalosPresentation.tsx
+ * sowie die jetzt ungenutzten v2-Dateien InklusiveDashboard.tsx und
+ * TalosHeroPlaceholder.tsx bleiben vorerst liegen (nicht mehr importiert).
  *
- * Kein Feindesign, kein 3D in dieser Etappe: TalosHeroPlaceholder und der
- * .tl-stage-slot in WerIstTalos sind Platzhalter fuer die spaetere
- * Walk-in-Hero-/Naeherkommen-Buehne (Orchestrator, naechste Etappe). Der
- * FragTalos-Port (Assistent-Logik + 5 Fragen aus der alten Seite) ist als
- * Etappe-4-Kommentar vorgemerkt, noch nicht eingebaut.
- *
- * JSON-LD: Service-Eintrag aus der alten Seite (git show HEAD, vor dieser
- * Aenderung) uebernommen und auf den neuen Sprachgebrauch angepasst
- * (digitaler Mitarbeiter statt Helfer/Dashboard, Fähigkeiten statt Module).
+ * JSON-LD: Service-Eintrag auf den Kommandozentrale-Sprachgebrauch
+ * angepasst; FAQPage-JSON-LD kommt weiter aus TalosFaqV2.
  */
 export const metadata: Metadata = {
-  title: 'Talos, der digitale Mitarbeiter in deiner Website (Preview) · Red Rabbit Media',
+  title: 'Talos, die Kommandozentrale deiner Website (Preview) · Red Rabbit Media',
   description:
-    'Talos ist der digitale Mitarbeiter, der in jeder Website von uns steckt: Anfragen auffangen, Beiträge schreiben, Zahlen in Klartext. Du gibst per Klick frei.',
+    'Talos steckt in jeder Website von uns: Texte und Bilder selbst ändern, Besucher und Klicks sehen, bei Google und ChatGPT gefunden werden, Alarm bei Ausfall. Alles an einem Ort.',
   robots: { index: false, follow: false },
 };
 
@@ -84,10 +83,10 @@ export default function TalosLeistungPreviewPage() {
             },
             {
               '@type': 'Service',
-              name: 'Talos, der digitale Mitarbeiter',
-              serviceType: 'Website mit automatisierten, buchbaren Fähigkeiten',
+              name: 'Talos, die Kommandozentrale deiner Website',
+              serviceType: 'Website mit Kommandozentrale und buchbaren Fähigkeiten',
               description:
-                'Talos ist der digitale Mitarbeiter, der in jeder Website von uns steckt. Texte und Bilder selbst ändern, Zahlen in Klartext, Ausfall-Alarm, Hosting und Pflege sind in jeder Website inklusive. Fähigkeiten wie Der Schreiber, Der Empfang, Der Aussendienst, Der Social-Poster und Die Sichtbarkeit bucht man einzeln dazu, monatlich, jederzeit kündbar.',
+                'Talos steckt in jeder Website von uns. Die Kommandozentrale zeigt Besucher, Klicks, Suchbegriffe, Sichtbarkeit bei Google und ChatGPT, Bewertungen, Anfragen und die Technik-Gesundheit der Seite; Texte und Bilder ändert man selbst. Fähigkeiten wie Der Schreiber, Der Empfang und Der Sichtbarmacher bucht man einzeln dazu, monatlich, jederzeit kündbar.',
               provider: { '@type': 'Organization', name: 'Red Rabbit Media' },
               areaServed: 'AT',
             },
@@ -126,11 +125,34 @@ export default function TalosLeistungPreviewPage() {
           zwischen z12 (hinter dem Text, Text lesbar) und z30 (vor der Flaeche,
           Kontrollraum/CTA). Weisser Grund kommt vom body. */}
       <div className={rrFonts} style={{ background: 'transparent', position: 'relative', zIndex: 20 }}>
+        {/* PIVOT Kommandozentrale (Thomas 07.08.): Einfuehlung zuerst — der
+            Besucher erkennt sich in den fuenf Fragen wieder, DANN kommt die
+            Antwort (WerIstTalos). Ohne Station: Talos ist nach dem Hero-Abgang
+            hier noch nicht wieder da, die Fragen gehoeren dem Leser. */}
+        <div data-rr-snap>
+          <KennstDuDas />
+        </div>
         <div data-rr-snap data-talos-station data-talos-anchor="0.78" data-talos-size="l" data-talos-appear="0.5" data-talos-layer="back">
           <WerIstTalos />
         </div>
+        {/* Das neue Herzstueck: die 9 Bereiche der Kommandozentrale. Ohne
+            Station (dichtes Karten-Raster, Talos wuerde Text verdecken). */}
         <div data-rr-snap>
-          <InklusiveDashboard />
+          <Bereiche />
+        </div>
+        {/* Kontrollraum direkt nach den Bereichen: erst lesen, was er alles
+            sieht — dann sehen, wie es aussieht (Live-Beleg). Station wie gehabt. */}
+        <div data-rr-snap data-talos-station data-talos-anchor="0.7" data-talos-size="m" data-talos-appear="0.55" data-talos-gesture="wink" data-talos-layer="front">
+          <Kontrollraum />
+        </div>
+        <div data-rr-snap>
+          <WertAnker />
+        </div>
+        <div data-rr-snap>
+          <VorherNachher />
+        </div>
+        <div data-rr-snap>
+          <TalosTest />
         </div>
         <div data-rr-snap>
           <Faehigkeiten />
@@ -138,16 +160,13 @@ export default function TalosLeistungPreviewPage() {
         {/* FreigabePrinzip MIT nickendem Talos (originalgetreu wiederhergestellt,
             Thomas 24.07. spaet: "der nickende Talos war sehr gut, stell ihn wieder
             her"). Nur ONBOARDING bleibt ohne Companion — DORT war Talos "zu frueh"
-            (Bild 54), erst danach am Kontrollraum wieder zentriert. layer="back",
-            weil weisse Sektion (kein Navy-Body-Cut) und Text links / Talos rechts. */}
+            (Bild 54). layer="back", weil weisse Sektion (kein Navy-Body-Cut) und
+            Text links / Talos rechts. */}
         <div data-rr-snap data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-gesture="nod" data-talos-layer="back">
           <FreigabePrinzip />
         </div>
         <div data-rr-snap>
           <Onboarding />
-        </div>
-        <div data-rr-snap data-talos-station data-talos-anchor="0.7" data-talos-size="m" data-talos-appear="0.55" data-talos-gesture="wink" data-talos-layer="front">
-          <Kontrollraum />
         </div>
         {/* Beweis "front" (nicht back): sonst schneidet der Navy-Frame beim
             Uebergang Kontrollraum->Beweis den Koerper an (Thomas 24.07., Bild 48/49). */}

@@ -18,26 +18,33 @@ import { useEffect, useRef, useState } from "react";
  */
 type Panel = { tag: string; text: string; booked: boolean };
 
+// Panels = die Bereiche der Kommandozentrale als Live-Beispiel (Pivot Thomas
+// 07.08.). Beispielwerte sind erkennbar illustrativ (Dashboard-Mock), keine
+// Kennzahlen-Behauptung ueber echte Kunden.
 const PANELS: Panel[] = [
-  { tag: "Immer an", text: "Seite läuft, alles schnell und erreichbar.", booked: false },
   {
-    tag: "Immer an",
-    text: "Deine Zahlen werden mitgeschrieben, jederzeit abrufbar in Klartext.",
+    tag: "Immer an · Besucher",
+    text: "38 Leute waren heute da, die meisten kamen über Google.",
     booked: false,
   },
   {
-    tag: "Immer an",
-    text: "Wächter aktiv, meldet sich sofort, falls etwas klemmt.",
+    tag: "Immer an · Technik",
+    text: "Seite läuft, alles schnell und erreichbar.",
+    booked: false,
+  },
+  {
+    tag: "Immer an · Bewertungen",
+    text: "Neue Fünf-Sterne-Bewertung von heute Vormittag.",
+    booked: false,
+  },
+  {
+    tag: "Immer an · Anfragen",
+    text: "Anfrage von heute Mittag aufgefangen, liegt für dich bereit.",
     booked: false,
   },
   {
     tag: "Gebucht · Der Schreiber",
     text: "Nächster Beitrag liegt fertig zur Freigabe bereit.",
-    booked: true,
-  },
-  {
-    tag: "Gebucht · Der Empfang",
-    text: "Anfrage von heute Mittag aufgefangen, Antwort wartet auf dein Ja.",
     booked: true,
   },
   {
@@ -81,9 +88,9 @@ export default function Kontrollraum() {
           Was gerade alles für dich läuft, während du etwas anderes machst.
         </h2>
         <p className="rr-body-lg tl-lead">
-          Talos arbeitet nicht der Reihe nach, sondern an vielem gleichzeitig,
-          Tag und Nacht. Die Grundausstattung läuft immer. Was du dazubuchst,
-          schaltet sich zusätzlich ein.
+          So sieht das aus. Die Bereiche deiner Kommandozentrale laufen immer,
+          Tag und Nacht, ohne dass jemand etwas tun muss. Was du Talos
+          zusätzlich übergibst, schaltet sich dazu.
         </p>
 
         <div className={`tl-kr__stageArea ${inView ? "is-in" : ""}`} ref={rootRef}>
