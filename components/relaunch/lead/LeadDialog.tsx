@@ -360,7 +360,7 @@ export default function LeadDialog({
               <div className="rrlead-actions">
                 <button
                   type="submit"
-                  className="rr-btn-sweep rr-btn-sweep--red"
+                  className="rr-btn-sweep rr-btn-sweep--red rrlead-submit"
                   disabled={status === "sending"}
                 >
                   {status === "sending" ? "Wird gesendet ..." : cfg.submitLabel}
@@ -526,6 +526,16 @@ export default function LeadDialog({
           color: var(--rr-ink-soft, #5a5e68);
         }
         .rrlead-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
+        /* Primaerer CTA kraeftiger: rr-btn-sweep ist in Ruhe transparent mit
+           5px-Balken; hier von Anfang an voll rot gefuellt, weisser Text, mehr
+           Praesenz. Sweep-Farbwelt bleibt, nur der Ruhezustand ist gefuellt. */
+        .rr .rrlead-submit { color: #fff; padding: 14px 34px; letter-spacing: 0.005em; }
+        .rr .rrlead-submit::before { width: 100%; }
+        .rr .rrlead-submit:hover { color: #fff; box-shadow: 0 12px 30px rgba(241, 32, 50, 0.42); }
+        .rr .rrlead-submit:hover::before { width: 100%; background: var(--rr-red-deep, #c81222); }
+        .rr .rrlead-submit:disabled { opacity: 0.6; cursor: default; }
+        .rr .rrlead-submit:disabled:hover { box-shadow: none; }
+        .rr .rrlead-submit:disabled:hover::before { background: var(--rr-red, #f12032); }
         @media (max-width: 560px) {
           .rrlead-row { grid-template-columns: 1fr; }
         }
