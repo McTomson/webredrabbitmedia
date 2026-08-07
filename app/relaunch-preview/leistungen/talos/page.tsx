@@ -14,11 +14,8 @@ import WertAnker from '@/components/subpages/leistungen/talos/v2/WertAnker';
 import VorherNachher from '@/components/subpages/leistungen/talos/v2/VorherNachher';
 import TalosTest from '@/components/subpages/leistungen/talos/v2/TalosTest';
 import Faehigkeiten from '@/components/subpages/leistungen/talos/v2/Faehigkeiten';
-import FreigabePrinzip from '@/components/subpages/leistungen/talos/v2/FreigabePrinzip';
-import Onboarding from '@/components/subpages/leistungen/talos/v2/Onboarding';
 import Kontrollraum from '@/components/subpages/leistungen/talos/v2/Kontrollraum';
 import Beweis from '@/components/subpages/leistungen/talos/v2/Beweis';
-import FragTalosAnmoderation from '@/components/subpages/leistungen/talos/v2/FragTalosAnmoderation';
 import TalosFaqV2 from '@/components/subpages/leistungen/talos/v2/TalosFaqV2';
 import SiteClosing from '@/components/relaunch/SiteClosing';
 import ScrollExperience from '@/components/relaunch/ScrollExperience';
@@ -157,34 +154,26 @@ export default function TalosLeistungPreviewPage() {
         <div data-rr-snap>
           <Faehigkeiten />
         </div>
-        {/* FreigabePrinzip MIT nickendem Talos (originalgetreu wiederhergestellt,
-            Thomas 24.07. spaet: "der nickende Talos war sehr gut, stell ihn wieder
-            her"). Nur ONBOARDING bleibt ohne Companion — DORT war Talos "zu frueh"
-            (Bild 54). layer="back", weil weisse Sektion (kein Navy-Body-Cut) und
-            Text links / Talos rechts. */}
-        <div data-rr-snap data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-gesture="nod" data-talos-layer="back">
-          <FreigabePrinzip />
-        </div>
-        <div data-rr-snap>
-          <Onboarding />
-        </div>
+        {/* GESTRICHEN (Thomas 07.08., "wir haben zu viel"): FreigabePrinzip
+            (Botschaft steckt in Faehigkeiten-Modal + FAQ), Onboarding (Kernsatz
+            wandert in die SiteClosing-Zeilen), FragTalosAnmoderation (widerspricht
+            dem ehrlichen "Kommt bald" des Assistenten; kommt zurueck, wenn der
+            Assistent real ist). Dateien bleiben fuer die Aufraeum-Etappe liegen. */}
         {/* Beweis "front" (nicht back): sonst schneidet der Navy-Frame beim
             Uebergang Kontrollraum->Beweis den Koerper an (Thomas 24.07., Bild 48/49). */}
         <div data-rr-snap data-talos-station data-talos-anchor="0.8" data-talos-size="m" data-talos-appear="0.45" data-talos-layer="front">
           <Beweis />
         </div>
-        {/* FragTalos MIT Companion (front): Talos soll hier noch sichtbar sein
-            und genau hier anfangen zu verschwinden (Thomas 24.07., Bild 56). */}
-        <div data-rr-snap data-talos-station data-talos-anchor="0.82" data-talos-size="m" data-talos-appear="0.45" data-talos-layer="front">
-          <FragTalosAnmoderation />
-        </div>
         <div data-rr-snap>
           <TalosFaqV2 />
         </div>
-        <div data-rr-snap data-talos-station data-talos-anchor="0.17" data-talos-size="sm" data-talos-gesture="wave" data-talos-layer="front">
+        {/* Anchor 0.8 = Talos RECHTS, Text links (Thomas 07.08., Screenshot:
+            bei 0.17 stand er ueber dem Text). */}
+        <div data-rr-snap data-talos-station data-talos-anchor="0.8" data-talos-size="sm" data-talos-gesture="wave" data-talos-layer="front">
           <SiteClosing
             lines={[
               'Du hast Talos kennengelernt.',
+              'Kein Aufwand für dich: er arbeitet sich selbst ein.',
               'Ob er auch für dich arbeitet, klärt ein kurzes Gespräch.',
               'Reden wir.',
             ]}

@@ -703,9 +703,20 @@
 .rr .tl-kd__close { margin-top: clamp(24px, 3.5vw, 36px); }
 .rr .tl-kd__close strong { color: var(--rr-navy); }
 
-/* ---- Bereiche — 9 Karten im Fugen-Raster (Hairlines wie tlfg-grid) ---- */
+/* ---- Bereiche — 9 Karten in 3 Gruppen im Fugen-Raster (wie tlfg-grid) ---- */
+/* Gruppen-Kopf: Muster tl-ink-grouphd (rote Uppercase-Zeile). */
+.rr .tl-br__gruppe { margin-top: clamp(36px, 5vw, 64px); }
+.rr .tl-br__grouphd {
+  margin: 0;
+  font-family: var(--rr-font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rr-red);
+}
 .rr .tl-br__grid {
-  margin-top: clamp(32px, 4.5vw, 56px);
+  margin-top: clamp(14px, 2vw, 20px);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
@@ -752,11 +763,13 @@
   flex-wrap: wrap;
   gap: clamp(16px, 2vw, 24px);
 }
+/* 2er-Gruppe (Selbst machen): zwei Spalten, keine leere dritte Zelle. */
+.rr .tl-br__grid--2 { grid-template-columns: repeat(2, 1fr); }
 @media (min-width: 769px) and (max-width: 1180px) {
   .rr .tl-br__grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
-  .rr .tl-br__grid { grid-template-columns: 1fr; }
+  .rr .tl-br__grid, .rr .tl-br__grid--2 { grid-template-columns: 1fr; }
 }
 
 /* ---- WertAnker — Navy-Flaeche mit Posten-Zeilen ---- */

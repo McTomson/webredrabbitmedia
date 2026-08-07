@@ -10,6 +10,8 @@
  * 'soon' = Phase 2 (Assistent/LLM), ehrlich als "Kommt bald" ausgewiesen.
  */
 export type Bereich = {
+  /** Gruppe (Thomas 07.08.: 3 beschriftete Gruppen statt 9-Karten-Wand). */
+  gruppe: 'machen' | 'wissen' | 'gefunden';
   /** Bereichs-Name (Label-Zeile der Karte). */
   name: string;
   /** Hook-Headline (Serif): beantwortet eine Frage, die er sich laengst stellt. */
@@ -27,6 +29,7 @@ export type Bereich = {
 
 export const BEREICHE: Bereich[] = [
   {
+    gruppe: 'machen',
     name: 'Deine Inhalte',
     head: 'Neuer Preis? Neues Foto? Änderst du selbst, in zwei Minuten.',
     why: 'Du klickst auf den Text, schreibst ihn neu, fertig. Kein Anruf bei der Agentur, keine Rechnung, kein Warten.',
@@ -35,6 +38,7 @@ export const BEREICHE: Bereich[] = [
     says: 'Sag mir nicht Bescheid. Ändere es einfach. Es ist deine Seite.',
   },
   {
+    gruppe: 'wissen',
     name: 'Deine Besucher',
     head: 'Wie viele heute da waren, weißt du ab jetzt genau.',
     why: 'Wie viele Leute kamen, woher, was sie sich angesehen haben. Jeden Tag frisch, ohne dass du etwas tun musst.',
@@ -43,6 +47,7 @@ export const BEREICHE: Bereich[] = [
     says: 'Gestern waren vierzig Leute da. Ich zeig dir, woher sie kamen.',
   },
   {
+    gruppe: 'wissen',
     name: 'Klicks und Verhalten',
     head: 'Du siehst, wo deine Besucher klicken. Und wo sie aussteigen.',
     why: 'Eine Karte färbt deine Seite dort ein, wo geklickt wird. Du siehst, welcher Knopf zieht und wo Leute abbrechen.',
@@ -51,6 +56,7 @@ export const BEREICHE: Bereich[] = [
     says: 'Deinen Anrufen-Knopf drücken viele. Den weiter unten sieht fast keiner.',
   },
   {
+    gruppe: 'gefunden',
     name: 'Gefunden werden',
     head: 'Mit welchen Wörtern dich Google zeigt, steht bei dir drin.',
     why: 'Wonach die Leute suchen, auf welchem Platz du stehst, wie oft geklickt wird. Und wo ein kleiner Schritt dich nach oben bringt.',
@@ -59,6 +65,7 @@ export const BEREICHE: Bereich[] = [
     says: 'Bei einem deiner Suchbegriffe stehst du knapp auf Seite zwei. Ein Schritt, und du bist oben.',
   },
   {
+    gruppe: 'gefunden',
     name: 'ChatGPT und Co',
     head: 'Wenn jemand ChatGPT nach einem Betrieb wie deinem fragt: kommst du vor?',
     why: 'Immer mehr Leute fragen nicht mehr Google, sondern eine KI. Talos prüft regelmäßig, ob du dort auftauchst und was über dich erzählt wird.',
@@ -68,6 +75,7 @@ export const BEREICHE: Bereich[] = [
     badge: 'hot',
   },
   {
+    gruppe: 'gefunden',
     name: 'Ruf und Bewertungen',
     head: 'Jede neue Google-Bewertung landet sofort bei dir.',
     why: 'Deine Sterne, jede neue Bewertung, wie oft angerufen und der Weg zu dir gesucht wird. Alles an einem Ort statt in fünf Apps.',
@@ -76,6 +84,7 @@ export const BEREICHE: Bereich[] = [
     says: 'Neue Fünf-Sterne-Bewertung von heute Vormittag. Willst du antworten?',
   },
   {
+    gruppe: 'wissen',
     name: 'Technik-Gesundheit',
     head: 'Ist die Seite schnell, sicher, erreichbar? Talos prüft es rund um die Uhr.',
     why: 'Ladezeit, Erreichbarkeit, Sicherheitszertifikat, kaputte Links. Stimmt etwas nicht, schlägt Talos Alarm, bevor es ein Kunde merkt.',
@@ -84,6 +93,7 @@ export const BEREICHE: Bereich[] = [
     says: 'Deine Seite lädt langsam am Handy. Das kostet dich Besucher. Hier ist der Grund.',
   },
   {
+    gruppe: 'wissen',
     name: 'Deine Anfragen',
     head: 'Keine Anfrage geht dir mehr durch. Keine einzige.',
     why: 'Jede Nachricht über deine Seite fängt Talos auf, sammelt sie an einem Ort und sagt dir Bescheid. Du siehst, wie viele kamen und was daraus wurde.',
@@ -92,6 +102,7 @@ export const BEREICHE: Bereich[] = [
     says: 'Um zwei Uhr früh kam eine Anfrage. Sie liegt sauber für dich bereit.',
   },
   {
+    gruppe: 'machen',
     name: 'Dein Assistent',
     head: 'Und wenn du eine Zahl nicht verstehst, fragst du einfach.',
     why: 'Talos erklärt dir jede Auswertung in normalen Worten und hilft dir beim Schreiben, wenn du einen besseren Text willst.',

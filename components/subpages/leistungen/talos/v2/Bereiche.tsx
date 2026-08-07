@@ -1,8 +1,16 @@
 import Link from 'next/link';
-import { BEREICHE } from './bereiche-data';
+import { BEREICHE, type Bereich } from './bereiche-data';
 
 const KONTAKT = '/relaunch-preview/kontakt';
 const PREISE = '/relaunch-preview/preise';
+
+/** Gruppen-Reihenfolge + Labels (Thomas 07.08.: 3 Gruppen statt 9er-Wand;
+    Label = Kundenfrage in Alltagssprache). */
+const GRUPPEN: Array<{ key: Bereich['gruppe']; label: string }> = [
+  { key: 'machen', label: 'Selbst machen' },
+  { key: 'wissen', label: 'Wissen, was los ist' },
+  { key: 'gefunden', label: 'Gefunden werden und dein Ruf' },
+];
 
 /**
  * Bereiche — das neue Herzstueck der Talos-Seite (Thomas 07.08., Pivot zur
@@ -35,33 +43,43 @@ export default function Bereiche() {
           aktuell.
         </p>
 
-        <div className="tl-br__grid">
-          {BEREICHE.map((b) => (
-            <article
-              key={b.name}
-              className={`tl-br__card${b.badge === 'hot' ? ' tl-br__card--hot' : ''}`}
-            >
-              {/* Bewusst "fast keiner" statt "keiner": woertliche
-                  Alleinstellung waere UWG-angreifbar (Security-Review
-                  07.08., solche Pruef-Werkzeuge existieren am Markt). */}
-              {b.badge === 'hot' && (
-                <span className="tl-br__badge tl-br__badge--hot">
-                  Das hat sonst fast keiner
-                </span>
-              )}
-              {b.badge === 'soon' && (
-                <span className="tl-br__badge">Kommt bald</span>
-              )}
-              <p className="tl-card__label">{b.name}</p>
-              <h3 className="tl-br__head">{b.head}</h3>
-              <p className="tl-br__why">{b.why}</p>
-              <p className="tl-br__edge">
-                <strong>{b.edgeLead}</strong> {b.edge}
-              </p>
-              <p className="tl-says tl-says--card">{b.says}</p>
-            </article>
-          ))}
-        </div>
+        {GRUPPEN.map((g) => {
+          const karten = BEREICHE.filter((b) => b.gruppe === g.key);
+          return (
+            <div key={g.key} className="tl-br__gruppe">
+              <p className="tl-br__grouphd">{g.label}</p>
+              <div
+                className={`tl-br__grid${karten.length === 2 ? ' tl-br__grid--2' : ''}`}
+              >
+                {karten.map((b) => (
+                  <article
+                    key={b.name}
+                    className={`tl-br__card${b.badge === 'hot' ? ' tl-br__card--hot' : ''}`}
+                  >
+                    {/* Bewusst "fast keiner" statt "keiner": woertliche
+                        Alleinstellung waere UWG-angreifbar (Security-Review
+                        07.08., solche Pruef-Werkzeuge existieren am Markt). */}
+                    {b.badge === 'hot' && (
+                      <span className="tl-br__badge tl-br__badge--hot">
+                        Das hat sonst fast keiner
+                      </span>
+                    )}
+                    {b.badge === 'soon' && (
+                      <span className="tl-br__badge">Kommt bald</span>
+                    )}
+                    <p className="tl-card__label">{b.name}</p>
+                    <h3 className="tl-br__head">{b.head}</h3>
+                    <p className="tl-br__why">{b.why}</p>
+                    <p className="tl-br__edge">
+                      <strong>{b.edgeLead}</strong> {b.edge}
+                    </p>
+                    <p className="tl-says tl-says--card">{b.says}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          );
+        })}
 
         <div className="tl-br__cta">
           <Link

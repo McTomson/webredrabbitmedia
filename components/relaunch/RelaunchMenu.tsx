@@ -379,7 +379,10 @@ export default function RelaunchMenu() {
           position: fixed;
           left: 0;
           top: 0;
-          z-index: 9999;
+          /* MUSS ueber JEDEM Overlay liegen (Lead-Popup backdrop = 10000):
+             der Punkt ist seitenweit der EINZIGE Cursor (cursor:none), ohne
+             ihn klickt man in Modals blind (Thomas 07.08.). */
+          z-index: 100000;
           width: 14px;
           height: 14px;
           border-radius: 50%;
