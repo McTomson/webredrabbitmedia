@@ -401,6 +401,12 @@ export default function TalosCompanionStage({
         motion?.setWinkLoop(false);
         opacity = damp(opacity, 0, 6, dt);
         writeWalkPose(curX, curZ, curYaw, false, dt);
+        // Denselben Handy-Tief-Offset wie im Hero anwenden, solange die Figur
+        // beim Verlassen des Heros ausfadet — sonst springt sie im Uebergang
+        // Hero->Stationen um HERO_MOBILE_DY nach oben (Logic-Review 08.08.).
+        if (heroEndFracFor(window.innerWidth) !== null && n.bot) {
+          n.bot.position.y += HERO_MOBILE_DY;
+        }
       }
     };
 
