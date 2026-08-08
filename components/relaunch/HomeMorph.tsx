@@ -25,7 +25,12 @@ const COMPS = [atShapes1, atShapes2, atShapes3, atShapes4, atShapes5];
  * treibt unveraendert die bestehende Timeline. So teilen Hasenkopf, Statement und
  * Wortmarke EIN Koordinatensystem -> nahtloser Lockup -> Shatter-Uebergang.
  */
-const U_INTRO = 1.6;
+// Gestrafft (Thomas 08.08.: "beim Ankommen auf Home fuehlt sich der Anfang
+// recht langsam an"). 1.6 * 260vh = 416vh Auftakt, in denen der Stack nur ~64vh
+// wanderte (0.15vh Bewegung pro 1vh Scroll) -> las sich wie Stillstand. 1.0 =
+// 260vh Auftakt, gleiche Choreografie strammer -> der erste Wisch bewegt
+// sichtbar etwas. Lockup-Geometrie ist U_INTRO-unabhaengig (ip normalisiert).
+const U_INTRO = 1.0;
 const U_SPAN = U_INTRO + U_TOTAL;
 /**
  * Scroll-Laenge pro u-Einheit (vh). Der Fortschritt p normalisiert auf die

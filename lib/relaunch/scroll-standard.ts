@@ -27,10 +27,12 @@
 
 /**
  * Scroll-Strecke pro Bumper-/Pan-Fenster in vh. Track-Hoehe = N * diesen Wert.
- * 190vh = ~1 Viewport Standbild (Dwell) + ~1 Viewport Uebergangs-Reserve,
- * abzueglich der 100vh, die der Sticky-Pin selbst belegt.
+ * Reaktiver gestellt (Thomas 08.08.: Fahrten fuehlten sich am Desktop zu
+ * langsam an — man wischte und einen Moment bewegte sich nichts). 150vh statt
+ * 190vh: pro Panel weniger Leerlauf, der Wisch "greift" frueher. Bleibt im
+ * 2026-ueblichen Korridor gepinnter Sektionen (~1-2 Viewport pro Panel).
  */
-export const BUMPER_TRACK_VH_PER_WINDOW = 190;
+export const BUMPER_TRACK_VH_PER_WINDOW = 150;
 
 /**
  * Beginn des Uebergangs innerhalb einer Etappe (0..1). Bis 0.4 steht das
@@ -39,12 +41,14 @@ export const BUMPER_TRACK_VH_PER_WINDOW = 190;
 export const DWELL_START = 0.4;
 
 /**
- * Breite des Uebergangsfensters innerhalb einer Etappe (0..1). 0.2 = der
- * Wechsel passiert im mittleren Fuenftel, danach steht das naechste Fenster
- * wieder still. Zusammen mit BUMPER_TRACK_VH_PER_WINDOW ergibt das bei
- * normalem Scrolltempo einen Uebergang im NN/g-Fenster von 100-400ms.
+ * Breite des Uebergangsfensters innerhalb einer Etappe (0..1). Verbreitert
+ * (Thomas 08.08.: 0.2 = nur ein Fuenftel bewegte sich, ~80% Standbild ->
+ * fuehlte sich unresponsiv an). 0.32 = der Wechsel laeuft ueber knapp ein
+ * Drittel der Etappe (0.4..0.72), danach steht das naechste Fenster still.
+ * Standbild-Anteil damit ~68% statt 80% — der Wisch erzeugt sofort sichtbare
+ * Bewegung, ohne den Dwell-Charakter (Stehenbleiben je Fenster) zu opfern.
  */
-export const DWELL_WIDTH = 0.2;
+export const DWELL_WIDTH = 0.32;
 
 /**
  * Scroll-Strecke pro Schritt bei DISKRETEN Sticky-Step-Szenen (Kreis-Ketten,
