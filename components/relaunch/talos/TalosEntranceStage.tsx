@@ -16,7 +16,7 @@ import SplineLoader from "@splinetool/loader";
 import { buildTalosRig, type TalosRig } from "./talosRig";
 import { createTalosMotion, type TalosMotion } from "./talosMotion";
 
-const SCENE_URL = "/hero/talos-scene.splinecode";
+const SCENE_URL = "https://prod.spline.design/bN7MTDW-zSkVIOxf/scene.splinecode";
 
 // Ruhige Kamera (am Modell vermessen: Kopf-Oberkante ~y300, Fuesse ~y-40, also
 // Figur-Mitte ~y130). Auf die Figur-MITTE gezielt und weit genug weg, damit der

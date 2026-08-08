@@ -33,7 +33,7 @@ import SplineLoader from "@splinetool/loader";
 import { buildTalosRig, type TalosRig } from "./talosRig";
 import { createTalosMotion, type TalosMotion } from "./talosMotion";
 
-const SCENE_URL = "/hero/talos-scene.splinecode";
+const SCENE_URL = "https://prod.spline.design/bN7MTDW-zSkVIOxf/scene.splinecode";
 
 // Ganzkoerper-Kamera, nah genug dass Talos gross wirkt (Thomas: "zu klein").
 // z=700 -> Koerper (~340 Einheiten) fuellt ~2/3 der Bildhoehe.

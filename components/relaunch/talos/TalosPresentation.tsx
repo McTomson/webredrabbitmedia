@@ -15,7 +15,7 @@ import { buildTalosRig, type TalosRig } from "./talosRig";
 import { createTalosMotion, type TalosMotion } from "./talosMotion";
 import { TALOS_SECTIONS, type CamKey } from "./talosSections";
 
-const SCENE_URL = "/hero/talos-scene.splinecode";
+const SCENE_URL = "https://prod.spline.design/bN7MTDW-zSkVIOxf/scene.splinecode";
 const PHONE_TEL = "+436769000955";
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
