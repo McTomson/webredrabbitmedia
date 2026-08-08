@@ -1,5 +1,29 @@
 # Naechste Session — TALOS-Seite MOBILE + TABLET (08.08.2026)
 
+## STATUS-UPDATE 08.08. (Runde 1 gebaut, HEAD 62a4ba3 auf v2)
+Thomas-Feedback (3 iPhone-Screenshots) eingearbeitet:
+1. Hero-Talos mobil DEUTLICH kleiner: heroZFor() in TalosCompanionStage
+   (Handy <=700px z=-760, Tablet <=1180 z=-400, Desktop -130 unveraendert).
+2. Kontrollraum mobil = gepinnte Pan-Szene (Klon TalosDashboard-Muster,
+   .tl-kr__scroller sticky, Browser 200%, Panels 3+3 spaltenweise,
+   stage-void mobil weg). Breakpoint 860, reduced-motion = gestapelt.
+3. Faehigkeiten-Modal mobil unter Hamburger (Backdrop-Padding 84px oben,
+   max-height 100svh-102px).
+4. STOPS RAUS Handy/Tablet (Thomas per Rueckfrage bestaetigt: Halte-
+   Plateaus raus, Desktop unveraendert; "Zahnraeder" = die roten
+   Zusammenbau-Animationen auf allen Seiten): neue Weiche rideUnits() in
+   scroll-standard.ts (<=1180px linear statt snapUnits) — umgestellt:
+   TalosPanorama, CasePanels, ScrollBumper, DreiStufenMatrix,
+   TalosTalenteFahrt, VarianteA. Kontrollraum-Pan ist bewusst linear.
+   NICHT angefasst (dokumentierte Gruende): MorphSculpture-Plateau
+   (haelt nur die Figur zusammengesetzt, Seite scrollt weiter),
+   website.css Paket-Snap (.fmx__stufe, explizite Thomas-Entscheidung
+   01.08.), Hero-Track-Laengen. Falls Thomas am Geraet bei den roten
+   Assemblierungen weiter Stops spuert: naechste Hebel = Hold-Fenster in
+   lib/relaunch/morph/stage.ts (0.85..1 je Szene) bzw. mobile
+   Hero-Track-Hoehen (z.B. website-demo demo.css 667vh).
+OFFEN: Abnahme aller 4 Punkte auf Thomas' Geraet (iPhone + Tablet).
+
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
 - NIE raten — immer verifizieren (Code/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.
