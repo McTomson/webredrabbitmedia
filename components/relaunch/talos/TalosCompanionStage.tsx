@@ -177,10 +177,14 @@ export default function TalosCompanionStage({
     // auf dem Desktop zu streng; nur echtes fehlendes WebGL2 schaltet dort ab).
     const mem = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
     const lowMem = mem !== undefined && mem <= 4 && window.innerWidth < 900;
+    // TEMP-Diagnose (Thomas 09.08.): sichtbar in der Konsole, wo Talos stoppt.
+    try { console.log("[RRTALOS] gate " + JSON.stringify({ webgl2, mem, w: window.innerWidth, lowMem, stationsOnly })); } catch {}
     if (!webgl2 || lowMem) {
+      try { console.log("[RRTALOS] -> Dashboard-Fallback (kein WebGL2 oder wenig RAM)"); } catch {}
       setNo3d(true);
       return startNo3dDashboard();
     }
+    try { console.log("[RRTALOS] WebGL ok -> lade 3D-Szene"); } catch {}
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
@@ -511,6 +515,7 @@ export default function TalosCompanionStage({
     };
     const onSceneLoaded = (splineScene: unknown) => {
         if (disposed) return;
+        try { console.log("[RRTALOS] Szene GELADEN -> Talos wird gebaut"); } catch {}
         scene.add(splineScene as never);
         rig = buildTalosRig(THREE, splineScene);
         if (rig) {
@@ -558,16 +563,19 @@ export default function TalosCompanionStage({
     // Original-CDN versuchen. Erst wenn auch das weg ist: 3D aus,
     // Kommandozentrale scroll-gesteuert (wie im no-WebGL-Fall).
     const tryLoad = (url: string, isFallback: boolean) => {
+      try { console.log("[RRTALOS] loader.load START url=" + url + (isFallback ? " (CDN-Fallback)" : " (same-origin)")); } catch {}
       loader.load(
         url,
         onSceneLoaded,
         undefined,
-        () => {
+        (err) => {
           if (disposed) return;
+          try { console.log("[RRTALOS] loader.load FEHLER url=" + url + " err=" + (err && (err as Error).message ? (err as Error).message : String(err))); } catch {}
           if (!isFallback) {
             tryLoad(SCENE_FALLBACK, true);
             return;
           }
+          try { console.log("[RRTALOS] beide Quellen weg -> Dashboard-Fallback"); } catch {}
           teardown();
           setNo3d(true);
           startNo3dDashboard();
