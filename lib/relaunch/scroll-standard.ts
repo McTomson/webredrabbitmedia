@@ -35,10 +35,15 @@
 export const BUMPER_TRACK_VH_PER_WINDOW = 150;
 
 /**
- * Beginn des Uebergangs innerhalb einer Etappe (0..1). Bis 0.4 steht das
- * Fenster still.
+ * Beginn des Uebergangs innerhalb einer Etappe (0..1). Frueher gestellt
+ * (Thomas 08.08.: die Fahrt "Problem/Loesung/Beweis" fuehlte sich am Anfang
+ * noch langsam an). 0.4 hiess: die ersten 40% jeder Etappe (bei 2 Fenstern
+ * ~120vh) bewegten sich gar nichts, bevor das naechste Fenster hereinkam.
+ * 0.25 = der Uebergang setzt frueher ein, das Eintritts-Standbild schrumpft;
+ * das Lese-Standbild des naechsten Fensters (Tail 0.57..1.0 = ~43%) waechst
+ * sogar, gut fuer die langen Absaetze (NN/g: Fliesstext nie im Snap gefangen).
  */
-export const DWELL_START = 0.4;
+export const DWELL_START = 0.25;
 
 /**
  * Breite des Uebergangsfensters innerhalb einer Etappe (0..1). Verbreitert
