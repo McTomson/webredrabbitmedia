@@ -144,14 +144,30 @@ export default function TalosCompanionStage({
     } catch {
       webgl2 = false;
     }
+    // Kommandozentrale (Dashboard-Fenster) OHNE 3D trotzdem zeigen — aber NUR
+    // im richtigen Scroll-Fenster (nach dem Buchstaben-Zerfall, dasselbe
+    // __sculptProgress-Fenster wie im 3D-Flow), NICHT dauerhaft oben angepinnt.
+    // Genau das ("wie wir sie immer hatten") ist der Talos-Ersatz auf Geraeten,
+    // die die 3D-Szene nicht laden (WebGL aus / Spline vom Browser blockiert /
+    // wenig Speicher). Frueheres Dauer-is-dash oben = der gemeldete Bug.
+    // (Thomas 08.08.)
+    let no3dRaf = 0;
+    const startNo3dDashboard = () => {
+      if (stationsOnly) return () => {};
+      const main = document.getElementById("mainSticky");
+      const tick = () => {
+        const p = (window as unknown as { __sculptProgress?: number }).__sculptProgress ?? 0;
+        main?.classList.toggle("is-dash", p >= P_FRAME0 && p <= P_FRAME1);
+        no3dRaf = requestAnimationFrame(tick);
+      };
+      no3dRaf = requestAnimationFrame(tick);
+      return () => { cancelAnimationFrame(no3dRaf); main?.classList.remove("is-dash"); };
+    };
+
     const mem = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
     if (!webgl2 || (mem !== undefined && mem <= 4)) {
       setNo3d(true);
-      // Ohne 3D KEIN erzwungenes Dashboard-Fenster mehr (Thomas 08.08.: das
-      // Fenster hing auf Geraeten ohne 3D dauerhaft oben im Hero, ohne Talos
-      // daneben -> wirkte kaputt). Der Hero zeigt dann normal Malbild + Titel;
-      // die echte Dashboard-Ansicht kommt weiter unten im Kontrollraum-Bereich.
-      return;
+      return startNo3dDashboard();
     }
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -528,10 +544,11 @@ export default function TalosCompanionStage({
       },
       undefined,
       () => {
-        // Spline-Szene nicht geladen (Netz/CDN): wie oben KEIN erzwungenes
-        // Dashboard-Fenster mehr — Hero bleibt sauber (Malbild + Titel).
+        // Spline-Szene nicht geladen (Netz/CDN/Blocker): 3D weg, aber die
+        // Kommandozentrale scroll-gesteuert zeigen (wie im no-WebGL-Fall).
         teardown();
         setNo3d(true);
+        startNo3dDashboard();
       },
     );
 
@@ -583,6 +600,10 @@ export default function TalosCompanionStage({
       disposed = true;
       rig?.dispose();
       teardown();
+      // Fallback-Dashboard-Loop (nur im Loader-Error-Fall aktiv) stoppen +
+      // is-dash abraeumen; teardown() greift hier nicht, weil es dort schon lief.
+      cancelAnimationFrame(no3dRaf);
+      document.getElementById("mainSticky")?.classList.remove("is-dash");
     };
   }, []);
 
