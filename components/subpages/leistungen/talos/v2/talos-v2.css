@@ -463,10 +463,40 @@
   to { opacity: 1; transform: none; }
 }
 
-@media (max-width: 860px) {
+/* ---- Mobile/Tablet: gepinnte Auto-Scroll-Szene (Thomas 08.08., iPhone-
+   Screenshot "sehr lang gezogen") — 1:1 das Muster des Website-Dashboards
+   (TalosDashboard.tsx @media 860): Track = 100svh Pin + Pan-Strecke, der
+   Scroller klebt, der Browser ist doppelt so breit wie das Sichtfenster.
+   Panels laufen SPALTENWEISE (grid-auto-flow: column): erste Haelfte = die
+   ersten drei Bereiche, zweite Haelfte = der Rest. stage-void entfaellt
+   mobil (der Companion-Talos ist <900px ohnehin aus). */
+@media (max-width: 860px) and (prefers-reduced-motion: no-preference) {
+  .rr .tl-kr__stageArea { height: calc(100svh + 85vh); }
+  .rr .tl-kr__scroller {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  .rr .tl-kr__browser { width: 200%; flex: none; will-change: transform; }
+  .rr .tl-kr__screen { grid-template-columns: 1fr; }
+  .rr .tl-kr__stage-void { display: none; }
+  .rr .tl-kr__panels {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(3, auto);
+    gap: 10px;
+    padding: 14px;
+  }
+}
+
+/* Reduced-motion auf Mobile: kein Pan/Pin, statisch gestapelt (alter Stand). */
+@media (max-width: 860px) and (prefers-reduced-motion: reduce) {
   .rr .tl-kr__screen { grid-template-columns: 1fr; }
   .rr .tl-kr__panels { grid-template-columns: 1fr; }
-  .rr .tl-kr__stage-void { min-width: 100%; min-height: 140px; border-left: none; border-top: 1px solid var(--rr-line); }
+  .rr .tl-kr__stage-void { display: none; }
 }
 
 /* ---- Talos-Sprechzeile (.tl-says), Muster 1:1 aus components/relaunch/

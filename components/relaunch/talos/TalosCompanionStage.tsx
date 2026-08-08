@@ -43,6 +43,11 @@ const CAM_FOV = 40;
 
 const END_X = -545; // Hero-Zielplatz: an der linken Fensterkante (die Panel-Spalte hat dafuer einen Einzug, .tlh-panels padding-left); wird in applyHero gegen den Frustum-Rand geclampt, damit er auf schmalen Viewports nicht aus dem Bild rutscht
 const HERO_Z = -130; // Hero: eine Spur kleiner (weiter von der Kamera)
+// Hero-Tiefe nach Viewport (Thomas 08.08., iPhone-Screenshot): auf Handy stand
+// Talos bei HERO_Z fast bildschirmfuellend VOR dem Story-Text. Schmale
+// Viewports schieben ihn deutlich weiter von der Kamera weg (kleiner), damit
+// der Text lesbar bleibt; Desktop (>1180) unveraendert.
+const heroZFor = (vw: number) => (vw <= 700 ? -760 : vw <= 1180 ? -400 : HERO_Z);
 const OFF_MARGIN = 320; // Luft hinter der Bildkante (offscreen) — inkl. Armreichweite, damit ganz oben NICHTS von Talos ins Bild ragt (Thomas 24.07., Bild 1)
 // Koerperhaltung im Stand: IMMER deutlich zur Bildmitte gedreht, nie nach aussen
 // (Thomas-Regel 24.07.: die alten 0.13 rad waren zu subtil, er las die Haltung als
@@ -249,14 +254,16 @@ export default function TalosCompanionStage({
 
     // --- Modus 1: Hero-Choreografie (p = __sculptProgress) ---
     const applyHero = (p: number, dt: number) => {
-      // Frustum-Breite bei der ECHTEN Hero-Tiefe (z=HERO_Z), nicht bei z=0 —
-      // sonst steht Talos zu weit vorne im breiteren Bild und der Arm ragt oben rein.
-      const halfW = halfWidthAt(HERO_Z);
+      // Hero-Tiefe viewport-abhaengig (Handy/Tablet kleiner, s. heroZFor).
+      const hz = heroZFor(window.innerWidth);
+      // Frustum-Breite bei der ECHTEN Hero-Tiefe, nicht bei z=0 — sonst steht
+      // Talos zu weit vorne im breiteren Bild und der Arm ragt oben rein.
+      const halfW = halfWidthAt(hz);
       const startX = -(halfW + tuning.offMargin);
       const exitX = halfW + tuning.offMargin;
       // Zielplatz nie aus dem Bild: auf schmalen Viewports (kleineres halfW)
       // rueckt er automatisch so weit rein, dass er voll sichtbar bleibt.
-      const endX = Math.max(tuning.endX, -(halfWidthAt(HERO_Z) - 130));
+      const endX = Math.max(tuning.endX, -(halfW - 130));
       const wp = clamp01((p - P_WALK0) / (P_WALK1 - P_WALK0));
       const tp = clamp01((p - P_WALK1) / (P_TURN1 - P_WALK1));
       const ep = clamp01((p - P_EXIT0) / (P_EXIT1 - P_EXIT0));
@@ -277,8 +284,8 @@ export default function TalosCompanionStage({
         walking = wp > 0.001 && wp < 0.999;
       }
       walkPhase = (x - startX) * PHASE_PER_UNIT;
-      curX = x; curZ = HERO_Z; curYaw = yaw;
-      writeWalkPose(x, HERO_Z, yaw, walking, dt);
+      curX = x; curZ = hz; curYaw = yaw;
+      writeWalkPose(x, hz, yaw, walking, dt);
 
       if (!waved && p >= P_WAVE && ep <= 0) {
         waved = true;
@@ -297,7 +304,7 @@ export default function TalosCompanionStage({
       // Im Hero schaut Talos den mittig sitzenden User an: netto = userLookYaw
       // (headYaw = Ziel - Koerper-Yaw). Beim Abgang (ep>0, er geht) NICHT — dann
       // schaut der Kopf frei in Laufrichtung.
-      motion?.setHeadYaw(ep > 0 ? 0 : userLookYaw(x, HERO_Z) - yaw);
+      motion?.setHeadYaw(ep > 0 ? 0 : userLookYaw(x, hz) - yaw);
       motion?.setNodLoop(false);
       motion?.setWinkLoop(false);
       // Im Hero liegt der Canvas immer VOR dem Inhalt.
@@ -489,7 +496,7 @@ export default function TalosCompanionStage({
         // die Seite traegt das statische Wortmarken-Wort im Figur-Slot.
         if (reduced && !stationsOnly) {
           curX = tuning.endX;
-          writeWalkPose(curX, HERO_Z, STAND_BIAS, false, 1 / 60);
+          writeWalkPose(curX, heroZFor(window.innerWidth), STAND_BIAS, false, 1 / 60);
           document.getElementById("mainSticky")?.classList.add("is-dash");
           opacity = 1;
         }

@@ -56,7 +56,60 @@ const PANELS: Panel[] = [
 
 export default function Kontrollraum() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const browserRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
+  // Mobile/Tablet-Pan (Thomas 08.08., iPhone-Screenshot: 6 gestapelte Panels =
+  // "sehr lang gezogen"): gleiche gepinnte Auto-Scroll-Szene wie das Dashboard
+  // der Website-Seite (TalosDashboard.tsx, Muster 01.08.) — erste Haelfte
+  // sichtbar, vertikales Scrollen pannt horizontal zur zweiten Haelfte, danach
+  // geht es normal weiter. Erst nach Mount gesetzt (SSR desktop-sicher).
+  const [panActive, setPanActive] = useState(false);
+
+  useEffect(() => {
+    setPanActive(
+      window.matchMedia("(max-width: 860px)").matches &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }, []);
+
+  // Auto-Scroll-Pan: vertikaler Track-Fortschritt q treibt das horizontale
+  // translateX des Browser-Frames. Liest nur die Scroll-Position (kapert den
+  // Touch nicht), 1:1 das Muster aus TalosDashboard.tsx. BEWUSST linear, ohne
+  // Halte-Plateau (Thomas 08.08.: Stops auf Handy/Tablet raus).
+  useEffect(() => {
+    if (!panActive) return;
+    const track = rootRef.current;
+    const browser = browserRef.current;
+    if (!track || !browser) return;
+    let raf = 0;
+    let destroyed = false;
+    const clamp = (n: number, a: number, b: number) => (n < a ? a : n > b ? b : n);
+
+    const render = () => {
+      const rect = track.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const denom = rect.height - vh;
+      const q = denom > 0 ? clamp(-rect.top / denom, 0, 1) : 0;
+      const stageW = browser.parentElement ? browser.parentElement.clientWidth : 0;
+      const shift = Math.max(0, browser.offsetWidth - stageW); // = eine Sichtfensterbreite
+      browser.style.transform = `translate3d(${(-q * shift).toFixed(1)}px,0,0)`;
+    };
+    const loop = () => {
+      if (destroyed) return;
+      render();
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    window.addEventListener("scroll", render, { passive: true });
+    window.addEventListener("resize", render);
+    render();
+    return () => {
+      destroyed = true;
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", render);
+      window.removeEventListener("resize", render);
+    };
+  }, [panActive]);
 
   useEffect(() => {
     const el = rootRef.current;
@@ -94,7 +147,12 @@ export default function Kontrollraum() {
         </p>
 
         <div className={`tl-kr__stageArea ${inView ? "is-in" : ""}`} ref={rootRef}>
-          <div className="tl-kr__browser">
+          {/* Mobile/Tablet: gepinnte Szene — der Scroller ist sticky, der
+              Browser doppelt so breit wie das Sichtfenster (zwei Haelften).
+              Desktop: unpositionierter, transparenter Wrapper (alle Regeln
+              unter @media max-width:860px), Layout unveraendert. */}
+          <div className="tl-kr__scroller">
+          <div className="tl-kr__browser" ref={browserRef}>
             {/* Browser-Chrome */}
             <div className="tl-kr__chrome">
               <span className="tl-kr__lights" aria-hidden="true">
@@ -130,6 +188,7 @@ export default function Kontrollraum() {
 
               <div className="tl-kr__stage-void" aria-hidden="true" />
             </div>
+          </div>
           </div>
         </div>
 

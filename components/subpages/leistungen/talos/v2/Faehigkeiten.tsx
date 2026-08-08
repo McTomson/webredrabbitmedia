@@ -759,6 +759,15 @@ const CSS = `
 .rr .tlfg-modal--invers .tlfg-says { color: rgba(246, 245, 241, 0.92); }
 .rr .tlfg-modal__cta { margin-top: clamp(24px, 3.2vw, 32px); }
 
+/* Mobile (Thomas 08.08., iPhone-Screenshot): das Modal ragte oben ins
+   Hamburger-Menue/Corner-Logo. Oben Luft lassen (84px deckt Logo + Menue ab),
+   dafuer buendig nach oben ausrichten und die Hoehe in svh rechnen (iOS-
+   Adressleiste macht 88vh sonst zu hoch). */
+@media (max-width: 700px) {
+  .rr .tlfg-backdrop { align-items: flex-start; padding: 84px 14px 18px; }
+  .rr .tlfg-modal { max-height: calc(100svh - 102px); }
+}
+
 @keyframes tlfg-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes tlfg-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
