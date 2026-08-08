@@ -11,6 +11,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three-spline";
 import SplineLoader from "@splinetool/loader";
+import { installSplineWasmProxy } from "@/lib/relaunch/splineWasmProxy";
 import { buildTalosRig, type TalosRig } from "./talosRig";
 import { createTalosMotion, type TalosMotion } from "./talosMotion";
 
@@ -94,6 +95,8 @@ export default function TalosHeroStage() {
       if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
     };
 
+    // WASM-Runtime same-origin umleiten, BEVOR der Loader sie von unpkg holt.
+    installSplineWasmProxy();
     const loader = new SplineLoader() as unknown as {
       load: (u: string, ok: (s: unknown) => void, p?: unknown, e?: (e: unknown) => void) => void;
     };

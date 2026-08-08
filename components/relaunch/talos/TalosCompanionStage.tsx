@@ -32,6 +32,7 @@ import * as THREE from "three-spline";
 import SplineLoader from "@splinetool/loader";
 import { buildTalosRig, type TalosRig } from "./talosRig";
 import { createTalosMotion, type TalosMotion } from "./talosMotion";
+import { installSplineWasmProxy } from "@/lib/relaunch/splineWasmProxy";
 
 // Same-origin: der Blocker mancher Browser sperrt den Fremd-Host
 // prod.spline.design (Thomas' Laptop: Talos fehlt, in Inkognito laeuft er).
@@ -503,6 +504,8 @@ export default function TalosCompanionStage({
       if (w.__talosCompanion === qaHooks) delete w.__talosCompanion;
     };
 
+    // WASM-Runtime same-origin umleiten, BEVOR der Loader sie von unpkg holt.
+    installSplineWasmProxy();
     const loader = new SplineLoader() as unknown as {
       load: (u: string, ok: (s: unknown) => void, p?: unknown, e?: (e: unknown) => void) => void;
     };
