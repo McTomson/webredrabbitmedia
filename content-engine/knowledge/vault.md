@@ -2552,3 +2552,57 @@ quelle: https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Keyboa
 quelle_name: MDN Web Docs - Keyboard-navigable JavaScript widgets
 geprueft_am: 2026-08-06
 recheck_nach: 2027-02-02
+
+## t62-2026-08-08-284
+cluster: 2
+keywords: optimiert, große, bilddateien, ohne, dass, qualität, leidet
+aussage: Laut Googles offizieller WebP-Kompressionsstudie sind WebP-Dateien bei gleichem SSIM-Index (messbare visuelle Qualität) im Schnitt 25-34% kleiner als JPEG - grosse Bilder lassen sich also deutlich verkleinern, ohne dass die wahrgenommene Qualitaet leidet.
+quelle: https://developers.google.com/speed/webp/docs/webp_study
+quelle_name: Google for Developers - WebP Compression Study
+geprueft_am: 2026-08-08
+recheck_nach: 2027-02-04
+
+## t62-2026-08-08-285
+cluster: 2
+keywords: optimiert, große, bilddateien, ohne, dass, qualität, leidet
+aussage: Laut Web Almanac 2024 (HTTP Archive) traegt die mediane Homepage mobil rund 900 KB allein an Bildbytes (Desktop: 1.054 KB); im Format-Vergleich liegen JPG-Bilder am 90. Perzentil (Desktop) bei 274 KB, WebP bei 116 KB und AVIF bei nur 45 KB - moderne Formate sind in der Praxis um ein Vielfaches leichter.
+quelle: https://almanac.httparchive.org/en/2024/page-weight
+quelle_name: HTTP Archive - Web Almanac 2024, Kapitel Page Weight
+geprueft_am: 2026-08-08
+recheck_nach: 2027-02-04
+
+## t62-2026-08-08-286
+cluster: 2
+keywords: optimiert, große, bilddateien, ohne, dass, qualität, leidet
+aussage: Google definiert einen guten Largest-Contentful-Paint-Wert (LCP, Core Web Vital) als 2,5 Sekunden oder weniger; da das LCP-Element haeufig ein grosses Bild ist, entscheidet Bildoptimierung direkt mit ueber das Google-Ranking-Signal.
+quelle: https://web.dev/articles/optimize-lcp
+quelle_name: web.dev (Google) - Optimize Largest Contentful Paint
+geprueft_am: 2026-08-08
+recheck_nach: 2027-02-04
+
+## t62-2026-08-08-287
+cluster: 2
+keywords: optimiert, große, bilddateien, ohne, dass, qualität, leidet
+aussage: Mit den HTML-Attributen srcset und sizes laedt der Browser automatisch die passende Bildgroesse pro Geraet: Im offiziellen MDN-Beispiel erhaelt ein Smartphone die 320px-Variante mit 39 KB statt der 640px-Variante mit 93 KB - weniger als die Haelfte der Datenmenge bei identischer Darstellungsqualitaet.
+quelle: https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images
+quelle_name: MDN Web Docs - Using responsive images in HTML
+geprueft_am: 2026-08-08
+recheck_nach: 2027-02-04
+
+## t62-2026-08-08-288
+cluster: 2
+keywords: optimiert, große, bilddateien, ohne, dass, qualität, leidet
+aussage: Die next/image-Komponente von Next.js erledigt zentrale Bildoptimierung automatisch: korrekt dimensionierte Varianten pro Geraet, moderne Formate wie WebP, natives Lazy Loading (Bilder laden erst im Viewport) und Layout-Shift-Vermeidung ueber fixe Breiten/Hoehen.
+quelle: https://nextjs.org/docs/app/getting-started/images
+quelle_name: Next.js Docs - Image Optimization
+geprueft_am: 2026-08-08
+recheck_nach: 2027-02-04
+
+## t62-2026-08-08-289
+cluster: 2
+keywords: optimiert, große, bilddateien, ohne, dass, qualität, leidet
+aussage: Extrem langsame Ladezeiten (LCP ueber 2,5 Sekunden) durch unkomprimierte Datenmengen gehoeren zu den haeufigsten Fehlern beim Website-Erstellen, die den Erfolg verhindern - neben schlechter Mobil-Optimierung und fehlender Barrierefreiheit.
+quelle: https://web.redrabbit.media/tipps/10-fehler-beim-website-erstellen
+quelle_name: Red Rabbit Media - 10 toedliche Fehler beim Website-Erstellen
+geprueft_am: 2026-08-08
+recheck_nach: 2027-02-04
