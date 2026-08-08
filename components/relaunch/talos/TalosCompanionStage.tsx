@@ -164,8 +164,13 @@ export default function TalosCompanionStage({
       return () => { cancelAnimationFrame(no3dRaf); main?.classList.remove("is-dash"); };
     };
 
+    // deviceMemory-Gate NUR auf schmalen Viewports (Handy/Tablet, zum Schutz
+    // schwacher Geraete). Auf dem Desktop NIE per Speicher-Hinweis abschalten
+    // (Thomas 08.08.: sein Laptop meldete den 3D-Talos nicht — der <=4-Gate war
+    // auf dem Desktop zu streng; nur echtes fehlendes WebGL2 schaltet dort ab).
     const mem = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
-    if (!webgl2 || (mem !== undefined && mem <= 4)) {
+    const lowMem = mem !== undefined && mem <= 4 && window.innerWidth < 900;
+    if (!webgl2 || lowMem) {
       setNo3d(true);
       return startNo3dDashboard();
     }
