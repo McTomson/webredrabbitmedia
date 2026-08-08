@@ -47,7 +47,11 @@ const HERO_Z = -130; // Hero: eine Spur kleiner (weiter von der Kamera)
 // Talos bei HERO_Z fast bildschirmfuellend VOR dem Story-Text. Schmale
 // Viewports schieben ihn deutlich weiter von der Kamera weg (kleiner), damit
 // der Text lesbar bleibt; Desktop (>1180) unveraendert.
-const heroZFor = (vw: number) => (vw <= 700 ? -760 : vw <= 1180 ? -400 : HERO_Z);
+const heroZFor = (vw: number) => (vw <= 700 ? -1700 : vw <= 1180 ? -400 : HERO_Z);
+// Hero-Zielplatz horizontal: Desktop links (Panel-Spalte), Handy RECHTS
+// (Thomas 08.08.: stand mittig gross ueber dem Story-Text -> kleiner + rechts,
+// damit der zentrierte Text frei bleibt). Bruchteil der halben Bildbreite.
+const heroEndFracFor = (vw: number) => (vw <= 700 ? 0.42 : null);
 const OFF_MARGIN = 320; // Luft hinter der Bildkante (offscreen) — inkl. Armreichweite, damit ganz oben NICHTS von Talos ins Bild ragt (Thomas 24.07., Bild 1)
 // Koerperhaltung im Stand: IMMER deutlich zur Bildmitte gedreht, nie nach aussen
 // (Thomas-Regel 24.07.: die alten 0.13 rad waren zu subtil, er las die Haltung als
@@ -263,7 +267,9 @@ export default function TalosCompanionStage({
       const exitX = halfW + tuning.offMargin;
       // Zielplatz nie aus dem Bild: auf schmalen Viewports (kleineres halfW)
       // rueckt er automatisch so weit rein, dass er voll sichtbar bleibt.
-      const endX = Math.max(tuning.endX, -(halfW - 130));
+      // Handy: bewusst RECHTS (positiver Bruchteil), Desktop links wie gehabt.
+      const endFrac = heroEndFracFor(window.innerWidth);
+      const endX = endFrac !== null ? halfW * endFrac : Math.max(tuning.endX, -(halfW - 130));
       const wp = clamp01((p - P_WALK0) / (P_WALK1 - P_WALK0));
       const tp = clamp01((p - P_WALK1) / (P_TURN1 - P_WALK1));
       const ep = clamp01((p - P_EXIT0) / (P_EXIT1 - P_EXIT0));

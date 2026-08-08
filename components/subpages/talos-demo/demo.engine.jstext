@@ -488,8 +488,13 @@
     // Reveal-Fade + Interaktion (viewport-fix; faded beim Verlassen des Heros)
     const fade=clamp((Pm-P_REVEAL)/0.07,0,1);
     blobsGroup.setAttribute("opacity",(1-fade).toFixed(3));
-    if(revealVideo)revealVideo.style.opacity=(1-fade).toFixed(3);   /* Poster/Video sofort sichtbar, faded mit dem Hero aus */
-    if(revealPoster)revealPoster.style.opacity=(1-fade).toFixed(3);   /* server-gerendertes LCP-Poster faded synchron mit dem Video */
+    /* Video ERST einblenden, wenn es wirklich spielt (revealVideoOk). Vorher 0,
+       damit iOS' natives Play-Overlay (erscheint auf einem <video>, das noch
+       nicht laeuft — Stromsparmodus/Netz) NICHT sichtbar wird (Thomas 08.08.,
+       "blaues Zeichen beim Laden"). Solange es nicht spielt, deckt das Poster
+       (gleiche Box, darunter) den Hero ab -> saubere Ladeansicht, kein Button. */
+    if(revealVideo)revealVideo.style.opacity=(revealVideoOk?(1-fade):0).toFixed(3);
+    if(revealPoster)revealPoster.style.opacity=(1-fade).toFixed(3);   /* server-gerendertes LCP-Poster faded synchron; bleibt sichtbar, bis das Video wirklich laeuft */
     const nowPainting=Pm<P_REVEAL+0.01;
     if(nowPainting!==lastPainting){
       lastPainting=nowPainting;
