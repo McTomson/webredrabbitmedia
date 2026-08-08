@@ -6,7 +6,7 @@ import {
   TRANSITION_EASING,
   TRANSITION_MS,
   isBumperDegraded,
-  snapUnits,
+  rideUnits,
 } from "@/lib/relaunch/scroll-standard";
 
 /**
@@ -20,7 +20,7 @@ import {
  * nicht in 2 Sekunden durch die Seite"): der fruehere frei durchlaufende
  * Ledger (12 x 62vh) ist ersetzt durch eine gepinnte Strecke nach dem
  * Scroll-Standard (lib/relaunch/scroll-standard.ts). Track = 12 x
- * TRACK_VH_PER_POINT, ein 100vh-Sticky-Pin, und snapUnits() sorgt fuer den
+ * TRACK_VH_PER_POINT, ein 100vh-Sticky-Pin, und rideUnits() sorgt fuer den
  * Dwell: jeder Punkt steht rund 80% seiner Etappe still, der Wechsel passiert
  * im schmalen mittleren Fenster. Der Track traegt data-rr-snap (Einstieg
  * rastet ein) + data-rr-snap-exempt (innen regiert der Dwell, nicht die
@@ -147,7 +147,7 @@ export default function VarianteA() {
       const total = r.height - window.innerHeight;
       const raw = total > 0 ? -r.top / total : 0;
       const p = raw < 0 ? 0 : raw > 1 ? 1 : raw;
-      const idx = Math.round(snapUnits(p * (N - 1), N));
+      const idx = Math.round(rideUnits(p * (N - 1), N));
       if (idx !== activeRef.current) {
         activeRef.current = idx;
         setActive(idx);

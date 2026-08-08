@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   BUMPER_TRACK_VH_PER_WINDOW,
   isBumperDegraded,
-  snapUnits,
+  rideUnits,
 } from '@/lib/relaunch/scroll-standard';
 
 /**
@@ -19,7 +19,7 @@ import {
  * Mechanik jetzt identisch zur Referenz components/relaunch/CasePanels.tsx, nur
  * vertikal statt horizontal: sticky 100vh-Fenster, eine Buehne mit N Fenstern
  * uebereinander, Track = N * BUMPER_TRACK_VH_PER_WINDOW. Der Fortschritt laeuft
- * durch snapUnits(), also steht jedes Fenster den grossen Teil seiner Etappe
+ * durch rideUnits(), also steht jedes Fenster den grossen Teil seiner Etappe
  * still und wechselt nur im schmalen Uebergangsfenster ("1 Scroll = 1 Fenster,
  * stoppt, 2 Fenster = 2x scrollen"). Vorher: 320vh Track, dunkles Navy,
  * rr-display-2 (44-89px), lineares Durchschieben mit Rand-Anstupsen, kein
@@ -82,7 +82,7 @@ export default function ScrollBumper({ statements, label }: ScrollBumperProps) {
       const total = rect.height - vh;
       const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
       // Gleiche Dwell-Mathe wie CasePanels, nur auf der Y-Achse.
-      const units = snapUnits(p * (n - 1), n);
+      const units = rideUnits(p * (n - 1), n);
       stage!.style.transform = `translate3d(0, ${-units * vh}px, 0)`;
     }
 

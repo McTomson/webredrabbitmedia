@@ -6,7 +6,7 @@ import { clamp01 } from '@/lib/relaunch/morph/grammar';
 import {
   BUMPER_TRACK_VH_PER_WINDOW,
   isBumperDegraded,
-  snapUnits,
+  rideUnits,
 } from '@/lib/relaunch/scroll-standard';
 
 /**
@@ -356,7 +356,7 @@ function TalosFahrt() {
       // steht den grossen Teil ihrer Etappe still, der Wechsel passiert im
       // schmalen Uebergangsfenster. Mathe zentral in scroll-standard.ts,
       // identisch zur Referenz CasePanels.
-      const units = snapUnits(p * (SLIDES - 1), SLIDES);
+      const units = rideUnits(p * (SLIDES - 1), SLIDES);
       stage.style.transform = `translate3d(${-units * vw}px, 0, 0)`;
       giant.style.transform = `translate3d(${-units * vw * 1.15}px, 0, 0)`;
     }

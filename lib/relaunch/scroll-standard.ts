@@ -95,6 +95,39 @@ export function snapUnits(seg: number, n: number): number {
 }
 
 /**
+ * Bis hier gelten Handy/Tablet-Regeln (Thomas 08.08.: "Stops raus bei der
+ * Mobile- und Tablet-Version"). 1180 = dieselbe Grenze, an der auch die
+ * Karten-Raster vom 3- auf das 2-Spalten-Layout wechseln.
+ */
+export const TABLET_BREAKPOINT = 1180;
+
+let dwellMql: MediaQueryList | null = null;
+
+/**
+ * Wahr, wenn Fahrten OHNE Halte-Plateau laufen sollen (Handy/Tablet).
+ * Kundenentscheidung Thomas 08.08.: auf Handy/Tablet sollen die Stops raus —
+ * Wischen muss immer sichtbar etwas bewegen. Desktop behaelt den
+ * Bumper-Standard (snapUnits). Nur im Browser aufrufen (nach Mount);
+ * MediaQueryList wird gecacht, .matches ist pro Frame billig.
+ */
+export function isDwellDisabled(): boolean {
+  if (typeof window === "undefined" || !window.matchMedia) return false;
+  if (!dwellMql) dwellMql = window.matchMedia(`(max-width: ${TABLET_BREAKPOINT}px)`);
+  return dwellMql.matches;
+}
+
+/**
+ * snapUnits mit Geraete-Weiche: Desktop = Dwell-Plateaus (Standard), Handy/
+ * Tablet = LINEAR (jeder Wisch bewegt sichtbar, kein Standbild-Anteil).
+ * Drop-in-Ersatz fuer snapUnits in allen Fahrt-Render-Loops.
+ */
+export function rideUnits(seg: number, n: number): number {
+  if (n <= 1) return 0;
+  if (isDwellDisabled()) return Math.max(0, Math.min(n - 1, seg));
+  return snapUnits(seg, n);
+}
+
+/**
  * Wahr, wenn die aufwendige Scroll-Mechanik durch normales vertikales
  * Scrollen ersetzt werden soll: schmaler Viewport oder reduzierte Bewegung.
  * Nur im Browser aufrufen (nach Mount).

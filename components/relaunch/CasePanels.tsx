@@ -6,7 +6,7 @@ import { clamp01 } from "@/lib/relaunch/morph/grammar";
 import {
   BUMPER_TRACK_VH_PER_WINDOW,
   prefersReducedMotion,
-  snapUnits,
+  rideUnits,
 } from "@/lib/relaunch/scroll-standard";
 import LighthouseCarousel from "@/components/relaunch/LighthouseCarousel";
 import KundenSagen from "@/components/subpages/leistungen/KundenSagen";
@@ -217,7 +217,7 @@ function PanelTrack({ t }: { t: Theme }) {
       // Fenster in der Mitte jeder Etappe -> "einmal scrollen, ankommen, stop"
       // (Tomson 26.07.). Mathe zentral in lib/relaunch/scroll-standard.ts,
       // damit alle Bumper-Strecken dieselbe Kurve fahren (Standard 28.07.).
-      const units = snapUnits(p * (N - 1), N);
+      const units = rideUnits(p * (N - 1), N);
       stage.style.transform = `translate3d(${-units * vw}px, 0, 0)`;
       // Riesen-Wort faehrt mit (Parallax, etwas schneller) — Tomson 26.07.
       giant.style.transform = `translate3d(${-units * vw * 1.18}px, 0, 0)`;

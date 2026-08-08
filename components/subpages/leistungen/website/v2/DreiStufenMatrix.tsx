@@ -7,7 +7,7 @@ import { STUFEN } from "./stufen-varianten/VarianteA";
 import {
   BUMPER_TRACK_VH_PER_WINDOW,
   isBumperDegraded,
-  snapUnits,
+  rideUnits,
 } from "@/lib/relaunch/scroll-standard";
 
 /**
@@ -335,7 +335,7 @@ function StufenFahrt() {
       const rect = track!.getBoundingClientRect();
       const total = rect.height - vh;
       const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      const units = snapUnits(p * (n - 1), n);
+      const units = rideUnits(p * (n - 1), n);
       stage!.style.transform = `translate3d(0, ${-units * vh}px, 0)`;
     }
     function loop() {

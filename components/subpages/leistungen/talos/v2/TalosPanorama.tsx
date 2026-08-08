@@ -5,7 +5,7 @@ import { clamp01 } from '@/lib/relaunch/morph/grammar';
 import {
   BUMPER_TRACK_VH_PER_WINDOW,
   prefersReducedMotion,
-  snapUnits,
+  rideUnits,
 } from '@/lib/relaunch/scroll-standard';
 import VorherNachher from './VorherNachher';
 import TalosTest from './TalosTest';
@@ -52,7 +52,7 @@ export default function TalosPanorama() {
       const r = track.getBoundingClientRect();
       const total = r.height - window.innerHeight;
       const p = total > 0 ? clamp01(-r.top / total) : 0;
-      const units = snapUnits(p * (N - 1), N);
+      const units = rideUnits(p * (N - 1), N);
       stage.style.transform = `translate3d(${-units * window.innerWidth}px, 0, 0)`;
     }
 
