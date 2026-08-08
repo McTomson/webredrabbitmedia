@@ -143,7 +143,7 @@ export const TALOS_SECTIONS: TalosSection[] = [
     eyebrow: "Los geht's",
     headline: "Deine Website zum Fixpreis. Den Preis kennst du vorher.",
     subline:
-      "Feste Preise statt Stundensatz-Ratespiel. Den Entwurf siehst du zuerst, gezahlt wird erst, wenn er dir gefällt.",
+      "Feste Preise statt Stundensatz-Ratespiel. 1-2 grafische Vorschläge siehst du zuerst, gezahlt wird erst, wenn sie dir gefallen.",
     says: ["Bis gleich. Ich freu mich, wenn wir zusammen loslegen."],
     cam: CLOSE_BACK,
     cardSide: "center",

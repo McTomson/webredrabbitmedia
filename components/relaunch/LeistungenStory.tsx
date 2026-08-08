@@ -405,7 +405,7 @@ export default function LeistungenStory({ articleCount }: { articleCount: number
                   <p className="rrls-result-closing">So starten die meisten Betriebe.</p>
                   <div className="rrls-result-actions">
                     <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
-                      Kostenlosen Entwurf genau dafür anfragen
+                      Kostenlose Vorschläge genau dafür anfragen
                     </Link>
                     <button type="button" className="rrls-back" onClick={() => setStep(QUESTIONS.length - 1)}>
                       Zurück
@@ -601,7 +601,7 @@ export default function LeistungenStory({ articleCount }: { articleCount: number
           </h2>
           <div className="rrls-cta-actions">
             <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
-              Kostenlosen Entwurf anfragen
+              Kostenlose Vorschläge anfragen
             </Link>
             <a href={`tel:${PHONE_TEL}`} className="rr-btn-outline rr-btn-outline--light">
               Anrufen
@@ -633,7 +633,7 @@ const ANFRAGE: { name: string; text: string }[] = [
 // ---- Die 3 Schritte ----
 const STEPS: { label: string; sub?: string }[] = [
   { label: "Du meldest dich" },
-  { label: "Du siehst deinen Entwurf", sub: "Ganz ohne Vorkasse." },
+  { label: "Du siehst deine Vorschläge", sub: "Ganz ohne Vorkasse." },
   { label: "Erst dann entscheidest du" },
 ];
 

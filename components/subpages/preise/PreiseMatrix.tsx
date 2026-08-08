@@ -23,9 +23,12 @@ import FloatingReview from './FloatingReview';
  * dupliziert. Klassen rpm-/rp- sind seiten-lokal eindeutig genug.
  */
 
+// Alle Preise sind Startpreise ("ab", Thomas 08.08.2026): je nach Anforderung
+// kann sich der Umfang und damit der Preis verschieben, das genaue Angebot
+// bekommt der Kunde bei der Auftragserteilung.
 const PREIS: Record<string, string> = {
-  Starter: '1.250 €',
-  Business: '2.850 €',
+  Starter: 'ab 1.250 €',
+  Business: 'ab 2.850 €',
   Premium: 'ab 4.900 €',
 };
 
@@ -64,7 +67,7 @@ function StufeMatrix({
             {stufe.featured && <span className="rpm__namedot" aria-hidden="true" />}
           </h3>
           <p className="rpm__price">{PREIS[stufe.name]}</p>
-          <span className="rpm__badge">0 € bis zum Entwurf</span>
+          <span className="rpm__badge">0 € bis zum Vorschlag</span>
           <p className="rpm__text">{stufe.text}</p>
           <Link
             href="/relaunch-preview/kontakt"
@@ -121,7 +124,9 @@ export default function PreiseMatrix() {
         </h2>
         <p className="rr-body-lg rp-matrix__intro">
           Du weißt vorher, woran du bist. Wähl das Paket, das zu deinem Betrieb passt, und
-          wachse später jederzeit in die nächste Stufe.
+          wachse später jederzeit in die nächste Stufe. Die Preise sind Startpreise: je nach
+          Anforderung kann sich der Umfang verschieben. Dein genaues Angebot bekommst du bei
+          der Auftragserteilung.
         </p>
 
         {STUFEN.map((s, i) => (
@@ -130,7 +135,8 @@ export default function PreiseMatrix() {
 
         <p className="rr-meta rp-matrix__custom">
           Große oder besondere Projekte, etwa Shops oder Sonderfunktionen, planen wir
-          individuell. Sprich uns einfach an, dann finden wir den passenden Rahmen.
+          individuell. Zusatzleistungen bekommst du auf Anfrage. Sprich uns einfach an, dann
+          finden wir den passenden Rahmen.
         </p>
       </div>
 

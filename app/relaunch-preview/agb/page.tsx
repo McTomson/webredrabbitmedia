@@ -60,11 +60,17 @@ export default function AGBPreviewPage() {
             <section>
               <h2>2. Vertragsabschluss &amp; Preisbindung</h2>
               <p>
-                Ein Vertrag kommt durch das Absenden des vollständig ausgefüllten Kontaktformulars auf
-                unserer Website zustande.
+                Über das Kontaktformular auf unserer Website stellt der Kunde eine unverbindliche
+                Anfrage. Auf dieser Grundlage erhält der Kunde ohne Vorkasse 1-2 grafische
+                Designvorschläge, wohin der Auftritt gehen kann. Ein verbindlicher Vertrag kommt
+                erst durch die ausdrückliche Auftragserteilung des Kunden zustande.
               </p>
-              {/* Preisstand 30.07.2026 (brand/decisions-log.md): Einstieg 1.250. */}
-              <p>Nur in diesem Fall gilt der vergünstigte Fixpreis ab 1.250 € netto.</p>
+              <p>
+                Mit der Auftragserteilung wird eine Anzahlung von 40 % des vereinbarten
+                Netto-Preises fällig (siehe Punkt 4).
+              </p>
+              {/* Preisstand 30.07.2026 (brand/decisions-log.md): Einstieg ab 1.250. */}
+              <p>Nur bei Beauftragung gilt der vergünstigte Fixpreis ab 1.250 € netto.</p>
               <ul>
                 <li>
                   Das Angebot ist 30 Tage gültig. Danach kann die Red Rabbit GmbH das Angebot einseitig
@@ -94,8 +100,9 @@ export default function AGBPreviewPage() {
             <section>
               <h2>4. Zahlungsbedingungen</h2>
               <ul>
-                <li>Die Rechnung wird nach Projektfreigabe bzw. Veröffentlichung der Website gestellt.</li>
-                <li>Die Zahlung ist innerhalb von 7 Werktagen ab Rechnungsdatum fällig.</li>
+                <li>Mit der Auftragserteilung wird eine Anzahlung von 40 % des vereinbarten Netto-Preises in Rechnung gestellt.</li>
+                <li>Der Restbetrag wird nach Projektfreigabe bzw. Veröffentlichung der Website in Rechnung gestellt.</li>
+                <li>Die Zahlung ist jeweils innerhalb von 7 Werktagen ab Rechnungsdatum fällig.</li>
               </ul>
               <p>Bei Zahlungsverzug gelten folgende Mahngebühren:</p>
               <ul>

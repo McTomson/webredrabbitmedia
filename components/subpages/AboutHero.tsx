@@ -138,8 +138,8 @@ export default function AboutHero() {
             intransparenten Stundensätze, sondern faire Festpreise.
           </p>
           <p ref={p2Ref} className="uup-hero-p">
-            Anti-Agentur heißt: Du siehst zuerst das Ergebnis. Den Entwurf bekommst du
-            ohne Vorkasse, eine Anzahlung fällt erst an, wenn du zusagst. Wir sagen dir
+            Anti-Agentur heißt: Du siehst zuerst das Ergebnis. Die 1-2 grafischen Vorschläge
+            bekommst du ohne Vorkasse, eine Anzahlung fällt erst an, wenn du zusagst. Wir sagen dir
             klar, was Sinn ergibt und was nicht.
           </p>
         </div>

@@ -12,7 +12,6 @@ import RisikoBand from '@/components/subpages/preise/RisikoBand';
 import PreiseMatrix from '@/components/subpages/preise/PreiseMatrix';
 import BetreuungFoerderung from '@/components/subpages/preise/BetreuungFoerderung';
 import TalosTalenteFahrt from '@/components/subpages/preise/TalosTalenteFahrt';
-import MehrwertRechner from '@/components/subpages/preise/MehrwertRechner';
 import PreiseFaq from '@/components/subpages/preise/PreiseFaq';
 import SiteClosing from '@/components/relaunch/SiteClosing';
 import ScrollExperience from '@/components/relaunch/ScrollExperience';
@@ -39,7 +38,7 @@ import '@/components/subpages/leistungen/wd-eyebrow.css';
 export const metadata: Metadata = {
   title: 'Preise · Red Rabbit Media',
   description:
-    'Klare Pakete ab 1.250 Euro. Den Entwurf siehst du zuerst, ganz ohne Vorkasse. Dein Cockpit ist bei jedem Paket dabei, Betreuung ohne Bindung, KMU.DIGITAL-förderbar.',
+    'Klare Pakete ab 1.250 Euro. Du siehst zuerst 1-2 grafische Vorschläge, ganz ohne Vorkasse. Dein Cockpit ist bei jedem Paket dabei, Betreuung ohne Bindung, KMU.DIGITAL-förderbar.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/preise' },
 };
@@ -127,7 +126,7 @@ export default function PreisePreviewPage() {
             { text: 'Wir bauen dir eine ganze Website.' },
             { text: 'Von Grund auf. Nicht von der Stange.' },
             { text: 'Dazu dein Cockpit: alle wichtigen Infos an einem Ort.' },
-            { text: 'Grundfunktionen immer dabei. Mehr per Abo, wenn du willst.' },
+            { text: 'Brauchst du mehr, bekommst du es auf Anfrage.' },
             { text: 'Erst überzeugt, dann bezahlt.', pointe: true },
           ]}
         />
@@ -141,9 +140,6 @@ export default function PreisePreviewPage() {
           <BetreuungFoerderung />
         </div>
         <TalosTalenteFahrt />
-        <div data-rr-snap>
-          <MehrwertRechner />
-        </div>
         <div data-rr-snap>
           <PreiseFaq />
         </div>

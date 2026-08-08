@@ -32,15 +32,15 @@ export const metadata: Metadata = {
 const faq = [
   {
     q: 'Was kostet eine Website bei euch?',
-    a: 'Wir arbeiten mit drei klaren Paketen: Starter ab 950 Euro, Business ab 2.900 Euro und Premium ab 4.900 Euro. Was genau du brauchst, besprechen wir vorher und halten es fest, ohne versteckte Kosten.',
+    a: 'Wir arbeiten mit drei klaren Paketen: Starter ab 1.250 Euro, Business ab 2.850 Euro und Premium ab 4.900 Euro. Was genau du brauchst, besprechen wir vorher und halten es fest, ohne versteckte Kosten.',
   },
   {
     q: 'Muss ich in Vorkasse gehen?',
-    a: 'Nein. Du siehst zuerst einen echten Entwurf, ganz ohne Vorkasse. Eine Anzahlung fällt erst an, wenn dir der Vorschlag gefällt und du den Auftrag erteilst. Bis dahin liegt das Risiko bei uns.',
+    a: 'Nein. Du siehst zuerst 1-2 grafische Vorschläge, ganz ohne Vorkasse. Gefällt dir die Richtung und du erteilst den Auftrag, bekommst du ein Angebot und leistest 40 % Anzahlung. Bis dahin liegt das Risiko bei uns.',
   },
   {
     q: 'Wie lange dauert es, bis meine Website fertig ist?',
-    a: 'Einen ersten Entwurf bekommst du in der Regel innerhalb von rund einer Woche. Wie lange die fertige Seite dauert, hängt vom Umfang ab. Wir nennen dir vorher einen realistischen Zeitrahmen.',
+    a: 'Die ersten 1-2 Vorschläge bekommst du in der Regel innerhalb von rund einer Woche. Wie lange die fertige Seite dauert, hängt vom Umfang ab. Wir nennen dir vorher einen realistischen Zeitrahmen.',
   },
   {
     q: 'Wie läuft die Zusammenarbeit ab?',

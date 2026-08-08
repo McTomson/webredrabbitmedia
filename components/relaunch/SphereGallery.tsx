@@ -89,7 +89,7 @@ const INFO_CARDS: InfoCard[] = [
     cellLines: ["ERST SEHEN,", "DANN ZAHLEN."],
     title: "Die Red Rabbit Methode",
     body:
-      "Du bekommst zuerst einen Entwurf — ohne Vorkasse. Eine Anzahlung wird erst fällig, " +
+      "Du bekommst zuerst 1-2 grafische Vorschläge — ohne Vorkasse. Eine Anzahlung wird erst fällig, " +
       "wenn du den Auftrag wirklich gibst. Fair und selektiv: Wir nehmen die Projekte an, " +
       "die wir richtig gut machen können.",
   },

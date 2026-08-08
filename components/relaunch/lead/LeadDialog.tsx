@@ -188,7 +188,7 @@ export default function LeadDialog({
             </h2>
             <p className="rrlead-sub">
               Wir schauen uns deinen Betrieb an und melden uns bei dir, in der Regel
-              am selben Werktag. Der erste Entwurf entsteht ohne Vorkasse. Kein
+              am selben Werktag. Die ersten 1-2 Vorschläge entstehen ohne Vorkasse. Kein
               Verkaufsdruck, versprochen.
             </p>
             <div className="rrlead-actions">

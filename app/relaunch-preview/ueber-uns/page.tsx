@@ -97,7 +97,7 @@ const faqLd = {
       name: 'Was heißt Entwurf ohne Vorkasse?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Du bekommst zuerst den Design-Entwurf zu sehen, bevor du einen Euro bezahlst. Gefällt er dir und sagst du zu, fällt eine Anzahlung an. Gefällt er dir nicht, hast du nichts verloren. Das Risiko liegt bei uns, nicht bei dir.',
+        text: 'Du bekommst zuerst 1-2 grafische Vorschläge zu sehen, bevor du einen Euro bezahlst. Gefallen sie dir und sagst du zu, fällt eine Anzahlung an. Gefallen sie dir nicht, hast du nichts verloren. Das Risiko liegt bei uns, nicht bei dir.',
       },
     },
   ],

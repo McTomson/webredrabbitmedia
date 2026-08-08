@@ -21,11 +21,11 @@ import Faq, { type FaqItem } from '@/components/relaunch/Faq';
 const FAQ_ITEMS: FaqItem[] = [
   {
     q: 'Was kostet so eine Website ungefähr?',
-    a: 'Das kommt drauf an, wie viel Seite du brauchst, aber es ist immer ein Fixpreis, kein Stundensatz, bei dem am Ende eine böse Überraschung steht. Die drei Stufen mit den echten Zahlen stehen weiter oben auf dieser Seite, da schaust du dir in Ruhe an, was zu dir passt. Und den Entwurf siehst du sowieso, bevor du dich festlegst.',
+    a: 'Das kommt drauf an, wie viel Seite du brauchst. Die Preise sind Startpreise, immer ein Fixpreis-Rahmen statt Stundensatz, bei dem am Ende eine böse Überraschung steht. Die drei Stufen mit den echten Zahlen stehen weiter oben auf dieser Seite, da schaust du dir in Ruhe an, was zu dir passt. Und die 1-2 grafischen Vorschläge siehst du sowieso, bevor du dich festlegst.',
   },
   {
     q: 'Wie lange dauert das Ganze?',
-    a: 'Den ersten Entwurf siehst du schnell, meist in ein paar Tagen. Danach feilen wir so lange, bis es passt. Ohne endlose Meetings, den großen Teil der Arbeit machen wir, nicht du.',
+    a: 'Die ersten 1-2 Vorschläge siehst du schnell, meist in ein paar Tagen. Danach feilen wir so lange, bis es passt. Ohne endlose Meetings, den großen Teil der Arbeit machen wir, nicht du.',
   },
   {
     q: 'Gehört mir die Website am Ende wirklich?',
@@ -40,16 +40,16 @@ const FAQ_ITEMS: FaqItem[] = [
     a: 'Ja. Impressum und Datenschutzerklärung setzen wir nach österreichischem Recht auf, und die Seite ist so gebaut, dass sie die üblichen Vorgaben erfüllt. Du stehst also nicht mit einem Bein im Risiko, nur weil dir eine Pflichtangabe gefehlt hat.',
   },
   {
-    q: 'Warum seht ihr mir den Entwurf ohne Vorkasse, wollt dann aber eine Anzahlung?',
-    a: 'Weil wir das Risiko tragen, bis du überzeugt bist. Wir zeigen dir deine Seite zuerst fertig, weil wir ziemlich sicher sind, dass sie sitzt. Gefällt sie dir nicht, hat es dich nichts gekostet. Sagst du Ja, arbeiten wir ab da partnerschaftlich, und dann fällt eine faire Anzahlung an. Das ist ehrlicher, als dir vorher Geld abzunehmen und zu hoffen, dass es passt.',
+    q: 'Warum zeigt ihr mir die Vorschläge ohne Vorkasse, wollt dann aber eine Anzahlung?',
+    a: 'Weil wir das Risiko tragen, bis du überzeugt bist. Du bekommst zuerst 1-2 grafische Vorschläge zu sehen, wohin dein Auftritt gehen kann, ohne Vorkasse. Gefällt dir die Richtung nicht, hat es dich nichts gekostet. Sagst du Ja und erteilst den Auftrag, bekommst du ein konkretes Angebot und leistest 40 % Anzahlung, den Rest nach Fertigstellung. Das ist ehrlicher, als dir vorher das ganze Geld abzunehmen und zu hoffen, dass es passt.',
   },
   {
     q: 'Sind das Fixpreise oder kommt noch etwas dazu?',
-    a: 'Die Pakete geben dir einen klaren Rahmen. Was genau du brauchst, besprechen wir vorher und halten es fest. Keine Stundensatz-Lotterie, keine versteckten Kosten.',
+    a: 'Die Preise sind Startpreise und geben dir einen klaren Rahmen. Je nach Anforderung kann sich der Umfang verschieben; das genaue Angebot bekommst du bei der Auftragserteilung. Zusatzleistungen gibt es auf Anfrage. Keine Stundensatz-Lotterie, keine versteckten Kosten.',
   },
   {
-    q: "Was bedeutet 'ab 4.900' beim Premium-Paket?",
-    a: 'Premium ist maßgeschneidert. Der Preis hängt vom Umfang ab. 4.900 Euro ist der Einstieg, den genauen Preis nennen wir dir nach einem kurzen Gespräch.',
+    q: "Was bedeutet das 'ab' bei den Preisen?",
+    a: 'Alle Preise sind Startpreise. Der genaue Preis hängt vom Umfang ab. Bei besonderen Anforderungen oder Extras kann er sich verschieben. Nach einem kurzen Gespräch nennen wir dir die Zahl, und dein verbindliches Angebot bekommst du bei der Auftragserteilung.',
   },
   {
     q: 'Gibt es eine Förderung?',

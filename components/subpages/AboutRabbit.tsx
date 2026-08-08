@@ -140,7 +140,7 @@ export default function AboutRabbit() {
             <div className="rr-prose">
               <p>
                 Ein Hase ist schnell, aufmerksam und immer auf dem Sprung. Genau so
-                arbeiten wir: der erste Entwurf steht in sieben Tagen, wir reagieren
+                arbeiten wir: die ersten 1-2 Vorschläge stehen in wenigen Tagen, wir reagieren
                 sofort und bleiben wach für das, was dein Betrieb wirklich braucht.
               </p>
               <p>
