@@ -12,7 +12,7 @@ import SplineLoader from "@splinetool/loader";
 import { buildTalosRig, TALOS_COLORS, type TalosRig } from "./talosRig";
 import { createTalosMotion, type TalosMotion } from "./talosMotion";
 
-const SCENE_URL = "https://prod.spline.design/bN7MTDW-zSkVIOxf/scene.splinecode";
+const SCENE_URL = "/hero/talos-scene.splinecode";
 
 export default function TalosSplineDemo() {
   const hostRef = useRef<HTMLDivElement>(null);

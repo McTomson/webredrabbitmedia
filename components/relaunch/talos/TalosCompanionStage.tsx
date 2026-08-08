@@ -33,7 +33,13 @@ import SplineLoader from "@splinetool/loader";
 import { buildTalosRig, type TalosRig } from "./talosRig";
 import { createTalosMotion, type TalosMotion } from "./talosMotion";
 
-const SCENE_URL = "https://prod.spline.design/bN7MTDW-zSkVIOxf/scene.splinecode";
+// Same-origin: der Blocker mancher Browser sperrt den Fremd-Host
+// prod.spline.design (Thomas' Laptop: Talos fehlt, in Inkognito laeuft er).
+// Die Szene liegt daher unter public/hero/ und wird ueber die eigene Domain
+// geladen. Der Loader liest sie per arraybuffer -> Content-Type egal.
+// SCENE_FALLBACK = Original-CDN, nur falls die eigene Datei je fehlt.
+const SCENE_URL = "/hero/talos-scene.splinecode";
+const SCENE_FALLBACK = "https://prod.spline.design/bN7MTDW-zSkVIOxf/scene.splinecode";
 
 // Ganzkoerper-Kamera, nah genug dass Talos gross wirkt (Thomas: "zu klein").
 // z=700 -> Koerper (~340 Einheiten) fuellt ~2/3 der Bildhoehe.
@@ -500,9 +506,7 @@ export default function TalosCompanionStage({
     const loader = new SplineLoader() as unknown as {
       load: (u: string, ok: (s: unknown) => void, p?: unknown, e?: (e: unknown) => void) => void;
     };
-    loader.load(
-      SCENE_URL,
-      (splineScene) => {
+    const onSceneLoaded = (splineScene: unknown) => {
         if (disposed) return;
         scene.add(splineScene as never);
         rig = buildTalosRig(THREE, splineScene);
@@ -546,16 +550,28 @@ export default function TalosCompanionStage({
           document.getElementById("mainSticky")?.classList.add("is-dash");
           opacity = 1;
         }
-      },
-      undefined,
-      () => {
-        // Spline-Szene nicht geladen (Netz/CDN/Blocker): 3D weg, aber die
-        // Kommandozentrale scroll-gesteuert zeigen (wie im no-WebGL-Fall).
-        teardown();
-        setNo3d(true);
-        startNo3dDashboard();
-      },
-    );
+    };
+    // Erst same-origin (/hero/). Scheitert das (404 o.ae.), einmal das
+    // Original-CDN versuchen. Erst wenn auch das weg ist: 3D aus,
+    // Kommandozentrale scroll-gesteuert (wie im no-WebGL-Fall).
+    const tryLoad = (url: string, isFallback: boolean) => {
+      loader.load(
+        url,
+        onSceneLoaded,
+        undefined,
+        () => {
+          if (disposed) return;
+          if (!isFallback) {
+            tryLoad(SCENE_FALLBACK, true);
+            return;
+          }
+          teardown();
+          setNo3d(true);
+          startNo3dDashboard();
+        },
+      );
+    };
+    tryLoad(SCENE_URL, false);
 
     // Ein Frame: Modus waehlen, Motion updaten, rendern. Ausgelagert, damit die
     // QA-Hooks bei eingefrorenem rAF (Hintergrund-Tab) Frames manuell treiben koennen.
