@@ -14,7 +14,7 @@ import SplineLoader from "@splinetool/loader";
 import { buildTalosRig, type TalosRig } from "./talosRig";
 import { createTalosMotion, type TalosMotion } from "./talosMotion";
 
-const SCENE_URL = "https://prod.spline.design/bN7MTDW-zSkVIOxf/scene.splinecode";
+const SCENE_URL = "/hero/talos-scene.splinecode";
 
 // Ruhige Hero-Kamera (am Modell vermessen: Head-Center ~y263, Body ~y138).
 const CAM_POS: [number, number, number] = [40, 196, 560];
