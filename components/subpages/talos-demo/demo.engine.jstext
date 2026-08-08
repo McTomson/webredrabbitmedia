@@ -485,16 +485,14 @@
       });
     }
 
-    // Reveal-Fade + Interaktion (viewport-fix; faded beim Verlassen des Heros)
+    // Reveal-Fade + Interaktion (viewport-fix; faded beim Verlassen des Heros).
+    // Auf Touch (noHover) gibt es kein Reveal-Video/-Poster mehr (Thomas 08.08.,
+    // navy Mal-Schwung soll nie sichtbar sein) -> revealVideo/revealPoster sind
+    // null, die Guards unten greifen nicht. Auf Desktop treibt fade das Live-Malen.
     const fade=clamp((Pm-P_REVEAL)/0.07,0,1);
     blobsGroup.setAttribute("opacity",(1-fade).toFixed(3));
-    /* Video ERST einblenden, wenn es wirklich spielt (revealVideoOk). Vorher 0,
-       damit iOS' natives Play-Overlay (erscheint auf einem <video>, das noch
-       nicht laeuft — Stromsparmodus/Netz) NICHT sichtbar wird (Thomas 08.08.,
-       "blaues Zeichen beim Laden"). Solange es nicht spielt, deckt das Poster
-       (gleiche Box, darunter) den Hero ab -> saubere Ladeansicht, kein Button. */
-    if(revealVideo)revealVideo.style.opacity=(revealVideoOk?(1-fade):0).toFixed(3);
-    if(revealPoster)revealPoster.style.opacity=(1-fade).toFixed(3);   /* server-gerendertes LCP-Poster faded synchron; bleibt sichtbar, bis das Video wirklich laeuft */
+    if(revealVideo)revealVideo.style.opacity=(1-fade).toFixed(3);
+    if(revealPoster)revealPoster.style.opacity=(1-fade).toFixed(3);
     const nowPainting=Pm<P_REVEAL+0.01;
     if(nowPainting!==lastPainting){
       lastPainting=nowPainting;
@@ -724,48 +722,19 @@
     if(!noHover) initFluid();
     if(autobtn) autobtn.addEventListener("click",()=>runAuto(autobtn));
     if(noHover){
-      /* Thomas 04.08.: auf Touch/Tablet/Mobile das Live-Malen durch das gelieferte
-         Video ersetzen (wie /leistungen/website + /preise). Video liegt UEBER der
-         Mal-/Deck-Flaeche (z4) und blendet mit `fade` aus (applyMain). Faellt es aus
-         (iOS-Stromsparmodus/Netz), bleibt runAuto als Fallback (daher !revealVideo). */
-      revealPoster=sticky.querySelector(".reveal-poster");   /* schon im HTML gerendert (LCP), Referenz fuer den Scroll-Fade */
-      revealVideo=document.createElement("video");
-      revealVideo.className="reveal-video";
-      revealVideo.src="/hero/talos-hero-mobile.mp4";
-      revealVideo.muted=true; revealVideo.defaultMuted=true; revealVideo.setAttribute("muted","");
-      revealVideo.loop=true; revealVideo.autoplay=true;
-      revealVideo.playsInline=true; revealVideo.setAttribute("playsinline",""); revealVideo.setAttribute("webkit-playsinline","");
-      revealVideo.setAttribute("preload","metadata");
-      revealVideo.setAttribute("aria-hidden","true");
-      revealVideo.poster="/hero/talos-hero-poster.jpg";   /* Sofort-Bild, falls Autoplay zoegert */
-      /* Natuerliche Groesse, oben anliegend (Thomas 04.08.): echtes Seitenverhaeltnis, nichts abgeschnitten. */
-      revealVideo.style.cssText="position:absolute;top:0;left:0;z-index:4;width:100%;height:auto;aspect-ratio:496/796;pointer-events:none;opacity:0;background:transparent;";
-      /* SOFORT die Mal-Artefakte ausblenden: Cursor-Punkt (z6) liegt UEBER dem Video (z4)
-         und wuerde sonst durchscheinen; dazu Auto-Button/Hinweis (und layer-base, falls da). */
-      const _hideArtifacts=function(){
-        const _lb=sticky.querySelector(".layer-base"); if(_lb)_lb.style.display="none";
-        const _cd=sticky.querySelector(".cursor-dot"); if(_cd)_cd.style.display="none";
-        if(hint)hint.style.display="none";
-        if(autobtn)autobtn.style.display="none";
-      };
-      _hideArtifacts();
-      revealVideo.addEventListener("playing",function(){ revealVideoOk=true; _hideArtifacts(); },{once:true});
-      sticky.appendChild(revealVideo);
-      /* Robuste iOS-Wiedergabe: mehrere Ausloeser statt nur ein touchstart-once. */
-      const tryPlay=function(){ const p=revealVideo&&revealVideo.play&&revealVideo.play(); if(p&&p.catch)p.catch(function(){}); };
-      revealVideo.addEventListener("loadeddata",tryPlay);
-      revealVideo.addEventListener("canplay",tryPlay);
-      try{ revealVideo.load(); }catch(e){}
-      tryPlay();
-      ["touchstart","touchend","pointerdown","click","scroll"].forEach(function(ev){
-        window.addEventListener(ev,tryPlay,{once:true,passive:true});
-      });
-      const autoLoop=()=>{
-        if(!sceneMain.isConnected){ return; }
-        if(!revealVideo&&painting&&!autoRunning&&document.visibilityState==="visible"&&window.scrollY<window.innerHeight*0.3){ runAuto(autobtn); }
-        setTimeout(autoLoop,9000);
-      };
-      setTimeout(autoLoop,1400);
+      /* Touch (Handy + Tablet): KEIN Mal-Reveal. Thomas 08.08.: der navy
+         Mal-Schwung (frueher via Video talos-hero-mobile.mp4 abgespielt, das
+         genau diese Reveal-Animation zeigt) darf auf Handy/Tablet zu KEINEM
+         Zeitpunkt sichtbar sein. Also weder Video noch Auto-Malen: die navy
+         Reveal-Ebene (layer-base) wird ausgeblendet, ebenso das Poster (wurde
+         nur als Sofort-Bild fuer das Video gebraucht) und die Mal-Artefakte.
+         Der Hero bleibt off-white mit dem Titel; Talos laeuft ein, dann Story.
+         Desktop (hover) behaelt das Live-Malen unveraendert (if(!noHover) oben). */
+      const _lb=sticky.querySelector(".layer-base"); if(_lb)_lb.style.display="none";
+      const _cd=sticky.querySelector(".cursor-dot"); if(_cd)_cd.style.display="none";
+      const _p=sticky.querySelector(".reveal-poster"); if(_p)_p.style.display="none";
+      if(hint)hint.style.display="none";
+      if(autobtn)autobtn.style.display="none";
     }
 
     renderHead(0,0);

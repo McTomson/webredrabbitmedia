@@ -89,9 +89,6 @@ export default function TalosLeistungPreviewPage() {
         }}
       />
 
-      {/* LCP-Poster mobil frueh laden (Thomas 04.08.), nur Mobile/Tablet. */}
-      <link rel="preload" as="image" href="/hero/talos-hero-poster.jpg" fetchPriority="high" media="(max-width: 1024px)" />
-
       {/* Ecken-Logo (rote Hasen-Marke oben links). */}
       <CornerLogo />
       <BackToTop />
