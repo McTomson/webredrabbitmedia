@@ -147,10 +147,10 @@ export default function TalosCompanionStage({
     const mem = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
     if (!webgl2 || (mem !== undefined && mem <= 4)) {
       setNo3d(true);
-      // Ohne 3D bleibt wenigstens das Dashboard-Fenster im Hero sichtbar.
-      // In stationsOnly (Fremdseite mit eigenem Hero) NICHT den fremden
-      // #mainSticky anfassen — is-dash ist eine Talos-Hero-Klasse.
-      if (!stationsOnly) document.getElementById("mainSticky")?.classList.add("is-dash");
+      // Ohne 3D KEIN erzwungenes Dashboard-Fenster mehr (Thomas 08.08.: das
+      // Fenster hing auf Geraeten ohne 3D dauerhaft oben im Hero, ohne Talos
+      // daneben -> wirkte kaputt). Der Hero zeigt dann normal Malbild + Titel;
+      // die echte Dashboard-Ansicht kommt weiter unten im Kontrollraum-Bereich.
       return;
     }
 
@@ -277,33 +277,13 @@ export default function TalosCompanionStage({
       const tp = clamp01((p - P_WALK1) / (P_TURN1 - P_WALK1));
       const ep = clamp01((p - P_EXIT0) / (P_EXIT1 - P_EXIT0));
 
-      // Handy-Hero (Thomas 08.08.): KEIN Walk-in von links — sonst poked sein
-      // Arm/Schulter beim Laden oben links ins Bild ("dunkler Fleck"). Er steht
-      // fix RECHTS, gespiegelte Haltung (Koerper zur Bildmitte/links gedreht,
-      // damit er den Text-Leser links anschaut), winkt mit der ANDEREN Hand
-      // ("other" = die andere als Desktop) und sitzt tiefer (HERO_MOBILE_DY).
-      // Abgang = ausblenden statt weglaufen.
-      if (endFrac !== null) {
-        const leaving = ep > 0;
-        const x = endX;
-        const yaw = -STAND_BIAS; // steht rechts -> Koerper leicht nach links/Mitte
-        curX = x; curZ = hz; curYaw = yaw;
-        writeWalkPose(x, hz, yaw, false, dt);
-        if (n.bot) n.bot.position.y = botBase.py + HERO_MOBILE_DY;
-        if (!waved && p >= P_WAVE && !leaving) { waved = true; motion?.triggerGreeting("other"); }
-        if (waved && p < P_WALK1 - 0.06) waved = false;
-        const wantFrameM = p >= P_FRAME0 && p <= P_FRAME1;
-        if (wantFrameM !== frameVisible) {
-          frameVisible = wantFrameM;
-          document.getElementById("mainSticky")?.classList.toggle("is-dash", wantFrameM);
-        }
-        motion?.setHeadYaw(leaving ? 0 : userLookYaw(x, hz) - yaw);
-        motion?.setNodLoop(false);
-        motion?.setWinkLoop(false);
-        setLayer("front");
-        opacity = damp(opacity, leaving ? 0 : 1, leaving ? 5 : 8, dt);
-        return;
-      }
+      // Stand-Haltung: Koerper leicht zur BILDMITTE gedreht (nie nach aussen).
+      // Desktop steht links -> nach rechts (+); Handy steht rechts -> nach
+      // links (-). Der Kopf schaut zusaetzlich immer den User an (userLookYaw).
+      // Thomas 08.08.: der Walk-in bleibt AUF ALLEN Geraeten erhalten ("er soll
+      // reingehen wie frueher") — auf Handy nur kleiner (heroZFor), rechts
+      // (heroEndFracFor) und tiefer (HERO_MOBILE_DY).
+      const standBias = endX > 0 ? -STAND_BIAS : STAND_BIAS;
 
       let x: number;
       let yaw: number;
@@ -311,24 +291,26 @@ export default function TalosCompanionStage({
       if (ep > 0) {
         const turnBack = smooth(Math.min(1, ep / 0.18));
         x = endX + (exitX - endX) * smooth(ep);
-        yaw = STAND_BIAS + (FACE_TURN - STAND_BIAS) * turnBack;
+        yaw = standBias + (FACE_TURN - standBias) * turnBack;
         walking = ep > 0.12 && ep < 0.98;
       } else {
         x = startX + (endX - startX) * wp;
-        // Ankommen: nicht auf 0 drehen, sondern auf die Stand-Haltung leicht
-        // zur Mitte (er steht links -> Haltung leicht nach rechts, nie aussen).
-        yaw = STAND_BIAS + (FACE_TURN - STAND_BIAS) * (1 - smooth(tp));
+        // Ankommen: auf die Stand-Haltung leicht zur Mitte (nie nach aussen).
+        yaw = standBias + (FACE_TURN - standBias) * (1 - smooth(tp));
         walking = wp > 0.001 && wp < 0.999;
       }
       walkPhase = (x - startX) * PHASE_PER_UNIT;
       curX = x; curZ = hz; curYaw = yaw;
       writeWalkPose(x, hz, yaw, walking, dt);
+      // Handy: Talos tiefer setzen (stand zu weit oben) — nach writeWalkPose,
+      // Bounce bleibt erhalten (Thomas 08.08.).
+      if (endFrac !== null && n.bot) n.bot.position.y += HERO_MOBILE_DY;
 
       if (!waved && p >= P_WAVE && ep <= 0) {
         waved = true;
-        // Thomas 07.08. (Screenshot Hero): winkt mit der falschen Hand ->
-        // zurueck auf "primary" (die 25.07.-Drehung auf "other" war es nicht).
-        motion?.triggerGreeting("primary");
+        // Winkhand: Desktop "primary" (linke Hand, Thomas 07.08.); Handy steht
+        // gespiegelt rechts -> "other", damit es optisch wieder die linke ist.
+        motion?.triggerGreeting(endFrac !== null ? "other" : "primary");
       }
       if (waved && p < P_WALK1 - 0.06) waved = false;
 
@@ -540,9 +522,10 @@ export default function TalosCompanionStage({
       },
       undefined,
       () => {
+        // Spline-Szene nicht geladen (Netz/CDN): wie oben KEIN erzwungenes
+        // Dashboard-Fenster mehr — Hero bleibt sauber (Malbild + Titel).
         teardown();
         setNo3d(true);
-        if (!stationsOnly) document.getElementById("mainSticky")?.classList.add("is-dash");
       },
     );
 
