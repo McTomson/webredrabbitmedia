@@ -1,7 +1,13 @@
 # Naechste Session — TALOS-Leistungsseite
 
-## >>> START HIER (Folgesession 07.08.2026) <<<
-- **Aufgabe:** Wir bearbeiten die Talos-Seite weiter. **Die konkrete Aufgabe/Infos gibt Thomas zu Beginn** — NICHT vorher raten oder umbauen. Erst zuhoeren, dann Plan (TodoWrite), dann tun.
+## >>> STATUS-UPDATE 07.08. spaet: PIVOT KOMMANDOZENTRALE GEBAUT + LIVE AUF v2 <<<
+- **Thomas' Pivot:** Talos = Kommandozentrale der Website (WordPress-artig selbst aendern + Bereiche mit Auto-Daten: Besucher, Klicks/Heatmap, Google-Suchbegriffe, KI-/ChatGPT-Sichtbarkeit, Bewertungen, Technik, Anfragen; Assistent/LLM = Phase 2 "Kommt bald"). Ziel-APIs: null Wartung, aktualisiert sich selbst; Setup-Modell: WIR legen Gmail/Zugaenge an. Konzept-Artifact freigegeben, Copy in Thomas' Ton.
+- **GEBAUT + committed `a636ba7` (auf `b82c300`), live auf v2** (git-Auto-Deploy LEBT WIEDER, Build ly0onnjcg, per Inhalt verifiziert): Seite neu = Hero (unveraendert, nur 1 Story-Absatz) -> KennstDuDas (NEU) -> WerIstTalos (umgetextet) -> Bereiche 9 Karten (NEU, Herzstueck; ChatGPT-Karte "Das hat sonst fast keiner" — NICHT "keiner", UWG!) -> Kontrollraum (Panels=Bereiche) -> WertAnker (NEU, Navy-Rechnung "ueber 2.000 EUR" + Haken-Klaerung) -> VorherNachher (NEU) -> TalosTest (NEU, 3-Fragen-Quiz) -> Faehigkeiten -> Bestand. InklusiveDashboard raus (Datei liegt noch, Aufraeum-Etappe).
+- **Review-it GO** (docs/reviews/talos-pivot-kommandozentrale-2026-08-07.md); tsc+Lint gruen; Desktop-QA komplett (Quiz, Lead-Popup preset talos, Companion-Stationen intakt).
+- **OFFEN:** (1) Thomas-Abnahme am Geraet, v.a. MOBILE/TABLET visuell (MCP-Browser friert/crasht auf der 3D-Seite — Breakpoints 3->2->1 nur per Code-Review geprueft); (2) Wort-fuer-Wort-Korrekturen der Copy durch Thomas (bereiche-data.ts!); (3) WertAnker-Marktpreise vor PRODUCTION-Go-Live nochmal gegen Anbieter belegen; (4) spaeter: echtes Dashboard-Produkt bauen (Tier A+C zuerst; Gemini-Flash-Gratis-Tier fuer Assistent, Kundendaten nur Bezahl-Pfad wegen Training-Klausel).
+
+## Alter Kontext (Vorsession)
+- **Aufgabe war:** Wir bearbeiten die Talos-Seite weiter. Erst zuhoeren, dann Plan (TodoWrite), dann tun.
 - **ZUERST LESEN:** dieser Handoff komplett (v.a. der rAF-Freeze-QA-Block unten — spart massiv Zeit), MEMORY.md, und die Talos-Memories: `project_talos_leistungen_3d_2026_07_17`, `reference_talos_companion_stage_kanonisch`, `reference_talos_kopf_zum_user_und_qa_tick`, `reference_talos_entrancestage_kamera_spiegelung`, `project_redrabbit_sales_onepager_talos`.
 - **Seite/Routen:** Haupt = `app/relaunch-preview/leistungen/talos/page.tsx`. Weitere Talos-Routen existieren (talos-choreo, talos-demo, talos-entrance, talos-intro) — vor Aenderung klaeren welche gemeint ist.
 - **Kontext erledigt:** Die Lead-Popups + IONOS-office@-Mailversand sind FERTIG und live auf v2 (Marken-Dropdown `LeadSelect.tsx`, kraeftiger CTA, E-Mail verifiziert). Nur Go-Live auf Production offen (Thomas-Entscheidung). Siehe `NEXT_SESSION_lead-popups.md`. Nicht mit Talos vermischen.
