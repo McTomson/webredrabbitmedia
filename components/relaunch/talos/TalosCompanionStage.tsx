@@ -52,6 +52,9 @@ const heroZFor = (vw: number) => (vw <= 700 ? -1700 : vw <= 1180 ? -400 : HERO_Z
 // (Thomas 08.08.: stand mittig gross ueber dem Story-Text -> kleiner + rechts,
 // damit der zentrierte Text frei bleibt). Bruchteil der halben Bildbreite.
 const heroEndFracFor = (vw: number) => (vw <= 700 ? 0.42 : null);
+// Handy-Hero: Talos tiefer setzen (Thomas 08.08.: stand zu weit oben).
+// Welt-Einheiten nach unten (Figur ~340 hoch), Fuesse naeher an die Unterkante.
+const HERO_MOBILE_DY = -55;
 const OFF_MARGIN = 320; // Luft hinter der Bildkante (offscreen) — inkl. Armreichweite, damit ganz oben NICHTS von Talos ins Bild ragt (Thomas 24.07., Bild 1)
 // Koerperhaltung im Stand: IMMER deutlich zur Bildmitte gedreht, nie nach aussen
 // (Thomas-Regel 24.07.: die alten 0.13 rad waren zu subtil, er las die Haltung als
@@ -273,6 +276,34 @@ export default function TalosCompanionStage({
       const wp = clamp01((p - P_WALK0) / (P_WALK1 - P_WALK0));
       const tp = clamp01((p - P_WALK1) / (P_TURN1 - P_WALK1));
       const ep = clamp01((p - P_EXIT0) / (P_EXIT1 - P_EXIT0));
+
+      // Handy-Hero (Thomas 08.08.): KEIN Walk-in von links — sonst poked sein
+      // Arm/Schulter beim Laden oben links ins Bild ("dunkler Fleck"). Er steht
+      // fix RECHTS, gespiegelte Haltung (Koerper zur Bildmitte/links gedreht,
+      // damit er den Text-Leser links anschaut), winkt mit der ANDEREN Hand
+      // ("other" = die andere als Desktop) und sitzt tiefer (HERO_MOBILE_DY).
+      // Abgang = ausblenden statt weglaufen.
+      if (endFrac !== null) {
+        const leaving = ep > 0;
+        const x = endX;
+        const yaw = -STAND_BIAS; // steht rechts -> Koerper leicht nach links/Mitte
+        curX = x; curZ = hz; curYaw = yaw;
+        writeWalkPose(x, hz, yaw, false, dt);
+        if (n.bot) n.bot.position.y = botBase.py + HERO_MOBILE_DY;
+        if (!waved && p >= P_WAVE && !leaving) { waved = true; motion?.triggerGreeting("other"); }
+        if (waved && p < P_WALK1 - 0.06) waved = false;
+        const wantFrameM = p >= P_FRAME0 && p <= P_FRAME1;
+        if (wantFrameM !== frameVisible) {
+          frameVisible = wantFrameM;
+          document.getElementById("mainSticky")?.classList.toggle("is-dash", wantFrameM);
+        }
+        motion?.setHeadYaw(leaving ? 0 : userLookYaw(x, hz) - yaw);
+        motion?.setNodLoop(false);
+        motion?.setWinkLoop(false);
+        setLayer("front");
+        opacity = damp(opacity, leaving ? 0 : 1, leaving ? 5 : 8, dt);
+        return;
+      }
 
       let x: number;
       let yaw: number;
