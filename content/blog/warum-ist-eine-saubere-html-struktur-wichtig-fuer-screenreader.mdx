@@ -1,0 +1,166 @@
+---
+title: "Saubere HTML-Struktur für Screenreader und SEO 2026"
+slug: warum-ist-eine-saubere-html-struktur-wichtig-fuer-screenreader
+excerpt: "Warum eine saubere HTML-Struktur mit echten Überschriften und Landmarks gleichzeitig Barrierefreiheit für Screenreader und ein besseres Google-Ranking schafft."
+featuredSnippetTitle: "Warum ist eine saubere HTML-Struktur wichtig für Screenreader?"
+featuredSnippet: "Eine saubere HTML-Struktur mit echten Überschriften (h1 bis h6) und Bereichs-Elementen wie header, nav, main und footer macht den Seitenaufbau maschinenlesbar. Screenreader nutzen sie als Wegweiser zum schnellen Springen, und Google erfasst Themen und Hierarchie besser. So verbessern Sie Barrierefreiheit und Ranking mit demselben Handgriff."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-09"
+updatedAt: "2026-08-09"
+category: "Technik & Performance"
+tags:
+  - "Barrierefreiheit"
+  - "HTML"
+  - "SEO"
+  - "WCAG"
+  - "Screenreader"
+  - "Österreich"
+featuredImage: /images/blog/warum-ist-eine-saubere-html-struktur-wichtig-fuer-screenreader.png
+status: draft
+aiAssisted: true
+sources:
+  - name: "WebAIM - Screen Reader User Survey #10 Results"
+    url: "https://webaim.org/projects/screenreadersurvey10/"
+  - name: "W3C - Web Content Accessibility Guidelines (WCAG) 2.1, SC 1.3.1"
+    url: "https://www.w3.org/TR/WCAG21/#info-and-relationships"
+  - name: "MDN Web Docs - HTML: A good basis for accessibility"
+    url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/HTML"
+  - name: "Google Search Central - SEO Starter Guide"
+    url: "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
+  - name: "Bundesministerium f. Soziales - Barrierefreiheitsgesetz"
+    url: "https://www.sozialministerium.gv.at/Themen/Soziales/Menschen-mit-Behinderungen/Barrierefreiheitsgesetz.html"
+  - name: "Google Search Central - Understanding Core Web Vitals and Google search results"
+    url: "https://developers.google.com/search/docs/appearance/core-web-vitals"
+keyTakeaways:
+  - "Screenreader springen von Überschrift zu Überschrift. Laut WebAIM navigieren 71,6 Prozent der Nutzer zuerst über die Überschriften, und 88,8 Prozent finden diese Navigation nützlich."
+  - "Nur echte h1 bis h6 zählen. Ein optisch fett gestylter div oder span ist für Screenreader und Google unsichtbar."
+  - "Dieselbe saubere Struktur, die Barrierefreiheit schafft, hilft laut Google-SEO-Guide auch beim Verständnis und Ranking Ihrer Seite."
+  - "Die WCAG 2.1 verlangen im Kriterium 1.3.1, dass visuelle Struktur auch programmatisch bestimmbar ist, also im Code steht und nicht nur in der Optik."
+  - "In Österreich ist saubere Semantik seit dem Barrierefreiheitsgesetz vom 28. Juni 2025 für viele B2C-Online-Angebote Pflicht, mit Strafen bis zu 80.000 Euro."
+conclusionStats:
+  - label: "Nutzer navigieren zuerst über Überschriften"
+    value: "71,6 %"
+  - label: "Barrierefreiheitsgesetz in Kraft seit"
+    value: "28. Juni 2025"
+  - label: "Verwaltungsstrafen bis zu"
+    value: "80.000 €"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Warum sind echte Überschriften wichtiger als nur fett gestylter Text?"
+    answer: "Screenreader und Google lesen das HTML, nicht die Optik. Ein fett gestylter div oder span sieht wie eine Überschrift aus, taucht aber in keiner Überschriften-Liste auf. Nur echte h1 bis h6 werden als Struktur erkannt und helfen bei Navigation und Ranking."
+  - question: "Hilft eine saubere HTML-Struktur wirklich beim Google-Ranking?"
+    answer: "Ja. Google empfiehlt im SEO-Starter-Guide beschreibende Überschriften und eine logische Seitenstruktur, damit der Crawler Themen und Hierarchie versteht. Dieselbe Semantik, die Barrierefreiheit schafft, hilft der Suchmaschine, den wichtigsten Inhalt zu erkennen."
+  - question: "Ist Barrierefreiheit in Österreich seit 2025 Pflicht?"
+    answer: "Für viele B2C-Online-Angebote ja. Seit 28. Juni 2025 gilt das Barrierefreiheitsgesetz, das WCAG 2.1 auf Level AA verlangt, etwa für Online-Shops, E-Banking sowie Buchungs- und Ticketsysteme. Bei Verstößen drohen Strafen bis zu 80.000 Euro. Kleinstunternehmen sind nur bei Dienstleistungen ausgenommen."
+  - question: "Welche HTML-Elemente sind für Screenreader am wichtigsten?"
+    answer: "Echte Überschriften (h1 bis h6) und Landmark-Elemente wie header, nav, main, aside und footer. Sie dienen als Wegweiser zum schnellen Springen. Ebenso zählen echte Listen und Tabellen mit Kopfzeilen statt optisch nachgebauter Container."
+  - question: "Wie prüfe ich, ob meine Website eine saubere Struktur hat?"
+    answer: "Öffnen Sie die Entwicklerwerkzeuge des Browsers und klicken Sie auf vermeintliche Überschriften. Steht dort ein div statt h2, ist es eine Scheinüberschrift. Testen Sie zusätzlich mit einem Screenreader wie VoiceOver oder NVDA, ob die Überschriften-Liste eine sinnvolle Inhaltsübersicht ergibt."
+hookCandidates:
+  - "sauberes html: besser bei google?"
+  - "gute überschriften, besseres ranking?"
+---
+
+Stellen Sie sich ein Kaufhaus ohne Beschilderung vor. Keine Stockwerks-Anzeige und keine Schilder an den Abteilungen. Sehende Kunden würden sich mühsam durchfragen, blinde Kunden hätten quasi keine Chance. Genau das passiert auf einer Website, deren Überschriften nur optisch fett aussehen, im Code aber gar keine echten Überschriften sind.
+
+Dieser Fehler ist verbreiteter, als man denken würde, und fast nie steckt böse Absicht dahinter. Jemand macht einen Text größer und fett, es sieht aus wie eine Überschrift, also gilt die Sache als erledigt. Für das Auge stimmt das auch. Für einen Screenreader und für den Google-Crawler ist die Überschrift damit aber unsichtbar, weil beide nicht auf das Aussehen schauen, sondern auf das darunterliegende HTML. Klingt banal, macht aber den ganzen Unterschied, oder?
+
+In diesem Beitrag gehen wir der Frage konkret nach, warum saubere Semantik im Code kein Nice-to-have für Perfektionisten ist, sondern in Österreich seit 2025 sogar eine rechtliche Frage werden kann.
+
+## Kurz gesagt: Warum ist saubere HTML-Struktur so wichtig?
+
+Eine saubere HTML-Struktur mit echten Überschriften (h1 bis h6) und Bereichs-Elementen wie header, nav, main und footer macht den Aufbau einer Seite maschinenlesbar. Screenreader nutzen diese Struktur als Wegweiser zum schnellen Springen, und Google versteht dadurch Themen und Hierarchie besser. Beides zusammen verbessert Barrierefreiheit und Ranking mit demselben Handgriff.
+
+Das ist der Kern, und es lohnt sich, ihn ernst zu nehmen. Denn hier arbeiten Zugänglichkeit und Suchmaschinenoptimierung nicht gegeneinander, sondern ziehen am selben Strang. Wer sauber auszeichnet, bedient beide Zielgruppen mit einer einzigen Entscheidung.
+
+## Was ein Screenreader mit Ihren Überschriften macht
+
+Ein blinder oder stark sehbeeinträchtigter Nutzer liest eine lange Seite nicht Zeile für Zeile von oben nach unten. Das wäre viel zu langsam. Stattdessen springt er von Überschrift zu Überschrift, so wie ein sehender Leser eine Seite überfliegt und an den fetten Zwischentiteln hängen bleibt.
+
+Wie stark diese Technik genutzt wird, zeigt die [WebAIM Screen Reader User Survey #10](https://webaim.org/projects/screenreadersurvey10/), eine große Befragung von Screenreader-Nutzern aus dem Winter 2023 auf 2024. Dort geben 71,6 Prozent an, dass sie sich auf einer langen Seite zuerst über die Überschriften orientieren. Und 88,8 Prozent finden die Navigation nach Überschriften-Ebenen sehr oder zumindest etwas nützlich. Das ist keine Randgruppe, das ist die klare Mehrheit.
+
+Der entscheidende Punkt: Diese Abkürzung funktioniert nur, wenn eine Überschrift im Code auch wirklich als h2 oder h3 ausgezeichnet ist. Ein optisch fett gestylter div oder span sieht für das Auge identisch aus, taucht in der Überschriften-Liste des Screenreaders aber überhaupt nicht auf. Für den betroffenen Nutzer verschwindet damit der halbe Wegweiser Ihrer Seite.
+
+[MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/HTML), die offizielle Web-Dokumentation von Mozilla, bringt es auf den Punkt: Assistive Technologien nutzen Überschriften und sogenannte Landmarks, also header, nav, main, aside und footer, als Wegweiser durch die Seite. Korrekt geschriebenes HTML definiert die Bedeutung der Inhalte maschinenlesbar, und das hilft laut MDN gleichzeitig der Barrierefreiheit und der Suchmaschinenoptimierung.
+
+Meine Empfehlung an dieser Stelle ist unbequem, aber einfach: Verlassen Sie sich nie auf das Aussehen. Wenn etwas eine Überschrift ist, muss es auch als Überschrift im Code stehen.
+
+## Warum Google dieselbe Struktur belohnt
+
+Jetzt kommt der Teil, der viele überrascht. Genau die Struktur, die dem Screenreader hilft, hilft auch Google. Der Crawler ist im Grunde ein sehr systematischer Leser ohne Augen, und er orientiert sich an denselben Signalen.
+
+Google empfiehlt in seinem offiziellen [SEO-Starter-Guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide) ausdrücklich, beschreibende Überschriften-Tags und eine logische Seitenstruktur zu verwenden, damit die Suchmaschine den Aufbau und die Themen einer Seite besser erfassen kann. Eine klare Hierarchie hilft dem Crawler, den wichtigsten Inhalt zu erkennen und passende Titel und Snippets für die Suchergebnisse auszuwählen.
+
+Das heißt praktisch: Wenn Ihre Seite von einer Steuerberatung im 7. Bezirk handelt und die zentrale Aussage in einem echten h2 steht statt in einem fett formatierten Absatz, dann versteht Google leichter, worum es geht. Wer die Struktur dagegen nur optisch bastelt, zwingt die Suchmaschine zum Raten. Und Raten führt selten zu guten Rankings.
+
+Das Schöne daran ist die Effizienz. Sie treffen mit einer Maßnahme zwei Ziele. Sauberes Markup ist kein Zusatzaufwand für die Barrierefreiheit, den Sie neben der SEO leisten müssen. Es ist dieselbe Arbeit.
+
+## Der teure Irrtum: fett ist nicht gleich Überschrift
+
+Der häufigste Fehler in der Praxis ist der Glaube, es komme auf das Ergebnis für das Auge an. Also nimmt jemand einen normalen Textabsatz, macht ihn groß und fett, und hält damit die Überschrift für gesetzt.
+
+Technisch ist das ein Trugschluss, und die [WCAG 2.1](https://www.w3.org/TR/WCAG21/#info-and-relationships), also die internationalen Richtlinien für barrierefreie Inhalte, benennen ihn sogar direkt. Das Erfolgskriterium 1.3.1 mit dem Titel "Info and Relationships" auf der niedrigsten Stufe Level A verlangt, dass Struktur und Beziehungen, die man visuell erkennt, auch programmatisch bestimmbar sein müssen. Übersetzt: Was für das Auge wie eine Überschrift, eine Liste oder eine Tabelle aussieht, muss auch im Code als Überschrift, Liste oder Tabelle stehen, damit assistive Technologien es erfassen können. Optik allein reicht nicht.
+
+Ein konkretes Mini-Szenario aus dem Alltag. Ein Wiener Restaurant baut seine Speisekarte auf der Website als Reihe von fett formatierten Zeilen, gefolgt von normalen Absätzen. Für den Gast am Bildschirm sieht das nach sauberen Kategorien aus. Der Screenreader liest aber einen einzigen, endlosen Textblock ohne jede Gliederung vor, weil im Code keine Überschriften und keine Listen existieren. Der blinde Gast findet die Vorspeisen nicht, weil es aus Sicht der Technik gar keine Kategorie "Vorspeisen" gibt.
+
+Meine klare Empfehlung: Trennen Sie im Kopf immer zwischen "wie es aussieht" und "was es ist". Das Aussehen regelt CSS. Was ein Element bedeutet, regelt das HTML. Beides zu vermischen ist die Wurzel fast aller Struktur-Probleme.
+
+## Was in Österreich seit 2025 verpflichtend ist
+
+Bis hierher klingt sauberes Markup nach guter Praxis. Für viele österreichische Betriebe ist es inzwischen mehr als das, nämlich eine rechtliche Anforderung.
+
+Seit dem 28. Juni 2025 ist das [Barrierefreiheitsgesetz](https://www.sozialministerium.gv.at/Themen/Soziales/Menschen-mit-Behinderungen/Barrierefreiheitsgesetz.html), kurz BaFG, in Kraft. Es setzt die europäische Vorgabe um und verlangt für viele B2C-Online-Angebote Barrierefreiheit nach der Norm EN 301 549 beziehungsweise nach WCAG 2.1 auf Stufe Level AA. Betroffen sind zum Beispiel Online-Shops, E-Banking sowie Buchungs- und Ticketsysteme. Genau in diese WCAG-Anforderungen fällt auch das oben genannte Kriterium 1.3.1, also die saubere semantische Auszeichnung von Überschriften, Listen und Formular-Labels.
+
+Der Rahmen hat Zähne. Bei Verstößen drohen Verwaltungsstrafen von bis zu 80.000 Euro, überwacht wird das durch das Sozialministeriumservice. Es gibt eine Ausnahme für Kleinstunternehmen mit weniger als 10 Mitarbeitern und unter 2 Millionen Euro Umsatz, allerdings nur bei Dienstleistungen. Sobald ein solches Kleinstunternehmen online Produkte verkauft, greift die Ausnahme nicht mehr.
+
+Rechnen wir das kurz durch. Ein kleiner Online-Shop, der Weine aus der Steiermark verkauft, fällt trotz geringer Größe unter die Pflicht, weil er Produkte vertreibt. Ein einzelner Coach, der über seine Website nur Termine für eine Beratung anbietet, kann dagegen als Dienstleister unter die Kleinstunternehmer-Ausnahme fallen. Der Unterschied liegt nicht in der Größe, sondern in "Produkt oder Dienstleistung".
+
+Meine Empfehlung: Prüfen Sie ehrlich, in welche der beiden Kategorien Ihr Angebot fällt, bevor Sie sich auf eine Ausnahme verlassen. Wenn Sie im Netz verkaufen, gehen Sie besser davon aus, dass saubere Semantik für Sie Pflicht ist. Wenn Sie unsicher sind, lassen Sie es kurz fachlich einschätzen, statt auf gut Glück zu bauen. Dieser Beitrag ersetzt keine individuelle Rechtsberatung.
+
+## Der stille Bonus: Struktur und Ladegeschwindigkeit
+
+Es gibt noch einen dritten Gewinner sauberer Auszeichnung, und der wird oft übersehen. Schlankes, semantisch korrektes Markup lässt sich vom Browser effizienter darstellen als ein Wust aus verschachtelten div-Containern.
+
+Google bewertet die sogenannten [Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals) als Teil des Page-Experience-Signals im Ranking. Dazu gehören ein LCP unter 2,5 Sekunden für das schnelle Erscheinen des Hauptinhalts, ein INP unter 200 Millisekunden für flüssige Reaktion auf Eingaben und ein CLS unter 0,1 für ein stabiles Layout ohne springende Elemente. Sauberes, schlankes HTML wirkt hier indirekt mit, weil es Crawling und Rendering effizienter macht.
+
+Man sollte das nicht überzeichnen. Semantik allein macht eine langsame Seite nicht schnell. Aber sie ist Teil desselben Prinzips: weniger unnötiger Ballast im Code und dadurch bessere Ergebnisse für Nutzer wie für Suchmaschinen.
+
+## Schritt für Schritt: was Sie konkret tun sollten
+
+Genug Theorie. Hier ist eine praktische Reihenfolge, mit der Sie den Zustand Ihrer Seite prüfen und verbessern.
+
+1. Schauen Sie sich die Überschriften-Gliederung an. Es sollte genau eine h1 pro Seite geben, meist der Seitentitel. Darunter folgen h2 für die Hauptabschnitte und h3 für Unterpunkte. Ebenen dürfen nicht willkürlich übersprungen werden, also kein Sprung von h2 direkt auf h4.
+2. Öffnen Sie eine Seite und klicken Sie in den Entwicklerwerkzeugen des Browsers auf ein Element, das wie eine Überschrift aussieht. Steht dort ein h2 oder ein div? Wenn dort ein div oder span steht, haben Sie einen der oben beschriebenen Scheinüberschriften-Fälle gefunden.
+3. Prüfen Sie die Bereichs-Elemente. Gibt es ein echtes header, ein nav für die Navigation, ein main für den Hauptinhalt und ein footer? Diese Landmarks sind die groben Wegweiser für Screenreader.
+4. Kontrollieren Sie Listen und Tabellen. Eine Aufzählung sollte ein echtes Listen-Element sein, eine Datentabelle eine echte Tabelle mit Kopfzeilen, nicht ein optisch nachgebautes Raster aus einzelnen Containern.
+5. Testen Sie stichprobenartig mit einem Screenreader. Auf dem Mac ist VoiceOver eingebaut, unter Windows gibt es das kostenlose NVDA. Lassen Sie die Seite die Überschriften-Liste vorlesen. Ergibt sie eine sinnvolle Inhaltsübersicht, sind Sie auf dem richtigen Weg.
+
+Meine Empfehlung: Machen Sie diesen Durchgang einmal gründlich pro Seitentyp, also einmal für die Startseite, einmal für eine Leistungsseite, einmal für den Shop-Artikel. Danach wissen Sie, ob Ihre Vorlage sauber ist oder ob das Problem systematisch in der Vorlage steckt.
+
+## Häufige Fallen, die immer wieder auftauchen
+
+Ein paar Muster tauchen so oft auf, dass sie eine eigene Warnung verdienen.
+
+Die erste Falle ist die dekorative h1. Manche Baukästen packen das Logo oder einen Slogan in die h1, sodass die eigentliche Seitenaussage nur noch eine h2 ist. Die h1 sollte das Hauptthema der Seite benennen, nicht den Firmennamen dekorieren.
+
+Die zweite Falle sind Überschriften, die aus reinen Stil-Gründen vergeben werden. Jemand will einen Text kleiner haben und wählt deshalb h4 statt h2, obwohl es hierarchisch ein Hauptabschnitt ist. Die Ebene richtet sich nach der Bedeutung im Inhalt, nicht nach der gewünschten Schriftgröße. Die Größe stellen Sie über CSS ein.
+
+Die dritte Falle ist der leere alt-Text bei inhaltlich wichtigen Bildern oder umgekehrt ein alt-Text auf rein dekorativen Grafiken. Beides verwirrt Screenreader-Nutzer. Beschreiben Sie, was ein Bild aussagt, und lassen Sie den alt-Text bei reiner Deko bewusst leer.
+
+Die vierte Falle betrifft Formulare. Ein Eingabefeld ohne verknüpftes Label ist für einen Screenreader ein Rätsel. Gerade Kontakt- und Buchungsformulare, also die Stellen, an denen Umsatz entsteht, leiden darunter besonders.
+
+![Vergleich einer sauberen HTML-Struktur mit echten Überschriften und Landmarks gegenüber optisch fett gestyltem Text für Screenreader und SEO](/images/blog/warum-ist-eine-saubere-html-struktur-wichtig-fuer-screenreader.png)
+
+## Key Takeaways
+
+- Screenreader springen von Überschrift zu Überschrift. Laut WebAIM navigieren 71,6 Prozent der Nutzer zuerst über die Überschriften, und 88,8 Prozent finden diese Navigation nützlich.
+- Nur echte h1 bis h6 zählen. Ein optisch fett gestylter div oder span ist für Screenreader und Google unsichtbar.
+- Dieselbe saubere Struktur, die Barrierefreiheit schafft, hilft laut Google-SEO-Guide auch beim Verständnis und Ranking Ihrer Seite.
+- Die WCAG 2.1 verlangen im Kriterium 1.3.1, dass visuelle Struktur auch programmatisch bestimmbar ist, also im Code steht und nicht nur in der Optik.
+- In Österreich ist saubere Semantik seit dem Barrierefreiheitsgesetz vom 28. Juni 2025 für viele B2C-Online-Angebote Pflicht, mit Strafen bis zu 80.000 Euro. Kleinstunternehmen sind nur bei Dienstleistungen ausgenommen, nicht beim Produktverkauf.
+
+## Wie Sie den nächsten Schritt gehen
+
+Sauberes HTML zahlt gleich mehrfach: Sie werden bei Google besser gefunden, und rechtlich stehen Sie auf der sicheren Seite. Dass zugleich alle Besucher leichter zurechtkommen, kommt oben drauf. Der Aufwand steckt meist nicht in einzelnen Seiten, sondern in der zugrunde liegenden Vorlage, und dort lässt er sich einmal sauber lösen.
+
+Wenn Sie wissen möchten, ob Ihre Website die Anforderungen aus WCAG und dem österreichischen Barrierefreiheitsgesetz erfüllt, sehen wir uns das gerne konkret an. Schicken Sie uns über unser [Kontaktformular](/kontakt) einfach die Adresse Ihrer Seite, und wir sagen Ihnen ehrlich, wo Sie stehen und was wirklich dringend ist.

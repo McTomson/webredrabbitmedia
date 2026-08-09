@@ -2651,3 +2651,57 @@ quelle: https://www.cloudflare.com/application-services/products/cdn/
 quelle_name: Cloudflare - CDN (Global Content Delivery Network)
 geprueft_am: 2026-08-09
 recheck_nach: 2027-02-05
+
+## t64-2026-08-09-295
+cluster: 2
+keywords: warum, eine, saubere, html, struktur, wichtig, screenreader, suchmaschinen
+aussage: Laut WebAIM Screen Reader User Survey #10 (Dez. 2023–Jan. 2024) suchen 71,6 % der Screenreader-Nutzer Informationen auf einer langen Seite, indem sie sich zuerst durch die Ueberschriften (Headings) navigieren; 88,8 % finden die Navigation nach Ueberschriften-Ebenen sehr oder etwas nuetzlich. Ohne echte h1-h6-Auszeichnung (statt optisch fett gestylter div/span) faellt diese Navigations-Abkuerzung fuer sie komplett weg.
+quelle: https://webaim.org/projects/screenreadersurvey10/
+quelle_name: WebAIM - Screen Reader User Survey #10 Results
+geprueft_am: 2026-08-09
+recheck_nach: 2027-02-05
+
+## t64-2026-08-09-296
+cluster: 2
+keywords: warum, eine, saubere, html, struktur, wichtig, screenreader, suchmaschinen
+aussage: Die WCAG 2.1 fordern in Erfolgskriterium 1.3.1 'Info and Relationships' (Level A), dass Struktur und Beziehungen, die visuell dargestellt werden (z. B. Ueberschriften, Listen, Tabellen, Formular-Labels), programmatisch bestimmbar sein muessen – also ueber semantisches HTML-Markup und nicht nur ueber Optik transportiert werden, damit assistive Technologien sie erfassen koennen.
+quelle: https://www.w3.org/TR/WCAG21/#info-and-relationships
+quelle_name: W3C - Web Content Accessibility Guidelines (WCAG) 2.1, SC 1.3.1
+geprueft_am: 2026-08-09
+recheck_nach: 2027-02-05
+
+## t64-2026-08-09-297
+cluster: 2
+keywords: warum, eine, saubere, html, struktur, wichtig, screenreader, suchmaschinen
+aussage: MDN (Mozilla) haelt fest: Assistive Technologien wie Screenreader nutzen Ueberschriften und Landmarks (header, nav, main, aside, footer) als 'Wegweiser', um Inhalte zu navigieren; korrekt geschriebenes HTML definiert die Semantik der Inhalte maschinenlesbar, was zugleich fuer Barrierefreiheit UND Suchmaschinenoptimierung wesentlich ist.
+quelle: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/HTML
+quelle_name: MDN Web Docs - HTML: A good basis for accessibility
+geprueft_am: 2026-08-09
+recheck_nach: 2027-02-05
+
+## t64-2026-08-09-298
+cluster: 2
+keywords: warum, eine, saubere, html, struktur, wichtig, screenreader, suchmaschinen
+aussage: Google empfiehlt in seinem offiziellen SEO-Starter-Guide, beschreibende Ueberschriften-Tags und eine logische Seitenstruktur zu verwenden, damit Google den Aufbau und die Themen einer Seite besser verstehen kann – klare semantische Struktur hilft Crawlern, den wichtigsten Inhalt zu erfassen und passende Titel/Snippets auszuwaehlen.
+quelle: https://developers.google.com/search/docs/fundamentals/seo-starter-guide
+quelle_name: Google Search Central - SEO Starter Guide (Use descriptive headings / structure)
+geprueft_am: 2026-08-09
+recheck_nach: 2027-02-05
+
+## t64-2026-08-09-299
+cluster: 2
+keywords: warum, eine, saubere, html, struktur, wichtig, screenreader, suchmaschinen
+aussage: Fuer Oesterreich ist saubere semantische HTML-Struktur seit dem Barrierefreiheitsgesetz (BaFG), in Kraft seit 28. Juni 2025, faktisch verpflichtend: Es fordert fuer B2C-Online-Angebote (Online-Shops, E-Banking, Buchungs-/Ticketsysteme) Barrierefreiheit nach EN 301 549 bzw. WCAG 2.1 Level AA; bei Verstoessen drohen Verwaltungsstrafen von bis zu 80.000 Euro (Marktueberwachung durch das Sozialministeriumservice). Kleinstunternehmen (unter 10 Mitarbeiter und unter 2 Mio. Euro Umsatz) sind bei Dienstleistungen ausgenommen, nicht aber beim Produktverkauf.
+quelle: https://www.sozialministerium.gv.at/Themen/Soziales/Menschen-mit-Behinderungen/Barrierefreiheitsgesetz.html
+quelle_name: Bundesministerium f. Soziales - Barrierefreiheitsgesetz
+geprueft_am: 2026-08-09
+recheck_nach: 2027-02-05
+
+## t64-2026-08-09-300
+cluster: 2
+keywords: warum, eine, saubere, html, struktur, wichtig, screenreader, suchmaschinen
+aussage: Google nutzt die Core Web Vitals (u. a. LCP < 2,5 Sek., INP < 200 ms, CLS < 0,1) als Teil des Page-Experience-Rankingsignals – saubere, schlanke Auszeichnung wirkt damit indirekt auch auf die organische Sichtbarkeit, weil sie Crawling und Rendering effizienter macht.
+quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
+quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
+geprueft_am: 2026-08-09
+recheck_nach: 2027-02-05
