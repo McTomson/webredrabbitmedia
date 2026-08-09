@@ -2606,3 +2606,48 @@ quelle: https://web.redrabbit.media/tipps/10-fehler-beim-website-erstellen
 quelle_name: Red Rabbit Media - 10 toedliche Fehler beim Website-Erstellen
 geprueft_am: 2026-08-08
 recheck_nach: 2027-02-04
+
+## t63-2026-08-09-290
+cluster: 2
+keywords: content, delivery, network, wann, braucht, eine, website, eines
+aussage: Ein Content Delivery Network (CDN) ist ein weltweit verteiltes Netz aus Servern, das statische Inhalte (HTML, CSS, JavaScript, Bilder) auf Edge-Servern zwischenspeichert und vom geografisch naechstgelegenen Standort ausliefert; das verkuerzt Ladezeiten, entlastet den Ursprungsserver und bietet zusaetzlichen Schutz vor DDoS-Angriffen.
+quelle: https://www.cloudflare.com/learning/cdn/what-is-a-cdn/
+quelle_name: Cloudflare Learning Center - What is a CDN?
+geprueft_am: 2026-08-09
+recheck_nach: 2027-02-05
+
+## t63-2026-08-09-291
+cluster: 2
+keywords: content, delivery, network, wann, braucht, eine, website, eines
+aussage: Google empfiehlt offiziell, ein CDN einzusetzen: Weil TTFB jedem nutzerrelevanten Rendering-Wert wie FCP und LCP vorausgeht, sollte der Einsatz eines CDN 'hohe Prioritaet' haben, wenn eine Website noch keines nutzt — CDNs loesen das Naehe-Problem durch verteilte Server, die Inhalte physisch naeher am Nutzer cachen und moderne Protokolle wie HTTP/2 oder HTTP/3 nutzen.
+quelle: https://web.dev/articles/optimize-ttfb
+quelle_name: web.dev (Google) - Optimize Time to First Byte
+geprueft_am: 2026-08-09
+recheck_nach: 2027-02-05
+
+## t63-2026-08-09-292
+cluster: 2
+keywords: content, delivery, network, wann, braucht, eine, website, eines
+aussage: Core Web Vitals (Geschwindigkeit, Reaktionsfaehigkeit, visuelle Stabilitaet) sind ein bestaetigtes Ranking-Signal in Googles Suchsystemen — gute Werte garantieren zwar kein Top-Ranking, sind aber Teil der Bewertung; das macht Ladezeit-Optimierung (u.a. via CDN) auch fuer oesterreichische KMU-Websites SEO-relevant.
+quelle: https://developers.google.com/search/docs/appearance/page-experience
+quelle_name: Google Search Central - Understanding Page Experience
+geprueft_am: 2026-08-09
+recheck_nach: 2027-02-05
+
+## t63-2026-08-09-293
+cluster: 2
+keywords: content, delivery, network, wann, braucht, eine, website, eines
+aussage: Auf modernen Hosting-Plattformen ist ein CDN bereits eingebaut: Vercels CDN ist Teil jedes Deployments (automatisch, ohne Zusatzkonfiguration), betreibt 126+ Points of Presence in 51 Laendern und liefert statische Seiten/Marketing-Seiten aus dem CDN aus, ohne den Ursprungsserver anzufragen — ein separates CDN muss ein KMU dort also nicht extra beschaffen.
+quelle: https://vercel.com/docs/cdn
+quelle_name: Vercel Docs - CDN overview
+geprueft_am: 2026-08-09
+recheck_nach: 2027-02-05
+
+## t63-2026-08-09-294
+cluster: 2
+keywords: content, delivery, network, wann, braucht, eine, website, eines
+aussage: Ein CDN als Reverse-Proxy (z.B. Cloudflare) wird per DNS-Umstellung vor die bestehende Website geschaltet und speichert Kopien statischer Inhalte, um Ladezeiten, Bandbreiten- und CPU-Last des Ursprungsservers zu reduzieren; bei Ausfall eines Servers uebernimmt ('fail over') automatisch ein anderer — relevant fuer Verfuegbarkeit und Skalierung bei Traffic-Spitzen.
+quelle: https://www.cloudflare.com/application-services/products/cdn/
+quelle_name: Cloudflare - CDN (Global Content Delivery Network)
+geprueft_am: 2026-08-09
+recheck_nach: 2027-02-05
