@@ -60,8 +60,9 @@ export default function AGB() {
                             <section className="bg-gray-50 rounded-2xl p-8">
                                 <h2 className="text-2xl font-light text-gray-900 mb-6">2. Vertragsabschluss & Preisbindung</h2>
                                 <div className="space-y-4 text-gray-700">
-                                    <p>Ein Vertrag kommt durch das Absenden des vollständig ausgefüllten Kontaktformulars auf unserer Website zustande.</p>
-                                    <p>Nur in diesem Fall gilt der vergünstigte Fixpreis ab 790 € netto.</p>
+                                    <p>Über das Kontaktformular auf unserer Website stellt der Kunde eine unverbindliche Anfrage. Auf dieser Grundlage erhält der Kunde ohne Vorkasse 1-2 grafische Designvorschläge, wohin der Auftritt gehen kann. Ein verbindlicher Vertrag kommt erst durch die ausdrückliche Auftragserteilung des Kunden zustande.</p>
+                                    <p>Mit der Auftragserteilung wird eine Anzahlung von 40 % des vereinbarten Netto-Preises fällig (siehe Punkt 4).</p>
+                                    <p>Nur bei Beauftragung gilt der vergünstigte Fixpreis ab 1.250 € netto.</p>
                                     <ul className="list-disc list-inside space-y-2 ml-4">
                                         <li>Das Angebot ist 30 Tage gültig. Danach kann die Red Rabbit GmbH das Angebot einseitig ändern oder zurückziehen.</li>
                                     </ul>
@@ -92,8 +93,9 @@ export default function AGB() {
                                 <h2 className="text-2xl font-light text-gray-900 mb-6">4. Zahlungsbedingungen</h2>
                                 <div className="space-y-4 text-gray-700">
                                     <ul className="list-disc list-inside space-y-2 ml-4">
-                                        <li>Die Rechnung wird nach Projektfreigabe bzw. Veröffentlichung der Website gestellt.</li>
-                                        <li>Die Zahlung ist innerhalb von 7 Werktagen ab Rechnungsdatum fällig.</li>
+                                        <li>Mit der Auftragserteilung wird eine Anzahlung von 40 % des vereinbarten Netto-Preises in Rechnung gestellt.</li>
+                                        <li>Der Restbetrag wird nach Projektfreigabe bzw. Veröffentlichung der Website in Rechnung gestellt.</li>
+                                        <li>Die Zahlung ist jeweils innerhalb von 7 Werktagen ab Rechnungsdatum fällig.</li>
                                     </ul>
                                     <p className="mt-4">Bei Zahlungsverzug gelten folgende Mahngebühren:</p>
                                     <ul className="list-disc list-inside space-y-2 ml-4">
