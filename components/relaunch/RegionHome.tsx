@@ -46,9 +46,6 @@ export type RegionContent = {
     trustLine: string;
     availabilityHeading: string;
     availabilityText: string;
-    /** "Frag die KI"-Selbstbeweis (regionaler Prompt). */
-    fragKiText: string;
-    fragKiPrompt: string;
   };
   /** Eyebrow ueber der FAQ. */
   faqEyebrow: string;
@@ -109,63 +106,45 @@ export default function RegionHome({ region }: { region: RegionContent }) {
       <section
         className="rr rr-section"
         data-talos-station
-        data-talos-anchor="0.82"
-        data-talos-size="m"
+        data-talos-anchor="0.84"
+        data-talos-size="s"
         data-talos-appear="0.45"
         data-talos-gesture="wave"
         data-talos-mobile
       >
         <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 16 }}>{rb.eyebrow}</p>
-          <h2 className="rr-sub" style={{ marginBottom: 24, maxWidth: 820 }}>{rb.heading}</h2>
-          <div className="rr-prose" style={{ display: "grid", gap: 18 }}>
-            {rb.paragraphs.map((p, i) => (
-              <p key={i} className="rr-body-lg" style={{ color: "var(--rr-ink-soft)" }}>{p}</p>
-            ))}
-            <p className="rr-body-lg">{rb.reachLine}</p>
-          </div>
+          {/* Textspalte bewusst schmal + linksbuendig, damit Talos rechts frei bleibt
+              (Thomas 09.08.: Text darf Talos nicht verdecken). Mobil ist Talos klein
+              unten rechts, die Spalte darf voll breit sein. */}
+          <div style={{ maxWidth: 600 }}>
+            <p className="rr-eyebrow" style={{ marginBottom: 16 }}>{rb.eyebrow}</p>
+            <h2 className="rr-sub" style={{ marginBottom: 24 }}>{rb.heading}</h2>
+            <div className="rr-prose" style={{ display: "grid", gap: 18 }}>
+              {rb.paragraphs.map((p, i) => (
+                <p key={i} className="rr-body-lg" style={{ color: "var(--rr-ink-soft)" }}>{p}</p>
+              ))}
+              <p className="rr-body-lg">{rb.reachLine}</p>
+            </div>
 
-          {/* Anonyme Vertrauenszeile (keine Fremd-Firmen) */}
-          <p
-            className="rr-body"
-            style={{ marginTop: 32, fontSize: 19, fontStyle: "italic", color: "var(--rr-ink)", maxWidth: 720 }}
-          >
-            {rb.trustLine}
-          </p>
-
-          {/* Verfuegbarkeit statt Standort */}
-          <div className="rr-card rr-card--surface" style={{ marginTop: 32 }}>
-            <h3 className="rr-sub" style={{ marginBottom: 12, fontSize: 22 }}>{rb.availabilityHeading}</h3>
-            <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, lineHeight: 1.6 }}>{rb.availabilityText}</p>
-          </div>
-
-          {/* "Frag die KI" - Selbstbeweis des KI-Sichtbarkeit-USP */}
-          <div
-            className="rr-card"
-            style={{ marginTop: 24, borderColor: "var(--rr-red)", borderWidth: 1.5 }}
-          >
-            <p className="rr-eyebrow" style={{ marginBottom: 12, color: "var(--rr-red)" }}>Mach den Test</p>
-            <p className="rr-body-lg" style={{ marginBottom: 18 }}>{rb.fragKiText}</p>
+            {/* Anonyme Vertrauenszeile (keine Fremd-Firmen) */}
             <p
-              style={{
-                fontFamily: "var(--rr-font-ui)",
-                fontSize: 20,
-                fontWeight: 600,
-                color: "var(--rr-ink)",
-                background: "var(--rr-surface)",
-                borderRadius: "var(--rr-radius)",
-                padding: "14px 18px",
-                display: "inline-block",
-              }}
+              className="rr-body"
+              style={{ marginTop: 32, fontSize: 19, fontStyle: "italic", color: "var(--rr-ink)" }}
             >
-              &bdquo;{rb.fragKiPrompt}&ldquo;
+              {rb.trustLine}
+            </p>
+
+            {/* Verfuegbarkeit statt Standort */}
+            <div className="rr-card rr-card--surface" style={{ marginTop: 32 }}>
+              <h3 className="rr-sub" style={{ marginBottom: 12, fontSize: 22 }}>{rb.availabilityHeading}</h3>
+              <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, lineHeight: 1.6 }}>{rb.availabilityText}</p>
+            </div>
+
+            {/* Kontextuelle Links zu den geteilten Detailseiten (statt Preise zu duplizieren) */}
+            <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, marginTop: 32 }}>
+              Wie wir arbeiten, steht bei den <Link className="rr-link" href="/leistungen">Leistungen</Link>. Was es kostet, offen auf der <Link className="rr-link" href="/preise">Preisseite</Link>.
             </p>
           </div>
-
-          {/* Kontextuelle Links zu den geteilten Detailseiten (statt Preise zu duplizieren) */}
-          <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, marginTop: 32 }}>
-            Wie wir arbeiten, steht bei den <Link className="rr-link" href="/leistungen">Leistungen</Link>. Was es kostet, offen auf der <Link className="rr-link" href="/preise">Preisseite</Link>.
-          </p>
         </div>
       </section>
 

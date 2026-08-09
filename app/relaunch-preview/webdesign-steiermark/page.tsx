@@ -47,20 +47,17 @@ const steiermark: RegionContent = {
     'Ergebnisse, schwarz auf weiß. Auch aus der Steiermark, von Betrieben, die heute noch zu unseren Stammkunden zählen.',
   regionalBlock: {
     eyebrow: 'Webdesign in der Steiermark',
-    heading: 'Deine Kunden in der Steiermark suchen online. Die Frage ist nur, ob sie dich finden.',
+    heading: 'Dein nächster Kunde in der Steiermark googelt gerade. Sieht er dich?',
     paragraphs: [
-      'Gesucht wird am Handy, bei Google, immer öfter direkt in der KI. Wer da nicht oben steht, existiert für den Kunden nicht. Wir bauen dir die Seite, die oben steht. Und die aus dem Klick eine Anfrage macht, nicht nur ein Kompliment fürs Design.',
+      'Die Kaufentscheidung fällt am Handy, oft bevor du überhaupt merkst, dass wer gesucht hat. Wer da nicht auftaucht, ist für den schlicht nicht da. Blöd, aber so läuft es. Wir bauen dir die Seite, die auftaucht. Und die aus dem Klick eine Anfrage macht, nicht bloß ein schaut-nett-aus.',
     ],
     reachLine:
-      'Ob dein Kunde in Graz sucht, in Leoben, in der Obersteiermark oder im hintersten Ennstal: dich findet er.',
+      'Ob dein Kunde in Graz sucht, in Leoben oder irgendwo im Ennstal, wo grad noch ein Balken Empfang ist: gefunden wirst du.',
     trustLine:
-      'Einige Betriebe in der Steiermark haben uns früh ihr Vertrauen geschenkt. Sie zählen noch immer zu unseren Stammkunden. Enttäuscht wurde keiner.',
-    availabilityHeading: 'Wir sind da, wenn du uns brauchst.',
+      'Ein paar steirische Betriebe haben uns früh vertraut. Die meisten sind heute noch da. Rausgeworfen hat uns keiner.',
+    availabilityHeading: 'Nach dem Launch sind wir nicht plötzlich weg.',
     availabilityText:
-      'Keine Warteschleife, keine Ticket-Nummer. Du erreichst uns direkt, und wenn was ist, kümmern wir uns. Deine Seite ist bei uns kein Projekt, das nach dem Launch verstaubt. Sie wächst mit dir mit.',
-    fragKiText:
-      'Frag ChatGPT nach der besten Webagentur in der Steiermark. Genau da wollen wir stehen. Für dich, wenn dein Kunde das nächste Mal fragt.',
-    fragKiPrompt: 'Beste Webagentur Steiermark',
+      'Kein Ticket-System, keine Warteschleife. Du schreibst uns, wir kümmern uns. Deine Seite ist bei uns nichts, das man einmal abhakt und vergisst. Die wächst mit, so wie dein Betrieb.',
   },
   faqEyebrow: 'Häufige Fragen aus der Steiermark',
   faq: [
