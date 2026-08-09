@@ -59,9 +59,11 @@ const heroZFor = (vw: number) => (vw <= 700 ? -1700 : vw <= 1180 ? -400 : HERO_Z
 // (Thomas 08.08.: stand mittig gross ueber dem Story-Text -> kleiner + rechts,
 // damit der zentrierte Text frei bleibt). Bruchteil der halben Bildbreite.
 const heroEndFracFor = (vw: number) => (vw <= 700 ? 0.42 : null);
-// Handy-Hero: Talos tiefer setzen (Thomas 08.08.: stand zu weit oben).
+// Handy-Hero: Talos tiefer setzen (Thomas 08.08.: stand zu weit oben; 09.08.:
+// noch deutlich tiefer, damit der Story-Text DARUEBER frei lesbar bleibt).
 // Welt-Einheiten nach unten (Figur ~340 hoch), Fuesse naeher an die Unterkante.
-const HERO_MOBILE_DY = -55;
+// Bei der Handy-Hero-Tiefe (z=-1700) sind das grob ~0,4 px/Einheit.
+const HERO_MOBILE_DY = -240;
 const OFF_MARGIN = 320; // Luft hinter der Bildkante (offscreen) — inkl. Armreichweite, damit ganz oben NICHTS von Talos ins Bild ragt (Thomas 24.07., Bild 1)
 // Koerperhaltung im Stand: IMMER deutlich zur Bildmitte gedreht, nie nach aussen
 // (Thomas-Regel 24.07.: die alten 0.13 rad waren zu subtil, er las die Haltung als
@@ -105,7 +107,9 @@ const P_FRAME1 = 0.64;
 // 24.07.: l/xl verkleinert, weil Talos bei l/xl unten abgeschnitten war
 // (Thomas Bild 2/15: "etwas verkleinern"). Fuesse sollen im Bild bleiben.
 // m/l 24.07. eine Spur kleiner (Thomas, Kontrollraum war zu gross): m -70->-150, l 110->40.
-const SIZE_Z: Record<string, number> = { s: -420, sm: -200, m: -150, l: 40, xl: 220 };
+// xs (Thomas 09.08.): fuer die Handy-Station (Schluss-CTA) — kleiner als s,
+// damit die kleine Winke-/Nick-Figur unten rechts wenig verdeckt.
+const SIZE_Z: Record<string, number> = { xs: -1000, s: -420, sm: -200, m: -150, l: 40, xl: 220 };
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const smooth = (t: number) => {
@@ -123,6 +127,15 @@ interface Station {
   yaw: number;
   layer: "front" | "back";
   appear: number;
+  // Mobil (Thomas 09.08.): Stationen sind auf Handy/Tablet (<900px) normalerweise
+  // AUS (einspaltiger Text vertraegt keinen davorstehenden Roboter). Eine Station
+  // kann sich per data-talos-mobile explizit dazu freischalten (z. B. die
+  // Schluss-CTA, wo Talos unten rechts klein winken/nicken darf). Optionale
+  // Mobil-Overrides fuer Position/Groesse/Geste; null = Basiswert nutzen.
+  mobile: boolean;
+  mAnchor: number | null;
+  mSizeZ: number | null;
+  mGesture: string | null;
 }
 
 export default function TalosCompanionStage({
@@ -177,14 +190,10 @@ export default function TalosCompanionStage({
     // auf dem Desktop zu streng; nur echtes fehlendes WebGL2 schaltet dort ab).
     const mem = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
     const lowMem = mem !== undefined && mem <= 4 && window.innerWidth < 900;
-    // TEMP-Diagnose (Thomas 09.08.): sichtbar in der Konsole, wo Talos stoppt.
-    try { console.log("[RRTALOS] gate " + JSON.stringify({ webgl2, mem, w: window.innerWidth, lowMem, stationsOnly })); } catch {}
     if (!webgl2 || lowMem) {
-      try { console.log("[RRTALOS] -> Dashboard-Fallback (kein WebGL2 oder wenig RAM)"); } catch {}
       setNo3d(true);
       return startNo3dDashboard();
     }
-    try { console.log("[RRTALOS] WebGL ok -> lade 3D-Szene"); } catch {}
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
@@ -246,6 +255,10 @@ export default function TalosCompanionStage({
         yaw: parseFloat(el.dataset.talosYaw ?? "0"),
         layer: (el.dataset.talosLayer as "front" | "back") ?? "back",
         appear: parseFloat(el.dataset.talosAppear ?? "0.18"),
+        mobile: el.dataset.talosMobile != null && el.dataset.talosMobile !== "0",
+        mAnchor: el.dataset.talosMobileAnchor != null ? parseFloat(el.dataset.talosMobileAnchor) : null,
+        mSizeZ: el.dataset.talosMobileSize != null ? SIZE_Z[el.dataset.talosMobileSize] ?? null : null,
+        mGesture: el.dataset.talosMobileGesture ?? null,
       }));
     };
 
@@ -376,13 +389,16 @@ export default function TalosCompanionStage({
       let best: Station | null = null;
       let bestScore = 0;
       for (const s of stations) {
+        // Handy/Tablet: nur ausdruecklich freigeschaltete Stationen (data-talos-
+        // mobile) kommen vor — der Rest bleibt aus (Text-Lesbarkeit). Frueher war
+        // hier ein pauschales best=null fuer <900px.
+        if (mobile && !s.mobile) continue;
         const r = s.el.getBoundingClientRect();
         if (r.bottom < 0 || r.top > vh) continue;
         const c = r.top + r.height / 2;
         const score = 1 - Math.abs(c - vh / 2) / (r.height / 2 + vh / 2);
         if (score > bestScore) { bestScore = score; best = s; }
       }
-      if (mobile) best = null;
 
       // Erst aktiv, wenn die Sektion wirklich da ist (Thomas: er erschien nach
       // dem Bumper zu frueh/zu schnell) — pro Station eigene Schwelle moeglich.
@@ -390,9 +406,13 @@ export default function TalosCompanionStage({
 
       if (best) {
         setLayer(best.layer);
-        const targetZ = best.sizeZ;
+        // Mobil-Overrides (falls gesetzt), sonst Basiswerte der Station.
+        const effAnchor = mobile && best.mAnchor != null ? best.mAnchor : best.anchor;
+        const effSizeZ = mobile && best.mSizeZ != null ? best.mSizeZ : best.sizeZ;
+        const effGesture = mobile && best.mGesture != null ? best.mGesture : best.gesture;
+        const targetZ = effSizeZ;
         const half = halfWidthAt(targetZ);
-        const targetX = (best.anchor * 2 - 1) * half;
+        const targetX = (effAnchor * 2 - 1) * half;
         if (opacity < 0.05) {
           // Unsichtbar -> Position setzen, DANN einblenden (kein Teleport im Bild).
           curX = targetX; curZ = targetZ; walkPhase = 0;
@@ -413,8 +433,8 @@ export default function TalosCompanionStage({
         // leicht zur Mitte/rechts, rechts spiegelverkehrt). Beim Gehen frei.
         motion?.setHeadYaw(walking ? 0 : userLookYaw(curX, curZ) - curYaw);
         // Nicken/Zwinkern laufen als 10-s-Loop, solange die Station aktiv ist.
-        motion?.setNodLoop(best.gesture === "nod");
-        motion?.setWinkLoop(best.gesture === "wink");
+        motion?.setNodLoop(effGesture === "nod");
+        motion?.setWinkLoop(effGesture === "wink");
         opacity = damp(opacity, 1, 3.2, dt);
         if (lastStation !== best) { lastStation = best; gestureDone = false; }
         if (!gestureDone && bestScore > 0.45 && !walking) {
@@ -422,9 +442,9 @@ export default function TalosCompanionStage({
           // Thomas 07.08. (Screenshots): winkt mit der falschen Hand ->
           // "wave" wieder auf "primary" gedreht (war seit 25.07. "other");
           // "wave2" bleibt als Sonderfall die jeweils andere Hand.
-          if (best.gesture === "wave") motion?.triggerGreeting("primary");
-          else if (best.gesture === "wave2") motion?.triggerGreeting("other");
-          else if (best.gesture === "bow") motion?.triggerBow();
+          if (effGesture === "wave") motion?.triggerGreeting("primary");
+          else if (effGesture === "wave2") motion?.triggerGreeting("other");
+          else if (effGesture === "bow") motion?.triggerBow();
         }
       } else {
         lastStation = null;
@@ -515,7 +535,6 @@ export default function TalosCompanionStage({
     };
     const onSceneLoaded = (splineScene: unknown) => {
         if (disposed) return;
-        try { console.log("[RRTALOS] Szene GELADEN -> Talos wird gebaut"); } catch {}
         scene.add(splineScene as never);
         rig = buildTalosRig(THREE, splineScene);
         if (rig) {
@@ -563,19 +582,16 @@ export default function TalosCompanionStage({
     // Original-CDN versuchen. Erst wenn auch das weg ist: 3D aus,
     // Kommandozentrale scroll-gesteuert (wie im no-WebGL-Fall).
     const tryLoad = (url: string, isFallback: boolean) => {
-      try { console.log("[RRTALOS] loader.load START url=" + url + (isFallback ? " (CDN-Fallback)" : " (same-origin)")); } catch {}
       loader.load(
         url,
         onSceneLoaded,
         undefined,
-        (err) => {
+        () => {
           if (disposed) return;
-          try { console.log("[RRTALOS] loader.load FEHLER url=" + url + " err=" + (err && (err as Error).message ? (err as Error).message : String(err))); } catch {}
           if (!isFallback) {
             tryLoad(SCENE_FALLBACK, true);
             return;
           }
-          try { console.log("[RRTALOS] beide Quellen weg -> Dashboard-Fallback"); } catch {}
           teardown();
           setNo3d(true);
           startNo3dDashboard();

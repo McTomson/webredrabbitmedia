@@ -158,8 +158,23 @@ export default function TalosLeistungPreviewPage() {
         </div>
         {/* Talos RECHTS, Text links. Thomas 07.08. (2. Runde): bei anchor 0.8 +
             sm ragte der Winke-Arm rechts aus dem Bild -> kleiner (size s) und
-            eine Spur weiter herein (0.76). */}
-        <div data-rr-snap data-talos-station data-talos-anchor="0.8" data-talos-size="s" data-talos-gesture="wave" data-talos-layer="front">
+            eine Spur weiter herein (0.76).
+            Thomas 09.08.: Auf Handy/Tablet soll Talos hier AUCH erscheinen (sonst
+            per <900px-Regel aus). data-talos-mobile schaltet NUR diese Station frei;
+            Mobil-Overrides = kleiner (xs), rechts (0.82), kleines Nicken statt Winken,
+            damit er wenig verdeckt. */}
+        <div
+          data-rr-snap
+          data-talos-station
+          data-talos-anchor="0.8"
+          data-talos-size="s"
+          data-talos-gesture="wave"
+          data-talos-layer="front"
+          data-talos-mobile="1"
+          data-talos-mobile-anchor="0.82"
+          data-talos-mobile-size="xs"
+          data-talos-mobile-gesture="nod"
+        >
           <SiteClosing
             lines={[
               'Du hast Talos kennengelernt.',
