@@ -110,9 +110,9 @@ const P_FRAME1 = 0.64;
 // (Thomas Bild 2/15: "etwas verkleinern"). Fuesse sollen im Bild bleiben.
 // m/l 24.07. eine Spur kleiner (Thomas, Kontrollraum war zu gross): m -70->-150, l 110->40.
 // xs (Thomas 09.08.): fuer die Handy-Station (Schluss-CTA) — kleiner als s,
-// damit die kleine Nick-Figur unten rechts wenig verdeckt. 2. Runde ("zu gross,
-// mach die Haelfte"): Distanz verdoppelt (z -1000 -> -2700) = halbe Groesse.
-const SIZE_Z: Record<string, number> = { xs: -2700, s: -420, sm: -200, m: -150, l: 40, xl: 220 };
+// damit die kleine Figur unten rechts wenig verdeckt. Runde 2 halbierte auf
+// z -2700; Runde 3 ("eine Spur groesser") -> z -2350 (~+11% Groesse).
+const SIZE_Z: Record<string, number> = { xs: -2350, s: -420, sm: -200, m: -150, l: 40, xl: 220 };
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const smooth = (t: number) => {

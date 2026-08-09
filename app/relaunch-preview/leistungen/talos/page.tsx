@@ -171,9 +171,9 @@ export default function TalosLeistungPreviewPage() {
           data-talos-gesture="wave"
           data-talos-layer="front"
           data-talos-mobile="1"
-          data-talos-mobile-anchor="0.82"
+          data-talos-mobile-anchor="0.78"
           data-talos-mobile-size="xs"
-          data-talos-mobile-gesture="nod"
+          data-talos-mobile-gesture="bow"
         >
           <SiteClosing
             lines={[
