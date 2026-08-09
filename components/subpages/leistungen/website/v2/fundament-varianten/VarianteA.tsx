@@ -55,15 +55,21 @@ const GROUPS: Group[] = [
   {
     heading: "Was auf der Seite steckt",
     items: [
+      {
+        tag: "Talos",
+        text: "Talos, dein Copilot: Texte und Bilder änderst du selbst, und du siehst an einem Ort, was auf deiner Seite läuft.",
+      },
       { tag: "Design", text: "Individuelles Design, gebaut auf deinen Betrieb." },
       { tag: "Handy", text: "Sauber am Handy, weil da deine Kunden suchen." },
       {
         tag: "Recht",
-        text: "Rechtssicher nach AT-Recht: Impressum und Datenschutz passen.",
+        text: "Impressum und Datenschutz nach AT-Recht, sauber aufgesetzt.",
       },
-      { tag: "SEO", text: "Grund-SEO, damit dich Leute aus deiner Gegend finden." },
+      {
+        tag: "Gefunden werden",
+        text: "So gebaut, dass Google und KI-Suchen wie ChatGPT deine Seite verstehen.",
+      },
       { tag: "Kontakt", text: "Kontaktformular, das direkt bei dir ankommt." },
-      { tag: "Domain", text: "Eigene Domain, gehört dir." },
     ],
   },
   {
@@ -84,10 +90,6 @@ const GROUPS: Group[] = [
       {
         tag: "Ein Wächter passt auf",
         text: "Geht etwas nicht, merken wir es meist vor dir. Ausfälle fängt die Seite selbst ab.",
-      },
-      {
-        tag: "Monatlicher Check",
-        text: "Einmal im Monat schauen wir drauf, ob alles rund läuft und aktuell ist.",
       },
       {
         tag: "Pflege inklusive",

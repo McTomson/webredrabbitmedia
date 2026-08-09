@@ -26,10 +26,10 @@ export default function RisikoBand() {
           Dein Risiko liegt bei uns, nicht bei dir<span style={{ color: '#f77480' }}>.</span>
         </p>
         <p className="rr-body-lg rp-risiko__body">
-          Du bekommst zuerst 1-2 grafische Vorschläge zu sehen, wohin dein Auftritt gehen kann,
-          ohne Vorkasse. Gefällt dir die Richtung und du erteilst den Auftrag, bekommst du ein
-          konkretes Angebot und leistest 40 % Anzahlung. Bis dahin liegt das Risiko bei uns,
-          nicht bei dir.
+          Du bekommst zuerst 1-2 grafische Vorschläge von unserem Designer-Team zu sehen, wohin
+          dein Auftritt gehen kann, ohne Vorkasse. Gefällt dir die Richtung und du erteilst den
+          Auftrag, bekommst du ein konkretes Angebot und leistest 40 % Anzahlung. Bis dahin liegt
+          das Risiko bei uns, nicht bei dir.
         </p>
       </div>
 

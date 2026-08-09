@@ -29,11 +29,11 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: 'Gehört mir die Website am Ende wirklich?',
-    a: 'Ja, ganz. Sobald die Seite live ist, gehört sie dir, mit Domain, Texten, Bildern und allem, was drinsteckt. Wir sitzen nicht auf deinem Zugang und halten dich nicht fest. Willst du irgendwann zu jemand anderem, nimmst du deine Seite einfach mit.',
+    a: 'Ja, ganz. Sobald die Seite live ist, gehört sie dir, mit Texten, Bildern und allem, was drinsteckt. Wir sitzen nicht auf deinem Zugang und halten dich nicht fest. Willst du irgendwann zu jemand anderem, nimmst du deine Seite einfach mit.',
   },
   {
     q: 'Kann ich Texte und Bilder selbst ändern?',
-    a: 'Ja. Du bekommst einen einfachen Zugang, in dem du Texte und Bilder mit ein paar Klicks selbst tauschst, ganz ohne Technikwissen. Und wenn du lieber willst, dass wir das übernehmen, sagst du kurz Bescheid und wir ziehen es für dich nach.',
+    a: 'Ja. Über Talos, deinen Copilot, tauschst du Texte und Bilder mit ein paar Klicks selbst, ganz ohne Technikwissen. Talos ist bei jeder Website dabei. Und wenn du lieber willst, dass wir das übernehmen, sagst du kurz Bescheid und wir ziehen es für dich nach.',
   },
   {
     q: 'Ist die Seite rechtlich sauber, also Impressum und Datenschutz?',

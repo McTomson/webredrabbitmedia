@@ -123,20 +123,29 @@ export default function PreiseMatrix() {
           Drei Pakete, ein Prinzip<span style={{ color: 'var(--rr-red)' }}>.</span>
         </h2>
         <p className="rr-body-lg rp-matrix__intro">
-          Du weißt vorher, woran du bist. Wähl das Paket, das zu deinem Betrieb passt, und
-          wachse später jederzeit in die nächste Stufe. Die Preise sind Startpreise: je nach
-          Anforderung kann sich der Umfang verschieben. Dein genaues Angebot bekommst du bei
-          der Auftragserteilung.
+          Das Fundament oben ist in jedem Paket dabei. Hier siehst du nur, was sich
+          unterscheidet. Wähl die Stufe, die zu deinem Betrieb passt, und wachse später
+          jederzeit in die nächste.
         </p>
 
         {STUFEN.map((s, i) => (
           <StufeMatrix key={s.name} stufe={s} defaultActive={i === 0 ? 0 : null} />
         ))}
 
+        <div className="rp-matrix__ab">
+          <p className="rp-matrix__ab-h">Warum „ab“?</p>
+          <p className="rp-matrix__ab-body">
+            Der Startpreis ist deine fertige, komplette Seite, alles dabei, um loszulegen. Und
+            weil wir selbst programmieren, ist nach oben alles offen: besonderes Design,
+            Sonderfunktionen, etwas ganz auf deinen Betrieb Gebautes. Was du dir zusätzlich
+            wünschst, setzen wir um und rechnen es fair dazu. Deinen genauen Preis siehst du,
+            bevor du zusagst. Bis dahin zahlst du keinen Cent.
+          </p>
+        </div>
+
         <p className="rr-meta rp-matrix__custom">
           Große oder besondere Projekte, etwa Shops oder Sonderfunktionen, planen wir
-          individuell. Zusatzleistungen bekommst du auf Anfrage. Sprich uns einfach an, dann
-          finden wir den passenden Rahmen.
+          individuell. Zusatzleistungen bekommst du auf Anfrage.
         </p>
       </div>
 
@@ -160,8 +169,29 @@ export default function PreiseMatrix() {
           max-width: 56ch;
           margin: 0 0 clamp(20px, 3vw, 32px);
         }
+        .rp-matrix__ab {
+          margin-top: clamp(44px, 6vw, 72px);
+          padding-top: clamp(24px, 3vw, 32px);
+          border-top: 1px solid rgba(28, 40, 55, 0.14);
+          max-width: 64ch;
+        }
+        .rp-matrix__ab-h {
+          font-family: var(--rr-font-display);
+          font-weight: 700;
+          font-size: clamp(1.2rem, 2vw, 1.6rem);
+          letter-spacing: -0.01em;
+          color: var(--rr-navy);
+          margin: 0 0 10px;
+        }
+        .rp-matrix__ab-body {
+          font-family: var(--rr-font-ui);
+          font-size: 15.5px;
+          line-height: 1.62;
+          color: var(--rr-ink-soft);
+          margin: 0;
+        }
         .rp-matrix__custom {
-          margin-top: clamp(40px, 5vw, 64px);
+          margin-top: clamp(28px, 4vw, 40px);
           max-width: 60ch;
         }
 

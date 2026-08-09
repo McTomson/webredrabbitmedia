@@ -22,21 +22,37 @@ export default function TalosTalenteFahrt() {
       <div className="rp-talos-intro">
         <div className="rp-talos-intro__grid">
           <div className="rp-talos-intro__text">
-            <p className="wd-eyebrow wd-eyebrow--ondark">Wenn du mehr willst</p>
+            <p className="wd-eyebrow wd-eyebrow--ondark">Was noch möglich ist</p>
             <h2 className="rr-statement rp-talos-intro__h2">
               Talos übernimmt, was liegen bleibt<span style={{ color: 'var(--rr-red)' }}>.</span>
             </h2>
             <p className="rp-talos-intro__lead">
-              Über die Website hinaus kann Talos weitere Aufgaben für deinen Betrieb übernehmen.
-              Was genau dazukommt, stimmen wir bei Bedarf gemeinsam ab — solche Zusatzleistungen
-              gibt es auf Anfrage.
+              Talos, dein Copilot, ist schon in jeder Website dabei. Wenn du willst, kann er über
+              die Website hinaus Aufgaben in deinem Betrieb übernehmen. Alles auf deinen Betrieb
+              gebaut, auf Anfrage. Ein paar Beispiele:
             </p>
-            {/* Ehrlichkeit zum Produktstand (Thomas 30.07.): zum Start ist das
-                Cockpit dabei, Talos und die KI-Agenten folgen. */}
-            <p className="rp-talos-intro__soon">
-              Dein Cockpit ist ab dem ersten Tag dabei, die Talos-Talente schalten wir
-              Schritt für Schritt frei.
-            </p>
+            <ul className="rp-talos-intro__ex">
+              <li>
+                <span className="rp-talos-intro__ex-t">Empfang</span> nimmt Anfragen auf, bucht
+                Termine und fasst automatisch nach, wenn ein Anruf verpasst wurde.
+              </li>
+              <li>
+                <span className="rp-talos-intro__ex-t">Chatbot</span> beantwortet Besucherfragen
+                rund um die Uhr, mit deinen Firmendaten.
+              </li>
+              <li>
+                <span className="rp-talos-intro__ex-t">Der Schreiber</span> hält dich mit
+                Beiträgen bei Google und KI sichtbar.
+              </li>
+              <li>
+                <span className="rp-talos-intro__ex-t">Laufende Optimierung</span> bringt deine
+                Seite Monat für Monat weiter nach vorne, als optionales Monatspaket.
+              </li>
+              <li>
+                <span className="rp-talos-intro__ex-t">Dein Problem steht hier nicht?</span> Dann
+                bauen wir&apos;s. Wir programmieren und binden an, was dein Betrieb braucht.
+              </li>
+            </ul>
             <p className="rp-talos-intro__pos">
               Unser Team hat zusammen 135 Jahre Erfahrung. Dieses Wissen steckt in Talos. Du
               bekommst also nicht nur eine KI, sondern alles, was wir können, und wir sitzen
@@ -109,27 +125,36 @@ export default function TalosTalenteFahrt() {
           max-width: 52ch;
           margin: 0 0 26px;
         }
-        .rp-talos-intro__soon {
-          font-family: var(--rr-font-ui);
-          font-size: clamp(0.9rem, 1.1vw, 1rem);
-          line-height: 1.55;
-          color: rgba(255, 255, 255, 0.82);
-          max-width: 52ch;
+        .rp-talos-intro__ex {
+          list-style: none;
           margin: 0 0 26px;
+          padding: 0;
+          max-width: 54ch;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
         }
-        .rp-talos-intro__soon::before {
-          content: "Bald verfügbar";
-          display: inline-block;
-          border: 1px solid var(--rr-red);
-          color: #fff;
+        .rp-talos-intro__ex li {
+          font-family: var(--rr-font-ui);
+          font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+          line-height: 1.5;
+          color: rgba(255, 255, 255, 0.82);
+          padding-left: 18px;
+          position: relative;
+        }
+        .rp-talos-intro__ex li::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0.62em;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
           background: var(--rr-red);
-          font-size: 11px;
+        }
+        .rp-talos-intro__ex-t {
+          color: #fff;
           font-weight: 700;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          padding: 3px 9px;
-          margin-right: 10px;
-          vertical-align: middle;
         }
         .rp-talos-intro__pos {
           font-family: var(--rr-font-ui);

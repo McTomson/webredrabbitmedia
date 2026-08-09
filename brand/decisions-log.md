@@ -228,3 +228,46 @@ beim naechsten Mal ansprechen (Memory project_redrabbit_sales_onepager_talos).
 - **40 % Anzahlung nach Auftragserteilung, in die AGB:** Mit der Auftragserteilung wird eine Anzahlung von 40 % des vereinbarten Netto-Preises faellig, der Rest nach Freigabe/Veroeffentlichung. In app/relaunch-preview/agb/page.tsx eingetragen: §2 (verbindlicher Vertrag entsteht erst durch die Auftragserteilung, nicht schon durch das Kontaktformular; Anfrage ist unverbindlich) + §4 (40 % Anzahlung / Restbetrag nach Veroeffentlichung). KONKRETISIERT die 15.06.-Regel "Anzahlung erst bei Auftragszusage" (bisher ohne Prozentsatz). Auf /preise (Risiko-Band + FAQ) sichtbar mit "40 %".
 - **FAQ-Preise korrigiert:** /relaunch-preview/faq (page.tsx + faq-demo/demo.body.html) zeigte noch veraltete 950/2.900 -> auf 1.250/2.850 gebracht (Thomas-Freigabe trotz Parallel-WIP-Status der Datei; nur die betroffenen Zeilen chirurgisch per git add -p gestaged).
 - **OFFEN/FLAG:** Die LIVE-Legacy-AGB (app/agb/AGBClient.tsx) hat die 40 %-Klausel NICHT — bewusst nicht angefasst (aendert sofort geltende Rechtstexte der Produktions-Domain). Mit Thomas klaeren, ob die Legacy-AGB gleich nachgezogen werden soll. "Cockpit"->"Copilot"-Nachzug (01.08.) weiterhin offen, hier nicht angefasst.
+
+## 2026-08-09 — Preisseite INHALT durchdefiniert (Brainstorm + grill-me mit Thomas, last30days-Research)
+Ergebnis einer Brainstorm-/Grill-Session (Marketing-Skills pricing/offers/copywriting + last30days-Community-Research). Preis-STRUKTUR (1.250/2.850/4.900, "ab", 1-2 Vorschlaege, 40 % Anzahlung) bleibt wie 08.08.; hier wird der INHALT/die Darstellung festgezurrt. Umsetzung folgt separat.
+
+**Leitprinzipien (ganze Seite):**
+- **Auto-Modell** als Rueckgrat: Serienausstattung (Fundament) -> Ausstattungslinien (3 Pakete) -> Sonderausstattung (Extras, auf Anfrage).
+- **McDonald's-einfach:** klares Kern-Menue, Extras ruhig getrennt, keine Zahlen-Wand. Einfachheit schlaegt Vollstaendigkeit (Thomas-Grundsatz + Research: Kunden-Frust = Verwirrung/Buzzwords).
+- **WAS statt WIE:** nie die Technik-Mechanik nennen (kein Google Search Console/Tag Manager/Heatmap/WordPress). Nur den Nutzen. "Zauberkiste zu."
+- **Nur Belegbares:** keine unhaltbaren Garantien. "ausfallsicher" RAUS ("schnell und stabil gehostet, du kuemmerst dich um nichts"); "rechtssicher" -> "Impressum & Datenschutz nach AT-Recht sauber aufgesetzt".
+- **Ton: auffordern/challengen, nicht beruhigen** (Thomas-Regel). "Kein Risiko" RAUS. Kante, aber keine Arroganz.
+
+**1. Fundament ("In jedem Paket dabei", einmal gezeigt, aufklappbare Ueberpunkte):**
+- **Talos, dein Copilot:** Texte & Bilder selbst aendern; an einem Ort sehen, was auf der Seite laeuft (Besucher/Herkunft/Klicks/Anfragen) im Klartext.
+- **Gefunden werden:** so gebaut, dass Google UND KI-Suchen (ChatGPT) die Seite sauber verstehen (Bau-Qualitaet, KEIN Ranking-Versprechen).
+- **Individuelles Design** auf den Betrieb (kein Template), **perfekt am Handy**, **Technik & Sicherheit** (schnell/stabil gehostet + Backups), **Rechtliches** (AT-Recht), **Kontaktformular**.
+- **Einrichtung & Uebertragung dabei** (Aufsetzen/Uebertragen/Mail verbinden) — Anker: "anderswo oft rund 350 € extra, bei uns Teil des Preises" (Thomas' Praxis-Zahl; verteidigbar formulieren, nicht als Fixzahl). Bewusst NICHT extra verrechnen = Anti-Nickel-and-Diming.
+- **Domain: taucht NICHT auf** (Thomas: machen wir nicht, kein Trust-Signal, gar nicht erwaehnen). -> "Eigene Domain"-Zeilen aus STUFEN (VarianteA.tsx) RAUS.
+
+**2. Talos-Definition (gelockt):** Talos = das Cockpit, das wir mit einbauen, Name durchgaengig "Talos, dein Copilot" ("Copilot"/"Cockpit" als Einzelbegriffe fallen weg). Basis (in JEDEM Paket, inkl. Starter): Bilder/Texte selbst tauschen + Standard-Datenquellen angebunden und aufbereitet angezeigt (Standard-Layout, das WIR definieren). Customizing der Darstellung = kostet mehr. Mehr Werkzeuge (Content-Automatik, Research, Lead-Gen) = spaeter/auf Anfrage. **Talos NICHT pro Paket staffeln** (Over-Engineering, killt Einfachheit) — ein Versprechen ueberall, skaliert unsichtbar mit dem Seitenumfang.
+
+**3. Die drei Pakete (nur der Unterschied; Fundament ueberall dabei):**
+- **Starter** (ab 1.250): One-Pager. Selbst-aendern via Talos ist auch hier dabei (Thomas: ja) — Ziel bleibt Business zu verkaufen, aber nicht ueber Entzug des Edit-Knopfs.
+- **Business — Meistgewaehlt** (ab 2.850): mehrseitig + lokal gezielt gefunden werden + auf Anfragen gebaut ("damit das Telefon klingelt" — staerkste Research-Erkenntnis: Ergebnis schlaegt Design).
+- **Premium** (ab 4.900): grosser skalierbarer Umfang + Inhalte, die mitwachsen (Ratgeber/Blog) + dauerhafte content-getriebene Sichtbarkeit + vorqualifizierende Formulare.
+- **Sichtbarkeits-Leiter:** Fundament = "fuer Google+KI gebaut" (ueberall) / Business = lokal / Premium = dauerhaft+content-getrieben.
+- **Monitoring:** automatisches Aufpassen = Fundament (gratis fuer uns/ehrlich). **Kein gratis Monatscheck** — menschlicher Monatscheck wird bezahltes Extra (siehe 4). "Zahlen im Klartext" ist jetzt Fundament (via Talos), RAUS aus Premium-Differenzierer.
+
+**4. Extras — "Was noch moeglich ist"** (EINE ruhige Sektion nach den Paketen, auf Anfrage, KEINE Preise, keine Schalter — NICHT der Baukasten von frueher). Reihenfolge nach Research-Nachfrage:
+1. **Empfang** (Anfragen/Termine/verpasste Anrufe nachfassen) — zieht am staerksten (NICHT Content/Social zuerst).
+2. **Chatbot** (Besucherfragen rund um die Uhr).
+3. **Der Schreiber** (sichtbar bleiben bei Google + KI).
+4. **Laufende Optimierung** = optionales Monatspaket, an sichtbare Leistung gekoppelt (Monatsreport + benannte Optimierungen; NICHT "wir schauen mal drauf" -> Research-Warnung "$400 fuer statische Seite"-Empoerung).
+5. **Custom-Bumper:** "Dein Problem steht hier nicht? Dann bauen wir's." (individuelle Loesungen, on-brand Entwickler-statt-Baukasten).
+
+**5. "ab"-Logik (positiv, nicht abschreckend; "nicht mehr/nicht weniger" RAUS):**
+> "Warum 'ab'? Der Startpreis ist deine fertige, komplette Seite — alles dabei, um loszulegen. Und weil wir selbst programmieren, ist nach oben alles offen: besonderes Design, Sonderfunktionen, etwas ganz auf deinen Betrieb Gebautes. Was du dir zusaetzlich wuenschst, setzen wir um und rechnen es fair dazu — deinen genauen Preis siehst du, bevor du zusagst. Bis dahin zahlst du keinen Cent."
+
+**6. Ablauf + CTA:**
+- Unverbindliche Anfrage -> **1-2 grafische Vorschlaege von unserem Designer-Team, ohne Vorkasse** (Thomas: "1-2" final; "Designer-Team" als Agentur-Signal — Konsistenz zur ueber-uns-Seite pruefen) -> gefaellt die Richtung -> Auftrag -> 40 % Anzahlung -> bauen -> Rest nach Veroeffentlichung (deckt AGB).
+- Badge bleibt: **"0 € bis zum Vorschlag"** (kuehne Tatsache, kein Beruhigungs-Satz).
+- **CTA = Richtung B (Thomas):** Button "Wir legen vor. Du entscheidest." / Microcopy "Zwei Design-Vorschlaege ohne Vorkasse. Erst wenn die Richtung sitzt, bauen wir."
+
+**OFFEN fuer die Umsetzung:** STUFEN-Daten (VarianteA.tsx) umbauen (Fundament rausziehen, Domain raus, "Zahlen im Klartext"/Monatscheck aus Premium, "Dein Cockpit"/"Talos kommt bald" -> Talos-ist-dabei); Fundament-Block + Extras-Sektion neu; CTA-Text ("Kostenlosen Entwurf holen" -> B) — liegt teils in SiteClosing.tsx (FREMD-WIP, nicht ohne Abstimmung anfassen). Deployment-350-Anker ggf. gegen Markt absichern.

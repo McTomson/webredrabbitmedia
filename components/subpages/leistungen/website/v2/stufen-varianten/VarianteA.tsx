@@ -28,172 +28,76 @@ type Stufe = {
   merkmale: Merkmal[];
 };
 
-// Merkmale + Erklaertexte ausschliesslich aus dokumentierten Quellen
-// (DreiStufen.tsx + fundament-varianten/VarianteA.tsx). Nichts Neues versprochen.
+// Stufen zeigen NUR NOCH den Unterschied (Thomas 09.08.2026, decisions-log):
+// Das gemeinsame Fundament (Talos/Copilot, Design, Handy, Recht, Hosting,
+// Pflege, Selbst-aendern, Gefunden-werden, Einrichtung, Kontaktformular) ist
+// aus den Stufen herausgezogen und wird EINMAL als eigener Fundament-Block
+// gezeigt (Preisseite: PreiseFundament; Website-Seite: fundament-varianten).
+// Hier stehen also nur die echten Ausstattungslinien-Unterschiede — damit der
+// Kunde in Sekunden sieht, was er je Stufe MEHR bekommt. Nichts Neues
+// versprochen. Preise NUR 1.250 / 2.850 / ab 4.900.
 export const STUFEN: Stufe[] = [
   {
     name: "Starter",
-    text: "Für alle, die schlank starten und erstmal gefunden werden wollen. One-Pager, sauber, schnell.",
+    text: "Der schlanke Start: ein One-Pager, sauber und schnell, damit du erstmal online und gefunden bist.",
     merkmale: [
       {
         titel: "One-Pager",
         detail:
-          "Eine Seite, sauber und schnell. Alles Wichtige an einem Ort, damit du erstmal online bist und gefunden wirst.",
+          "Eine Seite, sauber und schnell. Alles Wichtige an einem Ort, damit du erstmal online und gefunden bist.",
       },
       {
-        titel: "Dein Cockpit",
+        titel: "Der schlanke Einstieg",
         detail:
-          "Dein persönliches Dashboard: sammelt die wichtigsten Infos zu deinem Auftritt aus Google und anderen Quellen an einem Ort. Talos und die KI-Agenten kommen bald dazu.",
-      },
-      {
-        titel: "Individuelles Design",
-        detail: "Individuelles Design, gebaut auf deinen Betrieb.",
-      },
-      {
-        titel: "Sauber am Handy",
-        detail: "Sauber am Handy, weil da deine Kunden suchen.",
-      },
-      {
-        titel: "Rechtssicher",
-        detail:
-          "Rechtssicher nach AT-Recht: Impressum und Datenschutz passen.",
-      },
-      {
-        titel: "Kontaktformular",
-        detail: "Kontaktformular, das direkt bei dir ankommt.",
-      },
-      {
-        titel: "Eigene Domain",
-        detail: "Eigene Domain, gehört dir.",
-      },
-      {
-        titel: "Hosting inklusive",
-        detail:
-          "Deine Seite liegt bei uns, schnell und sicher. Du kümmerst dich um nichts.",
-      },
-      {
-        titel: "Pflege inklusive",
-        detail:
-          "Updates, kleine Korrekturen, Sicherheit: das läuft im Hintergrund einfach mit.",
+          "Für alle, die klein starten. Wachsen kannst du später jederzeit in die nächste Stufe, ohne bei null anzufangen.",
       },
     ],
   },
   {
     name: "Business",
-    text: "Für Betriebe, die ernst machen wollen. Mehrseitig, auf lokale Sichtbarkeit und Anfragen gebaut.",
+    text: "Mehrseitig, gezielt auf lokale Sichtbarkeit und Anfragen gebaut. Der Sprung, den die meisten brauchen.",
     featured: true,
     merkmale: [
       {
         titel: "Mehrseitig",
         detail:
-          "Mehrere Seiten statt einer, mit Platz für Leistungen, Team und alles, was dein Betrieb zeigen will.",
-      },
-      {
-        titel: "Dein Cockpit",
-        detail:
-          "Dein persönliches Dashboard: sammelt die wichtigsten Infos zu deinem Auftritt aus Google und anderen Quellen an einem Ort. Talos und die KI-Agenten kommen bald dazu.",
+          "Mehrere Seiten statt einer, mit Platz für Leistungen, Team, Referenzen und alles, was dein Betrieb zeigen will.",
       },
       {
         titel: "Lokale Sichtbarkeit",
         detail:
-          "Auf lokale Sichtbarkeit gebaut, damit dich Leute aus deiner Gegend finden.",
+          "Gezielt darauf gebaut, dass dich Leute aus deiner Gegend finden.",
       },
       {
         titel: "Auf Anfragen gebaut",
         detail:
-          "Auf Anfragen gebaut: das Kontaktformular kommt direkt bei dir an.",
-      },
-      {
-        titel: "Individuelles Design",
-        detail: "Individuelles Design, gebaut auf deinen Betrieb.",
-      },
-      {
-        titel: "Sauber am Handy",
-        detail: "Sauber am Handy, weil da deine Kunden suchen.",
-      },
-      {
-        titel: "Rechtssicher",
-        detail:
-          "Rechtssicher nach AT-Recht: Impressum und Datenschutz passen.",
-      },
-      {
-        titel: "Eigene Domain",
-        detail: "Eigene Domain, gehört dir.",
-      },
-      {
-        titel: "Selbst ändern",
-        detail:
-          "Öffnungszeiten, Texte, Bilder: das machst du selbst, ohne uns anzurufen und ohne Zusatzkosten.",
-      },
-      {
-        titel: "Hosting inklusive",
-        detail:
-          "Deine Seite liegt bei uns, schnell und sicher. Du kümmerst dich um nichts.",
-      },
-      {
-        titel: "Pflege inklusive",
-        detail:
-          "Updates, kleine Korrekturen, Sicherheit: das läuft im Hintergrund einfach mit.",
+          "Aufbau und Wege so gelegt, dass aus Besuchern Anfragen werden. Damit das Telefon klingelt.",
       },
     ],
   },
   {
     name: "Premium",
-    text: "Für alle, deren Seite wirklich arbeiten soll. Umfangreich, auf dauerhafte Sichtbarkeit und laufende Anfragen gebaut, mit Inhalten, die mitwachsen.",
+    text: "Für alle, deren Seite wirklich arbeiten soll: umfangreich, auf dauerhafte Sichtbarkeit und laufende Anfragen gebaut, mit Inhalten, die mitwachsen.",
     merkmale: [
       {
-        titel: "Umfangreich",
+        titel: "Umfangreich & skalierbar",
         detail:
-          "Die umfangreichste Stufe. Für alle, deren Seite wirklich arbeiten soll.",
+          "Die große Struktur, die mitwächst, so groß dein Betrieb wird. Für Seiten, die wirklich etwas leisten sollen.",
       },
       {
-        titel: "Dein Cockpit",
+        titel: "Inhalte, die mitwachsen",
         detail:
-          "Dein persönliches Dashboard: sammelt die wichtigsten Infos zu deinem Auftritt aus Google und anderen Quellen an einem Ort. Talos und die KI-Agenten kommen bald dazu.",
+          "Ein Ratgeber- oder Blog-System, das dich Stück für Stück sichtbarer macht, statt einmal gebaut zu verstauben.",
       },
       {
         titel: "Dauerhafte Sichtbarkeit",
         detail:
-          "Auf dauerhafte Sichtbarkeit und laufende Anfragen gebaut.",
+          "Auf dauerhafte, inhaltsgetriebene Sichtbarkeit und laufende Anfragen gebaut, nicht nur auf den ersten Tag.",
       },
       {
-        titel: "Inhalte wachsen mit",
-        detail: "Mit Inhalten, die mitwachsen.",
-      },
-      {
-        titel: "Grund-SEO",
+        titel: "Vorqualifizierte Anfragen",
         detail:
-          "Grund-SEO, damit dich Leute aus deiner Gegend finden.",
-      },
-      {
-        titel: "Zahlen im Klartext",
-        detail:
-          "Du siehst, wie viele Leute vorbeischauen und wie viele sich melden. Ohne Fachchinesisch.",
-      },
-      {
-        titel: "Ein Wächter passt auf",
-        detail:
-          "Geht etwas nicht, merken wir es meist vor dir. Ausfälle fängt die Seite selbst ab.",
-      },
-      {
-        titel: "Monatlicher Check",
-        detail:
-          "Einmal im Monat schauen wir drauf, ob alles rund läuft und aktuell ist.",
-      },
-      {
-        titel: "Selbst ändern",
-        detail:
-          "Öffnungszeiten, Texte, Bilder: das machst du selbst, ohne uns anzurufen und ohne Zusatzkosten.",
-      },
-      {
-        titel: "Hosting inklusive",
-        detail:
-          "Deine Seite liegt bei uns, schnell und sicher. Du kümmerst dich um nichts.",
-      },
-      {
-        titel: "Pflege inklusive",
-        detail:
-          "Updates, kleine Korrekturen, Sicherheit: das läuft im Hintergrund einfach mit.",
+          "Formulare, die Interessenten vorsortieren, bevor sie bei dir landen, damit du weniger Zeit mit dem Falschen verlierst.",
       },
     ],
   },

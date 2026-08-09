@@ -9,6 +9,7 @@ import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import PreiseDemoClient from '@/components/subpages/PreiseDemoClient';
 import ScrollBumper from '@/components/subpages/leistungen/ScrollBumper';
 import RisikoBand from '@/components/subpages/preise/RisikoBand';
+import PreiseFundament from '@/components/subpages/preise/PreiseFundament';
 import PreiseMatrix from '@/components/subpages/preise/PreiseMatrix';
 import BetreuungFoerderung from '@/components/subpages/preise/BetreuungFoerderung';
 import TalosTalenteFahrt from '@/components/subpages/preise/TalosTalenteFahrt';
@@ -38,7 +39,7 @@ import '@/components/subpages/leistungen/wd-eyebrow.css';
 export const metadata: Metadata = {
   title: 'Preise · Red Rabbit Media',
   description:
-    'Klare Pakete ab 1.250 Euro. Du siehst zuerst 1-2 grafische Vorschläge, ganz ohne Vorkasse. Dein Cockpit ist bei jedem Paket dabei, Betreuung ohne Bindung, KMU.DIGITAL-förderbar.',
+    'Klare Pakete ab 1.250 Euro. Du siehst zuerst 1-2 grafische Vorschläge, ganz ohne Vorkasse. Talos, dein Copilot, ist bei jedem Paket dabei, dazu KMU.DIGITAL-förderbar.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/preise' },
 };
@@ -68,7 +69,7 @@ export default function PreisePreviewPage() {
             {
               '@type': 'Service',
               name: 'Website',
-              description: 'Individuell gebaute Website zum Fixpreis, Entwurf ohne Vorkasse.',
+              description: 'Individuell gebaute Website zum Fixpreis, 1-2 grafische Vorschläge ohne Vorkasse.',
               provider: { '@type': 'Organization', name: 'Red Rabbit Media' },
               areaServed: 'AT',
               offers: [
@@ -125,13 +126,16 @@ export default function PreisePreviewPage() {
           statements={[
             { text: 'Wir bauen dir eine ganze Website.' },
             { text: 'Von Grund auf. Nicht von der Stange.' },
-            { text: 'Dazu dein Cockpit: alle wichtigen Infos an einem Ort.' },
+            { text: 'Dazu Talos, dein Copilot: alle wichtigen Infos an einem Ort.' },
             { text: 'Brauchst du mehr, bekommst du es auf Anfrage.' },
             { text: 'Erst überzeugt, dann bezahlt.', pointe: true },
           ]}
         />
         <div data-rr-snap>
           <RisikoBand />
+        </div>
+        <div data-rr-snap>
+          <PreiseFundament />
         </div>
         <div data-rr-snap>
           <PreiseMatrix />
@@ -145,8 +149,8 @@ export default function PreisePreviewPage() {
         </div>
         <SiteClosing
           lines={[
-            'Du kennst jetzt die Zahlen.',
-            'Was dein Projekt wirklich braucht, klären wir gemeinsam.',
+            'Du kennst die Zahlen.',
+            'Wir legen vor. Du entscheidest.',
             'Reden wir.',
           ]}
         />
