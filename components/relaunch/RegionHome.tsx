@@ -10,44 +10,47 @@ import HomeClosing from "@/components/relaunch/HomeClosing";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import ScrollExperience from "@/components/relaunch/ScrollExperience";
 import Faq, { type FaqItem } from "@/components/relaunch/Faq";
+import TalosCompanionStageLazy from "@/components/relaunch/talos/TalosCompanionStageLazy";
 import { SCENE_TEXTS } from "@/lib/relaunch/morph/scene-content";
 
 /**
  * Region-Variante der Homepage (Bundesland-Landingpages, Thomas 09.08.).
- * BASIS = die echte Home-Komposition (HomeMorph -> CasePanels -> Regional-FAQ ->
- * HomeClosing -> Footer). Regionalisiert wird NUR ueber die Content-Props der
- * bereits vorhandenen Bausteine (safe: die Home selbst ruft sie ohne Props und
- * bleibt unveraendert). So sieht Google jede Region als eigene, inhaltlich
- * unterschiedliche Seite statt als Home-Kopie. Spec: docs/BUNDESLAND_SEO_GEO_RESEARCH.md.
+ * BASIS = die echte Home-Komposition (HomeMorph -> CasePanels -> Regional-Bereich ->
+ * FAQ -> HomeClosing -> Footer). Regionalisiert wird ueber die Content-Props der
+ * vorhandenen Bausteine (safe: die Home ruft sie ohne Props und bleibt unveraendert).
  *
- * Diese Client-Komponente baut die Themes/Szenen im Client-Scope (die Beweis-
- * Kachel traegt JSX), damit nichts ueber die Server/Client-Grenze bricht. Das
- * H1 + Schema + Metadata liefert die Server-Seite drumherum.
+ * WICHTIG (Thomas 09.08.): KEIN Standort-Thema in der sichtbaren Copy. Wir deuten
+ * nicht an, dass wir nicht in der Region sind. Statt "vor Ort/remote" -> Verfuegbarkeit
+ * ("wir sind da, wenn du uns brauchst"). Statt verlinkter Fremd-Firmen -> anonyme
+ * Vertrauenszeile. areaServed=Region bleibt still im Schema (Server-Seite).
+ * Talos winkt rechts (data-talos-station, mobil klein via data-talos-mobile).
+ * Spec: docs/BUNDESLAND_SEO_GEO_RESEARCH.md.
  */
 
 export type RegionContent = {
   name: string;
-  /** Ueberschreibt die KI-Szene ("besten Betrieb der <Region>"). */
+  /** Ueberschreibt die KI-Szene ("besten ... der <Region>"). */
   kiStatement: string;
   /** Regionaler Problem-Text (langer Absatz im Problem-Panel). */
   problemBody: string;
-  /** Regionaler Beweis-Einstieg (nennt echte regionale Kunden). */
+  /** Regionaler Beweis-Einstieg. */
   beweisIntro: string;
-  /** Dedizierter Regional-Bereich: sichtbare, scannbare Ranking-Substanz
-   *  (~400-700 Woerter regionaler Text, echte Referenz-Karten, Vor-Ort-Logistik).
-   *  Traegt die region-spezifische Substanz, damit Google die Seite als eigene
-   *  wertet und die bestehenden Impressions nicht verloren gehen. Kein generischer
-   *  Preis-/Prozess-Text (der lebt auf /preise, /leistungen). */
+  /** Dedizierter Regional-Bereich: sichtbare, scannbare Ranking-Substanz ohne
+   *  Standort-Thema. Traegt den region-spezifischen Unique-Content. */
   regionalBlock: {
     eyebrow: string;
     heading: string;
     paragraphs: string[];
     reachLine: string;
-    proof: { name: string; ort: string; what: string; href?: string }[];
-    logistikHeading: string;
-    logistikText: string;
+    /** Anonyme Vertrauenszeile (keine Firmennamen/Links). */
+    trustLine: string;
+    availabilityHeading: string;
+    availabilityText: string;
+    /** "Frag die KI"-Selbstbeweis (regionaler Prompt). */
+    fragKiText: string;
+    fragKiPrompt: string;
   };
-  /** Eyebrow ueber der FAQ, z. B. "Haeufige Fragen aus der Steiermark". */
+  /** Eyebrow ueber der FAQ. */
   faqEyebrow: string;
   /** Regionale FAQ (SSR-crawlbar, eigenes FAQPage-Schema). */
   faq: FaqItem[];
@@ -80,11 +83,17 @@ export default function RegionHome({ region }: { region: RegionContent }) {
     return t;
   });
 
+  const rb = region.regionalBlock;
+
   return (
     <>
       <RelaunchMenu />
       <CornerLogo />
       <BackToTop />
+
+      {/* Talos-Companion (rechts, winkt an der Regional-Station; mobil klein unten rechts).
+          Lazy: three-spline liegt in eigenem Chunk, nicht im Initial-Bundle. */}
+      <TalosCompanionStageLazy />
 
       {/* Hero + 5 Leistungs-Szenen (KI-Szene regionalisiert) */}
       <HomeMorph sceneTexts={sceneTexts} />
@@ -95,50 +104,72 @@ export default function RegionHome({ region }: { region: RegionContent }) {
       {/* Problem / Loesung / Beweis (Problem + Beweis regionalisiert) */}
       <CasePanels themes={themes} />
 
-      {/* Dedizierter Regional-Bereich: sichtbare, scannbare Ranking-Substanz.
-          Kurze Absaetze + echte Referenz-Karten + Vor-Ort-Logistik. Traegt den
-          region-spezifischen Unique-Content (Impressions-Schutz), ohne Textwand. */}
-      <section className="rr rr-section">
+      {/* Dedizierter Regional-Bereich: scannbare Ranking-Substanz, kein Standort-Thema.
+          data-talos-station = Talos gleitet hier rechts rein und winkt. */}
+      <section
+        className="rr rr-section"
+        data-talos-station
+        data-talos-anchor="0.82"
+        data-talos-size="m"
+        data-talos-appear="0.45"
+        data-talos-gesture="wave"
+        data-talos-mobile
+      >
         <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 16 }}>{region.regionalBlock.eyebrow}</p>
-          <h2 className="rr-sub" style={{ marginBottom: 22, maxWidth: 780 }}>{region.regionalBlock.heading}</h2>
+          <p className="rr-eyebrow" style={{ marginBottom: 16 }}>{rb.eyebrow}</p>
+          <h2 className="rr-sub" style={{ marginBottom: 24, maxWidth: 820 }}>{rb.heading}</h2>
           <div className="rr-prose" style={{ display: "grid", gap: 18 }}>
-            {region.regionalBlock.paragraphs.map((p, i) => (
-              <p key={i} className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, lineHeight: 1.6 }}>{p}</p>
+            {rb.paragraphs.map((p, i) => (
+              <p key={i} className="rr-body-lg" style={{ color: "var(--rr-ink-soft)" }}>{p}</p>
             ))}
-            <p className="rr-body" style={{ fontSize: 18, lineHeight: 1.6 }}>{region.regionalBlock.reachLine}</p>
+            <p className="rr-body-lg">{rb.reachLine}</p>
           </div>
 
-          {/* Echte Referenz-Karten (Proof statt Prosa) */}
-          <div className="rr-grid rr-grid-2" style={{ marginTop: 40 }}>
-            {region.regionalBlock.proof.map((c) => (
-              <div key={c.name} className="rr-card">
-                <h3 className="rr-sub" style={{ marginBottom: 6, fontSize: 22 }}>{c.name}</h3>
-                <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 15, marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.06em" }}>{c.ort}</p>
-                <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17, marginBottom: c.href ? 14 : 0 }}>{c.what}</p>
-                {c.href && (
-                  <a className="rr-link" href={c.href} target="_blank" rel="noopener noreferrer">
-                    {c.href.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-                  </a>
-                )}
-              </div>
-            ))}
+          {/* Anonyme Vertrauenszeile (keine Fremd-Firmen) */}
+          <p
+            className="rr-body"
+            style={{ marginTop: 32, fontSize: 19, fontStyle: "italic", color: "var(--rr-ink)", maxWidth: 720 }}
+          >
+            {rb.trustLine}
+          </p>
+
+          {/* Verfuegbarkeit statt Standort */}
+          <div className="rr-card rr-card--surface" style={{ marginTop: 32 }}>
+            <h3 className="rr-sub" style={{ marginBottom: 12, fontSize: 22 }}>{rb.availabilityHeading}</h3>
+            <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, lineHeight: 1.6 }}>{rb.availabilityText}</p>
           </div>
 
-          {/* Vor-Ort-Logistik (ehrlich, beantwortet "kommt ihr vor Ort") */}
-          <div className="rr-card rr-card--surface" style={{ marginTop: 28 }}>
-            <h3 className="rr-sub" style={{ marginBottom: 12, fontSize: 22 }}>{region.regionalBlock.logistikHeading}</h3>
-            <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, lineHeight: 1.6 }}>{region.regionalBlock.logistikText}</p>
+          {/* "Frag die KI" - Selbstbeweis des KI-Sichtbarkeit-USP */}
+          <div
+            className="rr-card"
+            style={{ marginTop: 24, borderColor: "var(--rr-red)", borderWidth: 1.5 }}
+          >
+            <p className="rr-eyebrow" style={{ marginBottom: 12, color: "var(--rr-red)" }}>Mach den Test</p>
+            <p className="rr-body-lg" style={{ marginBottom: 18 }}>{rb.fragKiText}</p>
+            <p
+              style={{
+                fontFamily: "var(--rr-font-ui)",
+                fontSize: 20,
+                fontWeight: 600,
+                color: "var(--rr-ink)",
+                background: "var(--rr-surface)",
+                borderRadius: "var(--rr-radius)",
+                padding: "14px 18px",
+                display: "inline-block",
+              }}
+            >
+              &bdquo;{rb.fragKiPrompt}&ldquo;
+            </p>
           </div>
 
           {/* Kontextuelle Links zu den geteilten Detailseiten (statt Preise zu duplizieren) */}
-          <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, marginTop: 28 }}>
+          <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, marginTop: 32 }}>
             Wie wir arbeiten, steht bei den <Link className="rr-link" href="/leistungen">Leistungen</Link>. Was es kostet, offen auf der <Link className="rr-link" href="/preise">Preisseite</Link>.
           </p>
         </div>
       </section>
 
-      {/* Regionale FAQ (Zusatzblock ggue. Home: echte regionale Fragen, GEO-zitierfaehig) */}
+      {/* Regionale FAQ (SSR-crawlbar, eigenes FAQPage-Schema) */}
       <section className="rr rr-section" style={{ background: "var(--rr-surface)" }}>
         <div className="rr-wrap rr-narrow">
           <p className="rr-eyebrow" style={{ marginBottom: 12 }}>{region.faqEyebrow}</p>

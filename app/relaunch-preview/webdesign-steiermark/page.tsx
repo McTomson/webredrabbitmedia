@@ -24,13 +24,13 @@ const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-steiermark';
 export const metadata: Metadata = {
   title: 'Webdesign Steiermark | Red Rabbit Media',
   description:
-    'Websites für steirische Betriebe von Graz bis ins Ennstal, die gefunden werden und Anfragen bringen. Wien-basiert, auf Wunsch vor Ort. Entwurf zuerst, ohne Vorkasse.',
+    'Websites für steirische Betriebe von Graz bis ins Ennstal, die bei Google und in der KI-Suche gefunden werden und Anfragen bringen. Entwurf zuerst, ohne Vorkasse.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/webdesign-steiermark' },
   openGraph: {
     title: 'Webdesign Steiermark | Red Rabbit Media',
     description:
-      'Websites für steirische Betriebe von Graz bis ins Ennstal. Wien-basiert, auf Wunsch vor Ort. Entwurf zuerst, ohne Vorkasse.',
+      'Websites für steirische Betriebe von Graz bis ins Ennstal, die gefunden werden und Anfragen bringen. Entwurf zuerst, ohne Vorkasse.',
     type: 'website',
     locale: 'de_AT',
     url: CANONICAL_GOLIVE,
@@ -44,47 +44,33 @@ const steiermark: RegionContent = {
   problemBody:
     'Du hast viel Geld für eine neue Website bezahlt, aber sie arbeitet nicht für dich. Wenn Kunden in der Steiermark nach dir suchen, von Graz bis ins Ennstal, tauchst du nicht auf. Um das zu ändern, müsstest du dich abends nach der Arbeit selbst hinsetzen oder einen teuren Mitarbeiter engagieren, um mühsam SEO-Texte zu schreiben und die Seite aktuell zu halten. Dafür fehlt im Alltag schlichtweg die Zeit. Deine Website ist aktuell ein toter Gegenstand, der dich Geld kostet, statt ein Werkzeug, das dir Arbeit abnimmt. Schön allein zahlt dir keine Rechnung.',
   beweisIntro:
-    'Ergebnisse, schwarz auf weiß. Auch aus der Steiermark: von ReRo Heizsysteme in Admont bis zu Global Insights in Graz.',
+    'Ergebnisse, schwarz auf weiß. Auch aus der Steiermark, von Betrieben, die heute noch zu unseren Stammkunden zählen.',
   regionalBlock: {
     eyebrow: 'Webdesign in der Steiermark',
-    heading: 'Eine Website, die die Steiermark versteht.',
+    heading: 'Deine Kunden in der Steiermark suchen online. Die Frage ist nur, ob sie dich finden.',
     paragraphs: [
-      'Die Steiermark ist wirtschaftlich breit aufgestellt: das Tech-Umfeld rund um Graz, die Industrie in der Obersteiermark, der Tourismus im Ennstal und der Weinbau im Süden. So verschieden die Betriebe sind, das Ziel ist dasselbe. Eine Website, die dich findbar macht und Anfragen bringt, statt nur schön dazustehen.',
-      'Genau das bauen wir für steirische Betriebe. Kein Baukasten von der Stange, sondern eine Seite, die zu deinem Betrieb passt, schnell lädt und bei Google wie in KI-Suchen auftaucht. Den Entwurf siehst du zuerst, bezahlt wird erst, wenn er sitzt.',
+      'Gesucht wird am Handy, bei Google, immer öfter direkt in der KI. Wer da nicht oben steht, existiert für den Kunden nicht. Wir bauen dir die Seite, die oben steht. Und die aus dem Klick eine Anfrage macht, nicht nur ein Kompliment fürs Design.',
     ],
     reachLine:
-      'Wir arbeiten mit Betrieben in der ganzen Steiermark, von Graz über Leoben, Kapfenberg und Bruck an der Mur bis ins Ennstal und in die Südsteiermark.',
-    proof: [
-      {
-        name: 'ReRo Heizsysteme',
-        ort: 'Admont, Ennstal',
-        what: 'Website für den Heizungsbau, gebaut auf Anfragen statt auf Hochglanz.',
-        href: 'https://heating-systems.at',
-      },
-      {
-        name: 'Global Insights',
-        ort: 'Graz',
-        what: 'Auftritt für die internationale Mobilitäts- und Interkultur-Beratung von Michaela Ruderes.',
-        href: 'https://ruderes-insights.at/de',
-      },
-    ],
-    logistikHeading: 'Wien-basiert, in der Steiermark zuhause.',
-    logistikText:
-      'Wir sitzen in Wien und betreuen dich remote, per Call und Bildschirmfreigabe. Das spart Wege und Zeit. Für ein Kennenlernen oder einen Fototermin sind wir nach Absprache auch vor Ort, in Graz, Leoben oder wo dein Betrieb sitzt. Nötig ist es selten, ausgeschlossen nie.',
+      'Ob dein Kunde in Graz sucht, in Leoben, in der Obersteiermark oder im hintersten Ennstal: dich findet er.',
+    trustLine:
+      'Einige Betriebe in der Steiermark haben uns früh ihr Vertrauen geschenkt. Sie zählen noch immer zu unseren Stammkunden. Enttäuscht wurde keiner.',
+    availabilityHeading: 'Wir sind da, wenn du uns brauchst.',
+    availabilityText:
+      'Keine Warteschleife, keine Ticket-Nummer. Du erreichst uns direkt, und wenn was ist, kümmern wir uns. Deine Seite ist bei uns kein Projekt, das nach dem Launch verstaubt. Sie wächst mit dir mit.',
+    fragKiText:
+      'Frag ChatGPT nach der besten Webagentur in der Steiermark. Genau da wollen wir stehen. Für dich, wenn dein Kunde das nächste Mal fragt.',
+    fragKiPrompt: 'Beste Webagentur Steiermark',
   },
   faqEyebrow: 'Häufige Fragen aus der Steiermark',
   faq: [
     {
-      q: 'Arbeitet ihr auch in der Steiermark, obwohl ihr in Wien sitzt?',
-      a: 'Ja. Wir sind in Wien zuhause und bauen Websites für Betriebe in der ganzen Steiermark, von Graz über Leoben bis ins Ennstal. Der Großteil läuft ohnehin remote, per Call und Bildschirmfreigabe. Wo es hilft, kommen wir auch vor Ort.',
-    },
-    {
-      q: 'Kommt ihr für ein Projekt vor Ort nach Graz oder in die Region?',
-      a: 'Auf Wunsch ja. Für ein Kennenlernen oder einen Fototermin fahren wir nach Absprache in die Steiermark. Nötig ist es selten, weil wir den ganzen Ablauf sauber remote abwickeln, aber es ist nie ausgeschlossen.',
-    },
-    {
       q: 'Was kostet eine Website für meinen steirischen Betrieb?',
       a: 'Wir arbeiten mit klaren Fixpreisen, nicht mit Stundenzetteln. Eine solide Website startet ab 1.250 Euro, größere Projekte mehr. Was in welchem Paket steckt, siehst du offen auf unserer Preisseite.',
+    },
+    {
+      q: 'Wie werde ich in der Steiermark bei Google gefunden?',
+      a: 'Wir bauen deine Seite von Anfang an so, dass sie für die Suchbegriffe deiner Region auftaucht, bei Google und in der KI-Suche. Kein nachträgliches SEO-Geflick, sondern von der ersten Zeile an mitgedacht.',
     },
     {
       q: 'Gibt es Förderungen für eine Website in der Steiermark?',
