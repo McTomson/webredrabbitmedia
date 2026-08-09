@@ -170,7 +170,7 @@ const jsonLd = {
           "image": "https://web.redrabbit.media/images/dmitry-pashlov.jpg"
         }
       ],
-      "priceRange": "ab 790€",
+      "priceRange": "ab 1.250 €",
       "currenciesAccepted": "EUR",
       "paymentAccepted": "Bank Transfer, Invoice, Cash",
       "knowsAbout": [
@@ -191,37 +191,30 @@ const jsonLd = {
       "name": "Red Rabbit Media",
       "url": "https://web.redrabbit.media",
       "logo": "https://web.redrabbit.media/logo.png",
+      // Gruender-Verknuepfung staerkt E-E-A-T (echte Person hinter der Marke).
+      // foundingDate BEWUSST NICHT gesetzt: exaktes GmbH-Gruendungsdatum liegt nicht
+      // verifiziert vor -> nicht raten (autoritative Daten). Nachtragen, wenn belegt.
+      "founder": { "@id": "https://web.redrabbit.media/#thomas-uhlir" },
       "sameAs": [
         "https://www.instagram.com/redrabbit.media/",
         "https://www.linkedin.com/in/thomasuhlir/"
       ]
     },
     {
-      "@type": "Product",
-      "@id": "https://web.redrabbit.media/#premium-website-package",
-      "name": "Premium Website Paket",
-      "description": "Professionelles Webdesign ab 790€. Inkl. Design, SEO & Mobiloptimierung. Zahlung erst bei 100% Zufriedenheit.",
-      "image": "https://web.redrabbit.media/images/og-image.jpg",
-      "brand": {
-        "@id": "https://web.redrabbit.media/#organization"
-      },
-      "offers": {
-        "@type": "Offer",
-        "url": "https://web.redrabbit.media",
-        "priceCurrency": "EUR",
-        "price": "790",
-        "priceValidUntil": "2026-12-31",
-        "availability": "https://schema.org/InStock",
-        "seller": {
-          "@id": "https://web.redrabbit.media/#organization"
-        }
-      }
-      // aggregateRating ENTFERNT: Ein Rating ohne echte, verifizierbare Reviews
-      // (z. B. Google Business Profile) verstößt gegen Googles Structured-Data-
-      // Richtlinien. Das globale Schema sorgte zudem für Bewertungs-Sterne auf
-      // Impressum/AGB/Datenschutz in den SERPs (Review-Spam-Signal).
-      // Wieder einbauen, sobald echte Reviews existieren — dann NUR auf /preise.
+      // WebSite-Node fuer GEO/Sitelinks (Name der Domain in Answer Engines). Kein
+      // SearchAction — es gibt keine seiteneigene Suche, also nichts erfinden.
+      "@type": "WebSite",
+      "@id": "https://web.redrabbit.media/#website",
+      "url": "https://web.redrabbit.media",
+      "name": "Red Rabbit Media",
+      "inLanguage": "de-AT",
+      "publisher": { "@id": "https://web.redrabbit.media/#organization" }
     }
+    // Product/Offer-Schema bewusst NICHT global: Angebote/Preise (Starter 1.250 /
+    // Business 2.850 / Premium ab 4.900) liegen als Service+Offer page-level auf
+    // /preise. Ein globales Offer streute Preis-Nodes auf Impressum/AGB/Datenschutz
+    // (Rich-Result-/Spam-Signal) und widerspraeche mit einem Einzelpreis der Tier-
+    // Realitaet. Das alte 790er-Product ist damit entfernt (Relaunch-Preise gelten).
   ]
 };
 
@@ -248,10 +241,13 @@ export default function RootLayout({
         {/* RSS Feed */}
         <link rel="alternate" type="application/rss+xml" title="Red Rabbit Media Website Tipps RSS Feed" href="/feed.xml" />
 
-        {/* LLM/AI Search Optimization für ChatGPT, Claude, Perplexity */}
-        <meta name="chatgpt-summary" content="Red Rabbit Media: Professional websites from 790€ in Vienna. No risk, payment only after satisfaction. 164 satisfied customers. Contact: office@redrabbit.media, +43 676 9000955" />
+        {/* LLM/AI-Search-Kontext (ChatGPT, Claude, Perplexity). Nicht-offizielle
+            Metas — laut Research kein bestaetigter Ranking-Hebel, aber solange sie
+            existieren, muessen sie akkurat sein: alte Zahlen (790€/164) raus, echte
+            Fakten rein. Deutsch (AT-Zielgruppe). Wert-Feinschliff -> Phase B. */}
+        <meta name="chatgpt-summary" content="Red Rabbit Media ist eine oesterreichische Webdesign-Agentur in Wien fuer den Mittelstand (Handwerk, Gastronomie, Dienstleister, Aerzte, Kanzleien). Fixpreis-Pakete: Starter 1.250 EUR, Business 2.850 EUR, Premium ab 4.900 EUR. Du siehst zuerst 1-2 grafische Vorschlaege ohne Vorkasse; SEO und KI-Sichtbarkeit sind im Fundament dabei, DSGVO-konform, KMU.DIGITAL-foerderbar. Kontakt: office@redrabbit.media, +43 676 9000955" />
         <meta name="ai-indexable" content="true" />
-        <meta name="ai-description" content="Leading Webdesign agency in Vienna offering professional websites from 790€. GDPR-compliant, mobile-optimized, no upfront payment required." />
+        <meta name="ai-description" content="Oesterreichische Webdesign-Agentur in Wien fuer den Mittelstand: individuell gebaute, DSGVO-konforme Websites mit SEO und KI-Sichtbarkeit als Fundament. Fixpreis-Pakete ab 1.250 EUR, grafischer Vorschlag ohne Vorkasse." />
 
         {/* Analytics (GA4 + GTM) laden jetzt verzoegert via DeferredThirdParties
             im <body> (Mobile-Perf, Thomas 06.08.) — nicht mehr hier im <head>. */}
