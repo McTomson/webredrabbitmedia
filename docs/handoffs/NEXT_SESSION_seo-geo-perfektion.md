@@ -27,9 +27,15 @@ Ziel-Bild von Thomas: die Website so perfekt fuer Google/Bing/LLMs machen, "dass
 **Phase C — "ANZEIGEN richtig stellen" (nach A):** wie wir in Google/Bing/LLM-Ergebnissen erscheinen. Positionierung NICHT mehr ueber den Preis, sondern ueber den WERT/USP (Anti-Agentur, kein Risiko, Talos/Copilot, Ergebnis "damit das Telefon klingelt"). Je Seite/Anzeige **3 Beispiele** liefern.
 - ZUERST MIT THOMAS KLAEREN: meint "Anzeigen" die SERP-Meta-Snippets (title+description, organisch) ODER echte Google/Bing-**Ads** (bezahlt) — oder beides? Danach je 3 Varianten.
 
+## Go-Live-Domain-Modell (GEKLAERT, Thomas 09.08.) — [[reference_relaunch_golive_domain_modell]]
+- **Produktiv-Domain BLEIBT `web.redrabbit.media`** (traegt schon das SEO-Fundament: JSON-LD, Sitemap, robots, Verification; BASE_URL ueberall bereits so). KEIN Domain-Wechsel fuers Hauptprodukt = kleinstes Search-Console-Risiko.
+- Relaunch-Inhalt von `/relaunch-preview/*` auf die ROOT-Routen heben (`/preise`, `/leistungen` …): Praefix aus internen Links strippen, `robots:{index:false}` raus, Sitemap neu, 301 fuer geaenderte PFADE.
+- `redrabbit.media` (Apex) -> 301 auf `web.redrabbit.media` (Host-/DNS-Ebene; Ist-Zustand vorher pruefen).
+- `v2.redrabbit.media` existiert produktiv NICHT (nur Bau/Staging) -> muss unindexiert bleiben (beim Root-Umzug faellt der relaunch-preview-noindex weg, dann v2 separat blocken).
+
 ## Kritische Landminen (nicht uebersehen)
-- **noindex ueberall** auf /relaunch-preview (siehe A2) — die #1-Gefahr beim Live-Austausch.
-- **Live-Austausch = Domain-/URL-Wechsel:** Redirects sauber, sonst Ranking-Absturz + Search-Console-Fehler. Alte Live-Struktur (main) vs. neue Relaunch-Struktur mappen.
+- **noindex ueberall** auf /relaunch-preview (siehe A2) — beim Root-Umzug systematisch entfernen; gleichzeitig v2 unindexiert halten.
+- **URL-Wechsel = nur Pfad, nicht Domain** (Modell oben): 301 fuer jede geaenderte Pfad-URL + Apex-Redirect. Alte Live-Struktur (main) vs. neue Relaunch-Struktur mappen, keine verwaisten alten URLs.
 - **lib/config.ts PRICING + brand/pricing.md der LIVE-Hauptseite** noch NICHT auf 1.250/2.850/4.900 angeglichen (decisions-log OFFEN) — vor Go-Live angleichen, sonst widerspruechliche Preise/Schema.
 
 ## Offen aus der Preisseiten-Session (mitnehmen)
@@ -41,6 +47,21 @@ Ziel-Bild von Thomas: die Website so perfekt fuer Google/Bing/LLMs machen, "dass
 
 ## Stand Preisseite (diese Session, LIVE auf v2)
 - Commits `c312295` (Inhalt neu: Fundament separat via neue PreiseFundament.tsx, STUFEN nur Unterschied, Extras, ab-Logik, Talos=Copilot, Domain raus) + `4192360` (MehrwertRechner geloescht, Legacy-AGB app/agb auf 40% + 1.250). Details: brand/decisions-log.md Eintrag 2026-08-09. Typecheck gruen, Desktop in-browser verifiziert, kein Overflow.
+
+## Fortschritt SEO-Session 09.08. (Research + erster Fundament-Commit)
+**Research gemacht (2 Sonnet-Agenten, Ergebnisse gespeichert):**
+- `scratchpad/research_seo_geo_eeat.md` (last30days): Technik-SEO/CWV/Schema = Hygiene, NICHT Ranking-Hebel; echter Engpass = Indexierbarkeit ("crawled not indexed") + Crawl-Zugang am Edge (curl -A pruefen); GEO-Zitate kommen v.a. von DRITTPLATTFORMEN (GBP/WKO/Herold/Reviews), nicht eigener Schema-Politur; llms.txt = Hype (skip); E-E-A-T = echte Gruender-Autorzeile + Person-Schema + Case-Studies.
+- `scratchpad/research_keywords_serp.md`: ganze Wiener Konkurrenz fuehrt mit PREIS (699-999); Value-not-price + KI-Sichtbarkeit + "eigenes Dev-Team" als Headline UNBESETZT. Keyword-Map pro Seite + Konkurrenz-Snippet-Tabelle drin (fuer Phase C). Content-Luecken: "selbst machen oder Agentur", "ehrlicher Kostenvergleich".
+
+**Entscheidungen Thomas (09.08.):** (1) In-place jetzt, Root-Umzug separat auf Kommando (Go-Live-Modell siehe oben). (2) On-Site baue ich + Off-Site = Checkliste fuer Thomas -> `docs/SEO_OFFSITE_CHECKLIST.md`.
+
+**Erledigt+committet:** `6fb74aa` — globales JSON-LD/Meta korrigiert (Product-790 raus; priceRange 'ab 1.250'; Organization.founder + WebSite-Node; chatgpt-summary/ai-description entfalscht). Typecheck gruen. Nur relaunch-Branch/v2.
+
+**OFFEN (blockt naechsten Block):**
+- **Echte Google-Review-Zahl** von Thomas noetig (reviews.ts sagt 8 @12.06., positioning.md sagt 3 @22.07.) -> dann reviews.ts korrigieren + ggf. aggregateRating wieder ausspielen. LIVE-main publiziert aktuell noch die evtl. falschen 8 (separater Live-Hotfix erwaegen).
+- **NAP-Name-Entscheidung** von Thomas: Code sagt "Red Rabbit Media", Google-Profil "Red Rabbit GmbH" -> kanonische Schreibweise festlegen, dann Code + Verzeichnisse angleichen.
+
+**NAECHSTER BLOCK (Phase A Rest, in-place):** BreadcrumbList auf alle Relaunch-Seiten + referenzen/kontakt JSON-LD (fehlt); interne Verlinkung/Gegenverlinkung (2-3 kontextuelle Links/Seite, Breadcrumbs, Ueber-uns von jeder Content-Seite verlinkt, Menue/Footer-Praefix-Konsistenz); FAQ-Bloecke mit FAQPage-Schema (echte Nutzerfragen aus Keyword-Research); E-E-A-T-Autorzeile (Thomas Foto/Name/Bio) + Person-author auf Content-Seiten; default title/desc/OG/Twitter in layout.tsx noch auf 790/164 (Phase-B-Copy + Go-Live-Homepage-Metadata). DANN Phase B (Wert-Copy) DANN Phase C (Snippets 3+3).
 
 ## Deploy / Branch / Standing Constraints
 - Branch `relaunch`, live v2.redrabbit.media (git push -> Auto-Deploy via post-commit-Hook; "up-to-date"-Falle: mit `git ls-remote origin relaunch` gegen HEAD pruefen). NIE `vercel --prod`.
