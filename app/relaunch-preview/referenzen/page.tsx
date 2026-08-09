@@ -9,6 +9,7 @@ import SphereGallery from "@/components/relaunch/SphereGallery";
 import ScrollExperience from "@/components/relaunch/ScrollExperience";
 import GalleryChrome from "@/components/relaunch/GalleryChrome";
 import { SPHERE_PROJECTS } from "@/lib/relaunch/projects";
+import JsonLd from "@/components/JsonLd";
 import "../../styleguide/styleguide.css";
 import "@/components/relaunch/subpages.css";
 
@@ -49,6 +50,44 @@ export default function ReferenzenPreviewPage() {
       className={`rr rf ${dmsans.variable} ${crimson.variable} ${grotesk.variable}`}
       style={{ background: "var(--rr-surface, #f4f4f2)" }}
     >
+      {/* Page-Level-Schema (Thomas 09.08.): CollectionPage + crawlbare ItemList der
+          echten Referenzen (Quelle SPHERE_PROJECTS, fail-closed: url nur bei gesicherter
+          Domain) + Breadcrumb. URLs auf Go-Live-Root (/referenzen), Org via @id aus dem
+          globalen @graph. Verwandt: reference_relaunch_golive_domain_modell. */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "CollectionPage",
+              "@id": "https://web.redrabbit.media/referenzen#collectionpage",
+              url: "https://web.redrabbit.media/referenzen",
+              name: "Referenzen — Webdesign-Projekte aus Österreich",
+              description: META_DESC,
+              inLanguage: "de-AT",
+              isPartOf: { "@id": "https://web.redrabbit.media/#website" },
+              about: { "@id": "https://web.redrabbit.media/#organization" },
+              mainEntity: {
+                "@type": "ItemList",
+                itemListElement: SPHERE_PROJECTS.map((p, i) => ({
+                  "@type": "ListItem",
+                  position: i + 1,
+                  name: p.name,
+                  ...(p.href ? { url: p.href } : {}),
+                })),
+              },
+            },
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Startseite", item: "https://web.redrabbit.media/" },
+                { "@type": "ListItem", position: 2, name: "Referenzen", item: "https://web.redrabbit.media/referenzen" },
+              ],
+            },
+          ],
+        }}
+      />
+
       <RelaunchMenu />
 
       {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,

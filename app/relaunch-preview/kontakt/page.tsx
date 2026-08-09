@@ -8,6 +8,7 @@ import BackToTop from '@/components/relaunch/BackToTop';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import SiteClosing from '@/components/relaunch/SiteClosing';
 import ScrollExperience from '@/components/relaunch/ScrollExperience';
+import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 
@@ -31,6 +32,51 @@ export default function KontaktPage() {
   const js = readDemo('demo.engine.jstext');
   return (
     <>
+      {/* Page-Level-Schema (Thomas 09.08.): ContactPage + Breadcrumb, verifizierter NAP
+          (office@redrabbit.media, +43 676 9000955). URLs auf Go-Live-Root (/kontakt),
+          Org via @id aus dem globalen @graph. Verwandt: reference_relaunch_golive_domain_modell. */}
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'ContactPage',
+              '@id': 'https://web.redrabbit.media/kontakt#contactpage',
+              url: 'https://web.redrabbit.media/kontakt',
+              name: 'Kontakt · Red Rabbit Media',
+              description:
+                'Erzähl uns kurz, wo es hakt. Kein Verkaufsanruf, kein Newsletter: wir lesen, schauen uns deinen Betrieb an und schreiben dir zurück.',
+              inLanguage: 'de-AT',
+              isPartOf: { '@id': 'https://web.redrabbit.media/#website' },
+              about: { '@id': 'https://web.redrabbit.media/#organization' },
+              mainEntity: {
+                '@type': 'Organization',
+                '@id': 'https://web.redrabbit.media/#organization',
+                name: 'Red Rabbit Media',
+                url: 'https://web.redrabbit.media',
+                email: 'office@redrabbit.media',
+                telephone: '+436769000955',
+                contactPoint: {
+                  '@type': 'ContactPoint',
+                  contactType: 'customer service',
+                  email: 'office@redrabbit.media',
+                  telephone: '+436769000955',
+                  areaServed: 'AT',
+                  availableLanguage: ['de'],
+                },
+              },
+            },
+            {
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://web.redrabbit.media/' },
+                { '@type': 'ListItem', position: 2, name: 'Kontakt', item: 'https://web.redrabbit.media/kontakt' },
+              ],
+            },
+          ],
+        }}
+      />
+
       {/* LCP-Poster mobil frueh laden (Thomas 06.08.), nur Mobile/Tablet. */}
       <link rel="preload" as="image" href="/hero/kontakt-hero-poster.jpg" fetchPriority="high" media="(max-width: 1024px)" />
       {/* Fonts wie in der Demo (DM Sans, Instrument Sans, Crimson Pro). */}
