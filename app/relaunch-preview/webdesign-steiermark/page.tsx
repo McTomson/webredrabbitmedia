@@ -45,6 +45,33 @@ const steiermark: RegionContent = {
     'Du hast viel Geld für eine neue Website bezahlt, aber sie arbeitet nicht für dich. Wenn Kunden in der Steiermark nach dir suchen, von Graz bis ins Ennstal, tauchst du nicht auf. Um das zu ändern, müsstest du dich abends nach der Arbeit selbst hinsetzen oder einen teuren Mitarbeiter engagieren, um mühsam SEO-Texte zu schreiben und die Seite aktuell zu halten. Dafür fehlt im Alltag schlichtweg die Zeit. Deine Website ist aktuell ein toter Gegenstand, der dich Geld kostet, statt ein Werkzeug, das dir Arbeit abnimmt. Schön allein zahlt dir keine Rechnung.',
   beweisIntro:
     'Ergebnisse, schwarz auf weiß. Auch aus der Steiermark: von ReRo Heizsysteme in Admont bis zu Global Insights in Graz.',
+  regionalBlock: {
+    eyebrow: 'Webdesign in der Steiermark',
+    heading: 'Eine Website, die die Steiermark versteht.',
+    paragraphs: [
+      'Die Steiermark ist wirtschaftlich breit aufgestellt: das Tech-Umfeld rund um Graz, die Industrie in der Obersteiermark, der Tourismus im Ennstal und der Weinbau im Süden. So verschieden die Betriebe sind, das Ziel ist dasselbe. Eine Website, die dich findbar macht und Anfragen bringt, statt nur schön dazustehen.',
+      'Genau das bauen wir für steirische Betriebe. Kein Baukasten von der Stange, sondern eine Seite, die zu deinem Betrieb passt, schnell lädt und bei Google wie in KI-Suchen auftaucht. Den Entwurf siehst du zuerst, bezahlt wird erst, wenn er sitzt.',
+    ],
+    reachLine:
+      'Wir arbeiten mit Betrieben in der ganzen Steiermark, von Graz über Leoben, Kapfenberg und Bruck an der Mur bis ins Ennstal und in die Südsteiermark.',
+    proof: [
+      {
+        name: 'ReRo Heizsysteme',
+        ort: 'Admont, Ennstal',
+        what: 'Website für den Heizungsbau, gebaut auf Anfragen statt auf Hochglanz.',
+        href: 'https://heating-systems.at',
+      },
+      {
+        name: 'Global Insights',
+        ort: 'Graz',
+        what: 'Auftritt für die internationale Mobilitäts- und Interkultur-Beratung von Michaela Ruderes.',
+        href: 'https://ruderes-insights.at/de',
+      },
+    ],
+    logistikHeading: 'Wien-basiert, in der Steiermark zuhause.',
+    logistikText:
+      'Wir sitzen in Wien und betreuen dich remote, per Call und Bildschirmfreigabe. Das spart Wege und Zeit. Für ein Kennenlernen oder einen Fototermin sind wir nach Absprache auch vor Ort, in Graz, Leoben oder wo dein Betrieb sitzt. Nötig ist es selten, ausgeschlossen nie.',
+  },
   faqEyebrow: 'Häufige Fragen aus der Steiermark',
   faq: [
     {

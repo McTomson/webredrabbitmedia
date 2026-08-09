@@ -32,6 +32,20 @@ export type RegionContent = {
   problemBody: string;
   /** Regionaler Beweis-Einstieg (nennt echte regionale Kunden). */
   beweisIntro: string;
+  /** Dedizierter Regional-Bereich: sichtbare, scannbare Ranking-Substanz
+   *  (~400-700 Woerter regionaler Text, echte Referenz-Karten, Vor-Ort-Logistik).
+   *  Traegt die region-spezifische Substanz, damit Google die Seite als eigene
+   *  wertet und die bestehenden Impressions nicht verloren gehen. Kein generischer
+   *  Preis-/Prozess-Text (der lebt auf /preise, /leistungen). */
+  regionalBlock: {
+    eyebrow: string;
+    heading: string;
+    paragraphs: string[];
+    reachLine: string;
+    proof: { name: string; ort: string; what: string; href?: string }[];
+    logistikHeading: string;
+    logistikText: string;
+  };
   /** Eyebrow ueber der FAQ, z. B. "Haeufige Fragen aus der Steiermark". */
   faqEyebrow: string;
   /** Regionale FAQ (SSR-crawlbar, eigenes FAQPage-Schema). */
@@ -79,6 +93,49 @@ export default function RegionHome({ region }: { region: RegionContent }) {
 
       {/* Problem / Loesung / Beweis (Problem + Beweis regionalisiert) */}
       <CasePanels themes={themes} />
+
+      {/* Dedizierter Regional-Bereich: sichtbare, scannbare Ranking-Substanz.
+          Kurze Absaetze + echte Referenz-Karten + Vor-Ort-Logistik. Traegt den
+          region-spezifischen Unique-Content (Impressions-Schutz), ohne Textwand. */}
+      <section className="rr rr-section">
+        <div className="rr-wrap rr-narrow">
+          <p className="rr-eyebrow" style={{ marginBottom: 16 }}>{region.regionalBlock.eyebrow}</p>
+          <h2 className="rr-sub" style={{ marginBottom: 22, maxWidth: 780 }}>{region.regionalBlock.heading}</h2>
+          <div className="rr-prose" style={{ display: "grid", gap: 18 }}>
+            {region.regionalBlock.paragraphs.map((p, i) => (
+              <p key={i} className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, lineHeight: 1.6 }}>{p}</p>
+            ))}
+            <p className="rr-body" style={{ fontSize: 18, lineHeight: 1.6 }}>{region.regionalBlock.reachLine}</p>
+          </div>
+
+          {/* Echte Referenz-Karten (Proof statt Prosa) */}
+          <div className="rr-grid rr-grid-2" style={{ marginTop: 40 }}>
+            {region.regionalBlock.proof.map((c) => (
+              <div key={c.name} className="rr-card">
+                <h3 className="rr-sub" style={{ marginBottom: 6, fontSize: 22 }}>{c.name}</h3>
+                <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 15, marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.06em" }}>{c.ort}</p>
+                <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17, marginBottom: c.href ? 14 : 0 }}>{c.what}</p>
+                {c.href && (
+                  <a className="rr-link" href={c.href} target="_blank" rel="noopener noreferrer">
+                    {c.href.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Vor-Ort-Logistik (ehrlich, beantwortet "kommt ihr vor Ort") */}
+          <div className="rr-card rr-card--surface" style={{ marginTop: 28 }}>
+            <h3 className="rr-sub" style={{ marginBottom: 12, fontSize: 22 }}>{region.regionalBlock.logistikHeading}</h3>
+            <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, lineHeight: 1.6 }}>{region.regionalBlock.logistikText}</p>
+          </div>
+
+          {/* Kontextuelle Links zu den geteilten Detailseiten (statt Preise zu duplizieren) */}
+          <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, marginTop: 28 }}>
+            Wie wir arbeiten, steht bei den <a className="rr-link" href="/leistungen">Leistungen</a>. Was es kostet, offen auf der <a className="rr-link" href="/preise">Preisseite</a>.
+          </p>
+        </div>
+      </section>
 
       {/* Regionale FAQ (Zusatzblock ggue. Home: echte regionale Fragen, GEO-zitierfaehig) */}
       <section className="rr rr-section" style={{ background: "var(--rr-surface)" }}>
