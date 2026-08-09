@@ -39,7 +39,7 @@ import '@/components/subpages/leistungen/wd-eyebrow.css';
 export const metadata: Metadata = {
   title: 'Preise · Red Rabbit Media',
   description:
-    'Klare Pakete ab 1.250 Euro. Du siehst zuerst 1-2 grafische Vorschläge, ganz ohne Vorkasse. Talos, dein Copilot, ist bei jedem Paket dabei, dazu KMU.DIGITAL-förderbar.',
+    'Klare Website-Pakete ab 1.250 Euro. Du bekommst zuerst 1-2 grafische Vorschläge ohne Vorkasse, erst wenn sie dir gefallen, beauftragst du uns. Talos, dein Copilot, ist bei jedem Paket dabei.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/preise' },
 };

@@ -20,8 +20,8 @@ import Faq, { type FaqItem } from '@/components/relaunch/Faq';
  */
 const FAQ_ITEMS: FaqItem[] = [
   {
-    q: 'Was kostet so eine Website ungefähr?',
-    a: 'Das kommt drauf an, wie viel Seite du brauchst. Die Preise sind Startpreise, immer ein Fixpreis-Rahmen statt Stundensatz, bei dem am Ende eine böse Überraschung steht. Die drei Stufen mit den echten Zahlen stehen weiter oben auf dieser Seite, da schaust du dir in Ruhe an, was zu dir passt. Und die 1-2 grafischen Vorschläge siehst du sowieso, bevor du dich festlegst.',
+    q: 'Was kostet es, eine professionelle Website erstellen zu lassen?',
+    a: 'Bei uns startet der One-Pager (Starter) ab 1.250 Euro, die mehrseitige Business-Website ab 2.850 Euro und die große Premium-Ausbaustufe ab 4.900 Euro. Immer als Fixpreis-Rahmen, nicht als Stundensatz, bei dem am Ende eine böse Überraschung steht. Was am Ende genau dein Preis ist, hängt vom Umfang ab, den du brauchst. Die drei Pakete mit allem, was drinsteckt, stehen weiter oben auf dieser Seite. Und die 1-2 grafischen Vorschläge bekommst du sowieso, bevor du dich festlegst.',
   },
   {
     q: 'Wie lange dauert das Ganze?',

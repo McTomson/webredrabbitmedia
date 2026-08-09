@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { STUFEN } from '@/components/subpages/leistungen/website/v2/stufen-varianten/VarianteA';
 import FloatingReview from './FloatingReview';
 
 /**
@@ -23,36 +22,116 @@ import FloatingReview from './FloatingReview';
  * dupliziert. Klassen rpm-/rp- sind seiten-lokal eindeutig genug.
  */
 
-// Alle Preise sind Startpreise ("ab", Thomas 08.08.2026): je nach Anforderung
-// kann sich der Umfang und damit der Preis verschieben, das genaue Angebot
-// bekommt der Kunde bei der Auftragserteilung.
-const PREIS: Record<string, string> = {
-  Starter: 'ab 1.250 €',
-  Business: 'ab 2.850 €',
-  Premium: 'ab 4.900 €',
+/**
+ * Eigene Paket-Daten der Preisseite (Thomas 09.08.2026): KUMULATIV aufgebaut,
+ * jede Stufe enthaelt alles aus der kleineren plus den eigenen Zugewinn. Bewusst
+ * ENTKOPPELT von den STUFEN aus VarianteA.tsx (die die Website-Unterseite
+ * versorgen): dort zeigen die Stufen nur die Unterschiede, hier den vollen,
+ * kumulativen Umfang mit deutlich mehr Text. So bleibt die Website-Seite
+ * unveraendert, waehrend die Preisseite ihre eigene, ausfuehrliche Darstellung
+ * bekommt. Preise sind Startpreise ("ab", Thomas 08.08.): das verbindliche
+ * Angebot bekommt der Kunde bei der Auftragserteilung. Preise NUR 1.250 /
+ * 2.850 / ab 4.900.
+ */
+type Merkmal = { titel: string; detail: string };
+type Paket = {
+  name: string;
+  preis: string;
+  text: string;
+  featured?: boolean;
+  merkmale: Merkmal[];
 };
 
-/* Fail-closed (Review-Finding P2, 23.07.): der Lookup laeuft ueber den
-   Stufen-NAMEN aus VarianteA.tsx. Wird dort umbenannt, stuende hier sonst
-   still eine leere Preiszeile — ausgerechnet auf der Preisseite. Bewusst
-   namens- statt indexbasiert: eine geaenderte Reihenfolge wuerde bei
-   Index-Zuordnung einen FALSCHEN Preis anzeigen, und ein falscher Preis ist
-   schlimmer als ein harter Fehler. Die Seite wird statisch generiert, dieser
-   Check schlaegt also im Build zu, nicht beim Besucher. */
-const STUFEN_OHNE_PREIS = STUFEN.filter((s) => !PREIS[s.name]).map((s) => s.name);
-if (STUFEN_OHNE_PREIS.length > 0) {
-  throw new Error(
-    `PreiseMatrix: kein Preis fuer Stufe(n) ${STUFEN_OHNE_PREIS.join(', ')}. ` +
-      'PREIS-Map und STUFEN (leistungen/website/v2/stufen-varianten/VarianteA.tsx) ' +
-      'sind auseinandergelaufen — Preise NUR 1.250 / 2.850 / ab 4.900.',
-  );
-}
+const PAKETE: Paket[] = [
+  {
+    name: 'Starter',
+    preis: 'ab 1.250 €',
+    text: 'Der schlanke Start: eine Seite, die sitzt. Für alle, die schnell und sauber online sein wollen.',
+    merkmale: [
+      {
+        titel: 'Das komplette Fundament, alles inklusive',
+        detail:
+          'Alles, was oben steht, steckt schon in Starter drin: individuelles Design, perfekt am Handy, für Google und KI gebaut, Talos als dein Copilot, Technik, Recht, Einrichtung. Kein abgespecktes Einsteiger-Ding, sondern das volle Fundament, nur eben auf einer Seite.',
+      },
+      {
+        titel: 'One-Pager, der alles Wichtige trägt',
+        detail:
+          'Eine Seite, klar aufgebaut: wer du bist, was du machst, warum dich jemand anrufen soll und wie er das tut. Alles Wichtige an einem Ort, ohne dass sich der Besucher durchklicken muss.',
+      },
+      {
+        titel: 'Der schlanke Einstieg, der mitwächst',
+        detail:
+          'Perfekt, um klein zu starten. Wächst dein Betrieb, hebst du jederzeit auf Business oder Premium, ohne bei null anzufangen. Deine Seite wächst mit dir, nicht gegen dich.',
+      },
+    ],
+  },
+  {
+    name: 'Business',
+    preis: 'ab 2.850 €',
+    text: 'Mehrseitig, gezielt auf lokale Sichtbarkeit und Anfragen gebaut. Der Sprung, den die meisten brauchen.',
+    featured: true,
+    merkmale: [
+      {
+        titel: 'Alles aus Starter, plus mehr Raum',
+        detail:
+          'Das komplette Starter-Paket inklusive Fundament ist hier drin. Darauf setzt Business auf: mehr Seiten, mehr Struktur, mehr Möglichkeiten, deinen Betrieb zu zeigen.',
+      },
+      {
+        titel: 'Mehrseitig, mit Platz für alles',
+        detail:
+          'Eigene Seiten für Leistungen, Team, Referenzen, Anfahrt, was dein Betrieb eben zeigen will. Jede Leistung bekommt ihren Raum, statt sich auf einer Seite zu drängen.',
+      },
+      {
+        titel: 'Lokal gefunden werden',
+        detail:
+          'Gezielt darauf gebaut, dass dich Leute aus deiner Gegend finden, wenn sie genau das suchen, was du anbietest. Die Kunden vor deiner Haustür sind die, die am ehesten kaufen.',
+      },
+      {
+        titel: 'Auf Anfragen gebaut',
+        detail:
+          'Aufbau und Wege so gelegt, dass aus Besuchern Anfragen werden: klare Handlungsaufforderungen, kurze Wege zum Formular und zum Telefon. Damit das Telefon klingelt, nicht nur der Besucherzähler.',
+      },
+    ],
+  },
+  {
+    name: 'Premium',
+    preis: 'ab 4.900 €',
+    text: 'Für alle, deren Seite wirklich arbeiten soll: umfangreich, auf dauerhafte Sichtbarkeit und laufende Anfragen gebaut.',
+    merkmale: [
+      {
+        titel: 'Alles aus Business, plus volle Ausbaustufe',
+        detail:
+          'Das komplette Business-Paket ist drin, inklusive allem aus Starter und dem Fundament. Premium ist die große Ausbaustufe für Betriebe, deren Website richtig arbeiten soll.',
+      },
+      {
+        titel: 'Umfangreich und skalierbar',
+        detail:
+          'Die große Struktur, die mitwächst, so groß dein Betrieb wird. Für Seiten, die viel zeigen und viel leisten sollen, ohne dass es unübersichtlich wird.',
+      },
+      {
+        titel: 'Inhalte, die dich sichtbar halten',
+        detail:
+          'Ein Ratgeber- oder Blog-System, mit dem du Stück für Stück sichtbarer wirst, bei Google und bei KI-Suchen. Statt einmal gebaut zu verstauben, arbeitet deine Seite laufend für dich.',
+      },
+      {
+        titel: 'Dauerhafte Sichtbarkeit',
+        detail:
+          'Auf dauerhafte, inhaltsgetriebene Sichtbarkeit und laufende Anfragen gebaut, nicht nur auf den ersten Tag nach dem Launch.',
+      },
+      {
+        titel: 'Vorqualifizierte Anfragen',
+        detail:
+          'Formulare, die Interessenten vorsortieren, bevor sie bei dir landen. So verlierst du weniger Zeit mit dem Falschen und redest mit denen, die wirklich passen.',
+      },
+    ],
+  },
+];
 
 function StufeMatrix({
   stufe,
   defaultActive = null,
 }: {
-  stufe: (typeof STUFEN)[number];
+  stufe: Paket;
   defaultActive?: number | null;
 }) {
   const [active, setActive] = useState<number | null>(defaultActive);
@@ -66,13 +145,13 @@ function StufeMatrix({
             {stufe.name}
             {stufe.featured && <span className="rpm__namedot" aria-hidden="true" />}
           </h3>
-          <p className="rpm__price">{PREIS[stufe.name]}</p>
+          <p className="rpm__price">{stufe.preis}</p>
           <span className="rpm__badge">0 € bis zum Vorschlag</span>
           <p className="rpm__text">{stufe.text}</p>
           <Link
             href="/relaunch-preview/kontakt"
             data-rr-lead="paket"
-            data-rr-lead-service={`Paket ${stufe.name} (${PREIS[stufe.name]})`}
+            data-rr-lead-service={`Paket ${stufe.name} (${stufe.preis})`}
             className={
               'rpm__cta rr-btn-sweep ' +
               (stufe.featured ? 'rr-btn-sweep--red' : 'rr-btn-sweep--navy')
@@ -123,35 +202,19 @@ export default function PreiseMatrix() {
           Drei Pakete, ein Prinzip<span style={{ color: 'var(--rr-red)' }}>.</span>
         </h2>
         <p className="rr-body-lg rp-matrix__intro">
-          Das Fundament oben ist in jedem Paket dabei. Hier siehst du nur, was sich
-          unterscheidet. Wähl die Stufe, die zu deinem Betrieb passt, und wachse später
-          jederzeit in die nächste.
+          Jedes Paket enthält alles aus dem kleineren, plus das, was diese Stufe ausmacht.
+          Wähl die Stufe, die zu deinem Betrieb passt, und wachse später jederzeit in die
+          nächste.
         </p>
 
-        {STUFEN.map((s, i) => (
+        {PAKETE.map((s, i) => (
           <StufeMatrix key={s.name} stufe={s} defaultActive={i === 0 ? 0 : null} />
         ))}
-
-        <div className="rp-matrix__ab">
-          <p className="rp-matrix__ab-h">Warum „ab“?</p>
-          <p className="rp-matrix__ab-body">
-            Der Startpreis ist deine fertige, komplette Seite, alles dabei, um loszulegen. Und
-            weil wir selbst programmieren, ist nach oben alles offen: besonderes Design,
-            Sonderfunktionen, etwas ganz auf deinen Betrieb Gebautes. Was du dir zusätzlich
-            wünschst, setzen wir um und rechnen es fair dazu. Deinen genauen Preis siehst du,
-            bevor du zusagst. Bis dahin zahlst du keinen Cent.
-          </p>
-        </div>
-
-        <p className="rr-meta rp-matrix__custom">
-          Große oder besondere Projekte, etwa Shops oder Sonderfunktionen, planen wir
-          individuell. Zusatzleistungen bekommst du auf Anfrage.
-        </p>
       </div>
 
       <FloatingReview
         side="right"
-        quote="Ein Lob an Herrn Uhlir, der mich durch die Zeit der Umsetzung begleitet hat."
+        quote="Ich bin von der Firma begeistert, vor allem von der Umsetzung. 100 Prozent Empfehlung."
         name="Rene Rohrer, Google-Rezension"
       />
 

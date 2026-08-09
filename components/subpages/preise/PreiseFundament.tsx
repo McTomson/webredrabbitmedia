@@ -24,32 +24,47 @@ const FUNDAMENT: Punkt[] = [
   {
     titel: 'Talos, dein Copilot',
     detail:
-      'Bei jeder Website dabei. Texte und Bilder änderst du selbst, jederzeit. Und du siehst an einem Ort, was auf deiner Seite läuft: wie viele Leute kommen, woher, was sie anklicken, wer sich meldet. Im Klartext, ohne Fachchinesisch.',
+      'Bei jeder Website dabei, vom ersten Tag an. Texte und Bilder tauschst du selbst, in Minuten, ohne uns anzurufen und ohne Technikwissen. Und du siehst an einem Ort, was auf deiner Seite wirklich passiert: wie viele Leute kommen, woher, was sie anklicken, wer sich meldet. Im Klartext, ohne Fachchinesisch. Die meisten Betriebe raten, was ihre Website tut. Du weißt es.',
+  },
+  {
+    titel: 'Individuelles Design, kein Template',
+    detail:
+      'Wir bauen deine Seite von Grund auf, auf deinen Betrieb zugeschnitten. Kein gekaufter Baukasten, kein Theme, das tausend andere auch haben. Farben, Aufbau, Bildsprache, alles passt zu dir und hebt dich von der Konkurrenz ab, statt dich in der Masse verschwinden zu lassen.',
+  },
+  {
+    titel: 'Perfekt am Handy',
+    detail:
+      'Über die Hälfte deiner Besucher kommt vom Smartphone, oft die kaufbereitere Hälfte. Deshalb bauen wir jede Seite zuerst fürs Handy und dann für den großen Bildschirm. Nichts verrutscht, nichts ist zu klein, nichts musst du wegzoomen. Auf jedem Gerät, vom alten Android bis zum neuen iPhone.',
+  },
+  {
+    titel: 'Tempo, das bleibt',
+    detail:
+      'Eine langsame Seite verliert Kunden, bevor sie überhaupt gesehen haben, was du kannst. Wir bauen schlank, optimieren Bilder und Code, damit deine Seite in Sekunden steht statt in gefühlten Minuten. Das merkt der Besucher, und Google merkt es auch.',
   },
   {
     titel: 'Gefunden werden, bei Google und KI',
     detail:
-      'So gebaut, dass Google und KI-Suchen wie ChatGPT deine Seite sauber verstehen. Das Fundament, damit dich Leute überhaupt finden.',
+      'So gebaut, dass Google und die neuen KI-Suchen wie ChatGPT deine Seite sauber lesen und verstehen: saubere Struktur, richtige Überschriften, alles was heute zählt. Das ist das Fundament, damit dich Leute überhaupt finden. Platz eins verspricht dir seriös niemand, die Grundlagen dafür liefern wir.',
   },
   {
-    titel: 'Individuell gebaut',
+    titel: 'Technik, Hosting und Sicherheit',
     detail:
-      'Individuelles Design, auf deinen Betrieb gebaut, kein Baukasten-Template. Perfekt am Handy, weil da deine Kunden suchen.',
+      'Schnelles, stabiles Hosting, automatische Backups, Sicherheitsupdates, SSL-Verschlüsselung, alles läuft im Hintergrund mit. Um Server, Updates und den ganzen technischen Kram kümmerst du dich nie. Geht doch mal etwas nicht, merken wir es meist, bevor du es tust.',
   },
   {
-    titel: 'Technik und Sicherheit',
+    titel: 'Rechtlich sauber, nach AT-Recht',
     detail:
-      'Schnell und stabil gehostet, Backups und Sicherheit laufen im Hintergrund mit. Um Server, Updates und Technik kümmerst du dich nie. Geht etwas nicht, merken wir es meist vor dir.',
+      'Impressum und Datenschutzerklärung setzen wir nach österreichischem Recht auf, sauber und vollständig, Cookie-Hinweis wo er nötig ist. Damit du nicht wegen einer fehlenden Pflichtangabe eine Abmahnung riskierst, während du eigentlich nur deine Arbeit machen willst.',
   },
   {
-    titel: 'Rechtlich sauber',
+    titel: 'Kontaktwege, die ankommen',
     detail:
-      'Impressum und Datenschutz nach österreichischem Recht, sauber aufgesetzt. Und ein Kontaktformular, das direkt bei dir ankommt.',
+      'Ein Kontaktformular, das direkt in deinem Postfach landet, nicht in irgendeinem Nirwana. Anruf-Button fürs Handy, Route zu deinem Betrieb, Öffnungszeiten, alles was ein Interessent braucht, um bei dir zu landen. Denn die schönste Website nützt nichts, wenn niemand den Weg zu dir findet.',
   },
   {
-    titel: 'Einrichtung und Übertragung dabei',
+    titel: 'Einrichtung und Übertragung inklusive',
     detail:
-      'Aufsetzen, alles übertragen, Mailadressen verbinden: bei uns Teil des Preises. Anderswo landet genau das oft mit rund 350 Euro extra auf der Rechnung.',
+      'Aufsetzen, alles einrichten, deine bestehenden Inhalte übertragen, Mailadressen verbinden, live schalten, das machen wir. Bei vielen anderen steht genau dieser Teil am Ende mit ein paar hundert Euro extra auf der Rechnung. Bei uns ist er Teil des Preises. Punkt.',
   },
 ];
 
@@ -61,11 +76,13 @@ export default function PreiseFundament() {
       <div className="rr-wrap rr-narrow">
         <p className="wd-eyebrow">In jedem Paket dabei</p>
         <h2 className="rr-statement rpf__h2">
-          Das Fundament ist immer dabei<span style={{ color: 'var(--rr-red)' }}>.</span>
+          Was andere extra berechnen, ist bei uns Standard<span style={{ color: 'var(--rr-red)' }}>.</span>
         </h2>
         <p className="rr-body-lg rpf__intro">
-          Egal welches Paket du wählst, das steckt bei jeder Website von uns drin. Kein
-          Zusatzpaket, kein Kleingedrucktes. Der Unterschied zwischen den Stufen kommt danach.
+          Egal welches Paket du wählst, das steckt bei jeder Website von uns drin. Vieles davon
+          verkaufen andere als teures Extra oder lassen es gleich ganz weg. Bei uns ist es der
+          Standard, unter den wir nicht gehen. Der Unterschied zwischen den Stufen kommt erst
+          danach. Klick dich durch, dann siehst du, was wir wirklich machen.
         </p>
 
         <div className="rpf__list">
@@ -97,7 +114,8 @@ export default function PreiseFundament() {
         </div>
 
         <p className="rr-meta rpf__closer">
-          Kein Wartungsvertrag, keine Extra-Rechnung. Drin.
+          Kein Wartungsvertrag, kein Kleingedrucktes, keine Extra-Rechnung. Das alles ist in
+          jedem Paket drin.
         </p>
       </div>
 
@@ -112,11 +130,12 @@ export default function PreiseFundament() {
         }
         .rpf__intro {
           color: var(--rr-ink-soft);
-          max-width: 58ch;
-          margin: 0 0 clamp(28px, 4vw, 44px);
+          max-width: 60ch;
+          margin: 0 0 clamp(44px, 6vw, 76px);
         }
         .rpf__list {
-          border-top: 1px solid rgba(28, 40, 55, 0.12);
+          /* Keine Linie oben (Thomas 09.08.): der Block soll luftig starten,
+             nicht mit einer harten Trennlinie unter dem Intro. */
         }
         .rpf__item {
           border-bottom: 1px solid rgba(28, 40, 55, 0.12);

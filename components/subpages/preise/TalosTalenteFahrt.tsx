@@ -16,6 +16,8 @@
  * Blaues Talos-Panel: volle Navy-Flaeche, Text links, reservierte Figur-
  * Flaeche rechts (Companion-Station).
  */
+import Link from 'next/link';
+
 export default function TalosTalenteFahrt() {
   return (
     <section className="rr-section rp-talos">
@@ -27,9 +29,10 @@ export default function TalosTalenteFahrt() {
               Talos übernimmt, was liegen bleibt<span style={{ color: 'var(--rr-red)' }}>.</span>
             </h2>
             <p className="rp-talos-intro__lead">
-              Talos, dein Copilot, ist schon in jeder Website dabei. Wenn du willst, kann er über
-              die Website hinaus Aufgaben in deinem Betrieb übernehmen. Alles auf deinen Betrieb
-              gebaut, auf Anfrage. Ein paar Beispiele:
+              Talos, dein Copilot, ist schon in jeder Website dabei. Darüber hinaus bauen wir dir
+              auf Wunsch Zusatzfunktionen, die dir echte Arbeit abnehmen, ganz auf deinen Betrieb
+              zugeschnitten. Nichts von der Stange, wir programmieren es für dich. Ein paar
+              Beispiele, was heute schon geht:
             </p>
             <ul className="rp-talos-intro__ex">
               <li>
@@ -53,6 +56,20 @@ export default function TalosTalenteFahrt() {
                 bauen wir&apos;s. Wir programmieren und binden an, was dein Betrieb braucht.
               </li>
             </ul>
+            <div className="rp-talos-intro__cta">
+              <p className="rp-talos-intro__ask">
+                Alles davon gibt es auf Anfrage. Was für deinen Betrieb Sinn macht und was es
+                kostet, sagen wir dir nach einem kurzen Gespräch, ehrlich und unverbindlich.
+              </p>
+              <Link
+                href="/relaunch-preview/kontakt"
+                data-rr-lead="talos-extras"
+                data-rr-lead-service="Talos Zusatzfunktionen (auf Anfrage)"
+                className="rr-btn-sweep rr-btn-sweep--red rp-talos-intro__btn"
+              >
+                Nachfragen
+              </Link>
+            </div>
             <p className="rp-talos-intro__pos">
               Unser Team hat zusammen 135 Jahre Erfahrung. Dieses Wissen steckt in Talos. Du
               bekommst also nicht nur eine KI, sondern alles, was wir können, und wir sitzen
@@ -127,12 +144,12 @@ export default function TalosTalenteFahrt() {
         }
         .rp-talos-intro__ex {
           list-style: none;
-          margin: 0 0 26px;
+          margin: 0 0 clamp(30px, 4vw, 44px);
           padding: 0;
           max-width: 54ch;
           display: flex;
           flex-direction: column;
-          gap: 14px;
+          gap: clamp(16px, 2vw, 20px);
         }
         .rp-talos-intro__ex li {
           font-family: var(--rr-font-ui);
@@ -155,6 +172,24 @@ export default function TalosTalenteFahrt() {
         .rp-talos-intro__ex-t {
           color: #fff;
           font-weight: 700;
+        }
+        .rp-talos-intro__cta {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: clamp(16px, 2vw, 22px);
+          margin: 0 0 clamp(30px, 4vw, 44px);
+          max-width: 52ch;
+        }
+        .rp-talos-intro__ask {
+          font-family: var(--rr-font-ui);
+          font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+          line-height: 1.6;
+          color: rgba(255, 255, 255, 0.82);
+          margin: 0;
+        }
+        .rp-talos-intro__btn {
+          align-self: flex-start;
         }
         .rp-talos-intro__pos {
           font-family: var(--rr-font-ui);
