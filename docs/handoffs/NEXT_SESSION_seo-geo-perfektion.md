@@ -61,7 +61,16 @@ Ziel-Bild von Thomas: die Website so perfekt fuer Google/Bing/LLMs machen, "dass
 - **Echte Google-Review-Zahl** von Thomas noetig (reviews.ts sagt 8 @12.06., positioning.md sagt 3 @22.07.) -> dann reviews.ts korrigieren + ggf. aggregateRating wieder ausspielen. LIVE-main publiziert aktuell noch die evtl. falschen 8 (separater Live-Hotfix erwaegen).
 - **NAP-Name-Entscheidung** von Thomas: Code sagt "Red Rabbit Media", Google-Profil "Red Rabbit GmbH" -> kanonische Schreibweise festlegen, dann Code + Verzeichnisse angleichen.
 
-**NAECHSTER BLOCK (Phase A Rest, in-place):** BreadcrumbList auf alle Relaunch-Seiten + referenzen/kontakt JSON-LD (fehlt); interne Verlinkung/Gegenverlinkung (2-3 kontextuelle Links/Seite, Breadcrumbs, Ueber-uns von jeder Content-Seite verlinkt, Menue/Footer-Praefix-Konsistenz); FAQ-Bloecke mit FAQPage-Schema (echte Nutzerfragen aus Keyword-Research); E-E-A-T-Autorzeile (Thomas Foto/Name/Bio) + Person-author auf Content-Seiten; default title/desc/OG/Twitter in layout.tsx noch auf 790/164 (Phase-B-Copy + Go-Live-Homepage-Metadata). DANN Phase B (Wert-Copy) DANN Phase C (Snippets 3+3).
+**WICHTIGE KORREKTUR (Thomas 09.08.): der Blog deckt die "Content-Luecken" schon ab.** 26 Artikel in `content/blog/*.mdx` (geteilte Quelle Live+Relaunch), inkl. exakt der Research-"Luecken": `was-kostet-eine-website`, `website-selbst-erstellen-vs-agentur`, `generative-engine-optimization`, `warum-sind-...-teurer`, `versteckte-kosten`, `restaurant-website-must-haves` (Vertical) u.v.m. Der Research-Agent kannte den Blog nicht (nur Live-Konkurrenz). Der Relaunch-Artikel-Renderer `app/relaunch-preview/tipps/[slug]/page.tsx` hat SCHON BlogPosting+FAQPage+BreadcrumbList-Schema, getRelatedPosts (cluster-aware interne Verlinkung), Autoren-Profil, Breadcrumbs. Nur `robots:index:false` (Go-Live-noindex-Fix). -> Blog technisch fertig, KEIN Neubau noetig.
+
+**NAECHSTER BLOCK (Phase A Rest, in-place) — verfeinert:**
+1. **Cross-Verlinkung Geld-Seiten <-> Artikel (der eigentliche Hebel):** BEWIESEN 0/26 mdx verlinken auf /preise oder /leistungen; Geld-Seiten verlinken kaum in Artikel. -> je Kosten-Artikel 1 natuerlicher kontextueller Link + CTA zu /preise; Geld-Seiten (Preise/Leistungen) verlinken 2-3 passende Artikel. Natuerliche Anker, House-Voice (content-engine/voice/house.md), keine KI-Tells, keine Stuffing. SORGFAELTIGER Durchgang (frisch/fokussiert, nicht schnell).
+2. **referenzen + kontakt** JSON-LD nachziehen (einzige Relaunch-Seiten ohne).
+3. **Go-Live-Detail (Thomas "Link behalten"):** Relaunch-tipps-Design an `/tipps/[slug]` ausspielen statt `/relaunch-preview/tipps/[slug]` -> alle 26 Artikel-URLs bleiben identisch, kein Redirect. Content bereits geteilt.
+4. default title/desc/OG/Twitter in layout.tsx noch auf 790/164 (-> Phase-B-Copy + Go-Live-Homepage-Metadata).
+DANN Phase B (Wert-Copy) DANN Phase C (SERP-Snippets 3+3).
+
+**Erledigt+committet diese Session (Fortsetzung):** `4a0a498` (Name-Entscheidung: Marke bleibt "Red Rabbit Media", kein GmbH im Schema; Off-Site-Checkliste NAP angepasst -> Google-Profil auf "Red Rabbit Media" angleichen). Review-Zahl: Thomas sagt Reviews sind echt, bleiben -> reviews.ts unveraendert gelassen (8); exakte aktuelle Zahl bei Gelegenheit gegen Google-Profil abgleichen.
 
 ## Deploy / Branch / Standing Constraints
 - Branch `relaunch`, live v2.redrabbit.media (git push -> Auto-Deploy via post-commit-Hook; "up-to-date"-Falle: mit `git ls-remote origin relaunch` gegen HEAD pruefen). NIE `vercel --prod`.
