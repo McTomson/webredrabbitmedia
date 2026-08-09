@@ -9,10 +9,12 @@ Priorität: 1 = größter Hebel.
 ## 0. NAP-Konsistenz FESTLEGEN (Voraussetzung für alles andere)
 NAP = Name, Address, Phone. Muss auf ALLEN Plattformen ZEICHENGLEICH sein, sonst zerfasert das Local-/GEO-Signal.
 
-**ENTSCHEIDUNG NÖTIG (deine):** Der Code/JSON-LD sagt **"Red Rabbit Media"**, das Google-Profil heißt **"Red Rabbit GmbH"**. Das ist eine echte Inkonsistenz. Leg EINE kanonische Schreibweise fest (Empfehlung: der eingetragene Firmenname, den auch das Impressum trägt) — ich ziehe den Code dann exakt darauf nach.
+**ENTSCHIEDEN (Thomas 09.08.):** Die Marke bleibt überall **"Red Rabbit Media"** (Domain, OG, ganze Seite) — kein "GmbH" im sichtbaren Namen/Schema. Das Impressum trägt weiterhin die rechtlich vorgeschriebene Firmenbezeichnung "Red Rabbit GmbH" (FN 516936 a) — das ist getrennt und korrekt so.
 
-Kanonischer NAP-Satz (bitte bestätigen/korrigieren):
-- **Name:** Red Rabbit GmbH _(oder "Red Rabbit Media"? → du entscheidest)_
+**Off-Site-To-do daraus:** Das **Google-Business-Profil** (aktuell "Red Rabbit GmbH") auf **"Red Rabbit Media"** angleichen, damit der überall genutzte Marken-Name konsistent ist (Google erlaubt den real genutzten Markennamen/DBA). Ebenso alle Verzeichnis-Einträge auf "Red Rabbit Media".
+
+Kanonischer NAP-Satz:
+- **Name:** Red Rabbit Media
 - **Adresse:** Grabnergasse 8, 1060 Wien, Österreich
 - **Telefon:** +43 676 9000955
 - **E-Mail:** office@redrabbit.media
