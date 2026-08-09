@@ -88,10 +88,14 @@ export default function TalosTalenteFahrt() {
             data-talos-figure-slot
             data-talos-station
             data-talos-anchor="0.78"
-            data-talos-size="l"
-            data-talos-gesture="wave"
+            data-talos-size="m"
+            data-talos-gesture="wave2"
             data-talos-layer="front"
             data-talos-appear="0.4"
+            data-talos-mobile="1"
+            data-talos-mobile-anchor="0.82"
+            data-talos-mobile-size="xs"
+            data-talos-mobile-gesture="wave2"
             aria-hidden="true"
           >
             <span className="rp-talos-intro__figure-mark">Talos</span>
@@ -230,9 +234,18 @@ export default function TalosTalenteFahrt() {
             min-height: 0;
             padding: clamp(56px, 9vh, 96px) var(--rr-gutter, clamp(20px, 4.6vw, 72px));
           }
-          /* Figur-Flaeche mobil ausgeblendet (der echte Companion kommt
-             ohnehin nur auf breiten Viewports zum Tragen). */
+          /* Mobil: Station bleibt IN FLOW (Thomas 10.08.: Talos soll auch am Handy
+             kommen, klein, rechts unten). Die Engine braucht ein echtes Rect fuers
+             Scoring (TalosCompanionStage.getBoundingClientRect) -> NICHT display:none.
+             Kleine reservierte Flaeche am Panel-Ende, in der der Companion (xs,
+             mAnchor 0.82) rechts unten erscheint; das Riesen-Wort faellt weg. */
           .rp-talos-intro__figure {
+            min-height: clamp(200px, 44vh, 360px);
+            margin-top: clamp(8px, 3vw, 20px);
+            background: none;
+            border-radius: 0;
+          }
+          .rp-talos-intro__figure-mark {
             display: none;
           }
         }

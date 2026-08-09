@@ -17,7 +17,7 @@ interface Euler3 {
   z: number;
 }
 
-const GREETING_DURATION = 3.2; // Sekunden gesamt (heben, 2x winken, senken)
+const GREETING_DURATION = 4.6; // Sekunden gesamt (heben, 2x winken, senken); 10.08. verlangsamt (war 3.2), Winken wirkte zu hektisch (Thomas /preise + Bundesland-Handoff)
 const BOW_DURATION = 2.0;
 
 const clamp = (v: number, min: number, max: number) =>
