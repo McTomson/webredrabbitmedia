@@ -19,7 +19,7 @@ import KundenSagen from "@/components/subpages/leistungen/KundenSagen";
  * Perfektion" + Lighthouse -> KundenSagen (dunkel). Linksbuendig, echte Umlaute.
  */
 
-type PanelWindow = {
+export type PanelWindow = {
   eyebrow?: string;
   headline?: string;
   body?: ReactNode;
@@ -28,7 +28,7 @@ type PanelWindow = {
   kind?: "lighthouse" | "kundensagen" | "lighthouse-solo";
 };
 
-type Theme = {
+export type Theme = {
   key: string;
   giant: string;
   bg: string;
@@ -41,7 +41,7 @@ type Theme = {
 
 const LEISTUNGEN = "/relaunch-preview/leistungen";
 
-const THEMES: Theme[] = [
+export const THEMES: Theme[] = [
   {
     key: "problem",
     giant: "Problem",
@@ -254,7 +254,7 @@ function PanelTrack({ t }: { t: Theme }) {
   );
 }
 
-export default function CasePanels() {
+export default function CasePanels({ themes = THEMES }: { themes?: Theme[] } = {}) {
   // Degradiert = prefers-reduced-motion ODER schmaler Viewport (<= 820px):
   // Bumper/Pan werden dann zu normalem vertikalem Scrollen (Standard 28.07.).
   // Entscheidung beim Mount, kein Live-Umschalten bei Resize: ein Wechsel
@@ -267,7 +267,7 @@ export default function CasePanels() {
   if (degraded) {
     return (
       <div>
-        {THEMES.map((t) =>
+        {themes.map((t) =>
           t.windows.map((w, i) => (
             <section key={`${t.key}-${i}`} aria-label={t.key} style={{ minHeight: "100vh", position: "relative", overflow: "hidden", background: t.bg, color: t.text, display: "flex", alignItems: "center" }}>
               {w.kind === "kundensagen" ? (
@@ -287,7 +287,7 @@ export default function CasePanels() {
 
   return (
     <div>
-      {THEMES.map((t) => <PanelTrack key={t.key} t={t} />)}
+      {themes.map((t) => <PanelTrack key={t.key} t={t} />)}
     </div>
   );
 }

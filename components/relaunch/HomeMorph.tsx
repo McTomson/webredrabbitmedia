@@ -70,7 +70,7 @@ const STACK_TRAVEL = HEAD_PEEK_DY - HEAD_LOCK_DY; // 63.6vh
  * Original-Kompositionen, Seiten-Alternierung) — OHNE leeren Screen, ein
  * Teile-Pool ueber die ganze Fahrt (at-Struktur: EIN Lottie, kein Schnitt).
  */
-export default function HomeMorph() {
+export default function HomeMorph({ sceneTexts = SCENE_TEXTS }: { sceneTexts?: typeof SCENE_TEXTS } = {}) {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const headRef = useRef<HTMLDivElement>(null);
@@ -492,7 +492,7 @@ export default function HomeMorph() {
         `}</style>
 
         {/* Statements (SEO-Text immer im DOM), Seite = Gegenseite der Formation */}
-        {!reduced && SCENE_TEXTS.map((t, i) => (
+        {!reduced && sceneTexts.map((t, i) => (
           <div
             key={t.key}
             ref={(el) => { textRefs.current[i] = el; }}
@@ -504,7 +504,7 @@ export default function HomeMorph() {
         ))}
       </div>
       {/* reduced-motion: Statements als normale Sektionen */}
-      {reduced && SCENE_TEXTS.map((t) => (
+      {reduced && sceneTexts.map((t) => (
         <section key={t.key} className="rr-section">
           <div className="rr-wrap">
             <h2 className="rr-eyebrow-lg" style={{ marginBottom: 18 }}>{t.eyebrow}</h2>

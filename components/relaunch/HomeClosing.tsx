@@ -10,7 +10,13 @@ import SiteClosing from "@/components/relaunch/SiteClosing";
  * (Vereinheitlichung: jede Inhaltsseite nutzt denselben Abschluss-Block).
  */
 
-export default function HomeClosing() {
+const DEFAULT_CLOSING = [
+  "Du willst eine Website, die man findet?",
+  "Und die für dich im Hintergrund Kunden gewinnt?",
+  "Reden wir.",
+];
+
+export default function HomeClosing({ closingLines = DEFAULT_CLOSING }: { closingLines?: string[] } = {}) {
   return (
     <>
       {/* Sektionen 6+7: Kundenliste-Typing-Grid (Port ueber-uns, weiss statt blau).
@@ -20,13 +26,7 @@ export default function HomeClosing() {
       </div>
 
       {/* Sektion 8: Abschluss-CTA — eigener luftiger Block, Off-White-Grund */}
-      <SiteClosing
-        lines={[
-          "Du willst eine Website, die man findet?",
-          "Und die für dich im Hintergrund Kunden gewinnt?",
-          "Reden wir.",
-        ]}
-      />
+      <SiteClosing lines={closingLines} />
     </>
   );
 }
