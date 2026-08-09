@@ -161,3 +161,39 @@ WKO regional), NAP konsistent, LinkedIn-Company-Page aktiv, Reviews die Service+
 **Bau-Sequenz (Thomas-Regel Demo-vor-Umbau + visuell bestaetigen):** ZUERST EINE Referenz-Seite
 (Steiermark) im Relaunch-Design fertig bauen -> Thomas bestaetigt auf seinem Screen -> dann die
 anderen 8 + Hub nachziehen. Nicht alle 9 blind bauen.
+
+---
+
+## TEIL 6 — MIGRATIONS-RISIKO + One-Pager-Reframing (Research 09.08., HOCH-STAKES)
+
+**Ausloeser:** /webdesign-steiermark ist die TOP-IMPRESSIONS-Seite (Search Console). Darf beim
+Austausch NICHT verloren gehen.
+
+**Ist-Analyse der Live-Seite (empirisch):** ~3.115 Woerter, keyword-dicht (steiermark x72, graz x30,
+leoben x12, bruck x9, kapfenberg x9, knittelfeld x4, seo x22), Region-Ueberschriften, Branchen-Block,
+Portfolio mit 6 echten Kunden (ReRo, Thermewarten, LashesbyDanesh, La Morra, K2, Aircraft), Region-FAQ.
+DAS ist der Grund fuers Ranking.
+
+**Verdikt (Research research_bundesland_migration.md):** Die erste home-basierte Version (~500 Woerter,
+design-lastig) 1:1 einzuspielen = zwei unabhaengig belegte Ranking-Killer gestapelt auf der #1-Seite:
+1. Text bei rankender Seite schrumpfen (1000->100 Woerter = Ranking-Absturz, Redesign-Fehler Nr.1).
+2. 9 Template-Klone = Doorway (HVAC-Fall: -80% Rankings/-63% Traffic in 30 Tagen).
+Google: nach Umbau ~1 Monat Re-Crawl + 2-3 Monate Re-Ranking -> Fehler ist monatelang teuer.
+
+**One-Pager-Reframing (Thomas, wichtig):** Die alte Seite ist ein ONE-PAGER (Preise+Portfolio+Branchen+
+Testimonials alles auf einer Seite) -> daher die vielen Woerter. Der Relaunch verteilt das auf mehrere
+Seiten. Also braucht die Region-Seite NICHT alle 3.115 Woerter, sondern den REGION-SPEZIFISCHEN Anteil
+(Warum Steiermark, echte regionale Referenzen, Branchen, Region-FAQ, Vor-Ort-Logistik). Generisches
+(Preise/Prozess) lebt auf /preise, /leistungen. Gleichzeitig: User NICHT mit Textwand erschlagen.
+
+**Offene Kernfrage -> Research laeuft (research_bundesland_ux_text.md):** wie genug region-eigene
+crawlbare Substanz zum Ranken OHNE Text-Wueste? Progressive Disclosure (Akkordeon/FAQ/details =
+crawlbar aber eingeklappt), scannbare Struktur, verteilter Content + internes Linking. Mehrere
+Loesungen inkl. Foren, geprueft auf Anwendbarkeit.
+
+**Sichere Migration (fix):** gleiche URL + gleicher Title/H1-Keyword (Kontinuitaet); Content-Paritaet
+auf REGION-SPEZIFISCHER Ebene (nicht schrumpfen bei dem, was rankt); echte Referenzen + Region-FAQ +
+Keywords (steiermark/graz/leoben/bruck/kapfenberg/knittelfeld) erhalten; auf Staging pruefen; GSC
+Re-Index anfordern; woechentlich Impressions/Position + Duplikat-Report; Rollback-Trigger vorab
+(ploetzlicher Absturz <48h = technisch; langsamer Rueckgang >30% ueber 2+ Wochen = Content -> Snapshot
+zurueck).

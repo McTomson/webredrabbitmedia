@@ -107,7 +107,7 @@ export default function RegionHome({ region }: { region: RegionContent }) {
         className="rr rr-section"
         data-talos-station
         data-talos-anchor="0.84"
-        data-talos-size="s"
+        data-talos-size="m"
         data-talos-appear="0.45"
         data-talos-gesture="wave"
         data-talos-mobile
