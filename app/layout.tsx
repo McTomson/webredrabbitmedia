@@ -98,6 +98,10 @@ const jsonLd = {
       "@type": "LocalBusiness",
       "@id": "https://web.redrabbit.media/#localbusiness",
       "name": "Red Rabbit Media",
+      // Marke = "Red Rabbit Media" (Domain/OG/gesamte Seite); Rechtsform =
+      // "Red Rabbit GmbH" (Impressum, FN 516936 a). legalName verbindet beide
+      // fuer NAP-/Google-Konsistenz, ohne die Marke zu ersetzen.
+      "legalName": "Red Rabbit GmbH",
       // Echtes Google-Rating (lib/reviews.ts). Rendert nur, wenn echte Zahlen hinterlegt
       // sind — sonst kein aggregateRating (kein Review-Spam). Aktuell 5,0 aus 8.
       ...(aggregateRatingLd() ? { aggregateRating: aggregateRatingLd() } : {}),
@@ -189,6 +193,7 @@ const jsonLd = {
       "@type": "Organization",
       "@id": "https://web.redrabbit.media/#organization",
       "name": "Red Rabbit Media",
+      "legalName": "Red Rabbit GmbH",
       "url": "https://web.redrabbit.media",
       "logo": "https://web.redrabbit.media/logo.png",
       // Gruender-Verknuepfung staerkt E-E-A-T (echte Person hinter der Marke).
