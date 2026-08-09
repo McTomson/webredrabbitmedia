@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
 import CornerLogo from "@/components/relaunch/CornerLogo";
 import BackToTop from "@/components/relaunch/BackToTop";
@@ -132,7 +133,7 @@ export default function RegionHome({ region }: { region: RegionContent }) {
 
           {/* Kontextuelle Links zu den geteilten Detailseiten (statt Preise zu duplizieren) */}
           <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, marginTop: 28 }}>
-            Wie wir arbeiten, steht bei den <a className="rr-link" href="/leistungen">Leistungen</a>. Was es kostet, offen auf der <a className="rr-link" href="/preise">Preisseite</a>.
+            Wie wir arbeiten, steht bei den <Link className="rr-link" href="/leistungen">Leistungen</Link>. Was es kostet, offen auf der <Link className="rr-link" href="/preise">Preisseite</Link>.
           </p>
         </div>
       </section>
