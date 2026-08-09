@@ -62,8 +62,10 @@ const heroEndFracFor = (vw: number) => (vw <= 700 ? 0.42 : null);
 // Handy-Hero: Talos tiefer setzen (Thomas 08.08.: stand zu weit oben; 09.08.:
 // noch deutlich tiefer, damit der Story-Text DARUEBER frei lesbar bleibt).
 // Welt-Einheiten nach unten (Figur ~340 hoch), Fuesse naeher an die Unterkante.
-// Bei der Handy-Hero-Tiefe (z=-1700) sind das grob ~0,4 px/Einheit.
-const HERO_MOBILE_DY = -240;
+// Bei der Handy-Hero-Tiefe (z=-1700) projiziert 1 Welt-Einheit ~0,057% Bildhoehe.
+// Thomas 09.08. (2. Runde): "deutlich weiter unten, wie ueber den Rand laufend,
+// aber ganz sichtbar" -> Fuesse ~an der Unterkante (-240 -> -510).
+const HERO_MOBILE_DY = -510;
 const OFF_MARGIN = 320; // Luft hinter der Bildkante (offscreen) — inkl. Armreichweite, damit ganz oben NICHTS von Talos ins Bild ragt (Thomas 24.07., Bild 1)
 // Koerperhaltung im Stand: IMMER deutlich zur Bildmitte gedreht, nie nach aussen
 // (Thomas-Regel 24.07.: die alten 0.13 rad waren zu subtil, er las die Haltung als
@@ -108,8 +110,9 @@ const P_FRAME1 = 0.64;
 // (Thomas Bild 2/15: "etwas verkleinern"). Fuesse sollen im Bild bleiben.
 // m/l 24.07. eine Spur kleiner (Thomas, Kontrollraum war zu gross): m -70->-150, l 110->40.
 // xs (Thomas 09.08.): fuer die Handy-Station (Schluss-CTA) — kleiner als s,
-// damit die kleine Winke-/Nick-Figur unten rechts wenig verdeckt.
-const SIZE_Z: Record<string, number> = { xs: -1000, s: -420, sm: -200, m: -150, l: 40, xl: 220 };
+// damit die kleine Nick-Figur unten rechts wenig verdeckt. 2. Runde ("zu gross,
+// mach die Haelfte"): Distanz verdoppelt (z -1000 -> -2700) = halbe Groesse.
+const SIZE_Z: Record<string, number> = { xs: -2700, s: -420, sm: -200, m: -150, l: 40, xl: 220 };
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const smooth = (t: number) => {
