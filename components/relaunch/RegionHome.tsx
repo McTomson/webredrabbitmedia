@@ -49,6 +49,8 @@ export type RegionContent = {
   };
   /** Eyebrow ueber der FAQ. */
   faqEyebrow: string;
+  /** Ueberschrift der FAQ (Themen-Label wie /preise "Preis und Ablauf."). */
+  faqHeading: string;
   /** Regionale FAQ (SSR-crawlbar, eigenes FAQPage-Schema). */
   faq: FaqItem[];
   /** Abschluss-CTA-Zeilen. */
@@ -109,8 +111,11 @@ export default function RegionHome({ region }: { region: RegionContent }) {
         data-talos-anchor="0.84"
         data-talos-size="m"
         data-talos-appear="0.45"
-        data-talos-gesture="wave"
-        data-talos-mobile
+        data-talos-gesture="wave2"
+        data-talos-mobile="1"
+        data-talos-mobile-anchor="0.82"
+        data-talos-mobile-size="xs"
+        data-talos-mobile-gesture="wave2"
       >
         <div className="rr-wrap rr-narrow">
           {/* Textspalte bewusst schmal + linksbuendig, damit Talos rechts frei bleibt
@@ -148,12 +153,41 @@ export default function RegionHome({ region }: { region: RegionContent }) {
         </div>
       </section>
 
-      {/* Regionale FAQ (SSR-crawlbar, eigenes FAQPage-Schema) */}
-      <section className="rr rr-section" style={{ background: "var(--rr-surface)" }}>
-        <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 12 }}>{region.faqEyebrow}</p>
-          <Faq items={region.faq} id={`faq-${region.name.toLowerCase()}`} />
+      {/* Regionale FAQ — Design 1:1 wie /preise (PreiseFaq): zweispaltig, sticky
+          Themen-Label links, Accordion rechts. Position bleibt hier (weit unten,
+          direkt vor dem Abschluss-CTA) wie auf /preise. Eigenes FAQPage-Schema
+          liefert die Faq-Komponente mit. */}
+      <section className="rr-section rp-faq" data-rr-snap>
+        <div className="rr-wrap rr-narrow rp-faq__grid">
+          <div className="rp-faq__label">
+            <p className="wd-eyebrow">{region.faqEyebrow}</p>
+            <h2 className="rr-statement rp-faq__heading">
+              {region.faqHeading}<span className="rp-faq__dot">.</span>
+            </h2>
+          </div>
+          <div className="rp-faq__accordion">
+            <Faq items={region.faq} id={`faq-${region.name.toLowerCase()}`} />
+          </div>
         </div>
+
+        {/* Gleiche Styles wie PreiseFaq.tsx (plain globales style-Tag, styled-jsx
+            im Relaunch meiden — LESSONS_LEARNED.md). */}
+        <style>{`
+          .rp-faq { background: #ffffff; }
+          .rp-faq__grid {
+            display: grid;
+            grid-template-columns: minmax(260px, 0.82fr) 1.18fr;
+            gap: clamp(2.5rem, 6vw, 6.5rem);
+            align-items: start;
+          }
+          .rp-faq__label { position: sticky; top: 14vh; }
+          .rp-faq__heading { margin: 14px 0 0; color: var(--rr-ink); }
+          .rp-faq__dot { color: var(--rr-red); }
+          @media (max-width: 860px) {
+            .rp-faq__grid { grid-template-columns: 1fr; gap: 2rem; }
+            .rp-faq__label { position: static; }
+          }
+        `}</style>
       </section>
 
       {/* Zahlen/Kundenliste + Abschluss-CTA (CTA regionalisiert) */}

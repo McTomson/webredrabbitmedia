@@ -54,12 +54,13 @@ const steiermark: RegionContent = {
     reachLine:
       'Ob dein Kunde in Graz sucht, in Leoben oder irgendwo im Ennstal, wo grad noch ein Balken Empfang ist: gefunden wirst du.',
     trustLine:
-      'Ein paar steirische Betriebe haben uns früh vertraut. Die meisten sind heute noch da. Rausgeworfen hat uns keiner.',
+      'Ein paar steirische Betriebe haben uns früh ihr Vertrauen geschenkt. Die meisten zählen heute noch zu unseren Stammkunden.',
     availabilityHeading: 'Nach dem Launch sind wir nicht plötzlich weg.',
     availabilityText:
       'Kein Ticket-System, keine Warteschleife. Du schreibst uns, wir kümmern uns. Deine Seite ist bei uns nichts, das man einmal abhakt und vergisst. Die wächst mit, so wie dein Betrieb.',
   },
-  faqEyebrow: 'Häufige Fragen aus der Steiermark',
+  faqEyebrow: 'Häufige Fragen',
+  faqHeading: 'Gefunden werden in der Steiermark',
   faq: [
     {
       q: 'Was kostet eine Website für meinen steirischen Betrieb?',
