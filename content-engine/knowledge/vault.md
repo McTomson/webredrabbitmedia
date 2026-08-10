@@ -2705,3 +2705,48 @@ quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
 quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
 geprueft_am: 2026-08-09
 recheck_nach: 2027-02-05
+
+## t65-2026-08-10-301
+cluster: 2
+keywords: funktioniert, caching, modernen, servern, warum, fehleranfällig
+aussage: Zwischengespeicherte HTTP-Antworten haben genau zwei Zustaende — 'fresh' (frisch, wiederverwendbar) und 'stale' (abgelaufen). Massgeblich ist das Alter der Antwort: Solange es unter dem per 'Cache-Control: max-age=N' gesetzten Wert liegt, gilt die Antwort als frisch und wird ohne Rueckfrage beim Server ausgeliefert. So funktioniert Caching auf Server-, CDN- und Browser-Ebene technisch.
+quelle: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching
+quelle_name: MDN Web Docs - HTTP caching (Fresh and stale, max-age)
+geprueft_am: 2026-08-10
+recheck_nach: 2027-02-06
+
+## t65-2026-08-10-302
+cluster: 2
+keywords: funktioniert, caching, modernen, servern, warum, fehleranfällig
+aussage: Ein Kern-Grund fuer die Fehleranfaelligkeit: Es gibt keinen Mechanismus, um bereits gespeicherte Antworten auf zwischengeschalteten Caches (z. B. CDN/Proxy) aktiv zu loeschen. MDN: 'There is no way to delete responses on an intermediate server that have been stored with a long max-age' — der Server bekommt wegen des Caches gar keine Anfragen mehr und kann veraltete Inhalte nicht zurueckrufen; 'Clear-Site-Data: cache' wirkt nur im Browser, nicht auf Intermediate-Caches. Eine zu lange gesetzte TTL liefert dadurch dauerhaft veraltete Inhalte aus.
+quelle: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching
+quelle_name: MDN Web Docs - HTTP caching (Deleting stored responses)
+geprueft_am: 2026-08-10
+recheck_nach: 2027-02-06
+
+## t65-2026-08-10-303
+cluster: 2
+keywords: funktioniert, caching, modernen, servern, warum, fehleranfällig
+aussage: Zweite typische Fehlerquelle ist die Verwechslung von privatem und geteiltem Cache: Wird personalisierter Inhalt faelschlich in einem geteilten Cache (CDN/Proxy) statt nur im privaten Browser-Cache gespeichert, koennen andere Nutzer diese Inhalte abrufen — MDN warnt woertlich vor 'unintentional information leakage'. Personalisierte Antworten muessen zwingend mit dem 'private'-Directive markiert werden; das blosse Vorhandensein eines Cookies macht eine Antwort dabei nicht automatisch privat.
+quelle: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching
+quelle_name: MDN Web Docs - HTTP caching (Private vs shared caches)
+geprueft_am: 2026-08-10
+recheck_nach: 2027-02-06
+
+## t65-2026-08-10-304
+cluster: 2
+keywords: funktioniert, caching, modernen, servern, warum, fehleranfällig
+aussage: Auf modernen Setups mit vorgeschaltetem CDN entsteht eine haeufige Fehlkonfiguration daraus, dass die Edge-Cache-Regeln die vom Origin-Server gesendeten Cache-Control-Header ueberschreiben koennen: Cloudflares 'Edge Cache TTL' ignoriert bei entsprechender Einstellung die Origin-Header und cached fuer eine feste Dauer; ist 'Origin Cache Control' deaktiviert, ueberschreibt Cloudflare die Vorgaben des Servers. Zwei Cache-Ebenen mit widerspruechlichen Regeln fuehren so zu unerwartet veralteten oder falsch gecachten Auslieferungen.
+quelle: https://developers.cloudflare.com/cache/concepts/cache-control/
+quelle_name: Cloudflare Docs - Cache (Origin Cache Control / Edge Cache TTL)
+geprueft_am: 2026-08-10
+recheck_nach: 2027-02-06
+
+## t65-2026-08-10-305
+cluster: 2
+keywords: funktioniert, caching, modernen, servern, warum, fehleranfällig
+aussage: Warum korrektes Caching ueberhaupt so wichtig ist: Es senkt die Server-Antwortzeit (TTFB). Google/web.dev stuft einen TTFB von 0,8 Sekunden oder weniger als 'gut' ein, 0,8-1,8 s als verbesserungswuerdig und ueber 1,8 s als schlecht — Caching haelt den Wert niedrig, indem Antworten nicht bei jeder Anfrage neu aus Code + Datenbank erzeugt werden. Ein Fehler in der Cache-Konfiguration wirkt sich damit direkt auf Ladezeit und (ueber Core Web Vitals) auf das Google-Ranking aus, was gerade fuer AT/DACH-KMU-Websites relevant ist.
+quelle: https://web.dev/articles/ttfb
+quelle_name: web.dev (Google) - Time to First Byte (TTFB)
+geprueft_am: 2026-08-10
+recheck_nach: 2027-02-06
