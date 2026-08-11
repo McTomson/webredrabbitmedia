@@ -131,3 +131,20 @@ andere Formulierungen). Wenn austauschbar -> umschreiben VOR dem Push.
 components/relaunch/SiteClosing.tsx, app/relaunch-preview/faq/page.tsx,
 components/subpages/faq-demo/*, docs/handoffs/NEXT_SESSION_leistungen.md, docs/seo-monitor-log.md,
 app/preise-preview/, app/relaunch-preview/talos-choreo/, diverse Screenshots im Root.
+
+## STAND 11.08. ABENDS — ROLLOUT ERLEDIGT (Commit 60f09fc, deployt: success)
+Alle 7 Laender gebaut und live auf v2 (relaunch-preview/webdesign-<land>):
+- Pro Land eigene GSC-Daten erhoben (Nachtrag in docs/SUCHDATEN_BUNDESLAENDER_2026-08-11.md)
+  und in Title/H1/FAQ-Sprache uebersetzt: NOe+Salzburg "Website erstellen lassen",
+  Tirol/Vlbg/Ktn/Bgld "Homepage erstellen lassen", OOe Kopf-Keyword+OOe-Kuerzel.
+- Branchen-FAQ pro Land: NOe Handwerk (echter Fliesenleger-Anker), OOe Studios/Dienstleister
+  (echtes Studio Linzer Raum), Tirol Hotels/Vermieter, Vlbg Mehrsprachigkeit/Grenzlage,
+  Ktn Aerzte/Ordinationen, Salzburg Immobilien + BARRIEREFREIHEIT (6 FAQs, BaFG),
+  Bgld Weingueter/Direktvermarkter. Andere Anker = authentische Platzhalter (Thomas 11.08. ok).
+- Einzigartigkeit verifiziert: keine doppelte FAQ-Frage/Heading/trustLine ueber alle 8 Seiten (uniq -d leer).
+- QA: tsc 0, eslint 0, Verbots-Scan (Gedankenstriche/nicht-nur/guenstig/790) leer, alle 7 per
+  SSR-Marker live, alle 7 im Browser: kein Horizontal-Scroll, H1/Talos-Station/Ablauf/FAQ da.
+  Burgenland komplett visuell durchgescrollt (Regional-Block, Ablauf-Kreise 01-04, FAQ, Kundenliste).
+- OFFEN: Thomas-Abnahme am Geraet (Mobile + Talos-3D, MCP-Chrome kann beides nicht);
+  echte Kunden-Anker fuer Ktn/Sbg/Tirol/Vlbg/Bgld ersetzen Platzhalter vor Go-Live;
+  KundenGrid-Frage (behalten/raus) weiter offen; Go-Live-Landmine Canonical/noindex pro Seite.
