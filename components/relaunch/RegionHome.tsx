@@ -114,7 +114,7 @@ export default function RegionHome({ region }: { region: RegionContent }) {
         data-talos-appear="0.3"
         data-talos-gesture="wave2"
         data-talos-mobile="1"
-        data-talos-mobile-anchor="0.82"
+        data-talos-mobile-anchor="0.72"
         data-talos-mobile-size="xs"
         data-talos-mobile-gesture="wave2"
         data-talos-mobile-dy="-700"
