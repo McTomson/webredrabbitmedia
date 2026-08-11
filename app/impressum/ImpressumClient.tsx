@@ -79,7 +79,7 @@ export default function Impressum() {
                             <section className="bg-gray-50 rounded-2xl p-8">
                                 <h2 className="text-2xl font-light text-gray-900 mb-6">Unternehmensgegenstand</h2>
                                 <div className="space-y-4 text-gray-700">
-                                    <p><strong>Unternehmensgegenstand:</strong> Webdesign & digitale Dienstleistungen</p>
+                                    <p><strong>Unternehmensgegenstand:</strong> Webdesign und IT-Dienstleistungen</p>
                                 </div>
                             </section>
                         </AOSWrapper>
@@ -91,6 +91,20 @@ export default function Impressum() {
                                 <div className="space-y-4 text-gray-700">
                                     <p>Mitglied der Wirtschaftskammer Wien</p>
                                     <p><strong>Gewerbeordnung:</strong> <a href="https://www.ris.bka.gv.at" className="text-red-600 hover:text-red-700" target="_blank" rel="noopener noreferrer">www.ris.bka.gv.at</a></p>
+                                </div>
+                            </section>
+                        </AOSWrapper>
+
+                        {/* Offenlegung gemäß § 25 Mediengesetz */}
+                        <AOSWrapper animation="fade-up" delay={550}>
+                            <section className="bg-gray-50 rounded-2xl p-8">
+                                <h2 className="text-2xl font-light text-gray-900 mb-6">Offenlegung gemäß § 25 Mediengesetz</h2>
+                                <div className="space-y-4 text-gray-700">
+                                    <p><strong>Medieninhaber:</strong> Red Rabbit GmbH</p>
+                                    <p><strong>Sitz:</strong> Wien</p>
+                                    <p><strong>Anschrift:</strong> Grabnergasse 8/8, 1060 Wien</p>
+                                    <p><strong>Unternehmensgegenstand:</strong> Konzeption, Gestaltung und Betrieb von Websites und digitalen Diensten</p>
+                                    <p><strong>Grundlegende Richtung (Blattlinie):</strong> Informationen über Webdesign, Online-Sichtbarkeit und Digitalisierung für Unternehmen in Österreich sowie Darstellung der eigenen Leistungen.</p>
                                 </div>
                             </section>
                         </AOSWrapper>

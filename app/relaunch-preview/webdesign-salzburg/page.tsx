@@ -22,7 +22,7 @@ const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-salzburg';
 export const metadata: Metadata = {
   title: 'Webdesign Salzburg: Website erstellen lassen | Red Rabbit Media',
   description:
-    'Website erstellen lassen in Salzburg: Seiten für Betriebe von der Stadt bis in den Pinzgau, die bei Google und in der KI-Suche gefunden werden. Entwurf zuerst, ohne Vorkasse.',
+    'Website erstellen lassen in Salzburg: Seiten für Betriebe von der Stadt bis in den Pinzgau, gefunden bei Google und in der KI-Suche. Ohne Vorkasse.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/webdesign-salzburg' },
   openGraph: {

@@ -21,7 +21,7 @@ const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-vorarlberg';
 export const metadata: Metadata = {
   title: 'Webdesign Vorarlberg: Homepage erstellen lassen | Red Rabbit Media',
   description:
-    'Homepage erstellen lassen in Vorarlberg: Websites für Betriebe vom Rheintal bis zum Arlberg, gebaut für Google und die KI-Suche. Entwurf zuerst, ohne Vorkasse.',
+    'Homepage erstellen lassen in Vorarlberg: Websites für Betriebe vom Rheintal bis zum Arlberg, gebaut für Google und die KI-Suche. Ohne Vorkasse.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/webdesign-vorarlberg' },
   openGraph: {

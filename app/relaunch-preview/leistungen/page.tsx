@@ -41,7 +41,7 @@ import '@/components/subpages/leistungen/website/website.css';
 export const metadata: Metadata = {
   title: 'Leistungen · Red Rabbit Media',
   description:
-    'Eine individuell gebaute Website mit Design, Hosting und Kommandozentrale: ein Dashboard, in dem du alles selbst änderst, und Helfer, die im Hintergrund mitarbeiten.',
+    'Individuelle Website mit Design, Hosting und Kommandozentrale: ein Dashboard, in dem du alles selbst änderst, und Helfer, die im Hintergrund mitarbeiten.',
   robots: { index: false, follow: false },
 };
 

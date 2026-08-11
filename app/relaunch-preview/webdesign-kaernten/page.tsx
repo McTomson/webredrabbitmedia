@@ -21,7 +21,7 @@ const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-kaernten';
 export const metadata: Metadata = {
   title: 'Webdesign Kärnten: Homepage erstellen lassen | Red Rabbit Media',
   description:
-    'Homepage erstellen lassen in Kärnten: Websites für Ordinationen, Tourismus und Betriebe von Klagenfurt bis zum Wörthersee, sichtbar bei Google und in der KI-Suche. Entwurf ohne Vorkasse.',
+    'Homepage erstellen lassen in Kärnten: Websites für Ordinationen und Betriebe von Klagenfurt bis zum Wörthersee, sichtbar bei Google und KI. Ohne Vorkasse.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/webdesign-kaernten' },
   openGraph: {

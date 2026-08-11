@@ -21,7 +21,7 @@ const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-tirol';
 export const metadata: Metadata = {
   title: 'Webdesign Tirol: Homepage erstellen lassen | Red Rabbit Media',
   description:
-    'Homepage erstellen lassen in Tirol: Websites für Hotels, Vermieter und Betriebe von Innsbruck bis ins Zillertal, sichtbar bei Google und in der KI-Suche. Entwurf zuerst, ohne Vorkasse.',
+    'Homepage erstellen lassen in Tirol: Websites für Hotels, Vermieter und Betriebe von Innsbruck bis ins Zillertal, sichtbar bei Google und KI. Ohne Vorkasse.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/webdesign-tirol' },
   openGraph: {

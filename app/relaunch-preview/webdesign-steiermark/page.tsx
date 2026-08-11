@@ -24,7 +24,7 @@ const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-steiermark';
 export const metadata: Metadata = {
   title: 'Webdesign Steiermark: Website erstellen lassen | Red Rabbit Media',
   description:
-    'Website erstellen lassen in der Steiermark: Seiten für Betriebe von Graz bis ins Ennstal, die bei Google und in der KI-Suche gefunden werden. Entwurf zuerst, ohne Vorkasse.',
+    'Website erstellen lassen in der Steiermark: Seiten für Betriebe von Graz bis ins Ennstal, gefunden bei Google und in der KI-Suche. Ohne Vorkasse.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/webdesign-steiermark' },
   openGraph: {

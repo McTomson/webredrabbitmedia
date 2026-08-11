@@ -21,7 +21,7 @@ const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-oberoesterreich'
 export const metadata: Metadata = {
   title: 'Webdesign Oberösterreich: Websites für Betriebe in OÖ | Red Rabbit Media',
   description:
-    'Webdesign in Oberösterreich: Websites für Betriebe von Linz bis ins Salzkammergut, die bei Google und in der KI-Suche auftauchen und Anfragen bringen. Entwurf zuerst, ohne Vorkasse.',
+    'Webdesign in Oberösterreich: Websites für Betriebe von Linz bis ins Salzkammergut, sichtbar bei Google und in der KI-Suche. Entwurf zuerst, ohne Vorkasse.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/webdesign-oberoesterreich' },
   openGraph: {

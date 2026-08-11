@@ -21,7 +21,7 @@ const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-burgenland';
 export const metadata: Metadata = {
   title: 'Webdesign Burgenland: Homepage erstellen lassen | Red Rabbit Media',
   description:
-    'Homepage erstellen lassen im Burgenland: Websites für Weingüter, Betriebe und Praxen von Eisenstadt bis ins Südburgenland, sichtbar bei Google und in der KI-Suche. Entwurf ohne Vorkasse.',
+    'Homepage erstellen lassen im Burgenland: Websites für Weingüter und Betriebe von Eisenstadt bis ins Südburgenland, sichtbar bei Google und KI. Ohne Vorkasse.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/webdesign-burgenland' },
   openGraph: {

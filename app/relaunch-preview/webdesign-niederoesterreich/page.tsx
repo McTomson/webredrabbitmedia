@@ -21,7 +21,7 @@ const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-niederoesterreic
 export const metadata: Metadata = {
   title: 'Webdesign Niederösterreich: Website erstellen lassen | Red Rabbit Media',
   description:
-    'Website erstellen lassen in Niederösterreich: Seiten für Betriebe vom Waldviertel bis Wiener Neustadt, die bei Google und in der KI-Suche gefunden werden. Entwurf zuerst, ohne Vorkasse.',
+    'Website erstellen lassen in Niederösterreich: Seiten für Betriebe vom Waldviertel bis Wiener Neustadt, gefunden bei Google und in der KI-Suche. Ohne Vorkasse.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/webdesign-niederoesterreich' },
   openGraph: {

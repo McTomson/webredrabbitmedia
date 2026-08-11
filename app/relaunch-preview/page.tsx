@@ -13,7 +13,23 @@ import "../styleguide/styleguide.css";
 
 export const metadata: Metadata = {
   title: "Relaunch-Preview — Homepage nach Blaupause (intern)",
+  description:
+    "Webdesign aus Österreich: Websites, die bei Google und in der KI-Suche gefunden werden. Vorschläge ohne Vorkasse, mit Talos als digitalem Mitarbeiter.",
   robots: { index: false, follow: false },
+};
+
+// Screenreader-only Stil (identisch zu app/relaunch-preview/webdesign-tirol),
+// damit die Home ein h1 im SSR-HTML hat, ohne das visuelle Layout zu aendern.
+const srOnly: React.CSSProperties = {
+  position: 'absolute',
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
 };
 
 /**
@@ -24,6 +40,10 @@ export const metadata: Metadata = {
 export default function RelaunchPreviewPage() {
   return (
     <div className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}>
+      <h1 style={srOnly}>
+        Webdesign aus Österreich: Websites, die gefunden werden, mit Talos als digitalem Mitarbeiter
+      </h1>
+
       {/* Fixes Menue (Trigger + Vollbild-Overlay) */}
       <RelaunchMenu />
 

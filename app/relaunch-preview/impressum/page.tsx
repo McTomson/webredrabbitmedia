@@ -76,7 +76,7 @@ export default function ImpressumPreviewPage() {
             <section>
               <h2>Unternehmensgegenstand</h2>
               <p>
-                <strong>Unternehmensgegenstand:</strong> Webdesign &amp; digitale Dienstleistungen
+                <strong>Unternehmensgegenstand:</strong> Webdesign und IT-Dienstleistungen
               </p>
             </section>
 
@@ -88,6 +88,26 @@ export default function ImpressumPreviewPage() {
                 <a href="https://www.ris.bka.gv.at" target="_blank" rel="noopener noreferrer">
                   www.ris.bka.gv.at
                 </a>
+              </p>
+            </section>
+
+            <section>
+              <h2>Offenlegung gemäß § 25 Mediengesetz</h2>
+              <p>
+                <strong>Medieninhaber:</strong> Red Rabbit GmbH
+                <br />
+                <strong>Sitz:</strong> Wien
+                <br />
+                <strong>Anschrift:</strong> Grabnergasse 8/8, 1060 Wien
+              </p>
+              <p>
+                <strong>Unternehmensgegenstand:</strong> Konzeption, Gestaltung und Betrieb von
+                Websites und digitalen Diensten
+              </p>
+              <p>
+                <strong>Grundlegende Richtung (Blattlinie):</strong> Informationen über Webdesign,
+                Online-Sichtbarkeit und Digitalisierung für Unternehmen in Österreich sowie
+                Darstellung der eigenen Leistungen.
               </p>
             </section>
 
