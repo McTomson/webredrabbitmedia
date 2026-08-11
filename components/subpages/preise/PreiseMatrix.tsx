@@ -133,24 +133,24 @@ const PAKETE: Paket[] = [
           'Ja, inklusive allem aus Starter und dem Fundament. Premium ist die volle Ausbaustufe.',
       },
       {
-        titel: 'Was heißt "arbeitet für dich"?',
-        detail:
-          'Deine Seite bleibt nicht stehen. Mit dem Ratgeber-System wächst sie laufend, baut Sichtbarkeit bei Google und in KI-Antworten auf und holt Besucher, während du arbeitest.',
-      },
-      {
         titel: 'Shop, Terminbuchung, Bezahlen?',
         detail:
-          'Ja, hier ist der Platz dafür. Online verkaufen, Termine buchen lassen, Anfragen automatisch vorsortieren: was dein Betrieb braucht, planen wir konkret in dein Angebot.',
+          'Ja, das bauen wir dir. Online verkaufen, Termine buchen lassen, bezahlen auf der Seite: was dein Betrieb braucht, planen wir konkret in dein Angebot und bauen es fix fertig ein.',
       },
       {
-        titel: 'Bekomme ich mehr Talos?',
+        titel: 'Kann ich selbst neue Seiten bauen?',
         detail:
-          'Ja. Mehr Selbst-Steuerung über deine Inhalte und Aktionen, die Freiheit eines Baukastens, ohne Baukasten-Frust. Und wir sitzen dahinter und schauen mit.',
+          'Ja. Du bekommst fertige Bausteine in deinem Design und klickst damit selbst neue Unterseiten zusammen, wie mit einem Baukasten. Nur dass nichts verrutscht und das Design nicht kippt, egal was du baust.',
       },
       {
-        titel: 'Was sind vorqualifizierte Anfragen?',
+        titel: 'Bekomme ich ein besonderes Design?',
         detail:
-          'Formulare, die Interessenten vorsortieren, bevor sie bei dir landen. Du redest nur noch mit denen, die wirklich passen, statt Zeit am Telefon zu verlieren.',
+          'Ja, die volle Ausbaustufe auch beim Design: Animationen, Effekte, eine Seite, die man sich merkt. So wie die Seite, auf der du gerade bist.',
+      },
+      {
+        titel: 'Was heißt "arbeitet für dich"?',
+        detail:
+          'Die Seite ist so gebaut, dass sie dir Arbeit abnimmt: Formulare sortieren Anfragen vor, du redest nur noch mit denen, die passen. Und das Ratgeber-System steht bereit, mit dem du laufend sichtbarer wirst. Befüllen kannst du es selbst. Sollen wir das übernehmen, Beiträge schreiben, laufend optimieren, gibt es das als eigenes Monatspaket. Ehrlich getrennt vom Baupreis.',
       },
       {
         titel: 'Für wen ist Premium?',
