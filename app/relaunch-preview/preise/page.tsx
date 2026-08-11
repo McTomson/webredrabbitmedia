@@ -118,9 +118,10 @@ export default function PreisePreviewPage() {
 
       {/* 2-7 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope. */}
       <div className={rrFonts} style={{ background: 'var(--rr-surface, #f4f4f2)', position: 'relative', zIndex: 2 }}>
-        {/* Bumper = geteilter ScrollBumper im Site-Standard (hell, Fenster-Stopp,
-            rote ( Thema )-Zeile oben; Umbau 28.07., DESIGN_STANDARD.md). Zeilen
-            zentriert (Thomas 25.07.), letzter Satz mit rotem Punkt. */}
+        {/* Bumper = geteilter ScrollBumper, jetzt 1:1 die Belief-Stups-Mechanik
+            der Website-Seite (Thomas 11.08. mit Video: Satz steht in der Mitte,
+            der naechste stoesst ihn von unten an, der alte geht oben raus; die
+            Pointe bleibt stehen und der CTA blendet darunter ein). */}
         <ScrollBumper
           label="Was du bekommst"
           statements={[
@@ -130,6 +131,12 @@ export default function PreisePreviewPage() {
             { text: 'Brauchst du mehr, bekommst du es auf Anfrage.' },
             { text: 'Erst überzeugt, dann bezahlt.', pointe: true },
           ]}
+          cta={{
+            label: 'Hol dir die kostenlosen Vorschläge',
+            href: '/relaunch-preview/kontakt',
+            lead: 'bumper',
+            leadService: 'Preise Bumper-CTA',
+          }}
         />
         <div data-rr-snap>
           <RisikoBand />
