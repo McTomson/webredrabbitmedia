@@ -538,3 +538,11 @@ Update this file at the end of every session when a debugging lesson, setup issu
 
 ## 2026-07-23 — styled-jsx im Relaunch meiden
 - `<style jsx>` rendert Komponenten ungestylt oder bricht Server-Komponenten (ProduktTueren.tsx, punkte-varianten/VarianteB.tsx, website/v2/Ablauf.tsx). Standard: plain globales `<style>{...}</style>`-Tag mit namespaced Klassen (Muster Scharnierzeile/TalosSlot). Build-Agenten explizit so briefen.
+
+## 2026-08-11 — Styleguide margin:0 toetet lokale Sektions-Margen (Spezifitaet)
+- `styleguide.css` setzt `.rr .rr-statement { margin:0 }` und `.rr .rr-body-lg { margin:0 }` (2 Klassen). Lokale Regeln wie `.rpf__h2 { margin: ... }` (1 Klasse) VERLIEREN immer dagegen — die Marge kommt nie an, die Seite "klebt", egal was man einstellt. Wochenlang unbemerkt auf /preise.
+- Standard-Fix: lokale Margen-Regeln auf Elementen mit rr-statement/rr-body-lg/rr-meta IMMER als `.rr .lokale-klasse { ... }` schreiben (gleiche Spezifitaet, spaeter im Dokument gewinnt). Praezedenz: FragTalosAnmoderation.
+- QA-Regel dazu: Abstands-Aenderungen nie nur im Code machen — im Browser `getComputedStyle(el).margin` nachmessen. Hier war der Beweis `margin: 0px` trotz frisch committeter clamp()-Werte.
+
+## 2026-08-11 — Scroll-Stops: rideUnits war unter 1180px linear (Weiche 08.08.)
+- "Bumper geht auf vielen Seiten nicht mehr" hatte NICHTS mit Cache zu tun: die 08.08.-Weiche (`isDwellDisabled`, <=1180px linear) schaltete die Halte-Plateaus in jedem schmalen Fenster ab — auch im schmalen Desktop-Browserfenster. Thomas-Entscheid 11.08.: Stops IMMER UND UEBERALL -> rideUnits = snapUnits auf allen Breiten, ScrollBumper-Breiten-Degradation (<=820 statische Liste) raus, nur prefers-reduced-motion bleibt statisch.
