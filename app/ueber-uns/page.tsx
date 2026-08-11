@@ -1,130 +1,163 @@
-import type { Metadata } from "next";
-import PageShell from "@/components/relaunch/PageShell";
+import fs from 'node:fs';
+import path from 'node:path';
+import type { Metadata } from 'next';
+import UeberUnsDemoClient from '@/components/subpages/UeberUnsDemoClient';
+import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
+import CornerLogo from '@/components/relaunch/CornerLogo';
+import BackToTop from '@/components/relaunch/BackToTop';
+import FooterReassembly from '@/components/relaunch/FooterReassembly';
+import SiteClosing from '@/components/relaunch/SiteClosing';
+import ScrollExperience from '@/components/relaunch/ScrollExperience';
+import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
+import '@/app/styleguide/styleguide.css';
+
+// Rohteile der 1:1 portierten Demo (scratchpad/ueber-uns-gesamt-demo.html).
+// Werden beim Build (Static Generation) eingelesen und inline gebacken.
+// WICHTIG: Reads muessen IN der Komponente passieren (pro Request), nicht auf
+// Modulebene — Next watched fs-Reads nicht, Edits an demo.* waeren im Dev-Server
+// sonst unsichtbar bis zum Neustart (so gingen ganze Fix-Runden "verloren").
+const DEMO_DIR = path.join(process.cwd(), 'components/subpages/ueber-uns-demo');
+const readDemo = (f: string) => fs.readFileSync(path.join(DEMO_DIR, f), 'utf8');
 
 export const metadata: Metadata = {
-  title: "Über uns | Red Rabbit Media",
+  title: 'Über uns · Red Rabbit Media',
   description:
-    "Ein echtes Gesicht statt gesichtsloser Agentur. Red Rabbit Media steht für faires, transparentes Webdesign aus Österreich. Kein Risiko bis zur Zusage.",
-  alternates: { canonical: "https://web.redrabbit.media/ueber-uns" },
+    'Die faire Anti-Agentur für den österreichischen Mittelstand. Wer wir sind und warum wir den ersten Schritt machen.',
+  // Preview: noindex bis zum Live-Tausch (Landmine — ALLE Preview-Seiten noindex).
+  robots: { index: false, follow: false },
+  // Self-referencing canonical (Haus-Regel, siehe app/layout.tsx). Zeigt auf den
+  // AKTUELLEN Preview-Pfad — sobald diese Seite die Platzhalter-/ueber-uns ersetzt,
+  // hier auf '/ueber-uns' umstellen.
+  alternates: { canonical: '/relaunch-preview/ueber-uns' },
 };
 
-// Person-Schema (EEAT). Name, Rolle, Profil und Themen sind belegt (vgl. app/layout.tsx).
-// Das Foto ist PLATZHALTER, bis Tomson das finale Bild liefert.
+// Person-Schema (EEAT), gleiche @id wie das Employee-Objekt in app/layout.tsx,
+// damit Google/KI-Systeme EINE Entitaet erkennen statt zwei widerspruechlicher.
+// Kein `image`-Feld: es existiert noch kein echtes Foto (Platzhalter-Pfad in der
+// alten app/ueber-uns/page.tsx zeigt ins Leere) — lieber weglassen als auf ein
+// 404 verweisen. Ergaenzen, sobald ein echtes Foto von Thomas da ist.
 const personLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": "https://web.redrabbit.media/ueber-uns#thomas-uhlir",
-  name: "Thomas Uhlir MBA",
-  jobTitle: "Gründer & Strategie",
-  url: "https://web.redrabbit.media/ueber-uns",
-  image: "https://web.redrabbit.media/images/thomas-uhlir.jpg",
-  sameAs: ["https://www.linkedin.com/in/thomasuhlir/"],
-  worksFor: { "@type": "Organization", "@id": "https://web.redrabbit.media/#organization", name: "Red Rabbit Media" },
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://web.redrabbit.media/#thomas-uhlir',
+  name: 'Thomas Uhlir MBA',
+  jobTitle: 'Gründer & Strategie',
+  url: 'https://web.redrabbit.media/relaunch-preview/ueber-uns',
+  sameAs: ['https://www.linkedin.com/in/thomasuhlir/'],
+  worksFor: { '@id': 'https://web.redrabbit.media/#organization' },
   knowsAbout: [
-    "Webdesign",
-    "Suchmaschinenoptimierung (SEO)",
-    "Generative Engine Optimization (GEO)",
-    "Conversion-Optimierung",
-    "Webdesign Österreich",
+    'Webdesign',
+    'Suchmaschinenoptimierung (SEO)',
+    'Generative Engine Optimization (GEO)',
+    'Conversion-Optimierung',
+    'Webdesign Österreich',
   ],
 };
 
-// B2B-Stationen aus Tomsons Immobilien-Vergangenheit (decisions-log 2026-07-04).
-// Rein typografisch, eine Farbe, eine Schrift, keine Logos.
-const b2bNames = [
-  "SIGNA",
-  "6B47",
-  "Tillmann & Kraus",
-  "MBT",
-  "Sans Souci",
-  "Die Vorsorgewohnungs GmbH",
-  "Phils.place",
-];
+// FAQPage-Schema, 1:1 gespiegelt aus components/subpages/ueber-uns-demo/demo.body.html
+// (Sektion "scene-faq"). WICHTIG: Diese FAQ-Texte sind PROVISORISCH (Thomas 30.07.:
+// "wir machen später aber alle faq und texte neu") — bei der Text-Ueberarbeitung
+// MUSS dieses Array synchron mitgezogen werden, sonst zeigt Google veraltete Antworten.
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Wer steht hinter Red Rabbit?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Ich, Thomas Uhlir. Ich habe Red Rabbit 2019 gegründet und bin die Person, mit der du redest, von der ersten Idee bis nach dem Launch. Für Grafik, Entwicklung, SEO und KI arbeite ich mit einem handverlesenen Netzwerk aus Spezialisten, die ich seit Jahren kenne.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Seit wann gibt es euch?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Seit 2019. In der Zeit sind über 164 Projekte entstanden, und auf Google stehen wir bei 5,0 Sternen.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Arbeitet ihr nur in Wien?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Nein. Unsere Kunden sitzen in 9 Bundesländern. Die meiste Arbeit passiert ohnehin remote, per Anruf oder Video, nicht im Meetingraum.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Warum nehmt ihr nicht jedes Projekt an?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Weil wir uns für jedes Projekt Zeit nehmen wollen. Wenn wir merken, dass wir jemandem nicht wirklich helfen können, sagen wir das lieber ehrlich, statt den Auftrag trotzdem anzunehmen. Zufriedenheit ist uns wichtiger als Menge.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Was heißt Entwurf ohne Vorkasse?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Du bekommst zuerst 1-2 grafische Vorschläge zu sehen, bevor du einen Euro bezahlst. Gefallen sie dir und sagst du zu, fällt eine Anzahlung an. Gefallen sie dir nicht, hast du nichts verloren. Das Risiko liegt bei uns, nicht bei dir.',
+      },
+    },
+  ],
+};
 
 export default function UeberUnsPage() {
+  const css = readDemo('demo.css');
+  const html = readDemo('demo.body.html');
+  const js = readDemo('demo.engine.jstext');
   return (
-    <PageShell
-      eyebrow="Über uns"
-      title="Ein echtes Gesicht. Kein Callcenter."
-      intro="Red Rabbit Media ist keine gesichtslose Agentur. Du redest mit einer Person, die dein Projekt kennt, von der ersten Idee bis nach dem Launch. Fair, direkt und ohne Agentur-Bullshit."
-    >
-      {/* Bio + Foto (Platzhalter) */}
-      <section className="rr-section" style={{ paddingTop: 0 }}>
-        <div className="rr-wrap rr-narrow">
-          <div className="rr-grid rr-grid-2" style={{ alignItems: "start" }}>
-            {/* Foto-Platzhalter */}
-            <div
-              className="rr-placeholder"
-              style={{ aspectRatio: "4 / 5", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center" }}
-            >
-              <div>
-                <p className="rr-placeholder-tag">Platzhalter</p>
-                <p className="rr-meta" style={{ marginTop: 8 }}>Foto Thomas Uhlir (liefert Tomson)</p>
-              </div>
-            </div>
-
-            {/* Bio-Platzhalter */}
-            <div style={{ display: "grid", gap: 20 }}>
-              <div>
-                <p className="rr-eyebrow" style={{ marginBottom: 12 }}>Thomas Uhlir MBA</p>
-                <p className="rr-sub">Gründer & Strategie</p>
-              </div>
-              <div className="rr-placeholder">
-                <p className="rr-placeholder-tag">Platzhalter: Bio</p>
-                <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17, marginTop: 10 }}>
-                  Hier steht die persönliche Geschichte von Thomas: Werdegang, warum Red Rabbit gegründet wurde und
-                  warum das Kein-Risiko-Prinzip. Finaler Text und Bild kommen von Tomson.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Haltung */}
-      <section className="rr-section" style={{ paddingTop: 0 }}>
-        <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 34 }}>Wofür wir stehen</p>
-          <div className="rr-grid rr-grid-3">
-            <div className="rr-card rr-card--surface">
-              <h2 className="rr-sub" style={{ marginBottom: 14 }}>Kein Risiko</h2>
-              <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17 }}>
-                Du siehst den Entwurf zuerst. Wir tragen das Risiko, bis du überzeugt bist.
-              </p>
-            </div>
-            <div className="rr-card rr-card--surface">
-              <h2 className="rr-sub" style={{ marginBottom: 14 }}>Klartext</h2>
-              <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17 }}>
-                Fixpreis-Rahmen statt Stundensatz-Lotterie. Kein Fachchinesisch, keine versteckten Kosten.
-              </p>
-            </div>
-            <div className="rr-card rr-card--surface">
-              <h2 className="rr-sub" style={{ marginBottom: 14 }}>Ergebnis</h2>
-              <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17 }}>
-                Wir bauen keine digitale Visitenkarte, sondern einen Kanal, der Anfragen bringt.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* B2B-Vergangenheit */}
-      <section className="rr-section" style={{ paddingTop: 0 }}>
-        <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 10 }}>Frühere Stationen</p>
-          <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17, maxWidth: 720, marginBottom: 40 }}>
-            Vor Red Rabbit war Thomas im Immobilien-Umfeld tätig und hat mit diesen Unternehmen und Marken
-            zusammengearbeitet:
-          </p>
-          <div className="rr-trustnames">
-            {b2bNames.map((n) => (
-              <span key={n} className="rr-trustname">{n}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />
-    </PageShell>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+      {/* Fonts wie in der Demo (DM Sans, Instrument Sans, Crimson Pro). */}
+      {/* LCP-Poster mobil frueh laden (Thomas 04.08.): entfernt den Load-Delay,
+          bis der Inline-Engine das Video baut. Nur Mobile/Tablet. */}
+      <link rel="preload" as="image" href="/hero/ueber-uns-hero-poster.jpg" fetchPriority="high" media="(max-width: 1024px)" />
+      {/* Hamburger-Menue der Hauptseite. Wrapper liefert NUR die .rr-Font-Variablen
+          fuer das styled-jsx-gekapselte Menue; der Demo-Inhalt bleibt bewusst
+          AUSSERHALB des .rr-Scopes (keine Style-Leaks in demo.css). */}
+      <div
+        className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}
+        style={{ background: 'transparent' }}
+      >
+        <RelaunchMenu />
+      </div>
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
+          blendet erst nach dem Zerlegen der Hero-Woerter ein. */}
+      <CornerLogo />
+      <BackToTop />
+      {/* Stopps pro Szene: data-rr-snap/-exempt sitzen seit 29.07. direkt an
+          den <section>-Tags im demo.body.html (Sticky-Szenen exempt, normale
+          Szenen = Pflicht-Stopp-Ziele). Kein pauschaler Exempt mehr. */}
+      <div>
+        <UeberUnsDemoClient css={css} html={html} js={js} />
+      </div>
+
+      {/* Abschluss-Block + ECHTER Footer (28.07., Design-Vereinheitlichung):
+          der Nachbau-Footer und der zentrierte Schluss-CTA im demo.body.html
+          sind raus, hier stehen die gemeinsamen Bauteile. Wrapper liefert nur
+          die .rr-Font-Variablen (Muster wie beim Menue oben). */}
+      {/* Abschluss am Handy fensterhoch: site-weite Regel .rr-section.sc-full in
+          styleguide.css (Thomas 02.08.) — kein Seiten-Sonderfall mehr noetig. */}
+      <div className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
+        <SiteClosing
+          lines={[
+            'Jetzt kennst du uns.',
+            'Wir würden gern erfahren, was du vorhast.',
+            'Reden wir.',
+          ]}
+        />
+        <div data-rr-snap>
+          <FooterReassembly />
+        </div>
+      </div>
+
+      {/* Site-weites Scroll-Gefuehl: Lenis + Soft-Snap (Thomas 28.07.). */}
+      <ScrollExperience />
+    </>
   );
 }

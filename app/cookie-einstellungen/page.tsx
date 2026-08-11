@@ -1,26 +1,49 @@
-import { Metadata } from 'next';
-import CookieEinstellungenClient from './CookieEinstellungenClient';
+import type { Metadata } from "next";
+import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
+import CornerLogo from "@/components/relaunch/CornerLogo";
+import BackToTop from "@/components/relaunch/BackToTop";
+import FooterReassembly from "@/components/relaunch/FooterReassembly";
+import CookieEinstellungenPreview from "@/components/subpages/CookieEinstellungenPreview";
+import { crimson, dmsans, fraunces, grotesk } from "@/lib/relaunch/fonts";
+import "@/app/styleguide/styleguide.css";
+import "@/components/subpages/legal-preview.css";
 
+/**
+ * Cookie-Einstellungen im Relaunch-Look (Preview, noindex). Texte und
+ * Consent-Logik 1:1 aus app/cookie-einstellungen/CookieEinstellungenClient.tsx
+ * (siehe components/subpages/CookieEinstellungenPreview.tsx).
+ */
 export const metadata: Metadata = {
-    title: 'Cookie-Einstellungen | Red Rabbit Media',
-    description: 'Verwalten Sie Ihre Cookie-Präferenzen für die Website von Red Rabbit Media.',
-    alternates: {
-        canonical: 'https://web.redrabbit.media/cookie-einstellungen',
-    },
-    openGraph: {
-        title: 'Cookie-Einstellungen | Red Rabbit Media',
-        description: 'Verwalten Sie Ihre Cookie-Präferenzen.',
-        url: 'https://web.redrabbit.media/cookie-einstellungen',
-        siteName: 'Red Rabbit Media',
-        locale: 'de_AT',
-        type: 'website',
-    },
-    robots: {
-        index: true,
-        follow: true,
-    },
+  title: "Cookie-Einstellungen · Red Rabbit Media",
+  description: "Verwalte deine Datenschutz-Präferenzen.",
+  robots: { index: false, follow: false },
 };
 
-export default function CookiePage() {
-    return <CookieEinstellungenClient />;
+export default function CookieEinstellungenPreviewPage() {
+  return (
+    <>
+      <div
+        className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}
+        style={{ background: "transparent" }}
+      >
+        <RelaunchMenu />
+      </div>
+
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil. */}
+      <CornerLogo />
+      <BackToTop />
+
+      <div className="rrl">
+
+        <CookieEinstellungenPreview />
+      </div>
+
+      <div
+        className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}
+        style={{ background: "transparent" }}
+      >
+        <FooterReassembly />
+      </div>
+    </>
+  );
 }

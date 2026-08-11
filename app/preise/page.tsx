@@ -1,179 +1,174 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import PageShell from "@/components/relaunch/PageShell";
-import Faq from "@/components/relaunch/Faq";
+import fs from 'node:fs';
+import path from 'node:path';
+import type { Metadata } from 'next';
+import CornerLogo from '@/components/relaunch/CornerLogo';
+import BackToTop from '@/components/relaunch/BackToTop';
+import RelaunchMenu from '@/components/relaunch/RelaunchMenu';
+import TalosCompanionStage from '@/components/relaunch/talos/TalosCompanionStageLazy';
+import FooterReassembly from '@/components/relaunch/FooterReassembly';
+import PreiseDemoClient from '@/components/subpages/PreiseDemoClient';
+import ScrollBumper from '@/components/subpages/leistungen/ScrollBumper';
+import RisikoBand from '@/components/subpages/preise/RisikoBand';
+import PreiseFundament from '@/components/subpages/preise/PreiseFundament';
+import PreiseMatrix from '@/components/subpages/preise/PreiseMatrix';
+import BetreuungFoerderung from '@/components/subpages/preise/BetreuungFoerderung';
+import TalosTalenteFahrt from '@/components/subpages/preise/TalosTalenteFahrt';
+import PreiseFaq from '@/components/subpages/preise/PreiseFaq';
+import SiteClosing from '@/components/relaunch/SiteClosing';
+import ScrollExperience from '@/components/relaunch/ScrollExperience';
+import JsonLd from '@/components/JsonLd';
+import { crimson, dmsans, grotesk } from '@/lib/relaunch/fonts';
+import '@/app/styleguide/styleguide.css';
+import '@/components/relaunch/subpages.css';
+import '@/components/subpages/leistungen/wd-eyebrow.css';
 
+/**
+ * Preise, Preview, noindex — Server-Komponente nach docs/UNTERSEITEN_STIL.md,
+ * Muster 1:1 aus app/relaunch-preview/leistungen/website/page.tsx. Inhalt/
+ * Preise/Reihenfolge sind mit Thomas fixiert (brand/PREISE_SEITE_BRIEF.md) —
+ * NICHT umdesignen. Preise NUR 1.250 / 2.850 / ab 4.900 (Thomas 30.07.,
+ * brand/decisions-log.md) — nie 790, nie die alten 950/2.900.
+ *
+ * Hero = eigener demo-Ordner-Klon (components/subpages/preise-demo/), analog
+ * website-demo: Wort "Preise" + Wisch + MorphSculpture comp={3} (Chart,
+ * erste Verwendung) + Story-Spalte mit Headline A + Intro + CTA-Zeile.
+ *
+ * Chrome (RelaunchMenu/CornerLogo/FooterReassembly, Fonts, styleguide.css)
+ * identisch zu den anderen Preview-Seiten uebernommen.
+ */
 export const metadata: Metadata = {
-  title: "Preise | Red Rabbit Media",
+  title: 'Preise · Red Rabbit Media',
   description:
-    "Klare Pakete ab 950 Euro. Den Entwurf siehst du zuerst, ganz ohne Vorkasse. Dashboard ab dem Business-Paket gratis, Betreuung ohne Bindung, KMU.DIGITAL-förderbar.",
-  alternates: { canonical: "https://web.redrabbit.media/preise" },
+    'Klare Website-Pakete ab 1.250 Euro. Du bekommst zuerst 1-2 Vorschläge ohne Vorkasse und beauftragst uns erst, wenn sie dir gefallen. Talos immer dabei.',
+  robots: { index: false, follow: false },
+  alternates: { canonical: '/relaunch-preview/preise' },
 };
 
-type Pkg = {
-  name: string;
-  price: string;
-  priceNote?: string;
-  tagline: string;
-  features: string[];
-  featured?: boolean;
-};
+export default function PreisePreviewPage() {
+  const rrFonts = `rr ${dmsans.variable} ${crimson.variable} ${grotesk.variable}`;
 
-const packages: Pkg[] = [
-  {
-    name: "Starter",
-    price: "950 €",
-    tagline: "Der faire Einstieg für alle, die schlank und schnell online wollen.",
-    features: [
-      "Einseitige Website (One-Pager)",
-      "Individuelles Design, kein Baukasten",
-      "Sauber auf Handy, Tablet und Desktop",
-      "Kontaktformular und Anruf-Wege",
-      "SEO-Grundlagen eingebaut",
-      "DSGVO-konforme Umsetzung",
-    ],
-  },
-  {
-    name: "Business",
-    price: "2.900 €",
-    tagline: "Die solide Website für Betriebe, die gefunden werden wollen.",
-    featured: true,
-    features: [
-      "Mehrseitige Website",
-      "Alles aus dem Starter-Paket",
-      "Erweiterte SEO-Basis und lokale Sichtbarkeit",
-      "Dashboard gratis dabei",
-      "Struktur für Anfragen und Conversion",
-    ],
-  },
-  {
-    name: "Premium",
-    price: "ab 4.900 €",
-    tagline: "Das Flaggschiff, wenn deine Website wirklich arbeiten soll.",
-    features: [
-      "Umfangreiche, individuell gebaute Website",
-      "Performance- und Conversion-Aufbau",
-      "SEO- und KI-Sichtbarkeits-Fundament",
-      "Anbindung an Content und KI-Artikel",
-      "Dashboard inklusive",
-      "Persönliche Begleitung mit Priorität",
-    ],
-  },
-];
+  // Reads pro Request (IN der Komponentenfunktion, nicht auf Modulebene) fuer
+  // Dev-Hot-Reload — siehe reference_ueber_uns_template_rezept Root Cause 2.
+  const heroDir = path.join(process.cwd(), 'components/subpages/preise-demo');
+  const heroCss = fs.readFileSync(path.join(heroDir, 'demo.css'), 'utf8');
+  const heroHtml = fs.readFileSync(path.join(heroDir, 'demo.body.html'), 'utf8');
+  const heroJs = fs.readFileSync(path.join(heroDir, 'demo.engine.jstext'), 'utf8');
 
-const faq = [
-  {
-    q: "Warum seht ihr den Entwurf ohne Vorkasse?",
-    a: "Weil wir das Risiko tragen wollen, nicht du. Du siehst zuerst einen echten Vorschlag. Eine Anzahlung fällt erst an, wenn dir das Ergebnis gefällt und du den Auftrag erteilst.",
-  },
-  {
-    q: "Sind das Fixpreise oder kommt noch etwas dazu?",
-    a: "Die Pakete geben dir einen klaren Rahmen. Was genau du brauchst, besprechen wir vorher und halten es fest. Keine Stundensatz-Lotterie, keine versteckten Kosten.",
-  },
-  {
-    q: "Was bedeutet 'ab 4.900' beim Premium-Paket?",
-    a: "Premium ist maßgeschneidert. Der Preis hängt vom Umfang ab. 4.900 Euro ist der Einstieg, den genauen Preis nennen wir dir nach einem kurzen Gespräch.",
-  },
-  {
-    q: "Gibt es eine Förderung?",
-    a: "Für österreichische Kleinbetriebe kann die KMU.DIGITAL-Förderung einen Teil der Kosten übernehmen. Wir sagen dir, ob das für dich in Frage kommt.",
-  },
-];
-
-export default function PreisePage() {
   return (
-    <PageShell
-      eyebrow="Preise"
-      title="Klare Pakete. Kein Risiko bis zur Zusage."
-      intro="Drei Pakete, ein Prinzip: Du weißt vorher, woran du bist. Den ersten Entwurf siehst du, ohne einen Cent Vorkasse. Erst wenn er dir gefällt und du zusagst, fällt eine Anzahlung an."
-    >
-      {/* Risiko-USP prominent */}
-      <section className="rr-section" style={{ paddingTop: 0 }}>
-        <div className="rr-wrap rr-narrow">
-          <div
-            className="rr-card"
-            style={{ background: "var(--rr-surface)", borderColor: "transparent", display: "grid", gap: 16 }}
-          >
-            <p className="rr-eyebrow">Dein Risiko: null</p>
-            <p className="rr-statement">Erst überzeugt, dann bezahlt.</p>
-            <p className="rr-body-lg" style={{ color: "var(--rr-ink-soft)", maxWidth: 760 }}>
-              Du bekommst zuerst einen echten Entwurf zu sehen, ohne Vorkasse. Gefällt er dir und du erteilst den
-              Auftrag, fällt eine Anzahlung an. Bis dahin liegt das Risiko bei uns, nicht bei dir.
-            </p>
-          </div>
-        </div>
-      </section>
+    <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'Organization',
+              '@id': 'https://web.redrabbit.media/#organization',
+              name: 'Red Rabbit Media',
+              url: 'https://web.redrabbit.media',
+            },
+            {
+              '@type': 'Service',
+              name: 'Website',
+              description: 'Individuell gebaute Website zum Fixpreis, 1-2 grafische Vorschläge ohne Vorkasse.',
+              provider: { '@type': 'Organization', name: 'Red Rabbit Media' },
+              areaServed: 'AT',
+              offers: [
+                { '@type': 'Offer', name: 'Starter', priceCurrency: 'EUR', price: '1250' },
+                { '@type': 'Offer', name: 'Business', priceCurrency: 'EUR', price: '2850' },
+                {
+                  '@type': 'Offer',
+                  name: 'Premium',
+                  priceCurrency: 'EUR',
+                  price: '4900',
+                  priceSpecification: {
+                    '@type': 'PriceSpecification',
+                    minPrice: '4900',
+                    priceCurrency: 'EUR',
+                  },
+                },
+              ],
+            },
+          ],
+        }}
+      />
 
-      {/* Pakete */}
-      <section className="rr-section" style={{ paddingTop: 0 }}>
-        <div className="rr-wrap rr-narrow">
-          <div className="rr-price-grid">
-            {packages.map((p) => (
-              <div key={p.name} className={`rr-price-card${p.featured ? " rr-price-card--featured" : ""}`}>
-                {p.featured ? <span className="rr-price-badge">Beliebteste Wahl</span> : null}
-                <div>
-                  <p className="rr-eyebrow" style={{ color: "var(--rr-ink)", marginBottom: 12 }}>{p.name}</p>
-                  <p className="rr-sub">{p.price}</p>
-                  {p.priceNote ? (
-                    <p className="rr-meta" style={{ marginTop: 6 }}>{p.priceNote}</p>
-                  ) : null}
-                </div>
-                <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17 }}>{p.tagline}</p>
-                <ul className="rr-check">
-                  {p.features.map((f) => (
-                    <li key={f}>{f}</li>
-                  ))}
-                </ul>
-                <div className="rr-price-foot">
-                  <Link
-                    className={`rr-btn ${p.featured ? "rr-btn--primary" : "rr-btn--secondary"}`}
-                    href="/kontakt"
-                    style={{ width: "100%", justifyContent: "center" }}
-                  >
-                    {p.name} anfragen
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="rr-meta" style={{ marginTop: 24, maxWidth: 760 }}>
-            Große oder besondere Projekte, etwa Shops oder Sonderfunktionen, planen wir individuell. Sprich uns
-            einfach an, dann finden wir den passenden Rahmen.
-          </p>
-        </div>
-      </section>
+      {/* LCP-Poster mobil frueh laden (Thomas 04.08.), nur Mobile/Tablet. */}
+      <link rel="preload" as="image" href="/hero/preise-hero-poster.jpg" fetchPriority="high" media="(max-width: 1024px)" />
 
-      {/* Abo + KMU.DIGITAL */}
-      <section className="rr-section" style={{ paddingTop: 0 }}>
-        <div className="rr-wrap rr-narrow">
-          <div className="rr-grid rr-grid-2">
-            <div className="rr-card">
-              <p className="rr-eyebrow" style={{ marginBottom: 14 }}>Betreuung</p>
-              <h2 className="rr-sub" style={{ marginBottom: 16 }}>Wartungs-Abo ohne Bindung</h2>
-              <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17 }}>
-                Wenn du willst, halten wir deine Seite laufend aktuell und sichtbar. Ohne Mindestlaufzeit, jederzeit
-                kündbar. Wir halten dich mit Leistung, nicht mit einem Vertrag.
-              </p>
-            </div>
-            <div className="rr-card">
-              <p className="rr-eyebrow" style={{ marginBottom: 14 }}>Förderung</p>
-              <h2 className="rr-sub" style={{ marginBottom: 16 }}>KMU.DIGITAL kann mitzahlen</h2>
-              <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 17 }}>
-                Für österreichische Kleinbetriebe kann die KMU.DIGITAL-Förderung einen Teil der Kosten
-                übernehmen. Wir prüfen mit dir, ob das für dein Projekt in Frage kommt.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CornerLogo />
+      <BackToTop />
 
-      {/* FAQ */}
-      <section className="rr-section" style={{ paddingTop: 0 }}>
-        <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 12 }}>Häufige Fragen zu Preis und Ablauf</p>
-          <Faq items={faq} id="faq-preise" />
+      {/* Talos-3D-Companion, stationsOnly = ueberspringt den Hero (die Seite hat
+          selbst ein #sceneMain/__sculptProgress-Hero mit der Chart-Figur). Er
+          erscheint nur an der Station im blauen Talos-Panel (data-talos-station
+          am Figur-Slot), rechts, gross, winkend. Fixe Vollbild-Ebene. */}
+      <TalosCompanionStage stationsOnly />
+
+      <div className={rrFonts} style={{ background: 'transparent' }}>
+        <RelaunchMenu />
+      </div>
+
+      {/* 1 · Hero = ueber-uns/website-Malmechanik, hero-only (Wort "Preise" +
+          Wisch + Chart-Figur comp={3} + Story-Spalte mit Headline A + Intro +
+          CTA-Zeile). Demo-Inhalt bewusst AUSSERHALB des .rr-Font-Scopes. */}
+      {/* data-rr-snap-exempt: eigene Scroll-Dramaturgie, kein Soft-Snap darin. */}
+      <div data-rr-snap-exempt>
+        <PreiseDemoClient css={heroCss} html={heroHtml} js={heroJs} />
+      </div>
+
+      {/* 2-7 · Inhalts-Sektionen, echte rr-*-Bauteile im .rr-Font-Scope. */}
+      <div className={rrFonts} style={{ background: 'var(--rr-surface, #f4f4f2)', position: 'relative', zIndex: 2 }}>
+        {/* Bumper = geteilter ScrollBumper, jetzt 1:1 die Belief-Stups-Mechanik
+            der Website-Seite (Thomas 11.08. mit Video: Satz steht in der Mitte,
+            der naechste stoesst ihn von unten an, der alte geht oben raus; die
+            Pointe bleibt stehen und der CTA blendet darunter ein). */}
+        <ScrollBumper
+          label="Was du bekommst"
+          statements={[
+            { text: 'Wir bauen dir eine ganze Website.' },
+            { text: 'Von Grund auf. Nicht von der Stange.' },
+            { text: 'Dazu Talos, dein Copilot: alle wichtigen Infos an einem Ort.' },
+            { text: 'Brauchst du mehr, bekommst du es auf Anfrage.' },
+            { text: 'Erst überzeugt, dann bezahlt.', pointe: true },
+          ]}
+          cta={{
+            label: 'Hol dir die kostenlosen Vorschläge',
+            href: '/relaunch-preview/kontakt',
+            lead: 'bumper',
+            leadService: 'Preise Bumper-CTA',
+          }}
+        />
+        <div data-rr-snap>
+          <RisikoBand />
         </div>
-      </section>
-    </PageShell>
+        <div data-rr-snap>
+          <PreiseFundament />
+        </div>
+        <div data-rr-snap>
+          <PreiseMatrix />
+        </div>
+        <div data-rr-snap>
+          <BetreuungFoerderung />
+        </div>
+        <TalosTalenteFahrt />
+        <div data-rr-snap>
+          <PreiseFaq />
+        </div>
+        <SiteClosing
+          lines={[
+            'Du kennst die Zahlen.',
+            'Wir legen vor. Du entscheidest.',
+            'Reden wir.',
+          ]}
+        />
+      </div>
+
+      <div className={rrFonts} data-rr-snap style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
+        <FooterReassembly />
+      </div>
+
+      {/* Site-weites Scroll-Gefuehl: Lenis + Soft-Snap (Thomas 28.07.). */}
+      <ScrollExperience />
+    </>
   );
 }
