@@ -135,7 +135,7 @@ const PAKETE: Paket[] = [
       {
         titel: 'Shop, Terminbuchung, Bezahlen?',
         detail:
-          'Ja, das bauen wir dir. Online verkaufen, Termine buchen lassen, bezahlen auf der Seite: was dein Betrieb braucht, planen wir konkret in dein Angebot und bauen es fix fertig ein.',
+          'Wenn dein Betrieb das braucht: ja, dann bauen wir es dir. Premium ist die Stufe, in der so etwas Platz hat. Ob Shop, Terminbuchung oder Bezahlen reinkommt, entscheidet dein Vorhaben, nicht eine Preisliste. Deshalb steht beim Preis auch "ab": du zahlst für das, was du wirklich brauchst, nicht für Funktionen, die du nie nutzt.',
       },
       {
         titel: 'Kann ich selbst neue Seiten bauen?',
