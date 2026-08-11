@@ -24,13 +24,14 @@ import { buildReassembly, sample, clamp01, type Keyframe } from "@/lib/relaunch/
 
 const NAVY = "var(--rr-navy, #23262e)";
 
-// Leistungen/Preise zeigen bewusst noch auf die alten Live-Seiten,
-// bis es Relaunch-Versionen gibt (Tomson 16.07.).
+// Leistungs-HAUPTSEITE bewusst nirgends verlinkt (Thomas 12.08.: wird spaeter
+// neu gemacht, bis dahin soll sie niemand finden) — der Eintrag zeigt auf die
+// Website-Unterseite. Preise zeigt seit 12.08. auf die Relaunch-Preisseite.
 const NAV = [
   { label: "Start", href: "/relaunch-preview" },
-  { label: "Leistungen", href: "/leistungen" },
+  { label: "Deine Website", href: "/relaunch-preview/leistungen/website" },
   { label: "Referenzen", href: "/relaunch-preview/referenzen" },
-  { label: "Preise", href: "/preise" },
+  { label: "Preise", href: "/relaunch-preview/preise" },
   { label: "Tipps", href: "/relaunch-preview/tipps" },
   { label: "FAQ", href: "/relaunch-preview/faq" },
   { label: "Über uns", href: "/relaunch-preview/ueber-uns" },
