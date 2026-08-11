@@ -42,86 +42,125 @@ type Paket = {
   merkmale: Merkmal[];
 };
 
+/**
+ * Punkt-Titel = echte Kundenfrage, Antwort = Klartext (Thomas 11.08., nach
+ * 3-Agenten-Research: Konkurrenz listet 5-7 Punkte pro Stufe, Kunden fragen
+ * in ihrer Sprache "werde ich gefunden / kann ich selbst aendern / warum so
+ * teuer". Differenzierung ueber Ergebnis-Stufen statt Feature-Zaehlen:
+ * Starter = online sein, Business = gefunden werden, Premium = die Seite
+ * arbeitet). Ehrliche Grenzen bleiben drin (Starter sagt offen, wofuer er
+ * NICHT reicht), keine Fantasie-Zahlen (Rating-Ehrlichkeits-Regel).
+ */
 const PAKETE: Paket[] = [
   {
     name: 'Starter',
     preis: 'ab 1.250 €',
-    text: 'Der schlanke Start: eine Seite, die sitzt. Für alle, die schnell und sauber online sein wollen.',
+    text: 'Du bist professionell online. Der schlanke Start für alle, die schnell und sauber im Netz stehen wollen.',
     merkmale: [
       {
-        titel: 'Das komplette Fundament, alles inklusive',
+        titel: 'Ist das eine billige Einsteiger-Seite?',
         detail:
-          'Alles, was oben steht, steckt schon in Starter drin: individuelles Design, perfekt am Handy, für Google und KI gebaut, Talos als dein Copilot, Technik, Recht, Einrichtung. Kein abgespecktes Einsteiger-Ding, sondern das volle Fundament, nur eben auf einer Seite.',
+          'Nein. Das komplette Fundament steckt drin: individuelles Design, perfekt am Handy, für Google und KI gebaut, Talos als dein Copilot, Technik und Recht. Nur eben auf einer Seite. Abgespeckt ist hier nichts.',
       },
       {
-        titel: 'One-Pager, der alles Wichtige trägt',
+        titel: 'Was steht auf der einen Seite?',
         detail:
-          'Eine Seite, klar aufgebaut: wer du bist, was du machst, warum dich jemand anrufen soll und wie er das tut. Alles Wichtige an einem Ort, ohne dass sich der Besucher durchklicken muss.',
+          'Alles, was ein Kunde braucht, um sich für dich zu entscheiden: wer du bist, was du machst, warum du und wie er dich erreicht. Ohne Klick-Labyrinth.',
       },
       {
-        titel: 'Der schlanke Einstieg, der mitwächst',
+        titel: 'Werde ich damit gefunden?',
         detail:
-          'Perfekt, um klein zu starten. Wächst dein Betrieb, hebst du jederzeit auf Business oder Premium, ohne bei null anzufangen. Deine Seite wächst mit dir, nicht gegen dich.',
+          'Unter deinem Firmennamen: ja, sauber. Wer dich kennt oder empfohlen bekommt, findet dich sofort. Willst du gefunden werden, wenn jemand deine Leistung plus Ort sucht, brauchst du eigene Seiten pro Leistung. Das ist Business.',
+      },
+      {
+        titel: 'Kann ich selbst etwas ändern?',
+        detail:
+          'Ja. Texte und Bilder tauschst du mit Talos selbst, in Minuten, ohne Technikwissen und ohne uns anzurufen.',
+      },
+      {
+        titel: 'Und wenn mein Betrieb wächst?',
+        detail:
+          'Dann wächst die Seite mit. Du hebst jederzeit auf Business oder Premium, ohne bei null anzufangen. Nichts von deiner Investition ist verloren.',
       },
     ],
   },
   {
     name: 'Business',
     preis: 'ab 2.850 €',
-    text: 'Mehrseitig, gezielt auf lokale Sichtbarkeit und Anfragen gebaut. Der Sprung, den die meisten brauchen.',
+    text: 'Du wirst gefunden, und das Telefon klingelt. Der Sprung, den die meisten Betriebe brauchen.',
     featured: true,
     merkmale: [
       {
-        titel: 'Alles aus Starter, plus mehr Raum',
+        titel: 'Ist alles aus Starter drin?',
         detail:
-          'Das komplette Starter-Paket inklusive Fundament ist hier drin. Darauf setzt Business auf: mehr Seiten, mehr Struktur, mehr Möglichkeiten, deinen Betrieb zu zeigen.',
+          'Ja, komplett. Das ganze Fundament, der Starter-Kern, Talos. Business setzt oben drauf.',
       },
       {
-        titel: 'Mehrseitig, mit Platz für alles',
+        titel: 'Warum mehrere Seiten?',
         detail:
-          'Eigene Seiten für Leistungen, Team, Referenzen, Anfahrt, was dein Betrieb eben zeigen will. Jede Leistung bekommt ihren Raum, statt sich auf einer Seite zu drängen.',
+          'Weil eine Seite bei Google nur ein Thema gewinnen kann. Jede Leistung bekommt ihre eigene Seite und wird damit einzeln gefunden. Wer alles auf eine Seite drängt, verschenkt genau die Suchanfragen, die Kunden bringen.',
       },
       {
-        titel: 'Lokal gefunden werden',
+        titel: 'Findet man mich in meiner Region?',
         detail:
-          'Gezielt darauf gebaut, dass dich Leute aus deiner Gegend finden, wenn sie genau das suchen, was du anbietest. Die Kunden vor deiner Haustür sind die, die am ehesten kaufen.',
+          'Dafür ist Business gebaut. Sucht jemand deine Leistung in deiner Gegend, soll er bei dir landen, nicht nur, wenn er deinen Firmennamen schon kennt. Die Kunden vor deiner Haustür sind die, die am ehesten kaufen.',
       },
       {
-        titel: 'Auf Anfragen gebaut',
+        titel: 'Kommen dadurch Anfragen?',
         detail:
-          'Aufbau und Wege so gelegt, dass aus Besuchern Anfragen werden: klare Handlungsaufforderungen, kurze Wege zum Formular und zum Telefon. Damit das Telefon klingelt, nicht nur der Besucherzähler.',
+          'Der ganze Aufbau führt zum Anruf oder zum Formular: klare Wege, kurze Distanzen, keine Sackgassen. Und in Talos siehst du schwarz auf weiß, was auf deiner Seite passiert. Versprechen mit Fantasiezahlen bekommst du von uns keine.',
+      },
+      {
+        titel: 'Warum kostet das das Doppelte?',
+        detail:
+          'Ehrlich: weil doppelt so viel Arbeit drinsteckt. Struktur, Texte und Optimierung für jede einzelne Seite, nicht einmal pauschal für alle.',
+      },
+      {
+        titel: 'Was muss ich liefern?',
+        detail:
+          'Du erzählst uns deinen Betrieb, wir stellen die richtigen Fragen. Schreiben, bauen, einrichten und übertragen machen wir.',
       },
     ],
   },
   {
     name: 'Premium',
     preis: 'ab 4.900 €',
-    text: 'Für alle, deren Seite wirklich arbeiten soll: umfangreich, auf dauerhafte Sichtbarkeit und laufende Anfragen gebaut.',
+    text: 'Deine Website arbeitet für dich. Für Betriebe, deren Seite ein Vertriebskanal sein soll.',
     merkmale: [
       {
-        titel: 'Alles aus Business, plus volle Ausbaustufe',
+        titel: 'Ist alles aus Business drin?',
         detail:
-          'Das komplette Business-Paket ist drin, inklusive allem aus Starter und dem Fundament. Premium ist die große Ausbaustufe für Betriebe, deren Website richtig arbeiten soll.',
+          'Ja, inklusive allem aus Starter und dem Fundament. Premium ist die volle Ausbaustufe.',
       },
       {
-        titel: 'Umfangreich und skalierbar',
+        titel: 'Was heißt "arbeitet für dich"?',
         detail:
-          'Die große Struktur, die mitwächst, so groß dein Betrieb wird. Für Seiten, die viel zeigen und viel leisten sollen, ohne dass es unübersichtlich wird.',
+          'Deine Seite bleibt nicht stehen. Mit dem Ratgeber-System wächst sie laufend, baut Sichtbarkeit bei Google und in KI-Antworten auf und holt Besucher, während du arbeitest.',
       },
       {
-        titel: 'Inhalte, die dich sichtbar halten',
+        titel: 'Shop, Terminbuchung, Bezahlen?',
         detail:
-          'Ein Ratgeber- oder Blog-System, mit dem du Stück für Stück sichtbarer wirst, bei Google und bei KI-Suchen. Statt einmal gebaut zu verstauben, arbeitet deine Seite laufend für dich.',
+          'Ja, hier ist der Platz dafür. Online verkaufen, Termine buchen lassen, Anfragen automatisch vorsortieren: was dein Betrieb braucht, planen wir konkret in dein Angebot.',
       },
       {
-        titel: 'Dauerhafte Sichtbarkeit',
+        titel: 'Bekomme ich mehr Talos?',
         detail:
-          'Auf dauerhafte, inhaltsgetriebene Sichtbarkeit und laufende Anfragen gebaut, nicht nur auf den ersten Tag nach dem Launch.',
+          'Ja. Mehr Selbst-Steuerung über deine Inhalte und Aktionen, die Freiheit eines Baukastens, ohne Baukasten-Frust. Und wir sitzen dahinter und schauen mit.',
       },
       {
-        titel: 'Vorqualifizierte Anfragen',
+        titel: 'Was sind vorqualifizierte Anfragen?',
         detail:
-          'Formulare, die Interessenten vorsortieren, bevor sie bei dir landen. So verlierst du weniger Zeit mit dem Falschen und redest mit denen, die wirklich passen.',
+          'Formulare, die Interessenten vorsortieren, bevor sie bei dir landen. Du redest nur noch mit denen, die wirklich passen, statt Zeit am Telefon zu verlieren.',
+      },
+      {
+        titel: 'Für wen ist Premium?',
+        detail:
+          'Für Betriebe, deren Website ein Vertriebskanal sein soll: viel zeigen, laufend Anfragen bekommen, wachsen. Wenn du nur sauber online stehen willst, nimm Starter. Das ist auch völlig in Ordnung.',
+      },
+      {
+        titel: 'Warum "ab" 4.900?',
+        detail:
+          'Weil hier am meisten Arbeit drinsteckt und kein Vorhaben dem anderen gleicht. Du bekommst ein Angebot, das exakt auf dein Projekt gerechnet ist, keine Preisliste von der Stange.',
       },
     ],
   },
