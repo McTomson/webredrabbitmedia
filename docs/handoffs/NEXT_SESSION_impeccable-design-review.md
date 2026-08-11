@@ -55,3 +55,32 @@ kurz erklaeren (welches Kommando, warum, was es tut), bevor er laeuft.
   Paletten vorschlagen — wir HABEN eine, init nur dokumentierend nutzen).
 - Parallel-Session arbeitet an /preise (Fremd-WIP: SiteClosing.tsx, faq/, preise-preview/ u.a. — nicht anfassen,
   vor Arbeit git fetch + git log).
+
+## STAND 12.08. — TEIL-AUSGEFUEHRT (Commit 128d837, deployt+verifiziert live auf v2)
+Impeccable bedient: init (PRODUCT.md geschrieben; DESIGN.md des Users unangetastet gelassen — er hatte
+schon eine 587-Zeilen-Version), critique (7 Seiten) + audit (10 Seiten) komplett gelaufen (Detektor + echte
+WCAG-Kontrast-Messung). Ergebnis: Seiten sind stark (Slop-Test bestanden, Detektor sauber, Ø ~14/20).
+UMGESETZT + gepusht + auf v2 live (128d837, rein additiv/optisch minimal):
+- Roter Kleintext-Kontrast siteweit: `#f12032` faellt auf hell unter AA (3.8/4.2:1). Basis der geteilten
+  Klassen `.rr-eyebrow-theme` + `.wd-eyebrow` + `.rr-company-name` -> `--rr-red-deep` #c81222 (5.3-5.9:1);
+  Demo-Sektions-Labels (.b/p/f-label) + Tipps-Kategorie + `.fmx__tag` ebenso. DUNKELFAELLE (Beweis-
+  Betonwoerter, Talos-Invers-Modal, WertAnker-Eyebrow) -> `#f77480`/`--ondark` (nicht red-deep!). WICHTIG-
+  LESSON: `.wd-eyebrow`-Basis aendern kaskadiert auf dunkle Sektionen -> jede wd-eyebrow auf navy braucht
+  `--ondark` (nur WertAnker fehlte; CasePanels macht onDark automatisch, SiteClosing/HomeClosing haben keine).
+- Platzhalter blass->lesbar (~2.1->4.7:1): styleguide `.rr-field`, Kontaktformular, Lead-Popup.
+- Hero-Subtitle `#8a8d94`->`#6b6e76` (3.0->4.6:1).
+- Kontaktformular-A11y: aria-required, `:focus-visible`-Ring, aria-invalid + Fokus 1. Fehlerfeld, Erfolgs-Fokus.
+- Home: doppelter "DER BEWEIS"-Eyebrow -> "DIE ZAHLEN".
+OFFEN (aus dem Audit, noch NICHT gemacht — sauber pro Untergrund angehen):
+- Weiss-auf-Rot Button-Labels (`.rr-btn-sweep` hover, `.rrtn-ebtn`, `.rpm__tag`) ~4.2:1: Button-Grund
+  abdunkeln = groessere optische Entscheidung, mit Thomas klaeren.
+- Footer-Copyright `.rr-foot-copy` rgba(255,255,255,.45) = 4.25:1 -> alpha auf .55 (Ein-Zahl-Fix, FooterReassembly).
+- Sterne-Symbole ★ (~1.85:1) sind aria-hidden/dekorativ — optional.
+- Performance: mehrere rAF-Loops ohne IntersectionObserver-Gate (regionen/leistungen/website/talos) — Akku/Scroll.
+- /leistungen/website ~4400vh gepinnter Scroll — Thomas-Geraete-Urteil.
+- /faq: 2 von 14 FAQ-Antworten weichen sichtbarer Text vs. JSON-LD ab (Rich-Result-Risiko).
+- RisikoBand (/preise) Kernaussage `<p>`->`<h2>` — Parallel-Session-Gebiet, koordinieren.
+- Menue-Trigger `outline:none` ohne Fokus-Ersatz (RelaunchMenu) — a11y.
+- Theming-Cleanup: hartcodierte Hex / altes `rgba(28,40,55,x)` statt Token (breit, niedrig).
+LIVE-MODUS-BLOCKER dokumentiert: strenge CSP (next.config.ts:226) blockt das Impeccable-Overlay (Script/
+connect nur 'self'); + Inject muesste in layout.tsx (Parallel-WIP). Live-Overlay erst wenn Branch ruhig.
