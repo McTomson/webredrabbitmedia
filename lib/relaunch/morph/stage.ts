@@ -113,7 +113,13 @@ export function buildStagePlan(
   // FUELLEN (Thomas, Referenz-Video all-turtles) statt klein in der Mitte zu
   // sitzen. 2.1x bringt sie auf ~volle Viewport-Breite; Fly-in/Streuung gehen
   // dabei bewusst weit ueber den Rand hinaus (Teile stroemen von aussen herein).
-  const k = Math.min(vp.w / 1920, vp.h / 810) * (narrow ? 1.6 : 1);
+  // Narrow-Boost breiten-abhaengig (Thomas 11.08., Screenshots ~820px: Chart/
+  // Kopf oben abgeschnitten): volle 1.6 nur am echten Handy (<=560px), linear
+  // abfallend auf 1.15 an der 900px-Grenze. Handy unveraendert, Desktop (>=900)
+  // unveraendert; nur die Zwischenbreiten werden kleiner und passen ins Bild.
+  const t560 = Math.min(1, Math.max(0, (vp.w - 560) / (900 - 560)));
+  const boost = narrow ? 1.6 - 0.45 * t560 : 1;
+  const k = Math.min(vp.w / 1920, vp.h / 810) * boost;
   const diag = Math.hypot(vp.w, vp.h);
   const halfW = vp.w / 2, halfH = vp.h / 2;
 

@@ -301,7 +301,9 @@ export default function HomeMorph({ sceneTexts = SCENE_TEXTS }: { sceneTexts?: t
       // stehen) und als ERSTES wieder aus, sobald der Zerfall beginnt (schneller Fade).
       if (subtitleRef.current) {
         const subIn = clamp01((ip - 0.72) / 0.28); // erscheint im letzten Stueck der Intro-Fahrt
-        const subOut = 1 - clamp01(u / 0.06);       // weg, bevor die Kontraktion (u=0.22) startet
+        // Thomas 11.08.: Unterzeile bleibt stehen, BIS sich die Buchstaben zerteilen
+        // (Kontraktion ab u=U_REST=0.22) — vorher blendete sie schon bei u=0.06 aus.
+        const subOut = 1 - clamp01((u - 0.22) / 0.1);
         const gapPx = wordBoxH / 2 + 26;            // Abstand unter der Wortmarken-Unterkante
         subtitleRef.current.style.opacity = String(subIn * subOut);
         subtitleRef.current.style.transform = `translate(-50%, calc(-50% + ${stageY}vh + ${gapPx}px))`;
