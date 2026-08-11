@@ -224,7 +224,7 @@ export default function PreiseMatrix() {
           background: #ffffff;
         }
         .rp-matrix__h2 {
-          margin: 18px 0 20px;
+          margin: clamp(24px, 2.6vw, 34px) 0 clamp(30px, 3.6vw, 42px);
           max-width: 16em;
         }
         .rp-matrix__intro {

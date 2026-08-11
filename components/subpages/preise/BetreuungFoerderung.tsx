@@ -100,7 +100,7 @@ export default function BetreuungFoerderung() {
           background: #f4f4f2;
         }
         .rp-bf__h2 {
-          margin: 18px 0 20px;
+          margin: clamp(24px, 2.6vw, 34px) 0 clamp(30px, 3.6vw, 42px);
           max-width: 16em;
           color: var(--rr-navy);
         }
@@ -114,6 +114,11 @@ export default function BetreuungFoerderung() {
         }
         .rp-bf__item {
           border-top: 1px solid rgba(28, 40, 55, 0.12);
+        }
+        /* Keine harte Linie direkt unter dem Intro (Thomas 11.08.): der erste
+           Aufklapp-Punkt startet ohne Trennlinie, wie im Fundament-Block. */
+        .rp-bf__item:first-child {
+          border-top: 0;
         }
         .rp-bf__sum {
           list-style: none;

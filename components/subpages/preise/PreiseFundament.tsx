@@ -124,7 +124,7 @@ export default function PreiseFundament() {
           background: #f4f4f2;
         }
         .rpf__h2 {
-          margin: 18px 0 20px;
+          margin: clamp(24px, 2.6vw, 34px) 0 clamp(30px, 3.6vw, 42px);
           max-width: 16em;
           color: var(--rr-navy);
         }

@@ -63,7 +63,7 @@ export default function RisikoBand() {
         }
         .rp-risiko__statement {
           color: var(--rr-navy);
-          margin: 20px 0 28px;
+          margin: clamp(24px, 2.6vw, 34px) 0 clamp(30px, 3.6vw, 42px);
         }
         .rp-risiko__body {
           color: var(--rr-ink-soft);
