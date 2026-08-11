@@ -248,6 +248,19 @@ export default function TalosCompanionStage({
     let gestureDone = false;
     let lastMobileDy = 0; // zuletzt angewandter Stations-Mobile-Offset (fuers Ausfaden halten)
 
+    // Wiederhol-Winken drosseln (Thomas 11.08.: "3 mal so langsam" meint die
+    // WIEDERHOLUNG, nicht die Ausfuehrung): Auto-Trigger (Hero-Rewave beim
+    // Zurueckscrollen, Stations-Wiedereintritt) winken fruehestens alle
+    // GREET_COOLDOWN Sekunden erneut. Doppelklick-Gesten bleiben ungedrosselt.
+    const GREET_COOLDOWN = 30;
+    let lastGreetAt = -1e9;
+    const tryGreet = (arm: "primary" | "other") => {
+      const now = performance.now() / 1000;
+      if (now - lastGreetAt < GREET_COOLDOWN) return;
+      lastGreetAt = now;
+      motion?.triggerGreeting(arm);
+    };
+
     const tuning = { endX: END_X, offMargin: OFF_MARGIN };
 
     // --- Stationen aus dem DOM (gecached, periodisch neu gescannt) ---
@@ -363,7 +376,7 @@ export default function TalosCompanionStage({
         waved = true;
         // Winkhand: Desktop "primary" (linke Hand, Thomas 07.08.); Handy steht
         // gespiegelt rechts -> "other", damit es optisch wieder die linke ist.
-        motion?.triggerGreeting(endFrac !== null ? "other" : "primary");
+        tryGreet(endFrac !== null ? "other" : "primary");
       }
       if (waved && p < P_WALK1 - 0.06) waved = false;
 
@@ -454,8 +467,8 @@ export default function TalosCompanionStage({
           // Thomas 07.08. (Screenshots): winkt mit der falschen Hand ->
           // "wave" wieder auf "primary" gedreht (war seit 25.07. "other");
           // "wave2" bleibt als Sonderfall die jeweils andere Hand.
-          if (effGesture === "wave") motion?.triggerGreeting("primary");
-          else if (effGesture === "wave2") motion?.triggerGreeting("other");
+          if (effGesture === "wave") tryGreet("primary");
+          else if (effGesture === "wave2") tryGreet("other");
           else if (effGesture === "bow") motion?.triggerBow();
         }
       } else {

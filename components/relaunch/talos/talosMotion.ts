@@ -17,7 +17,7 @@ interface Euler3 {
   z: number;
 }
 
-const GREETING_DURATION = 13.8; // Sekunden gesamt (heben, 2x winken, senken); 11.08. auf Thomas-Wunsch "3 mal so langsam wie jetzt" (war 4.6, davor 3.2)
+const GREETING_DURATION = 4.6; // Sekunden gesamt (heben, 2x winken, senken); 11.08. zurueck auf 4.6 (Thomas: Ausfuehrung normal, nur das WIEDERHOLTE Winken seltener -> Cooldown in TalosCompanionStage)
 const BOW_DURATION = 2.0;
 
 const clamp = (v: number, min: number, max: number) =>

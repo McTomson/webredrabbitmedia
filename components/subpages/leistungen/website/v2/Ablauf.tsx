@@ -433,6 +433,24 @@ export default function Ablauf() {
           }
         }
 
+        /* Zwischengroesse (schmales Desktop-Fenster/Tablet quer, knapp ueber dem
+           Mobile-Breakpoint): Kreise ruecken zusammen und der CTA kommt naeher an
+           den Text (Thomas 11.08., Screenshots ~820-900px: Kreise zu weit
+           auseinander, Button zu weit weg). Handy (<=820) und grosser Desktop
+           (>1040) bleiben unveraendert. */
+        @media (min-width: ${MOBILE_BREAKPOINT + 1}px) and (max-width: 1040px) and (prefers-reduced-motion: no-preference) {
+          .wd-abl__circles {
+            --circle: clamp(54px, 7.5vw, 74px);
+            width: min(560px, 78vw);
+          }
+          .wd-abl__list {
+            min-height: clamp(190px, 28vh, 290px);
+          }
+          .wd-abl__cta {
+            margin-top: clamp(10px, 1.8vh, 22px);
+          }
+        }
+
         /* Schmale Feinheiten fuer die Szene auf Handy/Tablet: kleinster
            Viewport (svh) gegen URL-Leisten-Sprung, engere Abstaende, Schrift
            runter, damit jeder Schritt (auch der laengere Schritt 3) in EINE
