@@ -398,7 +398,12 @@
   transition:background-size .45s var(--ease);
 }
 .k-field input:focus,.k-field textarea:focus{background-size:100% 2px,100% 2px}
-.k-field input::placeholder,.k-field textarea::placeholder{color:rgba(35,38,46,.35)}
+/* Deutlicher Tastatur-Fokus (WCAG AA / BaFG): sichtbarer Ring wie bei den Buttons,
+   zusaetzlich zur roten Unterlinie. Nur fuer Tastatur (:focus-visible), Maus bleibt ruhig. */
+.k-field input:focus-visible,.k-field textarea:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+/* Ungueltige Felder nach Absende-Versuch: rote Unterlinie bleibt sichtbar. */
+.k-field input[aria-invalid="true"],.k-field textarea[aria-invalid="true"]{background-size:100% 2px,100% 2px}
+.k-field input::placeholder,.k-field textarea::placeholder{color:rgba(35,38,46,.66)}
 .k-field textarea{min-height:96px;resize:vertical}
 .k-hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;opacity:0}
 .k-dsgvo{

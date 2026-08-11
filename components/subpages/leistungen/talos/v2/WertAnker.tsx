@@ -50,7 +50,7 @@ export default function WertAnker() {
   return (
     <section className="rr-section tl-section tl-wa" data-rr-snap>
       <div className="rr-wrap rr-narrow">
-        <p className="wd-eyebrow tl-eyebrow">Rechnen wir kurz</p>
+        <p className="wd-eyebrow tl-eyebrow wd-eyebrow--ondark">Rechnen wir kurz</p>
         <h2 className="rr-statement tl-title tl-wa__title">
           Was das kostet, wenn du es dir einzeln zusammenkaufst.
         </h2>

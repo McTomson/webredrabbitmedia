@@ -37,14 +37,14 @@
             <p class="k-title">Erzähl uns, wo es hakt<span class="kdot">.</span></p>
             <form id="kForm" class="k-form" novalidate>
               <div class="k-row">
-                <div class="k-field"><label for="kName">Name <span class="k-req">*</span></label><input id="kName" name="name" type="text" autocomplete="name" placeholder="Wie heißt du?"></div>
+                <div class="k-field"><label for="kName">Name <span class="k-req" aria-hidden="true">*</span></label><input id="kName" name="name" type="text" autocomplete="name" aria-required="true" placeholder="Wie heißt du?"></div>
                 <div class="k-field"><label for="kCompany">Betrieb</label><input id="kCompany" name="company" type="text" autocomplete="organization" placeholder="Wie heißt dein Betrieb?"></div>
               </div>
               <div class="k-row">
-                <div class="k-field"><label for="kEmail">E-Mail <span class="k-req">*</span></label><input id="kEmail" name="email" type="email" autocomplete="email" placeholder="Wohin dürfen wir antworten?"></div>
+                <div class="k-field"><label for="kEmail">E-Mail <span class="k-req" aria-hidden="true">*</span></label><input id="kEmail" name="email" type="email" autocomplete="email" aria-required="true" placeholder="Wohin dürfen wir antworten?"></div>
                 <div class="k-field"><label for="kPhone">Telefon</label><input id="kPhone" name="phone" type="tel" autocomplete="tel" placeholder="+43 ... (wenn du magst)"></div>
               </div>
-              <div class="k-field"><label for="kMsg">Worum geht es? <span class="k-req">*</span></label><textarea id="kMsg" name="message" placeholder="Zwei Sätze reichen. Was machst du, und wo hakt es gerade?"></textarea></div>
+              <div class="k-field"><label for="kMsg">Worum geht es? <span class="k-req" aria-hidden="true">*</span></label><textarea id="kMsg" name="message" aria-required="true" placeholder="Zwei Sätze reichen. Was machst du, und wo hakt es gerade?"></textarea></div>
               <input class="k-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
               <label class="k-dsgvo"><input id="kDsgvo" type="checkbox"> <span>Passt für mich, dass ihr meine Angaben zum Beantworten der Anfrage verwendet. Details in der <a href="/relaunch-preview/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span></label>
               <div class="k-send">

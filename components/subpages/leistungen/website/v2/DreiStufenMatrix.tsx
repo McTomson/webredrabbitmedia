@@ -127,7 +127,7 @@ function StufeMatrix({
         }
         .fmx__tag {
           border: 1px solid var(--rr-red);
-          color: var(--rr-red);
+          color: var(--rr-red-deep);
           font-family: var(--rr-font-ui);
           font-size: 11px;
           font-weight: 700;

@@ -464,7 +464,7 @@ export default function HomeMorph({ sceneTexts = SCENE_TEXTS }: { sceneTexts?: t
               fontWeight: 500,
               letterSpacing: "clamp(0.12em, 0.3vw, 0.34em)",
               textIndent: "clamp(0.12em, 0.3vw, 0.34em)", // optische Zentrierung trotz Sperrung
-              color: "#8a8d94",
+              color: "#6b6e76",
               zIndex: 5,
               opacity: 0,
               pointerEvents: "none",

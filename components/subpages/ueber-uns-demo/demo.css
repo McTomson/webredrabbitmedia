@@ -198,7 +198,7 @@
     position:absolute;top:9vh;left:50%;transform:translateX(-50%);
     font-family:"DM Sans",sans-serif;
     font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--red);font-weight:700;white-space:nowrap;
+    color:#c81222;font-weight:700;white-space:nowrap;
   }
   .stmt{
     position:absolute;left:50%;top:50%;
@@ -265,7 +265,7 @@
   .p-label{
     font-family:"DM Sans",sans-serif;
     font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--red);font-weight:700;margin-bottom:1.4rem;
+    color:#c81222;font-weight:700;margin-bottom:1.4rem;
     user-select:none;-webkit-user-select:none;
   }
   /* R6: grosse Ueberschrift ueber dem Raster (Referenz pixelperfektion) */
@@ -342,7 +342,7 @@
   .f-label{
     font-family:"DM Sans",sans-serif;
     font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--red);font-weight:700;margin-bottom:1.4rem;
+    color:#c81222;font-weight:700;margin-bottom:1.4rem;
     user-select:none;-webkit-user-select:none;
   }
   /* Punkt4: grosse DM-Sans-Bold-Ueberschrift, Schlusspunkt in Rot (Marken-Pattern) */
@@ -407,7 +407,7 @@
   .cta-label{
     font-family:"DM Sans",sans-serif;
     font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--red);font-weight:700;margin-bottom:1.4rem;
+    color:#c81222;font-weight:700;margin-bottom:1.4rem;
     user-select:none;-webkit-user-select:none;
   }
   .cta-h{

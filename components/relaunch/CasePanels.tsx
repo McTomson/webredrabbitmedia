@@ -82,13 +82,13 @@ export const THEMES: Theme[] = [
     windows: [
       { eyebrow: "Der Beweis", headline: "Kunden, die für uns sprechen.", body: "Ergebnisse, schwarz auf weiß." },
       {
-        eyebrow: "Der Beweis",
+        eyebrow: "Die Zahlen",
         headline: "Messbare technische Perfektion.",
         body: (
           <>
             Ohne perfektes Fundament geht es nicht. Wir bauen Websites, die von{" "}
-            <span style={{ color: "var(--rr-red)" }}>Google</span> und modernen{" "}
-            <span style={{ color: "var(--rr-red)" }}>KI-Suchen</span> geliebt werden. Das ist
+            <span style={{ color: "#f77480" }}>Google</span> und modernen{" "}
+            <span style={{ color: "#f77480" }}>KI-Suchen</span> geliebt werden. Das ist
             keine Behauptung, das sind harte, messbare Fakten.
           </>
         ),

@@ -621,9 +621,9 @@ const CSS = `
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--rr-red);
+  color: var(--rr-red-deep);
 }
-.rr .tlfg-modal--invers .tlfg-modal__eyebrow { color: #f12032; }
+.rr .tlfg-modal--invers .tlfg-modal__eyebrow { color: #f77480; }
 
 /* Fähigkeiten-Akkordeon (Mechanik aus DreiStufenMatrix, single-column im Modal). */
 .rr .tlfg-mx { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--rr-line); }
@@ -735,9 +735,9 @@ const CSS = `
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--rr-red);
+  color: var(--rr-red-deep);
 }
-.rr .tlfg-modal--invers .tlfg-label { color: #f12032; }
+.rr .tlfg-modal--invers .tlfg-label { color: #f77480; }
 .rr .tlfg-text {
   margin: 0;
   font-family: var(--rr-font-ui);

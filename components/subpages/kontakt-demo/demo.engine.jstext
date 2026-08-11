@@ -717,12 +717,20 @@
     const name=(fd.get("name")||"").toString().trim();
     const email=(fd.get("email")||"").toString().trim();
     const message=(fd.get("message")||"").toString().trim();
-    const missing=[];
-    if(name.length<2) missing.push("deinen Namen");
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) missing.push("eine E-Mail, die wir beantworten können");
-    if(message.length<10) missing.push("zwei Sätze zu deinem Anliegen");
-    if(!document.getElementById("kDsgvo").checked) missing.push("den Haken beim Datenschutz");
-    if(missing.length){ note.textContent="Fehlt noch: "+missing.join(", ")+"."; note.className="k-note k-note--err"; return; }
+    const fName=document.getElementById("kName"), fEmail=document.getElementById("kEmail"), fMsg=document.getElementById("kMsg"), fDsgvo=document.getElementById("kDsgvo");
+    [fName,fEmail,fMsg,fDsgvo].forEach(function(el){ if(el) el.removeAttribute("aria-invalid"); });
+    const missing=[]; const bad=[];
+    if(name.length<2){ missing.push("deinen Namen"); bad.push(fName); }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ missing.push("eine E-Mail, die wir beantworten können"); bad.push(fEmail); }
+    if(message.length<10){ missing.push("zwei Sätze zu deinem Anliegen"); bad.push(fMsg); }
+    if(!fDsgvo.checked){ missing.push("den Haken beim Datenschutz"); bad.push(fDsgvo); }
+    if(missing.length){
+      note.textContent="Fehlt noch: "+missing.join(", ")+".";
+      note.className="k-note k-note--err";
+      bad.forEach(function(el){ if(el) el.setAttribute("aria-invalid","true"); });
+      const first=bad.find(Boolean); if(first&&first.focus) first.focus();
+      return;
+    }
     btn.disabled=true; const oldTxt=btn.textContent; btn.textContent="Geht gerade raus ...";
     try{
       const res=await fetch("/api/contact",{method:"POST",headers:{"Content-Type":"application/json"},
@@ -732,7 +740,9 @@
       if(!res.ok) throw new Error("send failed");
       f.style.display="none";
       note.className="k-note k-note--ok";
+      note.setAttribute("tabindex","-1");
       note.innerHTML="<strong>Angekommen.</strong> Jetzt du: Kaffee holen. Wir lesen inzwischen, schauen uns deinen Betrieb an und schreiben dir zurück. Kein Anruf aus dem Nichts, versprochen.";
+      note.focus(); note.scrollIntoView({behavior:"smooth",block:"center"});
     }catch(err){
       btn.disabled=false; btn.textContent=oldTxt;
       note.className="k-note k-note--err";

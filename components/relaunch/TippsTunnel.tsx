@@ -693,7 +693,7 @@ const CSS = `
 .rrtn-cat{
   font-family:var(--font-dmsans),"DM Sans",sans-serif; font-weight:700;
   font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
-  color:#f12032;
+  color:#c81222;
 }
 .rrtn-arrow{
   flex:none; display:grid; place-items:center;
@@ -709,7 +709,7 @@ const CSS = `
   font-family:var(--font-crimson),"Crimson Pro",Georgia,serif;
   font-size:clamp(1.4rem,3vw,2.1rem); color:#23262e; margin:0;
 }
-.rrtn-empty a{ color:#f12032; text-underline-offset:4px; }
+.rrtn-empty a{ color:#c81222; text-underline-offset:4px; }
 .rrtn-empty-actions{
   display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
   margin-top:28px;

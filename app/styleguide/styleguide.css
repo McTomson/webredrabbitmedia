@@ -157,7 +157,10 @@
   font-weight: 650;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--rr-red);
+  /* Kleintext-Kontrast (WCAG AA / BaFG): reines --rr-red faellt auf hell unter
+     4.5:1 (3.82/4.21). --rr-red-deep #c81222 = 5.35:1 (off-white) / 5.89:1 (weiss),
+     bleibt klar Marken-Rot. Dunkelfall --ondark unten unveraendert. */
+  color: var(--rr-red-deep);
   margin: 0;
 }
 .rr .rr-eyebrow-theme::before { content: "( "; }
@@ -627,7 +630,7 @@
   padding: 15px 18px;
   transition: border-color var(--rr-t-fast) var(--rr-ease), box-shadow var(--rr-t-fast) var(--rr-ease);
 }
-.rr .rr-field::placeholder { color: #9a9ea8; }
+.rr .rr-field::placeholder { color: #6b6e76; }
 .rr .rr-field:focus { outline: none; border-color: var(--rr-ink); }
 .rr .rr-field[aria-invalid="true"] { border-color: var(--rr-red); }
 .rr .rr-label {
@@ -646,7 +649,7 @@
 
 /* Firmen-Namensliste (Sektion 7): Name akzentfarben + grauer Einzeiler */
 .rr .rr-companyrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-.rr .rr-company-name { font-family: var(--rr-font-ui); font-size: var(--rr-fs-meta); font-weight: 650; color: var(--rr-red); margin: 0; }
+.rr .rr-company-name { font-family: var(--rr-font-ui); font-size: var(--rr-fs-meta); font-weight: 650; color: var(--rr-red-deep); margin: 0; }
 .rr .rr-company-line { font-family: var(--rr-font-display); font-size: 23px; font-weight: 500; line-height: 1.25; margin: 6px 0 0; }
 @media (max-width: 860px) { .rr .rr-companyrow { grid-template-columns: 1fr; gap: 28px; } }
 

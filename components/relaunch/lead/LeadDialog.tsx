@@ -479,7 +479,7 @@ export default function LeadDialog({
           padding: 9px 2px 10px;
           transition: background-size 0.45s var(--rr-ease, ease);
         }
-        .rrlead-field::placeholder { color: rgba(35, 38, 46, 0.35); }
+        .rrlead-field::placeholder { color: rgba(35, 38, 46, 0.66); }
         .rrlead-field:focus { background-size: 100% 2px, 100% 2px; }
         .rrlead-field[aria-invalid="true"] {
           background: linear-gradient(var(--rr-red, #f12032), var(--rr-red, #f12032)) left bottom / 100% 2px no-repeat;
@@ -512,7 +512,7 @@ export default function LeadDialog({
         .rrlead-trigger:focus-visible,
         .rrlead-trigger[aria-expanded="true"] { background-size: 100% 2px, 100% 2px; }
         .rrlead-trigger-val { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .rrlead-trigger-val--ph { color: rgba(35, 38, 46, 0.35); }
+        .rrlead-trigger-val--ph { color: rgba(35, 38, 46, 0.66); }
         .rrlead-trigger-chev {
           flex: 0 0 auto;
           color: var(--rr-ink-soft, #5a5e68);

@@ -13,7 +13,10 @@
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--rr-red);
+  /* Kleintext-Kontrast (WCAG AA / BaFG): reines --rr-red faellt auf hell unter
+     4.5:1 -> --rr-red-deep #c81222 (5.35:1 off-white / 5.89:1 weiss). Dunkel-/
+     Teal-Faelle unten (--ondark/--cream) unveraendert. */
+  color: var(--rr-red-deep);
   margin: 0;
 }
 /* Klammern gehoeren zum Stil, nicht zum Inhalt: als Pseudo-Content kann
