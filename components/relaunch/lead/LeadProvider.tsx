@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import dynamic from "next/dynamic";
+import { sendGAEvent } from "@next/third-parties/google";
 import type { LeadOpenOpts } from "@/lib/relaunch/leadPresets";
 
 // Lazy: der Dialog (und sein styleguide.css) laedt erst, wenn das Popup
@@ -52,7 +53,21 @@ export default function LeadProvider({ children }: { children: React.ReactNode }
   // null = geschlossen; sonst die Optionen des zuletzt geoeffneten Presets.
   const [opts, setOpts] = useState<LeadOpenOpts | null>(null);
 
-  const open = useCallback((o?: LeadOpenOpts) => setOpts(o ?? { preset: "standard" }), []);
+  const open = useCallback((o?: LeadOpenOpts) => {
+    const next = o ?? { preset: "standard" };
+    // Conversion-Intent: Anfrage-Popup geoeffnet. Muster wie AnalyticsListener
+    // (sendGAEvent -> dataLayer, flusht beim spaeteren GA-Laden). Der erfolgreiche
+    // Submit (generate_lead) lebt in LeadDialog.tsx und wird hier NICHT gefeuert.
+    try {
+      sendGAEvent("event", "contact_form_open", {
+        preset: next.preset,
+        service: next.service,
+      });
+    } catch {
+      /* Tracking darf das Popup nie blockieren */
+    }
+    setOpts(next);
+  }, []);
   const close = useCallback(() => setOpts(null), []);
 
   useEffect(() => {

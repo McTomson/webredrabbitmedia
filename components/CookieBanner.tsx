@@ -23,9 +23,9 @@ const CookieBanner = () => {
     const [showBanner, setShowBanner] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
     const [preferences, setPreferences] = useState({
-        necessary: true, // Always true, can't be disabled
-        analytics: true, // Default to true for Google Analytics
-        marketing: true  // Default to true for marketing
+        necessary: true,  // Always true, can't be disabled
+        analytics: false, // Opt-in (DSGVO): nicht vorangehakt
+        marketing: false  // Opt-in (DSGVO): nicht vorangehakt
     });
 
     useEffect(() => {
@@ -36,19 +36,22 @@ const CookieBanner = () => {
         }
     }, []);
 
-    // Neue Funktion für GTM Consent-Update
+    // GTM/GA Consent-Update (Consent Mode v2). Analytics steuert analytics_storage,
+    // Marketing steuert ALLE drei Google-Ads-Signale (ad_storage, ad_user_data,
+    // ad_personalization). Zusaetzlich ein 'rr:consent'-Event fuer Consent-gesteuerte
+    // Loader (z.B. Microsoft Clarity via ClarityLoader).
     const updateGTMConsent = (consent: ConsentData) => {
-        if (typeof window !== 'undefined' && window.gtag) {
-            window.gtag('consent', 'update', {
-                'analytics_storage': consent.analytics ? 'granted' : 'denied',
-                'ad_storage': consent.marketing ? 'granted' : 'denied'
-            });
-
-            // Debug-Logging für Testing
-            console.log('GTM Consent updated:', {
-                analytics: consent.analytics ? 'granted' : 'denied',
-                marketing: consent.marketing ? 'granted' : 'denied'
-            });
+        if (typeof window !== 'undefined') {
+            if (window.gtag) {
+                const marketing = consent.marketing ? 'granted' : 'denied';
+                window.gtag('consent', 'update', {
+                    'analytics_storage': consent.analytics ? 'granted' : 'denied',
+                    'ad_storage': marketing,
+                    'ad_user_data': marketing,
+                    'ad_personalization': marketing
+                });
+            }
+            window.dispatchEvent(new CustomEvent('rr:consent', { detail: consent }));
         }
     };
 
@@ -95,7 +98,7 @@ const CookieBanner = () => {
                     // Simple Banner
                     <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-4 lg:space-y-0 lg:space-x-6">
                         <div className="flex items-start space-x-4 flex-1">
-                            <Cookie className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
+                            <Cookie className="w-6 h-6 text-[#f12032] flex-shrink-0 mt-1" />
                             <div>
                                 <h3 className="font-semibold mb-2 text-gray-900">Wir verwenden Cookies</h3>
                                 <p className="text-sm text-gray-600 leading-relaxed">
@@ -108,21 +111,21 @@ const CookieBanner = () => {
 
                         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 flex-shrink-0 w-full sm:w-auto">
                             <button
-                                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                                className="px-4 py-2 border border-gray-300 rounded-none text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                                 onClick={() => setShowDetails(true)}
                             >
                                 <Settings className="w-4 h-4 inline mr-2" />
                                 Einstellungen
                             </button>
                             <button
-                                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                                className="px-4 py-2 border border-gray-300 rounded-none text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                                 onClick={rejectAll}
                             >
                                 Nur notwendige
                             </button>
                             <button
                                 onClick={acceptAll}
-                                className="px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition-colors flex items-center justify-center"
+                                className="px-4 py-2 bg-[#f12032] text-white rounded-none text-sm font-medium hover:bg-[#c81222] transition-colors flex items-center justify-center"
                             >
                                 <Check className="w-4 h-4 mr-2" />
                                 Alle akzeptieren
@@ -168,7 +171,7 @@ const CookieBanner = () => {
                                             onChange={(e) => setPreferences(prev => ({ ...prev, analytics: e.target.checked }))}
                                             className="sr-only peer"
                                         />
-                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600 transition-colors"></div>
+                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#f12032] transition-colors"></div>
                                     </label>
                                 </div>
                                 <p className="text-sm text-gray-600">
@@ -188,7 +191,7 @@ const CookieBanner = () => {
                                             onChange={(e) => setPreferences(prev => ({ ...prev, marketing: e.target.checked }))}
                                             className="sr-only peer"
                                         />
-                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600 transition-colors"></div>
+                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#f12032] transition-colors"></div>
                                     </label>
                                 </div>
                                 <p className="text-sm text-gray-600">
@@ -202,19 +205,19 @@ const CookieBanner = () => {
                         <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 mt-6 pt-6 border-t border-gray-200">
                             <button
                                 onClick={rejectAll}
-                                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                                className="px-4 py-2 border border-gray-300 rounded-none text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                             >
                                 Alle ablehnen
                             </button>
                             <button
                                 onClick={acceptSelected}
-                                className="px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition-colors"
+                                className="px-4 py-2 bg-[#f12032] text-white rounded-none text-sm font-medium hover:bg-[#c81222] transition-colors"
                             >
                                 Auswahl speichern
                             </button>
                             <button
                                 onClick={acceptAll}
-                                className="px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition-colors"
+                                className="px-4 py-2 bg-[#f12032] text-white rounded-none text-sm font-medium hover:bg-[#c81222] transition-colors"
                             >
                                 Alle akzeptieren
                             </button>

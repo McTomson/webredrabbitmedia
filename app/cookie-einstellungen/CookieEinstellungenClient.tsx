@@ -41,11 +41,17 @@ export default function CookieEinstellungen() {
     }, []);
 
     const updateGTMConsent = (consent: ConsentData) => {
-        if (typeof window !== 'undefined' && window.gtag) {
-            window.gtag('consent', 'update', {
-                'analytics_storage': consent.analytics ? 'granted' : 'denied',
-                'ad_storage': consent.marketing ? 'granted' : 'denied'
-            });
+        if (typeof window !== 'undefined') {
+            if (window.gtag) {
+                const marketing = consent.marketing ? 'granted' : 'denied';
+                window.gtag('consent', 'update', {
+                    'analytics_storage': consent.analytics ? 'granted' : 'denied',
+                    'ad_storage': marketing,
+                    'ad_user_data': marketing,
+                    'ad_personalization': marketing
+                });
+            }
+            window.dispatchEvent(new CustomEvent('rr:consent', { detail: consent }));
         }
     };
 
@@ -241,12 +247,12 @@ export default function CookieEinstellungen() {
                                         und die Effektivität unserer Werbekampagnen zu messen.
                                     </p>
                                     <div className="bg-white rounded-lg p-4 border border-gray-200">
-                                        <h3 className="font-medium text-gray-900 mb-2">Meta Pixel (Facebook)</h3>
+                                        <h3 className="font-medium text-gray-900 mb-2">Google Ads</h3>
                                         <p className="text-sm mb-2">
-                                            <strong>Anbieter:</strong> Meta Platforms Ireland Ltd.
+                                            <strong>Anbieter:</strong> Google Ireland Limited
                                         </p>
                                         <p className="text-sm mb-2">
-                                            <strong>Zweck:</strong> Conversion-Tracking, Remarketing
+                                            <strong>Zweck:</strong> Conversion-Messung und Remarketing über den Google Tag Manager
                                         </p>
                                         <p className="text-sm">
                                             <strong>Speicherdauer:</strong> Bis zu 90 Tage

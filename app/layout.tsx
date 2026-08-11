@@ -222,6 +222,8 @@ import { ContactFormProvider } from "@/components/ContactFormProvider";
 import ContactFormWrapper from "@/components/ContactFormWrapper";
 import AOSInit from "@/components/AOSInit";
 import AnalyticsListener from "@/components/AnalyticsListener";
+import ClarityLoader from "@/components/ClarityLoader";
+import CookieBanner from "@/components/CookieBanner";
 
 export default function RootLayout({
   children,
@@ -231,6 +233,19 @@ export default function RootLayout({
   return (
     <html lang="de" className="scroll-smooth" suppressHydrationWarning>
       <head>
+        {/* Consent Mode v2 Defaults (DSGVO). Laeuft SYNCHRON als erstes Element im
+            <head>, VOR GA4/GTM (die verzoegert via DeferredThirdParties nachladen).
+            Setzt alle Consent-Signale auf 'denied' bis zur Einwilligung; wiederkehrende
+            Besucher mit gespeicherter Zustimmung (localStorage-Key des CookieBanners)
+            bekommen im selben Script direkt ein consent update, damit sie ab dem ersten
+            Frame korrekt vermessen werden. Plain <script> (kein next/script) = garantiert
+            synchron waehrend des HTML-Parse, bevor irgendein Analytics-Code laeuft. */}
+        <script
+          id="consent-mode-default"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});gtag('set','ads_data_redaction',true);gtag('set','url_passthrough',true);try{var c=localStorage.getItem('redrabbit-cookie-consent');if(c){var p=JSON.parse(c);var m=p.marketing?'granted':'denied';gtag('consent','update',{ad_storage:m,ad_user_data:m,ad_personalization:m,analytics_storage:p.analytics?'granted':'denied'});}}catch(e){}})();`,
+          }}
+        />
         {/* Priority Resource Hints */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         {/* Kritischen Font-Schnitt (DM Sans, Headlines/Wortmarke) vorladen, damit
@@ -266,11 +281,17 @@ export default function RootLayout({
           <LeadProvider>
           <AOSInit />
           <DeferredThirdParties gaId="G-09FNC6THTD" gtmId="GTM-MQXGT8FL" />
+          <ClarityLoader />
           <AnalyticsListener />
           <ChromeGate><Header /></ChromeGate>
           <main id="main-content" tabIndex={-1} className="scroll-mt-20 focus:outline-none">{children}</main>
           <ChromeGate><Footer /></ChromeGate>
           <ContactFormWrapper />
+          {/* Cookie-Banner global auf ALLEN Routen (DSGVO). Rendert per
+              localStorage-Guard nur einmal sichtbar; alte Seiten, die ihn noch
+              selbst einbinden (ClientWidgets/RegionalLandingPage/CityContent),
+              werden vom Go-Live-Umbau entfernt. */}
+          <CookieBanner />
           </LeadProvider>
         </ContactFormProvider>
       </body>

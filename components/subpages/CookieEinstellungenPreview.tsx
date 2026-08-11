@@ -46,11 +46,17 @@ export default function CookieEinstellungenPreview() {
   }, []);
 
   const updateGTMConsent = (consent: ConsentData) => {
-    if (typeof window !== "undefined" && window.gtag) {
-      window.gtag("consent", "update", {
-        analytics_storage: consent.analytics ? "granted" : "denied",
-        ad_storage: consent.marketing ? "granted" : "denied",
-      });
+    if (typeof window !== "undefined") {
+      if (window.gtag) {
+        const marketing = consent.marketing ? "granted" : "denied";
+        window.gtag("consent", "update", {
+          analytics_storage: consent.analytics ? "granted" : "denied",
+          ad_storage: marketing,
+          ad_user_data: marketing,
+          ad_personalization: marketing,
+        });
+      }
+      window.dispatchEvent(new CustomEvent("rr:consent", { detail: consent }));
     }
   };
 
@@ -173,16 +179,17 @@ export default function CookieEinstellungenPreview() {
             </label>
           </div>
           <p>
-            Diese Cookies werden verwendet, um dir relevante Werbung und Inhalte zu zeigen und die
-            Effektivität unserer Werbekampagnen zu messen.
+            Diese Cookies werden verwendet, um die Effektivität unserer Kampagnen zu messen und dir
+            passende Inhalte auszuspielen. Sie steuern die Werbe-Signale der eingesetzten
+            Google-Dienste.
           </p>
           <div className="rrl-tool">
-            <h4>Meta Pixel (Facebook)</h4>
+            <h4>Google Ads</h4>
             <p>
-              <strong>Anbieter:</strong> Meta Platforms Ireland Ltd.
+              <strong>Anbieter:</strong> Google Ireland Limited
             </p>
             <p>
-              <strong>Zweck:</strong> Conversion-Tracking, Remarketing
+              <strong>Zweck:</strong> Conversion-Messung und Remarketing über den Google Tag Manager
             </p>
             <p>
               <strong>Speicherdauer:</strong> Bis zu 90 Tage
