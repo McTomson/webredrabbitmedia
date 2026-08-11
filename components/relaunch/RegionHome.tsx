@@ -11,6 +11,7 @@ import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import ScrollExperience from "@/components/relaunch/ScrollExperience";
 import Faq, { type FaqItem } from "@/components/relaunch/Faq";
 import TalosCompanionStageLazy from "@/components/relaunch/talos/TalosCompanionStageLazy";
+import Ablauf from "@/components/subpages/leistungen/website/v2/Ablauf";
 import { SCENE_TEXTS } from "@/lib/relaunch/morph/scene-content";
 
 /**
@@ -46,13 +47,6 @@ export type RegionContent = {
     trustLine: string;
     availabilityHeading: string;
     availabilityText: string;
-  };
-  /** Ablauf in 3 Schritten (beantwortet die echte Dauer-/Ablauf-Suchintention,
-   *  GSC 11.08.: "wie lange dauert es eine website zu erstellen" 202+60 Impr.). */
-  ablauf: {
-    eyebrow: string;
-    heading: string;
-    steps: { title: string; text: string }[];
   };
   /** Eyebrow ueber der FAQ. */
   faqEyebrow: string;
@@ -117,7 +111,7 @@ export default function RegionHome({ region }: { region: RegionContent }) {
         data-talos-station
         data-talos-anchor="0.84"
         data-talos-size="m"
-        data-talos-appear="0.45"
+        data-talos-appear="0.3"
         data-talos-gesture="wave2"
         data-talos-mobile="1"
         data-talos-mobile-anchor="0.82"
@@ -160,41 +154,12 @@ export default function RegionHome({ region }: { region: RegionContent }) {
         </div>
       </section>
 
-      {/* Ablauf in 3 Schritten — echte Sequenz (Anfrage -> Entwurf -> live),
-          beantwortet die Dauer-/Ablauf-Suchintention sichtbar auf der Seite. */}
-      <section className="rr rr-section">
-        <div className="rr-wrap rr-narrow">
-          <p className="rr-eyebrow" style={{ marginBottom: 16 }}>{region.ablauf.eyebrow}</p>
-          <h2 className="rr-sub" style={{ marginBottom: 40 }}>{region.ablauf.heading}</h2>
-          <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 28, maxWidth: 720 }}>
-            {region.ablauf.steps.map((s, i) => (
-              <li key={i} style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 20, alignItems: "start" }}>
-                <span
-                  aria-hidden
-                  style={{
-                    fontSize: 15,
-                    fontWeight: 700,
-                    color: "var(--rr-red)",
-                    border: "1px solid var(--rr-red)",
-                    borderRadius: "50%",
-                    width: 34,
-                    height: 34,
-                    display: "grid",
-                    placeItems: "center",
-                    marginTop: 2,
-                  }}
-                >
-                  {i + 1}
-                </span>
-                <div>
-                  <h3 className="rr-sub" style={{ fontSize: 21, marginBottom: 8 }}>{s.title}</h3>
-                  <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, lineHeight: 1.6 }}>{s.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+      {/* Ablauf — die Kreis-Ketten-Szene von /leistungen/website 1:1 wiederverwendet
+          (Thomas 11.08., Screenshot: "den ablauf wuerde ich gerne so machen").
+          Beantwortet sichtbar die echte Dauer-/Ablauf-Suchintention (GSC:
+          "wie lange dauert es eine website zu erstellen" 202+60 Impr.) und
+          bringt den Entwurf-ohne-Vorkasse-CTA mit. */}
+      <Ablauf />
 
       {/* Regionale FAQ — Design 1:1 wie /preise (PreiseFaq): zweispaltig, sticky
           Themen-Label links, Accordion rechts. Position bleibt hier (weit unten,

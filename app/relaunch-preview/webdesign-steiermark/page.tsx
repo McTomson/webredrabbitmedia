@@ -60,24 +60,6 @@ const steiermark: RegionContent = {
     availabilityText:
       'Kein Ticket-System, keine Warteschleife. Du schreibst uns, wir kümmern uns. Deine Seite ist bei uns nichts, das man einmal abhakt und vergisst. Die wächst mit, so wie dein Betrieb.',
   },
-  ablauf: {
-    eyebrow: 'So läuft das bei uns',
-    heading: 'Von der ersten Nachricht bis zur fertigen Website.',
-    steps: [
-      {
-        title: 'Du meldest dich',
-        text: 'Eine kurze Nachricht reicht. Wir schauen uns an, was dein Betrieb braucht, und machen dir 1-2 grafische Vorschläge. Das kostet dich nichts außer ein paar Minuten.',
-      },
-      {
-        title: 'Du siehst den Entwurf, bevor du zahlst',
-        text: 'Gefällt dir die Richtung nicht, gehst du ohne Rechnung. Gefällt sie dir, erteilst du den Auftrag und wir feilen gemeinsam, bis es sitzt.',
-      },
-      {
-        title: 'Deine Seite geht live',
-        text: 'Eine kompakte Website steht meist in zwei bis vier Wochen. Danach lassen wir dich nicht allein: Du schreibst uns, wir kümmern uns.',
-      },
-    ],
-  },
   faqEyebrow: 'Häufige Fragen',
   faqHeading: 'Website erstellen lassen in der Steiermark',
   faq: [
