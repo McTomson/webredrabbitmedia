@@ -6,6 +6,7 @@ import BackToTop from "@/components/relaunch/BackToTop";
 import HomeMorph from "@/components/relaunch/HomeMorph";
 import CasePanels from "@/components/relaunch/CasePanels";
 import HomeClosing from "@/components/relaunch/HomeClosing";
+import Ablauf from "@/components/subpages/leistungen/website/v2/Ablauf";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import ScrollExperience from "@/components/relaunch/ScrollExperience";
 import "../styleguide/styleguide.css";
@@ -42,6 +43,11 @@ export default function RelaunchPreviewPage() {
 
       {/* Sektion 5: Case-Panels (Referenz-Auswahl = Vorschlag, Tomson-Gate) */}
       <CasePanels />
+
+      {/* Sektion 5b: Ablauf-Kreis-Szene (01-04, von /leistungen/website) — Thomas
+          11.08.: auch auf der echten Home. Traegt das Entwurf-ohne-Vorkasse-
+          Argument + CTA "Mach den ersten Schritt" sichtbar auf die Startseite. */}
+      <Ablauf />
 
       {/* Sektionen 6-8: Zahlen, Firmen-Liste, CTA */}
       <HomeClosing />

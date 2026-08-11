@@ -119,12 +119,15 @@ export default function RegionHome({ region }: { region: RegionContent }) {
         data-talos-mobile-gesture="wave2"
       >
         <div className="rr-wrap rr-narrow">
+          {/* Kopf im Site-Standard (wd-eyebrow + rr-statement wie Ablauf/PreiseFaq,
+              Thomas 11.08.: Ueberschrift war unstimmig mit den anderen). Er darf
+              breiter laufen als die Textspalte; nur der Fliesstext bleibt schmal. */}
+          <p className="wd-eyebrow" style={{ marginBottom: 14 }}>{rb.eyebrow}</p>
+          <h2 className="rr-statement" style={{ marginBottom: 32, maxWidth: 820 }}>{rb.heading}</h2>
           {/* Textspalte bewusst schmal + linksbuendig, damit Talos rechts frei bleibt
               (Thomas 09.08.: Text darf Talos nicht verdecken). Mobil ist Talos klein
               unten rechts, die Spalte darf voll breit sein. */}
           <div style={{ maxWidth: 600 }}>
-            <p className="rr-eyebrow" style={{ marginBottom: 16 }}>{rb.eyebrow}</p>
-            <h2 className="rr-sub" style={{ marginBottom: 24 }}>{rb.heading}</h2>
             <div className="rr-prose" style={{ display: "grid", gap: 18 }}>
               {rb.paragraphs.map((p, i) => (
                 <p key={i} className="rr-body-lg" style={{ color: "var(--rr-ink-soft)" }}>{p}</p>
