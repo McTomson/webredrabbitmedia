@@ -604,9 +604,12 @@
   /* Mobile + Tablet (Thomas 02.08.): Hero-Scrollweg kuerzer, Ziel ~5 statt 8 Fingerscrolls bis zum Text (Wert unten) -
      am Handy war der Weg zu langsam mit dem Finger durchzugehen. Timings sind Bruchteile
      der Szenen-Hoehe (Pm 0..1) -> Choreografie identisch, nur die Scroll-Strecke der
-     Hero-Szene schrumpft (Inhalt nach der Figur bleibt normal). Desktop (>1024)
-     unveraendert. Steht VOR dem Reduced-Motion-Block, damit dessen height:auto gewinnt. */
-  @media (max-width:1024px){
+     Hero-Szene schrumpft (Inhalt nach der Figur bleibt normal). Desktop (>1120)
+     unveraendert. Grenze 1024->1120 (Review 11.08.): muss deckungsgleich mit dem
+     Tablet-Stapel-Band oben sein, sonst haette 1025-1120px das kompakte Layout
+     mit voller 1600vh-Desktop-Strecke (Leerlauf-Scroll). Steht VOR dem
+     Reduced-Motion-Block, damit dessen height:auto gewinnt. */
+  @media (max-width:1120px){
     .scene-main{height:667vh}
   }
 
