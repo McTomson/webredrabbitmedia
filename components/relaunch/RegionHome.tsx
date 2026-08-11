@@ -109,7 +109,7 @@ export default function RegionHome({ region }: { region: RegionContent }) {
       <section
         className="rr rr-section"
         data-talos-station
-        data-talos-anchor="0.84"
+        data-talos-anchor="0.8"
         data-talos-size="m"
         data-talos-appear="0.3"
         data-talos-gesture="wave2"
@@ -117,6 +117,7 @@ export default function RegionHome({ region }: { region: RegionContent }) {
         data-talos-mobile-anchor="0.82"
         data-talos-mobile-size="xs"
         data-talos-mobile-gesture="wave2"
+        data-talos-mobile-dy="-700"
       >
         <div className="rr-wrap rr-narrow">
           {/* Kopf im Site-Standard (wd-eyebrow + rr-statement wie Ablauf/PreiseFaq,

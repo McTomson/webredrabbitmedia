@@ -139,6 +139,9 @@ interface Station {
   mAnchor: number | null;
   mSizeZ: number | null;
   mGesture: string | null;
+  /** Mobiler Hoehen-Offset (Welt-Einheiten, negativ = tiefer), data-talos-mobile-dy.
+   *  Thomas 11.08. (Steiermark): kleine Figur soll mobil fast am unteren Rand stehen. */
+  mDy: number;
 }
 
 export default function TalosCompanionStage({
@@ -243,6 +246,7 @@ export default function TalosCompanionStage({
     let opacity = 0; // weiches Ein-/Ausblenden der ganzen Ebene
     let lastStation: Station | null = null;
     let gestureDone = false;
+    let lastMobileDy = 0; // zuletzt angewandter Stations-Mobile-Offset (fuers Ausfaden halten)
 
     const tuning = { endX: END_X, offMargin: OFF_MARGIN };
 
@@ -262,6 +266,7 @@ export default function TalosCompanionStage({
         mAnchor: el.dataset.talosMobileAnchor != null ? parseFloat(el.dataset.talosMobileAnchor) : null,
         mSizeZ: el.dataset.talosMobileSize != null ? SIZE_Z[el.dataset.talosMobileSize] ?? null : null,
         mGesture: el.dataset.talosMobileGesture ?? null,
+        mDy: el.dataset.talosMobileDy != null ? parseFloat(el.dataset.talosMobileDy) || 0 : 0,
       }));
     };
 
@@ -432,6 +437,10 @@ export default function TalosCompanionStage({
         const targetYaw = walking ? FACE_TURN * Math.sign(vx) : centerBias + best.yaw;
         curYaw = damp(curYaw, targetYaw, 5, dt);
         writeWalkPose(curX, curZ, curYaw, walking, dt);
+        // Mobiler Hoehen-Offset der Station (data-talos-mobile-dy): z.B. kleine
+        // Figur fast am unteren Rand (Thomas 11.08., Steiermark-Regional-Block).
+        lastMobileDy = mobile ? best.mDy : 0;
+        if (lastMobileDy && n.bot) n.bot.position.y += lastMobileDy;
         // Kopf schaut den mittig sitzenden User an: netto = userLookYaw (links ->
         // leicht zur Mitte/rechts, rechts spiegelverkehrt). Beim Gehen frei.
         motion?.setHeadYaw(walking ? 0 : userLookYaw(curX, curZ) - curYaw);
@@ -462,6 +471,9 @@ export default function TalosCompanionStage({
         if (heroEndFracFor(window.innerWidth) !== null && n.bot) {
           n.bot.position.y += HERO_MOBILE_DY;
         }
+        // Stations-Mobile-Offset auch beim Ausfaden halten, sonst springt die
+        // Figur waehrend des Fade-outs nach oben (gleiche Logik wie Hero-DY).
+        if (lastMobileDy && n.bot) n.bot.position.y += lastMobileDy;
       }
     };
 
