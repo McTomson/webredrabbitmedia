@@ -10,9 +10,10 @@ import { useEffect } from 'react';
  *    (wiederkehrende Besucher), ODER
  *  - sobald der CookieBanner ein 'rr:consent'-Event mit analytics=true feuert.
  *
- * Projekt-ID kommt aus NEXT_PUBLIC_CLARITY_ID. Fehlt die Variable, ist die
- * Komponente ein No-op (kein Script, kein Netzwerk-Call). Nach dem Laden
- * signalisiert clarity('consent') die erteilte Einwilligung (Clarity Consent-API).
+ * Projekt-ID kommt aus NEXT_PUBLIC_CLARITY_ID, mit Fallback auf die
+ * produktive Projekt-ID "y0xaxw5gux" (Repo-Standard, analog zu den fest
+ * hinterlegten GA4/GTM-IDs). Nach dem Laden signalisiert clarity('consent')
+ * die erteilte Einwilligung (Clarity Consent-API).
  */
 
 declare global {
@@ -21,7 +22,7 @@ declare global {
   }
 }
 
-const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
+const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID || 'y0xaxw5gux';
 
 function hasAnalyticsConsent(): boolean {
   try {

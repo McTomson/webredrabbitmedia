@@ -21,7 +21,9 @@ Environment-Variablen in Vercel.
   Analytics steuert `analytics_storage`.
 - **Microsoft Clarity** (`components/ClarityLoader.tsx`): laedt NUR nach
   Analytics-Zustimmung (beim Mount bei gespeicherter Zustimmung, sonst auf `rr:consent`).
-  No-op ohne `NEXT_PUBLIC_CLARITY_ID`. Signalisiert nach Laden `clarity('consent')`.
+  Projekt-ID `y0xaxw5gux` ist als Default hardcodiert (Fallback, falls
+  `NEXT_PUBLIC_CLARITY_ID` nicht gesetzt ist); Env-Variable optional als Override.
+  Signalisiert nach Laden `clarity('consent')`.
 - **Events**: `scroll_depth` und `outbound_click` (`components/AnalyticsListener.tsx`),
   `contact_form_open` beim Oeffnen des Lead-Popups (`components/relaunch/lead/LeadProvider.tsx`).
 
@@ -34,7 +36,7 @@ Neu fuer diesen Tracking-Stack:
 
 | Variable | Pflicht | Zweck |
 | --- | --- | --- |
-| `NEXT_PUBLIC_CLARITY_ID` | optional | Microsoft-Clarity-Projekt-ID. Fehlt sie, laedt Clarity nicht (No-op). Nach Anlage des Clarity-Projekts in Vercel (Production + Preview) setzen und neu deployen. |
+| `NEXT_PUBLIC_CLARITY_ID` | optional | Microsoft-Clarity-Projekt-ID. Default im Code ist `y0xaxw5gux` (hardcodiert in `components/ClarityLoader.tsx`, analog GA4/GTM). Env-Variable nur noetig, um die ID zu ueberschreiben (z. B. eigenes Projekt fuer Preview). |
 
 Hinweis: GA4- und GTM-IDs sind aktuell im Code hardcodiert (bewusst, entsprechen der
 alten Live-Seite). Falls sie kuenftig ueber Env laufen sollen, hier ergaenzen.
@@ -51,7 +53,6 @@ alten Live-Seite). Falls sie kuenftig ueber Env laufen sollen, hier ergaenzen.
 
 ## Offene Punkte
 
-- `NEXT_PUBLIC_CLARITY_ID` folgt nach Anlage des Clarity-Projekts.
 - `generate_lead` (erfolgreicher Formular-Submit) wird noch NICHT gefeuert: die
   Submit-Logik liegt in `components/relaunch/lead/LeadDialog.tsx` (in diesem Auftrag tabu).
   Zum Nachruesten dort nach `setStatus("success")` ein `sendGAEvent('event','generate_lead', ...)`
