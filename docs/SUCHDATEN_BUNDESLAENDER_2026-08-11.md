@@ -74,3 +74,41 @@ Seeds: website erstellen lassen, homepage erstellen lassen, webdesign agentur be
 1. Kosten-Intention = größter kaufnaher Cluster -> FAQ-Kostenfrage auf PreiseFaq-Wortlaut "professionelle Website erstellen lassen" + "Festpreis" (echte Suchsprache, passt zur Fixpreis-Realität).
 2. GÜNSTIG-Cluster BEWUSST NICHT bedient: Marke = fair+selektiv, Wert statt Preis (brand/decisions-log). Billig-Positionierung wäre Markenschaden, auch wenn Wettbewerb gering.
 3. landingpage/webshop = Leistungs- nicht Regional-Themen -> nicht auf Bundesland-Seiten.
+
+## NACHTRAG 11.08. abends: GSC-Queries PRO LAND (Seite enthaelt webdesign-<land>, 3 Monate 10.05.-09.08., 0 Klicks ueberall)
+
+### Niederoesterreich (2.510 Impr., Pos. 38, 38 Queries)
+webdesign noe 613 / webdesigner noe 578 / **webdesigner waldviertel 171 + webdesign waldviertel 103** /
+**homepage erstellen lassen noe 104** / homepage erstellen noe 95 / website design 89 / web design 87 /
+website erstellung 78 / web entwicklung 71. -> Waldviertel-Cluster 274! erstellen-lassen bewiesen (199).
+
+### Oberoesterreich (3.130 Impr., Pos. 43,9, 24 Queries)
+webdesign ooe(lang) 1.545 / webdesign oö 780 / web designer 313 / website entwicklung 188 /
+webdesigner 49 / **webdesign voecklabruck 37 + webdesign salzkammergut 26** / website erstellen 28 /
+homepage erstellen lassen 25 / website erstellen lassen 21. -> Kopf-Keyword dominiert, Salzkammergut-Nische.
+
+### Tirol (2.480 Impr., Pos. 50,2, 27 Queries)
+webdesign tirol 909 / webdesigner 461 / **homepage erstellung tirol 351** / website designen 152 /
+**webseitenprogrammierung 135 + websitenprogrammierung 86** / website design 81 / agentur 64 / responsive 42.
+-> "Homepage erstellen/Erstellung"-Sprache PFLICHT; Programmierung-Vokabel nur hier.
+
+### Vorarlberg (3.230 Impr., Pos. 37,6, 36 Queries)
+webdesign vlbg 1.106 / webdesigner 411 / **webdesign arlberg 226** / homepage erstellen 225 /
+**homepage erstellen lassen 208** / agentur 190 / website erstellen 132 / website erstellung 96.
+-> staerkstes erstellen-lassen-Land; Arlberg (Tourismus Lech/Zuers) eigenes Signal.
+
+### Kaernten (1.090 Impr., Pos. 33,1, 17 Queries)
+webdesign ktn 322 / webdesigner 105 / **homepage erstellen lassen ktn 101** / website design 94 /
+website erstellung 91 / homepage erstellen 88 / website development 69 / agentur fuer webdesign 44.
+-> erstellen-lassen bewiesen (189).
+
+### Salzburg (nur 101 Impr., aber Pos. 17,9 = BESTE aller Laender, 8 Queries)
+**website erstellen salzburg 55** / website salzburg erstellen 5 / homepageerstellung 5 /
+website erstellen lassen 3 / onlineshop erstellen lassen 2 / "website erstellen lassen salzburg / wien –
+welche anbieter?" 1 (KI-Agent-artig) / barrierefreie website erstellen lassen 1.
+-> Seite rankt NUR fuer "website erstellen salzburg"-Formulierungen, dafuer gut -> ganze Seite darauf einschwenken.
+
+### Burgenland (1.760 Impr., Pos. 35,5, 24 Queries)
+webdesign bgld 399 / **homepage erstellen bgld 141** / webdesigner 120 / website design 96 /
+**homepage erstellen lassen 94** / website erstellung 93 / web design 93 / web entwicklung 92 /
+online media 89 / agentur webdesign 85. -> Homepage-Sprache (235); Eisenstadt-Cluster liegt auf eigener Seite.
