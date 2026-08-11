@@ -64,8 +64,8 @@ const steiermark: RegionContent = {
   faqHeading: 'Website erstellen lassen in der Steiermark',
   faq: [
     {
-      q: 'Was kostet es, eine Website erstellen zu lassen?',
-      a: 'Bei uns startet der One-Pager ab 1.250 Euro, die mehrseitige Business-Website ab 2.850 Euro. Fixpreis-Rahmen statt Stundensatz-Lotterie. Und bevor du dich festlegst, siehst du 1-2 grafische Vorschläge, ohne Vorkasse. Was in welchem Paket steckt, steht offen auf unserer Preisseite.',
+      q: 'Was kostet es, eine professionelle Website erstellen zu lassen?',
+      a: 'Bei uns startet der One-Pager ab 1.250 Euro, die mehrseitige Business-Website ab 2.850 Euro. Als Festpreis-Rahmen, nicht als Stundensatz-Lotterie: Du weißt vorher, was es kostet. Und bevor du dich festlegst, siehst du 1-2 grafische Vorschläge, ohne Vorkasse. Was in welchem Paket steckt, steht offen auf unserer Preisseite.',
     },
     {
       q: 'Wie lange dauert es, eine Website erstellen zu lassen?',
