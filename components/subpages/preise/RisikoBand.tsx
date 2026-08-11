@@ -22,9 +22,9 @@ export default function RisikoBand() {
       />
 
       <div className="rr-wrap rr-narrow rp-risiko__inner">
-        <p className="wd-eyebrow wd-eyebrow--ondark">Ohne Vorkasse</p>
+        <p className="wd-eyebrow">Ohne Vorkasse</p>
         <p className="rr-statement rp-risiko__statement">
-          Dein Risiko liegt bei uns, nicht bei dir<span style={{ color: '#f77480' }}>.</span>
+          Dein Risiko liegt bei uns, nicht bei dir<span style={{ color: 'var(--rr-red)' }}>.</span>
         </p>
         <p className="rr-body-lg rp-risiko__body">
           Du bekommst zuerst 1-2 grafische Vorschläge von unserem Designer-Team zu sehen, wohin
@@ -55,25 +55,18 @@ export default function RisikoBand() {
         .rp-risiko {
           position: relative;
           isolation: isolate;
-          background: var(--rr-navy);
-          color: #ffffff;
+          background: #f4f4f2;
           overflow: hidden;
-          /* Seitenfuellend (Thomas 09.08.): das Risiko-Band ist der staerkste
-             USP vor den Zahlen und soll den Bildschirm fuellen, Inhalt zentriert.
-             100svh = mobil sauber (kein Sprung durch die Browser-Adressleiste). */
-          min-height: 100svh;
-          display: flex;
-          align-items: center;
         }
         .rp-risiko__inner {
           max-width: 760px;
         }
         .rp-risiko__statement {
-          color: #ffffff;
+          color: var(--rr-navy);
           margin: 20px 0 28px;
         }
         .rp-risiko__body {
-          color: rgba(255, 255, 255, 0.78);
+          color: var(--rr-ink-soft);
           max-width: 56ch;
         }
         .rp-risiko__cta {
@@ -84,17 +77,17 @@ export default function RisikoBand() {
           margin-top: clamp(32px, 5vw, 48px);
         }
         .rp-risiko__anchor {
-          color: rgba(255, 255, 255, 0.72);
+          color: var(--rr-ink-soft);
           font-family: var(--rr-font-ui);
           font-size: 15px;
           text-decoration: none;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+          border-bottom: 1px solid rgba(28, 40, 55, 0.28);
           padding-bottom: 2px;
           transition: color 0.25s var(--rr-ease, ease), border-color 0.25s var(--rr-ease, ease);
         }
         .rp-risiko__anchor:hover {
-          color: #ffffff;
-          border-color: #ffffff;
+          color: var(--rr-navy);
+          border-color: var(--rr-navy);
         }
       `}</style>
     </section>
