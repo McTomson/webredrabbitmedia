@@ -1,27 +1,23 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { isBumperDegraded, smoothstep } from '@/lib/relaunch/scroll-standard';
+import {
+  snapUnits,
+  BUMPER_TRACK_VH_PER_WINDOW,
+  prefersReducedMotion,
+} from '@/lib/relaunch/scroll-standard';
 
 /**
- * Gleit-Kurve NUR fuer diesen Bumper (Thomas 10.08.): auf /preise hielt jeder
- * Satz zu lange still und sprang dann ruckartig zum naechsten — weil ScrollBumper
- * (anders als die Homepage-CasePanels) KEIN staendig mitlaufendes Parallax-Element
- * hat, das die Dwell-Plateaus kaschiert. Also hier weniger Halte-Plateau + breiteres
- * Uebergangsfenster, damit der Satz sauber durchgleitet ("kommt von unten, schiebt
- * den anderen weg"). Bewusst LOKAL statt in scroll-standard (rideUnits), damit
- * CasePanels/Homepage seine eigene, dort gut funktionierende Kurve behaelt.
- * /preise ist der einzige echte ScrollBumper-Nutzer, also kein Blast-Radius.
+ * STOPS ZURUECK, IMMER UND UEBERALL (Thomas 11.08.): der Bumper MUSS auf jeder
+ * Geraetegroesse mit Halte-Plateau laufen — Satz bleibt stehen, naechster kommt
+ * von unten und schiebt ihn weg, der alte verschwindet oben. Deshalb wieder
+ * snapUnits (harte Dwell-Kurve, ~68% Standbild) statt der weichen glideUnits
+ * (10.08., fast kein Stop) und statt des linearen Handy/Tablet-Rides (rideUnits,
+ * 08.08. "Stops raus"). Auch die Breiten-Abschaltung (isBumperDegraded, ≤820px ->
+ * statische Liste) faellt fuer den Bumper weg: die Stop-Fahrt laeuft jetzt auch
+ * auf Tablet und Handy. EINZIGE Ausnahme = prefers-reduced-motion (Barrierefrei-
+ * heit): dann bleibt die statische Liste.
  */
-const SB_TRACK_VH_PER_WINDOW = 120;
-const SB_DWELL_START = 0.1;
-const SB_DWELL_WIDTH = 0.66;
-function glideUnits(seg: number, n: number): number {
-  if (n <= 1) return 0;
-  const i = Math.min(n - 2, Math.floor(seg));
-  const f = seg - i;
-  return i + smoothstep((f - SB_DWELL_START) / SB_DWELL_WIDTH);
-}
 
 /**
  * ScrollBumper — die kanonische Bumper-Strecke fuer kurze Display-Inhalte.
@@ -34,13 +30,11 @@ function glideUnits(seg: number, n: number): number {
  *
  * Mechanik nach dem Vorbild components/relaunch/CasePanels.tsx, nur vertikal
  * statt horizontal: sticky 100vh-Fenster, eine Buehne mit N Fenstern uebereinander,
- * Track = N * SB_TRACK_VH_PER_WINDOW. Der Fortschritt laeuft durch das LOKALE
- * glideUnits() (oben): weniger Halte-Plateau, breiterer Uebergang -> der Satz
- * gleitet durch, statt lange still zu stehen und dann zu springen (Thomas 10.08.).
- * CasePanels behaelt bewusst seine eigene rideUnits-Dwell (dort kaschiert ein
- * mitlaufendes Parallax-Wort die Plateaus; hier gibt es keines). Vorher: 320vh
- * Track, dunkles Navy, rr-display-2 (44-89px), lineares Durchschieben mit
- * Rand-Anstupsen, kein Eyebrow.
+ * Track = N * BUMPER_TRACK_VH_PER_WINDOW. Der Fortschritt laeuft durch snapUnits
+ * (harte Dwell-Kurve mit Halte-Plateau): jeder Satz bleibt den grossen Teil seiner
+ * Etappe stehen und wird nur im schmalen Uebergangsfenster weggeschoben — der
+ * gewuenschte Stop-Bumper (Thomas 11.08.). Vorher: 320vh Track, dunkles Navy,
+ * rr-display-2 (44-89px), lineares Durchschieben mit Rand-Anstupsen, kein Eyebrow.
  *
  * Inhalte hier sind bewusst kurze Saetze — die NN/g-Regel "nie Fliesstext im
  * Snap trappen" wird also nicht verletzt. Kommt ein langer Absatz dazu, gehoert
@@ -81,7 +75,9 @@ export default function ScrollBumper({ statements, label }: ScrollBumperProps) {
   // Entscheidung beim Mount (kein Live-Umschalten bei Resize: ein Wechsel
   // mitten im Scroll wuerde die Scroll-Position der Seite zerreissen).
   useEffect(() => {
-    setDegraded(isBumperDegraded());
+    // Nur bei reduzierter Bewegung statisch — KEINE Breiten-Abschaltung mehr,
+    // damit die Stop-Fahrt auch auf Tablet und Handy laeuft (Thomas 11.08.).
+    setDegraded(prefersReducedMotion());
   }, []);
 
   useEffect(() => {
@@ -98,9 +94,9 @@ export default function ScrollBumper({ statements, label }: ScrollBumperProps) {
       const rect = section!.getBoundingClientRect();
       const total = rect.height - vh;
       const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      // Sanftere Gleit-Kurve (glideUnits) statt der harten CasePanels-Dwell:
-      // weniger Standbild, breiterer Uebergang -> der Satz gleitet durch.
-      const units = glideUnits(p * (n - 1), n);
+      // Harte Dwell-Kurve (snapUnits): Standbild pro Satz, kurzer Uebergang ->
+      // der Satz bleibt stehen und wird dann weggeschoben (Stop-Bumper).
+      const units = snapUnits(p * (n - 1), n);
       stage!.style.transform = `translate3d(0, ${-units * vh}px, 0)`;
     }
 
@@ -146,7 +142,7 @@ export default function ScrollBumper({ statements, label }: ScrollBumperProps) {
       // den Track rastet ein, innen regiert das eigene Dwell-System.
       data-rr-snap
       data-rr-snap-exempt
-      style={{ '--sb-track': `${n * SB_TRACK_VH_PER_WINDOW}vh` } as React.CSSProperties}
+      style={{ '--sb-track': `${n * BUMPER_TRACK_VH_PER_WINDOW}vh` } as React.CSSProperties}
     >
       <div className="sb-sticky">
         {label && <p className="rr-eyebrow-theme sb-label">{label}</p>}
