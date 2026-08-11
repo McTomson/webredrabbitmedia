@@ -57,11 +57,29 @@ export default function RisikoBand() {
           isolation: isolate;
           background: #f4f4f2;
           overflow: hidden;
+          /* Eigener Bereich = eigene Bildschirmseite (Thomas 11.08.), Muster
+             1:1 vom site-weiten Abschluss-Block (.sc-full, styleguide.css 1638
+             + SiteClosing.tsx): fensterhoch, Inhalt vertikal zentriert. Gilt
+             auf ALLEN Groessen (Thomas: "auf jeden bildschirmgroessen"). */
+          min-height: 100vh;
+          min-height: 100svh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        /* Flex-Kind-Korrektur wie in SiteClosing: width:100% stellt das
+           Block-Verhalten von .rr-wrap wieder her (sonst shrink-to-fit). */
+        .rp-risiko > .rr-wrap {
+          width: 100%;
         }
         .rp-risiko__inner {
           max-width: 760px;
         }
-        .rp-risiko__statement {
+        /* .rr-Praefix PFLICHT (Root-Cause 11.08.): styleguide.css setzt
+           ".rr .rr-statement { margin: 0 }" mit 2-Klassen-Spezifitaet — eine
+           einzelne Klasse verliert IMMER dagegen, die Marge kam nie an
+           ("alles klebt"). Gleiches Muster wie FragTalosAnmoderation. */
+        .rr .rp-risiko__statement {
           color: var(--rr-navy);
           margin: clamp(24px, 2.6vw, 34px) 0 clamp(30px, 3.6vw, 42px);
         }

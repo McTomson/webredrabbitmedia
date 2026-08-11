@@ -555,6 +555,19 @@
      niedriger — 3 Spalten bleiben, Groesse/Anordnung bleibt harmonisch. */
   @media (min-width:769px) and (max-width:1120px){
     .p-cell{min-height:122px;padding:clamp(1.5rem,2.2vw,2.2rem);font-size:clamp(1.2rem,2.15vw,1.42rem)}
+    /* Tablet-Band-Fix Hero (Thomas 11.08.): im Zweispalter (52%/44%) ueberlappte
+       die 86vh-Glyphen-Figur (overflow:visible) bei ~800-1100px den Text.
+       Loesung = EXAKT das Mobile-Stapel-Rezept (Figur oben 44vh, Text darunter),
+       nur fuers Band uebernommen — keine neuen Werte erfunden. */
+    .story-grid{
+      grid-template-columns:1fr;grid-template-rows:44vh auto;gap:1rem;
+      align-content:center;padding:0 6vw;align-items:start;
+    }
+    .text-col{order:0}
+    .head-col{height:44vh}
+    .head-col svg{height:42vh}
+    .text-window{height:46vh}
+    .t-ch,.t-close{max-width:none}
   }
 
   /* ---------- Mobile ---------- */

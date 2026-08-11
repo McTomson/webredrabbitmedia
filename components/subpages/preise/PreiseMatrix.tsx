@@ -222,12 +222,26 @@ export default function PreiseMatrix() {
         .rp-matrix {
           position: relative;
           background: #ffffff;
+          /* Eigener Bereich = eigene Bildschirmseite (Thomas 11.08.), Muster
+             1:1 vom .sc-full-Standard. Die Matrix ist ohnehin hoeher als ein
+             Fenster ("wenn mehr zu sehen ist, ist es ok") — min-height greift
+             nur als Untergrenze. */
+          min-height: 100vh;
+          min-height: 100svh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
-        .rp-matrix__h2 {
+        .rp-matrix > .rr-wrap {
+          width: 100%;
+        }
+        /* .rr-Praefix PFLICHT (Root-Cause 11.08.): styleguide margin:0-Regeln
+           (2 Klassen) schlugen die lokalen Margen — kam sonst nie an. */
+        .rr .rp-matrix__h2 {
           margin: clamp(24px, 2.6vw, 34px) 0 clamp(30px, 3.6vw, 42px);
           max-width: 16em;
         }
-        .rp-matrix__intro {
+        .rr .rp-matrix__intro {
           color: var(--rr-ink-soft);
           max-width: 56ch;
           margin: 0 0 clamp(20px, 3vw, 32px);

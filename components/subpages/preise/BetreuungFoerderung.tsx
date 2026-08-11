@@ -98,13 +98,25 @@ export default function BetreuungFoerderung() {
       <style>{`
         .rp-bf {
           background: #f4f4f2;
+          /* Eigener Bereich = eigene Bildschirmseite (Thomas 11.08.), Muster
+             1:1 vom .sc-full-Standard (styleguide.css 1638 + SiteClosing.tsx). */
+          min-height: 100vh;
+          min-height: 100svh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
-        .rp-bf__h2 {
+        .rp-bf > .rr-wrap {
+          width: 100%;
+        }
+        /* .rr-Praefix PFLICHT (Root-Cause 11.08.): styleguide margin:0-Regeln
+           (2 Klassen) schlugen die lokalen Margen — kam sonst nie an. */
+        .rr .rp-bf__h2 {
           margin: clamp(24px, 2.6vw, 34px) 0 clamp(30px, 3.6vw, 42px);
           max-width: 16em;
           color: var(--rr-navy);
         }
-        .rp-bf__intro {
+        .rr .rp-bf__intro {
           color: var(--rr-ink-soft);
           max-width: 60ch;
           margin: 0 0 clamp(36px, 5vw, 60px);
@@ -201,7 +213,7 @@ export default function BetreuungFoerderung() {
           color: var(--rr-red);
           border-color: var(--rr-red);
         }
-        .rp-bf__closer {
+        .rr .rp-bf__closer {
           margin-top: clamp(28px, 4vw, 44px);
           max-width: 60ch;
           color: var(--rr-ink);

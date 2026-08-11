@@ -122,13 +122,27 @@ export default function PreiseFundament() {
       <style>{`
         .rpf {
           background: #f4f4f2;
+          /* Eigener Bereich = eigene Bildschirmseite (Thomas 11.08.), Muster
+             1:1 vom .sc-full-Standard (styleguide.css 1638 + SiteClosing.tsx).
+             Inhalt groesser als ein Fenster -> Sektion waechst einfach mit. */
+          min-height: 100vh;
+          min-height: 100svh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
-        .rpf__h2 {
+        .rpf > .rr-wrap {
+          width: 100%;
+        }
+        /* .rr-Praefix PFLICHT (Root-Cause 11.08.): ".rr .rr-statement" und
+           ".rr .rr-body-lg" in styleguide.css setzen margin:0 mit 2-Klassen-
+           Spezifitaet — die lokalen Margen kamen sonst NIE an. */
+        .rr .rpf__h2 {
           margin: clamp(24px, 2.6vw, 34px) 0 clamp(30px, 3.6vw, 42px);
           max-width: 16em;
           color: var(--rr-navy);
         }
-        .rpf__intro {
+        .rr .rpf__intro {
           color: var(--rr-ink-soft);
           max-width: 60ch;
           margin: 0 0 clamp(44px, 6vw, 76px);
@@ -233,7 +247,7 @@ export default function PreiseFundament() {
         .rpf__item.is-active .rpf__detail {
           opacity: 1;
         }
-        .rpf__closer {
+        .rr .rpf__closer {
           margin-top: clamp(28px, 4vw, 44px);
           color: var(--rr-ink);
           font-family: var(--rr-font-display);

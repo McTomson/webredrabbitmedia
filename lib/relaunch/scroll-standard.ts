@@ -104,35 +104,30 @@ export function snapUnits(seg: number, n: number): number {
 }
 
 /**
- * Bis hier gelten Handy/Tablet-Regeln (Thomas 08.08.: "Stops raus bei der
- * Mobile- und Tablet-Version"). 1180 = dieselbe Grenze, an der auch die
- * Karten-Raster vom 3- auf das 2-Spalten-Layout wechseln.
+ * Historische Grenze der frueheren Handy/Tablet-Weiche (08.08., inzwischen
+ * zurueckgenommen — siehe rideUnits). Bleibt exportiert, weil Layout-Raster
+ * dieselbe Zahl nutzen (3- auf 2-Spalten-Wechsel).
  */
 export const TABLET_BREAKPOINT = 1180;
 
-let dwellMql: MediaQueryList | null = null;
-
 /**
- * Wahr, wenn Fahrten OHNE Halte-Plateau laufen sollen (Handy/Tablet).
- * Kundenentscheidung Thomas 08.08.: auf Handy/Tablet sollen die Stops raus —
- * Wischen muss immer sichtbar etwas bewegen. Desktop behaelt den
- * Bumper-Standard (snapUnits). Nur im Browser aufrufen (nach Mount);
- * MediaQueryList wird gecacht, .matches ist pro Frame billig.
+ * ZURUECKGENOMMEN (Thomas 11.08.): Die Geraete-Weiche "Handy/Tablet = linear,
+ * kein Stop" (08.08.) hat den Stoss-Effekt auf allen Fahrten unter 1180px
+ * Fensterbreite abgeschaltet — auch in schmalen Desktop-Fenstern. Thomas'
+ * Entscheidung woertlich: "die stops sollen natuerlich sein und muessen bei
+ * der bumper funktion sein immer ueberall". rideUnits ist deshalb wieder auf
+ * ALLEN Breiten die Dwell-Kurve (snapUnits): Satz steht, der naechste kommt
+ * von unten, stoesst ihn an, der alte geht oben raus.
  */
 export function isDwellDisabled(): boolean {
-  if (typeof window === "undefined" || !window.matchMedia) return false;
-  if (!dwellMql) dwellMql = window.matchMedia(`(max-width: ${TABLET_BREAKPOINT}px)`);
-  return dwellMql.matches;
+  return false;
 }
 
 /**
- * snapUnits mit Geraete-Weiche: Desktop = Dwell-Plateaus (Standard), Handy/
- * Tablet = LINEAR (jeder Wisch bewegt sichtbar, kein Standbild-Anteil).
- * Drop-in-Ersatz fuer snapUnits in allen Fahrt-Render-Loops.
+ * Einheitliche Fahrt-Kurve fuer alle Render-Loops: IMMER Dwell-Plateaus
+ * (Stops), auf jeder Geraetegroesse (Thomas 11.08., ersetzt die 08.08.-Weiche).
  */
 export function rideUnits(seg: number, n: number): number {
-  if (n <= 1) return 0;
-  if (isDwellDisabled()) return Math.max(0, Math.min(n - 1, seg));
   return snapUnits(seg, n);
 }
 
