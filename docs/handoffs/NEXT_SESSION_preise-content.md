@@ -32,6 +32,15 @@ Die Seite ist ihm ZU ENG/ZU VOLL und die dunklen Baender stoeren. Richtung:
 - **Schritt 3 OFFEN:** `BetreuungFoerderung.tsx` Abstaende richten (gleiche Logik).
 - **Schritt 4 OFFEN:** `TalosTalenteFahrt.tsx` navy→#f4f4f2. ACHTUNG: metallische 3D-Figur + Szene wurden fuer navy gebaut → auf hellem Grund Kontrast/Lesbarkeit + Figur-Anzeige neu pruefen (Thomas' Geraet). Klaeren, warum Talos bei Thomas gerade nicht anzeigt.
 
+## Zusatz-Aufgabe: MEMORY.md moderat verschlanken (Kriterien mit Thomas gelockt 11.08.)
+- HAERTE = **moderat**: NUR offensichtlichen Ballast raus — Dubletten, klar veraltete/ueberholte Staende, und Detail-Saetze die ohnehin im Topic-File stehen. Struktur bleibt.
+- **Erledigtes/Ueberholtes NICHT loeschen** → in ein Archiv-Index-File verschieben (`archive_index_2026-08.md` neu oder bestehendes `archive_index_langfassung_*.md`). Recoverable. Topic-Detaildateien bleiben eh liegen.
+- **ALLE feedback_*/Praeferenz-Regeln BLEIBEN vollstaendig** (wertvollster Teil, nicht anfassen/mergen).
+- **ALLE vier Projekt-Straenge bleiben aktiv im Index**: Web-Relaunch (Preise/Talos/Home/SEO), Pumukel, Datenraeume+B&R-Scanner, Marketing/Ads (almtal/Treehouse). KEINE ganze Sektion streichen.
+- Methode: jeder Index-Eintrag = **EINE knappe Zeile** (Titel-Link + 1 Hook). Mehrsatz-Eintraege → Detail ins Topic-File, Index-Zeile kuerzen. Dubletten mergen. Mehrere Status-Zeilen zum selben Thema → nur die aktuellste behalten, Rest ins Archiv.
+- Ziel: deutlich unter das Read-Limit (Hook will < 17,1KB; peil ~14-15KB an), OHNE Info-Verlust.
+- Vorgehen: erst **Vorschlag zeigen** (Liste: was gekuerzt/archiviert wird), Thomas-OK, DANN anwenden. MEMORY.md frisch lesen vor jedem Edit (Parallel-Session schreibt auch rein).
+
 ## Offene Flags / Risiken
 - FloatingReview-Karte ragt rechts ueber den Rand (bestehendes Verhalten) — evtl. sauber reinholen.
 - Dead CSS in PreiseMatrix.tsx: `.rp-matrix__ab*`, `.rp-matrix__custom` (ungenutzt seit "Warum ab?"-Block raus) — bei Gelegenheit entfernen.
