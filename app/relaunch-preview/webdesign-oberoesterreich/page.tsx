@@ -139,6 +139,15 @@ export default function WebdesignOberoesterreichPage() {
       <h1 style={srOnly}>
         Webdesign Oberösterreich: Websites für Betriebe in OÖ, von Linz bis ins Salzkammergut
       </h1>
+      {/* Kernantwort-Absatz fuer KI-Suchen (Thomas 11.08.), sr-only wie das h1
+          direkt darueber: crawlbar im SSR-HTML, Design bleibt unberuehrt. */}
+      <p style={srOnly}>
+        Webdesign in Oberösterreich heißt bei Red Rabbit Media: Websites für Studios,
+        Dienstleister und Betriebe von Linz und Wels bis ins Salzkammergut, gebaut für Google und
+        die KI-Suche. Der One-Pager startet ab 1.250 Euro, die Business-Website mit mehreren
+        Seiten ab 2.850 Euro, umfangreiche Projekte ab 4.900 Euro, als Festpreis-Rahmen. Entwürfe
+        siehst du vorab, ohne Vorkasse.
+      </p>
       <RegionHome region={oberoesterreich} />
     </div>
   );

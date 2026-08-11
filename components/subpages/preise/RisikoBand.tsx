@@ -32,6 +32,16 @@ export default function RisikoBand() {
           Auftrag, bekommst du ein konkretes Angebot und leistest 40 % Anzahlung. Bis dahin liegt
           das Risiko bei uns, nicht bei dir.
         </p>
+        {/* Kernantwort-Absatz (Thomas 11.08., KI-Suchen-Zitierbarkeit): erste
+            sichtbare Preiszahl lag sonst erst bei ~21 % des Dokuments. Als
+            zweiter Body-Absatz im Sektions-Muster (Eyebrow, Statement, Body),
+            kein eigener Kasten. */}
+        <p className="rr-body-lg rp-risiko__kernantwort">
+          Was kostet eine Website bei Red Rabbit Media? Starter ab 1.250 Euro (eine Seite,
+          professionell online), Business ab 2.850 Euro (mehrere Seiten, gefunden werden) und
+          Premium ab 4.900 Euro (volle Ausbaustufe). Du siehst zuerst 1-2 grafische Vorschläge
+          ohne Vorkasse und zahlst erst, wenn du überzeugt bist.
+        </p>
         <div className="rp-risiko__cta">
           <Link
             href="/relaunch-preview/kontakt"
@@ -86,6 +96,12 @@ export default function RisikoBand() {
         .rp-risiko__body {
           color: var(--rr-ink-soft);
           max-width: 56ch;
+        }
+        /* .rr-Praefix PFLICHT (gleiche Root-Cause wie __statement oben). */
+        .rr .rp-risiko__kernantwort {
+          color: var(--rr-ink-soft);
+          max-width: 56ch;
+          margin: clamp(18px, 2.4vw, 26px) 0 0;
         }
         .rp-risiko__cta {
           display: flex;

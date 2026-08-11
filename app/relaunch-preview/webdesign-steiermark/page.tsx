@@ -144,6 +144,15 @@ export default function WebdesignSteiermarkPage() {
       <h1 style={srOnly}>
         Webdesign Steiermark: Website erstellen lassen für Betriebe von Graz bis ins Ennstal
       </h1>
+      {/* Kernantwort-Absatz fuer KI-Suchen (Thomas 11.08.), sr-only wie das h1
+          direkt darueber: crawlbar im SSR-HTML, Design bleibt unberuehrt. */}
+      <p style={srOnly}>
+        Website erstellen lassen in der Steiermark heißt bei Red Rabbit Media: Seiten für
+        Betriebe von Graz bis ins Ennstal, gebaut für Google und die KI-Suche statt für die
+        Schublade. Der One-Pager startet ab 1.250 Euro, die mehrseitige Business-Website ab
+        2.850 Euro, als Festpreis-Rahmen statt Stundensatz-Lotterie. Du siehst zuerst 1-2
+        grafische Vorschläge, ohne Vorkasse.
+      </p>
       <RegionHome region={steiermark} />
     </div>
   );

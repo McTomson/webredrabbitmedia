@@ -258,7 +258,10 @@ export default async function TippsArticlePreview({ params }: Props) {
               </a>
             </span>
             <span className="rrt-meta rrt-checked">Fachlich gepr&uuml;ft</span>
-            <span className="rrt-meta">{fmtDate(post.updatedAt || post.publishedAt)}</span>
+            <span className="rrt-meta">{fmtDate(post.publishedAt)}</span>
+            {post.updatedAt && new Date(post.updatedAt).getTime() > new Date(post.publishedAt).getTime() && (
+              <span className="rrt-meta">Zuletzt aktualisiert am {fmtDate(post.updatedAt)}</span>
+            )}
             <span className="rrt-meta">{readingTime} Min Lesezeit</span>
           </div>
         </header>

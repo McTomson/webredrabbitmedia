@@ -79,6 +79,11 @@ export function BlogPostClient({
                             <span className="text-gray-400 text-sm">
                                 {new Date(post.publishedAt).toLocaleDateString('de-AT', { day: '2-digit', month: 'long', year: 'numeric' })}
                             </span>
+                            {post.updatedAt && new Date(post.updatedAt).getTime() > new Date(post.publishedAt).getTime() && (
+                                <span className="text-gray-400 text-sm">
+                                    · Zuletzt aktualisiert am {new Date(post.updatedAt).toLocaleDateString('de-AT', { day: '2-digit', month: 'long', year: 'numeric' })}
+                                </span>
+                            )}
                         </div>
 
                         {/* Title */}

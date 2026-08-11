@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import Faq, { type FaqItem } from '@/components/relaunch/Faq';
 
 /**
@@ -69,6 +70,19 @@ export default function PreiseFaq() {
         </div>
         <div className="rp-faq__accordion">
           <Faq items={FAQ_ITEMS} id="faq-preise" />
+          {/* Querverlinkung zum Kosten-Ratgeber (Thomas 11.08.): der Artikel
+              verlinkt schon auf /preise, die Rueckrichtung fehlte. Dezenter
+              Textlink statt eigener Absatz in der Faq-Antwort, da die
+              geteilte Faq-Komponente (components/relaunch/Faq.tsx) reinen
+              Text erwartet (JSON-LD acceptedAnswer.text) und in 5 weiteren
+              Seiten wiederverwendet wird, hier lokal ergaenzt, um sie nicht
+              anzufassen. */}
+          <p className="rp-faq__link">
+            Mehr dazu im Ratgeber:{' '}
+            <Link href="/relaunch-preview/tipps/welche-versteckten-kosten-gibt-es-bei-der-website-erstellung">
+              Welche versteckten Kosten gibt es bei der Website-Erstellung?
+            </Link>
+          </p>
         </div>
       </div>
 
@@ -94,6 +108,23 @@ export default function PreiseFaq() {
         }
         .rp-faq__dot {
           color: var(--rr-red);
+        }
+        .rp-faq__link {
+          margin: clamp(20px, 3vw, 32px) 0 0;
+          color: var(--rr-ink-soft);
+          font-family: var(--rr-font-ui);
+          font-size: 15px;
+        }
+        .rp-faq__link a {
+          color: var(--rr-ink-soft);
+          text-decoration: none;
+          border-bottom: 1px solid rgba(28, 40, 55, 0.28);
+          padding-bottom: 2px;
+          transition: color 0.25s var(--rr-ease, ease), border-color 0.25s var(--rr-ease, ease);
+        }
+        .rp-faq__link a:hover {
+          color: var(--rr-navy);
+          border-color: var(--rr-navy);
         }
         @media (max-width: 860px) {
           .rp-faq__grid {

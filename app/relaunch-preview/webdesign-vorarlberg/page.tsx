@@ -139,6 +139,15 @@ export default function WebdesignVorarlbergPage() {
       <h1 style={srOnly}>
         Webdesign Vorarlberg: Homepage erstellen lassen für Betriebe vom Rheintal bis zum Arlberg
       </h1>
+      {/* Kernantwort-Absatz fuer KI-Suchen (Thomas 11.08.), sr-only wie das h1
+          direkt darueber: crawlbar im SSR-HTML, Design bleibt unberuehrt. */}
+      <p style={srOnly}>
+        Homepage erstellen lassen in Vorarlberg heißt bei Red Rabbit Media: Websites für Betriebe
+        vom Rheintal bis zum Arlberg, auf Wunsch mehrsprachig für Kundschaft aus der Schweiz und
+        Liechtenstein, gebaut für Google und die KI-Suche. Der One-Pager startet ab 1.250 Euro,
+        die mehrseitige Business-Homepage ab 2.850 Euro, große Vorhaben ab 4.900 Euro, als
+        Festpreis-Rahmen. Entwürfe siehst du vorab, ohne Vorkasse.
+      </p>
       <RegionHome region={vorarlberg} />
     </div>
   );

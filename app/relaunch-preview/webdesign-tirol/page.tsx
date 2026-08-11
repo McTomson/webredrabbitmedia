@@ -139,6 +139,15 @@ export default function WebdesignTirolPage() {
       <h1 style={srOnly}>
         Webdesign Tirol: Homepage erstellen lassen für Hotels, Vermieter und Betriebe von Innsbruck bis ins Zillertal
       </h1>
+      {/* Kernantwort-Absatz fuer KI-Suchen (Thomas 11.08.), sr-only wie das h1
+          direkt darueber: crawlbar im SSR-HTML, Design bleibt unberuehrt. */}
+      <p style={srOnly}>
+        Webdesign in Tirol heißt bei Red Rabbit Media: Homepages für Hotels, Vermieter und
+        Handwerksbetriebe von Innsbruck bis ins Zillertal, gebaut für Google und die KI-Suche.
+        Der One-Pager startet ab 1.250 Euro, die mehrseitige Business-Website ab 2.850 Euro,
+        große Projekte ab 4.900 Euro, immer als Festpreis-Rahmen. Du siehst zuerst 1-2 grafische
+        Entwürfe, ohne Vorkasse.
+      </p>
       <RegionHome region={tirol} />
     </div>
   );
