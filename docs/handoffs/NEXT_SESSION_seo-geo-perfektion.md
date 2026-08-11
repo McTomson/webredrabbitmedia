@@ -1,5 +1,13 @@
 # Naechste Session — FINALCHECK vor Live: SEO + E-E-A-T + GEO/LLM komplett (2026-08-11)
 
+## STATUS-UPDATE 11.08. spaet: FINALCHECK IM KERN DURCHGEZOGEN (Commits f8c7a22..e16e8c5, alle auf v2 SSR-verifiziert)
+- Research (3 Sonnet) -> docs/SEO_GEO_FINALCHECK_CHECKLISTE_2026-08-11.md; Voll-Audit (3 Sonnet) -> docs/SEO_GEO_AUDIT_BEFUNDE_2026-08-11.md.
+- UMGESETZT + verifiziert: ueber-uns wieder noindex (Landmine war verletzt!), 790-EUR/164-Claims aus layout.tsx+organization.ts, echte h1 auf 7 Kernseiten (faq-demo offen: Parallel-Session-WIP!), OG-Bild global 1200x630 (public/og/og-image-redrabbit.jpg) + twitter:card + explizit auf Referenzen/8 Regionen, Descriptions alle 130-158, robots-Doppelquelle raus, llms.txt erweitert + llms-full.txt neu, IndexNow (Key public/aae688....txt + scripts/indexnow-ping.mjs + docs/INDEXNOW_RUNBOOK.md — PING ERST BEIM LIVE-GANG), MedienG-Offenlegung + ECG-Gewerbe "Webdesign und IT-Dienstleistungen" (Preview+Live-Komponente synchron), GEO-Kernantwort-Absaetze (/preise sichtbar im RisikoBand, 8 Regionen sr-only), /preise->Kosten-Ratgeber-Link, Zuletzt-aktualisiert-Anzeige (nur echtes updatedAt) + dateModified war schon da.
+- THOMAS-ENTSCHEIDE (nicht neu aufrollen): "8 bleibt" (aggregateRating/sichtbare Zahlen unveraendert, Risiko 2x benannt); Regionen-Testimonials = echte Kunden mit Zustimmung; BaFG-Artikel bleibt draft.
+- OFFEN (Thomas-Input): Geschaeftsfuehrer + Beteiligungsverhaeltnisse fuer Offenlegung (grosse Website!), LinkedIn-Link fuer sameAs (erinnern!).
+- OFFEN (Arbeit): CWV — Lighthouse lokal: /preise Score 0.40 (TBT 2,5s, 3MB, Spline/3D + Chunks 1255-*/ebda9f70-*), Tirol LCP 7,5s (Unused JS 1,1s), Home/ueber-uns 0.60/0.65; Fix = 3D lazy-on-interaction + Route-JS pruefen — Eingriff in Talos-Strang NUR mit Thomas-Go. Leistungs-Hub neu-vs-streichen-Vorschlag (Hub ist komplett unverlinkt, streichen = 0 Linkbrueche). faq-demo h1 nachziehen wenn Parallel-WIP committet. Thomas-Abnahme /preise-Kernantwort-Absatz auf seinem Geraet.
+- BEIM LIVE-TAUSCH: noindex oeffnen, Sitemap neue Pfade, IndexNow-Ping, /leistungen-HUB dauerhaft noindex halten.
+
 ## Arbeitsregeln (verbindlich)
 - Lies ZUERST alles Relevante: diesen Handoff, STATE.md, MEMORY.md, betroffene Dateien. Nicht loslegen ohne Kontext.
 - NIE raten — immer verifizieren (Code/SQL/Browser/Docs). Bei Unsicherheit: fragen oder fail-closed, nie einen Wert erfinden.
