@@ -41,6 +41,7 @@ export const metadata: Metadata = {
     description: META_DESC,
     type: "website",
     url: CANONICAL,
+    images: [{ url: "/og/og-image-redrabbit.jpg", width: 1200, height: 630, alt: "Red Rabbit Media, Referenzen aus Österreich" }],
   },
 };
 

@@ -23,6 +23,8 @@ export const metadata: Metadata = {
   title: 'Über uns · Red Rabbit Media',
   description:
     'Die faire Anti-Agentur für den österreichischen Mittelstand. Wer wir sind und warum wir den ersten Schritt machen.',
+  // Preview: noindex bis zum Live-Tausch (Landmine — ALLE Preview-Seiten noindex).
+  robots: { index: false, follow: false },
   // Self-referencing canonical (Haus-Regel, siehe app/layout.tsx). Zeigt auf den
   // AKTUELLEN Preview-Pfad — sobald diese Seite die Platzhalter-/ueber-uns ersetzt,
   // hier auf '/ueber-uns' umstellen.

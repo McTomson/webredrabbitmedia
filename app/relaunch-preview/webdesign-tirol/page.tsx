@@ -31,6 +31,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'de_AT',
     url: CANONICAL_GOLIVE,
+    images: [{ url: '/og/og-image-redrabbit.jpg', width: 1200, height: 630, alt: 'Red Rabbit Media, Webdesign Tirol aus Österreich' }],
   },
 };
 

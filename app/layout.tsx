@@ -20,7 +20,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Webdesign Österreich: Premium-Qualität zum Fixpreis",
-  description: "Exklusives Webdesign ab 790€. Für Unternehmer, die smart rechnen. Kein Baukasten, keine Abos. Zahlung erst bei 100% Zufriedenheit. 164 Kunden.",
+  description: "Webdesign zum Fixpreis für den österreichischen Mittelstand. Du siehst zuerst 1-2 grafische Entwürfe und zahlst erst, wenn du überzeugt bist. Kein Baukasten, keine Abos.",
   metadataBase: new URL('https://web.redrabbit.media'),
 
   // Open Graph
@@ -29,22 +29,22 @@ export const metadata: Metadata = {
     locale: 'de_AT',
     url: 'https://web.redrabbit.media',
     siteName: 'Red Rabbit Media',
-    title: 'Red Rabbit Media | Website ab 790€ - Keine Vorkasse',
-    description: 'Website ab 790€ ✓ 164 zufriedene Kunden ✓ Zahlung erst bei Zufriedenheit ✓ DSGVO-konform',
+    title: 'Red Rabbit Media | Websites zum Fixpreis, ohne Vorkasse',
+    description: 'Webdesign zum Fixpreis für den österreichischen Mittelstand. Entwurf zuerst, du zahlst erst, wenn du überzeugt bist. DSGVO-konform.',
     images: [{
-      url: 'https://web.redrabbit.media/images/og-image-wien.jpg',
+      url: '/og/og-image-redrabbit.jpg',
       width: 1200,
       height: 630,
-      alt: 'Red Rabbit Media - Webdesign Wien ab 790€',
+      alt: 'Red Rabbit Media, Webdesign zum Fixpreis aus Österreich',
     }],
   },
 
   // Twitter Cards
   twitter: {
     card: 'summary_large_image',
-    title: 'Website ab 790€ | Red Rabbit Media Wien',
-    description: '164 zufriedene Kunden ✓ Kein Risiko ✓ DSGVO-konform',
-    images: ['https://web.redrabbit.media/images/twitter-card.jpg'],
+    title: 'Websites zum Fixpreis | Red Rabbit Media',
+    description: 'Entwurf zuerst, du zahlst erst, wenn du überzeugt bist. DSGVO-konform, aus Österreich.',
+    images: ['/og/og-image-redrabbit.jpg'],
   },
 
   // NOTE: Kein globales canonical! Jede Seite setzt ihr eigenes (self-referencing)
