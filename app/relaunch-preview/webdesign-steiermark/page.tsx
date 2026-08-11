@@ -22,15 +22,15 @@ import '@/components/relaunch/subpages.css';
 const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-steiermark';
 
 export const metadata: Metadata = {
-  title: 'Webdesign Steiermark | Red Rabbit Media',
+  title: 'Webdesign Steiermark: Website erstellen lassen | Red Rabbit Media',
   description:
-    'Websites für steirische Betriebe von Graz bis ins Ennstal, die bei Google und in der KI-Suche gefunden werden und Anfragen bringen. Entwurf zuerst, ohne Vorkasse.',
+    'Website erstellen lassen in der Steiermark: Seiten für Betriebe von Graz bis ins Ennstal, die bei Google und in der KI-Suche gefunden werden. Entwurf zuerst, ohne Vorkasse.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/relaunch-preview/webdesign-steiermark' },
   openGraph: {
-    title: 'Webdesign Steiermark | Red Rabbit Media',
+    title: 'Webdesign Steiermark: Website erstellen lassen | Red Rabbit Media',
     description:
-      'Websites für steirische Betriebe von Graz bis ins Ennstal, die gefunden werden und Anfragen bringen. Entwurf zuerst, ohne Vorkasse.',
+      'Website erstellen lassen in der Steiermark: Seiten für Betriebe von Graz bis ins Ennstal, die gefunden werden und Anfragen bringen. Entwurf zuerst, ohne Vorkasse.',
     type: 'website',
     locale: 'de_AT',
     url: CANONICAL_GOLIVE,
@@ -50,6 +50,7 @@ const steiermark: RegionContent = {
     heading: 'Dein nächster Kunde in der Steiermark googelt gerade. Sieht er dich?',
     paragraphs: [
       'Die Kaufentscheidung fällt am Handy, oft bevor du überhaupt merkst, dass wer gesucht hat. Wer da nicht auftaucht, ist für den schlicht nicht da. Blöd, aber so läuft es. Wir bauen dir die Seite, die auftaucht. Und die aus dem Klick eine Anfrage macht, nicht bloß ein schaut-nett-aus.',
+      'Du willst deine Website erstellen lassen statt abends selber herumzubasteln? Genau dafür gibt es uns. Wirtshaus im Ennstal, Installateur in Kapfenberg, Ordination in Graz: Steirische Betriebe ticken verschieden, und ihre Websites müssen das auch. Eine Seite, die Zimmer füllt, ist anders gebaut als eine, die Serviceanfragen bringt. Wir bauen die, die zu deinem Betrieb passt.',
     ],
     reachLine:
       'Ob dein Kunde in Graz sucht, in Leoben oder irgendwo im Ennstal, wo grad noch ein Balken Empfang ist: gefunden wirst du.',
@@ -59,28 +60,46 @@ const steiermark: RegionContent = {
     availabilityText:
       'Kein Ticket-System, keine Warteschleife. Du schreibst uns, wir kümmern uns. Deine Seite ist bei uns nichts, das man einmal abhakt und vergisst. Die wächst mit, so wie dein Betrieb.',
   },
+  ablauf: {
+    eyebrow: 'So läuft das bei uns',
+    heading: 'Von der ersten Nachricht bis zur fertigen Website.',
+    steps: [
+      {
+        title: 'Du meldest dich',
+        text: 'Eine kurze Nachricht reicht. Wir schauen uns an, was dein Betrieb braucht, und machen dir 1-2 grafische Vorschläge. Das kostet dich nichts außer ein paar Minuten.',
+      },
+      {
+        title: 'Du siehst den Entwurf, bevor du zahlst',
+        text: 'Gefällt dir die Richtung nicht, gehst du ohne Rechnung. Gefällt sie dir, erteilst du den Auftrag und wir feilen gemeinsam, bis es sitzt.',
+      },
+      {
+        title: 'Deine Seite geht live',
+        text: 'Eine kompakte Website steht meist in zwei bis vier Wochen. Danach lassen wir dich nicht allein: Du schreibst uns, wir kümmern uns.',
+      },
+    ],
+  },
   faqEyebrow: 'Häufige Fragen',
-  faqHeading: 'Gefunden werden in der Steiermark',
+  faqHeading: 'Website erstellen lassen in der Steiermark',
   faq: [
     {
-      q: 'Was kostet eine Website für meinen steirischen Betrieb?',
-      a: 'Wir arbeiten mit klaren Fixpreisen, nicht mit Stundenzetteln. Eine solide Website startet ab 1.250 Euro, größere Projekte mehr. Was in welchem Paket steckt, siehst du offen auf unserer Preisseite.',
+      q: 'Was kostet es, eine Website erstellen zu lassen?',
+      a: 'Bei uns startet der One-Pager ab 1.250 Euro, die mehrseitige Business-Website ab 2.850 Euro. Fixpreis-Rahmen statt Stundensatz-Lotterie. Und bevor du dich festlegst, siehst du 1-2 grafische Vorschläge, ohne Vorkasse. Was in welchem Paket steckt, steht offen auf unserer Preisseite.',
+    },
+    {
+      q: 'Wie lange dauert es, eine Website erstellen zu lassen?',
+      a: 'Die ersten Vorschläge siehst du nach ein paar Tagen. Eine kompakte Website ist meist in zwei bis vier Wochen online, je nachdem, wie schnell Texte und Bilder beisammen sind. Größere Projekte brauchen länger. Den Zeitplan legen wir vorher gemeinsam fest, damit nichts offen bleibt.',
     },
     {
       q: 'Wie werde ich in der Steiermark bei Google gefunden?',
-      a: 'Wir bauen deine Seite von Anfang an so, dass sie für die Suchbegriffe deiner Region auftaucht, bei Google und in der KI-Suche. Kein nachträgliches SEO-Geflick, sondern von der ersten Zeile an mitgedacht.',
+      a: 'Wir bauen deine Seite von der ersten Zeile an so, dass sie für die Suchbegriffe deiner Region auftaucht, bei Google und in der KI-Suche. Kein nachträgliches SEO-Geflick. Dazu gehören saubere Technik, schnelle Ladezeiten und Texte, die so formuliert sind, wie deine Kunden wirklich suchen.',
+    },
+    {
+      q: 'Macht ihr auch Websites für Gastronomie und Tourismus?',
+      a: 'Ja, und gern. Gerade in der Steiermark hängt viel am Tourismus, vom Wirtshaus bis zur Ferienwohnung. Eine Seite, die Tische oder Zimmer füllt, braucht anderes als eine Firmenseite: Speisekarte, die am Handy lesbar ist, Anfrage in zwei Klicks, Fotos, die Appetit machen. Und bist du Installateur statt Wirt, passt das genauso. Wir sind auf keine Branche festgenagelt.',
     },
     {
       q: 'Gibt es Förderungen für eine Website in der Steiermark?',
       a: 'Für digitale Projekte gibt es österreichweit KMU.DIGITAL, das einen Teil der Kosten fördern kann. Ob dein Vorhaben passt, hängt vom Betrieb ab. Wir sagen dir ehrlich, ob sich der Antrag lohnt, und liefern dir die Unterlagen dafür.',
-    },
-    {
-      q: 'Wie lange dauert es, bis meine Seite online ist?',
-      a: 'Eine kompakte Website steht meist in zwei bis vier Wochen, je nachdem wie schnell Texte und Bilder da sind. Größere Projekte dauern länger. Den Zeitplan legen wir vorher gemeinsam fest, keine offenen Enden.',
-    },
-    {
-      q: 'Baut ihr nur für bestimmte Branchen?',
-      a: 'Nein. Vom Heizungsbauer bis zur Beratung, unsere Kunden in der Steiermark kommen aus ganz unterschiedlichen Branchen. Was zählt, ist eine Seite, die zu deinem Betrieb passt und Anfragen bringt, nicht eine Vorlage von der Stange.',
     },
   ],
   closingLines: [
@@ -97,7 +116,7 @@ const schema = {
       '@type': 'WebPage',
       '@id': `${CANONICAL_GOLIVE}#webpage`,
       url: CANONICAL_GOLIVE,
-      name: 'Webdesign Steiermark | Red Rabbit Media',
+      name: 'Webdesign Steiermark: Website erstellen lassen | Red Rabbit Media',
       inLanguage: 'de-AT',
       isPartOf: { '@id': 'https://web.redrabbit.media/#website' },
       about: { '@id': 'https://web.redrabbit.media/#organization' },
@@ -140,7 +159,7 @@ export default function WebdesignSteiermarkPage() {
       {/* Eigenes, eindeutiges H1 (die Home hat keins) — der staerkste
           Einzelsignal, dass Google die Seite als eigene Region-Seite wertet. */}
       <h1 style={srOnly}>
-        Webdesign Steiermark: Websites für steirische Betriebe von Graz bis ins Ennstal
+        Webdesign Steiermark: Website erstellen lassen für Betriebe von Graz bis ins Ennstal
       </h1>
       <RegionHome region={steiermark} />
     </div>

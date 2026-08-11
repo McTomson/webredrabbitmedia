@@ -47,6 +47,13 @@ export type RegionContent = {
     availabilityHeading: string;
     availabilityText: string;
   };
+  /** Ablauf in 3 Schritten (beantwortet die echte Dauer-/Ablauf-Suchintention,
+   *  GSC 11.08.: "wie lange dauert es eine website zu erstellen" 202+60 Impr.). */
+  ablauf: {
+    eyebrow: string;
+    heading: string;
+    steps: { title: string; text: string }[];
+  };
   /** Eyebrow ueber der FAQ. */
   faqEyebrow: string;
   /** Ueberschrift der FAQ (Themen-Label wie /preise "Preis und Ablauf."). */
@@ -150,6 +157,42 @@ export default function RegionHome({ region }: { region: RegionContent }) {
               Wie wir arbeiten, steht bei den <Link className="rr-link" href="/leistungen">Leistungen</Link>. Was es kostet, offen auf der <Link className="rr-link" href="/preise">Preisseite</Link>.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Ablauf in 3 Schritten — echte Sequenz (Anfrage -> Entwurf -> live),
+          beantwortet die Dauer-/Ablauf-Suchintention sichtbar auf der Seite. */}
+      <section className="rr rr-section">
+        <div className="rr-wrap rr-narrow">
+          <p className="rr-eyebrow" style={{ marginBottom: 16 }}>{region.ablauf.eyebrow}</p>
+          <h2 className="rr-sub" style={{ marginBottom: 40 }}>{region.ablauf.heading}</h2>
+          <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 28, maxWidth: 720 }}>
+            {region.ablauf.steps.map((s, i) => (
+              <li key={i} style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 20, alignItems: "start" }}>
+                <span
+                  aria-hidden
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 700,
+                    color: "var(--rr-red)",
+                    border: "1px solid var(--rr-red)",
+                    borderRadius: "50%",
+                    width: 34,
+                    height: 34,
+                    display: "grid",
+                    placeItems: "center",
+                    marginTop: 2,
+                  }}
+                >
+                  {i + 1}
+                </span>
+                <div>
+                  <h3 className="rr-sub" style={{ fontSize: 21, marginBottom: 8 }}>{s.title}</h3>
+                  <p className="rr-body" style={{ color: "var(--rr-ink-soft)", fontSize: 18, lineHeight: 1.6 }}>{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
