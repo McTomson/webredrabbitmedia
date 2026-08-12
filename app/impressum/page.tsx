@@ -14,6 +14,7 @@ import "@/components/subpages/legal-preview.css";
 export const metadata: Metadata = {
   title: "Impressum · Red Rabbit Media",
   description: "Rechtliche Informationen über Red Rabbit Media.",
+  alternates: { canonical: "/impressum" },
 };
 
 export default function ImpressumPreviewPage() {

@@ -29,7 +29,7 @@ import "@/components/relaunch/subpages.css";
 const CANONICAL = "https://web.redrabbit.media/referenzen";
 const META_DESC =
   "Ausgewählte Webdesign-Projekte von Red Rabbit Media: Websites für Betriebe aus Österreich, " +
-  "von Thermenwartung über Gastronomie bis Immobilien. Sieh dir an, was wir bauen.";
+  "von Gastronomie bis Immobilien. Sieh dir an, was wir bauen.";
 
 export const metadata: Metadata = {
   title: "Referenzen — Webdesign-Projekte aus Österreich | Red Rabbit Media",
