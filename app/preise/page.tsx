@@ -24,7 +24,7 @@ import '@/components/subpages/leistungen/wd-eyebrow.css';
 
 /**
  * Preise, Preview, noindex — Server-Komponente nach docs/UNTERSEITEN_STIL.md,
- * Muster 1:1 aus app/relaunch-preview/leistungen/website/page.tsx. Inhalt/
+ * Muster 1:1 aus app/leistungen/website/page.tsx. Inhalt/
  * Preise/Reihenfolge sind mit Thomas fixiert (brand/PREISE_SEITE_BRIEF.md) —
  * NICHT umdesignen. Preise NUR 1.250 / 2.850 / ab 4.900 (Thomas 30.07.,
  * brand/decisions-log.md) — nie 790, nie die alten 950/2.900.
@@ -40,8 +40,7 @@ export const metadata: Metadata = {
   title: 'Preise · Red Rabbit Media',
   description:
     'Klare Website-Pakete ab 1.250 Euro. Du bekommst zuerst 1-2 Vorschläge ohne Vorkasse und beauftragst uns erst, wenn sie dir gefallen. Talos immer dabei.',
-  robots: { index: false, follow: false },
-  alternates: { canonical: '/relaunch-preview/preise' },
+  alternates: { canonical: '/preise' },
 };
 
 export default function PreisePreviewPage() {
@@ -133,7 +132,7 @@ export default function PreisePreviewPage() {
           ]}
           cta={{
             label: 'Hol dir die kostenlosen Vorschläge',
-            href: '/relaunch-preview/kontakt',
+            href: '/kontakt',
             lead: 'bumper',
             leadService: 'Preise Bumper-CTA',
           }}

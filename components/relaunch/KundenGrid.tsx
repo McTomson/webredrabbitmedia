@@ -236,7 +236,7 @@ export default function KundenGrid() {
             <i className="rrkg-caret" />
           </div>
         ))}
-        <Link className="rrkg-cell rrkg-cta" href="/relaunch-preview/referenzen" aria-label="Alle Projekte ansehen" ref={ctaRef}>
+        <Link className="rrkg-cell rrkg-cta" href="/referenzen" aria-label="Alle Projekte ansehen" ref={ctaRef}>
           <span className="rrkg-cta-label">Alle Projekte<span className="rrkg-cta-more"> ansehen</span></span>
           <svg className="rrkg-chev" viewBox="0 0 128 64" aria-hidden="true">
             <g ref={chevWrapRef} />

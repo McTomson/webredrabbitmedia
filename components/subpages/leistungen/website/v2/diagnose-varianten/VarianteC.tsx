@@ -262,7 +262,7 @@ export default function VarianteC() {
 
                 <div className="sp__cta">
                   <Link
-                    href="/relaunch-preview/kontakt"
+                    href="/kontakt"
                     className="rr-btn-sweep rr-btn-sweep--red"
                   >
                     Hol dir den kostenlosen Entwurf

@@ -16,7 +16,6 @@ import "@/components/subpages/legal-preview.css";
 export const metadata: Metadata = {
   title: "Cookie-Einstellungen · Red Rabbit Media",
   description: "Verwalte deine Datenschutz-Präferenzen.",
-  robots: { index: false, follow: false },
 };
 
 export default function CookieEinstellungenPreviewPage() {

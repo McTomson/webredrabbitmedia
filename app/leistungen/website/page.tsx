@@ -32,7 +32,7 @@ import '@/components/subpages/leistungen/website/website.css';
 /**
  * Leistungen — Website ("Der Bau"), Preview, noindex — Server-Komponente
  * nach docs/UNTERSEITEN_STIL.md, Muster 1:1 aus dem frisch gebauten Hub
- * (app/relaunch-preview/leistungen/page.tsx). Reines Produkt: Website neu
+ * (app/leistungen/page.tsx). Reines Produkt: Website neu
  * bauen oder relaunchen, Fixpreis, kein Baukasten, gehoert dir. Bewusst KEIN
  * Talos/3D auf dieser Seite (das ist /leistungen/talos vorbehalten) und
  * KEINE Preise (jeder Preis-Bezug verweist auf /preise).
@@ -48,8 +48,7 @@ export const metadata: Metadata = {
   title: 'Website · Leistungen · Red Rabbit Media',
   description:
     'Individuell gebaute Website, neu erstellt oder von Grund auf erneuert. Fixpreis, kein Baukasten, kein Wartungsvertrag, Entwurf ohne Vorkasse.',
-  robots: { index: false, follow: false },
-  alternates: { canonical: '/relaunch-preview/leistungen/website' },
+  alternates: { canonical: '/leistungen/website' },
 };
 
 export default function LeistungenWebsitePreviewPage() {

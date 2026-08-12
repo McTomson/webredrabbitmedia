@@ -9,16 +9,15 @@ import HomeClosing from "@/components/relaunch/HomeClosing";
 import Ablauf from "@/components/subpages/leistungen/website/v2/Ablauf";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import ScrollExperience from "@/components/relaunch/ScrollExperience";
-import "../styleguide/styleguide.css";
+import '@/app/styleguide/styleguide.css';
 
 export const metadata: Metadata = {
   title: "Relaunch-Preview — Homepage nach Blaupause (intern)",
   description:
     "Webdesign aus Österreich: Websites, die bei Google und in der KI-Suche gefunden werden. Vorschläge ohne Vorkasse, mit Talos als digitalem Mitarbeiter.",
-  robots: { index: false, follow: false },
 };
 
-// Screenreader-only Stil (identisch zu app/relaunch-preview/webdesign-tirol),
+// Screenreader-only Stil (identisch zu app/webdesign-tirol),
 // damit die Home ein h1 im SSR-HTML hat, ohne das visuelle Layout zu aendern.
 const srOnly: React.CSSProperties = {
   position: 'absolute',

@@ -401,7 +401,7 @@ export default function VarianteA() {
 
         <p className="rr-meta eac__meta">
           Was die Stufen kosten, steht schwarz auf weiß auf der{" "}
-          <Link href="/relaunch-preview/preise" className="rr-link rr-link--text">
+          <Link href="/preise" className="rr-link rr-link--text">
             Preisseite
           </Link>
           . Fixpreis, kein Stundensatz-Ratespiel.

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import RegionHome, { type RegionContent } from '@/components/relaunch/RegionHome';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
-import '../../styleguide/styleguide.css';
+import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
 
 /**
@@ -22,8 +22,7 @@ export const metadata: Metadata = {
   title: 'Webdesign Niederösterreich: Website erstellen lassen | Red Rabbit Media',
   description:
     'Website erstellen lassen in Niederösterreich: Seiten für Betriebe vom Waldviertel bis Wiener Neustadt, gefunden bei Google und in der KI-Suche. Ohne Vorkasse.',
-  robots: { index: false, follow: false },
-  alternates: { canonical: '/relaunch-preview/webdesign-niederoesterreich' },
+  alternates: { canonical: '/webdesign-niederoesterreich' },
   openGraph: {
     title: 'Webdesign Niederösterreich: Website erstellen lassen | Red Rabbit Media',
     description:

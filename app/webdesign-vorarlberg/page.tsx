@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import RegionHome, { type RegionContent } from '@/components/relaunch/RegionHome';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
-import '../../styleguide/styleguide.css';
+import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
 
 /**
@@ -22,8 +22,7 @@ export const metadata: Metadata = {
   title: 'Webdesign Vorarlberg: Homepage erstellen lassen | Red Rabbit Media',
   description:
     'Homepage erstellen lassen in Vorarlberg: Websites für Betriebe vom Rheintal bis zum Arlberg, gebaut für Google und die KI-Suche. Ohne Vorkasse.',
-  robots: { index: false, follow: false },
-  alternates: { canonical: '/relaunch-preview/webdesign-vorarlberg' },
+  alternates: { canonical: '/webdesign-vorarlberg' },
   openGraph: {
     title: 'Webdesign Vorarlberg: Homepage erstellen lassen | Red Rabbit Media',
     description:

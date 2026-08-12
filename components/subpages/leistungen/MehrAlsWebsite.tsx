@@ -55,7 +55,7 @@ export default function MehrAlsWebsite() {
           Website an, hol dir mehr dazu, wenn du es brauchst.
         </p>
         <p className="lh-vergleich__more">
-          <Link href="/relaunch-preview/leistungen/website" className="rr-link">
+          <Link href="/leistungen/website" className="rr-link">
             Alles zur Website im Detail
           </Link>
         </p>

@@ -86,7 +86,7 @@ export default function SiteClosing({
             marginTop: "clamp(40px, 6vh, 64px)",
           }}
         >
-          <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
+          <Link href="/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
             Kostenlosen Entwurf holen
           </Link>
           <a href={TEL} className="rr-btn-outline">

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import RegionHome, { type RegionContent } from '@/components/relaunch/RegionHome';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
-import '../../styleguide/styleguide.css';
+import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
 
 /**
@@ -23,8 +23,7 @@ export const metadata: Metadata = {
   title: 'Webdesign Salzburg: Website erstellen lassen | Red Rabbit Media',
   description:
     'Website erstellen lassen in Salzburg: Seiten für Betriebe von der Stadt bis in den Pinzgau, gefunden bei Google und in der KI-Suche. Ohne Vorkasse.',
-  robots: { index: false, follow: false },
-  alternates: { canonical: '/relaunch-preview/webdesign-salzburg' },
+  alternates: { canonical: '/webdesign-salzburg' },
   openGraph: {
     title: 'Webdesign Salzburg: Website erstellen lassen | Red Rabbit Media',
     description:

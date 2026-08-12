@@ -29,7 +29,7 @@ export default function ProduktTueren() {
               Google, sieht auf jedem Gerät gut aus und bringt dir echte
               Anfragen statt nur ein hübsches Bild im Netz.
             </p>
-            <Link href="/relaunch-preview/leistungen/website" className="rr-btn-sweep rr-btn-sweep--red">
+            <Link href="/leistungen/website" className="rr-btn-sweep rr-btn-sweep--red">
               Mehr über die Website
             </Link>
           </div>
@@ -40,7 +40,7 @@ export default function ProduktTueren() {
               Bei jeder Website fix dabei, kein Extra-Paket. Er steckt in
               deiner Seite drin und arbeitet, während du Feierabend hast.
             </p>
-            <Link href="/relaunch-preview/leistungen/talos" className="rr-btn-outline rr-btn-outline--light pt-talos__cta">
+            <Link href="/leistungen/talos" className="rr-btn-outline rr-btn-outline--light pt-talos__cta">
               Was Talos alles kann
             </Link>
           </div>

@@ -188,7 +188,7 @@ function StufeMatrix({
           <span className="rpm__badge">0 € bis zum Vorschlag</span>
           <p className="rpm__text">{stufe.text}</p>
           <Link
-            href="/relaunch-preview/kontakt"
+            href="/kontakt"
             data-rr-lead="paket"
             data-rr-lead-service={`Paket ${stufe.name} (${stufe.preis})`}
             className={

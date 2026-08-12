@@ -534,7 +534,7 @@ export default function TalosPage({ articleCount }: { articleCount: number }) {
             <button type="button" className="tal-btn tal-btn--red" onClick={openAssistant}>
               Los geht&apos;s
             </button>
-            <Link href="/relaunch-preview/kontakt" className="tal-exit">
+            <Link href="/kontakt" className="tal-exit">
               Ich weiß schon, was ich will
             </Link>
           </div>
@@ -549,7 +549,7 @@ export default function TalosPage({ articleCount }: { articleCount: number }) {
                   />
                 ))}
               </div>
-              <Link href="/relaunch-preview/kontakt" className="tal-exit">
+              <Link href="/kontakt" className="tal-exit">
                 Ich weiß schon, was ich will
               </Link>
             </div>
@@ -601,7 +601,7 @@ export default function TalosPage({ articleCount }: { articleCount: number }) {
                 </ul>
                 <p className="tal-result-closing">So starten die meisten Betriebe.</p>
                 <div className="tal-result-actions">
-                  <Link href="/relaunch-preview/kontakt" className="tal-btn tal-btn--red">
+                  <Link href="/kontakt" className="tal-btn tal-btn--red">
                     Kostenlosen Entwurf genau dafür anfragen
                   </Link>
                   <button type="button" className="tal-back" onClick={() => setStep(QUESTIONS.length - 1)}>
@@ -626,7 +626,7 @@ export default function TalosPage({ articleCount }: { articleCount: number }) {
 
         <p className="tal-beweis tal-reveal">
           Übrigens: Diese Website hier hat den Schreiber selbst. Schau in seine{" "}
-          <Link href="/relaunch-preview/tipps" className="tal-inline-link">
+          <Link href="/tipps" className="tal-inline-link">
             {articleCount} Artikel
           </Link>
           .
@@ -645,7 +645,7 @@ export default function TalosPage({ articleCount }: { articleCount: number }) {
         <div className="tal-cta tal-reveal">
           <h2 className="tal-cta-h2">Zeig uns deinen Betrieb. Wir zeigen dir dein Team.</h2>
           <div className="tal-cta-actions">
-            <Link href="/relaunch-preview/kontakt" className="tal-btn tal-btn--white">
+            <Link href="/kontakt" className="tal-btn tal-btn--white">
               Kostenlosen Entwurf anfragen
             </Link>
             <a href={`tel:${PHONE_TEL}`} className="tal-btn tal-btn--ghost">

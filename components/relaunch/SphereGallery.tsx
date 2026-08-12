@@ -101,7 +101,7 @@ const INFO_CARDS: InfoCard[] = [
     body:
       "Du hast gesehen, was wir für andere gebaut haben. Der nächste Schritt ist ein " +
       "kurzes Gespräch: unverbindlich und konkret.",
-    cta: { label: "Projekt anfragen", href: "/relaunch-preview/kontakt" },
+    cta: { label: "Projekt anfragen", href: "/kontakt" },
   },
 ];
 // Position im 7x7-Raster (row,col) -> Karte; wiederholt sich mit dem Wrap.
@@ -781,7 +781,7 @@ export default function SphereGallery() {
           setLeaving(true);
           const slug = cell.project.slug;
           navTimeout = window.setTimeout(() => {
-            router.push(`/relaunch-preview/referenzen/${slug}`);
+            router.push(`/referenzen/${slug}`);
           }, 420);
         }
       }
@@ -1127,7 +1127,7 @@ function FallbackGrid() {
         {SPHERE_PROJECTS.map((p) => (
           <a
             key={p.slug}
-            href={`/relaunch-preview/referenzen/${p.slug}`}
+            href={`/referenzen/${p.slug}`}
             style={{ textDecoration: "none", color: "#f4f4f2" }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}

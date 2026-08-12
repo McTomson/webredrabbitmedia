@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import RegionHome, { type RegionContent } from '@/components/relaunch/RegionHome';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
-import '../../styleguide/styleguide.css';
+import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
 
 /**
@@ -22,8 +22,7 @@ export const metadata: Metadata = {
   title: 'Webdesign Burgenland: Homepage erstellen lassen | Red Rabbit Media',
   description:
     'Homepage erstellen lassen im Burgenland: Websites für Weingüter und Betriebe von Eisenstadt bis ins Südburgenland, sichtbar bei Google und KI. Ohne Vorkasse.',
-  robots: { index: false, follow: false },
-  alternates: { canonical: '/relaunch-preview/webdesign-burgenland' },
+  alternates: { canonical: '/webdesign-burgenland' },
   openGraph: {
     title: 'Webdesign Burgenland: Homepage erstellen lassen | Red Rabbit Media',
     description:

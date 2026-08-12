@@ -31,10 +31,10 @@ const LeadDialog = dynamic(() => import("./LeadDialog"), { ssr: false });
  *
  * Auf der ALTEN (Nicht-Relaunch-) Seite ist der Provider inert: dort gibt es
  * keine data-rr-lead-Elemente, und deren Kontakt-Pfad ("/kontakt") ist nicht
- * der Relaunch-Pfad ("/relaunch-preview/kontakt"), den wir abfangen.
+ * der Relaunch-Pfad ("/kontakt"), den wir abfangen.
  */
 
-const KONTAKT_PATH = "/relaunch-preview/kontakt";
+const KONTAKT_PATH = "/kontakt";
 
 interface LeadContextValue {
   open: (opts?: LeadOpenOpts) => void;

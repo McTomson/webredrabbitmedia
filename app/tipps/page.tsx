@@ -24,7 +24,7 @@ const HERO_DIR = path.join(process.cwd(), 'components/subpages/tipps-hero-demo')
 const readHero = (f: string) => fs.readFileSync(path.join(HERO_DIR, f), 'utf8');
 
 /**
- * TIPPS-Uebersicht im Relaunch-Look (Preview, noindex) — 3D-Karten-Tunnel
+ * TIPPS-Uebersicht im Relaunch-Look (indexierbar) — 3D-Karten-Tunnel
  * (Vorbild ashleybrookecs.com/work): die Blogartikel-Karten fliegen beim
  * Scrollen aus der Tiefe an den Betrachter vorbei (Komponente TippsTunnel).
  * Hero (tipps-hero-demo) bleibt; Filter-/Suchleiste unten rechts. Die alte
@@ -32,10 +32,10 @@ const readHero = (f: string) => fs.readFileSync(path.join(HERO_DIR, f), 'utf8');
  * Detailseiten unter [slug] nutzen rrt-* unveraendert weiter).
  */
 export const metadata: Metadata = {
-  title: 'Tipps (Preview) · Red Rabbit Media',
+  title: 'Tipps · Red Rabbit Media',
   description:
     'Ehrliche Antworten auf die Fragen, die dich wirklich Geld kosten: Website-Preise, SEO, KI-Sichtbarkeit.',
-  robots: { index: false, follow: false },
+  alternates: { canonical: `${SITE_URL}/tipps` },
 };
 
 export default async function TippsPreviewPage() {
@@ -53,10 +53,8 @@ export default async function TippsPreviewPage() {
   const rrFonts = `rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`;
 
   // Strukturierte Daten (Blog-Uebersicht): CollectionPage + ItemList aller
-  // Artikel + BreadcrumbList. Waehrend der Preview-Phase noindex (Metadata
-  // oben) — das Schema ist fuer den Go-Live vorbereitet; dann faellt das
-  // /relaunch-preview-Prefix in BASE weg.
-  const BASE = `${SITE_URL}/relaunch-preview`;
+  // Artikel + BreadcrumbList. BASE = Root-Domain.
+  const BASE = SITE_URL;
   const collectionSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',

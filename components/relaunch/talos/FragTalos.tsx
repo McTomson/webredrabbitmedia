@@ -124,7 +124,7 @@ export default function FragTalos() {
             Das ist ein Vorschlag, kein Vertrag. Im Erstgespräch schauen wir gemeinsam, was wirklich Sinn ergibt.
           </p>
           <div className="ft-actions">
-            <Link href="/relaunch-preview/kontakt" data-rr-lead="talos" className="ft-btn ft-btn--red">
+            <Link href="/kontakt" data-rr-lead="talos" className="ft-btn ft-btn--red">
               Entwurf ohne Vorkasse holen
             </Link>
             <button type="button" className="ft-btn ft-btn--ghost" onClick={reset}>

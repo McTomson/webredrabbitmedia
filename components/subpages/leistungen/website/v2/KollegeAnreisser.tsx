@@ -123,7 +123,7 @@ export default function KollegeAnreisser() {
             </div>
 
             <p className="wd-kol__more">
-              <Link href="/relaunch-preview/leistungen" className="rr-link">
+              <Link href="/leistungen" className="rr-link">
                 Was Talos alles kann, siehst du auf der Leistungs-Seite
               </Link>
             </p>

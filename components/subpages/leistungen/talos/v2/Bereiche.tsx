@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { BEREICHE, type Bereich } from './bereiche-data';
 
-const KONTAKT = '/relaunch-preview/kontakt';
-const PREISE = '/relaunch-preview/preise';
+const KONTAKT = '/kontakt';
+const PREISE = '/preise';
 
 /** Gruppen-Reihenfolge + Labels (Thomas 07.08.: 3 Gruppen statt 9er-Wand;
     Label = Kundenfrage in Alltagssprache). */

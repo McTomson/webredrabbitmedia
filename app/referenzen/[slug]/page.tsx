@@ -7,7 +7,7 @@ import CornerLogo from "@/components/relaunch/CornerLogo";
 import BackToTop from "@/components/relaunch/BackToTop";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import { SPHERE_PROJECTS } from "@/lib/relaunch/projects";
-import "../../../styleguide/styleguide.css";
+import '@/app/styleguide/styleguide.css';
 import "@/components/relaunch/subpages.css";
 
 /**
@@ -92,7 +92,7 @@ export default async function ReferenzProjektPage({
             >
               Website live ansehen
             </a>
-            <Link className="rr-btn rr-btn--ondark-ghost" href="/relaunch-preview/referenzen">
+            <Link className="rr-btn rr-btn--ondark-ghost" href="/referenzen">
               Zurück zur Galerie
             </Link>
           </div>

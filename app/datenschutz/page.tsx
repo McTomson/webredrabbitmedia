@@ -14,7 +14,6 @@ import "@/components/subpages/legal-preview.css";
 export const metadata: Metadata = {
   title: "Datenschutz · Red Rabbit Media",
   description: "Informationen zum Schutz Ihrer persönlichen Daten.",
-  robots: { index: false, follow: false },
 };
 
 export default function DatenschutzPreviewPage() {

@@ -232,7 +232,7 @@ const PUNKTE: Punkt[] = [
     title: 'Helfer, die du dazustellen kannst',
     body: 'In der Kommandozentrale warten Helfer auf Arbeit. Einer schreibt Beiträge über dein Handwerk, einer beantwortet Anfragen, einer kümmert sich um Termine. Du gibst per Klick frei, sie erledigen den Rest.',
     mock: <MockAgenten />,
-    href: '/relaunch-preview/leistungen/talos',
+    href: '/leistungen/talos',
     more: 'Mehr über die Agenten',
   },
 ];

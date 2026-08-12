@@ -23,7 +23,6 @@ export const metadata: Metadata = {
   title: 'FAQ · Red Rabbit Media',
   description:
     'Ehrliche Antworten auf die häufigsten Fragen: Preise, Ablauf, Vorkasse, Förderung, Sichtbarkeit bei Google und in KI, Eigentum an der Website und Hosting.',
-  robots: { index: false, follow: false },
 };
 
 // Die 14 echten FAQ (wortgleich aus app/faq/page.tsx). Quelle fuer das

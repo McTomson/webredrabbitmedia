@@ -29,23 +29,23 @@ import { RabbitMark } from "@/components/relaunch/RabbitMark";
 type NavItem = { label: string; href: string; children?: { label: string; href: string }[] };
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Start", href: "/relaunch-preview" },
+  { label: "Start", href: "/" },
   {
     label: "Leistungen",
-    href: "/relaunch-preview/leistungen",
+    href: "/leistungen",
     // Klick klappt auf statt zu navigieren (Thomas 22.07.: genau diese zwei
     // Zeilen). Du-Anrede statt "Ihre" (Hausregel), kein Wort "KI".
     children: [
-      { label: "Deine Website", href: "/relaunch-preview/leistungen/website" },
-      { label: "Bei jeder Website dabei · Talos", href: "/relaunch-preview/leistungen/talos" },
+      { label: "Deine Website", href: "/leistungen/website" },
+      { label: "Bei jeder Website dabei · Talos", href: "/leistungen/talos" },
     ],
   },
-  { label: "Referenzen", href: "/relaunch-preview/referenzen" },
-  { label: "Preise", href: "/relaunch-preview/preise" },
-  { label: "Tipps", href: "/relaunch-preview/tipps" },
-  { label: "FAQ", href: "/relaunch-preview/faq" },
-  { label: "Über uns", href: "/relaunch-preview/ueber-uns" },
-  { label: "Kontakt", href: "/relaunch-preview/kontakt" },
+  { label: "Referenzen", href: "/referenzen" },
+  { label: "Preise", href: "/preise" },
+  { label: "Tipps", href: "/tipps" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Über uns", href: "/ueber-uns" },
+  { label: "Kontakt", href: "/kontakt" },
 ];
 
 const CONTACTS: { label: string; href: string; external?: boolean }[] = [

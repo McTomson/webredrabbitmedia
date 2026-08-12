@@ -23,12 +23,8 @@ export const metadata: Metadata = {
   title: 'Über uns · Red Rabbit Media',
   description:
     'Die faire Anti-Agentur für den österreichischen Mittelstand. Wer wir sind und warum wir den ersten Schritt machen.',
-  // Preview: noindex bis zum Live-Tausch (Landmine — ALLE Preview-Seiten noindex).
-  robots: { index: false, follow: false },
-  // Self-referencing canonical (Haus-Regel, siehe app/layout.tsx). Zeigt auf den
-  // AKTUELLEN Preview-Pfad — sobald diese Seite die Platzhalter-/ueber-uns ersetzt,
-  // hier auf '/ueber-uns' umstellen.
-  alternates: { canonical: '/relaunch-preview/ueber-uns' },
+  // Self-referencing canonical (Haus-Regel, siehe app/layout.tsx).
+  alternates: { canonical: '/ueber-uns' },
 };
 
 // Person-Schema (EEAT), gleiche @id wie das Employee-Objekt in app/layout.tsx,
@@ -42,7 +38,7 @@ const personLd = {
   '@id': 'https://web.redrabbit.media/#thomas-uhlir',
   name: 'Thomas Uhlir MBA',
   jobTitle: 'Gründer & Strategie',
-  url: 'https://web.redrabbit.media/relaunch-preview/ueber-uns',
+  url: 'https://web.redrabbit.media/ueber-uns',
   sameAs: ['https://www.linkedin.com/in/thomasuhlir/'],
   worksFor: { '@id': 'https://web.redrabbit.media/#organization' },
   knowsAbout: [

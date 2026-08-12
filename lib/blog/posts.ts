@@ -36,8 +36,9 @@ export interface BlogPostMeta extends Omit<BlogPost, 'content'> {
     readingTime: number;
 }
 
-// Get all blog posts
-export async function getAllPosts(): Promise<BlogPostMeta[]> {
+// Load every post's meta (INCLUDING drafts), newest first. Internal base for the
+// two public getters below.
+async function loadAllPostMeta(): Promise<BlogPostMeta[]> {
     const files = fs.readdirSync(BLOG_DIR);
 
     const posts = await Promise.all(
@@ -61,9 +62,22 @@ export async function getAllPosts(): Promise<BlogPostMeta[]> {
 
     return posts
         .filter((post): post is BlogPostMeta => post !== null)
-        // Drafts never appear in listings, related posts, feed, or static params / index.
-        .filter((post) => post.status !== 'draft')
         .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+}
+
+// Get all PUBLISHED blog posts. Drafts never appear in listings, related posts,
+// feed, sitemap, or the index.
+export async function getAllPosts(): Promise<BlogPostMeta[]> {
+    return (await loadAllPostMeta()).filter((post) => post.status !== 'draft');
+}
+
+// Get all posts INCLUDING drafts. Used ONLY by the article route's
+// generateStaticParams so a freshly generated draft is reachable by its direct
+// URL (the review mail links to /tipps/<slug> before the article is published).
+// Draft pages render robots noindex, so they never enter the index despite being
+// statically built. Listings/sitemap/feed keep using getAllPosts() (published only).
+export async function getAllPostsIncludingDrafts(): Promise<BlogPostMeta[]> {
+    return loadAllPostMeta();
 }
 
 // Get single blog post by slug

@@ -10,7 +10,7 @@ import ScrollExperience from "@/components/relaunch/ScrollExperience";
 import GalleryChrome from "@/components/relaunch/GalleryChrome";
 import { SPHERE_PROJECTS } from "@/lib/relaunch/projects";
 import JsonLd from "@/components/JsonLd";
-import "../../styleguide/styleguide.css";
+import '@/app/styleguide/styleguide.css';
 import "@/components/relaunch/subpages.css";
 
 /**
@@ -26,7 +26,7 @@ import "@/components/relaunch/subpages.css";
  * im Repo fuer spaetere Verwendung.
  */
 
-const CANONICAL = "https://web.redrabbit.media/relaunch-preview/referenzen";
+const CANONICAL = "https://web.redrabbit.media/referenzen";
 const META_DESC =
   "Ausgewählte Webdesign-Projekte von Red Rabbit Media: Websites für Betriebe aus Österreich, " +
   "von Thermenwartung über Gastronomie bis Immobilien. Sieh dir an, was wir bauen.";
@@ -34,8 +34,7 @@ const META_DESC =
 export const metadata: Metadata = {
   title: "Referenzen — Webdesign-Projekte aus Österreich | Red Rabbit Media",
   description: META_DESC,
-  robots: { index: false, follow: false },
-  alternates: { canonical: "/relaunch-preview/referenzen" },
+  alternates: { canonical: "/referenzen" },
   openGraph: {
     title: "Referenzen — Red Rabbit Media",
     description: META_DESC,

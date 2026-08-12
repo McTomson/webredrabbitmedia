@@ -9,7 +9,7 @@ import '@/app/styleguide/styleguide.css';
  * Vergleichs-Route (noindex) fuer den Auftraggeber: die drei scroll-interaktiven
  * Design-Varianten der "Was drinsteckt / Fundament"-Sektion untereinander,
  * jeweils mit deutlichem navy Trenner-Balken davor. Chrome (Fonts, styleguide.css,
- * rr-Font-Wrapper) 1:1 aus app/relaunch-preview/leistungen/website/page.tsx.
+ * rr-Font-Wrapper) 1:1 aus app/leistungen/website/page.tsx.
  * Bestehende Fundament.tsx und die Website-Seite bleiben unberuehrt.
  */
 export const metadata: Metadata = {

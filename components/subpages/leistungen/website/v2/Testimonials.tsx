@@ -91,7 +91,7 @@ export default function Testimonials() {
 
         <p className="rr-body" style={{ marginTop: 24 }}>
           Mehr Arbeiten und Stimmen findest du auf der{" "}
-          <Link href="/relaunch-preview/referenzen">Referenzen-Seite</Link>.
+          <Link href="/referenzen">Referenzen-Seite</Link>.
         </p>
       </div>
     </section>

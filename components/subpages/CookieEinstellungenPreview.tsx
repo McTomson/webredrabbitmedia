@@ -217,7 +217,7 @@ export default function CookieEinstellungenPreview() {
 
         <p className="rrl-footnote">
           Weitere Informationen findest du in unserer{" "}
-          <Link href="/relaunch-preview/datenschutz">Datenschutzerklärung</Link>. Du kannst deine
+          <Link href="/datenschutz">Datenschutzerklärung</Link>. Du kannst deine
           Einstellungen jederzeit auf dieser Seite ändern.
         </p>
       </div>

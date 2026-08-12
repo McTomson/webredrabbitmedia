@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import RegionHome, { type RegionContent } from '@/components/relaunch/RegionHome';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
-import '../../styleguide/styleguide.css';
+import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
 
 /**
@@ -22,8 +22,7 @@ export const metadata: Metadata = {
   title: 'Webdesign Oberösterreich: Websites für Betriebe in OÖ | Red Rabbit Media',
   description:
     'Webdesign in Oberösterreich: Websites für Betriebe von Linz bis ins Salzkammergut, sichtbar bei Google und in der KI-Suche. Entwurf zuerst, ohne Vorkasse.',
-  robots: { index: false, follow: false },
-  alternates: { canonical: '/relaunch-preview/webdesign-oberoesterreich' },
+  alternates: { canonical: '/webdesign-oberoesterreich' },
   openGraph: {
     title: 'Webdesign Oberösterreich: Websites für Betriebe in OÖ | Red Rabbit Media',
     description:

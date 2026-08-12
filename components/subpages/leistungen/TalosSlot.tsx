@@ -27,7 +27,7 @@ export default function TalosSlot() {
             fremden App.
           </p>
           <Link
-            href="/relaunch-preview/leistungen/talos"
+            href="/leistungen/talos"
             className="rr-btn-outline"
           >
             Was Talos alles kann

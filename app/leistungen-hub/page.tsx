@@ -76,7 +76,7 @@ export default async function LeistungenHubPage() {
                 der Baustelle stehst.
               </p>
               <div className="lh-cta-row">
-                <Link href="/relaunch-preview/kontakt" className="lh-btn lh-btn--red">
+                <Link href="/kontakt" className="lh-btn lh-btn--red">
                   Entwurf ohne Vorkasse holen
                 </Link>
                 <a href="#frag-talos" className="lh-btn lh-btn--ghost">
@@ -102,7 +102,7 @@ export default async function LeistungenHubPage() {
                     wie dein Handwerk und gehört dir, ohne monatliche Miete auf den Bau. Ein Fixpreis, den du
                     vorher kennst.
                   </p>
-                  <Link href="/relaunch-preview/leistungen" className="lh-link">
+                  <Link href="/leistungen" className="lh-link">
                     Mehr zur Website
                   </Link>
                 </article>
@@ -114,7 +114,7 @@ export default async function LeistungenHubPage() {
                     Klartext, was deine Website macht. Die Basis kann er ab dem ersten Tag. Kann er mehr,
                     mietest du ihm einfach eine Fähigkeit dazu.
                   </p>
-                  <Link href="/relaunch-preview/talos-intro" className="lh-link">
+                  <Link href="/talos-intro" className="lh-link">
                     Was Talos kann
                   </Link>
                 </article>
@@ -150,7 +150,7 @@ export default async function LeistungenHubPage() {
                 ))}
               </ul>
               <p className="lh-center lh-mt-sm">
-                <Link href="/relaunch-preview/talos-intro" className="lh-link">
+                <Link href="/talos-intro" className="lh-link">
                   Alles, was Talos kann
                 </Link>
               </p>
@@ -217,7 +217,7 @@ export default async function LeistungenHubPage() {
                 wenn du deine fertige Seite siehst.
               </p>
               <div className="lh-cta-row lh-cta-center">
-                <Link href="/relaunch-preview/kontakt" className="lh-btn lh-btn--red">
+                <Link href="/kontakt" className="lh-btn lh-btn--red">
                   Entwurf ohne Vorkasse holen
                 </Link>
                 <a href={`tel:${PHONE_TEL}`} className="lh-btn lh-btn--ghost">

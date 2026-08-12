@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const KONTAKT = '/relaunch-preview/kontakt';
+const KONTAKT = '/kontakt';
 
 /**
  * WertAnker — "Rechnen wir kurz" (Thomas 07.08.): beziffert, was die Bereiche

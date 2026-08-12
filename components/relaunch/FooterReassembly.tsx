@@ -28,14 +28,14 @@ const NAVY = "var(--rr-navy, #23262e)";
 // neu gemacht, bis dahin soll sie niemand finden) — der Eintrag zeigt auf die
 // Website-Unterseite. Preise zeigt seit 12.08. auf die Relaunch-Preisseite.
 const NAV = [
-  { label: "Start", href: "/relaunch-preview" },
-  { label: "Deine Website", href: "/relaunch-preview/leistungen/website" },
-  { label: "Referenzen", href: "/relaunch-preview/referenzen" },
-  { label: "Preise", href: "/relaunch-preview/preise" },
-  { label: "Tipps", href: "/relaunch-preview/tipps" },
-  { label: "FAQ", href: "/relaunch-preview/faq" },
-  { label: "Über uns", href: "/relaunch-preview/ueber-uns" },
-  { label: "Kontakt", href: "/relaunch-preview/kontakt" },
+  { label: "Start", href: "/" },
+  { label: "Deine Website", href: "/leistungen/website" },
+  { label: "Referenzen", href: "/referenzen" },
+  { label: "Preise", href: "/preise" },
+  { label: "Tipps", href: "/tipps" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Über uns", href: "/ueber-uns" },
+  { label: "Kontakt", href: "/kontakt" },
 ];
 
 const REGIONEN = [
@@ -51,10 +51,10 @@ const REGIONEN = [
 ];
 
 const LEGAL = [
-  { label: "Impressum", href: "/relaunch-preview/impressum" },
-  { label: "Datenschutz", href: "/relaunch-preview/datenschutz" },
-  { label: "AGB", href: "/relaunch-preview/agb" },
-  { label: "Cookie-Einstellungen", href: "/relaunch-preview/cookie-einstellungen" },
+  { label: "Impressum", href: "/impressum" },
+  { label: "Datenschutz", href: "/datenschutz" },
+  { label: "AGB", href: "/agb" },
+  { label: "Cookie-Einstellungen", href: "/cookie-einstellungen" },
 ];
 
 export default function FooterReassembly() {

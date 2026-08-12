@@ -51,7 +51,7 @@ export default function CornerLogo() {
 
   return (
     <Link
-      href="/relaunch-preview"
+      href="/"
       aria-label="Zur Startseite"
       tabIndex={shown ? 0 : -1}
       style={{

@@ -69,7 +69,7 @@ const P: Record<string, Punkt> = {
     n: '06',
     title: 'Talos ist immer dabei. Weitere Helfer stellst du dazu.',
     body: 'Bei jeder Website fix dabei: Talos, dein Mitarbeiter. Kein Extra-Paket. Er sitzt in deiner Kommandozentrale und wartet auf Arbeit. Brauchst du mehr, stellst du dir weitere Helfer dazu, die Beiträge schreiben oder Anfragen beantworten. Du gibst per Klick frei, sie erledigen den Rest.',
-    href: '/relaunch-preview/leistungen/talos',
+    href: '/leistungen/talos',
     more: 'Mehr über die Agenten',
   },
 };

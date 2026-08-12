@@ -128,7 +128,7 @@ export default function LeistungenPreviewPage() {
       {/* Rote Hasen-Marke oben links (Muster aus der bisherigen Leistungen-/
           Tipps-Seite), Link zur Startseite. */}
       <Link
-        href="/relaunch-preview"
+        href="/"
         aria-label="Zur Startseite"
         style={{
           position: 'fixed',

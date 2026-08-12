@@ -7,7 +7,7 @@ import '@/components/subpages/leistungen/wd-eyebrow.css';
 /**
  * Vorschau-Route (noindex) fuer den Auftraggeber: Variante B "Echte Bauteile"
  * als Ersatz fuer die Stockfotos in der LeistungenUeberblick-Sektion. Die
- * Live-Seite (app/relaunch-preview/leistungen) bleibt unberuehrt. Chrome
+ * Live-Seite (app/leistungen) bleibt unberuehrt. Chrome
  * (Fonts, styleguide.css, rr-Font-Wrapper) 1:1 aus den bestehenden
  * *-Varianten-Vergleichsseiten.
  */

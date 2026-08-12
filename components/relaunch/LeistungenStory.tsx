@@ -7,7 +7,7 @@ import MorphSculpture from "@/components/subpages/MorphSculpture";
 
 /**
  * LeistungenStory — self-contained Scroll-Story der Leistungs-Hub-Seite
- * (/relaunch-preview/leistungen). Muster = TippsTunnel: eigener <style>-Block,
+ * (/leistungen). Muster = TippsTunnel: eigener <style>-Block,
  * Prefix `.rrls-`, KEIN GSAP, nur transform/opacity, IntersectionObserver + ein
  * schlanker rAF-Loop nur fuer die Skulptur-Kopplung. prefers-reduced-motion:
  * alles statisch sichtbar (CSS-Kill-Switch + JS-Zweige).
@@ -358,7 +358,7 @@ export default function LeistungenStory({ articleCount }: { articleCount: number
                     />
                   ))}
                 </div>
-                <Link href="/relaunch-preview/kontakt" className="rrls-exit">
+                <Link href="/kontakt" className="rrls-exit">
                   Ich weiß schon, was ich will
                 </Link>
               </div>
@@ -404,7 +404,7 @@ export default function LeistungenStory({ articleCount }: { articleCount: number
                   </ul>
                   <p className="rrls-result-closing">So starten die meisten Betriebe.</p>
                   <div className="rrls-result-actions">
-                    <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
+                    <Link href="/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
                       Kostenlose Vorschläge genau dafür anfragen
                     </Link>
                     <button type="button" className="rrls-back" onClick={() => setStep(QUESTIONS.length - 1)}>
@@ -569,7 +569,7 @@ export default function LeistungenStory({ articleCount }: { articleCount: number
           kein Baukasten, kein Flickwerk. Wenn dein Betrieb es braucht, finden wir einen Weg.
         </p>
         <div className="rrls-reveal">
-          <Link href="/relaunch-preview/kontakt" className="rr-btn-outline">
+          <Link href="/kontakt" className="rr-btn-outline">
             Erzähl uns davon
           </Link>
         </div>
@@ -579,7 +579,7 @@ export default function LeistungenStory({ articleCount }: { articleCount: number
       <div className="rrls-section rrls-start" id="ls-start">
         <p className="rrls-beweis rrls-reveal">
           Übrigens: Diese Website hier hat den Schreiber selbst. Schau in seine{" "}
-          <Link href="/relaunch-preview/tipps" className="rrls-inline-link">
+          <Link href="/tipps" className="rrls-inline-link">
             {articleCount} {articleCount === 1 ? "Artikel" : "Artikel"}
           </Link>
           .
@@ -600,7 +600,7 @@ export default function LeistungenStory({ articleCount }: { articleCount: number
             Zeig uns deinen Betrieb. Wir zeigen dir dein Team.
           </h2>
           <div className="rrls-cta-actions">
-            <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
+            <Link href="/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
               Kostenlose Vorschläge anfragen
             </Link>
             <a href={`tel:${PHONE_TEL}`} className="rr-btn-outline rr-btn-outline--light">

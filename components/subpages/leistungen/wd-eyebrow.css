@@ -3,7 +3,7 @@
    Klammern, rot, uppercase, letterspaced — 1:1 der Stil der Belief-Szene im
    Hero (.b-label in components/subpages/website-demo/demo.css). Vorher nur
    in website.css definiert und dort verwendet; jetzt geteilt, damit der Hub
-   (app/relaunch-preview/leistungen/page.tsx) denselben Stil ohne Duplikat
+   (app/leistungen/page.tsx) denselben Stil ohne Duplikat
    bekommt. Beide Seiten importieren diese Datei direkt (website.css
    importiert selbst keine CSS-Dateien, Kontrakt).
    ============================================================================ */

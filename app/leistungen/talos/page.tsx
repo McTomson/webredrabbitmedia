@@ -46,7 +46,6 @@ export const metadata: Metadata = {
   title: 'Talos, Kommandozentrale deiner Website · Red Rabbit Media',
   description:
     'Talos steckt in jeder Website von uns: Texte selbst ändern, Besucher sehen, bei Google und ChatGPT gefunden werden, Alarm bei Ausfall. Alles an einem Ort.',
-  robots: { index: false, follow: false },
 };
 
 export default function TalosLeistungPreviewPage() {

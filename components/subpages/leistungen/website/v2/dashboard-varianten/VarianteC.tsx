@@ -142,7 +142,7 @@ export default function VarianteC() {
               sie hingeklickt haben.
             </p>
             <p className="wdc__more">
-              <Link href="/relaunch-preview/leistungen" className="rr-link rr-link--text">
+              <Link href="/leistungen" className="rr-link rr-link--text">
                 Was Talos alles kann, siehst du auf der Leistungs-Seite
               </Link>
             </p>

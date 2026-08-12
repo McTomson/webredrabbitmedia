@@ -150,7 +150,7 @@ export default function VarianteB() {
         </div>
 
         <div className="sf__cta">
-          <Link href="/relaunch-preview/kontakt" className="rr-btn-outline">
+          <Link href="/kontakt" className="rr-btn-outline">
             Mach den ersten Schritt
           </Link>
         </div>

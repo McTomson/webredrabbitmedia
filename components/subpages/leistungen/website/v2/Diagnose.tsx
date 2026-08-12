@@ -188,7 +188,7 @@ export default function Diagnose() {
 
               <div className="wd-diag__cta">
                 <Link
-                  href="/relaunch-preview/kontakt"
+                  href="/kontakt"
                   data-rr-lead="quiz"
                   data-rr-lead-service={`Paket-Finder Empfehlung: ${paket}`}
                   className="rr-btn-sweep rr-btn-sweep--red"

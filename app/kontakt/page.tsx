@@ -23,7 +23,6 @@ export const metadata: Metadata = {
   title: 'Kontakt · Red Rabbit Media',
   description:
     'Erzähl uns kurz, wo es hakt. Kein Verkaufsanruf, kein Newsletter: wir lesen, schauen uns deinen Betrieb an und schreiben dir zurück.',
-  robots: { index: false, follow: false },
 };
 
 export default function KontaktPage() {

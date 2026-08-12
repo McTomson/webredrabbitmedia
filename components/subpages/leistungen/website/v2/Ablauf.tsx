@@ -163,7 +163,7 @@ export default function Ablauf() {
               Sweep), damit Quiz-CTA und Schluss-CTA die Haupt-Buttons bleiben.
               Mobile/reduced-motion: statisch nach der Liste sichtbar. */}
           <div className={'wd-abl__cta' + (reduced || activeIndex === 3 ? ' is-show' : '')}>
-            <Link href="/relaunch-preview/kontakt" className="rr-btn-outline">
+            <Link href="/kontakt" className="rr-btn-outline">
               Mach den ersten Schritt
             </Link>
           </div>

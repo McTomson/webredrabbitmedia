@@ -24,7 +24,7 @@ export default function TalosCta() {
           siehst du ohne Vorkasse.
         </p>
         <div className="lt-cta__actions">
-          <Link href="/relaunch-preview/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
+          <Link href="/kontakt" className="rr-btn-sweep rr-btn-sweep--red">
             Kostenloser Entwurf
           </Link>
           <Link href="/preise" className="rr-btn-outline rr-btn-outline--light">

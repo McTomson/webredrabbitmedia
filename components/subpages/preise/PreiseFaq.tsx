@@ -79,7 +79,7 @@ export default function PreiseFaq() {
               anzufassen. */}
           <p className="rp-faq__link">
             Mehr dazu im Ratgeber:{' '}
-            <Link href="/relaunch-preview/tipps/welche-versteckten-kosten-gibt-es-bei-der-website-erstellung">
+            <Link href="/tipps/welche-versteckten-kosten-gibt-es-bei-der-website-erstellung">
               Welche versteckten Kosten gibt es bei der Website-Erstellung?
             </Link>
           </p>

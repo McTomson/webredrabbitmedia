@@ -124,7 +124,7 @@ function layout(posts: TunnelPost[]): Laid[] {
 const EmptyState = () => (
   <div className="rrtn-empty">
     <p>
-      Nichts gefunden. <Link href="/relaunch-preview/kontakt">Frag uns direkt.</Link>
+      Nichts gefunden. <Link href="/kontakt">Frag uns direkt.</Link>
     </p>
     <div className="rrtn-empty-actions">
       <a className="rrtn-ebtn" href="tel:+436769000955">Anrufen</a>
@@ -150,7 +150,7 @@ function Card({ l }: { l: Laid }) {
   return (
     <a
       className="rrtn-card"
-      href={`/relaunch-preview/tipps/${p.slug}`}
+      href={`/tipps/${p.slug}`}
       style={{ left: `${l.x}%`, top: `${l.y}%` }}
       data-slug={p.slug}
     >
@@ -520,7 +520,7 @@ export default function TippsTunnel({ posts }: { posts: TunnelPost[] }) {
               <a
                 key={l.post.slug}
                 className="rrtn-card"
-                href={`/relaunch-preview/tipps/${l.post.slug}`}
+                href={`/tipps/${l.post.slug}`}
                 style={{ left: `${l.x}%`, top: `${l.y}%` }}
                 data-slug={l.post.slug}
                 ref={(el) => {

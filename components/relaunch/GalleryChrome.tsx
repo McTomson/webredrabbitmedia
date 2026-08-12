@@ -72,7 +72,7 @@ export default function GalleryChrome() {
   return (
     <>
       {/* Ecken-Logo wird jetzt seitenweit von <CornerLogo /> gerendert
-          (app/relaunch-preview/referenzen/page.tsx), damit Groesse/Position
+          (app/referenzen/page.tsx), damit Groesse/Position
           und das verzoegerte Einblenden auf allen Seiten identisch sind. */}
 
       {/* Let's talk oben rechts, links neben dem Burger des RelaunchMenu */}
@@ -101,11 +101,11 @@ export default function GalleryChrome() {
           gap: 14,
         }}
       >
-        <FrameBtn href="/relaunch-preview">Start</FrameBtn>
-        <FrameBtn href="/relaunch-preview/referenzen" current>
+        <FrameBtn href="/">Start</FrameBtn>
+        <FrameBtn href="/referenzen" current>
           Referenzen
         </FrameBtn>
-        <FrameBtn href="/relaunch-preview/kontakt">Kontakt</FrameBtn>
+        <FrameBtn href="/kontakt">Kontakt</FrameBtn>
       </nav>
 
       {/* Let's-talk-Overlay: Blur-Grund (bleibt), Karten neu im
@@ -161,7 +161,7 @@ export default function GalleryChrome() {
               <TalkCard eyebrow="Zusammenarbeit" line="Ich will eine Website von euch.">
                 <Link
                   className="rr-btn-sweep rr-btn-sweep--red"
-                  href="/relaunch-preview/kontakt"
+                  href="/kontakt"
                 >
                   Projekt anfragen
                 </Link>

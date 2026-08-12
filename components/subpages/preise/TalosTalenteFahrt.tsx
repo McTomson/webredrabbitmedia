@@ -62,7 +62,7 @@ export default function TalosTalenteFahrt() {
                 kostet, sagen wir dir nach einem kurzen Gespräch, ehrlich und unverbindlich.
               </p>
               <Link
-                href="/relaunch-preview/kontakt"
+                href="/kontakt"
                 data-rr-lead="talos-extras"
                 data-rr-lead-service="Talos Zusatzfunktionen (auf Anfrage)"
                 className="rr-btn-sweep rr-btn-sweep--red rp-talos-intro__btn"

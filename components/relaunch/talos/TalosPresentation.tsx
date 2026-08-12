@@ -294,7 +294,7 @@ export default function TalosPresentation() {
       {no3d && <div className="tp-poster" aria-hidden="true" />}
 
       {/* Ecken-Logo wird jetzt seitenweit von <CornerLogo /> gerendert
-          (auf app/relaunch-preview/leistungen/talos + talos-intro), damit
+          (auf app/leistungen/talos + talos-intro), damit
           Groesse/Position und das verzoegerte Einblenden ueberall gleich sind. */}
 
       {/* Progress-Linie oben */}
@@ -350,14 +350,14 @@ export default function TalosPresentation() {
 
             {s.id === "tal-frag" && (
               <div className="tp-actions">
-                <Link href="/relaunch-preview/kontakt" className="tp-btn tp-btn--red">
+                <Link href="/kontakt" className="tp-btn tp-btn--red">
                   Los geht&apos;s
                 </Link>
               </div>
             )}
             {s.id === "tal-start" && (
               <div className="tp-actions">
-                <Link href="/relaunch-preview/kontakt" className="tp-btn tp-btn--red">
+                <Link href="/kontakt" className="tp-btn tp-btn--red">
                   Kostenlosen Entwurf anfragen
                 </Link>
                 <div className="tp-actions-row">

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { AOSWrapper } from './AnimatedSection';
+import { isRelaunchPath } from '@/lib/relaunch/routes';
 
 const Footer = () => {
     const pathname = usePathname();
@@ -16,10 +17,8 @@ const Footer = () => {
     if (pathname?.startsWith('/dashboard')) return null;
     // Relaunch-Seiten (neues Design-System) rendern ihr eigenes Chrome.
     if (pathname?.startsWith('/styleguide')) return null;
-    if (pathname?.startsWith('/relaunch-preview')) return null;
-    if (pathname?.startsWith('/preise-preview')) return null;
-    if (pathname?.startsWith('/referenzen-preview')) return null;
     if (pathname?.startsWith('/design-system')) return null;
+    if (isRelaunchPath(pathname)) return null;
 
     const handleSaveContact = () => {
         // Create a link element to download the VCF file

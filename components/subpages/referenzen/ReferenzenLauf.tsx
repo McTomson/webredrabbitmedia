@@ -54,7 +54,7 @@ type Card = {
   exitY: number; // (vh)
 };
 
-const KONTAKT = "/relaunch-preview/kontakt";
+const KONTAKT = "/kontakt";
 
 // Reihenfolge/Daten laut Spec. K2 bewusst als VORLETZTE Position (Position 6).
 // Fenster (Thomas-Runde 3): 7 Karten gestaffelt im Tunnel-Bereich, t0 von

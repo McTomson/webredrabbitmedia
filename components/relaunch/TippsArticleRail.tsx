@@ -91,7 +91,7 @@ export default function TippsArticleRail({
           <li>SEO ab dem ersten Tag</li>
           <li>Betreuung aus Wien</li>
         </ul>
-        <Link className="rrt-rail-link" href="/relaunch-preview/ueber-uns">
+        <Link className="rrt-rail-link" href="/ueber-uns">
           Mehr &uuml;ber uns
         </Link>
       </div>
@@ -102,7 +102,7 @@ export default function TippsArticleRail({
         <nav className="rrt-rail-box rrt-rail-related" aria-label="Weiterlesen">
           <span className="rrt-label">(Weiterlesen)</span>
           {related.map((p) => (
-            <Link key={p.slug} href={`/relaunch-preview/tipps/${p.slug}`}>
+            <Link key={p.slug} href={`/tipps/${p.slug}`}>
               {p.title}
               <span>{p.readingTime} Min</span>
             </Link>
@@ -141,7 +141,7 @@ export default function TippsArticleRail({
             Wir schauen uns deinen Auftritt an und sagen dir ehrlich, wo du
             stehst. Kein Verkaufsanruf.
           </p>
-          <Link className="rrt-btn rrt-btn--block" href="/relaunch-preview/kontakt" data-rr-lead="analyse">
+          <Link className="rrt-btn rrt-btn--block" href="/kontakt" data-rr-lead="analyse">
             Analyse anfordern
           </Link>
           <div className="rrt-rail-cta-alt">

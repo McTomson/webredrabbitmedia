@@ -44,7 +44,7 @@ export default function RisikoBand() {
         </p>
         <div className="rp-risiko__cta">
           <Link
-            href="/relaunch-preview/kontakt"
+            href="/kontakt"
             data-rr-lead="risiko"
             data-rr-lead-service="Preise Risiko-Band"
             className="rr-btn-sweep rr-btn-sweep--red"

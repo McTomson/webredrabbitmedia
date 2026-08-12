@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-const KONTAKT = '/relaunch-preview/kontakt';
+const KONTAKT = '/kontakt';
 
 /**
  * TalosTest — "Wie viel weisst du ueber deine eigene Website?" (Thomas

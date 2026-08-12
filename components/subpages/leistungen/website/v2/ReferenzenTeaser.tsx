@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 /**
- * Schmaler Teaser auf /relaunch-preview/referenzen, direkt nach den
+ * Schmaler Teaser auf /referenzen, direkt nach den
  * Testimonials: das Zitat behauptet, die Arbeiten belegen. Bewusst nur ein
  * Streifen (Eyebrow + Satz + Frame-Button), keine eigene Galerie, damit die
  * Referenzen-Seite das Schaufenster bleibt. Server-Komponente, nur
@@ -71,7 +71,7 @@ export default function ReferenzenTeaser() {
             selber urteilen.
           </p>
         </div>
-        <Link href="/relaunch-preview/referenzen" className="rr-btn-outline">
+        <Link href="/referenzen" className="rr-btn-outline">
           Unsere Arbeiten ansehen
         </Link>
       </div>

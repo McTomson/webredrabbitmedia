@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import RegionHome, { type RegionContent } from '@/components/relaunch/RegionHome';
 import JsonLd from '@/components/JsonLd';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
-import '../../styleguide/styleguide.css';
+import '@/app/styleguide/styleguide.css';
 import '@/components/relaunch/subpages.css';
 
 /**
@@ -25,8 +25,7 @@ export const metadata: Metadata = {
   title: 'Webdesign Steiermark: Website erstellen lassen | Red Rabbit Media',
   description:
     'Website erstellen lassen in der Steiermark: Seiten für Betriebe von Graz bis ins Ennstal, gefunden bei Google und in der KI-Suche. Ohne Vorkasse.',
-  robots: { index: false, follow: false },
-  alternates: { canonical: '/relaunch-preview/webdesign-steiermark' },
+  alternates: { canonical: '/webdesign-steiermark' },
   openGraph: {
     title: 'Webdesign Steiermark: Website erstellen lassen | Red Rabbit Media',
     description:

@@ -52,7 +52,7 @@ const P: Punkt[] = [
     n: '06',
     title: 'Helfer, die du dazustellen kannst',
     body: 'In der Kommandozentrale warten Helfer auf Arbeit. Einer schreibt Beiträge über dein Handwerk, einer beantwortet Anfragen, einer kümmert sich um Termine. Du gibst per Klick frei, sie erledigen den Rest.',
-    href: '/relaunch-preview/leistungen/talos',
+    href: '/leistungen/talos',
     more: 'Mehr über die Agenten',
   },
 ];

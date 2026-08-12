@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { compileMDX } from 'next-mdx-remote/rsc';
-import { getAllPosts, getPostBySlug, getRelatedPosts, extractHeadings } from '@/lib/blog/posts';
+import { getAllPostsIncludingDrafts, getPostBySlug, getRelatedPosts, extractHeadings, clampDescription } from '@/lib/blog/posts';
 import { SITE_URL, AUTHORS } from '@/lib/config';
 import { SimpleAudioPlayer } from '@/components/blog/content/SimpleAudioPlayer';
 import { VideoEmbed } from '@/components/blog/content/VideoEmbed';
@@ -22,7 +22,8 @@ import '@/app/styleguide/styleguide.css';
 import '@/components/subpages/tipps-preview.css';
 
 /**
- * Artikel-Template im Relaunch-Look (Preview, noindex).
+ * Artikel-Template im Relaunch-Look. Indexierbar; nur Drafts sind noindex
+ * (siehe generateMetadata).
  * Struktur nach Vorbild der LIVE-Artikelseite (app/tipps/[slug], Thomas
  * 29.07.: "unsere Seite wie sie aufgebaut ist"): Breadcrumbs, E-E-A-T-Kopf
  * (Autor + LinkedIn + Fachlich geprueft + Lesezeit), Schnellantwort,
@@ -36,15 +37,21 @@ interface Props {
 }
 
 /**
- * Statisch vorrendern (wie /tipps/[slug]). WICHTIG: ohne SSG packt Vercels
- * File-Tracing wegen des fs-Checks in ArticleImg den kompletten public/-
- * Ordner (>1 GB Medien) in die Serverless-Funktion -> Deploy-Abbruch
- * (250-MB-Limit, 22.07.). Statisch = fs laeuft zur Build-Zeit, keine Funktion.
+ * Statisch vorrendern. WICHTIG: ohne SSG packt Vercels File-Tracing wegen des
+ * fs-Checks in ArticleImg den kompletten public/-Ordner (>1 GB Medien) in die
+ * Serverless-Funktion -> Deploy-Abbruch (250-MB-Limit, 22.07.). Statisch = fs
+ * laeuft zur Build-Zeit, keine Funktion. dynamicParams=false MUSS bleiben.
+ *
+ * generateStaticParams liefert ALLE Slugs inkl. Drafts (getAllPostsIncludingDrafts):
+ * die Content-Automatik mailt einen Review-Link auf /tipps/<slug>, BEVOR der
+ * Artikel published ist. Der Draft wird also statisch gebaut, bleibt aber via
+ * robots noindex aus dem Index (siehe generateMetadata). Listen/Sitemap/Feed
+ * nutzen weiter getAllPosts() (nur published).
  */
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const posts = await getAllPosts();
+  const posts = await getAllPostsIncludingDrafts();
   return posts.map((p) => ({ slug: p.slug }));
 }
 
@@ -52,10 +59,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return { title: 'Beitrag nicht gefunden' };
+
+  // Drafts sind per Direkt-URL erreichbar (Review), duerfen aber nie in den Index.
+  const draftRobots =
+    post.status === 'draft' ? { robots: { index: false, follow: false } } : {};
+
+  // SERPs kappen Descriptions ab ~160 Zeichen; Meta-Tags cappen (Excerpt bleibt voll fuer Cards).
+  const metaDescription = clampDescription(post.excerpt);
+  const authorName = post.author?.toLowerCase().includes('dmitry')
+    ? AUTHORS.dmitry.name
+    : AUTHORS.thomas.name;
+
   return {
-    title: `${post.title} (Preview) · Red Rabbit Media`,
-    description: post.excerpt,
-    robots: { index: false, follow: false },
+    title: `${post.title} | Red Rabbit Media`,
+    description: metaDescription,
+    ...draftRobots,
+    alternates: {
+      canonical: `${SITE_URL}/tipps/${slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: metaDescription,
+      url: `${SITE_URL}/tipps/${slug}`,
+      images: [post.featuredImage],
+      type: 'article',
+      publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt,
+      authors: [authorName],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: metaDescription,
+      images: [post.featuredImage],
+    },
   };
 }
 
@@ -91,17 +128,6 @@ const headingId = (children: React.ReactNode): string | undefined =>
     ? children.toLowerCase().replace(/[^a-z0-9]+/g, '-')
     : undefined;
 
-/**
- * Interne Artikel-Links in den MDX-Quellen zeigen auf die LIVE-Pfade
- * (/tipps/<slug>, 21 von 26 Artikeln) — korrekt fuer den Go-Live, aber auf
- * der Preview wuerde der Leser damit ins alte Design springen. Nur fuers
- * Preview-Prefix umschreiben; beim Go-Live faellt dieses Mapping weg.
- */
-const A = ({ href = '', ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
-  // eslint-disable-next-line jsx-a11y/anchor-has-content
-  <a href={href.startsWith('/tipps/') ? `/relaunch-preview${href}` : href} {...props} />
-);
-
 const H2 = ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
   <h2 id={headingId(children)} {...props}>{children}</h2>
 );
@@ -128,7 +154,6 @@ export default async function TippsArticlePreview({ params }: Props) {
       HeroldComparisonTable,
       RegionComparisonTable,
       img: ArticleImg,
-      a: A,
       h2: H2,
       h3: H3,
     },
@@ -157,9 +182,8 @@ export default async function TippsArticlePreview({ params }: Props) {
   const showHero = imageExists(post.featuredImage);
   const rrFonts = `rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`;
 
-  // --- Strukturierte Daten (wie Live-Seite; BASE mit Preview-Prefix, faellt
-  // beim Go-Live weg). Seite ist waehrend der Preview noindex. ---
-  const BASE = `${SITE_URL}/relaunch-preview`;
+  // --- Strukturierte Daten (wie Live-Seite; BASE = Root-Domain). ---
+  const BASE = SITE_URL;
   const blogSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -230,15 +254,15 @@ export default async function TippsArticlePreview({ params }: Props) {
 
       <div className="rrt-wrap rrt-wrap--article">
         <header className="rrt-top">
-          <Link className="rrt-mark" href="/relaunch-preview">red rabbit</Link>
-          <Link className="rrt-back" href="/relaunch-preview/tipps">Alle Tipps</Link>
+          <Link className="rrt-mark" href="/">red rabbit</Link>
+          <Link className="rrt-back" href="/tipps">Alle Tipps</Link>
         </header>
 
         {/* Breadcrumbs (sichtbar, wie live; Schema unten). */}
         <nav className="rrt-crumbs" aria-label="Breadcrumb">
-          <Link href="/relaunch-preview">Home</Link>
+          <Link href="/">Home</Link>
           <span aria-hidden="true">/</span>
-          <Link href="/relaunch-preview/tipps">Tipps</Link>
+          <Link href="/tipps">Tipps</Link>
           <span aria-hidden="true">/</span>
           <span aria-current="page">{post.title}</span>
         </nav>
@@ -362,7 +386,7 @@ export default async function TippsArticlePreview({ params }: Props) {
                 <p>{authorBio}</p>
                 {/* Button-Paar wie Hauptseite: Sweep primaer + Outline sekundaer. */}
                 <div className="rrt-bio-actions">
-                  <Link className="rrt-btn" href="/relaunch-preview/kontakt" data-rr-lead="analyse">Beratung anfragen</Link>
+                  <Link className="rrt-btn" href="/kontakt" data-rr-lead="analyse">Beratung anfragen</Link>
                   <a className="rrt-btn-outline" href={author.linkedin} target="_blank" rel="noopener noreferrer">
                     LinkedIn-Profil
                   </a>
@@ -376,7 +400,7 @@ export default async function TippsArticlePreview({ params }: Props) {
                 <section className="rrt-related">
                   <span className="rrt-label">(Weiterlesen)</span>
                   {related.map((p, i) => (
-                    <Link className="rrt-row" href={`/relaunch-preview/tipps/${p.slug}`} key={p.slug}>
+                    <Link className="rrt-row" href={`/tipps/${p.slug}`} key={p.slug}>
                       <span className="rrt-num">{String(i + 1).padStart(2, '0')}</span>
                       <h3>{p.title}</h3>
                       <span className="rrt-meta">{p.readingTime} Min</span>

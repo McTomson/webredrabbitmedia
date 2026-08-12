@@ -21,7 +21,7 @@
  * Abweichungen von KundenGrid (bewusst, markenkonform):
  *  - 6 Faehigkeits-Namen statt Kundennamen; kein CTA-/Chevron-Feld.
  *  - Zellen sind <button>: Klick oeffnet ein Modal (4 Bloecke, rote Labels,
- *    says-Zeile, CTA -> /relaunch-preview/kontakt). Modal-Logik unveraendert
+ *    says-Zeile, CTA -> /kontakt). Modal-Logik unveraendert
  *    uebernommen (Esc/X/Backdrop, Body-Scroll-Lock, harte Fokusfalle).
  *  - Klick-Zeichen (kleines Plus) unten rechts je Zelle als Klickbarkeits-
  *    Signal (border-radius 0), hover -> Rot.
@@ -36,7 +36,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FAEHIGKEITEN } from './faehigkeiten-data';
 
-const KONTAKT = '/relaunch-preview/kontakt';
+const KONTAKT = '/kontakt';
 
 // Timing 1:1 aus KundenGrid.tsx (Zeilen 42-44).
 const DEL_MS = 42;

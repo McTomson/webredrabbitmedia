@@ -229,7 +229,7 @@ export default function VarianteA() {
 
               <div className="gta__cta">
                 <Link
-                  href="/relaunch-preview/kontakt"
+                  href="/kontakt"
                   className="rr-btn-sweep rr-btn-sweep--red"
                 >
                   Hol dir den kostenlosen Entwurf

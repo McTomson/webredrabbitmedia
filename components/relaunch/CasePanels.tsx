@@ -39,7 +39,7 @@ export type Theme = {
   windows: PanelWindow[];
 };
 
-const LEISTUNGEN = "/relaunch-preview/leistungen";
+const LEISTUNGEN = "/leistungen";
 
 export const THEMES: Theme[] = [
   {
