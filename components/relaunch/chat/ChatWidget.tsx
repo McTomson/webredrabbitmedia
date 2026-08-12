@@ -445,20 +445,20 @@ const STYLE = `
 .rrchat-fab{
   position:fixed; right:26px; bottom:26px;
   right:calc(26px + env(safe-area-inset-right));
-  bottom:calc(26px + env(safe-area-inset-bottom));
+  /* Hebt sich um die Cookie-Banner-Hoehe an (CSS-Var vom Banner gesetzt) -> FAB
+     bleibt IMMER sichtbar und ueberdeckt den Banner nie. 0px wenn kein Banner. */
+  bottom:calc(26px + env(safe-area-inset-bottom) + var(--rr-cookiebanner-h, 0px));
   z-index:var(--rrchat-z);
   width:64px; height:64px; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
   background:var(--rrchat-paper); border:1px solid var(--rrchat-line);
   box-shadow:0 12px 30px rgba(0,0,0,.14), 0 2px 6px rgba(28,40,55,.08);
   cursor:pointer;
-  transition:transform .22s var(--rr-ease,cubic-bezier(.6,0,.4,1)), box-shadow .22s;
+  transition:transform .22s var(--rr-ease,cubic-bezier(.6,0,.4,1)), box-shadow .22s, bottom .32s var(--rr-ease,ease);
 }
 .rrchat-fab:hover{ transform:translateY(-3px); box-shadow:0 16px 36px rgba(241,32,50,.22), 0 3px 8px rgba(28,40,55,.10); }
 .rrchat-fab:focus-visible{ outline:none; box-shadow:0 0 0 3px var(--rrchat-paper), 0 0 0 5.5px var(--rr-red,#f12032); }
 .rrchat-fab-logo{ width:32px; height:32px; object-fit:contain; }
-/* Cookie-Banner sitzt in derselben Ecke -> FAB weicht, solange er offen ist. */
-:root[data-rr-cookiebanner="1"] .rrchat-fab{ opacity:0; transform:translateY(10px) scale(.85); pointer-events:none; }
 
 /* ---------- Overlay + Scrim ---------- */
 /* Fast deckende, helle Flaeche statt teurem backdrop-filter: die Startseite
@@ -659,7 +659,8 @@ const STYLE = `
   .rrchat-logotop{ top:16px; left:16px; }
   .rrchat-close{ top:14px; right:16px; }
   .rrchat-fab{ width:58px; height:58px; right:18px; bottom:18px;
-    right:calc(18px + env(safe-area-inset-right)); bottom:calc(18px + env(safe-area-inset-bottom)); }
+    right:calc(18px + env(safe-area-inset-right));
+    bottom:calc(18px + env(safe-area-inset-bottom) + var(--rr-cookiebanner-h, 0px)); }
   /* Anrufen/E-Mail nebeneinander statt gestapelt -> spart Hoehe unten. */
   .rrchat-fallback-actions{ gap:10px; }
   .rrchat .rrchat-fallback-actions .rr-btn-outline{ flex:1 1 0; min-width:0; }

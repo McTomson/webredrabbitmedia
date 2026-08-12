@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import Link from 'next/link';
 
@@ -22,6 +22,7 @@ declare global {
 const CookieBanner = () => {
     const [showBanner, setShowBanner] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
+    const rootRef = useRef<HTMLDivElement>(null);
     // OPT-OUT-Modell (Thomas 2026-08-12, NICHT auf Opt-in zuruecksetzen):
     // Tracking ist ab Seitenaufruf aktiv (Consent-Mode-Default 'granted' im <head>,
     // Clarity laedt sofort). Der Banner ist ein HINWEIS mit ehrlichem Ablehn-/
@@ -42,15 +43,25 @@ const CookieBanner = () => {
         }
     }, []);
 
-    // Solange der Banner sichtbar ist, markieren wir das am <html>. Der Chat-FAB
-    // (unten rechts, gleiche Ecke) blendet sich darueber aus, damit er den
-    // "Alle akzeptieren"-Button nicht ueberdeckt (Consent zuerst). Entkoppelt via
-    // Attribut, kein direkter Bezug zwischen den Komponenten.
+    // Wir veroeffentlichen die Banner-Hoehe als CSS-Variable am <html>. Der Chat-FAB
+    // (unten rechts, gleiche Ecke) hebt sich um genau diese Hoehe an -> bleibt IMMER
+    // sichtbar (auch waehrend der Banner offen ist) und ueberdeckt trotzdem nichts.
+    // ResizeObserver haelt die Hoehe aktuell (einfach <-> Detailansicht, Umbruch).
     useEffect(() => {
         const root = document.documentElement;
-        if (showBanner) root.setAttribute('data-rr-cookiebanner', '1');
-        else root.removeAttribute('data-rr-cookiebanner');
-        return () => root.removeAttribute('data-rr-cookiebanner');
+        const el = rootRef.current;
+        if (!showBanner || !el) {
+            root.style.setProperty('--rr-cookiebanner-h', '0px');
+            return;
+        }
+        const setH = () => root.style.setProperty('--rr-cookiebanner-h', `${el.offsetHeight}px`);
+        setH();
+        const ro = new ResizeObserver(setH);
+        ro.observe(el);
+        return () => {
+            ro.disconnect();
+            root.style.setProperty('--rr-cookiebanner-h', '0px');
+        };
     }, [showBanner]);
 
     // GTM/GA Consent-Update (Consent Mode v2). Analytics steuert analytics_storage,
@@ -132,6 +143,7 @@ const CookieBanner = () => {
 
     return (
         <div
+            ref={rootRef}
             className="fixed inset-x-0 bottom-0 z-50 border-t border-[color:var(--rr-line,#e4e4e0)] bg-white shadow-[0_-10px_40px_rgba(20,26,35,0.10)]"
             style={uiFont}
             role="dialog"
