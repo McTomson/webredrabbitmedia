@@ -115,6 +115,7 @@ export default function ChatWidget() {
   const stageRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const logRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const hpRef = useRef<HTMLInputElement | null>(null);
 
   const typewriterActive = open && !hasStarted && input.length === 0 && !reducedMotion;
@@ -173,9 +174,10 @@ export default function ChatWidget() {
     };
   }, [open]);
 
-  // Auto-Scroll des Verlaufs ans Ende bei neuem Text.
+  // Auto-Scroll ans Ende bei neuem Text. Es scrollt der .rrchat-scroll-Container
+  // (nicht mehr der Log selbst), da im Chat-Modus nur dieser scrollt.
   useEffect(() => {
-    const el = logRef.current;
+    const el = scrollRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [turns]);
 
@@ -290,6 +292,7 @@ export default function ChatWidget() {
             </button>
 
             <div className="rrchat-panel" data-chatting={hasStarted ? "true" : "false"}>
+              <div className="rrchat-scroll" ref={scrollRef}>
               <div className="rrchat-intro">
                 <h2 id="rrchat-title" className="rrchat-h">
                   Wie können wir dir helfen?
@@ -325,7 +328,9 @@ export default function ChatWidget() {
                   </p>
                 )}
               </div>
+              </div>
 
+              <div className="rrchat-dock">
               <div className="rrchat-box">
                 <div className="rrchat-field">
                   <label htmlFor="rrchat-input" className="rrchat-sr-only">
@@ -413,6 +418,7 @@ export default function ChatWidget() {
                   Datenschutz
                 </Link>
               </p>
+              </div>
             </div>
           </div>
         </div>
@@ -474,11 +480,13 @@ const STYLE = `
   padding:0 20px; overflow-y:auto; overscroll-behavior:contain;
   animation:rrchat-fade .4s var(--rr-ease,ease) both;
 }
+/* Logo oben LINKS wie im Site-Header (nicht mittig-schwebend). */
 .rrchat-logotop{
-  position:fixed; top:24px; left:50%; transform:translateX(-50%); z-index:2;
+  position:fixed; top:20px; left:24px; z-index:2;
+  left:calc(24px + env(safe-area-inset-left));
   pointer-events:none;
 }
-.rrchat-logotop-img{ width:26px; height:26px; object-fit:contain; opacity:.95; }
+.rrchat-logotop-img{ width:30px; height:30px; object-fit:contain; opacity:1; }
 .rrchat-close{
   position:fixed; top:20px; right:24px; z-index:2;
   right:calc(24px + env(safe-area-inset-right));
@@ -489,13 +497,39 @@ const STYLE = `
 .rrchat-close:hover{ color:var(--rrchat-ink); transform:rotate(90deg); }
 .rrchat-close:focus-visible{ outline:none; color:var(--rrchat-ink); box-shadow:0 0 0 2px var(--rr-red,#f12032); border-radius:50%; }
 
-/* ---------- Panel (Inhaltsspalte) ---------- */
+/* ---------- Panel: idle = Landing-Spalte, Chat = Vollhoehe mit Dock ----------
+   Idle (kein Gespraech): natuerlicher Fluss, oben verankert (Intro -> Eingabe ->
+   Buttons gruppiert wie in der Vorlage). Sobald gechattet wird: Panel fuellt die
+   Hoehe, NUR .rrchat-scroll scrollt (Verlauf, per Touch), und .rrchat-dock
+   (Eingabe + Buttons) bleibt unten fixiert -> Buttons verschwinden nie, auf
+   jeder Bildschirmgroesse (fluid, ohne Breakpoint). */
 .rrchat-panel{
   width:min(680px, 100%);
-  margin-top:min(15vh, 128px); margin-bottom:56px;
   display:flex; flex-direction:column;
   animation:rrchat-rise .4s var(--rr-ease,cubic-bezier(.6,0,.4,1)) both;
 }
+.rrchat-panel[data-chatting="false"]{ margin:min(15vh, 120px) 0 48px; }
+.rrchat-panel[data-chatting="true"]{
+  flex:1 1 auto; min-height:0;
+  padding:72px 0 calc(18px + env(safe-area-inset-bottom));
+}
+.rrchat-scroll{ display:block; }
+.rrchat-panel[data-chatting="true"] .rrchat-scroll{
+  flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden;
+  -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+  scrollbar-width:thin; padding-right:2px;
+  display:flex; flex-direction:column;
+}
+/* Nachrichten unten am Eingabefeld ankern (bei wenig Text); bei viel Text
+   greift der Scroll normal (margin-top:auto kollabiert). */
+.rrchat-panel[data-chatting="true"] .rrchat-log{ margin-top:auto; }
+.rrchat-dock{ flex:0 0 auto; }
+/* Im Gespraech kompakter: Erklaertext/"Lieber direkt reden"/Fusszeile weg,
+   Buttons (Vorschlag + Anrufen/E-Mail) bleiben. */
+.rrchat-panel[data-chatting="true"] .rrchat-fallback-lead,
+.rrchat-panel[data-chatting="true"] .rrchat-fallback-alt,
+.rrchat-panel[data-chatting="true"] .rrchat-foot{ display:none; }
+.rrchat-panel[data-chatting="true"] .rrchat-fallback{ margin-top:14px; }
 
 /* ---------- Intro (kollabiert, sobald das Gespraech laeuft) ---------- */
 .rrchat-intro{
@@ -523,11 +557,10 @@ const STYLE = `
 }
 
 /* ---------- Verlauf (Claude-Look: User rechts als Pill, Bot reiner Text) ---------- */
+/* Kein eigener Scroll mehr -> das Scrollen uebernimmt .rrchat-scroll. */
 .rrchat-log{
   display:flex; flex-direction:column;
-  overflow-y:auto; overflow-x:hidden; min-height:0;
-  max-height:44vh; margin:0 2px 22px; padding-right:4px;
-  scrollbar-width:thin;
+  margin:0 2px 8px; padding-right:2px;
 }
 .rrchat-log:empty{ display:none; }
 .rrchat-turn{ margin-bottom:22px; }
@@ -618,16 +651,18 @@ const STYLE = `
 
 /* ---------- Mobile ---------- */
 @media (max-width:600px){
-  .rrchat-stage{ padding:0 16px; }
-  .rrchat-panel{ margin-top:12vh; margin-bottom:40px; }
+  .rrchat-stage{ padding:0 14px; }
+  .rrchat-panel[data-chatting="false"]{ margin:11vh 0 32px; }
+  .rrchat-panel[data-chatting="true"]{ padding-top:60px; }
   .rrchat-h{ font-size:1.6rem; }
-  .rrchat-log{ max-height:38vh; }
   .rrchat .rrchat-cta-primary{ display:block; width:100%; }
+  .rrchat-logotop{ top:16px; left:16px; }
+  .rrchat-close{ top:14px; right:16px; }
   .rrchat-fab{ width:58px; height:58px; right:18px; bottom:18px;
     right:calc(18px + env(safe-area-inset-right)); bottom:calc(18px + env(safe-area-inset-bottom)); }
-  .rrchat-fallback-actions{ gap:12px; }
-  .rrchat .rrchat-fallback-actions .rr-btn-sweep,
-  .rrchat .rrchat-fallback-actions .rr-btn-outline{ flex:1 1 100%; }
+  /* Anrufen/E-Mail nebeneinander statt gestapelt -> spart Hoehe unten. */
+  .rrchat-fallback-actions{ gap:10px; }
+  .rrchat .rrchat-fallback-actions .rr-btn-outline{ flex:1 1 0; min-width:0; }
 }
 
 /* ---------- Motion ---------- */
