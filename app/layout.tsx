@@ -11,6 +11,7 @@ import ChromeGate from "@/components/ChromeGate";
 import DeferredThirdParties from "@/components/DeferredThirdParties";
 import NoTrackFlag from "@/components/NoTrackFlag";
 import LeadProvider from "@/components/relaunch/lead/LeadProvider";
+import ChatWidgetMount from "@/components/relaunch/chat/ChatWidgetMount";
 import { aggregateRatingLd } from '@/lib/reviews';
 
 const inter = Inter({
@@ -302,6 +303,10 @@ export default function RootLayout({
           <main id="main-content" tabIndex={-1} className="scroll-mt-20 focus:outline-none">{children}</main>
           <ChromeGate><Footer /></ChromeGate>
           <ContactFormWrapper />
+          {/* Chat-Widget global auf ALLEN Seiten (client-only, ssr:false). Spricht
+              via fetch/SSE mit chat.redrabbit.media; Turnstile-Script/-iframe von
+              challenges.cloudflare.com (CSP entsprechend erweitert). */}
+          <ChatWidgetMount />
           {/* Cookie-Banner global auf ALLEN Routen (DSGVO). Rendert per
               localStorage-Guard nur einmal sichtbar; alte Seiten, die ihn noch
               selbst einbinden (ClientWidgets/RegionalLandingPage/CityContent),
