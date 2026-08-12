@@ -1,12 +1,14 @@
 "use client";
 
-// Chat-Widget im Red-Rabbit-Haus-Stil. Wurzel traegt ".rr" (zieht alle
-// --rr-Tokens + die echten Button-Klassen aus styleguide.css) und ".rrchat".
-// Fonts: --font-grotesk ist NICHT self-hosted (Space Grotesk) -> hier inline auf
-// die self-hosted "Instrument Sans" gemappt, --font-dmsans/-crimson auf ihre
-// self-hosted Familien. styled-jsx wird gemieden -> namespaced <style> (Muster
-// FragTalos.tsx). Blur nur ueber den Scrim (fremdes Seiten-Markup ist nicht
-// bekleidbar). A11y: dialog/aria-modal, Fokus-Falle, ESC, role=log aria-live.
+// Chat-Widget im Red-Rabbit-Haus-Stil, Vollbild-Overlay (Design-Vorlage
+// chatbot-widget-mockup.html, von Thomas abgenommen). Wurzel traegt ".rr" (zieht
+// alle --rr-Tokens + die echten Button-Klassen aus styleguide.css) und ".rrchat".
+// SCHRIFTEN: ausschliesslich die echten Site-Tokens -- Headline = --rr-font-display
+// (DM Sans), alles andere = --rr-font-ui (Instrument Sans). KEIN Space Grotesk,
+// keine hardcodierten Familien (DESIGN_STANDARD.md). styled-jsx wird gemieden ->
+// namespaced <style> (Muster FragTalos.tsx). Blur ueber den Scrim (backdrop-filter,
+// fremdes Seiten-Markup ist nicht direkt bekleidbar). A11y: dialog/aria-modal,
+// Fokus-Falle, ESC, role=log aria-live. Verdrahtung (useChatSession) unveraendert.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
@@ -105,7 +107,7 @@ export default function ChatWidget() {
     useChatSession();
 
   const fabRef = useRef<HTMLButtonElement | null>(null);
-  const panelRef = useRef<HTMLDivElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const logRef = useRef<HTMLDivElement | null>(null);
   const hpRef = useRef<HTMLInputElement | null>(null);
@@ -114,7 +116,7 @@ export default function ChatWidget() {
   const ghost = useTypewriter(typewriterActive);
   const placeholder = useMemo(() => {
     if (hasStarted) return "Schreib uns eine Nachricht ...";
-    if (typewriterActive) return ghost || " ";
+    if (typewriterActive) return ghost || " ";
     return "Frag uns etwas zu Red Rabbit ...";
   }, [hasStarted, typewriterActive, ghost]);
 
@@ -124,7 +126,7 @@ export default function ChatWidget() {
     window.setTimeout(() => fabRef.current?.focus(), 0);
   }, []);
 
-  // ESC schliesst; Tab-Falle innerhalb des Dialogs.
+  // ESC schliesst; Tab-Falle innerhalb des Dialogs (die Stage traegt role=dialog).
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -134,9 +136,9 @@ export default function ChatWidget() {
         return;
       }
       if (e.key !== "Tab") return;
-      const panel = panelRef.current;
-      if (!panel) return;
-      const focusables = panel.querySelectorAll<HTMLElement>(
+      const stage = stageRef.current;
+      if (!stage) return;
+      const focusables = stage.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), textarea, input:not([type="hidden"]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])'
       );
       if (focusables.length === 0) return;
@@ -197,6 +199,11 @@ export default function ChatWidget() {
     }
   };
 
+  // Klick auf die leere Stage-Flaeche (nicht auf das Panel) schliesst ebenfalls.
+  const onStagePointer = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) closeWidget();
+  };
+
   return (
     <div className="rr rrchat" data-open={open ? "true" : "false"}>
       {!open && (
@@ -210,10 +217,10 @@ export default function ChatWidget() {
           onClick={() => setOpen(true)}
         >
           <Image
-            src="/images/rr-logo.png"
+            src="/images/rr-mark.png"
             alt=""
-            width={30}
-            height={30}
+            width={32}
+            height={32}
             className="rrchat-fab-logo"
           />
         </button>
@@ -229,61 +236,55 @@ export default function ChatWidget() {
             onClick={closeWidget}
           />
           <div
-            ref={panelRef}
-            className="rrchat-panel"
+            ref={stageRef}
+            className="rrchat-stage"
             role="dialog"
             aria-modal="true"
             aria-labelledby="rrchat-title"
+            onMouseDown={onStagePointer}
           >
-            <div className="rrchat-panel-head">
+            <div className="rrchat-logotop" aria-hidden="true">
               <Image
-                src="/images/rr-logo.png"
+                src="/images/rr-mark.png"
                 alt="Red Rabbit"
-                width={34}
-                height={34}
-                className="rrchat-brand-logo"
+                width={26}
+                height={26}
+                className="rrchat-logotop-img"
               />
-              <button
-                type="button"
-                className="rrchat-close"
-                aria-label="Chat schließen"
-                onClick={closeWidget}
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M5 5l10 10M15 5L5 15"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
             </div>
+            <button
+              type="button"
+              className="rrchat-close"
+              aria-label="Chat schließen"
+              onClick={closeWidget}
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 20 20"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 5l10 10M15 5L5 15"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
 
-            <div className="rrchat-body">
-              {!hasStarted && (
-                <div className="rrchat-intro">
-                  <h2 id="rrchat-title" className="rrchat-h">
-                    Wie können wir dir helfen?
-                  </h2>
+            <div className="rrchat-panel" data-chatting={hasStarted ? "true" : "false"}>
+              <div className="rrchat-intro">
+                <h2 id="rrchat-title" className="rrchat-h">
+                  Wie können wir dir helfen?
                   <span className="rrchat-rule" aria-hidden="true" />
-                  <p className="rrchat-sub">
-                    Frag uns alles zu Red Rabbit, unseren Websites, dem Ablauf
-                    oder den Preisen. Wir antworten direkt.
-                  </p>
-                </div>
-              )}
-              {hasStarted && (
-                <h2 id="rrchat-title" className="rrchat-sr-only">
-                  Chat mit Red Rabbit
                 </h2>
-              )}
+                <p className="rrchat-sub">
+                  Frag uns alles zu Red Rabbit, unseren Websites, dem Ablauf
+                  oder den Preisen. Wir antworten direkt.
+                </p>
+              </div>
 
               <div
                 ref={logRef}
@@ -294,11 +295,13 @@ export default function ChatWidget() {
               >
                 {turns.map((turn) =>
                   turn.role === "user" ? (
-                    <div key={turn.id} className="rrchat-umsg">
-                      {turn.text}
+                    <div key={turn.id} className="rrchat-turn">
+                      <div className="rrchat-umsg">{turn.text}</div>
                     </div>
                   ) : (
-                    <BotBubble key={turn.id} turn={turn} sending={isSending} />
+                    <div key={turn.id} className="rrchat-turn">
+                      <BotBubble turn={turn} sending={isSending} />
+                    </div>
                   )
                 )}
                 {notice && (
@@ -307,83 +310,81 @@ export default function ChatWidget() {
                   </p>
                 )}
               </div>
-            </div>
 
-            <div className="rrchat-inputwrap">
-              <label htmlFor="rrchat-input" className="rrchat-sr-only">
-                Deine Nachricht an Red Rabbit
-              </label>
-              <textarea
-                id="rrchat-input"
-                ref={textareaRef}
-                className="rrchat-textarea"
-                rows={1}
-                value={input}
-                placeholder={placeholder}
-                maxLength={MAX_INPUT_CHARS}
-                onChange={(e) => {
-                  setInput(e.target.value);
-                  if (notice) clearNotice();
-                  autoGrow();
-                }}
-                onKeyDown={onKeyDownTextarea}
-              />
+              <div className="rrchat-box">
+                <div className="rrchat-field">
+                  <label htmlFor="rrchat-input" className="rrchat-sr-only">
+                    Deine Nachricht an Red Rabbit
+                  </label>
+                  <textarea
+                    id="rrchat-input"
+                    ref={textareaRef}
+                    className="rrchat-textarea"
+                    rows={1}
+                    value={input}
+                    placeholder={placeholder}
+                    maxLength={MAX_INPUT_CHARS}
+                    onChange={(e) => {
+                      setInput(e.target.value);
+                      if (notice) clearNotice();
+                      autoGrow();
+                    }}
+                    onKeyDown={onKeyDownTextarea}
+                  />
 
-              {/* Honeypot: fuer Menschen unsichtbar, aber NICHT display:none,
-                  damit naive Bots es trotzdem befuellen. */}
-              <div className="rrchat-hp" aria-hidden="true">
-                <label htmlFor="rrchat-hp-field">Bitte dieses Feld frei lassen</label>
-                <input
-                  id="rrchat-hp-field"
-                  ref={hpRef}
-                  type="text"
-                  name="hp"
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
+                  {/* Honeypot: fuer Menschen unsichtbar, aber NICHT display:none,
+                      damit naive Bots es trotzdem befuellen. */}
+                  <div className="rrchat-hp" aria-hidden="true">
+                    <label htmlFor="rrchat-hp-field">Bitte dieses Feld frei lassen</label>
+                    <input
+                      id="rrchat-hp-field"
+                      ref={hpRef}
+                      type="text"
+                      name="hp"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+                </div>
+                <div className="rrchat-sendrow">
+                  <span className="rrchat-hint">Nur Fragen zu Red Rabbit</span>
+                  <button
+                    type="button"
+                    className="rr-btn-sweep rr-btn-sweep--red rrchat-send"
+                    onClick={submit}
+                    disabled={isSending || input.trim().length === 0}
+                  >
+                    {isSending ? "Sendet ..." : "Senden"}
+                  </button>
+                </div>
               </div>
 
-              <div className="rrchat-sendrow">
-                <span className="rrchat-hint">
-                  Enter sendet, Shift+Enter für eine neue Zeile.
-                </span>
-                <button
-                  type="button"
-                  className="rr-btn-sweep rr-btn-sweep--red rrchat-send"
-                  onClick={submit}
-                  disabled={isSending || input.trim().length === 0}
-                >
-                  {isSending ? "Sendet ..." : "Senden"}
-                </button>
+              <div className="rrchat-fallback">
+                <p className="rrchat-fallback-lead">
+                  Keine passende Antwort gefunden? <b>Hast du noch Fragen?</b>
+                </p>
+                <div className="rrchat-fallback-actions">
+                  <a className="rr-btn-sweep rr-btn-sweep--red" href={`tel:${TEL}`}>
+                    Anrufen
+                  </a>
+                  <Link
+                    className="rr-btn-outline"
+                    href="/kontakt"
+                    data-rr-lead="chat"
+                  >
+                    E-Mail senden
+                  </Link>
+                </div>
               </div>
-            </div>
 
-            <div className="rrchat-fallback">
-              <p className="rrchat-fallback-lead">
-                Keine passende Antwort gefunden, oder lieber direkt mit einem
-                Menschen reden?
-              </p>
-              <div className="rrchat-fallback-actions">
-                <a className="rr-btn-sweep rr-btn-sweep--red" href={`tel:${TEL}`}>
-                  Anrufen
-                </a>
-                <Link
-                  className="rr-btn-outline"
-                  href="/kontakt"
-                  data-rr-lead="chat"
-                >
-                  E-Mail senden
+              <p className="rrchat-foot">
+                Digitaler Assistent von Red Rabbit. Antworten sind unverbindlich und
+                ersetzen kein persönliches Angebot.{" "}
+                <Link href="/datenschutz" className="rrchat-foot-link">
+                  Datenschutz
                 </Link>
-              </div>
+              </p>
             </div>
-
-            <p className="rrchat-foot">
-              Digitaler Assistent von Red Rabbit. Antworten sind unverbindlich und
-              ersetzen kein persönliches Angebot.{" "}
-              <Link href="/datenschutz" className="rrchat-foot-link">
-                Datenschutz
-              </Link>
-            </p>
           </div>
         </div>
       )}
@@ -395,152 +396,176 @@ export default function ChatWidget() {
 
 const STYLE = `
 .rrchat{
-  --font-dmsans:'DM Sans';
-  --font-grotesk:'Instrument Sans';
-  --font-crimson:'Crimson Pro';
-  --rrchat-hint:#77776f;
+  --rrchat-hint:#a4a49b;
   --rrchat-sub:#5a5e68;
+  --rrchat-paper:var(--rr-paper,#ffffff);
+  --rrchat-line:var(--rr-line,#e4e4e0);
+  --rrchat-ink:var(--rr-ink,#23262e);
+  --rrchat-bg:#f4f4f2;
   --rrchat-z:2147483000;
 }
 .rrchat *{ box-sizing:border-box; }
 
-/* ---------- FAB (geschlossen) ---------- */
+/* ---------- FAB (geschlossen) = Kreis mit Marke ---------- */
 .rrchat-fab{
-  position:fixed; right:22px; bottom:22px;
-  right:calc(22px + env(safe-area-inset-right));
-  bottom:calc(22px + env(safe-area-inset-bottom));
+  position:fixed; right:26px; bottom:26px;
+  right:calc(26px + env(safe-area-inset-right));
+  bottom:calc(26px + env(safe-area-inset-bottom));
   z-index:var(--rrchat-z);
   width:64px; height:64px; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
-  background:var(--rr-paper,#fff); border:1px solid var(--rr-line,#e4e4e0);
-  box-shadow:0 6px 22px rgba(28,40,55,.18), 0 2px 6px rgba(28,40,55,.10);
+  background:var(--rrchat-paper); border:1px solid var(--rrchat-line);
+  box-shadow:0 12px 30px rgba(0,0,0,.14), 0 2px 6px rgba(28,40,55,.08);
   cursor:pointer;
   transition:transform .22s var(--rr-ease,cubic-bezier(.6,0,.4,1)), box-shadow .22s;
 }
-.rrchat-fab:hover{ transform:translateY(-3px); box-shadow:0 12px 30px rgba(241,32,50,.20), 0 3px 8px rgba(28,40,55,.12); }
-.rrchat-fab:focus-visible{ outline:none; box-shadow:0 0 0 3px var(--rr-paper,#fff), 0 0 0 5.5px var(--rr-red,#f12032); }
-.rrchat-fab-logo{ width:30px; height:30px; object-fit:contain; }
+.rrchat-fab:hover{ transform:translateY(-3px); box-shadow:0 16px 36px rgba(241,32,50,.22), 0 3px 8px rgba(28,40,55,.10); }
+.rrchat-fab:focus-visible{ outline:none; box-shadow:0 0 0 3px var(--rrchat-paper), 0 0 0 5.5px var(--rr-red,#f12032); }
+.rrchat-fab-logo{ width:32px; height:32px; object-fit:contain; }
 
-/* ---------- Overlay + Scrim ---------- */
+/* ---------- Overlay + Scrim (hell, Seite dahinter wird geblurrt) ---------- */
 .rrchat-overlay{ position:fixed; inset:0; z-index:var(--rrchat-z); }
 .rrchat-scrim{
   position:absolute; inset:0; width:100%; height:100%; border:none; padding:0; margin:0;
-  background:rgba(20,20,20,.42);
-  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  background:rgba(244,244,242,.76);
+  -webkit-backdrop-filter:blur(9px) saturate(.98); backdrop-filter:blur(9px) saturate(.98);
   cursor:pointer;
-  animation:rrchat-fade .25s var(--rr-ease,ease) both;
+  animation:rrchat-fade .35s var(--rr-ease,ease) both;
 }
 
-/* ---------- Panel ---------- */
-.rrchat-panel{
-  position:absolute; left:50%; top:54%;
-  transform:translate(-50%,-50%);
-  width:min(560px, calc(100vw - 32px));
-  max-height:min(84vh, 720px);
-  display:flex; flex-direction:column;
-  background:var(--rr-paper,#fff);
-  border:1px solid var(--rr-line,#e4e4e0);
-  box-shadow:0 24px 70px rgba(20,26,35,.28), 0 6px 18px rgba(20,26,35,.14);
-  padding:20px 24px 20px;
-  animation:rrchat-rise .3s var(--rr-ease,cubic-bezier(.6,0,.4,1)) both;
+/* ---------- Stage (Vollbild, scrollbar) ---------- */
+.rrchat-stage{
+  position:absolute; inset:0; z-index:1;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+  padding:0 20px; overflow-y:auto; overscroll-behavior:contain;
+  animation:rrchat-fade .4s var(--rr-ease,ease) both;
 }
-.rrchat-panel-head{ display:flex; align-items:center; justify-content:space-between; }
-.rrchat-brand-logo{ width:34px; height:34px; object-fit:contain; }
+.rrchat-logotop{
+  position:fixed; top:24px; left:50%; transform:translateX(-50%); z-index:2;
+  pointer-events:none;
+}
+.rrchat-logotop-img{ width:26px; height:26px; object-fit:contain; opacity:.95; }
 .rrchat-close{
-  width:36px; height:36px; display:flex; align-items:center; justify-content:center;
-  background:transparent; border:1px solid transparent; color:var(--rr-ink-soft,#5a5e68);
-  cursor:pointer; transition:color .2s, border-color .2s, background .2s;
+  position:fixed; top:20px; right:24px; z-index:2;
+  right:calc(24px + env(safe-area-inset-right));
+  width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+  background:transparent; border:none; color:var(--rr-ink-soft,#5a5e68);
+  cursor:pointer; transition:color .2s, transform .2s;
 }
-.rrchat-close:hover{ color:var(--rr-ink,#23262e); border-color:var(--rr-line,#e4e4e0); background:#faf9f7; }
-.rrchat-close:focus-visible{ outline:none; box-shadow:0 0 0 2px var(--rr-paper,#fff), 0 0 0 4px var(--rr-red,#f12032); }
+.rrchat-close:hover{ color:var(--rrchat-ink); transform:rotate(90deg); }
+.rrchat-close:focus-visible{ outline:none; color:var(--rrchat-ink); box-shadow:0 0 0 2px var(--rr-red,#f12032); border-radius:50%; }
 
-/* ---------- Body / Intro ---------- */
-.rrchat-body{ display:flex; flex-direction:column; min-height:0; flex:1; margin-top:6px; }
-.rrchat-intro{ padding:6px 2px 4px; }
+/* ---------- Panel (Inhaltsspalte) ---------- */
+.rrchat-panel{
+  width:min(680px, 100%);
+  margin-top:min(15vh, 128px); margin-bottom:56px;
+  display:flex; flex-direction:column;
+  animation:rrchat-rise .4s var(--rr-ease,cubic-bezier(.6,0,.4,1)) both;
+}
+
+/* ---------- Intro (kollabiert, sobald das Gespraech laeuft) ---------- */
+.rrchat-intro{
+  text-align:center; overflow:hidden;
+  max-height:220px; opacity:1;
+  transition:max-height .45s var(--rr-ease,ease), opacity .35s ease, margin .45s ease;
+  margin-bottom:8px;
+}
+.rrchat-panel[data-chatting="true"] .rrchat-intro{
+  max-height:0; opacity:0; margin-bottom:0;
+}
 .rrchat-h{
-  font-family:var(--rr-font-display,'DM Sans',sans-serif); font-weight:700; letter-spacing:-.02em;
-  font-size:clamp(1.4rem,3.4vw,1.85rem); line-height:1.1; color:var(--rr-ink,#23262e); margin:0;
+  position:relative;
+  font-family:var(--rr-font-display,'DM Sans',sans-serif); font-weight:600; letter-spacing:-.01em;
+  font-size:clamp(1.75rem,4.4vw,2.25rem); line-height:1.15; color:var(--rrchat-ink);
+  margin:0 0 8px; padding-bottom:10px;
 }
-.rrchat-rule{ display:block; width:44px; height:3px; background:var(--rr-red,#f12032); margin:14px 0 12px; }
+.rrchat-rule{
+  display:block; height:1px; width:100%; margin:8px auto 0;
+  background:linear-gradient(to right, transparent, rgba(241,32,50,.5), transparent);
+}
 .rrchat-sub{
-  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.98rem; line-height:1.5;
-  color:var(--rrchat-sub); margin:0; max-width:46ch;
+  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.98rem; line-height:1.55;
+  color:var(--rrchat-sub); margin:14px auto 0; max-width:52ch;
 }
 
-/* ---------- Verlauf ---------- */
+/* ---------- Verlauf (Claude-Look: User rechts als Pill, Bot reiner Text) ---------- */
 .rrchat-log{
-  display:flex; flex-direction:column; gap:14px;
-  overflow-y:auto; overflow-x:hidden; min-height:0; flex:1;
-  margin-top:14px; padding:2px 2px 4px;
+  display:flex; flex-direction:column;
+  overflow-y:auto; overflow-x:hidden; min-height:0;
+  max-height:44vh; margin:0 2px 22px; padding-right:4px;
   scrollbar-width:thin;
 }
-.rrchat[data-open="true"] .rrchat-intro + * + .rrchat-log{ margin-top:16px; }
+.rrchat-log:empty{ display:none; }
+.rrchat-turn{ margin-bottom:22px; }
+.rrchat-turn:last-child{ margin-bottom:2px; }
 .rrchat-umsg{
-  align-self:flex-end; max-width:82%;
-  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:1rem; line-height:1.5;
-  color:var(--rr-ink,#23262e);
-  background:#faf9f7; border:1px solid var(--rr-line,#e4e4e0);
-  padding:10px 14px; white-space:pre-wrap; word-break:break-word;
+  max-width:80%; margin-left:auto;
+  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.98rem; line-height:1.55;
+  color:var(--rrchat-ink);
+  background:#faf9f7; border:1px solid var(--rrchat-line); border-radius:16px;
+  padding:12px 16px; white-space:pre-wrap; word-break:break-word;
 }
 .rrchat-amsg{
-  align-self:flex-start; max-width:94%;
-  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:1.02rem; line-height:1.6;
-  color:var(--rr-ink,#23262e); white-space:pre-wrap; word-break:break-word;
+  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:1.02rem; line-height:1.7;
+  color:var(--rrchat-ink); margin-top:14px; white-space:pre-wrap; word-break:break-word;
 }
-.rrchat-typing{ display:inline-flex; align-items:center; gap:5px; padding:8px 2px; }
-.rrchat-dot{ width:7px; height:7px; border-radius:50%; background:var(--rr-ink-soft,#5a5e68);
+.rrchat-typing{ display:inline-flex; align-items:center; gap:5px; }
+.rrchat-dot{ width:6px; height:6px; border-radius:50%; background:#c9c9c1;
   animation:rrchat-blink 1.2s var(--rr-ease,ease) infinite; }
-.rrchat-dot:nth-child(2){ animation-delay:.18s; }
-.rrchat-dot:nth-child(3){ animation-delay:.36s; }
+.rrchat-dot:nth-child(2){ animation-delay:.2s; }
+.rrchat-dot:nth-child(3){ animation-delay:.4s; }
 .rrchat-notice{
-  align-self:stretch; font-family:var(--rr-font-ui,'Instrument Sans',sans-serif);
+  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif);
   font-size:.92rem; line-height:1.5; color:var(--rr-red-deep,#c81222);
   background:color-mix(in srgb, var(--rr-red,#f12032) 8%, transparent);
-  border-left:3px solid var(--rr-red,#f12032); padding:10px 12px; margin:0;
+  border-left:3px solid var(--rr-red,#f12032); padding:10px 12px; margin:4px 0 0;
 }
 
-/* ---------- Eingabe ---------- */
-.rrchat-inputwrap{ margin-top:12px; border-top:1px solid var(--rr-line,#e4e4e0); padding-top:14px; }
+/* ---------- Eingabe-Box (schwebende Karte, ein Feld) ---------- */
+.rrchat-box{
+  background:var(--rrchat-paper); border:1px solid var(--rrchat-line); border-radius:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.07); overflow:hidden;
+}
+.rrchat-field{ position:relative; padding:16px 20px 4px; }
 .rrchat-textarea{
-  width:100%; resize:none; max-height:190px; overflow-y:auto;
-  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:1rem; line-height:1.5;
-  color:var(--rr-ink,#23262e); background:var(--rr-paper,#fff);
-  border:1px solid var(--rr-line,#e4e4e0); padding:11px 13px;
-  transition:border-color .2s, box-shadow .2s;
+  width:100%; border:none; outline:none; resize:none;
+  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:1rem; line-height:1.55;
+  color:var(--rrchat-ink); background:none;
+  min-height:30px; max-height:190px; overflow-y:auto;
 }
-.rrchat-textarea::placeholder{ color:var(--rrchat-hint); opacity:1; }
-.rrchat-textarea:focus{ outline:none; border-color:var(--rr-ink,#23262e); box-shadow:0 0 0 3px color-mix(in srgb, var(--rr-ink,#23262e) 10%, transparent); }
-
-/* Honeypot: sichtbar fuer Bots, weg fuer Menschen (kein display:none). */
-.rrchat-hp{
-  position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
+.rrchat-textarea::placeholder{ color:#b7b7ae; opacity:1; }
+.rrchat-sendrow{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:8px 14px 12px 20px;
 }
-
-.rrchat-sendrow{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:10px; }
 .rrchat-hint{
-  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.82rem; line-height:1.35;
+  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.78rem; letter-spacing:.02em;
   color:var(--rrchat-hint);
 }
 /* kleiner Sende-Button, Sweep-Optik bleibt erhalten (nur Groesse/min-width) */
 .rrchat .rrchat-send{ min-width:auto; font-size:15px; padding:9px 20px; flex:0 0 auto; }
 .rrchat .rrchat-send:disabled{ opacity:.5; cursor:not-allowed; box-shadow:none; }
 .rrchat .rrchat-send:disabled::before{ width:5px; }
-.rrchat .rrchat-send:disabled:hover{ color:var(--rr-ink,#23262e); box-shadow:none; }
+.rrchat .rrchat-send:disabled:hover{ color:var(--rrchat-ink); box-shadow:none; }
+
+/* Honeypot: aus dem Blickfeld, aber nicht display:none. */
+.rrchat-hp{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
 
 /* ---------- Fallback ---------- */
-.rrchat-fallback{ margin-top:16px; padding-top:14px; border-top:1px solid var(--rr-line,#e4e4e0); }
+.rrchat-fallback{ margin-top:32px; text-align:center; }
 .rrchat-fallback-lead{
-  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.9rem; line-height:1.45;
-  color:var(--rrchat-sub); margin:0 0 12px;
+  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.98rem; line-height:1.5;
+  color:var(--rrchat-ink); margin:0 0 16px;
 }
-.rrchat-fallback-actions{ display:flex; flex-wrap:wrap; gap:12px; }
+.rrchat-fallback-lead b{ font-weight:700; }
+.rrchat-fallback-actions{ display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
 .rrchat .rrchat-fallback-actions .rr-btn-sweep,
-.rrchat .rrchat-fallback-actions .rr-btn-outline{ font-size:16px; padding:10px 22px; min-width:132px; }
+.rrchat .rrchat-fallback-actions .rr-btn-outline{ font-size:17px; padding:11px 24px; min-width:150px; }
 
 /* ---------- Fusszeile ---------- */
 .rrchat-foot{
-  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.78rem; line-height:1.45;
-  color:var(--rrchat-hint); margin:14px 0 0;
+  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.72rem; line-height:1.5;
+  color:var(--rrchat-hint); margin:24px 0 0; text-align:center;
 }
 .rrchat-foot-link{ color:var(--rr-red-deep,#c81222); text-decoration:underline; text-underline-offset:2px; }
 .rrchat-foot-link:hover{ color:var(--rr-red,#f12032); }
@@ -550,30 +575,28 @@ const STYLE = `
   clip:rect(0,0,0,0); white-space:nowrap; border:0;
 }
 
-/* ---------- Mobile: vollflaechig ---------- */
+/* ---------- Mobile ---------- */
 @media (max-width:600px){
-  .rrchat-panel{
-    top:0; left:0; transform:none;
-    width:100vw; max-height:none; height:100dvh;
-    padding:calc(14px + env(safe-area-inset-top)) 18px calc(16px + env(safe-area-inset-bottom));
-    border:none;
-  }
-  .rrchat-scrim{ -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); }
-  .rrchat-fab{ width:58px; height:58px; }
-  .rrchat-sendrow{ flex-wrap:wrap; }
-  .rrchat-hint{ flex:1 1 100%; order:2; }
-  .rrchat .rrchat-send{ order:1; }
+  .rrchat-stage{ padding:0 16px; }
+  .rrchat-panel{ margin-top:14vh; margin-bottom:40px; }
+  .rrchat-h{ font-size:1.6rem; }
+  .rrchat-log{ max-height:40vh; }
+  .rrchat-fab{ width:58px; height:58px; right:18px; bottom:18px;
+    right:calc(18px + env(safe-area-inset-right)); bottom:calc(18px + env(safe-area-inset-bottom)); }
+  .rrchat-fallback-actions{ gap:12px; }
+  .rrchat .rrchat-fallback-actions .rr-btn-sweep,
+  .rrchat .rrchat-fallback-actions .rr-btn-outline{ flex:1 1 100%; }
 }
 
 /* ---------- Motion ---------- */
 @keyframes rrchat-fade{ from{ opacity:0; } to{ opacity:1; } }
-@keyframes rrchat-rise{ from{ opacity:0; transform:translate(-50%,calc(-50% + 14px)); } to{ opacity:1; transform:translate(-50%,-50%); } }
+@keyframes rrchat-rise{ from{ opacity:0; transform:translateY(16px); } to{ opacity:1; transform:translateY(0); } }
 @keyframes rrchat-blink{ 0%,60%,100%{ opacity:.3; } 30%{ opacity:1; } }
 
 @media (prefers-reduced-motion:reduce){
-  .rrchat-fab, .rrchat-scrim, .rrchat-panel{ animation:none; transition:none; }
+  .rrchat-fab, .rrchat-scrim, .rrchat-stage, .rrchat-panel, .rrchat-intro{ animation:none; transition:none; }
   .rrchat-fab:hover{ transform:none; }
+  .rrchat-close:hover{ transform:none; }
   .rrchat-dot{ animation:none; opacity:.6; }
-  @media (max-width:600px){ .rrchat-panel{ transform:none; } }
 }
 `;
