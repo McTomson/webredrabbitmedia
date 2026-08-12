@@ -629,6 +629,9 @@ const STYLE = `
 .rrchat .rrchat-cta-primary{
   display:inline-block; min-width:auto; font-size:18px; padding:13px 32px; margin:0 auto;
 }
+/* Dezenterer Schatten als der globale Sweep-Hover (Thomas: Glow war zu viel) -
+   nur fuer diese CTA, global unangetastet. */
+.rrchat .rrchat-cta-primary:hover{ box-shadow:0 5px 14px rgba(241,32,50,.16); }
 .rrchat-fallback-alt{
   font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.82rem; letter-spacing:.02em;
   color:var(--rrchat-hint); margin:20px 0 12px;
