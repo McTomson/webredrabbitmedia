@@ -14,6 +14,7 @@ import "@/components/subpages/legal-preview.css";
 export const metadata: Metadata = {
   title: "AGB · Red Rabbit Media",
   description: "Allgemeine Geschäftsbedingungen der Red Rabbit GmbH.",
+  alternates: { canonical: "/agb" },
 };
 
 export default function AGBPreviewPage() {
