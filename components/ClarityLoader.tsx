@@ -3,12 +3,17 @@
 import { useEffect } from 'react';
 
 /**
- * Microsoft Clarity, Consent-gesteuert (DSGVO).
+ * Microsoft Clarity, Consent-gesteuert (DSGVO) — OPT-OUT-Modell.
  *
- * Laedt das Clarity-Script NUR nach Analytics-Zustimmung:
- *  - beim Mount, falls im localStorage bereits Zustimmung gespeichert ist
- *    (wiederkehrende Besucher), ODER
- *  - sobald der CookieBanner ein 'rr:consent'-Event mit analytics=true feuert.
+ * Bewusste Entscheidung Thomas (2026-08-12): NICHT auf Opt-in zuruecksetzen.
+ * Clarity laedt standardmaessig SOFORT beim Mount — AUSSER es liegt eine
+ * explizite Ablehnung im localStorage (analytics === false). Also:
+ *  - keine gespeicherte Wahl  -> laden (Default-on),
+ *  - gespeicherte Zustimmung  -> laden,
+ *  - gespeicherte ABLEHNUNG   -> NICHT laden.
+ * Zusaetzlich reagiert der 'rr:consent'-Listener live: analytics=true laedt
+ * (falls noch nicht geladen), analytics=false widerruft die Einwilligung
+ * (clarity('consent', false)) — der Ablehn-Weg stoppt Clarity also wirklich.
  *
  * Projekt-ID kommt aus NEXT_PUBLIC_CLARITY_ID, mit Fallback auf die
  * produktive Projekt-ID "y0xaxw5gux" (Repo-Standard, analog zu den fest
@@ -24,11 +29,17 @@ declare global {
 
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID || 'y0xaxw5gux';
 
-function hasAnalyticsConsent(): boolean {
+/**
+ * Opt-out-Gate: Clarity darf laden, SOLANGE keine explizite Ablehnung vorliegt.
+ * Nur eine gespeicherte Wahl mit analytics === false blockt das Laden; alles
+ * andere (keine Wahl / Zustimmung) erlaubt es. Bei kaputtem localStorage
+ * fail-open (Default-on gemaess Opt-out-Entscheidung).
+ */
+function analyticsBlocked(): boolean {
   try {
     const raw = localStorage.getItem('redrabbit-cookie-consent');
     if (!raw) return false;
-    return JSON.parse(raw).analytics === true;
+    return JSON.parse(raw).analytics === false;
   } catch {
     return false;
   }
@@ -58,7 +69,8 @@ export default function ClarityLoader() {
   useEffect(() => {
     if (!CLARITY_ID) return;
 
-    if (hasAnalyticsConsent()) loadClarity(CLARITY_ID);
+    // Opt-out: sofort laden, ausser es liegt eine explizite Ablehnung vor.
+    if (!analyticsBlocked()) loadClarity(CLARITY_ID);
 
     const onConsent = (e: Event) => {
       const detail = (e as CustomEvent<{ analytics?: boolean }>).detail;

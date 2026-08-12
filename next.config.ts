@@ -306,6 +306,32 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+
+      // === CATCH-ALL fuer unbekannte /webdesign-<stadt>-URLs (SEO 2026-08-12) ===
+      // MUSS die ALLERLETZTE Redirect-Regel bleiben: Next.js matcht in Reihenfolge,
+      // der erste Treffer gewinnt. Alle expliziten Stadt->Bundesland-Redirects und
+      // Umlaut-Fixes oben greifen daher zuerst; nur was NICHTS davon trifft, landet
+      // hier und wird 308 auf die Startseite '/' geleitet — damit alte/verlinkte
+      // Klein-Stadt-Slugs (die nie eine echte Seite waren) keine Linkkraft in 404s
+      // verlieren.
+      //
+      // Die 9 ECHTEN Bundesland-Seiten (burgenland ... wien) sind per Negativ-
+      // Lookahead ausgeschlossen, damit sie NICHT vom Catch-all geschluckt werden,
+      // sondern normal mit 200 laden.
+      //
+      // >>> OVERRIDE-HINWEIS (WICHTIG): Wird spaeter eine ECHTE
+      //     /webdesign-<stadt>-Seite gebaut (z.B. app/webdesign-graz/page.tsx),
+      //     MUSS ihr Slug hier in den Negativ-Lookahead aufgenommen werden
+      //     (analog zu den Bundeslaendern). Sonst wuerde diese Regel — sie laeuft
+      //     VOR dem Filesystem-Routing — die neue Seite weiterhin auf '/' umleiten,
+      //     statt sie normal laden zu lassen. Neue echte Stadt-Seite = Slug hier
+      //     eintragen. <<<
+      {
+        source:
+          '/webdesign-:slug((?!burgenland|kaernten|niederoesterreich|oberoesterreich|salzburg|steiermark|tirol|vorarlberg|wien).+)',
+        destination: '/',
+        permanent: true,
+      },
     ]
   },
 

@@ -235,15 +235,25 @@ export default function RootLayout({
       <head>
         {/* Consent Mode v2 Defaults (DSGVO). Laeuft SYNCHRON als erstes Element im
             <head>, VOR GA4/GTM (die verzoegert via DeferredThirdParties nachladen).
-            Setzt alle Consent-Signale auf 'denied' bis zur Einwilligung; wiederkehrende
-            Besucher mit gespeicherter Zustimmung (localStorage-Key des CookieBanners)
-            bekommen im selben Script direkt ein consent update, damit sie ab dem ersten
-            Frame korrekt vermessen werden. Plain <script> (kein next/script) = garantiert
-            synchron waehrend des HTML-Parse, bevor irgendein Analytics-Code laeuft. */}
+            Plain <script> (kein next/script) = garantiert synchron waehrend des
+            HTML-Parse, bevor irgendein Analytics-Code laeuft.
+
+            OPT-OUT-MODELL (bewusste Entscheidung Thomas, 2026-08-12) — NICHT auf
+            Opt-in zuruecksetzen:
+              - Default = 'granted' fuer alle Signale. Tracking (GA4 + Clarity) feuert
+                ab dem ersten Seitenaufruf, der Nutzer kann jederzeit ablehnen.
+              - Der localStorage-Key des CookieBanners wird im selben Script sofort
+                gelesen: hat ein wiederkehrender Nutzer bereits ABGELEHNT
+                (analytics/marketing=false), wird das per consent update SYNCHRON auf
+                'denied' gesetzt, BEVOR ein Tag feuert -> abgelehnte Nutzer werden
+                nicht getrackt. Gespeicherte Zustimmung bleibt granted (== Default).
+              - Kein wait_for_update noetig: Default ist granted und ein evtl.
+                gespeicherter Opt-out wird synchron in derselben Ausfuehrung angewandt.
+              - ads_data_redaction bleibt als Datenschutz-Schutz aktiv. */}
         <script
           id="consent-mode-default"
           dangerouslySetInnerHTML={{
-            __html: `(function(){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});gtag('set','ads_data_redaction',true);gtag('set','url_passthrough',true);try{var c=localStorage.getItem('redrabbit-cookie-consent');if(c){var p=JSON.parse(c);var m=p.marketing?'granted':'denied';gtag('consent','update',{ad_storage:m,ad_user_data:m,ad_personalization:m,analytics_storage:p.analytics?'granted':'denied'});}}catch(e){}})();`,
+            __html: `(function(){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});gtag('set','ads_data_redaction',true);gtag('set','url_passthrough',true);try{var c=localStorage.getItem('redrabbit-cookie-consent');if(c){var p=JSON.parse(c);var m=p.marketing?'granted':'denied';gtag('consent','update',{ad_storage:m,ad_user_data:m,ad_personalization:m,analytics_storage:p.analytics?'granted':'denied'});}}catch(e){}})();`,
           }}
         />
         {/* Priority Resource Hints */}

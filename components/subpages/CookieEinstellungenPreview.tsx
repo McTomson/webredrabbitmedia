@@ -25,6 +25,10 @@ declare global {
 }
 
 export default function CookieEinstellungenPreview() {
+  // OPT-OUT-Modell (Thomas 2026-08-12, NICHT auf Opt-in zuruecksetzen):
+  // Default-Anzeige = alles AN. Nur eine gespeicherte Wahl (siehe useEffect)
+  // ueberschreibt das. Ausschalten + Speichern setzt gtag 'denied' und feuert
+  // rr:consent(false) -> Tracking (inkl. Clarity) stoppt sofort.
   const [preferences, setPreferences] = useState({
     necessary: true,
     analytics: true,
