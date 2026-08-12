@@ -1,0 +1,92 @@
+'use client';
+
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import MorphSculpture from '@/components/subpages/MorphSculpture';
+
+/**
+ * Kontakt-Seite auf Basis des ueber-uns-Templates (siehe UeberUnsDemoClient fuer
+ * die Architektur-Doku: stabiler innerHTML-Container, Engine als echtes <script>,
+ * MorphSculpture-Portal in .main-sticky, window.__sculptProgress von der Engine).
+ *
+ * Unterschiede zu ueber-uns:
+ * - comp={1} = GLUEHBIRNE (at-shapes-comp2) statt Kopf; Figur steht rechts,
+ *   FORMULAR links (Spaltentausch in kontakt-demo/demo.css). Das Formular
+ *   sitzt seit 29.07. im Hero-Fenster (faehrt ein + stoppt, Dynamic-Snap),
+ *   nicht mehr in einer Schluss-CTA-Sektion; Endpunkt POST /api/contact
+ *   wie KontaktForm.tsx (Submit-IIFE am Ende von demo.engine.jstext).
+ * - .sculpt-layer-Klasse am Portal: Mobile dockt die Gluehbirne beim
+ *   Formular-Einflug klein in die Kopfzeile (Engine toggelt .docked).
+ */
+export default function KontaktDemoClient({
+  css,
+  html,
+  js,
+}: {
+  css: string;
+  html: string;
+  js: string;
+}) {
+  const booted = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [sticky, setSticky] = useState<HTMLElement | null>(null);
+
+  const injectedHtml = useMemo(
+    () => <div ref={containerRef} dangerouslySetInnerHTML={{ __html: html }} />,
+    [html],
+  );
+
+  useEffect(() => {
+    if (!booted.current) {
+      booted.current = true;
+      const script = document.createElement('script');
+      script.setAttribute('data-kontakt-engine', '');
+      script.textContent = js;
+      document.body.appendChild(script);
+    }
+
+    let raf = 0;
+    let tries = 0;
+    let cancelled = false;
+    const find = () => {
+      if (cancelled) return;
+      const el = containerRef.current?.querySelector('.main-sticky') as HTMLElement | null;
+      if (el) { setSticky(el); return; }
+      if (++tries < 120) raf = requestAnimationFrame(find);
+    };
+    find();
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+      /* Script-Tag beim Unmount entfernen (Soft-Navigation): die Engine beendet
+         ihre Loops selbst ueber den isConnected-Guard; ohne remove() stapeln
+         sich tote <script>-Knoten im body. booted bleibt true (StrictMode-
+         Doppel-Effekt darf die Engine nicht erneut booten). */
+      document.querySelector('script[data-kontakt-engine]')?.remove();
+    };
+  }, [js]);
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: css }} />
+      {injectedHtml}
+      {sticky &&
+        createPortal(
+          <div
+            aria-hidden
+            className="sculpt-layer"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 2,
+              pointerEvents: 'none',
+            }}
+          >
+            {/* comp={1} = Gluehbirne. Kein progress-Prop -> liest window.__sculptProgress. */}
+            <MorphSculpture comp={1} style={{ background: 'transparent' }} />
+          </div>,
+          sticky,
+        )}
+    </>
+  );
+}

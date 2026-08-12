@@ -137,10 +137,60 @@ Gesendet von der Red Rabbit Media Website
             `
         };
 
-        // Send email
+        // Send email (an das Team; SMTP_TO darf mehrere Empfaenger enthalten,
+        // komma-separiert, z.B. "office@redrabbit.media,thomas.uhlir@gmail.com")
         await transporter.sendMail(mailOptions);
 
-        return NextResponse.json({ success: true, message: 'Email sent successfully' });
+        // Bestaetigungs-Mail an den Absender (Thomas 07.08.). Best effort: ein
+        // Fehler hier darf die Lead-Erfassung NICHT scheitern lassen, die
+        // Team-Mail ist oben schon raus. confirmationSent = harmlose Telemetrie
+        // fuers Frontend/Monitoring. Verifiziert 07.08.: Versand + Zustellung ok
+        // (an office@ nachgewiesen; SPF authorisiert IONOS, DMARC p=none, also
+        // kein Auth-Drop bei fremden Postfaechern).
+        let confirmationSent = false;
+        try {
+            await transporter.sendMail({
+                from: `"Red Rabbit Media" <${smtpFrom}>`,
+                to: email,
+                replyTo: smtpFrom,
+                subject: 'Deine Anfrage bei Red Rabbit Media',
+                text: `Hallo ${name},
+
+danke für deine Nachricht, sie ist bei uns angekommen. Wir schauen sie uns an und melden uns, in der Regel am selben Werktag.
+
+Kurz zur Sicherheit: Der erste Entwurf entsteht ohne Vorkasse. Kein Verkaufsdruck.
+
+Wenn es dringend ist, ruf uns direkt an unter +43 676 9000955.
+
+Herzlich,
+dein Red Rabbit Media Team
+
+---
+Das hast du uns geschickt:
+${message || 'Keine Nachricht'}
+`,
+                html: `
+<div style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #23262e; line-height: 1.55;">
+  <p>Hallo ${safeName},</p>
+  <p>danke für deine Nachricht, sie ist bei uns angekommen. Wir schauen sie uns an und melden uns, in der Regel am selben Werktag.</p>
+  <p>Kurz zur Sicherheit: Der erste Entwurf entsteht <strong>ohne Vorkasse</strong>. Kein Verkaufsdruck.</p>
+  <p>Wenn es dringend ist, ruf uns direkt an unter <a href="tel:+436769000955" style="color:#f12032;">+43 676 9000955</a>.</p>
+  <p>Herzlich,<br>dein Red Rabbit Media Team</p>
+  <hr style="border:none;border-top:1px solid #e4e4e0;margin:20px 0;">
+  <p style="font-size:13px;color:#5a5e68;"><strong>Das hast du uns geschickt:</strong><br>${safeMessage}</p>
+</div>
+`
+            });
+            confirmationSent = true;
+        } catch (confirmErr) {
+            console.error('Bestaetigungs-Mail an Absender fehlgeschlagen:', confirmErr);
+        }
+
+        return NextResponse.json({
+            success: true,
+            message: 'Email sent successfully',
+            confirmationSent,
+        });
 
     } catch (error) {
         console.error('Error sending email:', error);

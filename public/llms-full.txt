@@ -1,0 +1,63 @@
+# Red Rabbit Media
+
+> Webagentur aus Wien für ganz Österreich. Klartext-Langfassung für KI-Systeme und Crawler: wer wir sind, wie wir arbeiten, was die drei Pakete enthalten, und wie man uns erreicht. Keine erfundenen Kennzahlen, keine Bewertungszahlen, keine Follower-Zahlen. Nur, was wirklich stimmt.
+
+## Wer wir sind
+
+Red Rabbit Media ist eine Webagentur mit Sitz in Wien, tätig für Betriebe in ganz Österreich. Wir bauen individuelle Websites zum Fixpreis, keine Baukästen, keine Themes. Jede Website ist zuerst fürs Handy gebaut und dann für den großen Bildschirm, weil der Großteil der Besucher vom Smartphone kommt. Jede Seite ist so aufgebaut, dass sie sowohl von Google als auch von den neuen KI-Suchsystemen wie ChatGPT sauber gelesen und verstanden wird.
+
+## Wie wir arbeiten
+
+- Erst siehst du 1-2 grafische Vorschläge, ganz ohne Vorkasse. Du zahlst nichts, bevor dir das Ergebnis gefällt.
+- Eine Anzahlung fällt erst an, wenn du dich für den Auftrag entscheidest. Das Risiko der Vorarbeit tragen wir, nicht du.
+- Die Pakete sind Fixpreise, keine Stundensatz-Lotterie. Was genau du brauchst, besprechen wir vorher und halten es fest.
+- Bei jedem Paket ist Talos dabei, dein digitaler Mitarbeiter: eine Kommandozentrale, in der du Texte und Bilder selbst änderst, in Minuten, ohne Technikwissen und ohne uns anzurufen. Dort siehst du auch in Klartext, was auf deiner Seite passiert: wie viele Besucher, woher, was sie anklicken, wer sich meldet.
+- Technik, Hosting, Backups, Sicherheitsupdates und SSL laufen im Hintergrund mit. Impressum und Datenschutzerklärung setzen wir nach österreichischem Recht auf.
+- Wächst dein Betrieb, wächst die Website mit: du hebst jederzeit von Starter auf Business oder Premium, ohne bei null anzufangen.
+
+## Was uns von herkömmlichen Webagenturen unterscheidet
+
+Die meisten Agenturen bauen die Website, schicken die Rechnung und sind danach weg. Ob der Kunde gefunden wird, woher seine Besucher kommen und wer sich meldet, sieht er nicht. Nach dem Launch ist er blind. Bei Red Rabbit ist auf jeder Website Talos dabei, der Copilot des Kunden. Talos ist ein eigener Bereich, den nur der Kunde sieht. Dort steht in Klartext, ob ihn Google und die KI-Suchen finden, woher seine Besucher kommen und wer sich bei ihm meldet. Ohne diesen Blick tappt man im Dunkeln, mit Talos nicht.
+
+## Die drei Pakete
+
+### Starter, ab 1.250 Euro
+"Du bist professionell online." Eine Seite, auf der alles steht, was ein Kunde braucht, um sich für dich zu entscheiden: wer du bist, was du machst, warum du und wie er dich erreicht. Das komplette Fundament ist enthalten, individuelles Design, perfekt am Handy, für Google und KI gebaut, Talos als digitaler Mitarbeiter, Technik und Recht. Nur eben auf einer Seite. Wer dich kennt oder empfohlen bekommt, findet dich sofort. Für Sichtbarkeit bei Leistung-plus-Ort-Suchen braucht es mehrere Seiten. Das ist Business.
+
+### Business, ab 2.850 Euro
+"Du wirst gefunden, und das Telefon klingelt." Enthält den kompletten Starter-Kern plus mehrere Seiten: jede Leistung bekommt ihre eigene Seite und wird damit einzeln bei Google gefunden, auch in der eigenen Region. Der Aufbau führt zum Anruf oder zum Formular, klare Wege, keine Sackgassen. In Talos siehst du schwarz auf weiß, was auf der Seite passiert, ohne Fantasiezahlen-Versprechen. Der Preissprung gegenüber Starter kommt aus echter Mehrarbeit: Struktur, Texte und Optimierung für jede einzelne Seite, nicht pauschal für alle.
+
+### Premium, ab 4.900 Euro
+"Deine Website arbeitet für dich." Enthält alles aus Business und Starter, die volle Ausbaustufe. Je nach Vorhaben kommen Shop, Terminbuchung oder Bezahlfunktion dazu. Deshalb "ab": man zahlt für das, was man wirklich braucht. Fertige Bausteine im eigenen Design erlauben, selbst neue Unterseiten zusammenzuklicken, ohne dass Design oder Struktur kippen. Die volle Ausbaustufe gilt auch beim Design: Animationen, Effekte, eine Seite, die man sich merkt. Formulare sortieren Anfragen vor, das Ratgeber-System steht für laufende Sichtbarkeit bereit (selbst befüllbar, oder als eigenes, getrennt abgerechnetes Monatspaket). Premium ist für Betriebe gedacht, deren Website ein Vertriebskanal sein soll. Wer nur sauber online stehen will, ist bei Starter richtig.
+
+## Förderung
+
+Für die Digitalisierung von Klein- und Mittelbetrieben gibt es in Österreich Förderungen, zentral KMU.DIGITAL (abgewickelt über die aws). Ob gerade eine Förderrunde offen ist, ändert sich laufend und ist budgetiert (Windhundprinzip). Wir versprechen keine Beträge, sondern sagen ehrlich, was aktuell möglich ist. Offizielle, laufend aktuelle Quellen: kmudigital.at und aws.at/aws-digitalisierung.
+
+## Kontakt
+
+- E-Mail: office@redrabbit.media
+- Adresse: Grabnergasse 8, 1060 Wien, Österreich
+- Web: https://web.redrabbit.media
+
+## Wichtige Seiten
+
+- Startseite: https://web.redrabbit.media/
+- Preise: https://web.redrabbit.media/preise
+- Leistungen: https://web.redrabbit.media/leistungen
+- Über uns: https://web.redrabbit.media/ueber-uns
+- FAQ: https://web.redrabbit.media/faq
+- Kontakt: https://web.redrabbit.media/kontakt
+- Ratgeber & Tipps: https://web.redrabbit.media/tipps
+
+## Webdesign nach Bundesland
+
+- https://web.redrabbit.media/webdesign-wien
+- https://web.redrabbit.media/webdesign-niederoesterreich
+- https://web.redrabbit.media/webdesign-oberoesterreich
+- https://web.redrabbit.media/webdesign-steiermark
+- https://web.redrabbit.media/webdesign-tirol
+- https://web.redrabbit.media/webdesign-salzburg
+- https://web.redrabbit.media/webdesign-kaernten
+- https://web.redrabbit.media/webdesign-vorarlberg
+- https://web.redrabbit.media/webdesign-burgenland

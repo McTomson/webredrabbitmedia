@@ -1,0 +1,244 @@
+/* ============================================================
+   LEISTUNGEN / WEBSITE ("Der Bau") — Seiten-lokale Styles (lw-*)
+   Nur Layout/Spacing auf Basis der rr-*-Tokens aus styleguide.css /
+   components/relaunch/subpages.css — keine neuen Farben, kein neues
+   Easing. Alles unter .rr (UNTERSEITEN_STIL.md §1). Diese Datei ist NEU
+   und gehoert ausschliesslich zu dieser Unterseite; styleguide.css und
+   subpages.css bleiben unberuehrt (Ownership).
+   ============================================================ */
+
+/* ---- 1 · Was entsteht ---- */
+.rr .lw-entsteht__title { max-width: 15em; margin: 20px 0 clamp(28px, 4vw, 40px); color: var(--rr-navy); }
+.rr .lw-entsteht__body { max-width: 640px; color: var(--rr-ink-soft); }
+
+/* ---- 2 · Wie wir bauen (3 Schritte) ---- */
+.rr .lw-bauen__title { max-width: 14em; margin: 20px 0 clamp(36px, 5vw, 56px); color: var(--rr-navy); }
+.rr .lw-bauen__grid { align-items: stretch; }
+.rr .lw-step {
+  width: 100%;
+  height: auto;
+  min-height: 220px;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.rr .lw-step__label { margin-top: 2px; }
+.rr .lw-step__body { color: var(--rr-ink-soft); }
+
+/* ---- 3 · Was inklusive ist (Fundament-Grid) ---- */
+.rr .lw-fund__title { max-width: 14em; margin: 20px 0 clamp(32px, 4vw, 48px); color: var(--rr-navy); }
+.rr .lw-fund__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 1.6vw, 20px);
+}
+.rr .lw-fund__card {
+  width: 100%;
+  height: auto;
+  min-height: 168px;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.rr .lw-fund__text {
+  font-family: var(--rr-font-display);
+  font-weight: 560;
+  font-size: 18px;
+  line-height: 1.28;
+  letter-spacing: -0.005em;
+  margin: 0;
+}
+.rr .lw-fund__closing { margin-top: clamp(28px, 4vw, 40px); max-width: 560px; color: var(--rr-ink-soft); }
+@media (max-width: 1180px) { .rr .lw-fund__grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 760px) { .rr .lw-fund__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .rr .lw-fund__grid { grid-template-columns: 1fr; } }
+
+/* ---- Facetten-Dach (spannt Neu / Relaunch / Gestaltung auf) ---- */
+.rr .lw-facetten-dach {
+  max-width: 640px;
+  margin: 0 0 clamp(44px, 6vw, 72px);
+  padding-bottom: clamp(28px, 4vw, 40px);
+  border-bottom: 1px solid var(--rr-line);
+  font-family: var(--rr-font-display);
+  font-weight: 560;
+  font-size: clamp(19px, 2vw, 22px);
+  line-height: 1.42;
+  letter-spacing: -0.006em;
+  color: var(--rr-navy);
+}
+
+/* ---- Facette · Neu bauen ---- */
+.rr .lw-neu__title { max-width: 15em; margin: 20px 0 clamp(28px, 4vw, 40px); color: var(--rr-navy); }
+.rr .lw-neu__body { max-width: 660px; color: var(--rr-ink-soft); }
+
+/* ---- Facette · Relaunch (Warnsignale + Beruhigung) ---- */
+.rr .lw-relaunch__title { max-width: 15em; margin: 20px 0 clamp(20px, 3vw, 28px); color: var(--rr-navy); }
+.rr .lw-relaunch__body { max-width: 640px; color: var(--rr-ink-soft); margin-bottom: clamp(24px, 3.5vw, 36px); }
+.rr .lw-relaunch__signals { list-style: none; margin: 0 0 clamp(36px, 5vw, 56px); padding: 0; max-width: 720px; }
+.rr .lw-relaunch__signal {
+  font-family: var(--rr-font-display);
+  font-weight: 540;
+  font-size: clamp(17px, 1.8vw, 19px);
+  line-height: 1.4;
+  color: var(--rr-navy);
+  padding: clamp(14px, 1.8vw, 18px) 0 clamp(14px, 1.8vw, 18px) 26px;
+  border-top: 1px solid var(--rr-line);
+  position: relative;
+}
+.rr .lw-relaunch__signal::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(clamp(14px, 1.8vw, 18px) + 0.62em);
+  width: 8px;
+  height: 8px;
+  background: var(--rr-red);
+}
+.rr .lw-relaunch__signal:last-child { border-bottom: 1px solid var(--rr-line); }
+.rr .lw-relaunch__ruhe {
+  background: var(--rr-surface);
+  padding: clamp(24px, 3.5vw, 40px);
+  max-width: 720px;
+}
+.rr .lw-relaunch__ruhe-eyebrow { margin: 0 0 14px; }
+.rr .lw-relaunch__ruhe-body { max-width: 620px; color: var(--rr-ink-soft); margin: 0; }
+
+/* ---- Facette · Gestaltung, die Anfragen bringt ---- */
+.rr .lw-design__title { max-width: 15em; margin: 20px 0 clamp(24px, 3.5vw, 36px); color: var(--rr-navy); }
+.rr .lw-design__body { max-width: 660px; color: var(--rr-ink-soft); margin-bottom: clamp(28px, 4vw, 40px); }
+.rr .lw-design__list { list-style: none; margin: 0; padding: 0; max-width: 640px; }
+.rr .lw-design__item {
+  font-size: clamp(16px, 1.7vw, 18px);
+  line-height: 1.45;
+  color: var(--rr-ink-soft);
+  padding: 12px 0 12px 26px;
+  border-top: 1px solid var(--rr-line);
+  position: relative;
+}
+.rr .lw-design__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(12px + 0.6em);
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--rr-red);
+}
+.rr .lw-design__item:last-child { border-bottom: 1px solid var(--rr-line); }
+
+/* ---- Selbst mit Baukasten vs. mit uns (2-Spalten-Vergleich) ---- */
+.rr .lw-vergleich__title { max-width: 16em; margin: 20px 0 clamp(36px, 5vw, 56px); color: var(--rr-navy); }
+.rr .lw-vergleich__grid { align-items: stretch; }
+.rr .lw-vergleich__card {
+  width: 100%;
+  height: auto;
+  min-height: 260px;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.rr .lw-vergleich__label { margin: 2px 0 6px; }
+.rr .lw-vergleich__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.rr .lw-vergleich__item {
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--rr-ink-soft);
+  padding: 10px 0;
+  border-top: 1px solid var(--rr-line);
+}
+.rr .lw-vergleich__item:first-child { border-top: 0; padding-top: 0; }
+.rr .lw-vergleich__closing { margin-top: clamp(28px, 4vw, 40px); max-width: 620px; color: var(--rr-ink-soft); }
+
+/* ---- Sie gehoert dir (Eigentum + Unabhaengigkeit) ---- */
+.rr .lw-eigentum__title { max-width: 16em; margin: 20px 0 clamp(28px, 4vw, 40px); color: var(--rr-navy); }
+.rr .lw-eigentum__body { max-width: 660px; color: var(--rr-ink-soft); }
+
+/* ---- Nach dem Start bist du nicht allein (Support/Pflege) ---- */
+.rr .lw-launch__title { max-width: 15em; margin: 20px 0 clamp(24px, 3.5vw, 36px); color: var(--rr-navy); }
+.rr .lw-launch__body { max-width: 620px; color: var(--rr-ink-soft); margin-bottom: clamp(32px, 4vw, 48px); }
+.rr .lw-launch__grid { align-items: stretch; }
+.rr .lw-launch__card {
+  width: 100%;
+  height: auto;
+  min-height: 180px;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.rr .lw-launch__label { margin-top: 2px; }
+.rr .lw-launch__cardbody { color: var(--rr-ink-soft); }
+
+/* ---- So arbeiten wir (ehrlicher Satz + EIN Teal-Zitat) ---- */
+.rr .lw-arbeit__title { max-width: 16em; margin: 20px 0 clamp(20px, 3vw, 28px); color: var(--rr-navy); }
+.rr .lw-arbeit__body { max-width: 640px; color: var(--rr-ink-soft); margin-bottom: clamp(32px, 4vw, 48px); }
+.rr .lw-arbeit__quote { margin: 0; }
+.rr .lw-arbeit__quote .rr-quote__text { font-style: normal; font-family: var(--rr-font-display); }
+
+/* ---- 4 · Fuer wen sich das (noch) nicht lohnt ---- */
+.rr .lw-nicht { background: var(--rr-surface); }
+.rr .lw-nicht__title { max-width: 16em; margin: 20px 0 clamp(28px, 4vw, 40px); color: var(--rr-navy); }
+.rr .lw-nicht__body { max-width: 660px; color: var(--rr-ink-soft); }
+
+/* ---- FAQ zweispaltig (Ink-Label links sticky, Akkordeon rechts) ---- */
+.rr .lw-faq__grid { display: grid; grid-template-columns: 280px 1fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+.rr .lw-faq__label { position: sticky; top: clamp(24px, 4vh, 64px); }
+.rr .lw-faq__heading { margin-top: 20px; color: var(--rr-navy); }
+.rr .lw-faq__dot { color: var(--rr-red); }
+@media (max-width: 900px) {
+  .rr .lw-faq__grid { grid-template-columns: 1fr; }
+  .rr .lw-faq__label { position: static; margin-bottom: 24px; }
+}
+
+/* ---- Schluss-CTA (Navy-Band) ---- */
+.rr .lw-cta { background: var(--rr-navy); text-align: center; }
+.rr .lw-cta__title { color: #f4f4f2; max-width: 15em; margin: 0 auto; }
+.rr .lw-cta__sub { color: rgba(246, 245, 241, 0.78); max-width: 560px; margin: clamp(36px, 5vh, 60px) auto 0; }
+.rr .lw-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(20px, 2.5vw, 32px); margin-top: clamp(56px, 8vh, 96px); }
+/* rr-btn-sweep hat im Ruhezustand Ink-Text (fuer helle Flaechen); auf dem
+   Navy-Band den Text hell setzen (Kontrast-Fix, Muster aus leistungen.css). */
+.rr .lw-cta .rr-btn-sweep { color: #f4f4f2; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rr .lw-fund__grid > *,
+  .rr .lw-bauen__grid > * { transition: none; }
+}
+
+/* ---- Eyebrow-Stil: ausgelagert nach components/subpages/leistungen/
+   wd-eyebrow.css (Thomas 22.07.), von Hub UND dieser Unterseite importiert
+   (website.css importiert selbst keine CSS-Dateien, Kontrakt) — keine
+   Doppel-Definition mehr. Siehe dort fuer Herkunft/Modifikatoren. */
+
+/* ---- Mobile-only ausblenden (Thomas 01.08.): auf Handy/Tablet fallen
+   Sektionen weg, die die Seite zu lang machen ("kein Baukasten" = SoBauenWir)
+   oder als Popup an anderer Stelle wiederkommen ("wer du bist" = Diagnose).
+   Desktop unveraendert. */
+@media (max-width: 860px) {
+  .rr .rr-hide-mobile { display: none; }
+
+  /* Vollbild-Sektionen (Thomas 01.08.: "jeder Bereich mindestens so gross wie
+     der Bildschirm"): der Wrapper wird mindestens bildschirmhoch und zentriert
+     seinen Inhalt vertikal. Nur auf Nicht-gepinnte Inhalts-Sektionen anwenden
+     (NICHT auf Hero/Ablauf/Dashboard-Track — die steuern ihre Hoehe selbst).
+     Ist die Sektion ohnehin hoeher als der Screen, waechst der Wrapper mit und
+     die Zentrierung hat keinen Effekt. Aendert nur den Wrapper, nie die
+     (teils fremden) Sektions-Komponenten selbst. */
+  .rr .rr-fullscreen-mobile {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Stopp an jedem Paket (Thomas 01.08.: "das einzige was ich wollte war, dass
+     da ein Stop ist, mehr nicht — kein neues Design"). Rein additiv: die drei
+     Pakete (Starter/Business/Premium, .fmx__stufe) bleiben visuell unveraendert
+     und werden nur zu Snap-Zielen. scroll-snap-stop:always heisst, ein Wisch
+     kann kein Paket ueberspringen — die Seite haelt an jedem Paket-Anfang.
+     Nur diese Elemente tragen snap-align, alles andere (Hero, Ablauf,
+     Dashboard, Vollbild-Sektionen) scrollt frei weiter. Auf dem Desktop laeuft
+     stattdessen die gepinnte Stufen-Fahrt; dieser Block ist mobil-only. */
+  html {
+    scroll-snap-type: y proximity;
+  }
+  .fmx__stufe {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    scroll-margin-top: 0;
+  }
+}

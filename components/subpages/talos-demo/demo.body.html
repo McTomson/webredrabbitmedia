@@ -1,0 +1,132 @@
+
+<div class="demobar">
+  <span class="dot"></span>
+  Red Rabbit · Talos · Gesamtvorschau
+  <span class="sep">·</span>
+  <em>Nur der Hero, darunter dockt die Server-Seite an</em>
+</div>
+
+<!-- ============ HERO-SZENE (Wort + Wisch + Talos-Walk-in + Story in EINEM Sticky) ============
+     Klon von website-demo. Unterschied: KEINE MorphSculpture-Figur. Der TalosDemoClient
+     portalt stattdessen die 3D-Walk-Buehne (TalosWalkStage) in .main-sticky; sie liest
+     window.__sculptProgress (0..0.55 = Walk-in von links, Plateau 0.55 = stehen + winken
+     + Dashboard-Rahmen an, Aufloesungs-Phase = er geht rechts wieder raus).
+     Copy = ENTWURF aus docs/specs/TALOS_COPY_V2_2026-07-22_ENTWURF.md (nicht freigegeben). -->
+<section class="scene-main" id="sceneMain">
+  <!-- data-active startet auf 0: die Deck-Maske (mask:url(#mask-v1)) greift erst,
+       wenn die Engine bootet. Beim HTML-Streaming ist das masksvg (steht weiter
+       unten) sonst noch nicht geparst -> leere Maske -> weisses Deck unsichtbar
+       -> navy layer-base blitzt beim Laden auf. -->
+  <div class="main-sticky painting" id="mainSticky" data-active="0" style="--mask:url(#mask-v1)">
+    <div class="layer-base">
+      <div class="reveal-msg">Er steckt in jeder Website,<br>die wir bauen.<br>Ohne Aufpreis.</div>
+    </div>
+    <div class="layer-deck">
+      <h1 class="hero-title" id="htitle" aria-label="Talos"><span class="ltr" data-l="0" aria-hidden="true">T</span><span class="ltr" data-l="1" aria-hidden="true">a</span><span class="ltr" data-l="2" aria-hidden="true">l</span><span class="ltr" data-l="3" aria-hidden="true">o</span><span class="ltr" data-l="4" aria-hidden="true">s</span><span class="ltr dot" data-l="5" aria-hidden="true">.</span></h1>
+    </div>
+
+    <!-- Navy-Dashboard-Fenster: 1:1-Klon des abgenommenen wda-Fensters von der
+         Website-Seite (components/subpages/leistungen/website/v2/TalosDashboard.tsx),
+         Klassen umbenannt auf Praefix tlh- (kein Import, reiner CSS-Klon). Sichtbar
+         nur wenn .main-sticky die Klasse "is-dash" traegt (setzt eine andere
+         Komponente). Panels nur linke Haelfte, rechte Haelfte bleibt fuer den
+         Story-Text frei (der per CSS ueber .story-grid/.text-window dort hinein
+         positioniert wird, Markup dort unveraendert). -->
+    <div class="tlh-frame" aria-hidden="true">
+      <div class="tlh-chrome">
+        <span class="tlh-lights"><span></span><span></span><span></span></span>
+        <span class="tlh-url"><span class="tlh-lock"></span>dein-dashboard.redrabbit.media</span>
+        <span class="tlh-spacer"></span>
+      </div>
+      <div class="tlh-screen">
+        <div class="tlh-panels">
+          <div class="tlh-card tlh-card--note">
+            <span class="tlh-mark"></span>
+            <span class="tlh-card-head">Benachrichtigung</span>
+            <span class="tlh-card-line">Formular geprüft: alles in Ordnung.</span>
+          </div>
+          <div class="tlh-card tlh-card--ring">
+            <span class="tlh-donut"><span class="tlh-donut-hole"></span></span>
+            <span class="tlh-ring-meta">
+              <span class="tlh-card-head">Deine Seite</span>
+              <span class="tlh-card-sub">läuft, alles online</span>
+            </span>
+          </div>
+          <div class="tlh-card tlh-card--stats">
+            <span class="tlh-card-head">Besucher diese Woche</span>
+            <div class="tlh-spark">
+              <span style="height:34%"></span>
+              <span style="height:52%"></span>
+              <span style="height:41%"></span>
+              <span style="height:68%"></span>
+              <span style="height:57%"></span>
+              <span style="height:79%"></span>
+              <span style="height:63%"></span>
+              <span style="height:48%"></span>
+            </div>
+          </div>
+          <div class="tlh-card tlh-card--skills">
+            <span class="tlh-card-head">Talos kann mehr lernen</span>
+            <ul class="tlh-skills">
+              <li>Blogbeiträge schreiben</li>
+              <li>Kunden suchen und anschreiben</li>
+              <li>Auf Social Media posten</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="story-grid">
+      <div class="head-col">
+        <svg id="headSvg" viewBox="120 110 770 910" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+      </div>
+      <div class="text-col">
+        <div class="text-window" id="textWindow">
+          <div class="text-move" id="textMove">
+            <div class="t-eyebrow">DAS IST TALOS</div>
+            <p class="t-statement">Deine Website bekommt einen Mitarbeiter. Ohne dass du einen anstellst.</p>
+            <p class="t-ch">Talos ist der Kollege, der in deiner Seite sitzt. Er zeigt dir, wie viele Leute da waren, wo sie klicken und was sie dir schreiben. Texte und Bilder änderst du selbst, ohne uns anzurufen. Und hakt etwas, schlägt er Alarm, bevor es ein Kunde merkt. Das steckt in jeder Website, die wir bauen. Fest im Preis, den du vorher kennst.</p>
+            <p class="t-ch">Und wenn du willst, übernimmt er mehr. Du buchst ihm einzelne Fähigkeiten dazu: Beiträge schreiben, Anfragen auffangen, neue Kunden anschreiben. Jede einzeln, monatlich, jederzeit kündbar. Brauchst du nichts davon, hast du trotzdem mehr Website als die meisten.</p>
+            <p class="t-close">Scroll weiter, er zeigt dir selbst, was er kann.</p>
+            <div class="t-byline">Thomas Uhlir<span>Gründer</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <span class="hint" id="hint">Maus über das Bild bewegen</span>
+    <button class="autobtn" data-auto>Auto abspielen</button>
+
+    <svg class="masksvg" aria-hidden="true">
+      <defs>
+        <filter id="gooey-v1">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
+          <feColorMatrix in="blur" type="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -9" result="goo"/>
+        </filter>
+        <clipPath id="paintclip"><rect id="paintRect" x="0" y="0" width="100" height="100"/></clipPath>
+        <mask id="mask-v1">
+          <rect class="mrect" width="100%" height="100%" fill="#fff"/>
+          <g class="blobs" filter="url(#gooey-v1)"></g>
+        </mask>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ SEKTION 2 : BERUHIGUNGS-BUMPER (Original-Belief-Mechanik) ============
+     Struktur 1:1 aus website-demo (Engine erwartet EXAKT 4 .stmt, Index 3 = pointe,
+     B_CENTERS hardcoded; bCta MUSS existieren, applyBelief greift ungeguardet zu).
+     Texte = Talos-Beruhigung (ENTWURF): nimmt den "aha, die wollen Geld"-Verdacht raus. -->
+<section class="scene-belief" id="sceneBelief">
+  <div class="belief-sticky">
+    <div class="belief-backing" aria-hidden="true"></div>
+    <div class="b-label">(Bevor du weiterliest)</div>
+    <div class="stmt" data-s="0">Ein Mitarbeiter in der Website? Klingt nach Aufpreis<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="1">Ist es nicht. Das meiste davon ist schon drin<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="2">Was dazukommt, entscheidest allein du. Jederzeit. Ohne Vertragsfalle<span style="color:var(--red)">.</span></div>
+    <div class="stmt pointe" data-s="3">Schauen wir, was er für dich tun kann<span style="color:var(--red)">?</span><span class="pointe-cta"><a class="rr-btn-sweep rr-btn-sweep--red" id="bCta" href="/kontakt">Hol dir den kostenlosen Entwurf</a></span></div>
+  </div>
+</section>

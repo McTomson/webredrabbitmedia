@@ -4,6 +4,62 @@ Durable lessons for `webredrabbitmedia`.
 
 Update this file at the end of every session when a debugging lesson, setup issue, deployment issue, or recurring mistake was discovered.
 
+
+## 2026-07-29 (abends) — Scroll-Pflicht-Stopp fuer Checkpoints: Distanz-Gate reicht nicht
+
+- **Ein distanz-gegateter Idle-Snap ("nur wenn nah genug") garantiert KEIN "1 Scroll = 1
+  Schritt".** Bei fein getakteten Checkpoints (hier: 4 Statement-Mitten ~650px auseinander)
+  faellt ein normaler, nicht-extremer Fingerwisch oft ausserhalb des Fangbereichs
+  (CATCH_RATIO) — dann greift der generische Snap gar nicht, User braucht einen zweiten
+  Scroll. Fix: bei bewusst gesetzten Gesten-Zielen (nicht "naechstgelegene Kante", sondern
+  "die Kante, auf die DIESE Geste zielt") IMMER zu Ende fahren, unabhaengig von der Distanz.
+- **Zwei Scroll-Mechanismen, die beide `lenis.scrollTo()` rufen, fahren sich in die Parade.**
+  Erster Versuch: dynamische Checkpoints in den generischen "naechstgelegene Kante"-Idle-Snap
+  miteinbezogen — der kennt aber keine Richtung und hat bei zu grosser Vorwaerts-Distanz
+  faelschlich RUECKWAERTS zur naeheren (bereits verlassenen) Kante gezogen. Lehre: ein neuer
+  Anwendungsfall braucht eine EIGENE, zum Anwendungsfall passende Funktion (hier: die Geste
+  kennt ihr Ziel bereits aus `beginGesture()` — das nutzen, nicht "irgendwas Nahes" suchen),
+  statt ihn in eine bestehende, andersartig gebaute Funktion reinzuquetschen.
+- **Next.js Fast-Refresh reicht nicht immer, um Closure-State in einem `useEffect` mit
+  mutablen lokalen Variablen (Timer, Boundary-State) sauber neu zu booten** — nach jeder
+  Aenderung an `ScrollExperience.tsx` einen ECHTEN `navigate()`/Reload gemacht, sonst testet
+  man gegen alten Code und die Befunde widersprechen sich (mehrfach passiert in dieser
+  Session, kostete Zeit bis erkannt).
+- **`console.debug()` wird vom Browser-Automation-Consolen-Reader NICHT zurueckgegeben**
+  (vermutlich Log-Level-Filter) — fuer Debug-Instrumentierung, die per Tool ausgelesen werden
+  soll, `console.log()` verwenden. Ausserdem: Objekt-Argumente (`console.log("x", {a,b})`)
+  kommen im Tool nur als Platzhalter `Object` an, nicht expandiert — Werte per
+  String-Konkatenation/`JSON.stringify` direkt in den Log-String einbetten.
+- **`window.scrollTo(x, y)` per JS-Injection zum schnellen Positionieren im Test desynct
+  Lenis' internen `targetScroll`/`animatedScroll`** (Lenis weiss nichts von der externen
+  Aenderung) — fuehrte zu widerspruechlichem Verhalten beim naechsten Wheel-Event. Fuer Tests
+  IMMER echte Scroll-Gesten (Tool-`scroll`-Action) verwenden, nie `window.scrollTo` zum
+  Vorspulen, wenn danach die Scroll-Engine weiter beobachtet werden soll.
+- Lenis-Doku (Context7) vor dem Aendern der Daempfung gezogen statt geraten: `lerp` ist
+  dokumentiert im Bereich 0..1 (Default 0.1); `duration`+`easing` sind mutually exclusive zu
+  `lerp` (README) — bestaetigt, dass `SITE_LERP=1` im dokumentierten Rahmen bleibt statt
+  ins Undefinierte zu gehen.
+
+## 2026-07-16 — Referenzen phantom.land Iteration 2 (Strang relaunch-referenzen)
+
+- Ortho-Picking (Screen-UV -> Welt) MUSS `camera.zoom` einrechnen — updateProjectionMatrix()
+  skaliert den Frustum zusaetzlich. Ohne /zoom treffen Klicks waehrend Intro-/Grab-Zoom die
+  falsche Zelle (war CRITICAL im review-it von `c399f0c`).
+- Verzoegertes `router.push` per setTimeout braucht `clearTimeout` im Effect-Cleanup, sonst
+  ueberschreibt es nach Unmount die vom Nutzer gewaehlte Navigation.
+- Nachbau-Auftraege: ZUERST das Original vermessen (Bundle-Chunks, Original-CSS, Case-Studies,
+  Frame-Vermessung eines Screencasts), DANN bauen — die Spec-first-Iteration traf sofort, die
+  visuelle Rate-Iteration davor endete bei "65%, nicht gut".
+- Kunden-Site-Video-Loops: Playwright `recordVideo` headless + rAF-Palindrom-Scroll + ffmpeg
+  (640w, crf~32, -an) liefert 7 Loops in ~1MB gesamt; Cookie-Banner vor Aufnahme per JS
+  entfernen und per Frame-Check verifizieren.
+- styled-jsx: `<style jsx>` darf nicht in verschachtelten Elementen liegen (Build-Error
+  "nested styled-jsx tag") — alle Regeln in EINEN Block auf oberster Ebene.
+- Dev-Overlay "1 Issue" auf relaunch-preview-Seiten = Hydration-Mismatch aus `RelaunchMenu`
+  (useId-abhaengige `aria-controls`/`id` SSR vs. Client) — fremder Strang, dort fixen.
+- Thomas-Dauerregel (auch hier dokumentiert): Telefonnummer nie im Klartext auf Websites,
+  nur "Anrufen"-Button mit `tel:`-Link.
+
 ## 2026-06-29 — Nachts freigegebener Artikel bekam keine Medien (Zeitzonen-Marker-Bug)
 
 Der heutige Artikel `was-sind-die-vorteile-von-modernen-frameworks-wie-next` war als Text live, aber das Hero-Bild war live 404 und es gab keine Bilder/Podcast/Video — der media-checker meldete stundenlang „Kein offener Media-Request fuer heute", obwohl der Marker existierte. Fix: commit `82045b7`.
@@ -65,6 +121,7 @@ Ziel des VPS-Umzugs erreicht: der heutige Artikel wurde ERSTMALS komplett headle
 - **Finalizer-Totalausfall war Parallel-Last, kein Bug.** Im ersten manuellen Testlauf scheiterte die finalizer-Rolle alle 4 Versuche — Ursache: ich (Claude-Session) war gleichzeitig auf demselben Konto aktiv → Rate-Limit beim 4. schweren `claude`-Aufruf. Zweiter Lauf (ich still gehalten) lief sauber durch. Lehre: Content-Pipeline NICHT testen, während eine andere claude-Session aktiv ist; der Retry/Backoff in roles.ts fängt Transientes, aber nicht dauerhafte Parallel-Last.
 - **DERSELBE Branch-Bug traf auch den media-checker → freigegebene Artikel bekamen NIE Medien.** Nach der Freigabe per Review-Mail wird ein Marker `content-engine/.media-requests/<slug>.json` (status `requested`) auf **main** committet; `run-media-check.sh` (alle 30 Min) soll ihn finden, headless Bilder erzeugen + Notification für die Browser-Session (NotebookLM/YouTube/Substack) schicken. Lief NICHT, zwei Bugs: (1) `REPO=$HOME/dev/redrabbit` = geteilter Checkout auf Feature-Branch → Marker (auf main) unsichtbar; (2) Parser-Bug: grep `'"requestedAt":"…"'` OHNE Leerzeichen, Marker ist aber pretty-printed mit Leerzeichen → matchte nie (auch der Vortag fiel deshalb aus). Fix: self-locating REPO (läuft aus `~/dev/redrabbit-daily`-Worktree) + `git fetch && git merge --ff-only origin/main` (sieht neue Freigaben, fail-safe kein Clobber) + node-`JSON.parse` statt grep. **REGEL (gilt für ALLE launchd-Bot-Scripts): NIE `REPO=$HOME/dev/redrabbit` (Mensch-Checkout, driftet auf Feature-Branches) — IMMER self-locating aus dem Bot-Worktree `~/dev/redrabbit-daily` (immer main).** Alle drei Jobs (run-daily, run-media-check, run-remind) sind jetzt so. Wer einen neuen Bot-Job baut: gleiches Muster, sonst dieser Ausfall erneut.
 - **„Kompletter Prozess nach Freigabe" ist NICHT 100% headless.** Der media-checker macht headless nur Bilder (Codex `images-only.ts`) + Notification. **Podcast (NotebookLM), Video (nur Browser), Substack** brauchen zwingend eine Browser-/Claude-Session → diese Schritte erfordern, dass eine Session sie ausführt (Runbook media-notes.md). „Immer automatisch" heißt also: Freigabe → Bilder+Notification zuverlässig automatisch; Podcast/Video/Substack in der Session. YouTube-Public/Substack-Publish = OK von Thomas holen.
+
 
 ## 2026-06-12 (Teil 3) — Slug-Renames: 4 Blindspots + Build-Langsamkeit ≠ Hang
 
@@ -502,3 +559,79 @@ Ziel des VPS-Umzugs erreicht: der heutige Artikel wurde ERSTMALS komplett headle
 - Prefer root-cause notes over vague summaries.
 - Include the command or file involved when it helps future debugging.
 - Do not store secrets or credentials here.
+
+## 2026-07-04 — Morph-Engine v2 (relaunch)
+- Lottie `fromX/fromY` (erster Position-Keyframe) = Einflug von aussen, NICHT die sichtbare Zerfall-Verteilung (nur 31/129 im Canvas). Vollbild-Zerfall braucht eigenes gejittertes Raster.
+- SVG-Teile per CSS-transform hochskalieren = Matsch (GPU rastert Layout-Groesse). Fix: Element in seiner Maximal-Verwendung dimensionieren, Timeline-Scales normieren (nur Downscale).
+- Lenis vs. window.scrollTo = Race (Lenis-raf ueberschreibt). Automation: WheelEvents dispatchen; Screenshots: doppelt scrollTo + settle-Wartezeit.
+- `npm run build` waehrend `next dev` laeuft korrumpiert .next des Dev-Servers -> dev neu starten.
+
+## 2026-07-07 — Halb-Revert fror den Morph ein (relaunch)
+- Symptom: /relaunch-preview laedt sauber (keine JS-Fehler), aber die komplette Morph-Show steht — Scroll bewegt nur die Seite, am Track-Ende springt abrupt die naechste Sektion rein.
+- Root Cause: Revert von HomeMorph.tsx auf fab62e4 warf den Guard-Fix `pieces.length < 6` mit weg; die uncommittete "Ganze Buchstaben"-Aenderung in pieces.ts liefert nur 9 Teile, alter Guard `< 10` -> build() scheitert still (fail-closed), timelines leer, render() steigt in Zeile 239 aus. Lehre: bei Reverts pruefen, ob der revertierte Stand von UNCOMMITTETEN Aenderungen in anderen Dateien abhaengt.
+- Diagnose-Rezept: rAF-Loop laeuft, aber MutationObserver auf style-Attribute zeigt 0 Mutationen = frueher Return in render(); `window.__uScroll` ist eine ZAHL (kein Funktionsaufruf), als QA-Override setzen.
+- Mobile-Fix (gleiche Session): (1) stage.ts — auf narrow (<900px) Kamera-Pan unterdruecken (nur Zoom), sonst schiebt der Desktop-Pan die zentrierte Figur aus dem 390px-Viewport und der Navy-Traveler entkoppelt; (2) HomeMorph.tsx — Szenen-Statements mobil sequenziell faden (0.15u-Totfenster), sonst Doppelbelichtung, weil mobil alle Texte an derselben Position ankern.
+- QA-Abnahme (agent-browser): Desktop 1440x900 pixelgleich zu vorher, Mobile 390x844 alle 5 Holds zentriert + ein Statement + kein H-Scroll, Konsole sauber.
+
+## 2026-07-14 — Ueber-uns-Port: placeUeDots-Crash killte den ganzen Boot
+- Symptom: /relaunch-preview/ueber-uns zeigt nur den statischen blauen Hero, keine Skulptur, keine Scroll-Show. Konsole: `IndexSizeError: getImageData source width 0` at placeUeDots (:97) at boot (:650).
+- Root Cause: In `components/subpages/ueber-uns-demo/demo.engine.jstext` misst `placeUeDots()` die Ue-Punkte per Canvas. `fs=parseFloat(getComputedStyle(htitle).fontSize)` wird in der Next-Einbettung (Font/Layout-Timing) NaN -> `cv.width=Math.ceil(m.width+pad*2+fs*0.2)` = NaN -> Canvas-Breite 0 -> `getImageData(0,0,0,H)` wirft. Der uncaught throw riss den GANZEN `boot()` mit, inkl. `requestAnimationFrame(tick)` -> Scroll-Maschine startet nie.
+- Fix: Guard `if(!isFinite(fs)||fs<=0){ htitle.style.transform=savedT; requestAnimationFrame(placeUeDots); return; }` + `cv.width/height = Math.max(2, Math.ceil(... isFinite? ...))`. Ue-Punkte sind kosmetisch -> Retry statt Crash.
+- Lehre: Kosmetische Sub-Routinen duerfen die kritische Init-Kette nie per Exception kappen. Bei portierten Standalone-Engines auf Font-/Layout-Timing-Annahmen achten (Standalone-HTML hat andere Font-Ready-Reihenfolge als Next mit `<link>`-Fonts).
+
+## 2026-07-14 — MorphSculpture-Scatter: Regressionen durch fehlendes Gating + Punkt-Hold
+- Beim Nachbau des Demo-Vollbild-Zerfalls in MorphSculpture zwei Fehler: (a) Opacity/Visibility-Gating entfernt -> Fragmente immer sichtbar, nur per Offscreen-Position "versteckt"; bei zu kleinem Rand lugen sie rein (gemessen: 9 Fragmente bei progress 0). (b) Halt nur bei EXAKT progress 0.55 statt Plateau -> beim Scrollen fast immer Mid-Assemble-Frame = dichte Ueberlappung ("zu viele Teile").
+- Fix: Gating zurueck (visibility:hidden wenn geparkt e==0 / ausgeflogen e==1); Halte-Plateau progress 0.5-0.6 (assembleT=clamp(p/0.5), dissolveT=clamp((p-0.6)/0.4)); Offscreen-Rand += max(w,h)*fromScale+160.
+- Lehre: Bei scroll-getriebener Fragment-Animation IMMER (1) geparkte Teile hart ausblenden (Offscreen-Position allein reicht nie sicher wegen Rotation/Scale), (2) den Halte-Zustand als BEREICH definieren, nicht als Punkt (die Engine liefert nie exakt einen Wert). Der gehaltene Slot ist deterministisch aus dem JSON -> Halt-Kopf ist per Konstruktion = Hauptseite; sichtbare "Dichte" kam aus Mid-Transition, nicht aus dem Halt.
+
+## 14.07.2026 (abends) — ueber-uns Doppel-Kopf + Stale-Dev-Server (Folgesession)
+
+- **Doppel-Renderer-Falle:** Beim Ersetzen einer Demo-Komponente durch einen echten
+  Renderer IMMER verifizieren, dass die alte Zeichnung wirklich AUS ist (computed style
+  im Browser pruefen), nicht nur einem Kommentar glauben. Hier rendeten #headSvg (Demo)
+  und MorphSculpture (Portal) gleichzeitig -> 350 statt 175 Fragmente, "unscharf/dicht".
+- **fs.readFileSync auf Modulebene = unsichtbare Edits:** Next.js watched keine fs-Reads.
+  Dateien, die eine Route per fs liest, werden bei Edits NICHT neu ausgeliefert, bis die
+  Route neu kompiliert/der Server neu gestartet wird. Ganze Fix-Runden der Vorsession
+  kamen so nie im Browser an ("ich sehe keine Veraenderung"). Fix: Reads in die
+  Server-Komponente verschieben (Dev: pro Request frisch; Prod: Build-Zeit wie vorher).
+- **Chrome-MCP-QA: Hintergrund-Tab friert rAF ein.** visibilityState=hidden -> Engine
+  steht, Scroll-Progress bleibt 0, QA-Messungen luegen. Tab vor Scroll-QA per osascript
+  aktivieren (Fenster + active tab index setzen).
+
+## 15.07.2026 (frueh) — ueber-uns Kopf: die drei ECHTEN Rest-Ursachen
+
+- **stage.ts `o`-Feld nie ignorieren:** Teile mit `op < displayFrames` sind Reveal-
+  Austauschpaare und am Halte-Zeitpunkt UNSICHTBAR (o=0). Jeder Renderer, der
+  stage.ts-Timelines nutzt, MUSS `st.o` anwenden oder solche Teile filtern —
+  MorphSculpture zeigte sonst 8 Phantom-Teile doppelt (comp5: 14,21,23,25,27,29,31,33).
+- **Scroll-Glaettung ist Teil des Looks:** Die Hauptseite wirkt fluessig, weil Lenis
+  (lerp 0.075) das u glaettet. Ein Renderer am rohen Scroll "teleportiert" bei
+  Radticks. Wiederverwendete Skulpturen brauchen eigene Fortschritts-Glaettung.
+- **"Identisch" maschinell beweisen, nicht per Auge:** Fragment-Signaturen (Center/
+  Groesse, centroid-normiert) via localStorage zwischen gleich-origin Seiten
+  vergleichen. Ergebnis hier: 167 vs 167 Teile, Median 0.08px.
+
+## 15.07.2026 (nachts) — ueber-uns: Reveal-am-Slot-Teile, Mask-Flash, Malen
+
+- **entryT==arriveT-Teile brauchen im Scatter ein synthetisches Flugfenster:** comp5 hat
+  8 Teile (13,20,22,24,26,28,30,32) mit entryT=arriveT=0 + ip>0 ("Reveal am Slot").
+  Im Scatter-Renderer sprangen sie beim kleinsten Fortschritt fix ins Bild und blieben.
+  Fix in MorphSculpture: e2=ip/displayFrames, a2=e2+0.35.
+- **SVG-Mask-Referenz + HTML-Streaming = Flash:** `mask:url(#id)` auf einem Element,
+  dessen mask-SVG WEITER UNTEN im HTML steht, rendert beim Streaming kurz mit leerer
+  Maske (Element unsichtbar, darunterliegende Ebene blitzt auf). Fix: Maske per
+  data-active-Attribut erst im Engine-Boot scharf schalten.
+- **Nicht zu grob fixen:** `.layer-base display:none` toetete das Mal-Feature
+  (Gooey-Reveal der versteckten Botschaft). Erst Mechanik verstehen, dann minimal fixen.
+
+## 2026-07-23 — styled-jsx im Relaunch meiden
+- `<style jsx>` rendert Komponenten ungestylt oder bricht Server-Komponenten (ProduktTueren.tsx, punkte-varianten/VarianteB.tsx, website/v2/Ablauf.tsx). Standard: plain globales `<style>{...}</style>`-Tag mit namespaced Klassen (Muster Scharnierzeile/TalosSlot). Build-Agenten explizit so briefen.
+
+## 2026-08-11 — Styleguide margin:0 toetet lokale Sektions-Margen (Spezifitaet)
+- `styleguide.css` setzt `.rr .rr-statement { margin:0 }` und `.rr .rr-body-lg { margin:0 }` (2 Klassen). Lokale Regeln wie `.rpf__h2 { margin: ... }` (1 Klasse) VERLIEREN immer dagegen — die Marge kommt nie an, die Seite "klebt", egal was man einstellt. Wochenlang unbemerkt auf /preise.
+- Standard-Fix: lokale Margen-Regeln auf Elementen mit rr-statement/rr-body-lg/rr-meta IMMER als `.rr .lokale-klasse { ... }` schreiben (gleiche Spezifitaet, spaeter im Dokument gewinnt). Praezedenz: FragTalosAnmoderation.
+- QA-Regel dazu: Abstands-Aenderungen nie nur im Code machen — im Browser `getComputedStyle(el).margin` nachmessen. Hier war der Beweis `margin: 0px` trotz frisch committeter clamp()-Werte.
+
+## 2026-08-11 — Scroll-Stops: rideUnits war unter 1180px linear (Weiche 08.08.)
+- "Bumper geht auf vielen Seiten nicht mehr" hatte NICHTS mit Cache zu tun: die 08.08.-Weiche (`isDwellDisabled`, <=1180px linear) schaltete die Halte-Plateaus in jedem schmalen Fenster ab — auch im schmalen Desktop-Browserfenster. Thomas-Entscheid 11.08.: Stops IMMER UND UEBERALL -> rideUnits = snapUnits auf allen Breiten, ScrollBumper-Breiten-Degradation (<=820 statische Liste) raus, nur prefers-reduced-motion bleibt statisch.

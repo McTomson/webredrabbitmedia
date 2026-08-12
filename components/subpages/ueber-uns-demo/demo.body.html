@@ -1,0 +1,156 @@
+
+<div class="demobar">
+  <span class="dot"></span>
+  Red Rabbit · Über uns — Gesamtvorschau
+  <span class="sep">·</span>
+  <em>Hero + Kopf + Story + Haltung + Partner, eine Scroll-Strecke</em>
+</div>
+
+<!-- ============ HAUPT-SZENE (Hero + Uebergang + Story in EINEM Sticky) ============ -->
+<section class="scene-main" id="sceneMain" data-rr-snap data-rr-snap-exempt>
+  <!-- data-active startet auf 0: die Deck-Maske (mask:url(#mask-v1)) greift erst,
+       wenn die Engine bootet. Beim HTML-Streaming ist das masksvg (steht weiter
+       unten) sonst noch nicht geparst -> leere Maske -> weisses Deck unsichtbar
+       -> navy layer-base blitzt beim Laden auf. -->
+  <div class="main-sticky painting" id="mainSticky" data-active="0" style="--mask:url(#mask-v1)">
+    <div class="layer-base">
+      <div class="reveal-msg">Gibt es die überhaupt:<br>eine Agentur<br>ohne Blabla?</div>
+    </div>
+    <div class="layer-deck">
+      <h1 class="hero-title" id="htitle" aria-label="Über uns"><span class="ltr ue" data-l="0" aria-hidden="true">U</span><span class="ltr" data-l="1" aria-hidden="true">b</span><span class="ltr" data-l="2" aria-hidden="true">e</span><span class="ltr" data-l="3" aria-hidden="true">r</span><span class="ltr sp" data-l="4" aria-hidden="true">&nbsp;</span><span class="ltr" data-l="5" aria-hidden="true">u</span><span class="ltr" data-l="6" aria-hidden="true">n</span><span class="ltr" data-l="7" aria-hidden="true">s</span><span class="ltr dot" data-l="8" aria-hidden="true">.</span></h1>
+    </div>
+
+    <!-- LCP-Poster (Thomas 06.08.): server-gerendertes <img> im Ausgangs-HTML,
+         damit das groesste Hero-Element schon beim ersten Paint steht (nicht erst
+         nachdem die Engine per JS das Video baut). NUR Mobile/Tablet (CSS via
+         hover:none, matcht die noHover-Bedingung der Engine). Das Video legt sich
+         drueber (gleiches z, spaeter im DOM) und faded synchron auf Scroll. -->
+    <img class="reveal-poster" src="/hero/ueber-uns-hero-poster.jpg" alt="" aria-hidden="true" fetchpriority="high" decoding="async" width="496" height="796">
+
+    <div class="story-grid">
+      <div class="head-col">
+        <svg id="headSvg" viewBox="120 110 770 910" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+      </div>
+      <div class="text-col">
+        <div class="text-window" id="textWindow">
+          <div class="text-move" id="textMove">
+            <div class="t-eyebrow">(Die Story)</div>
+            <p class="t-statement">Warum es Red&nbsp;Rabbit gibt.</p>
+            <p class="t-ch">Bevor es Red Rabbit gab, habe ich bei ReachLocal gearbeitet, einem amerikanischen, börsennotierten Konzern. Dort habe ich Webdesign und Google Advertising für große österreichische Immobilienunternehmen umgesetzt, zuletzt als Geschäftsführer der Wiener Niederlassung.</p>
+            <p class="t-ch">In dieser Zeit habe ich gesehen, wie viele Agenturen arbeiten, wenn der Kunde groß genug ist, um es sich nicht zu merken. Stundensätze, die niemand nachrechnen kann. Projekte, die sich ziehen, weil es sich lohnt, sie zu ziehen. Und am Ende eine Website, die zwar hübsch aussieht, aber niemand findet sie.</p>
+            <p class="t-ch">2019 habe ich mich selbstständig gemacht, weil ich es anders machen wollte. Fixpreis statt Stundenlohn. Die Vorschläge zuerst, das Geld erst danach. Und eine Regel, die vielen Agenturen fremd ist: wir nehmen nicht jedes Projekt an. Wenn ich merke, dass wir jemandem nicht wirklich helfen können, sage ich das. Lieber weniger Projekte und die, die wir machen, richtig machen.</p>
+            <p class="t-close">Das ist keine Marketing-Zeile. Das ist der Grund, warum ich das hier mache.</p>
+            <div class="t-byline">Thomas Uhlir<span>Gründer</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <span class="hint" id="hint">Maus über das Bild bewegen</span>
+    <button class="autobtn" data-auto>Auto abspielen</button>
+
+    <svg class="masksvg" aria-hidden="true">
+      <defs>
+        <filter id="gooey-v1">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
+          <feColorMatrix in="blur" type="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -9" result="goo"/>
+        </filter>
+        <clipPath id="paintclip"><rect id="paintRect" x="0" y="0" width="100" height="100"/></clipPath>
+        <mask id="mask-v1">
+          <rect class="mrect" width="100%" height="100%" fill="#fff"/>
+          <g class="blobs" filter="url(#gooey-v1)"></g>
+        </mask>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ SEKTION 4 : HALTUNGS-STATEMENTS ============ -->
+<section class="scene-belief" id="sceneBelief" data-rr-snap data-rr-snap-exempt>
+  <div class="belief-sticky">
+    <div class="belief-backing" aria-hidden="true"></div>
+    <div class="b-label">(Woran wir glauben)</div>
+    <div class="stmt" data-s="0">Wir wollen nicht die größte Agentur sein. Nur die, die zu dir passt<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="1">Eine Website ist nicht fertig, wenn sie online geht. Sondern wenn sie dir die ersten Kunden bringt<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="2">Vertrauen beginnt nicht mit einem Versprechen. Sondern mit dem ersten Schritt, den wir machen<span style="color:var(--red)">.</span></div>
+    <div class="stmt pointe" data-s="3">Wir machen den ersten Schritt. Machst du den zweiten<span style="color:var(--red)">?</span><span class="pointe-cta"><a class="rr-btn-sweep rr-btn-sweep--red" id="bCta" href="/kontakt">Den zweiten Schritt machen</a></span></div>
+  </div>
+</section>
+
+<!-- ============ SEKTION 5 : PARTNER / REFERENZEN ============ -->
+<section class="scene-partner" id="scenePartner" data-rr-snap>
+  <div class="p-head">
+    <div class="p-label">(Stationen und Projekte)</div>
+    <h2 class="p-title">Ausschnitt aus unserer Kundenliste</h2>
+    <div class="p-stats">Seit 2019 &nbsp;·&nbsp; 164+ Projekte &nbsp;·&nbsp; 5,0 auf Google &nbsp;·&nbsp; 9 Bundesländer</div>
+  </div>
+  <!-- Einheitliches 5x3-Raster: 13 uniforme Namenszellen + 1 hohe ">>"-Zelle (Kind 14),
+       die per grid-column:3 / grid-row:4 span 2 die rechte Spalte in Reihe 4+5 belegt.
+       Die 13 Namen fliessen (auto-flow) um die fest platzierte ">>"-Zelle herum:
+       Reihe4 = Therme, Lashes | Reihe5 = ReRo, K2 (rechts jeweils die hohe ">>"-Zelle).
+       DOM-Reihenfolge = POOL-Reihenfolge (siehe JS). -->
+  <div class="p-grid" id="pGrid">
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <div class="p-cell"><span class="p-name"></span><i class="p-caret"></i></div>
+    <a class="p-cell p-cta" href="/referenzen" id="pCta" aria-label="Alle Projekte ansehen">
+      <svg class="p-chev" viewBox="0 0 128 64" aria-hidden="true"><g class="chevwrap" id="chevWrap"></g></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============ SEKTION 6 : FAQ ============ -->
+<section class="scene-faq" id="sceneFaq" data-rr-snap>
+  <div class="faq-wrap">
+    <div class="faq-grid">
+    <div class="faq-left">
+      <div class="f-label">(FAQ)</div>
+      <h2 class="faq-heading">Bevor du fragst<span class="fdot">.</span></h2>
+    </div>
+    <div class="faq-right">
+    <details class="faq-item">
+      <summary>Wer steht hinter Red Rabbit?<span class="pm"></span></summary>
+      <p class="faq-a">Ich, Thomas Uhlir. Ich habe Red Rabbit 2019 gegründet und bin die Person, mit der du redest, von der ersten Idee bis nach dem Launch. Für Grafik, Entwicklung, SEO und KI arbeite ich mit einem handverlesenen Netzwerk aus Spezialisten, die ich seit Jahren kenne.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Seit wann gibt es euch?<span class="pm"></span></summary>
+      <p class="faq-a">Seit 2019. In der Zeit sind über 164 Projekte entstanden, und auf Google stehen wir bei 5,0 Sternen.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Arbeitet ihr nur in Wien?<span class="pm"></span></summary>
+      <p class="faq-a">Nein. Unsere Kunden sitzen in 9 Bundesländern. Die meiste Arbeit passiert ohnehin remote, per Anruf oder Video, nicht im Meetingraum.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Warum nehmt ihr nicht jedes Projekt an?<span class="pm"></span></summary>
+      <p class="faq-a">Weil wir uns für jedes Projekt Zeit nehmen wollen. Wenn wir merken, dass wir jemandem nicht wirklich helfen können, sagen wir das lieber ehrlich, statt den Auftrag trotzdem anzunehmen. Zufriedenheit ist uns wichtiger als Menge.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Was heißt Entwurf ohne Vorkasse?<span class="pm"></span></summary>
+      <p class="faq-a">Du bekommst zuerst 1-2 grafische Vorschläge zu sehen, bevor du einen Euro bezahlst. Gefallen sie dir und sagst du zu, fällt eine Anzahlung an. Gefallen sie dir nicht, hast du nichts verloren. Das Risiko liegt bei uns, nicht bei dir.</p>
+    </details>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEKTION 7 (Schluss-CTA) ist RAUS (28.07.): ersetzt durch das geteilte
+     <SiteClosing /> in der page.tsx (linksbuendig, Homepage-Aufbau). -->
+
+
+<!-- FOOTER: der frühere Nachbau von FooterReassembly ist RAUS (28.07.,
+     Design-Vereinheitlichung). Die Seite rendert stattdessen die ECHTE
+     Komponente <FooterReassembly /> aus der page.tsx, davor das geteilte
+     <SiteClosing />. Die Engine-Hooks auf #rrFoot sind null-geguarded. -->
+

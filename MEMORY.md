@@ -6,6 +6,179 @@ Update this file at the end of every session when project state, recurring conte
 
 This file is shared project memory for Codex and Claude Code. Both tools should read and update `MEMORY.md` and `LESSONS_LEARNED.md` so they stay on the same project state.
 
+## Stand 2026-07-30 (spaet abends) — Kontakt-Seite komplett umgebaut (Hero-Formular)
+- /relaunch-preview/kontakt: Formular im Hero neben der Gluehbirne (Einfahrt + Pflicht-Stopp via __rrDynamicSnapTops, distanz-gegated — Gate noetig, sonst faehrt finishDynamicBoundary jede Hero-Geste zum Formular durch), Kontaktdaten-Bumper (Grabnergasse 8/8 laut Impressum; layout.tsx-Schema sagt noch "8"), rotes Raster + alte CTA-Sektion raus, FAQ neu (6 Fragen, volle Viewport-Hoehe), SiteClosing ohne compact, Mobile-Andocken der Skulptur (.sculpt-layer.docked, nur <768px).
+- Commits 9d46e61 / 26ceaec / d1b5c8e gepusht, Vercel Ready, live auf v2 verifiziert. Review: docs/reviews/kontakt-hero-formular-2026-07-29.md (deferred: starker-Wisch-Skip des Stopps, consent/message serverseitig, Adress-Angleichung projektweit).
+- QA-Werkzeug: Chrome-Extension-Tab hat fixen 1800x807-Viewport + rAF-Drosselung im Hintergrund — Mobile-/Viewport-QA headless via python3 playwright (installiert). Lenis-Snap synthetisch nicht testbar.
+- Naechste Session: Tipps-Seite — ZUERST docs/handoffs/NEXT_SESSION_tipps.md.
+
+## Stand 2026-07-30 — Ueber-uns SEO/E-E-A-T-Regression gefixt + Kundenliste rot->weiss
+
+Committet + gepusht (`1b022c5`, Branch `relaunch`). Details: Claude-Memory
+`project_ueber_uns_seo_kundenliste_2026_07_30.md`, Handoff `docs/handoffs/NEXT_SESSION_kontakt.md`.
+
+- SEO-Audit von `/relaunch-preview/ueber-uns` gegen die alte, noch live geschaltete
+  Platzhalter-Seite `app/ueber-uns/page.tsx` ergab: der Relaunch-Umbau hatte gegenueber dem
+  Platzhalter drei Dinge verloren — echtes `<h1>` (war `role="heading"`-Div), `alternates.canonical`,
+  Person-Schema. Alle drei in `app/relaunch-preview/ueber-uns/page.tsx` +
+  `components/subpages/ueber-uns-demo/demo.body.html` nachgezogen, dazu FAQPage-JSON-LD ergaenzt
+  (Inhalte provisorisch, Thomas schreibt die FAQ noch komplett neu) und einen toten
+  `href="#projekte"`-Link auf `/relaunch-preview/referenzen` korrigiert.
+- Kundenliste ("Ausschnitt aus unserer Kundenliste") auf Ueber-uns UND
+  `components/relaunch/KundenGrid.tsx` (Hauptseite) synchron: Panel von Rot auf Weiss/Off-White
+  (Thomas-Wunsch, Referenz = Hauptseiten-Screenshot), `K2 Dach- & Bau` (kein echter Kunde) raus,
+  `Global Insights` (ruderes-insights.at) rein, Tipp-Animation schreibt jetzt einen ANDEREN Namen
+  statt denselben zurueck.
+- NICHT angefasst, separat zu klaeren: Dmitry/Pashlov steht noch in 12 Dateien projektweit
+  (u. a. `app/layout.tsx` globales Schema) — laut Thomas nicht mehr im Team, in Beitraegen darf er
+  bleiben; `K2 Dach- & Bau` steht noch in 4 weiteren Dateien (Portfolio/Referenzen/Projects); vier
+  `<title>`-Tags im SSR-HTML (vermutlich Next-Streaming-Artefakt) ungeklaert.
+- Naechste Session: Kontakt-Seite (`docs/handoffs/NEXT_SESSION_kontakt.md`) — hat denselben h1-Bug,
+  aber die dortige `scene-partner`-Sektion ist ein anderes Feature (Was-hier-nicht-passiert-Raster),
+  nicht blind mit auf Weiss umstellen.
+
+## Stand 2026-07-29 (abends) — Scroll-Standard site-weit neu: Pflicht-Stopp + nativ-schnell (Thomas freigegeben)
+
+Strang `/relaunch-preview/leistungen/website`, committet + gepusht (`7a2e5db`, Branch `relaunch`).
+Kanonisch dokumentiert in `docs/DESIGN_STANDARD.md` § "Scroll & Bumper" (Detail dort lesen,
+hier nur der Kurzstand). Vorgeschichte/Vorlaeufer-Problem: [[feedback_scroll_snap_verifikation_unreliable]].
+
+- **Fertig + von Thomas live freigegeben ("supper passt jetzt"):** Hero-Ankunft (data-rr-snap
+  auf dem hero+belief-Wrapper) + alle 4 Ehrlich-gesagt-Statements in
+  `components/subpages/website-demo/demo.engine.jstext` bekommen ueber den neuen
+  `window.__rrDynamicSnapTops`-Hook (registriert in `types.d.ts`) garantierte
+  Ein-Scroll-Checkpoints via `finishDynamicBoundary()` in `ScrollExperience.tsx`. Mehrfach
+  live mit Konsolen-Instrumentierung bewiesen (vor+rueckwaerts, schwacher und starker Scroll).
+- **SITE_LERP von 0.065 auf 1** (ScrollExperience.tsx) — kein spuerbares Nachziehen mehr,
+  Scrollen fuehlt sich nativ an. Das war Thomas' Kernbeschwerde ("dieser sticky Effekt").
+- **Bugfix unterwegs gefunden:** der generische Idle-Snap darf dynamische Checkpoints NICHT
+  mit anfassen (`trySnap` zieht "naechstgelegen" ohne Richtung — hat bei zu grosser Distanz
+  faelschlich RUECKWAERTS gezogen). Jetzt sauber getrennt: `trySnap` nur fuer echte
+  `[data-rr-snap]`-Elemente, `finishDynamicBoundary` nur fuer die Gesten-Richtung.
+- **OFFEN / naechste Schritte (Thomas will das explizit, nicht nur diese eine Seite):**
+  1. Dieselbe Sektion, Bild 4-7 aus Thomas' Screenshot-Walkthrough (SoBauenWir/Diagnose/
+     Ablauf/Fundament) — laufen schon ueber `data-rr-snap`, pruefen ob SITE_LERP=1 allein
+     reicht oder ob dort auch ein Sticky-Scrubbing-Rest sitzt.
+  2. **Site-weit ausrollen**, nicht nur diese Seite: `components/relaunch/HomeMorph.tsx`
+     (Homepage) hat noch eine EIGENE Lenis-Instanz mit hartcodiertem `lerp:0.065` —
+     NICHT in dieser Session angefasst (ausserhalb des besprochenen Scopes), gehoert aber
+     laut Thomas jetzt mit dazu. Jede andere Seite mit eigenem scroll-gebundenem
+     Mehr-Schritt-Track (falls vorhanden) nach demselben Muster (`window.__rrDynamicSnapTops`)
+     umbauen, NIE einen zweiten Wheel-Listener bauen.
+  3. **Standing-Regel (siehe docs/DESIGN_STANDARD.md, gilt dauerhaft, nicht nur fuer diese
+     Aufgabe):** kein kuenstliches Verlangsamen mehr irgendwo auf der Site; Pflicht-Stopp
+     pro Sektion beim Reinscrollen egal wie schnell/viel gescrollt wird; scroll-gebundene
+     Checkpoints IMMER ueber den zentralen Hook, nie eigene Engine.
+- ZUERST `docs/handoffs/NEXT_SESSION_leistungen-website-scroll.md` lesen fuer den vollen
+  Uebergabe-Prompt.
+
+## Stand 2026-07-19 — fuch.ai Roboter-Choreografie aus Production-Code extrahiert (fuer TALOS)
+
+Referenz-Analyse fuer TALOS-Bewegung (Thomas will fuchs Bewegungs-Idee mit UNSERER TALOS-Figur nachbauen).
+
+- **KANONISCH:** `docs/specs/FUCHAI_CHOREOGRAFIE_2026-07.md` — vollstaendige, wertgenaue Spec aus dem
+  realen fuch.ai-Bundle (`main.js`) + GLB-Inspektion extrahiert. Enthaelt: Mood-Tabellen `XE` (3D-Koerper)
+  + `YE` (Augen/HUD) verbatim, Clip-Map `i7`, Pointer/Blick-Konstanten, Idle-Timings, Intro-Sequenz,
+  Nav-Trigger. Die Datei ist zum "Claude spaeter geben" gemacht.
+- **fuch-Technik (verifiziert):** react-three-fiber + drei + THREE.AnimationMixer, Zustand-Store, Framer
+  Motion (nur 2D-UI). KEIN Spline, KEIN CSS-Zauber, KEIN GSAP. Gerigter 24-Bone-Humanoid-GLB
+  (`mascot-anim.glb`, 20 Clips: walk/run/turn/wave/bow/dance/backflip/handstand …) + Mood-State-Machine.
+  Alles state-driven (aiState/mood -> useFrame-Damping), nicht Timeline-basiert.
+- **Kern-Trick "Aliveness":** Idle-Variant-Wechsel alle 7 s (45 %), idle<->idle2 alle 25–45 s, Blinzeln
+  2,4–6,4 s, Kopf/Koerper-Blick-Split (Kopf schnell ±35°/λ9, Koerper traege ab 0,42-Totzone/λ2.2).
+- **TALOS-Uebertragung (2 Wege, in Spec §8):** Weg A = Persoenlichkeits-Schicht (Mood + Blick + Leerlauf-
+  Zappeln + prozedurale Gesten) SOFORT auf bestehenden Spline-Rig portierbar — ABER TALOS hat nur EINEN
+  Arm gerigt, KEINE Beine, KEINE Clips -> kein Laufen/Tanzen/Backflip. Weg B = standard-gerigte Humanoid-
+  GLB (Mixamo-kompatibel) + Clip-Bibliothek -> fuchs System faellt fast 1:1 rein ("Welten"-Look), aber
+  Asset-/Rig-/Lizenz-Entscheidung. Empfehlung: Weg A als sichtbares Upgrade, Weg B nur bei bewusstem
+  Ganzkoerper-Akrobatik-Ziel.
+- Roh-Artefakte (nur read-only, NICHT ins Repo): fuch-Bundle + GLBs liegen im Session-Scratchpad.
+  Wir replizieren das SYSTEM, nicht das fremde Asset (NEXBOT/Charakter-Lizenz beachten).
+- OFFEN: Thomas will "ein Beispiel wie TALOS sich bewegen koennte" — Weg-A-Demo (isoliert, neue Route,
+  nicht-destruktiv) bauen + zeigen.
+
+## Stand 2026-07-16 — Referenzen-Galerie: phantom.land Iteration 2 KOMPLETT (relaunch `721b884`)
+
+Strang "relaunch-referenzen" (Branch `relaunch`, committet + gepusht bis `721b884`; Handoff: `docs/handoffs/NEXT_SESSION_relaunch-referenzen.md`):
+
+- `/relaunch-preview/referenzen` ist jetzt der vollstaendige phantom.land-Nachbau auf Basis
+  einer VERMESSENEN Original-Spec (Bundle-Chunk + Original-CSS + Codrops + Frame-Vermessung).
+  Kern: `components/relaunch/SphereGallery.tsx` (einzige freigegebene WebGL-Signatur),
+  Chrome: `components/relaunch/GalleryChrome.tsx` (NEU), Daten: `lib/relaunch/projects.ts`
+  (SphereProject um domain/tags/hoverColor/loop erweitert).
+- Galerie: quadratische 260px-Zellen auf Navy (#1c2837), feine Rasterlinien, Barrel-Distortion
+  als Post-Pass (woertliche Original-Formel), Drag/Wheel-Endlos-Pan, Grab-Zoom, Intro-Zoom,
+  Hover = Blur-Verlauf des eigenen Screenshots (x0.7), max 3 Tag-Pills, KEINE Nummern.
+- 7 Scroll-Video-Loops der Kundenseiten unter `public/relaunch/referenzen/loops/` (~1MB gesamt,
+  Playwright-Aufnahme, Cookie-Banner entfernt) laufen auf ~1/3 der Zellen (nur nahe Bildmitte).
+- 3 Info-Zellen im Raster (Hooks: Gefunden werden / Erst sehen, dann zahlen / Der naechste bist
+  du) -> Klick oeffnet Paper-Panel im DESIGN.md-Stil. Inhalte NUR verifizierte Marken-Fakten.
+- Klick auf Projekt-Zelle -> Whiteout -> Stub-Unterseite `/relaunch-preview/referenzen/<slug>`
+  (NEU, alle 7; echte Case-Studies = eigener Folgeauftrag).
+- Let's-talk-Overlay: 3 Paper-Karten (Layer-Schatten + roter Innen-Balken), Kontaktdaten von
+  der Live-Site verifiziert. NEUE DAUERREGEL (Thomas): Telefonnummer NIE im Klartext auf
+  Websites — nur "Anrufen"-Button mit tel:-Link (auch fuer alle anderen Straenge!).
+- review-it gelaufen: 1 CRITICAL (Ortho-Picking ohne camera.zoom) + 2 MAJOR gefixt;
+  `docs/reviews/referenzen-phantom-2026-07-16.md`, Lessons L-referenzen-05/-06 in docs/lessons.md.
+- OFFEN: Thomas-Abnahme; vercel.app-Referenzlinks mittelfristig auf Kunden-Domains (Security-
+  Defer); Menue-Umbiegen auf neue Seiten erst wenn alle Parallel-Straenge committet sind.
+- FUER PARALLEL-SESSIONS WICHTIG: (a) Hydration-Mismatch kommt aus `RelaunchMenu` (useId-
+  abhaengige `aria-controls`/`id` differieren SSR vs. Client) — sichtbar als Dev-Overlay
+  "1 Issue" auf allen relaunch-preview-Seiten; gehoert dem Menue-/Basis-Strang, bitte dort
+  fixen. (b) Dieser Strang fasst NUR an: app/relaunch-preview/referenzen/**,
+  components/relaunch/SphereGallery.tsx + GalleryChrome.tsx, lib/relaunch/projects.ts,
+  public/relaunch/referenzen/**. (c) Dev-Server :9000 wurde NICHT neu gestartet.
+
+## Stand 2026-06-15 — Brand Second Brain, SEO-Monitor-Dashboard, Option 3, Dmitri raus
+
+Cowork-Session (Claude). Branch `feat/seo-monitor-und-brand-second-brain` (Commit `4517d0e`) liegt lokal, **Push offen** (Sandbox ohne Git-Creds, GitHub-Connector 401). Push via `git push -u origin feat/seo-monitor-und-brand-second-brain` (Tomson) ODER GitHub-Connector neu verbinden.
+
+- **SEO-Monitor (wöchentlich, Montag):** Lauf 15.06 gemacht. GSC 28T = 4 Klicks / 6.081 Impr / CTR 0,1% / Pos 40,5 (3-Mon: 10/18.400/42,3 vs. Baseline 12/18.200/42,7 → Position leicht besser). Indexiert 30 / nicht 27 (10× 404 unverändert, 11× gecrawlt-nicht-indexiert, 6× gefunden-nicht-indexiert). Top-Impressionen = Bundesland-Begriffe auf Pos 35–48 (Seite 4–5), "webdesign wien" + Brand NICHT in Top. Canonicals alle self ✓. aggregateRating sitewide = 5,0/8 echte Reviews (NICHT die erfundene 4,8/315; web_fetch lieferte für /webdesign-klagenfurt eine veraltete 4,8/315-Cache-Variante → beobachten). PageSpeed nicht abrufbar (keyless-API 429). Verlauf: `docs/seo-monitor-log.md`.
+- **Broken Links / 404:** Tippfehler-Link `/webdesign-st.-poelten` (mit Punkt) im Body der St.-Pölten-Seite; `/webdesign-feldkirchen` + `/webdesign-voelkermarkt` lösen nicht auf; villach/spittal = Soft-Redirect auf Kärnten (aber wie eigene Stadtseiten verlinkt). Kundenzahlen inkonsistent (164/152/315/800+).
+- **SEO-Monitor-Dashboard-Tab (neu):** `app/dashboard/seo-monitor/page.tsx` + `lib/dashboard/seoMonitor.ts` lesen `content-engine/seo-monitor/tasks.json` (Wochenbefunde + To-do-Liste), Tab in `DashboardTabs.tsx`. tsc+eslint grün. Dashboard auf Prod weiter via `DASHBOARD_ENABLED` gated (sonst 404). Plan: Montags-Task aktualisiert künftig tasks.json (erledigt abhaken/ergänzen) + Push → Vercel. Erst Test, dann voll-auto (Tomson 15.06).
+- **Brand Second Brain (neu):** Ordner `brand/` (README, positioning, cult-brand-playbook, messaging, decisions-log) = Single Source of Truth für Marke/Identität/Copy. In `CLAUDE.md` verankert ("zuerst lesen"). Cult-Brand-Wissen aus NotebookLM (13 Videos, `t.uhlir@immo.red`) extrahiert + nach Eignung gefiltert.
+- **Marken-Entscheidung (Tomson 15.06): Option 3 "fair + selektiv".** Kern (zugänglich, risikofrei) bleibt, aufgeladen mit Menschlichkeit/Story/Feindbild. Preis/Risiko: **Design-Vorschlag ohne Vorkasse, Anzahlung erst bei Auftragszusage**, 790 € wird Starter/One-Pager, höhere Pakete darüber (Struktur offen). Details `brand/positioning.md` + `brand/decisions-log.md`.
+- **Dmitri ab jetzt nicht mehr verwenden (Tomson 15.06):** Dmitry Pashlov wird für NEUE Inhalte/Bylines nicht mehr genutzt → Thomas Uhlir ist Autor/Gesicht. **KEIN Refactor, KEIN Entfernen:** bestehende Bylines (10-fehler, ki-website-erstellung, statische-vs-dynamische, website-5-seiten-kosten u.a.), `AUTHORS.dmitry` in `lib/config.ts`, Person-Schema in `app/layout.tsx`, About.tsx bleiben UNVERÄNDERT. Nur `voice/dmitry.md` mit Hinweis markiert (Content-Engine vergibt ab jetzt nur Thomas-Bylines).
+- **OFFENE Brand-Entscheidungen (grill-me Q&A läuft):** Paket-/Preisstruktur über 790 €, Anzahlungs-Höhe & ob "kein Risiko" pro Tier, Schärfe des Feindbilds, persönliche Marken-Stimme erfassen (für Website-Copy), Social-Proof-Aufbau (echte Reviews/Cases).
+- **Brand-Brain Dateien (Stand 15.06):** `brand/` enthält README, positioning, cult-brand-playbook, messaging, founder-story, manifesto-statements (+ Beweis-Audit), method-arsenal, decisions-log, **todo.md (laufende Umsetzungsliste Site-Overhaul)**. Q&A-Stand: Story+Beweise+Statements (1,2,3,5 fix; 4 erst wenn eigene Seite rankt; 6 klein) erfasst. Offen/als Nächstes: USP/Signatur-Methode (Baustein 4) benennen, dann Stamm (Baustein 3). Arbeitsprinzip: knallhart/ehrlich/unabhängig, alles belegbar, kein 08/15 (brand/README).
+- **Umsetzungs-To-dos (brand/todo.md):** Site-Neugestaltung + Grauzone raus, 404s/dünne Stadtseiten fixen, CWV/AI-Crawler/Schema/BFSG, CRO (Clarity/Call-Tracking), Review-Engine (auch als ~15€/Mon-Add-on), eigene Datenstudie + kostenloses Tool statt Verzeichnis-Spam, Messung (GSC/Bing/GA4/GTM + AI-Citation-Monitoring), Monats-Abo-Angebot.
+- **Konzept-Stand 15.06 (Markenkern v0.1, brand/markenkern.md + method.md + values.md):** USP-Richtung = "Performance-Marketer, die Websites bauen → gefunden werden + Anfragen, ohne Risiko, premium aber nicht überheblich". Methode = "Die Red Rabbit Methode": 1 Verstehen (intern, NICHT plakatieren), 2 Bauen für Performance (Trumpf), 3 Feinschliff bis es passt, 4 Wachsen lassen (Abo). Werte (alle 6 bestätigt): Klartext/Ehrlichkeit, Ergebnis über Show, Mehr geben als nehmen, Augenhöhe/nicht überheblich, Mut/Haltung, Handschlagqualität. **Niemals:** etwas versprechen was wir nicht halten; Geld nehmen wenn Kunde es woanders besser+billiger+schneller bekommt (Beweis-Story: Buch-Kunde → zu Shopify geschickt). Ziel-Gefühl: "die können was, bei denen bin ich richtig, keine 08/15" → Seite SELBST muss Kompetenz beweisen. OFFEN: Methoden-Name final (A Red Rabbit Methode / C "Anfragen-Maschinen"), Stamm/Ausschluss, echte Kundenstimmen, Optik-Richtung, Paketstruktur 790→3.800.
+- **PROZESS (Tomson-Wunsch 15.06):** Bei Marken-/Positionierungs-Arbeit regelmäßig mit dem NotebookLM "Cult Brand Psychology" gegenchecken (Claude kann es per Browser-Chat abfragen UND Notizen reinschreiben). Konto t.uhlir@immo.red. Repo bleibt Single Source of Truth; NotebookLM = Wissensquelle/Abgleich. Bei jeder Frage an Tomson immer gleich eine Empfehlung mitgeben.
+- **ALLE brand/-Dateien (Stand 15.06, in neuem Chat ZUERST lesen):** README, positioning, cult-brand-playbook, messaging, founder-story, manifesto-statements, method-arsenal, todo, values, markenkern, method, design-concept, prototypes/hero-morph-prototype.html. Werte/Niemals/Gefühl/Stamm/Methode/USP/Hooks-Richtung/Design-Richtung alle dort.
+- **DESIGN-RICHTUNG neue Seite (15.06):** Referenzen analysiert: all-turtles (Tomsons FAVORIT; Next.js, Premium-Serif "Heldane", Lenis Smooth-Scroll, Hero-Logotype zerlegt sich beim Scrollen in Fragmente und formt pro Sektion NEUE Icons = "Morph-Engine"), silberpuls (Framer, Satoshi, Award-Badges früh im Hero), designatives (Rebond Grotesque ~120px, Riesen-Typo). Richtung: editorial-bold auf WEISS, **Serif-Headlines + Sans-Body**, EIN Rot (Red-Rabbit-Rot) als einziger Akzent, viel Whitespace, scroll-getriebene Bewegung. **Kern-Idee (Tomson):** Hero zeigt zuerst einen TEIL des Hasenkopfes → scrollt man, sieht man den ganzen → weiter scrollen ZERLEGT ihn → das rote Material formt pro Sektion etwas Neues (Morph-Engine, Variante B). NICHT ihren Blackletter-Look klauen, nur die Technik. Tech: GSAP+ScrollTrigger+Lenis + SVG-Path-Morph; Performance-Budget PFLICHT (langsame Performance-Agentur = Selbstwiderspruch). **Prototyp gebaut:** brand/prototypes/hero-morph-prototype.html (Canvas-Shards Hase→Lupe→Blitz, zum Öffnen/Scrollen).
+- **OFFEN Design:** in WAS zerlegt sich der Kopf pro Sektion (Icon-Sequenz wählen — Ideen offen), finaler Serif-Font, genauer RR-Rot-Hexwert, echtes Hasen-Logo-SVG (aktuell Platzhalter), Prototyp auf "Teil→ganz→zerlegt" erweitern.
+
+## Stand 2026-06-16 — STRUKTUR/INHALT der neuen Seite KOMPLETT (brand/site-structure.md, pricing.md, capabilities.md)
+Vorgehen: erst Struktur/Inhalt, Design zuletzt (Tomson). Vollständig entschieden + verifiziert (Web + NotebookLM):
+- **Scope:** Webdesign vorne, SEO/Ads/KI als Zusatz. **Conversion-Ziel:** Formular "Kostenlosen Entwurf". **Sprache:** nur Deutsch (AT). **Preise transparent.**
+- **Preis-Architektur (Agentur-Band 4.000-10.000, über Ein-Mann-Buden):** Starter 990-1.490 (One-Pager) / Business ab ~2.900-3.500 / **Premium/Flaggschiff ab 4.900-6.900 (Held)** / Custom auf Anfrage. Wartungs-/Optimierungs-Abo OHNE Bindung (79-149/Mon). KMU.DIGITAL-Förderung (bis 50%) als Verkaufs-Hebel. Verifiziert an 10 Agenturen (HM Tech/Web Bastler = Ein-Mann; Designtribe Premium ab 6.000, web-austria ab 4.000). Details brand/pricing.md.
+- **Capabilities (brand/capabilities.md):** alles eigen programmiert (Web/Shops/Web-Apps/Portale/Dashboards/API) = Agentur-Signal; SEO/Ads/Meta/Newsletter/Reporting/KI-LLM; Content/Branding/Video/Foto via KI. **Prinzip: wenig Aufwand für uns / viel Wert für Kunden.** **KI-Nutzung NICHT öffentlich zugeben** (intern). Recurring-Bundle (Care+Reporting via SEO-Monitor+Hosting+Google-Business).
+- **Homepage-Sektionen:** Hero → Trust-Leiste → Problem/Feind → Methode(1-4) → Leistungen → Cases → Werte/Risiko-Umkehr → Preise → (Lead-Magnet Sichtbarkeits-Check) → FAQ → Final CTA → Footer.
+- **Navigation:** Leistungen · Referenzen · Preise · Über uns · Tipps + Button "Kostenlosen Entwurf". Footer: Regionen, Rechtliches, Immobilien-LP.
+- **Erstkontakt:** mehrstufiges Mini-Formular (2-3 Schritte, 86-300% bessere Conversion) = "Verstehen"-Schritt ohne Meeting; CTA "Hol dir deinen kostenlosen Entwurf"; optional Sichtbarkeits-Check als Sofort-Wert; WhatsApp+Tel prominent.
+- **Team/Über-uns:** echte Agentur; Tomson als Gesicht (Foto/Bio); Team = "Kollektiv aus Spezialisten" (Rollen, nicht alle Namen); KI/Freelancer intern.
+- **Trust = nur Echtes:** KEINE Awards ("award-prämiert" GESTRICHEN, war Fake-Annahme), keine Zertifikate (evtl. später), Referenzen als NAMEN statt Logos (K2/Aircraft NICHT; Immobilien-Namen ja), 8 echte Google-Reviews; mündliche Reviews → Entwurf+Kundenfreigabe. Echter Differenzierer = eigenes Programmierer-Team (custom) + ReachLocal-Pedigree.
+- **FAQ:** 7 Fragen (Kosten, Vorkasse/Anzahlung, warum teurer, Dauer, keine Meetings, für wen NICHT, nach Launch) + Förderung.
+- **NÄCHSTE PHASE:** echte TEXTE/Copy je Sektion in Tomsons Stimme (brand/voice + values + manifesto), DANN Design. Offen (Daten, kein Blocker): echte Case-Zahlen, Premium-Preis final, Abo-Preis, Tomson Bio/Foto, Reviews verschriftlichen.
+
+## Stand 2026-06-16 — Hero-Animation: Erkundung, Learnings, gewählte Technik (vollständig)
+
+ZUERST `brand/design-concept.md` lesen. Diese Session war fast komplett die Hero-Animation für die neue web.redrabbit.media-Startseite.
+
+- **WIE all-turtles es WIRKLICH macht (Code inspiziert):** KEIN WebGL, KEINE Partikel, KEIN Video fürs Morph. Es ist EIN großes Inline-SVG mit ~705 einzelnen `<path>` (Buchstaben-Scherben). Ein DESIGNER hat dieselben Pfade von Hand in jede Zielform (Logo→Glühbirne→Zahnrad→Kopf) arrangiert; Code interpoliert pro Pfad die transforms (translate/rotate/scale) auf Scroll-Fortschritt. Smooth via **Lenis**, Next.js, Animation gebundelt (vermutl. Framer Motion). **Der "Wow" = Designer-Handwerk (gestaltete Keyframes), nicht Physik/Algorithmus.**
+- **KERN-LEARNING:** Die Ästhetik hängt an ASSETS/Design, NICHT am Code. Code-generierte Formen (Partikel/Blobs/Scherben) bleiben "okay/kindergarten". Schöne Scherben = Design-Asset.
+- **Prototyp-Reise (alles in brand/prototypes/):**
+  1. `hero-morph-prototype.html` — Canvas-Shards (Rechtecke) = zu billig, verworfen.
+  2. `morph-styles-compare.html` — 3 Canvas-Stile (Kugeln/Netz/Liquid) = alle "kindergarten", verworfen.
+  3. `webgl-murmuration.html` — Three.js + Curl-Noise GPU-Partikel (Murmuration). Hatte Point-Size-Bug (=Blob), gefixt; aber reine Partikel-Physik ≠ Award-Politur, und ich kann den Render NICHT selbst sehen.
+  4. Solid-Shard-Widget — Methode richtig (solide, füllt erkennbaren Hasen, keine Lücken), aber Scherben sahen "bubbly/Bälle" aus = Asset-Problem.
+  5. **`logo-particles.html` = GEWÄHLTE TECHNIK (Stand jetzt):** Image-to-Particles mit dem ECHTEN Logo: Logo-Pixel → Partikel, lösen sich/strömen, im Stand Crossfade auf das **gestochen scharfe Original-Logo** (=solide, nicht bubbly). Auto-Loop (für Produktion auf Scroll-Steuerung umbauen).
+- **ECHTES LOGO:** liegt im Repo `public/images/logo.webp` (+ `logo-alt.webp`), 677×267, roter Hasen-Mark links (~179×267), Wortmarke war weiß/unsichtbar. KEIN sauberes SVG des Marks im Repo (Tomson hat SVG am Mac, aber Finder kaputt). Ich extrahiere den roten Mark per Python aus der webp (Pixel r>120/a>110). Für `logo-particles.html` als data-URI eingebettet.
+- **VERIFIKATIONS-LIMIT (wichtig):** Claude kann eigene Prototypen NICHT selbst sehen — Chrome-MCP öffnet keine `file://` (prefixt https://), Sandbox hat keinen Headless-Browser, show_widget rendert nur bei Tomson. → Auf Tomsons Screenshots angewiesen. Erste Versuche scheiterten teils an Bugs, die ich blind nicht sah (Point-Size). Konsequenz: kleine, verifizierbare Schritte + Tomson um Screenshot bitten.
+- **PLAN B (ohne Award-Designer):** B1 = eine solide Form morpht (echtes Logo + saubere Icon-Vektoren aus Bibliothek) — sicherste Premium-Lösung; B2 = generative Scherben (bubbly-Risiko); B3 = gekauftes Ink/Brush-Vektor-Pack für schöne Scherben; B4 = Logo + KI für Zielsymbole; B5 = einmaliger Motion-Freelancer (Fiverr/Upwork) nur für Keyframe-Formen, dann läuft die Engine.
+- **PRODUKTION:** Technik in Next.js als Komponente (Image-to-Particles Canvas ODER SVG-Path-Morph via GSAP/Framer Motion + Lenis). Scroll-Steuerung statt Loop. PERFORMANCE-BUDGET PFLICHT: Inhalt rendert sofort, Animation nur Enhancement, `prefers-reduced-motion`+statischer Fallback. Langsame Performance-Agentur = Selbstwiderspruch.
+- **OFFEN/Nächste Stellschrauben:** Partikel-Dichte/Tempo, Hintergrund weiß vs. dunkel, Ziel-Symbol-Sequenz (Logo→Lupe→Blitz→Pfote, brauchen Vektor-Assets), dann echte Hero-Komponente mit Scroll. Tomson will gemeinsam "wie verbessern wir das noch" durchgehen.
+
 ## Stand 2026-06-11 (Teil 11) — SEO-Batch: Titel, H1, Meta, llms.txt, Pillar, a11y (main `cfcc6fe`)
 
 Diese Session (Fortsetzung Teil 10) hat den Quality-Scan genutzt, um echte Funde abzuarbeiten:

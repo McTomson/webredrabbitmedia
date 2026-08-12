@@ -40,7 +40,7 @@ export const organizationSchema = {
     ],
     ...(ratingLd ? { aggregateRating: ratingLd } : {}),
     priceRange: '€€',
-    description: 'Professionelle Webdesign Agentur in Wien. Website ab 790€. 164 zufriedene Kunden.',
+    description: 'Professionelle Webdesign-Agentur in Wien für den österreichischen Mittelstand. Websites zum Fixpreis, Entwurf ohne Vorkasse.',
 };
 
 // LocalBusiness Schema (zusätzlich zu Organization)
@@ -85,8 +85,8 @@ export const websiteSchema = {
     '@type': 'WebSite',
     '@id': 'https://web.redrabbit.media/#website',
     url: 'https://web.redrabbit.media',
-    name: 'Red Rabbit Media - Website ab 790€',
-    description: 'Professionelle Website ab 790€. 164 zufriedene Kunden. Erst zahlen wenn zufrieden.',
+    name: 'Red Rabbit Media | Webdesign aus Österreich',
+    description: 'Websites zum Fixpreis aus Österreich. Du siehst zuerst einen Entwurf und zahlst erst, wenn du überzeugt bist.',
     publisher: {
         '@id': 'https://web.redrabbit.media/#organization',
     },

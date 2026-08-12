@@ -1,0 +1,31 @@
+/* ============================================================================
+   Eyebrow-Stil, geteilt Hub + Website-Unterseite (Thomas 21.07./22.07.):
+   Klammern, rot, uppercase, letterspaced — 1:1 der Stil der Belief-Szene im
+   Hero (.b-label in components/subpages/website-demo/demo.css). Vorher nur
+   in website.css definiert und dort verwendet; jetzt geteilt, damit der Hub
+   (app/leistungen/page.tsx) denselben Stil ohne Duplikat
+   bekommt. Beide Seiten importieren diese Datei direkt (website.css
+   importiert selbst keine CSS-Dateien, Kontrakt).
+   ============================================================================ */
+.rr .wd-eyebrow {
+  font-family: var(--rr-font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  /* Kleintext-Kontrast (WCAG AA / BaFG): reines --rr-red faellt auf hell unter
+     4.5:1 -> --rr-red-deep #c81222 (5.35:1 off-white / 5.89:1 weiss). Dunkel-/
+     Teal-Faelle unten (--ondark/--cream) unveraendert. */
+  color: var(--rr-red-deep);
+  margin: 0;
+}
+/* Klammern gehoeren zum Stil, nicht zum Inhalt: als Pseudo-Content kann
+   keine Sektion sie vergessen (Review-Vormerkung e15914a, Simplify P3). */
+.rr .wd-eyebrow::before { content: "("; }
+.rr .wd-eyebrow::after { content: ")"; }
+/* Navy (Schluss-CTA): reines Markenrot faellt unter 4.5:1 auf #23262e (~3.55:1)
+   -> helleres Rot, geprueft ~5.5:1 (AA fuer Kleintext). */
+.rr .wd-eyebrow--ondark { color: #f77480; }
+/* Teal (Diagnose-Welt): Rot vibriert auf Teal und faellt im Kontrast durch
+   (~1.05:1) -> Creme-Akzent der Farbwelt uebernehmen, Struktur bleibt gleich. */
+.rr .wd-eyebrow--cream { color: var(--rr-world-1-accent, #fcfbc9); }

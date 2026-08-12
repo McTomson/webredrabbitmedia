@@ -1,0 +1,440 @@
+  :root{
+    --offwhite:#f4f4f2;
+    --ink:#23262e;
+    --ink-soft:#6a6e78;
+    --navy:#23262e;
+    --red:#f12032;
+    --red-deep:#c81222;
+    --ease:cubic-bezier(.6,0,.4,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:auto}
+  html,body{
+    background:var(--offwhite);color:var(--ink);
+    font-family:"Instrument Sans",system-ui,sans-serif;
+    overflow-x:clip;
+  }
+  body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+  /* ---------- Slim Kontextleiste ---------- */
+  .demobar{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    display:flex;align-items:center;gap:.6rem;
+    padding:.42rem 1rem;
+    background:rgba(28,40,55,.9);color:var(--offwhite);
+    font-family:"DM Sans",sans-serif;
+    font-size:.68rem;font-weight:700;letter-spacing:.05em;
+    backdrop-filter:saturate(1.2) blur(6px);
+    user-select:none;-webkit-user-select:none;pointer-events:none;
+  }
+  .demobar .dot{width:7px;height:7px;background:var(--red);display:inline-block}
+  .demobar em{font-style:normal;opacity:.55;font-weight:500}
+
+  /* ================= HAUPT-SZENE: HERO + UEBERGANG + FORMULAR ================= */
+  /* 1150vh statt 1600vh: die lange Story ist raus, das Formular faehrt ein und
+     STOPPT — die Reststrecke waere totes Scrollen. Phasen sind Anteile, skalieren mit. */
+  .scene-main{position:relative;height:1150vh}
+  .main-sticky{
+    position:sticky;top:0;height:100vh;height:100dvh;
+    overflow:hidden;isolation:isolate;
+    user-select:none;-webkit-user-select:none;
+  }
+  .main-sticky.painting{cursor:none}
+  .main-sticky ::selection{background:rgba(241,32,50,.25)}
+
+  /* Ebene B (Reveal): Navy + versteckte Botschaft — viewport-fix im Sticky */
+  .layer-base{
+    position:absolute;inset:0;z-index:1;
+    background:var(--navy);color:var(--offwhite);
+    display:flex;align-items:center;justify-content:center;
+    padding:0 6vw;pointer-events:none;
+  }
+  .reveal-msg{
+    font-family:"DM Sans",sans-serif;
+    font-weight:800;text-transform:uppercase;text-align:center;
+    font-size:clamp(2rem,6vw,6rem);line-height:.98;letter-spacing:-.01em;
+    max-width:15em;text-wrap:balance;
+    transform:translateY(-9vh);
+  }
+
+  /* Ebene A (Deck): Off-White + Titel */
+  .layer-deck{
+    position:absolute;inset:0;z-index:2;
+    background:var(--offwhite);
+    display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+    pointer-events:none;
+  }
+  .hero-title{
+    font-family:"DM Sans",sans-serif;
+    font-weight:700;color:var(--ink);
+    font-size:22vw;line-height:.8;white-space:nowrap;letter-spacing:-.03em;
+    position:relative;will-change:transform;
+    transform-origin:50% 50%;
+  }
+  .ltr{display:inline-block;will-change:transform,opacity;transform-origin:center center}
+  .ltr.sp{width:.16em}
+  /* Roter Schlusspunkt im Hero-Titel (wie Hauptseiten-Headlines, Tomson 16.07.) */
+  .hero-title .ltr.dot{color:var(--red)}
+
+  .ue{position:relative}
+  .ue .udot{position:absolute;background:var(--red);border-radius:50%;pointer-events:none;will-change:transform}
+
+  .cursor-dot{
+    position:absolute;left:0;top:0;z-index:6;
+    width:19px;height:19px;border-radius:50%;
+    background:var(--red);pointer-events:none;opacity:0;
+    will-change:transform,opacity;
+  }
+  .masksvg{position:absolute;width:0;height:0;pointer-events:none}
+  .main-sticky[data-active="1"] .layer-deck{
+    -webkit-mask:var(--mask);mask:var(--mask);
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  }
+  .autobtn{
+    position:absolute;right:1rem;bottom:calc(16.5vw + 1.6rem);z-index:7;pointer-events:auto;
+    background:var(--red);color:#fff;border:none;font-family:"DM Sans",sans-serif;
+    font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+    padding:.55rem .9rem;cursor:pointer;border-radius:0;
+    transition:opacity .3s;
+  }
+  .autobtn:disabled{opacity:.5;cursor:default}
+  .hint{
+    position:absolute;left:1rem;bottom:calc(16.5vw + 7.5rem);z-index:5;
+    font-family:"DM Sans",sans-serif;
+    font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--offwhite);opacity:.55;pointer-events:none;
+    mix-blend-mode:difference;transition:opacity .4s;
+  }
+
+  /* LCP-Poster: nur Mobile/Tablet (matcht Engine-noHover: hover:none). Desktop malt live -> Poster aus. Gleiche Box wie das reveal-video (z4), das sich drueberlegt; faded synchron auf Scroll. */
+  .reveal-poster{display:none}
+  @media (hover:none){
+    .reveal-poster{
+      display:block;position:absolute;top:0;left:0;z-index:4;
+      width:100%;height:auto;aspect-ratio:496/796;
+      pointer-events:none;background:transparent;
+    }
+  }
+
+  /* Story-Ebene (Kopf links, Text-Fenster rechts) — ueber dem Deck */
+  .story-grid{
+    position:absolute;inset:0;z-index:3;
+    max-width:1240px;margin:0 auto;padding:0 4vw;
+    display:grid;grid-template-columns:44% 52%;gap:4%;
+    align-items:center;
+    pointer-events:none;
+  }
+  .head-col{
+    height:100%;display:flex;align-items:center;justify-content:center;
+    overflow:visible;
+  }
+  /* Demo-Naeherungs-Kopf dauerhaft ausgeblendet: die echte relaunch-preview-Skulptur
+     (MorphSculpture) wird als Vollbild-Ebene in .main-sticky portalt und rendert oben drueber. */
+  .head-col svg{width:100%;height:86vh;overflow:visible;display:block;opacity:0!important}
+
+  .text-col{position:relative;height:100%;display:flex;align-items:center;user-select:text;-webkit-user-select:text}
+  .text-window{
+    position:relative;width:100%;height:78vh;overflow:hidden;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 86%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 86%,transparent 100%);
+  }
+  .text-move{position:relative;width:100%;will-change:transform;transform:translateY(120vh)}
+  /* Hauptseiten-Format: Eyebrow-lg (Instrument Sans) + Serif-Statements (Crimson Pro) */
+  .t-eyebrow{
+    font-family:"Instrument Sans",sans-serif;
+    font-size:clamp(15px,1.69vw,33px);font-weight:500;
+    letter-spacing:.04em;text-transform:uppercase;
+    color:var(--ink);margin-bottom:1.2rem;
+    user-select:none;-webkit-user-select:none;
+  }
+  /* ================= SEKTION 4 : KONTAKTDATEN (Bumper-Stil) ================= */
+  /* Ruhiger Voll-Viewport-Bumper in der "(Keine Sorge)"-Optik: kleines rotes
+     Klammer-Label oben, zentrierte Serif-Zeilen, Buttons darunter. */
+  .scene-daten{
+    position:relative;min-height:100vh;min-height:100dvh;
+    background:var(--offwhite);
+    display:flex;align-items:center;justify-content:center;
+    padding:14vh 6vw;
+  }
+  .daten-inner{max-width:900px;text-align:center}
+  .d-label{
+    font-family:"DM Sans",sans-serif;
+    font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--red);font-weight:700;margin-bottom:clamp(2.5rem,7vh,5rem);
+    user-select:none;-webkit-user-select:none;
+  }
+  .d-firma{
+    font-family:"DM Sans",sans-serif;font-weight:700;
+    font-size:clamp(2rem,4.6vw,3.8rem);line-height:1.05;letter-spacing:-.025em;
+    color:var(--ink);margin-bottom:1.4rem;
+  }
+  .d-firma .ddot{color:var(--red)}
+  .d-line{
+    font-family:"Crimson Pro",Georgia,serif;font-weight:500;
+    font-size:clamp(22px,2.6vw,36px);line-height:1.35;
+    letter-spacing:-.01em;color:var(--navy);text-wrap:balance;
+    margin-bottom:.4rem;
+  }
+  .d-mail{color:var(--navy);text-decoration:none;border-bottom:2px solid var(--red)}
+  .d-mail:hover{color:var(--red)}
+  .d-actions{
+    display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
+    margin-top:clamp(2.2rem,6vh,4rem);
+  }
+  /* ---- Echter Design-System-Button: rr-btn-sweep (DESIGN.md §8) ---- */
+  .rr-btn-sweep{
+    --c:var(--red);
+    position:relative;z-index:1;display:inline-block;text-align:center;
+    min-width:150px;font-family:"Instrument Sans",system-ui,sans-serif;
+    font-size:18px;font-weight:700;line-height:1.2;padding:15px 32px;
+    color:var(--ink);text-decoration:none;background:transparent;border:none;
+    border-radius:0;cursor:pointer;overflow:hidden;
+    transition:color .4s var(--ease),box-shadow .35s var(--ease);
+    will-change:transform,opacity;
+  }
+  .rr-btn-sweep::before{
+    content:"";position:absolute;top:0;left:0;width:5px;height:100%;z-index:-1;
+    background:var(--c);transition:width .4s var(--ease);
+  }
+  .rr-btn-sweep:hover::before{width:100%}
+  .rr-btn-sweep:hover{color:#fff;box-shadow:0 10px 26px rgba(241,32,50,.34)}
+  .rr-btn-sweep:active::before{background:var(--red-deep)}
+  .rr-btn-sweep:focus-visible{outline:none;box-shadow:0 0 0 2px var(--offwhite),0 0 0 4.5px var(--c)}
+  .rr-btn-sweep--red{--c:var(--red)}
+
+  /* (Partner-/"Was hier nicht passiert"-Raster ist RAUS, 29.07. — Thomas.) */
+
+  /* ================= SEKTION 6 : FAQ (zweispaltig, Referenz pixelperfektion) ============ */
+  /* Voller Viewport + vertikal zentriert: die Sektion war kuerzer als der Screen,
+     dadurch lugte die SiteClosing-Zeile unten rein (Thomas 29.07.). */
+  .scene-faq{
+    background:var(--offwhite);padding:14vh 6vw 12vh;
+    min-height:100vh;min-height:100dvh;
+    display:flex;align-items:center;
+  }
+  .faq-wrap{width:100%}
+  .faq-wrap{max-width:1180px;margin:0 auto}
+  /* Punkt4: linke Spalte (Label + Riesen-Ueberschrift) | rechte Spalte (Akkordeon) */
+  .faq-grid{
+    display:grid;grid-template-columns:minmax(260px,0.82fr) 1.18fr;
+    gap:clamp(2.5rem,6vw,6.5rem);align-items:start;
+  }
+  .faq-left{position:sticky;top:14vh}
+  .f-label{
+    font-family:"DM Sans",sans-serif;
+    font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--red);font-weight:700;margin-bottom:1.4rem;
+    user-select:none;-webkit-user-select:none;
+  }
+  /* Punkt4: grosse DM-Sans-Bold-Ueberschrift, Schlusspunkt in Rot (Marken-Pattern) */
+  .faq-heading{
+    font-family:"DM Sans",sans-serif;font-weight:700;
+    font-size:clamp(2.2rem,4.4vw,4rem);line-height:1.02;letter-spacing:-.03em;
+    color:var(--ink);text-wrap:balance;margin:0;
+  }
+  .faq-heading .fdot{color:var(--red)}
+  .faq-right{min-width:0}
+  /* C10: Scroll-Enthuellung — pro Frage faehrt eine Hairline von links nach rechts ein */
+  .faq-item{position:relative;border-bottom:none;border-radius:0}
+  .faq-item::after{
+    content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
+    background:rgba(35,38,46,.22);
+    transform:scaleX(0);transform-origin:left center;
+    transition:transform .8s var(--ease);
+  }
+  .faq-item.revealed::after{transform:scaleX(1)}
+  .faq-item:first-of-type::before{
+    content:"";position:absolute;left:0;top:0;height:1px;width:100%;
+    background:rgba(35,38,46,.22);
+    transform:scaleX(0);transform-origin:left center;
+    transition:transform .8s var(--ease);
+  }
+  .faq-item:first-of-type.revealed::before{transform:scaleX(1)}
+  .faq-item summary{
+    display:flex;justify-content:space-between;align-items:center;gap:1.2rem;
+    padding:1.35rem 0;cursor:pointer;list-style:none;
+    font-family:"DM Sans",sans-serif;font-weight:600;
+    font-size:clamp(17px,1.4vw,20px);letter-spacing:-.01em;color:var(--ink);
+    user-select:none;-webkit-user-select:none;
+    opacity:0;transform:translateX(-14px);
+    transition:opacity .6s var(--ease),transform .6s var(--ease);
+  }
+  .faq-item.revealed summary{opacity:1;transform:none}
+  .faq-item summary::-webkit-details-marker{display:none}
+  .pm{position:relative;width:14px;height:14px;flex:none}
+  .pm::before{content:"";position:absolute;left:0;top:6px;width:14px;height:2px;background:var(--ink)}
+  .pm::after{content:"";position:absolute;left:6px;top:0;width:2px;height:14px;background:var(--ink);transition:transform .22s ease}
+  .faq-item[open] .pm::after{transform:scaleY(0)}
+  .faq-a{
+    font-family:"Instrument Sans",sans-serif;
+    font-size:1.02rem;line-height:1.62;color:var(--ink);opacity:.85;
+    padding:0 2.4rem 1.5rem 0;max-width:62ch;
+  }
+
+  /* Scroll-Reveal der Daten-Sektion (frueher Schluss-CTA; IO-Hook #ctaInner bleibt). */
+  .cta-inner{
+    opacity:0;transform:translateY(28px);
+    transition:opacity .7s ease,transform .7s ease;
+  }
+  .cta-inner.on{opacity:1;transform:none}
+  /* ---------- Mobile ---------- */
+  @media (max-width:768px){
+    .hero-title{font-size:30vw}
+    .reveal-msg{font-size:clamp(1.6rem,7.6vw,3rem)}
+    .autobtn{bottom:calc(28vw + 1.4rem)}
+    .hint{bottom:calc(28vw + 6rem)}
+    /* Formular braucht am Handy die Hoehe: Gluehbirne kompakt oben (24vh),
+       Formular-Fenster darunter (66vh) — zusammen 1 Viewport im Sticky. */
+    .story-grid{
+      grid-template-columns:1fr;grid-template-rows:24vh auto;gap:.5rem;
+      align-content:center;padding:0 6vw;align-items:start;
+    }
+    .head-col{height:24vh}
+    .head-col svg{height:22vh}
+    .text-window{height:66vh}
+    /* Die echte Skulptur (MorphSculpture) ist eine Vollbild-Portal-Ebene und
+       zentriert die Gluehbirne am Handy MITTEN ueber dem Formular. Waehrend
+       der Choreo bleibt sie GROSS und mittig (soll wirken); sobald das
+       Formular einfaehrt, dockt sie animiert klein in der Kopfzeile an
+       (Engine toggelt .docked; Desktop ignoriert das — Regel nur hier). */
+    .sculpt-layer{transition:transform .9s var(--ease);transform-origin:50% 50%}
+    .sculpt-layer.docked{transform:translateY(-28vh) scale(.5)}
+    /* Punkt4: FAQ auf Mobile sauber untereinander (Label+Heading oben, Liste darunter) */
+    .faq-grid{grid-template-columns:1fr;gap:2rem}
+    .faq-left{position:static;top:auto}
+  }
+
+  /* Mobile + Tablet (Thomas 02.08.): Hero-Scrollweg kuerzer, Ziel ~5 statt 8 Fingerscrolls bis zum Text (Wert unten) -
+     am Handy war der Weg zu langsam mit dem Finger durchzugehen. Timings sind Bruchteile
+     der Szenen-Hoehe (Pm 0..1) -> Choreografie identisch, nur die Scroll-Strecke der
+     Hero-Szene schrumpft (Inhalt nach der Figur bleibt normal). Desktop (>1024)
+     unveraendert. Steht VOR dem Reduced-Motion-Block, damit dessen height:auto gewinnt. */
+  @media (max-width:1024px){
+    .scene-main{height:667vh}
+  }
+
+  /* ---------- Reduced Motion: alles statisch ---------- */
+  @media (prefers-reduced-motion:reduce){
+    .cursor-dot,.autobtn,.hint{display:none}
+    .scene-main{height:auto}
+    .main-sticky{position:static;height:auto;overflow:visible;cursor:auto}
+    .layer-base{display:none}
+    .layer-deck{
+      position:static;-webkit-mask:none!important;mask:none!important;
+      padding:16vh 0 4vh;justify-content:center;
+    }
+    .hero-title{font-size:14vw;transform:none!important}
+    .ltr{transform:none!important;opacity:1!important}
+    .story-grid{position:static;display:block;padding:6vh 6vw}
+    .head-col{height:70vh}
+    .text-col{height:auto}
+    .text-window{
+      height:auto;overflow:visible;
+      -webkit-mask:none!important;mask:none!important;
+    }
+    .text-move{transform:none!important}
+    .cta-inner{opacity:1!important;transform:none!important;transition:none}
+    .faq-item summary{opacity:1!important;transform:none!important}
+    .faq-item::after,.faq-item::before{transform:scaleX(1)!important}
+  }
+
+/* --- Vorschau-Chrome der Standalone-Demo ausblenden -----------------------
+   demobar (obere Gesamtvorschau-Leiste), hint (Maus-Hinweis), autobtn
+   (Auto abspielen) und cursor-dot (Maus-Gimmick) gehoeren nicht auf die
+   Live-Seite. Per display:none ausblenden statt aus dem HTML loeschen, damit
+   die Engine-Referenz auf .autobtn gueltig bleibt (if(autobtn)-Guards). */
+.demobar, .hint, .autobtn, .cursor-dot { display: none !important; }
+
+/* Der Demo-Naeherungs-Kopf (#headSvg) ist durch das MorphSculpture-Portal
+   ersetzt. Er MUSS aus, sonst rendern ZWEI Koepfe uebereinander (dicht,
+   unscharf, fremde Teile am Start). Die Engine setzt display/opacity inline
+   pro Frame — darum !important. */
+#headSvg { display: none !important; }
+
+/* ================================================================ */
+/* KONTAKT-spezifisch                                                */
+/* ================================================================ */
+
+/* Gluehbirne (comp2) steht RECHTS im Canvas -> Formular nach LINKS
+   (ueber-uns hatte Kopf links / Text rechts). Nur Spalten tauschen. */
+.story-grid{grid-template-columns:52% 44%}
+.text-col{order:1}
+.head-col{order:2}
+
+/* Das Fenster traegt jetzt ein FORMULAR statt Lesetext: weichere, kuerzere
+   Fade-Kanten (nur waehrend der Einfahrt sichtbar), Interaktion erlaubt.
+   overflow-y:auto als Sicherheitsnetz: ist das Formular hoeher als das
+   Fenster (kleine Screens), bleibt ALLES erreichbar (DSGVO + Absenden). */
+.text-window{
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 5%,#000 95%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 5%,#000 95%,transparent 100%);
+}
+
+/* ---- Formular im Hero (faehrt von unten ein, stoppt) — Editorial-Look ----
+   Kein Karton, keine Box: grosse Serif-Anrede, Unterstrich-Felder mit rotem
+   Fokus-Sweep (Linie waechst von links), DM-Sans-Caps-Labels, rr-btn-sweep. */
+.k-title{
+  font-family:"Crimson Pro",Georgia,serif;font-weight:500;
+  font-size:clamp(28px,2.9vw,52px);line-height:1.1;letter-spacing:-.01em;
+  color:var(--ink);text-wrap:balance;margin:0 0 clamp(1.2rem,3vh,2.2rem);
+}
+.k-title .kdot{color:var(--red)}
+.k-form{max-width:640px;text-align:left}
+.k-row{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.k-field{margin-bottom:1.05rem;display:flex;flex-direction:column}
+.k-field label{
+  font-family:"DM Sans",sans-serif;font-size:.66rem;letter-spacing:.2em;
+  text-transform:uppercase;font-weight:700;color:var(--ink);opacity:.6;margin-bottom:.3rem;
+}
+.k-req{color:var(--red);opacity:1}
+.k-field input,.k-field textarea{
+  font-family:"Instrument Sans",sans-serif;font-size:1.05rem;color:var(--ink);
+  background:
+    linear-gradient(var(--red),var(--red)) left bottom / 0 2px no-repeat,
+    linear-gradient(rgba(35,38,46,.2),rgba(35,38,46,.2)) left bottom / 100% 2px no-repeat;
+  border:none;outline:none;border-radius:0;
+  padding:.5rem 2px .55rem;
+  transition:background-size .45s var(--ease);
+}
+.k-field input:focus,.k-field textarea:focus{background-size:100% 2px,100% 2px}
+/* Deutlicher Tastatur-Fokus (WCAG AA / BaFG): sichtbarer Ring wie bei den Buttons,
+   zusaetzlich zur roten Unterlinie. Nur fuer Tastatur (:focus-visible), Maus bleibt ruhig. */
+.k-field input:focus-visible,.k-field textarea:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+/* Ungueltige Felder nach Absende-Versuch: rote Unterlinie bleibt sichtbar. */
+.k-field input[aria-invalid="true"],.k-field textarea[aria-invalid="true"]{background-size:100% 2px,100% 2px}
+.k-field input::placeholder,.k-field textarea::placeholder{color:rgba(35,38,46,.66)}
+.k-field textarea{min-height:96px;resize:vertical}
+.k-hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;opacity:0}
+.k-dsgvo{
+  display:flex;gap:.6rem;align-items:flex-start;text-align:left;
+  font-family:"Instrument Sans",sans-serif;font-size:.85rem;line-height:1.5;
+  color:var(--ink);opacity:.8;margin:.4rem 0 1.4rem;cursor:pointer;
+}
+.k-dsgvo input{margin-top:.22em;width:16px;height:16px;flex:none;accent-color:var(--red)}
+.k-dsgvo a{color:var(--red)}
+.k-send{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap}
+.k-sendnote{
+  font-family:"Instrument Sans",sans-serif;font-size:.85rem;
+  color:var(--ink-soft);
+}
+/* 2 Zeilen reserviert: die Fehlerliste ist lang; ohne Reserve wuerde sie unter
+   der Fenster-Maske abgeschnitten (blockH wird nur beim Boot gemessen). */
+.k-note{font-family:"Instrument Sans",sans-serif;font-size:1rem;margin-top:1rem;min-height:2.9em}
+.k-note--err{color:var(--red)}
+.k-note--ok{color:var(--ink);font-size:1.12rem;line-height:1.65}
+
+/* Mobil: kompakteres Formular, damit Gluehbirne + Formular EINEN Viewport teilen.
+   Passt es trotzdem nicht ganz (kleine Phones), scrollt das Fenster intern
+   (overflow-y:auto oben) — nichts ist unerreichbar. */
+@media(max-width:768px){
+  .k-title{font-size:clamp(22px,6.4vw,28px);margin-bottom:.9rem}
+  .k-row{grid-template-columns:1fr;gap:0}
+  .k-field{margin-bottom:.75rem}
+  .k-field input,.k-field textarea{font-size:1rem;padding:.4rem 2px .45rem}
+  .k-field textarea{min-height:72px}
+  .k-dsgvo{font-size:.8rem;margin-bottom:1rem}
+  .k-note{min-height:1.4em}
+  .t-eyebrow{margin-bottom:.6rem}
+  .d-actions .rr-btn-sweep{width:100%;}
+}

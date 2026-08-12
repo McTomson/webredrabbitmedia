@@ -1,52 +1,95 @@
-import dynamic from 'next/dynamic';
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
+import { crimson, dmsans, fraunces, grotesk } from "@/lib/relaunch/fonts";
+import RelaunchMenu from "@/components/relaunch/RelaunchMenu";
+import CornerLogo from "@/components/relaunch/CornerLogo";
+import BackToTop from "@/components/relaunch/BackToTop";
+import HomeMorph from "@/components/relaunch/HomeMorph";
+import CasePanels from "@/components/relaunch/CasePanels";
+import HomeClosing from "@/components/relaunch/HomeClosing";
+import TalosUsp from "@/components/relaunch/TalosUsp";
+import Ablauf from "@/components/subpages/leistungen/website/v2/Ablauf";
+import FooterReassembly from "@/components/relaunch/FooterReassembly";
+import ScrollExperience from "@/components/relaunch/ScrollExperience";
+import '@/app/styleguide/styleguide.css';
 
-// Self-referencing canonical für die Startseite (das frühere globale canonical
-// in layout.tsx wurde entfernt, weil es alle Unterseiten deindexierte).
 export const metadata: Metadata = {
+  title: "Relaunch-Preview — Homepage nach Blaupause (intern)",
+  description:
+    "Webdesign aus Österreich: Websites, die bei Google und in der KI-Suche gefunden werden. Vorschläge ohne Vorkasse, mit Talos als digitalem Mitarbeiter.",
+  // Self-referencing canonical (Haus-Regel, siehe app/layout.tsx). Fehlte als
+  // einzige Seite; alle anderen setzen ein alternates.canonical.
   alternates: { canonical: 'https://web.redrabbit.media' },
 };
 
-import Hero from "@/components/Hero";
-import SEOContent from "@/components/SEOContent";
-import SkipLinks from "@/components/SkipLinks";
+// Screenreader-only Stil (identisch zu app/webdesign-tirol),
+// damit die Home ein h1 im SSR-HTML hat, ohne das visuelle Layout zu aendern.
+const srOnly: React.CSSProperties = {
+  position: 'absolute',
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
+};
 
-// Below-the-fold - lazy laden für bessere Performance
-const Portfolio = dynamic(() => import('@/components/Portfolio'));
-const Process = dynamic(() => import('@/components/Process'));
-const SeoOptimization = dynamic(() => import('@/components/SeoOptimization'));
-const About = dynamic(() => import('@/components/About'));
-const Pricing = dynamic(() => import('@/components/Pricing'));
-const FeaturedBlogPosts = dynamic(() => import('@/components/FeaturedBlogPosts'));
-const FAQ = dynamic(() => import('@/components/FAQ'));
-const Contact = dynamic(() => import('@/components/Contact'));
-
-import ClientWidgets from "@/components/ClientWidgets";
-
-export default function Home() {
+/**
+ * Komplette Homepage-Sektionsfolge nach docs/HOMEPAGE_BLAUPAUSE_ALLTURTLES.md:
+ * Hero+Morph -> 5 Leistungs-Szenen -> Ueberleitung -> 3 Case-Panels ->
+ * Zahlen-Statement -> Firmen-Liste -> Riesen-CTA -> Footer-Reassembly.
+ */
+export default function RelaunchPreviewPage() {
   return (
-    <div className="min-h-screen">
-      <SkipLinks />
-      <ClientWidgets />
+    <div className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`}>
+      <h1 style={srOnly}>
+        Webdesign aus Österreich: Websites, die gefunden werden, mit Talos als digitalem Mitarbeiter
+      </h1>
 
-      {/* SEO Content for Crawlers (hidden) */}
-      <SEOContent />
+      {/* Fixes Menue (Trigger + Vollbild-Overlay) */}
+      <RelaunchMenu />
 
-      <main id="main-content" className="relative">
-        <Hero />
-        <Portfolio />
-        <Process />
-        <SeoOptimization />
-        <About />
-        <Pricing />
-        <FeaturedBlogPosts />
-        <FAQ />
-        <Contact />
-      </main>
+      {/* Ecken-Logo (rote Hasen-Marke oben links) — gemeinsames Bauteil,
+          blendet erst nach dem Zerlegen der Hero-Woerter ein. Bleibt bei
+          z-index 43 unter dem Menue-Overlay (z-index 1000). */}
+      <CornerLogo />
+      <BackToTop />
 
-      {/* Global Background Image (Absolute, verify position/visibility) */}
-      <div className="absolute top-0 left-0 w-full h-[100vh] -z-10 bg-gray-50 pointer-events-none hidden">
+      {/* Sektionen 0-3: Marken-Auftakt (Statement + Hasenkopf-Lockup) direkt in die
+          durchgehende Morph-Buehne integriert (Hero + 5 Leistungs-Szenen) */}
+      <HomeMorph />
+
+      {/* Sektion 4: nur Weissraum als Atempause vor dem ersten Panel
+          (Ueberleitungs-Satz entfernt, Tomson 25.07.). */}
+      <div aria-hidden style={{ height: "var(--rr-section-y)" }} />
+
+      {/* Sektion 5: Case-Panels (Referenz-Auswahl = Vorschlag, Tomson-Gate) */}
+      <CasePanels />
+
+      {/* Sektion 5b: Ablauf-Kreis-Szene (01-04, von /leistungen/website) — Thomas
+          11.08.: auch auf der echten Home. Traegt das Entwurf-ohne-Vorkasse-
+          Argument + CTA "Mach den ersten Schritt" sichtbar auf die Startseite. */}
+      <Ablauf />
+
+      {/* USP-Block: Talos-Copilot grenzt uns von herkoemmlichen Webagenturen ab
+          (Thomas 12.08.). Sitzt nach Referenzen/Leistungen (CasePanels/Ablauf)
+          und vor dem Abschluss (HomeClosing). */}
+      <TalosUsp />
+
+      {/* Sektionen 6-8: Zahlen, Firmen-Liste, CTA */}
+      <HomeClosing />
+
+      {/* Sektion 9: Footer mit Wortmarken-Reassembly */}
+      <div data-rr-snap>
+        <FooterReassembly />
       </div>
+
+      {/* Site-weites Scroll-Gefuehl: Lenis + Soft-Snap (Thomas 28.07.).
+          Bewusst als LETZTES Kind: dann hat HomeMorph seine Lenis-Instanz
+          schon auf window.__rrLenis gelegt und ScrollExperience haengt sich
+          dort an, statt ein zweites Lenis zu starten. */}
+      <ScrollExperience />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Phone, ArrowRight, Menu, X } from "lucide-react";
+import { isRelaunchPath } from "@/lib/relaunch/routes";
 
 interface HeaderProps {
     onFormOpen?: () => void;
@@ -29,6 +30,10 @@ export default function Header({ onFormOpen }: HeaderProps) {
 
     // The internal dashboard is a standalone tool — no marketing chrome.
     if (pathname?.startsWith('/dashboard')) return null;
+    // Relaunch-Seiten (neues Design-System) rendern ihr eigenes Chrome.
+    if (pathname?.startsWith('/styleguide')) return null;
+    if (pathname?.startsWith('/design-system')) return null;
+    if (isRelaunchPath(pathname)) return null;
 
     const navLinks = [
         { name: 'Über uns', href: '/#about' },

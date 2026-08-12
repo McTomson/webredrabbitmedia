@@ -1,0 +1,147 @@
+
+<div class="demobar">
+  <span class="dot"></span>
+  Red Rabbit · FAQ — Gesamtvorschau
+  <span class="sep">·</span>
+  <em>Hero + Malen + Haltung + 14 Antworten, eine Scroll-Strecke</em>
+</div>
+
+<!-- ============ HAUPT-SZENE (Hero: Titel + Malen in EINEM Sticky) ============ -->
+<section class="scene-main" id="sceneMain">
+  <!-- data-active startet auf 0: die Deck-Maske (mask:url(#mask-v1)) greift erst,
+       wenn die Engine bootet. Beim HTML-Streaming ist das masksvg (steht weiter
+       unten) sonst noch nicht geparst -> leere Maske -> weisses Deck unsichtbar
+       -> navy layer-base blitzt beim Laden auf. -->
+  <div class="main-sticky painting" id="mainSticky" data-active="0" style="--mask:url(#mask-v1)">
+    <div class="layer-base">
+      <div class="reveal-msg">Frag alles.<br>Wir antworten<br>ohne Sternchen.</div>
+    </div>
+    <div class="layer-deck">
+      <div class="hero-title" id="htitle" role="heading" aria-level="1" aria-label="FAQ"><span class="ltr" data-l="0" aria-hidden="true">F</span><span class="ltr" data-l="1" aria-hidden="true">A</span><span class="ltr" data-l="2" aria-hidden="true">Q</span><span class="ltr dot" data-l="3" aria-hidden="true">.</span></div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <span class="hint" id="hint">Maus über das Bild bewegen</span>
+    <button class="autobtn" data-auto>Auto abspielen</button>
+
+    <svg class="masksvg" aria-hidden="true">
+      <defs>
+        <filter id="gooey-v1">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
+          <feColorMatrix in="blur" type="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -9" result="goo"/>
+        </filter>
+        <clipPath id="paintclip"><rect id="paintRect" x="0" y="0" width="100" height="100"/></clipPath>
+        <mask id="mask-v1">
+          <rect class="mrect" width="100%" height="100%" fill="#fff"/>
+          <g class="blobs" filter="url(#gooey-v1)"></g>
+        </mask>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ SEKTION 4 : HALTUNGS-STATEMENTS (Intro/Statement-Moment) ============ -->
+<section class="scene-belief" id="sceneBelief">
+  <div class="belief-sticky">
+    <div class="belief-backing" aria-hidden="true"></div>
+    <div class="b-label">(Ehrlich gesagt)</div>
+    <div class="stmt" data-s="0">Die meisten FAQ-Seiten beantworten Fragen, die niemand stellt<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="1">Wir haben die gesammelt, die du dir vor der Zusammenarbeit wirklich stellst<span style="color:var(--red)">.</span></div>
+    <div class="stmt" data-s="2">Keine Ausweichmanöver, kein Marketing-Sprech, kein Kleingedrucktes<span style="color:var(--red)">.</span></div>
+    <div class="stmt pointe" data-s="3">Also, was willst du wissen<span style="color:var(--red)">?</span><span class="pointe-cta"><a class="rr-btn-sweep rr-btn-sweep--red" id="bCta" href="#sceneFaq">Zu den Antworten</a></span></div>
+  </div>
+</section>
+
+<!-- ============ SEKTION 6 : FAQ (zweispaltig, 3 Themengruppen) ============ -->
+<section class="scene-faq" id="sceneFaq">
+  <div class="faq-wrap">
+    <div class="faq-grid">
+    <div class="faq-left">
+      <div class="f-label">(FAQ)</div>
+      <h2 class="faq-heading">Fragen? Hier die ehrlichen Antworten<span class="fdot">.</span></h2>
+    </div>
+    <div class="faq-right">
+
+      <div class="faq-group">
+        <div class="faq-group-label">(Preis &amp; Ablauf)</div>
+        <details class="faq-item">
+          <summary>Was kostet eine Website bei euch?<span class="pm"></span></summary>
+          <p class="faq-a">Wir arbeiten mit drei klaren Paketen: Starter ab 1.250 Euro, Business ab 2.850 Euro und Premium ab 4.900 Euro. Was genau du brauchst, besprechen wir vorher und halten es fest, ohne versteckte Kosten.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Muss ich in Vorkasse gehen?<span class="pm"></span></summary>
+          <p class="faq-a">Nein. Du siehst zuerst 1-2 grafische Vorschläge, ganz ohne Vorkasse. Gefällt dir die Richtung und du erteilst den Auftrag, bekommst du ein Angebot und leistest 40 % Anzahlung. Bis dahin liegt das Risiko bei uns.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Wie lange dauert es, bis meine Website fertig ist?<span class="pm"></span></summary>
+          <p class="faq-a">Die ersten 1-2 Vorschläge bekommst du in der Regel innerhalb von rund einer Woche. Wie lange die fertige Seite dauert, hängt vom Umfang ab. Wir nennen dir vorher einen realistischen Zeitrahmen.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Wie läuft die Zusammenarbeit ab?<span class="pm"></span></summary>
+          <p class="faq-a">Kurz gesagt: Wir sprechen über deinen Betrieb und dein Ziel, du bekommst 1-2 grafische Vorschläge ohne Vorkasse, wir passen sie an, bis es passt, und gehen dann live. Ein Ansprechpartner begleitet dich durch den ganzen Weg.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Bekomme ich eine individuelle Seite oder einen Baukasten?<span class="pm"></span></summary>
+          <p class="faq-a">Eine individuell gebaute Seite. Wir verwenden keine fertigen Baukasten-Vorlagen, sondern gestalten Aufbau, Text und Design für deinen Betrieb.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Gibt es eine Förderung?<span class="pm"></span></summary>
+          <p class="faq-a">Für österreichische Kleinbetriebe kann die KMU.DIGITAL-Förderung einen Teil der Kosten übernehmen. Wir prüfen mit dir, ob das für dein Projekt in Frage kommt.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Muss ich einen Wartungsvertrag abschließen?<span class="pm"></span></summary>
+          <p class="faq-a">Nein. Unser Wartungs- und Optimierungs-Abo ist freiwillig, ohne Mindestlaufzeit und jederzeit kündbar. Du kannst deine Seite auch selbst pflegen oder die Betreuung uns überlassen.</p>
+        </details>
+      </div>
+
+      <div class="faq-group">
+        <div class="faq-group-label">(Sichtbarkeit &amp; Google)</div>
+        <details class="faq-item">
+          <summary>Wie lange dauert es, bis ich bei Google gefunden werde?<span class="pm"></span></summary>
+          <p class="faq-a">SEO wirkt langfristig. Erste Bewegungen sind oft nach einigen Wochen sichtbar, stabile Rankings brauchen meist mehrere Monate. Wer schnelle Garantien verspricht, ist unseriös.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Könnt ihr Platz 1 bei Google garantieren?<span class="pm"></span></summary>
+          <p class="faq-a">Nein, und das kann niemand seriös. Wir bauen eine starke technische Basis, guten Inhalt und die richtigen Signale. Über die Platzierung entscheidet am Ende Google.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Was bedeutet KI-Sichtbarkeit?<span class="pm"></span></summary>
+          <p class="faq-a">Immer mehr Menschen fragen ChatGPT, Gemini oder Perplexity statt Google. KI-Sichtbarkeit heißt, dass dein Betrieb in diesen Antworten vorkommt. Wir bauen deine Seite so auf, dass sie auch von KI-Systemen gut verstanden wird.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Bekomme ich ein Dashboard?<span class="pm"></span></summary>
+          <p class="faq-a">Ab dem Business-Paket ist ein Dashboard ohne Aufpreis dabei. Es zeigt dir in Klartext, wie sichtbar du bist und wie viele Anfragen über die Seite reinkommen.</p>
+        </details>
+      </div>
+
+      <div class="faq-group">
+        <div class="faq-group-label">(Das Kleingedruckte)</div>
+        <details class="faq-item">
+          <summary>Gehört die Website danach mir?<span class="pm"></span></summary>
+          <p class="faq-a">Ja. Deine Inhalte, deine Domain und dein Auftritt gehören dir. Wir binden dich nicht mit künstlichen Hürden an uns, sondern wollen dich mit Leistung halten. Die genauen Punkte hält dein Angebot fest.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Wie ist das mit Hosting und Domain?<span class="pm"></span></summary>
+          <p class="faq-a">Wir kümmern uns um das Hosting und die Domain oder nutzen deine bestehende, ganz wie es für dich passt. Wir klären das vor dem Start und halten die Details im Angebot fest.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Für wen seid ihr NICHT die richtige Wahl?<span class="pm"></span></summary>
+          <p class="faq-a">Wenn du das Billigste vom Billigen suchst und Sichtbarkeit egal ist, passen wir nicht. Wir arbeiten mit Betrieben, die ihren Auftritt ernst nehmen und echte Anfragen wollen, nicht nur eine Seite zum Abhaken.</p>
+        </details>
+      </div>
+
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEKTION 7 (Schluss-CTA) ist RAUS (28.07.): ersetzt durch das geteilte
+     <SiteClosing /> in der page.tsx (linksbuendig, Homepage-Aufbau). -->
+
+
+<!-- FOOTER: der frühere Nachbau von FooterReassembly ist RAUS (28.07.,
+     Design-Vereinheitlichung). Die Seite rendert stattdessen die ECHTE
+     Komponente <FooterReassembly /> aus der page.tsx, davor das geteilte
+     <SiteClosing />. Die Engine-Hooks auf #rrFoot sind null-geguarded. -->
+

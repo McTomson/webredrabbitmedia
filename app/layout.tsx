@@ -1,10 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+// Selbst-gehostete Fonts unter woertlichen Namen (Thomas 06.08.) -> ersetzt den
+// render-blockierenden externen Google-Fonts-<link> auf den Seiten (FCP-Hebel).
+import "./fonts-selfhosted.css";
 import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google';
+import ChromeGate from "@/components/ChromeGate";
+import DeferredThirdParties from "@/components/DeferredThirdParties";
+import LeadProvider from "@/components/relaunch/lead/LeadProvider";
 import { aggregateRatingLd } from '@/lib/reviews';
 
 const inter = Inter({
@@ -15,7 +20,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Webdesign Österreich: Premium-Qualität zum Fixpreis",
-  description: "Exklusives Webdesign ab 790€. Für Unternehmer, die smart rechnen. Kein Baukasten, keine Abos. Zahlung erst bei 100% Zufriedenheit. 164 Kunden.",
+  description: "Webdesign zum Fixpreis für den österreichischen Mittelstand. Du siehst zuerst 1-2 grafische Entwürfe und zahlst erst, wenn du überzeugt bist. Kein Baukasten, keine Abos.",
   metadataBase: new URL('https://web.redrabbit.media'),
 
   // Open Graph
@@ -24,22 +29,22 @@ export const metadata: Metadata = {
     locale: 'de_AT',
     url: 'https://web.redrabbit.media',
     siteName: 'Red Rabbit Media',
-    title: 'Red Rabbit Media | Website ab 790€ - Keine Vorkasse',
-    description: 'Website ab 790€ ✓ 164 zufriedene Kunden ✓ Zahlung erst bei Zufriedenheit ✓ DSGVO-konform',
+    title: 'Red Rabbit Media | Websites zum Fixpreis, ohne Vorkasse',
+    description: 'Webdesign zum Fixpreis für den österreichischen Mittelstand. Entwurf zuerst, du zahlst erst, wenn du überzeugt bist. DSGVO-konform.',
     images: [{
-      url: 'https://web.redrabbit.media/images/og-image-wien.jpg',
+      url: '/og/og-image-redrabbit.jpg',
       width: 1200,
       height: 630,
-      alt: 'Red Rabbit Media - Webdesign Wien ab 790€',
+      alt: 'Red Rabbit Media, Webdesign zum Fixpreis aus Österreich',
     }],
   },
 
   // Twitter Cards
   twitter: {
     card: 'summary_large_image',
-    title: 'Website ab 790€ | Red Rabbit Media Wien',
-    description: '164 zufriedene Kunden ✓ Kein Risiko ✓ DSGVO-konform',
-    images: ['https://web.redrabbit.media/images/twitter-card.jpg'],
+    title: 'Websites zum Fixpreis | Red Rabbit Media',
+    description: 'Entwurf zuerst, du zahlst erst, wenn du überzeugt bist. DSGVO-konform, aus Österreich.',
+    images: ['/og/og-image-redrabbit.jpg'],
   },
 
   // NOTE: Kein globales canonical! Jede Seite setzt ihr eigenes (self-referencing)
@@ -73,6 +78,17 @@ export const metadata: Metadata = {
   verification: {
     google: 'Z8sJwBHULpdZo5gD7gglo4G_tmQHTKYeAuF2F8jX8cM',
   }
+};
+
+// Viewport: bis 31.07. fehlte ein expliziter Export -> Next-Default ohne
+// viewport-fit=cover, d.h. env(safe-area-inset-*) lieferten 0 (kein Notch-/
+// Home-Indicator-Handling auf iPhones). viewport-fit=cover aktiviert die Insets;
+// das Safe-Area-Padding setzen die Fixed-Chrome-Elemente selbst (CornerLogo,
+// Menue-Overlay, Nach-oben-Button).
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 const jsonLd = {
@@ -154,7 +170,7 @@ const jsonLd = {
           "image": "https://web.redrabbit.media/images/dmitry-pashlov.jpg"
         }
       ],
-      "priceRange": "ab 790€",
+      "priceRange": "ab 1.250 €",
       "currenciesAccepted": "EUR",
       "paymentAccepted": "Bank Transfer, Invoice, Cash",
       "knowsAbout": [
@@ -175,37 +191,30 @@ const jsonLd = {
       "name": "Red Rabbit Media",
       "url": "https://web.redrabbit.media",
       "logo": "https://web.redrabbit.media/logo.png",
+      // Gruender-Verknuepfung staerkt E-E-A-T (echte Person hinter der Marke).
+      // foundingDate BEWUSST NICHT gesetzt: exaktes GmbH-Gruendungsdatum liegt nicht
+      // verifiziert vor -> nicht raten (autoritative Daten). Nachtragen, wenn belegt.
+      "founder": { "@id": "https://web.redrabbit.media/#thomas-uhlir" },
       "sameAs": [
         "https://www.instagram.com/redrabbit.media/",
         "https://www.linkedin.com/in/thomasuhlir/"
       ]
     },
     {
-      "@type": "Product",
-      "@id": "https://web.redrabbit.media/#premium-website-package",
-      "name": "Premium Website Paket",
-      "description": "Professionelles Webdesign ab 790€. Inkl. Design, SEO & Mobiloptimierung. Zahlung erst bei 100% Zufriedenheit.",
-      "image": "https://web.redrabbit.media/images/og-image.jpg",
-      "brand": {
-        "@id": "https://web.redrabbit.media/#organization"
-      },
-      "offers": {
-        "@type": "Offer",
-        "url": "https://web.redrabbit.media",
-        "priceCurrency": "EUR",
-        "price": "790",
-        "priceValidUntil": "2026-12-31",
-        "availability": "https://schema.org/InStock",
-        "seller": {
-          "@id": "https://web.redrabbit.media/#organization"
-        }
-      }
-      // aggregateRating ENTFERNT: Ein Rating ohne echte, verifizierbare Reviews
-      // (z. B. Google Business Profile) verstößt gegen Googles Structured-Data-
-      // Richtlinien. Das globale Schema sorgte zudem für Bewertungs-Sterne auf
-      // Impressum/AGB/Datenschutz in den SERPs (Review-Spam-Signal).
-      // Wieder einbauen, sobald echte Reviews existieren — dann NUR auf /preise.
+      // WebSite-Node fuer GEO/Sitelinks (Name der Domain in Answer Engines). Kein
+      // SearchAction — es gibt keine seiteneigene Suche, also nichts erfinden.
+      "@type": "WebSite",
+      "@id": "https://web.redrabbit.media/#website",
+      "url": "https://web.redrabbit.media",
+      "name": "Red Rabbit Media",
+      "inLanguage": "de-AT",
+      "publisher": { "@id": "https://web.redrabbit.media/#organization" }
     }
+    // Product/Offer-Schema bewusst NICHT global: Angebote/Preise (Starter 1.250 /
+    // Business 2.850 / Premium ab 4.900) liegen als Service+Offer page-level auf
+    // /preise. Ein globales Offer streute Preis-Nodes auf Impressum/AGB/Datenschutz
+    // (Rich-Result-/Spam-Signal) und widerspraeche mit einem Einzelpreis der Tier-
+    // Realitaet. Das alte 790er-Product ist damit entfernt (Relaunch-Preise gelten).
   ]
 };
 
@@ -213,6 +222,8 @@ import { ContactFormProvider } from "@/components/ContactFormProvider";
 import ContactFormWrapper from "@/components/ContactFormWrapper";
 import AOSInit from "@/components/AOSInit";
 import AnalyticsListener from "@/components/AnalyticsListener";
+import ClarityLoader from "@/components/ClarityLoader";
+import CookieBanner from "@/components/CookieBanner";
 
 export default function RootLayout({
   children,
@@ -222,20 +233,39 @@ export default function RootLayout({
   return (
     <html lang="de" className="scroll-smooth" suppressHydrationWarning>
       <head>
+        {/* Consent Mode v2 Defaults (DSGVO). Laeuft SYNCHRON als erstes Element im
+            <head>, VOR GA4/GTM (die verzoegert via DeferredThirdParties nachladen).
+            Setzt alle Consent-Signale auf 'denied' bis zur Einwilligung; wiederkehrende
+            Besucher mit gespeicherter Zustimmung (localStorage-Key des CookieBanners)
+            bekommen im selben Script direkt ein consent update, damit sie ab dem ersten
+            Frame korrekt vermessen werden. Plain <script> (kein next/script) = garantiert
+            synchron waehrend des HTML-Parse, bevor irgendein Analytics-Code laeuft. */}
+        <script
+          id="consent-mode-default"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});gtag('set','ads_data_redaction',true);gtag('set','url_passthrough',true);try{var c=localStorage.getItem('redrabbit-cookie-consent');if(c){var p=JSON.parse(c);var m=p.marketing?'granted':'denied';gtag('consent','update',{ad_storage:m,ad_user_data:m,ad_personalization:m,analytics_storage:p.analytics?'granted':'denied'});}}catch(e){}})();`,
+          }}
+        />
         {/* Priority Resource Hints */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        {/* Kritischen Font-Schnitt (DM Sans, Headlines/Wortmarke) vorladen, damit
+            der sichtbare Text ohne Flackern in der richtigen Schrift paintet
+            (selbst-gehostet, Thomas 06.08.). crossOrigin Pflicht auch same-origin. */}
+        <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossOrigin="" />
 
         {/* RSS Feed */}
         <link rel="alternate" type="application/rss+xml" title="Red Rabbit Media Website Tipps RSS Feed" href="/feed.xml" />
 
-        {/* LLM/AI Search Optimization für ChatGPT, Claude, Perplexity */}
-        <meta name="chatgpt-summary" content="Red Rabbit Media: Professional websites from 790€ in Vienna. No risk, payment only after satisfaction. 164 satisfied customers. Contact: office@redrabbit.media, +43 676 9000955" />
+        {/* LLM/AI-Search-Kontext (ChatGPT, Claude, Perplexity). Nicht-offizielle
+            Metas — laut Research kein bestaetigter Ranking-Hebel, aber solange sie
+            existieren, muessen sie akkurat sein: alte Zahlen (790€/164) raus, echte
+            Fakten rein. Deutsch (AT-Zielgruppe). Wert-Feinschliff -> Phase B. */}
+        <meta name="chatgpt-summary" content="Red Rabbit Media ist eine oesterreichische Webdesign-Agentur in Wien fuer den Mittelstand (Handwerk, Gastronomie, Dienstleister, Aerzte, Kanzleien). Fixpreis-Pakete: Starter 1.250 EUR, Business 2.850 EUR, Premium ab 4.900 EUR. Du siehst zuerst 1-2 grafische Vorschlaege ohne Vorkasse; SEO und KI-Sichtbarkeit sind im Fundament dabei, DSGVO-konform, KMU.DIGITAL-foerderbar. Kontakt: office@redrabbit.media, +43 676 9000955" />
         <meta name="ai-indexable" content="true" />
-        <meta name="ai-description" content="Leading Webdesign agency in Vienna offering professional websites from 790€. GDPR-compliant, mobile-optimized, no upfront payment required." />
+        <meta name="ai-description" content="Oesterreichische Webdesign-Agentur in Wien fuer den Mittelstand: individuell gebaute, DSGVO-konforme Websites mit SEO und KI-Sichtbarkeit als Fundament. Fixpreis-Pakete ab 1.250 EUR, grafischer Vorschlag ohne Vorkasse." />
 
-        <GoogleAnalytics gaId="G-09FNC6THTD" />
-        <GoogleTagManager gtmId="GTM-MQXGT8FL" />
-
+        {/* Analytics (GA4 + GTM) laden jetzt verzoegert via DeferredThirdParties
+            im <body> (Mobile-Perf, Thomas 06.08.) — nicht mehr hier im <head>. */}
         <Script id="json-ld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className={`${inter.variable} font-sans antialiased bg-[#fafafa] text-[#141414] overflow-x-hidden`} suppressHydrationWarning>
@@ -248,12 +278,21 @@ export default function RootLayout({
           Zum Inhalt springen
         </a>
         <ContactFormProvider>
+          <LeadProvider>
           <AOSInit />
+          <DeferredThirdParties gaId="G-09FNC6THTD" gtmId="GTM-MQXGT8FL" />
+          <ClarityLoader />
           <AnalyticsListener />
-          <Header />
+          <ChromeGate><Header /></ChromeGate>
           <main id="main-content" tabIndex={-1} className="scroll-mt-20 focus:outline-none">{children}</main>
-          <Footer />
+          <ChromeGate><Footer /></ChromeGate>
           <ContactFormWrapper />
+          {/* Cookie-Banner global auf ALLEN Routen (DSGVO). Rendert per
+              localStorage-Guard nur einmal sichtbar; alte Seiten, die ihn noch
+              selbst einbinden (ClientWidgets/RegionalLandingPage/CityContent),
+              werden vom Go-Live-Umbau entfernt. */}
+          <CookieBanner />
+          </LeadProvider>
         </ContactFormProvider>
       </body>
     </html>

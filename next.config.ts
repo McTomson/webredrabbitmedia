@@ -1,10 +1,34 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Talos: @splinetool/loader ist gegen three 0.149 gebaut (Haupt-App: 0.185).
+  // Alle three-Importe AUS @splinetool-Paketen werden auf das isolierte Paket
+  // `three-spline` (npm-Alias auf three@0.149) umgeleitet; die Haupt-App
+  // bleibt unberuehrt.
+  webpack: (
+    config: { plugins: unknown[] },
+    { webpack }: { webpack: { NormalModuleReplacementPlugin: new (re: RegExp, fn: (res: { request: string; contextInfo?: { issuer?: string } }) => void) => unknown } }
+  ) => {
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(/^three($|\/)/, (resource) => {
+        if ((resource.contextInfo?.issuer ?? '').includes('@splinetool')) {
+          resource.request = resource.request.replace(/^three/, 'three-spline')
+        }
+      })
+    )
+    return config
+  },
   // SSR + ISR Hybrid für beste SEO-Performance
   output: 'standalone',
 
   // Performance Optimierungen
   outputFileTracingRoot: __dirname,
+  // Der fs-Bildcheck im Artikel-Template (ArticleImg) verleitet das Tracing,
+  // den kompletten public/-Ordner (>1 GB Medien) in die Route-Funktion zu
+  // packen -> Vercel-250-MB-Limit, Deploy-Abbruch (22.07.). Die Route ist
+  // SSG (dynamicParams=false), die Funktion braucht public/ nie.
+  outputFileTracingExcludes: {
+    '/tipps/[slug]': ['./public/**'],
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [320, 384, 420, 640, 750, 828, 1080, 1200, 1920],
@@ -20,6 +44,110 @@ const nextConfig = {
   // SEO - 301 Redirects für konsolidierte Landing Pages
   async redirects() {
     return [
+      // === Go-Live-Tausch: alte Preview-Praefixe auf Root ===
+      // Alte /relaunch-preview-Links (intern/geteilt) auf den finalen Root-Pfad.
+      {
+        source: '/relaunch-preview/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+      {
+        source: '/relaunch-preview',
+        destination: '/',
+        permanent: true,
+      },
+
+      // === Go-Live: alte Landeshauptstadt-Seiten auf die Bundesland-Hubs ===
+      // (Salzburg NICHT: /webdesign-salzburg existiert neu 1:1.)
+      {
+        source: '/webdesign-graz',
+        destination: '/webdesign-steiermark',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-linz',
+        destination: '/webdesign-oberoesterreich',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-innsbruck',
+        destination: '/webdesign-tirol',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-klagenfurt',
+        destination: '/webdesign-kaernten',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-st-poelten',
+        destination: '/webdesign-niederoesterreich',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-bregenz',
+        destination: '/webdesign-vorarlberg',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-eisenstadt',
+        destination: '/webdesign-burgenland',
+        permanent: true,
+      },
+      // === Go-Live: entfernte Branchen-Seiten auf die Startseite ===
+      {
+        source: '/branchen',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/branchen/handwerk',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/branchen/gastronomie',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/branchen/einzelhandel',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/branchen/dienstleistung',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/branchen/aerzte',
+        destination: '/',
+        permanent: true,
+      },
+
+      // === Go-Live: alte Leistungs-Unterseiten auf die neuen zwei Produkte ===
+      {
+        source: '/leistungen/webdesign',
+        destination: '/leistungen/website',
+        permanent: true,
+      },
+      {
+        source: '/leistungen/seo',
+        destination: '/leistungen/website',
+        permanent: true,
+      },
+      {
+        source: '/leistungen/dashboard',
+        destination: '/leistungen/talos',
+        permanent: true,
+      },
+      {
+        source: '/leistungen/ki-sichtbarkeit',
+        destination: '/leistungen/talos',
+        permanent: true,
+      },
+
       // Oberösterreich - Secondary cities → Bundesland hub
       {
         source: '/webdesign-wels',
@@ -152,6 +280,17 @@ const nextConfig = {
   async headers() {
     return [
       {
+        // Hero-Videos/Poster haben stabile Dateinamen (bei Ersatz Query-Version
+        // anhaengen) -> langlebig immutable cachen (Repeat-View/Navigation, Thomas 04.08.).
+        source: '/hero/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
         source: '/:path*',
         headers: [
           // SEO Headers
@@ -188,7 +327,7 @@ const nextConfig = {
           // Content Security Policy (CSP) - Optimized for GTM
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://tagmanager.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://tagmanager.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://prod.spline.design https://unpkg.com; worker-src 'self' blob:; frame-src https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self';",
           },
         ],
       },

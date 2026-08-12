@@ -1,0 +1,1642 @@
+/* ============================================================
+   RED RABBIT RELAUNCH — DESIGN-TOKENS (P0)
+   Quelle der Werte: Live-Messung all-turtles.com 04.07.2026
+   (Typo-Stufen 135/89/74/47/41/27/23/20/16 px, Ink #252F3A-Logik,
+   Master-Easing cubic-bezier(.6,0,.4,1) aus Lottie-Extraktion)
+   + Markenrot #F12032 (aus Logo gesampelt, fix).
+   Scope: alles unter .rr — beruehrt die Bestandsseiten nicht.
+   ============================================================ */
+
+.rr {
+  /* ---- Farbe ---- */
+  --rr-red: #f12032;          /* Markenrot, einziger Akzent */
+  --rr-red-deep: #c81222;     /* Hover/gedrueckt */
+  --rr-ink: #23262e;          /* Text, warm-dunkles Schiefer (eigene Ableitung der at-Logik) */
+  --rr-ink-soft: #5a5e68;     /* Sekundaertext */
+  --rr-paper: #ffffff;        /* Grund */
+  --rr-surface: #f4f4f2;      /* zweite Flaeche */
+  --rr-dark: #17181d;         /* dunkle Sektion */
+  --rr-navy: #23262e;         /* Dunkle Flaeche = einheitliches #23262E (Design-System 25.07.; kein Navy/Blau mehr) */
+  --rr-line: #e4e4e0;         /* Hairlines */
+
+  /* Case-Farbwelten (Design-System 25.07.): striktes Premium-Set, kein Tuerkis/Blau.
+     Panel 1 = Problem (Weiss), Panel 2 = Loesung (Hellgrau), Panel 3 = Beweis (Dunkel). */
+  --rr-world-1-bg: #ffffff;   /* Problem: Basis-Weiss */
+  --rr-world-1-accent: var(--rr-red);
+  --rr-world-2-bg: #f4f4f2;   /* Loesung: heller Hintergrund */
+  --rr-world-2-accent: var(--rr-red);
+  --rr-world-3-bg: #23262e;   /* Beweis: dunkle Flaeche */
+  --rr-world-3-accent: var(--rr-red);
+
+  /* ---- Semantische Farben (Formular-/Statuszustaende; Tomson-Entscheidung 06.07.) ---- */
+  /* Rot bleibt Marke UND Fehler-Signal; Erfolg/Warnung/Hinweis bewusst entsaettigt. */
+  --rr-success: #17915b;      /* Erfolg: Akzent/Rahmen/Punkt */
+  --rr-success-ink: #146e46;  /* Erfolg: Text auf hellem Fond (AA) */
+  --rr-success-bg: #e8f5ee;   /* Erfolg: heller Fond */
+  --rr-warning: #c8890a;      /* Warnung: Akzent/Punkt (Amber) */
+  --rr-warning-ink: #8a5f05;  /* Warnung: Text auf hellem Fond (AA) */
+  --rr-warning-bg: #fbf3e2;   /* Warnung: heller Fond */
+  --rr-error: var(--rr-red);  /* Fehler = Marken-Rot */
+  --rr-error-ink: #b1101f;    /* Fehler: Text auf hellem Fond (AA) */
+  --rr-error-bg: #fdeaec;     /* Fehler: heller Fond */
+  --rr-info: var(--rr-navy);  /* Hinweis = Navy */
+  --rr-info-bg: #edf0f3;      /* Hinweis: heller Fond */
+
+  /* ---- Typo-Skala (gemessen -> responsiv) ---- */
+  --rr-font-display: var(--font-dmsans), "DM Sans", system-ui, sans-serif; /* 06.07.: Fraunces -> DM Sans (Wortmarke + Headlines) */
+  --rr-font-serif: var(--font-crimson), Georgia, serif; /* Statements/Claims, Heldane-Gegenstueck */
+  --rr-font-ui: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --rr-font-sans: var(--rr-font-ui); /* Alias: CasePanels referenziert --rr-font-sans, das es sonst nicht gibt */
+
+  --rr-fs-display-1: clamp(58px, 9.4vw, 135px);  /* Case-Headline */
+  --rr-fs-display-2: clamp(44px, 6.2vw, 89px);   /* Abschluss-CTA */
+  --rr-fs-statement: clamp(34px, 4.46vw, 92px);  /* 5-Punkte-Statements (at-Messung 05.07.) */
+  --rr-fs-claim: clamp(28px, 3.3vw, 47px);       /* Hero-Claim */
+  --rr-fs-sub: clamp(22px, 2.85vw, 41px);        /* Case-Subline */
+  --rr-fs-eyebrow-lg: clamp(15px, 1.69vw, 33px); /* grosse Eyebrow (at-Messung 05.07.) */
+  --rr-fs-body-lg: 23px;
+  --rr-fs-ui: 20px;
+  --rr-fs-meta: 16px;
+  --rr-fs-nav: 15px;
+
+  /* ---- Motion (Master-Easing aus der Lottie-Messung) ---- */
+  --rr-ease: cubic-bezier(0.6, 0, 0.4, 1);
+  --rr-t-fast: 200ms;
+  --rr-t-med: 420ms;
+  --rr-t-slow: 700ms;
+
+  /* ---- Raum (all-turtles-Luft) ---- */
+  --rr-section-y: clamp(96px, 12vw, 180px);
+  --rr-gutter: clamp(20px, 4.6vw, 72px);
+  --rr-max: 1680px;
+
+  /* ---- Sonstiges ---- */
+  /* Radius 0 ist Gesetz (E2, Tomson 2026-07-08). Tokens bleiben als 0
+     bestehen, damit alle var()-Verweise (auch in subpages.css / SphereGallery)
+     eckig werden, ohne die Verbraucher-Dateien anzufassen. Einzige Ausnahmen:
+     Toggle-Track/Knob und Radio-Punkt (konventionell rund). */
+  --rr-radius: 0;
+  --rr-radius-lg: 0;
+
+  /* ---- Schatten (zwei Sprachen, E4 Tomson 2026-07-08) ----
+     FLAT ist Standard (kein Schatten). --rr-shadow-layer hebt Karten dezent ab.
+     Neumorph-Doppelschatten NUR als Ausnahme (rr-formcard-neu, rr-card-soft). */
+  --rr-shadow-layer: rgba(28, 40, 55, 0.26) 0 2px 4px, rgba(28, 40, 55, 0.18) 0 7px 13px -3px;
+  --rr-shadow-btn: 0 1px 2px rgba(28, 40, 55, 0.10), 0 2px 8px rgba(28, 40, 55, 0.06);
+  --rr-shadow-btn-hover: 0 4px 14px rgba(28, 40, 55, 0.14), 0 2px 6px rgba(28, 40, 55, 0.08);
+  --rr-shadow-red: 0 5px 18px rgba(241, 32, 50, 0.30);
+  --rr-shadow-pop: 0 14px 44px rgba(28, 40, 55, 0.16), 0 2px 8px rgba(28, 40, 55, 0.08);
+
+  font-family: var(--rr-font-ui);
+  color: var(--rr-ink);
+  background: var(--rr-paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ Typo-Rollen ============ */
+.rr .rr-display-1,
+.rr .rr-display-2,
+.rr .rr-statement,
+.rr .rr-claim,
+.rr .rr-sub {
+  font-family: var(--rr-font-display);
+  font-weight: 700; /* DM Sans Bold (06.07., Tomson) — vorher Fraunces 560 */
+  letter-spacing: -0.018em;
+  line-height: 1.02;
+  font-variation-settings: normal; /* DM Sans hat die Fraunces-Achsen (opsz/SOFT/WONK) nicht */
+  text-wrap: balance;
+  margin: 0;
+}
+.rr .rr-display-1 { font-size: var(--rr-fs-display-1); }
+.rr .rr-display-2 { font-size: var(--rr-fs-display-2); line-height: 1.05; }
+.rr .rr-statement {
+  font-family: var(--rr-font-serif);
+  font-size: var(--rr-fs-statement);
+  font-weight: 500;
+  line-height: 1.11;
+  letter-spacing: -0.01em;
+  font-variation-settings: normal;
+}
+.rr .rr-claim     {
+  font-family: var(--rr-font-serif);
+  font-size: var(--rr-fs-claim);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-variation-settings: normal;
+}
+.rr .rr-sub       { font-size: var(--rr-fs-sub); line-height: 1.22; font-weight: 480; }
+
+.rr .rr-eyebrow {
+  font-family: var(--rr-font-ui);
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--rr-red);
+  margin: 0;
+}
+.rr .rr-eyebrow-lg {
+  font-family: var(--rr-font-ui);
+  font-size: var(--rr-fs-eyebrow-lg);
+  font-weight: 460;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0;
+}
+/* Themen-Eyebrow — EIN Standard (docs/DESIGN_STANDARD.md, Abschnitt "Eyebrow"):
+   rote Grossbuchstaben-Zeile MIT runden Klammern "( Thema )". Die Klammern sind
+   Stil, nicht Inhalt, und kommen als Pseudo-Content (Vorbild: .wd-eyebrow in
+   components/subpages/leistungen/wd-eyebrow.css) — der Text wird also OHNE
+   Klammern uebergeben. Schrift = --rr-font-ui, weil Eyebrows laut
+   Typografie-Abschnitt zur UI-Rolle gehoeren. Gilt ueberall: Homepage-Panels,
+   Preise-Bumper, Unterseiten. */
+.rr .rr-eyebrow-theme {
+  font-family: var(--rr-font-ui);
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  /* Kleintext-Kontrast (WCAG AA / BaFG): reines --rr-red faellt auf hell unter
+     4.5:1 (3.82/4.21). --rr-red-deep #c81222 = 5.35:1 (off-white) / 5.89:1 (weiss),
+     bleibt klar Marken-Rot. Dunkelfall --ondark unten unveraendert. */
+  color: var(--rr-red-deep);
+  margin: 0;
+}
+.rr .rr-eyebrow-theme::before { content: "( "; }
+.rr .rr-eyebrow-theme::after { content: " )"; }
+/* Auf Navy faellt reines Markenrot unter 4.5:1 (~3.55:1) -> helleres Rot,
+   identisch zu .wd-eyebrow--ondark (dort geprueft ~5.5:1, AA fuer Kleintext). */
+.rr .rr-eyebrow-theme--ondark { color: #f77480; }
+
+.rr .rr-body-lg { font-size: var(--rr-fs-body-lg); line-height: 1.5; margin: 0; }
+.rr .rr-body    { font-size: 17px; line-height: 1.55; margin: 0; }
+.rr .rr-meta    { font-size: var(--rr-fs-meta); line-height: 1.45; color: var(--rr-ink-soft); margin: 0; }
+
+/* ============================================================
+   BUTTON-SYSTEM (ueberarbeitet 05.07., eckig E1 2026-07-08)
+   Token-basiert, ruecwaertskompatibel: primary / secondary /
+   ondark bleiben die alten Klassennamen, jetzt ECKIG (border-radius 0).
+   Rolle: rr-btn (eckig solid) = Formular-/Utility-Button. Primaer-CTA =
+   rr-btn-sweep, Sekundaer = rr-btn-outline (Button-System 28.07.).
+   Jede Variante setzt --rr-btn-fg (Text + Spinnerfarbe), damit
+   der Loading-Spinner ohne Sonderfall die richtige Farbe hat.
+   ============================================================ */
+.rr .rr-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--rr-font-ui);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1;
+  padding: 15px 26px;
+  border-radius: 0;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--rr-t-fast) var(--rr-ease),
+    color var(--rr-t-fast) var(--rr-ease),
+    border-color var(--rr-t-fast) var(--rr-ease),
+    box-shadow var(--rr-t-fast) var(--rr-ease),
+    transform var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-btn:hover { transform: translateY(-1px); }
+.rr .rr-btn:active { transform: translateY(0) scale(0.985); transition-duration: 90ms; }
+.rr .rr-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--rr-paper), 0 0 0 4.5px var(--rr-red);
+}
+
+/* Icon-Baustein (icon+label und icon-only) */
+.rr .rr-btn__ico { display: inline-flex; width: 18px; height: 18px; flex: 0 0 auto; }
+.rr .rr-btn__ico svg { width: 100%; height: 100%; display: block; }
+
+/* ---- Variante: primary (Solid-Rot, Hero-CTA) ---- */
+.rr .rr-btn--primary {
+  --rr-btn-fg: #fff;
+  background: var(--rr-red);
+  color: var(--rr-btn-fg);
+  box-shadow: var(--rr-shadow-btn);
+}
+.rr .rr-btn--primary:hover { background: var(--rr-red-deep); box-shadow: var(--rr-shadow-red); }
+.rr .rr-btn--primary:active { box-shadow: var(--rr-shadow-btn); }
+
+/* ---- Variante: secondary (Outline/Ghost auf hell) ---- */
+.rr .rr-btn--secondary {
+  --rr-btn-fg: var(--rr-ink);
+  background: var(--rr-paper);
+  color: var(--rr-ink);
+  border-color: color-mix(in srgb, var(--rr-ink) 24%, transparent);
+}
+.rr .rr-btn--secondary:hover {
+  background: var(--rr-ink);
+  color: var(--rr-paper);
+  border-color: var(--rr-ink);
+  box-shadow: var(--rr-shadow-btn-hover);
+}
+
+/* ---- Variante: tertiary (Text-Button, minimal) ---- */
+.rr .rr-btn--tertiary {
+  --rr-btn-fg: var(--rr-ink);
+  background: transparent;
+  color: var(--rr-ink);
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.rr .rr-btn--tertiary:hover {
+  color: var(--rr-red);
+  background: color-mix(in srgb, var(--rr-red) 8%, transparent);
+  transform: none;
+}
+.rr .rr-btn--tertiary:active { background: color-mix(in srgb, var(--rr-red) 15%, transparent); }
+
+/* ---- Variante: ondark (helle Pille auf dunklem Grund) ---- */
+.rr .rr-btn--ondark {
+  --rr-btn-fg: var(--rr-ink);
+  background: #fff;
+  color: var(--rr-ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+.rr .rr-btn--ondark:hover { background: var(--rr-red); color: #fff; box-shadow: var(--rr-shadow-red); }
+
+/* ---- Variante: ondark-ghost (Outline auf dunklem Grund) ---- */
+.rr .rr-btn--ondark-ghost {
+  --rr-btn-fg: #fff;
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.40);
+}
+.rr .rr-btn--ondark-ghost:hover { background: #fff; color: var(--rr-ink); border-color: #fff; }
+
+/* ---- Groessen: sm / md(default) / lg ---- */
+.rr .rr-btn--sm { font-size: 14px; padding: 10px 18px; gap: 7px; }
+.rr .rr-btn--lg { font-size: 18px; padding: 19px 34px; gap: 12px; }
+
+/* ---- Icon-only (quadratisch); aria-label ist Pflicht ---- */
+.rr .rr-btn--icon { padding: 0; width: 48px; height: 48px; gap: 0; }
+.rr .rr-btn--icon.rr-btn--sm { width: 38px; height: 38px; }
+.rr .rr-btn--icon.rr-btn--sm .rr-btn__ico { width: 16px; height: 16px; }
+.rr .rr-btn--icon.rr-btn--lg { width: 58px; height: 58px; }
+.rr .rr-btn--icon.rr-btn--lg .rr-btn__ico { width: 22px; height: 22px; }
+.rr .rr-btn--icon .rr-btn__ico { width: 20px; height: 20px; }
+
+/* ---- Pfeil-Affordance: schiebt beim Hover (fuer den Hero-CTA) ---- */
+.rr .rr-btn--arrow::after {
+  content: "\2192";
+  font-size: 1.05em;
+  line-height: 0;
+  transition: transform var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-btn--arrow:hover::after { transform: translateX(4px); }
+
+/* ---- Zustand: disabled ---- */
+.rr .rr-btn:disabled,
+.rr .rr-btn[aria-disabled="true"],
+.rr .rr-btn.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+  transform: none;
+  pointer-events: none;
+}
+
+/* ---- Zustand: loading (Spinner, Label transparent) ---- */
+.rr .rr-btn.is-loading {
+  color: transparent !important;
+  cursor: progress;
+  pointer-events: none;
+}
+.rr .rr-btn.is-loading::after { opacity: 0; }
+.rr .rr-btn.is-loading::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.05em;
+  height: 1.05em;
+  margin: -0.525em 0 0 -0.525em;
+  border-radius: 50%;
+  border: 2px solid var(--rr-btn-fg, currentColor);
+  border-top-color: transparent;
+  animation: rr-spin 640ms linear infinite;
+}
+@keyframes rr-spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   LINK-SYSTEM (ueberarbeitet 05.07.)
+   .rr-link bleibt der etablierte Pfeil-Link, nur mit feinerer
+   Unterstreichung + Pfeil-Nudge. Neue Varianten: --text (Wipe,
+   kein Pfeil), --meta (leise), --ondark (heller Grund).
+   ============================================================ */
+.rr .rr-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--rr-font-ui);
+  font-size: var(--rr-fs-ui);
+  font-weight: 550;
+  color: currentColor;
+  text-decoration: none;
+  padding-bottom: 3px;
+  transition: gap var(--rr-t-fast) var(--rr-ease), color var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(1);
+  transform-origin: left center;
+  transition: transform var(--rr-t-med) var(--rr-ease), background-color var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-link::after { content: "\2192"; transition: transform var(--rr-t-fast) var(--rr-ease); }
+.rr .rr-link:hover { color: var(--rr-red); gap: 12px; }
+.rr .rr-link:hover::after { transform: translateX(2px); }
+
+/* Text-Link: kein Pfeil, Unterstreichung wischt beim Hover von links ein */
+.rr .rr-link--text { gap: 0; }
+.rr .rr-link--text::after { content: none; }
+.rr .rr-link--text::before { transform: scaleX(0); transform-origin: left center; }
+.rr .rr-link--text:hover { gap: 0; }
+.rr .rr-link--text:hover::before { transform: scaleX(1); }
+
+/* Meta/leiser Link: kleiner, sekundaer, Unterstreichung nur beim Hover */
+.rr .rr-link--meta {
+  font-size: var(--rr-fs-meta);
+  font-weight: 500;
+  color: var(--rr-ink-soft);
+  gap: 0;
+}
+.rr .rr-link--meta::after { content: none; }
+.rr .rr-link--meta::before { transform: scaleX(0); transform-origin: left center; }
+.rr .rr-link--meta:hover { color: var(--rr-ink); gap: 0; }
+.rr .rr-link--meta:hover::before { transform: scaleX(1); }
+
+/* Auf dunklem Grund: heller Text, Hover in hellem Rot */
+.rr .rr-link--ondark { color: #f2f2ef; }
+.rr .rr-link--ondark:hover { color: #ff5f6d; }
+/* Legacy-Alias (Footer), weiter unterstuetzt */
+.rr .rr-link-dark { color: #f2f2ef; }
+.rr .rr-link-dark:hover { color: #ff5f6d; }
+
+/* ============================================================
+   DROPDOWN / SELECT
+   Styling fuer RelaunchDropdown.tsx (listbox) + native <select>.
+   ============================================================ */
+.rr .rr-select { position: relative; display: inline-block; font-family: var(--rr-font-ui); }
+.rr .rr-select__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 240px;
+  width: 100%;
+  font-family: var(--rr-font-ui);
+  font-size: 16px;
+  font-weight: 550;
+  color: var(--rr-ink);
+  background: var(--rr-paper);
+  border: 1.5px solid var(--rr-line);
+  border-radius: 0; /* eckig (Tomson 2026-07-07: D · Klar-Box wird Standard) */
+  padding: 13px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--rr-t-fast) var(--rr-ease), box-shadow var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-select__trigger:hover { border-color: color-mix(in srgb, var(--rr-ink) 34%, transparent); }
+.rr .rr-select__trigger:focus-visible {
+  outline: none;
+  border-color: var(--rr-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 22%, transparent);
+}
+.rr .rr-select__trigger[aria-expanded="true"] { border-color: var(--rr-ink); }
+.rr .rr-select__value--placeholder { color: #9a9ea8; }
+.rr .rr-select__chev {
+  flex: 0 0 auto;
+  color: var(--rr-ink-soft);
+  transition: transform var(--rr-t-med) var(--rr-ease);
+}
+.rr .rr-select__trigger[aria-expanded="true"] .rr-select__chev { transform: rotate(180deg); }
+
+.rr .rr-select__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--rr-paper);
+  border: 1px solid var(--rr-line);
+  border-radius: 0; /* eckig */
+  box-shadow: var(--rr-shadow-pop);
+  max-height: 288px;
+  overflow-y: auto;
+  transform-origin: top center;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--rr-t-fast) var(--rr-ease),
+    transform var(--rr-t-fast) var(--rr-ease),
+    visibility 0s linear var(--rr-t-fast);
+}
+.rr .rr-select__menu[data-open="true"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity var(--rr-t-fast) var(--rr-ease),
+    transform var(--rr-t-fast) var(--rr-ease),
+    visibility 0s;
+}
+.rr .rr-select__opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 0; /* eckig */
+  font-size: 15.5px;
+  color: var(--rr-ink);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 120ms var(--rr-ease), color 120ms var(--rr-ease);
+}
+.rr .rr-select__opt.is-active { background: var(--rr-surface); }
+.rr .rr-select__opt[aria-selected="true"] { color: var(--rr-red); font-weight: 600; }
+.rr .rr-select__opt-check {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  color: var(--rr-red);
+  opacity: 0;
+  transition: opacity 120ms var(--rr-ease);
+}
+.rr .rr-select__opt[aria-selected="true"] .rr-select__opt-check { opacity: 1; }
+
+/* Natives <select> im Marken-Stil */
+.rr .rr-select-native {
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: var(--rr-font-ui);
+  font-size: 16px;
+  font-weight: 550;
+  color: var(--rr-ink);
+  background-color: var(--rr-paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235a5e68' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 14px;
+  border: 1.5px solid var(--rr-line);
+  border-radius: 0; /* eckig */
+  padding: 13px 44px 13px 16px;
+  min-width: 240px;
+  cursor: pointer;
+  transition: border-color var(--rr-t-fast) var(--rr-ease), box-shadow var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-select-native:hover { border-color: color-mix(in srgb, var(--rr-ink) 34%, transparent); }
+.rr .rr-select-native:focus-visible {
+  outline: none;
+  border-color: var(--rr-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 22%, transparent);
+}
+
+/* ---- Eck-Rahmen-Variante (.rr-select-frame) — Akzent, Tomson 2026-07-07 ----
+   Vier Eck-Winkel (eigenstaendiges Muster); beim Hover/Oeffnen wachsen sie auf
+   50/50 und schliessen den VOLLEN Rahmen (keine Luecken) in Rot. <details>-basiert. */
+.rr .rr-select-frame { position: relative; display: inline-block; width: 260px; font-family: var(--rr-font-ui); }
+.rr .rr-select-frame > summary {
+  list-style: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 18px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--rr-navy);
+}
+.rr .rr-select-frame > summary::-webkit-details-marker { display: none; }
+.rr .rr-select-frame__chev { flex: 0 0 auto; width: 14px; height: 14px; color: var(--rr-ink-soft); transition: transform var(--rr-t-med) var(--rr-ease), color var(--rr-t-med) var(--rr-ease); }
+.rr .rr-select-frame[open] .rr-select-frame__chev { transform: rotate(180deg); }
+.rr .rr-select-frame i {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border: 0 solid var(--rr-navy);
+  pointer-events: none;
+  transition: width 0.35s var(--rr-ease), height 0.35s var(--rr-ease), border-color 0.35s var(--rr-ease);
+}
+.rr .rr-select-frame .c1 { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
+.rr .rr-select-frame .c2 { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+.rr .rr-select-frame .c3 { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
+.rr .rr-select-frame .c4 { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
+.rr .rr-select-frame > summary:hover i,
+.rr .rr-select-frame[open] i { width: 50%; height: 50%; border-color: var(--rr-red); }
+.rr .rr-select-frame__menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 60;
+  background: var(--rr-paper);
+  border: 2px solid var(--rr-red);
+  overflow: hidden;
+}
+.rr .rr-select-frame[open] .rr-select-frame__menu { animation: rr-ddin 0.2s var(--rr-ease); }
+@keyframes rr-ddin { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+.rr .rr-select-frame__opt {
+  position: relative;
+  padding: 11px 14px;
+  font-size: 14.5px;
+  color: var(--rr-ink);
+  cursor: pointer;
+  transition: background-color 120ms var(--rr-ease), color 120ms var(--rr-ease);
+}
+.rr .rr-select-frame__opt + .rr-select-frame__opt { border-top: 1px solid var(--rr-line); }
+.rr .rr-select-frame__opt:hover { background: color-mix(in srgb, var(--rr-red) 8%, transparent); color: var(--rr-red); }
+.rr .rr-select-frame__opt[data-sel] { color: var(--rr-red); font-weight: 600; }
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-select-frame i, .rr .rr-select-frame__chev { transition: none; }
+  .rr .rr-select-frame[open] .rr-select-frame__menu { animation: none; }
+}
+
+/* ============================================================
+   ANIMATIONS-UTILITIES
+   Wiederverwendbare Bewegungs-Muster, alle auf --rr-ease.
+   prefers-reduced-motion wird global weiter unten neutralisiert.
+   ============================================================ */
+.rr .rr-hover-lift {
+  transition: transform var(--rr-t-med) var(--rr-ease), box-shadow var(--rr-t-med) var(--rr-ease);
+}
+.rr .rr-hover-lift:hover { transform: translateY(-4px); box-shadow: var(--rr-shadow-pop); }
+
+.rr .rr-underline-wipe {
+  text-decoration: none;
+  color: inherit;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1.5px;
+  transition: background-size var(--rr-t-med) var(--rr-ease), color var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-underline-wipe:hover { background-size: 100% 1.5px; }
+
+/* fracture-settle: Buchstaben setzen sich aus leichter Rotation/Versatz
+   zusammen (Echo der Wortmarke). Hover-getriggert oder .is-settled setzen. */
+.rr .rr-fracture-settle { display: inline-flex; }
+.rr .rr-fracture-settle .rr-fx-ch {
+  display: inline-block;
+  transform: rotate(calc((var(--i, 0) - 2.5) * 6deg)) translateY(calc(var(--i, 0) * 1px + 8px));
+  opacity: 0.5;
+  transition:
+    transform var(--rr-t-slow) var(--rr-ease),
+    opacity var(--rr-t-slow) var(--rr-ease),
+    color var(--rr-t-slow) var(--rr-ease);
+  transition-delay: calc(var(--i, 0) * 45ms);
+}
+.rr .rr-fracture-settle:hover .rr-fx-ch,
+.rr .rr-fracture-settle.is-settled .rr-fx-ch { transform: none; opacity: 1; }
+
+/* ============ Formularfelder ============ */
+.rr .rr-field {
+  display: block;
+  width: 100%;
+  font-family: var(--rr-font-ui);
+  font-size: 17px;
+  color: var(--rr-ink);
+  background: var(--rr-paper);
+  border: 1.5px solid var(--rr-line);
+  border-radius: var(--rr-radius);
+  padding: 15px 18px;
+  transition: border-color var(--rr-t-fast) var(--rr-ease), box-shadow var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-field::placeholder { color: #6b6e76; }
+.rr .rr-field:focus { outline: none; border-color: var(--rr-ink); }
+.rr .rr-field[aria-invalid="true"] { border-color: var(--rr-red); }
+.rr .rr-label {
+  display: block;
+  font-family: var(--rr-font-ui);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+/* ============ Layout-Bausteine ============ */
+.rr .rr-section { padding: var(--rr-section-y) var(--rr-gutter); }
+.rr .rr-wrap { max-width: var(--rr-max); margin: 0 auto; }
+.rr .rr-hairline { border: 0; border-top: 1px solid var(--rr-line); margin: 0; }
+
+/* Firmen-Namensliste (Sektion 7): Name akzentfarben + grauer Einzeiler */
+.rr .rr-companyrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.rr .rr-company-name { font-family: var(--rr-font-ui); font-size: var(--rr-fs-meta); font-weight: 650; color: var(--rr-red-deep); margin: 0; }
+.rr .rr-company-line { font-family: var(--rr-font-display); font-size: 23px; font-weight: 500; line-height: 1.25; margin: 6px 0 0; }
+@media (max-width: 860px) { .rr .rr-companyrow { grid-template-columns: 1fr; gap: 28px; } }
+
+/* Reduced Motion: alles springt auf Endzustand */
+@media (prefers-reduced-motion: reduce) {
+  .rr * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* Dashboard-Panel (Homepage Themen-Panel 2): Balken atmen mit Master-Easing */
+.rr .rr-dash-bar { transform-origin: bottom; animation: rr-grow 2.6s var(--rr-ease) infinite alternate; }
+@keyframes rr-grow { from { transform: scaleY(0.25); } to { transform: scaleY(1); } }
+@media (prefers-reduced-motion: reduce) { .rr .rr-dash-bar { animation: none; } }
+
+/* ============================================================
+   AUFGENOMMENE FREMD-SNIPPETS (05.07.) — 1:1 in der Mechanik
+   uebernommen, auf die Marke umgefaerbt. rr-btn-metal und
+   rr-btn-draw wurden 2026-07-08 (E3) entfernt (eine Button-
+   Sprache, Eckig-Konsequenz); archiviert in
+   docs/handoffs/entfernte-kandidaten-2026-07-08.patch.
+   Es bleiben: rr-card-soft (jetzt eckig) + rr-toggle.
+   ============================================================ */
+
+/* ---- Weiche, plastische Karte (.rr-card-soft) ----
+   Neumorphismus mit doppeltem Schatten; auf hellem Grund
+   lesbar gehalten. Neutral / Rot / Navy. ECKIG (E3, Tomson
+   2026-07-08): border-radius 0, Neumorph-Schatten bleiben.
+   Zweite Neumorph-Ausnahme neben rr-formcard-neu. */
+.rr .rr-card-soft {
+  width: 200px;
+  height: 250px;
+  border-radius: 0;
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  transition: transform 240ms var(--rr-ease), box-shadow 240ms var(--rr-ease);
+}
+.rr .rr-card-soft:hover { transform: translateY(-4px); }
+.rr .rr-card-soft__eyebrow {
+  font-family: var(--rr-font-ui);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.rr .rr-card-soft__label {
+  font-family: var(--rr-font-display);
+  font-weight: 560;
+  font-size: 22px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.rr .rr-card-soft--neutral {
+  background: #f0f0ee;
+  color: var(--rr-ink);
+  box-shadow: 16px 16px 40px #d3d3cf, -16px -16px 40px #ffffff;
+}
+.rr .rr-card-soft--neutral .rr-card-soft__eyebrow { color: var(--rr-red); }
+.rr .rr-card-soft--red {
+  background: linear-gradient(145deg, #f4384a, #d3162a);
+  color: #fff;
+  box-shadow: 18px 18px 42px rgba(200, 18, 34, 0.3), -14px -14px 36px rgba(255, 255, 255, 0.9);
+}
+.rr .rr-card-soft--red .rr-card-soft__eyebrow { color: rgba(255, 255, 255, 0.82); }
+.rr .rr-card-soft--navy {
+  background: linear-gradient(145deg, #243646, #161f2b);
+  color: #fff;
+  box-shadow: 18px 18px 42px rgba(28, 40, 55, 0.32), -14px -14px 36px #ffffff;
+}
+.rr .rr-card-soft--navy .rr-card-soft__eyebrow { color: #ff6470; }
+
+/* ---- 4) Schalter (.rr-toggle) — klarer Schiebeschalter ----
+   Grauer Track im Aus-Zustand, Knopf gleitet nach rechts, Track
+   wird im Ein-Zustand Navy (Default) oder Rot (--red). */
+.rr .rr-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-family: var(--rr-font-ui);
+  font-size: 15px;
+  color: var(--rr-ink);
+}
+.rr .rr-toggle__input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.rr .rr-toggle__track {
+  position: relative;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--rr-line);
+  transition: background var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-toggle__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--rr-paper);
+  box-shadow: 0 1px 3px rgb(28 40 55 / 0.35);
+  transition: transform var(--rr-t-fast) var(--rr-ease);
+}
+.rr .rr-toggle__input:checked + .rr-toggle__track { background: var(--rr-navy); }
+.rr .rr-toggle__input:checked + .rr-toggle__track .rr-toggle__knob { transform: translateX(20px); }
+.rr .rr-toggle--red .rr-toggle__input:checked + .rr-toggle__track { background: var(--rr-red); }
+.rr .rr-toggle__input:focus-visible + .rr-toggle__track { box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 30%, transparent); }
+
+/* ============================================================
+   Aufgenommene Buttons (Tomson 2026-07-06)
+   ============================================================ */
+
+/* ---- Sweep-Fill (uiverse, originalgetreu, nur Farbe/Schrift auf Marke) ----
+   Eckig, transparenter Grund. Farbiger Balken links waechst beim Hover
+   zur Vollflaeche, Schrift invertiert auf weiss. Farbe ueber --c. */
+.rr .rr-btn-sweep {
+  --c: var(--rr-red);
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  text-align: center;
+  min-width: 150px;
+  font-family: var(--rr-font-ui);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 12px 26px;
+  color: var(--rr-ink);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.4s var(--rr-ease), box-shadow 0.35s var(--rr-ease);
+}
+.rr .rr-btn-sweep::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  z-index: -1;
+  background: var(--c);
+  transition: width 0.4s var(--rr-ease);
+}
+.rr .rr-btn-sweep:hover::before { width: 100%; }
+.rr .rr-btn-sweep:hover { color: #fff; box-shadow: 0 10px 26px rgba(241, 32, 50, 0.34); }
+.rr .rr-btn-sweep:active::before { background: var(--rr-red-deep); }
+.rr .rr-btn-sweep:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--rr-paper), 0 0 0 4.5px var(--c);
+}
+.rr .rr-btn-sweep--navy { --c: var(--rr-navy); }
+.rr .rr-btn-sweep--red { --c: var(--rr-red); }
+
+/* Helle Variante fuer dunklen Hintergrund (Button-System 28.07.: Sweep primaer +
+   Outline sekundaer, Farbe je nach Hintergrund). Balken/Hover-Fuellung Off-White,
+   Text hell in Ruhe, auf der Fuellung dunkel. */
+.rr .rr-btn-sweep--light { --c: #f4f4f2; color: #f4f4f2; }
+.rr .rr-btn-sweep--light:hover { color: #23262e; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34); }
+.rr .rr-btn-sweep--light:focus-visible { box-shadow: 0 0 0 2px #23262e, 0 0 0 4.5px var(--c); }
+
+/* Sekundaerer Rahmen-Button (matched pair zum roten Sweep, Tomson 25.07.):
+   duenner Rahmen, Ink-Schrift; Hover fuellt dunkel. Gleiche Schrift/Groesse
+   wie der Sweep, damit beide als Paar wirken. */
+.rr .rr-btn-outline {
+  display: inline-block;
+  text-align: center;
+  min-width: 150px;
+  font-family: var(--rr-font-ui);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 11px 26px;
+  color: var(--rr-ink);
+  border: 1.5px solid var(--rr-ink);
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s var(--rr-ease), color 0.3s var(--rr-ease);
+}
+.rr .rr-btn-outline:hover { background: var(--rr-ink); color: #fff; }
+.rr .rr-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--rr-paper), 0 0 0 4.5px var(--rr-ink); }
+
+/* Helle Variante fuer dunklen Hintergrund (Button-System 28.07., matched pair
+   zu rr-btn-sweep--light): heller Rahmen, Text hell, Hover fuellt hell mit
+   dunklem Text. */
+.rr .rr-btn-outline--light { color: #f4f4f2; border-color: rgba(244, 244, 242, 0.6); }
+.rr .rr-btn-outline--light:hover { background: #f4f4f2; color: #23262e; }
+.rr .rr-btn-outline--light:focus-visible { outline: none; box-shadow: 0 0 0 2px #23262e, 0 0 0 4.5px #f4f4f2; }
+
+/* KundenSagen im dunklen Beweis-Panel (Tomson 26.07.): Grund transparent (Panel-
+   Dunkel bleibt), Ink-Tokens auf hell -> Titel/Zitat/Namen werden hell lesbar. */
+.rr .ks-ondark { --rr-ink: #f4f4f2; --rr-ink-soft: rgba(246,245,241,0.62); --rr-line: rgba(255,255,255,0.14); }
+.rr .ks-ondark .ks-section { background: transparent; --ks-tile-bg: rgba(255,255,255,0.09); }
+/* Inaktive Avatar-Kachel dunkel -> helle Initialen bleiben lesbar (Tomson 26.07.) */
+.rr .ks-ondark .ks-tile-initials { color: rgba(246,245,241,0.9); }
+
+/* ============================================================
+   Formular-System (aufgebaut auf rr-field/rr-label, 2026-07-06)
+   ============================================================ */
+
+/* Sichtbarer Fokus-Ring zusaetzlich zur Rahmenfarbe (additiv) */
+.rr .rr-field:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-ink) 12%, transparent); }
+.rr .rr-field[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 20%, transparent); }
+
+/* Textarea-Variante */
+.rr textarea.rr-field,
+.rr .rr-field--textarea { min-height: 132px; line-height: 1.5; resize: vertical; }
+
+/* Feld-Gruppe (Label + Feld + Hilfe/Fehler) */
+.rr .rr-form { display: grid; gap: 20px; max-width: 560px; }
+.rr .rr-form__row { display: grid; gap: 20px; grid-template-columns: 1fr 1fr; }
+.rr .rr-form__group { display: block; }
+.rr .rr-help { font-family: var(--rr-font-ui); font-size: 13px; color: var(--rr-ink-soft); margin: 7px 0 0; }
+.rr .rr-error { font-family: var(--rr-font-ui); font-size: 13px; color: var(--rr-error-ink); margin: 7px 0 0; display: flex; align-items: center; gap: 7px; }
+.rr .rr-error::before { content: ""; flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--rr-red); }
+
+/* Checkbox (eigenes Kaestchen, roter Haken) */
+.rr .rr-check,
+.rr .rr-radio { display: inline-flex; align-items: flex-start; gap: 12px; cursor: pointer; font-family: var(--rr-font-ui); font-size: 15px; line-height: 1.5; color: var(--rr-ink); }
+.rr .rr-check__input,
+.rr .rr-radio__input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.rr .rr-check__box { flex: 0 0 auto; width: 22px; height: 22px; margin-top: 1px; border: 1.5px solid var(--rr-line); border-radius: 0; background: var(--rr-paper); display: grid; place-items: center; transition: border-color var(--rr-t-fast) var(--rr-ease), background var(--rr-t-fast) var(--rr-ease); }
+.rr .rr-check__box svg { width: 13px; height: 13px; stroke: #fff; opacity: 0; transform: scale(0.7); transition: opacity var(--rr-t-fast) var(--rr-ease), transform var(--rr-t-fast) var(--rr-ease); }
+.rr .rr-check__input:checked + .rr-check__box { background: var(--rr-red); border-color: var(--rr-red); }
+.rr .rr-check__input:checked + .rr-check__box svg { opacity: 1; transform: scale(1); }
+.rr .rr-check__input:focus-visible + .rr-check__box { box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 30%, transparent); }
+
+/* Radio (runder Punkt) */
+.rr .rr-radio__dot { flex: 0 0 auto; position: relative; width: 22px; height: 22px; margin-top: 1px; border: 1.5px solid var(--rr-line); border-radius: 50%; background: var(--rr-paper); transition: border-color var(--rr-t-fast) var(--rr-ease); }
+.rr .rr-radio__dot::after { content: ""; position: absolute; inset: 0; margin: auto; width: 10px; height: 10px; border-radius: 50%; background: var(--rr-red); transform: scale(0); transition: transform var(--rr-t-fast) var(--rr-ease); }
+.rr .rr-radio__input:checked + .rr-radio__dot { border-color: var(--rr-red); }
+.rr .rr-radio__input:checked + .rr-radio__dot::after { transform: scale(1); }
+.rr .rr-radio__input:focus-visible + .rr-radio__dot { box-shadow: 0 0 0 3px color-mix(in srgb, var(--rr-red) 30%, transparent); }
+
+/* Status-Hinweis (Erfolg / Fehler) */
+.rr .rr-formnote { font-family: var(--rr-font-ui); font-size: 14.5px; line-height: 1.5; padding: 14px 16px; border-radius: var(--rr-radius); border: 1px solid transparent; }
+.rr .rr-formnote--success { color: var(--rr-success-ink); background: var(--rr-success-bg); border-color: color-mix(in srgb, var(--rr-success) 40%, transparent); }
+.rr .rr-formnote--error { color: var(--rr-error-ink); background: var(--rr-error-bg); border-color: color-mix(in srgb, var(--rr-red) 40%, transparent); }
+
+@media (max-width: 560px) { .rr .rr-form__row { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   Aufgenommene Karten (Tomson 2026-07-07)
+   V1 Slide-Reveal · V2 Layer-Schatten · V2xV3 Fokus-Stapel · V5 Buch
+   ============================================================ */
+
+/* ---- V1 · Slide-Reveal (.rr-card-slide) ----
+   Beschreibungs-Flaeche liegt ueber einer Navy-Rot-Flaeche und faehrt
+   beim Hover nach unten weg. Eckradius weich, alles geclippt. */
+.rr .rr-card-slide {
+  position: relative;
+  width: 190px;
+  height: 254px;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px 8px #d7d7d3;
+}
+.rr .rr-card-slide__image {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to top, var(--rr-navy), var(--rr-red));
+}
+.rr .rr-card-slide__cta {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+.rr .rr-card-slide__desc {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 70%;
+  box-sizing: border-box;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  background: var(--rr-surface);
+  border-radius: 0;
+  transition: transform 700ms var(--rr-ease);
+}
+.rr .rr-card-slide__title {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.rr .rr-card-slide__body {
+  font-family: var(--rr-font-ui);
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--rr-ink-soft);
+  margin: 0;
+}
+.rr .rr-card-slide:hover .rr-card-slide__desc { transform: translateY(100%); }
+
+/* ---- V2 · Layer-Schatten (.rr-card-layer) ----
+   Gestapelte Schatten, roter Balken als Innen-Kante unten. Ruhig als
+   Einzelkarte; im Fokus-Stapel bekommt sie das Hover-Verhalten. */
+.rr .rr-card-layer {
+  width: 190px;
+  min-height: 236px;
+  box-sizing: border-box;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+  background: var(--rr-surface);
+  color: var(--rr-ink);
+  box-shadow: var(--rr-shadow-layer), var(--rr-red) 0 -3px 0 inset;
+}
+.rr .rr-card-layer__eyebrow {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rr-red);
+  margin: 0;
+}
+.rr .rr-card-layer__title {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: auto 0 0;
+}
+.rr .rr-card-layer__body {
+  font-family: var(--rr-font-ui);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--rr-ink-soft);
+  margin: 8px 0 0;
+}
+
+/* ---- V2 x V3 · Fokus-Stapel (.rr-focus-row) ----
+   Reihe aus Layer-Karten. Die Karte unter dem Cursor rueckt in den
+   Fokus, die anderen treten unscharf und blass zurueck. */
+.rr .rr-focus-row { display: flex; flex-wrap: wrap; gap: 22px; }
+.rr .rr-focus-row .rr-card-layer {
+  cursor: pointer;
+  transition: transform 400ms var(--rr-ease), filter 400ms var(--rr-ease), opacity 400ms var(--rr-ease);
+}
+.rr .rr-focus-row .rr-card-layer:hover { transform: translateY(-6px) scale(1.03); }
+.rr .rr-focus-row:hover > .rr-card-layer:not(:hover) { filter: blur(7px); opacity: 0.35; transform: scale(0.95); }
+
+/* ---- V5 · Buch (.rr-card-book) ----
+   Roter Deckel klappt beim Hover auf und gibt die Innenseite frei.
+   Flacher Oeffnungswinkel, Text bleibt im Rahmen (overflow geclippt). */
+.rr .rr-card-book {
+  position: relative;
+  width: 180px;
+  height: 250px;
+  border-radius: 0;
+  perspective: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rr-ink);
+  background: var(--rr-surface);
+  box-shadow: var(--rr-shadow-layer);
+  transition: transform 500ms var(--rr-ease);
+}
+.rr .rr-card-book__cover,
+.rr .rr-card-book__inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  cursor: pointer;
+  transform-origin: 0;
+  box-shadow: 1px 1px 12px rgba(28, 40, 55, 0.45);
+  transition: transform 500ms var(--rr-ease), box-shadow 500ms var(--rr-ease);
+}
+.rr .rr-card-book__cover { background: var(--rr-red); color: #fff; }
+.rr .rr-card-book__inner { background: var(--rr-paper); transform-origin: 100%; }
+.rr .rr-card-book__eyebrow {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin: 0;
+}
+.rr .rr-card-book__title {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.rr .rr-card-book__inner .rr-card-book__title { font-size: 16px; }
+.rr .rr-card-book__body {
+  font-family: var(--rr-font-ui);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--rr-ink-soft);
+  max-width: 20ch;
+  margin: 0;
+}
+.rr .rr-card-book:hover { transform: rotate(-6deg); }
+.rr .rr-card-book:hover .rr-card-book__cover { transform: rotateY(-68deg); }
+.rr .rr-card-book:hover .rr-card-book__inner {
+  transform: rotateZ(11deg) rotateY(-6deg) translateX(96px);
+  box-shadow: 2px 2px 20px rgba(28, 40, 55, 0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-card-slide__desc,
+  .rr .rr-focus-row .rr-card-layer,
+  .rr .rr-card-book,
+  .rr .rr-card-book__cover,
+  .rr .rr-card-book__inner { transition: none; }
+  .rr .rr-card-slide:hover .rr-card-slide__desc,
+  .rr .rr-card-book:hover,
+  .rr .rr-card-book:hover .rr-card-book__cover,
+  .rr .rr-card-book:hover .rr-card-book__inner { transform: none; }
+  .rr .rr-focus-row:hover > .rr-card-layer:not(:hover) { filter: none; opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   Formular-Karten (Tomson 2026-07-07)
+   Neumorph eckig · Split. Ersetzen die Formular-Optik aus S.14;
+   die rr-field/rr-form-Primitive bleiben die Basis (Split nutzt sie).
+   ============================================================ */
+
+/* ---- Neumorph eckig (.rr-formcard-neu) ----
+   uiverse-Vorlage, originalgetreu, auf Marke + ECKIG (Tomson-Wunsch).
+   Wanderndes Label wird beim Fokus/Inhalt ein roter eckiger Block,
+   Submit = rr-btn-sweep--red. --tx je Feld. */
+.rr .rr-formcard-neu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  width: 300px;
+  min-height: 378px;
+  padding-bottom: 10px;
+  border-radius: 0;
+  background: #eae9e6;
+  box-shadow: 16px 16px 32px #cbcbc6, -16px -16px 32px #ffffff;
+}
+.rr .rr-formcard-neu__title {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: x-large;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rr-ink);
+  margin-top: 1.4em;
+}
+.rr .rr-formcard-neu__box { position: relative; width: 250px; }
+.rr .rr-formcard-neu__box input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  font-family: var(--rr-font-ui);
+  font-size: 1em;
+  color: var(--rr-ink);
+  background: transparent;
+  border: none;
+  border-left: 2px solid var(--rr-ink);
+  border-bottom: 2px solid var(--rr-ink);
+  outline: none;
+  transition: 0.1s;
+}
+.rr .rr-formcard-neu__box span {
+  position: absolute;
+  left: 0;
+  margin-top: 5px;
+  margin-left: 10px;
+  padding: 10px;
+  transform: translateY(-4px);
+  pointer-events: none;
+  font-family: var(--rr-font-ui);
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--rr-ink);
+  transition: 0.5s;
+}
+.rr .rr-formcard-neu__box input:valid ~ span,
+.rr .rr-formcard-neu__box input:focus ~ span {
+  transform: translateX(var(--tx, 150px)) translateY(-15px);
+  padding: 5px 10px;
+  font-size: 0.8em;
+  letter-spacing: 0.2em;
+  color: #fff;
+  background: var(--rr-red);
+}
+.rr .rr-formcard-neu__box input:valid,
+.rr .rr-formcard-neu__box input:focus { border: 2px solid var(--rr-ink); }
+
+/* ---- Split (.rr-formcard-split) ----
+   Statement-Panel (Navy) + Formular auf rr-field/rr-label. Fuer eine
+   ganze Kontakt-Sektion. Submit = rr-btn-sweep--red. */
+.rr .rr-formcard-split {
+  display: flex;
+  width: 560px;
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--rr-line);
+  background: var(--rr-paper);
+}
+.rr .rr-formcard-split__aside {
+  flex: 0 0 200px;
+  padding: 26px;
+  background: var(--rr-navy);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+.rr .rr-formcard-split__eyebrow {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ff5f6d;
+  margin: 0;
+}
+.rr .rr-formcard-split__stmt {
+  font-family: var(--rr-font-serif);
+  font-weight: 600;
+  font-size: 27px;
+  line-height: 1.12;
+  color: #fff;
+  margin: 14px 0 0;
+}
+.rr .rr-formcard-split__meta {
+  font-family: var(--rr-font-ui);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+.rr .rr-formcard-split__form { flex: 1; padding: 26px; }
+@media (max-width: 560px) {
+  .rr .rr-formcard-split { flex-direction: column; }
+  .rr .rr-formcard-split__aside { flex: 0 0 auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-formcard-neu__box span { transition: none; }
+}
+
+/* ============================================================
+   FAQ-Akkordeon (Tomson-Entscheidung 2026-07-07)
+   A Farbwelt-Panel · B Editorial · E Konversation. Natives
+   <details>, weiche grid-rows-Reveal, im Stil der Relaunch-Panels.
+   Fächer/Karten-Stapel wurden getestet, aber verworfen (Liste gewinnt).
+   ============================================================ */
+.rr .rr-faq summary { list-style: none; cursor: pointer; }
+.rr .rr-faq summary::-webkit-details-marker { display: none; }
+.rr .rr-faq__answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.42s var(--rr-ease); }
+.rr .rr-faq details[open] > .rr-faq__answer { grid-template-rows: 1fr; }
+.rr .rr-faq__answer-in { overflow: hidden; }
+.rr .rr-faq__eyebrow { font-family: var(--rr-font-display); font-weight: 700; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; margin: 0 0 36px; }
+
+/* ---- A · Farbwelt-Panel (rr-faq--panel; --dark / --blue) ---- */
+.rr .rr-faq--panel { background: var(--rr-world-1-bg); color: #f4f4f2; }
+.rr .rr-faq--panel.rr-faq--dark { background: var(--rr-world-2-bg); }
+.rr .rr-faq--panel.rr-faq--blue { background: var(--rr-world-3-bg); }
+.rr .rr-faq--panel .rr-faq__inner { max-width: 1000px; margin: 0 auto; padding: 96px 40px 104px; }
+.rr .rr-faq--panel .rr-faq__eyebrow { color: #f4f4f2; opacity: 0.7; }
+.rr .rr-faq--panel details { border-top: 1px solid rgba(246, 245, 241, 0.28); }
+.rr .rr-faq--panel details:last-of-type { border-bottom: 1px solid rgba(246, 245, 241, 0.28); }
+.rr .rr-faq--panel summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 30px 0; font-family: var(--rr-font-display); font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.08; letter-spacing: -0.02em; color: #f4f4f2; }
+.rr .rr-faq__plus { position: relative; flex: 0 0 auto; width: 28px; height: 28px; margin-top: 4px; }
+.rr .rr-faq__plus::before, .rr .rr-faq__plus::after { content: ""; position: absolute; left: 50%; top: 50%; background: #f4f4f2; transition: transform 0.35s var(--rr-ease); }
+.rr .rr-faq__plus::before { width: 26px; height: 3px; transform: translate(-50%, -50%); }
+.rr .rr-faq__plus::after { width: 3px; height: 26px; transform: translate(-50%, -50%); }
+.rr .rr-faq--panel details[open] .rr-faq__plus::after { transform: translate(-50%, -50%) scaleY(0); }
+.rr .rr-faq--panel .rr-faq__answer-in p { max-width: 60ch; font-family: var(--rr-font-ui); font-size: 17px; line-height: 1.62; color: rgba(246, 245, 241, 0.8); margin: 0; padding: 0 60px 34px 0; }
+
+/* ---- B · Editorial (rr-faq--editorial), heller Grund ---- */
+.rr .rr-faq--editorial { max-width: 1000px; margin: 0 auto; }
+.rr .rr-faq--editorial .rr-faq__eyebrow { color: var(--rr-red); margin-bottom: 8px; }
+.rr .rr-faq--editorial details { border-top: 1px solid rgba(35, 38, 46, 0.14); }
+.rr .rr-faq--editorial details:last-of-type { border-bottom: 1px solid rgba(35, 38, 46, 0.14); }
+.rr .rr-faq--editorial summary { display: flex; align-items: baseline; gap: 22px; padding: 34px 0; font-family: var(--rr-font-display); font-weight: 700; font-size: clamp(24px, 3vw, 36px); line-height: 1.05; letter-spacing: -0.025em; color: var(--rr-ink); transition: color 0.3s var(--rr-ease); }
+.rr .rr-faq--editorial summary:hover { color: var(--rr-red); }
+.rr .rr-faq--editorial details[open] summary { color: var(--rr-red); }
+.rr .rr-faq--editorial .rr-faq__idx { flex: 0 0 auto; font-size: 15px; letter-spacing: 0.02em; color: var(--rr-ink-soft); }
+.rr .rr-faq--editorial details[open] .rr-faq__idx { color: var(--rr-red); }
+.rr .rr-faq--editorial .rr-faq__q { flex: 1; }
+.rr .rr-faq--editorial .rr-faq__answer-in p { max-width: 62ch; font-family: var(--rr-font-ui); font-size: 17px; line-height: 1.62; color: var(--rr-ink-soft); margin: 0; padding: 0 0 40px 52px; }
+
+/* ---- E · Konversation (rr-faq--chat), Chat auf dunklem Panel ---- */
+.rr .rr-faq--chat { background: var(--rr-world-2-bg); color: #f4f4f2; }
+.rr .rr-faq--chat .rr-faq__inner { max-width: 820px; margin: 0 auto; padding: 80px 40px 92px; }
+.rr .rr-faq--chat .rr-faq__eyebrow { color: #ff5f6d; }
+.rr .rr-faq--chat details { margin-bottom: 14px; }
+.rr .rr-faq--chat details::after { content: ""; display: table; clear: both; }
+.rr .rr-faq--chat summary { display: inline-flex; align-items: center; gap: 12px; max-width: 80%; padding: 15px 20px; float: right; clear: both; background: var(--rr-red); color: #fff; font-family: var(--rr-font-ui); font-size: 16px; font-weight: 600; border-radius: 0; }
+.rr .rr-faq--chat .rr-faq__answer-in { padding-top: 14px; }
+.rr .rr-faq__bubble { max-width: 80%; float: left; clear: both; padding: 16px 20px; background: #3a3a3a; color: rgba(246, 245, 241, 0.92); font-size: 15px; line-height: 1.55; border-radius: 0; transform: translateY(8px); opacity: 0; }
+.rr .rr-faq--chat details[open] .rr-faq__bubble { animation: rr-faq-bub 0.4s var(--rr-ease) 0.08s forwards; }
+@keyframes rr-faq-bub { to { transform: translateY(0); opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-faq__answer { transition: none; }
+  .rr .rr-faq__plus::before, .rr .rr-faq__plus::after, .rr .rr-faq--editorial summary { transition: none; }
+  .rr .rr-faq--chat details[open] .rr-faq__bubble { animation: none; opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   SCROLL-REVEAL (E5, Tomson-Entscheidung 2026-07-08)
+   .rr-reveal (Einzelelement) / .rr-stagger (Kinder gestaffelt).
+   CSS-only ueber animation-timeline: view(); ohne Support einfach
+   sichtbar, reduced-motion immer sofort sichtbar.
+   ============================================================ */
+.rr .rr-reveal,
+.rr .rr-stagger > * {
+  opacity: 0;
+  transform: translateY(16px);
+}
+@keyframes rr-reveal-in { to { opacity: 1; transform: translateY(0); } }
+@supports (animation-timeline: view()) {
+  .rr .rr-reveal {
+    animation: rr-reveal-in 700ms var(--rr-ease) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+  .rr .rr-stagger > * {
+    animation: rr-reveal-in 700ms var(--rr-ease) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+  .rr .rr-stagger > *:nth-child(2) { animation-delay: 80ms; }
+  .rr .rr-stagger > *:nth-child(3) { animation-delay: 160ms; }
+  .rr .rr-stagger > *:nth-child(4) { animation-delay: 240ms; }
+  .rr .rr-stagger > *:nth-child(5) { animation-delay: 320ms; }
+  .rr .rr-stagger > *:nth-child(n+6) { animation-delay: 400ms; }
+}
+@supports not (animation-timeline: view()) {
+  .rr .rr-reveal,
+  .rr .rr-stagger > * { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-reveal,
+  .rr .rr-stagger > * { opacity: 1 !important; transform: none !important; animation: none !important; }
+}
+
+/* ============================================================
+   ZITAT / TESTIMONIAL (E6, Tomson-Entscheidung 2026-07-08)
+   .rr-quote (Teal-Panel, Signatur-Moment) + .rr-quote--editorial
+   (heller Einsatz auf redaktionellen Seiten).
+   ============================================================ */
+.rr .rr-quote {
+  position: relative;
+  background: var(--rr-world-1-bg);
+  color: #f4f4f2;
+  padding: clamp(40px, 6vw, 72px) clamp(28px, 5vw, 64px);
+  overflow: hidden;
+}
+.rr .rr-quote__mark {
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: 120px;
+  line-height: 1;
+  color: rgba(246, 245, 241, 0.22);
+  margin: 0 0 -44px;
+}
+.rr .rr-quote__text {
+  font-family: var(--rr-font-serif);
+  font-style: italic;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.3;
+  color: #f4f4f2;
+  margin: 0 0 32px;
+  max-width: 46ch;
+}
+.rr .rr-quote__attr { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.rr .rr-quote__name { font-family: var(--rr-font-ui); font-weight: 650; font-size: 15px; color: #f4f4f2; }
+.rr .rr-quote__stars { color: #fcfbc9; letter-spacing: 2px; font-size: 15px; }
+.rr .rr-quote__src { font-family: var(--rr-font-ui); font-size: 13px; color: rgba(246, 245, 241, 0.65); }
+
+.rr .rr-quote--editorial {
+  background: transparent;
+  color: var(--rr-ink);
+  padding: 48px 0;
+  border-top: 1px solid var(--rr-line);
+  border-bottom: 1px solid var(--rr-line);
+}
+.rr .rr-quote--editorial .rr-quote__mark { color: var(--rr-red); font-size: 48px; margin-bottom: -6px; }
+.rr .rr-quote--editorial .rr-quote__text { color: var(--rr-ink); }
+.rr .rr-quote--editorial .rr-quote__name { color: var(--rr-ink); }
+.rr .rr-quote--editorial .rr-quote__stars { color: var(--rr-red); }
+.rr .rr-quote--editorial .rr-quote__src { color: var(--rr-ink-soft); }
+
+/* ============================================================
+   TAG / LABEL (E7, Tomson-Entscheidung 2026-07-08)
+   Outline-Basis, semantische Modifier ueber Tokens.
+   ============================================================ */
+.rr .rr-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-family: var(--rr-font-ui);
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rr-ink-soft);
+  background: transparent;
+  border: 1px solid var(--rr-line);
+}
+.rr .rr-tag--red { background: var(--rr-red); border-color: var(--rr-red); color: #fff; }
+.rr .rr-tag--navy { background: var(--rr-navy); border-color: var(--rr-navy); color: #fff; }
+.rr .rr-tag--ok { background: var(--rr-success-bg); border-color: var(--rr-success); color: var(--rr-success-ink); }
+.rr .rr-tag--warn { background: var(--rr-warning-bg); border-color: var(--rr-warning); color: var(--rr-warning-ink); }
+
+/* ============================================================
+   REFERENZ-TABELLE (E8, Tomson-Entscheidung 2026-07-08)
+   Hairline-Tabelle: Name (gross) | Branche | Jahr (tabular-nums).
+   ============================================================ */
+.rr .rr-reftable { width: 100%; border-collapse: collapse; font-family: var(--rr-font-ui); }
+.rr .rr-reftable thead th {
+  text-align: left;
+  padding: 0 16px 14px 0;
+  border-bottom: 1px solid var(--rr-line);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rr-ink-soft);
+}
+.rr .rr-reftable thead th:last-child { text-align: right; padding-right: 0; }
+.rr .rr-reftable tbody tr { border-top: 1px solid var(--rr-line); transition: background 160ms var(--rr-ease); }
+.rr .rr-reftable tbody td { padding: 18px 16px 18px 0; font-size: 15.5px; color: var(--rr-ink); vertical-align: middle; }
+.rr .rr-reftable__name {
+  display: block;
+  font-family: var(--rr-font-display);
+  font-weight: 600;
+  font-size: 18px;
+  transition: color 160ms var(--rr-ease);
+}
+.rr .rr-reftable tbody tr:hover .rr-reftable__name { color: var(--rr-red); }
+.rr .rr-reftable__branche { color: var(--rr-ink-soft); }
+.rr .rr-reftable__year { text-align: right; padding-right: 0; font-variant-numeric: tabular-nums; color: var(--rr-ink-soft); }
+
+/* ============================================================
+   PROSA / FLIESSTEXT (E9, Tomson-Entscheidung 2026-07-08)
+   ============================================================ */
+.rr .rr-prose { font-family: var(--rr-font-ui); color: var(--rr-ink); }
+.rr .rr-prose p { max-width: 68ch; line-height: 1.6; margin: 0 0 20px; }
+.rr .rr-prose a {
+  color: var(--rr-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rr-red);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-thickness 200ms var(--rr-ease), color 200ms var(--rr-ease);
+}
+.rr .rr-prose a:hover, .rr .rr-prose a:focus-visible { color: var(--rr-red); text-decoration-thickness: 2px; }
+.rr .rr-prose ul { list-style: none; margin: 0 0 20px; padding: 0; max-width: 68ch; }
+.rr .rr-prose ul li { position: relative; padding-left: 22px; margin-bottom: 10px; line-height: 1.6; }
+.rr .rr-prose ul li::before { content: ""; position: absolute; left: 0; top: 0.58em; width: 7px; height: 7px; background: var(--rr-red); }
+.rr .rr-prose ol { list-style: none; counter-reset: rr-ol; margin: 0 0 20px; padding: 0; max-width: 68ch; }
+.rr .rr-prose ol li { position: relative; padding-left: 30px; margin-bottom: 10px; line-height: 1.6; counter-increment: rr-ol; }
+.rr .rr-prose ol li::before {
+  content: counter(rr-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--rr-red);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.rr .rr-prose blockquote {
+  position: relative;
+  margin: 28px 0;
+  padding-left: 28px;
+  max-width: 62ch;
+  font-family: var(--rr-font-serif);
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--rr-ink);
+}
+.rr .rr-prose blockquote::before {
+  content: "\201C";
+  position: absolute;
+  left: 0;
+  top: -0.12em;
+  font-family: var(--rr-font-display);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--rr-red);
+}
+
+/* ============================================================
+   PREMIUM-LAYER P1-P7 (Tomson-Entscheidung 2026-07-08)
+   Sparsame Signatur-Effekte, nicht als Flaechendecker gedacht
+   (siehe DESIGN.md §15 fuer Einsatzregeln). P8 (Custom Cursor)
+   bewusst verworfen.
+   ============================================================ */
+
+/* ---- P1 · Kinetic Headline ----
+   Buchstaben/Woerter morphen gestaffelt im Weight (500->700) plus
+   leichtes scaleY bei Hover. Fliessender Morph braucht eine Variable
+   Font (siehe DESIGN.md-Hinweis); ohne Variable Font springt der
+   Weight diskret, was als Effekt bewusst in Kauf genommen wird. */
+.rr .rr-kinetic {
+  display: inline-flex;
+  flex-wrap: wrap;
+  font-family: var(--rr-font-display);
+  font-size: clamp(40px, 6vw, 88px);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: var(--rr-ink);
+}
+.rr .rr-kinetic span {
+  display: inline-block;
+  font-weight: 500;
+  transition: font-weight 260ms var(--rr-ease), transform 260ms var(--rr-ease);
+  transition-delay: calc(var(--i, 0) * 30ms);
+}
+.rr .rr-kinetic:hover span { font-weight: 700; transform: scaleY(1.06); }
+
+/* ---- P2 · Outline-Word ----
+   Text-Stroke statt Fuellung; Hover/Fokus fuellt mit Rot (hell) bzw.
+   Off-White (dunkel). */
+.rr .rr-outline-word {
+  display: inline-block;
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  -webkit-text-stroke: 1px var(--rr-ink);
+  color: transparent;
+  transition: color 220ms var(--rr-ease), -webkit-text-stroke-color 220ms var(--rr-ease);
+}
+.rr .rr-outline-word:hover, .rr .rr-outline-word:focus-visible { color: var(--rr-red); -webkit-text-stroke-color: var(--rr-red); }
+.rr .rr-outline-word--ondark { -webkit-text-stroke-color: #f4f4f2; }
+.rr .rr-outline-word--ondark:hover, .rr .rr-outline-word--ondark:focus-visible { color: #f4f4f2; -webkit-text-stroke-color: #f4f4f2; }
+
+/* ---- P3 · Shatter (Variante B: alt zerfaellt, neu setzt sich zusammen) ----
+   3x3-Fragment-Raster ueber background-position; Eintritt via
+   animation-timeline: view() (Fragmente fliegen aus versetzten
+   Richtungen zusammen), Hover = minimales Auseinanderdriften,
+   reduced-motion = statisch. Bildquelle ueber --rr-shatter-img
+   (Custom Property, pro Instanz gesetzt). Einsatzort: Referenzen /
+   Case-Details, sparsam (siehe DESIGN.md). */
+.rr .rr-shatter {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--rr-ink);
+}
+.rr .rr-shatter__frag { background-image: var(--rr-shatter-img); background-size: 300% 300%; transition: transform 320ms var(--rr-ease); }
+.rr .rr-shatter__frag:nth-child(1) { background-position: 0% 0%; }
+.rr .rr-shatter__frag:nth-child(2) { background-position: 50% 0%; }
+.rr .rr-shatter__frag:nth-child(3) { background-position: 100% 0%; }
+.rr .rr-shatter__frag:nth-child(4) { background-position: 0% 50%; }
+.rr .rr-shatter__frag:nth-child(5) { background-position: 50% 50%; }
+.rr .rr-shatter__frag:nth-child(6) { background-position: 100% 50%; }
+.rr .rr-shatter__frag:nth-child(7) { background-position: 0% 100%; }
+.rr .rr-shatter__frag:nth-child(8) { background-position: 50% 100%; }
+.rr .rr-shatter__frag:nth-child(9) { background-position: 100% 100%; }
+.rr .rr-shatter:hover .rr-shatter__frag { transform: scale(0.96); }
+@supports (animation-timeline: view()) {
+  .rr .rr-shatter__frag { animation: rr-shatter-in 900ms var(--rr-ease) both; animation-timeline: view(); animation-range: entry 0% cover 50%; }
+  .rr .rr-shatter__frag:nth-child(1) { --tx: -60px; --ty: -60px; }
+  .rr .rr-shatter__frag:nth-child(2) { --tx: 0px; --ty: -72px; }
+  .rr .rr-shatter__frag:nth-child(3) { --tx: 60px; --ty: -60px; }
+  .rr .rr-shatter__frag:nth-child(4) { --tx: -72px; --ty: 0px; }
+  .rr .rr-shatter__frag:nth-child(5) { --tx: 0px; --ty: 0px; }
+  .rr .rr-shatter__frag:nth-child(6) { --tx: 72px; --ty: 0px; }
+  .rr .rr-shatter__frag:nth-child(7) { --tx: -60px; --ty: 60px; }
+  .rr .rr-shatter__frag:nth-child(8) { --tx: 0px; --ty: 72px; }
+  .rr .rr-shatter__frag:nth-child(9) { --tx: 60px; --ty: 60px; }
+}
+@keyframes rr-shatter-in {
+  from { transform: translate(var(--tx, 0), var(--ty, 0)) scale(0.85); opacity: 0; }
+  to { transform: translate(0, 0) scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-shatter__frag { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .rr .rr-shatter:hover .rr-shatter__frag { transform: none; }
+}
+
+/* ---- P4 · Draw-Line ----
+   Rote Linie waechst per scaleX mit dem Scroll-Fortschritt. */
+.rr .rr-drawline { transform-origin: left center; transform: scaleX(0); height: 2px; width: 100%; background: var(--rr-red); }
+@supports (animation-timeline: view()) {
+  .rr .rr-drawline { animation: rr-drawline-in linear both; animation-timeline: view(); animation-range: entry 0% cover 70%; }
+}
+@keyframes rr-drawline-in { to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .rr .rr-drawline { transform: scaleX(1); animation: none; }
+}
+
+/* ---- P5 · Block-Text ----
+   background-clip:text mit harten Farbbloecken (kein weicher
+   Verlauf). Regel: maximal eine Stelle pro Seite (siehe DESIGN.md). */
+.rr .rr-blocktext {
+  display: inline-block;
+  font-family: var(--rr-font-display);
+  font-weight: 700;
+  font-size: clamp(40px, 6vw, 96px);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  background: linear-gradient(
+    90deg,
+    var(--rr-world-1-bg) 0%, var(--rr-world-1-bg) 33.33%,
+    var(--rr-world-2-bg) 33.33%, var(--rr-world-2-bg) 66.66%,
+    var(--rr-world-3-bg) 66.66%, var(--rr-world-3-bg) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- P6 · Magnetic Button ----
+   Reine Marker-Klasse; die Cursor-Anziehung (max 8px, ease-out
+   zurueck) laeuft ueber ein kleines Inline-Script, nur bei
+   pointer:fine + ohne prefers-reduced-motion (siehe DESIGN.md §15). */
+.rr .rr-magnetic { display: inline-block; will-change: transform; transition: transform 200ms var(--rr-ease); }
+
+/* ---- P7 · Bild-Duoton + Grain ----
+   .rr-img-duo--teal/--navy: Graustufen-Bild + Farb-Overlay
+   (mix-blend-mode). .rr-grain: feines SVG-Rauschen, sehr dezent. */
+.rr .rr-img-duo { position: relative; overflow: hidden; display: block; }
+.rr .rr-img-duo > img,
+.rr .rr-img-duo > .rr-img-duo__ph { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
+.rr .rr-img-duo::after { content: ""; position: absolute; inset: 0; mix-blend-mode: multiply; pointer-events: none; }
+.rr .rr-img-duo--teal::after { background: var(--rr-world-1-bg); }
+.rr .rr-img-duo--navy::after { background: var(--rr-navy); }
+
+.rr .rr-grain { position: relative; }
+.rr .rr-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
+}
+
+/* Abschluss-Block (SiteClosing) am Handy/Tablet fensterhoch (Thomas 02.08.):
+   Das geteilte Bauteil setzt <=820px bewusst min-height:0. Hier site-weit
+   (alle Unterseiten laden styleguide.css; Home laedt es nicht -> bleibt
+   unberuehrt) per hoeher spezifischer Klasse .rr-section.sc-full zurueck auf
+   volle (small) Viewport-Hoehe, damit der Abschluss wie eine eigene
+   Bildschirmseite wirkt. sc-full sitzt nur an NICHT-compact-Abschluessen
+   (die bewusst kleinen compact-Bloecke bleiben klein). Zentrierung kommt aus
+   dem immer aktiven flex/justify-center des Bauteils. */
+@media (max-width: 820px) {
+  .rr-section.sc-full { min-height: 100vh; min-height: 100svh; }
+}

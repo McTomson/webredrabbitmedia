@@ -1,0 +1,497 @@
+'use client';
+
+import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
+import {
+  MOBILE_BREAKPOINT,
+  STEP_TRACK_VH_PER_STEP,
+  TRANSITION_EASING,
+  TRANSITION_MS,
+  prefersReducedMotion,
+} from '@/lib/relaunch/scroll-standard';
+
+/**
+ * Ablauf "So läuft das ab" (Copy v2 §4). Vier Schritte als scroll-getriebene
+ * Kreis-Kette: Sticky-Szene auf dem Desktop, bei der der naechste Schritt beim
+ * Scrollen dazukommt (Kreis mit Zahl fuellt sich, Text darunter wechselt).
+ * Mobile und prefers-reduced-motion bekommen dieselbe Liste als statische,
+ * vertikale Aufzaehlung ohne Sticky/Scroll-Kopplung (reines CSS, kein JS noetig
+ * fuer die Darstellung selbst). rr-* Tokens, Eckig-Gesetz border-radius:0 ausser
+ * bei den Kreisen, DU-Anrede, echte Umlaute, kein Gedankenstrich, kein "KI"-Wort.
+ * Nur <h2> (das eine h1 sitzt im Hero). Copy/Inhalt unveraendert aus v1.
+ */
+
+type Schritt = { titel: string; text: string; ergebnis: string };
+
+const SCHRITTE: Schritt[] = [
+  {
+    titel: 'Du erzählst uns deinen Betrieb.',
+    text: 'Kurz, wer du bist, was du machst, wer deine Kunden sind. Kein Formular-Marathon, ein Gespräch reicht.',
+    ergebnis: 'Wir wissen, worum es geht. Ohne dass du dafür schon einen Cent zahlst.',
+  },
+  {
+    titel: 'Wir bauen deinen Entwurf.',
+    text: 'Den großen Teil der Arbeit machen wir, nicht du. Kein wochenlanges Hin und Her, den ersten Entwurf hast du meist in ein paar Tagen.',
+    ergebnis: 'Du siehst deine echte Seite, fertig gestaltet. Nicht eine Skizze, nicht eine Vorlage. Deine.',
+  },
+  {
+    titel: 'Du schaust sie dir in Ruhe an.',
+    text: 'Andere hätten längst die halbe Rechnung geschickt. Wir zeigen dir die fertige Seite zuerst. Du legst dich erst fest, wenn sie sitzt. Gefällt sie nicht, hat es dich nichts gekostet.',
+    ergebnis: 'Du entscheidest mit dem Ergebnis vor Augen, nicht auf gut Glück.',
+  },
+  {
+    titel: 'Feinschliff, dann geht sie live.',
+    text: 'Sagst du Ja, feilen wir so lange, bis es passt. Dann stellen wir sie online, mit deiner Domain und allen Zugängen in deiner Hand.',
+    ergebnis: 'Deine Seite ist live und gehört dir. Der Kollege legt am selben Tag los.',
+  },
+];
+
+function clamp01(n: number): number {
+  return n < 0 ? 0 : n > 1 ? 1 : n;
+}
+
+export default function Ablauf() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const fillRef = useRef<HTMLDivElement>(null);
+  const activeIndexRef = useRef(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [reduced, setReduced] = useState(false);
+
+  // Nur prefers-reduced-motion degradiert zur statischen Liste (Thomas
+  // 01.08.: die Kreis-Ketten-Szene aus Bild #34 soll auch auf Handy/Tablet
+  // laufen, nicht nur ab 821px). Deckungsgleich mit der Media Query der
+  // Sticky-Szene unten (dort ebenfalls nur no-preference, keine min-width),
+  // sonst laeuft der rAF-Loop gegen ein Layout, das gar nicht sticky ist.
+  useEffect(() => {
+    setReduced(prefersReducedMotion());
+  }, []);
+
+  useEffect(() => {
+    if (reduced) return;
+    const track = trackRef.current;
+    if (!track) return;
+    let raf = 0;
+    let destroyed = false;
+
+    const render = () => {
+      const r = track.getBoundingClientRect();
+      const denom = r.height - window.innerHeight;
+      const q = denom > 0 ? clamp01(-r.top / denom) : 0;
+
+      if (fillRef.current) {
+        fillRef.current.style.transform = `scaleX(${q.toFixed(4)})`;
+      }
+
+      const idx = Math.min(3, Math.max(0, Math.floor(q * 4)));
+      if (idx !== activeIndexRef.current) {
+        activeIndexRef.current = idx;
+        setActiveIndex(idx);
+      }
+    };
+
+    const loop = () => {
+      if (destroyed) return;
+      render();
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    window.addEventListener('scroll', render, { passive: true });
+    window.addEventListener('resize', render);
+    return () => {
+      destroyed = true;
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', render);
+      window.removeEventListener('resize', render);
+    };
+  }, [reduced]);
+
+  return (
+    <section className="wd-abl" aria-labelledby="wd-abl-title" data-rr-snap>
+      <div className="wd-abl__head">
+        <p className="wd-eyebrow">SO LÄUFT DAS AB</p>
+        <h2 id="wd-abl-title" className="rr-statement">
+          Vier Schritte. Und du siehst deine Seite echt, bevor du dich festlegst.
+        </h2>
+        <p className="rr-body-lg wd-abl__intro">
+          Vier Schritte von heute bis online. Du siehst bei jedem davon, was
+          passiert, und der erste kostet dich nichts.
+        </p>
+      </div>
+
+      {/* Gepinnter Track (100vh sticky + rAF-Fortschritt): vom site-weiten
+          Soft-Snap ausgenommen, das eigene Dwell-System regiert innen
+          (ScrollExperience.tsx, Muster wie CasePanels/TalosFahrt). */}
+      <div ref={trackRef} className="wd-abl__track" data-rr-snap-exempt>
+        <div className="wd-abl__stage">
+          <div className="wd-abl__circles" aria-hidden="true">
+            <div className="wd-abl__linetrack">
+              <div ref={fillRef} className="wd-abl__linefill" />
+            </div>
+            {SCHRITTE.map((_, i) => (
+              <span
+                key={i}
+                className={
+                  'wd-abl__circle' +
+                  (i === activeIndex ? ' is-active' : i < activeIndex ? ' is-done' : '')
+                }
+              >
+                <span className="wd-abl__circlenum">0{i + 1}</span>
+              </span>
+            ))}
+          </div>
+
+          <ol className="wd-abl__list">
+            {SCHRITTE.map((s, i) => (
+              <li className={'wd-abl__step' + (i === activeIndex ? ' is-active' : '')} key={i}>
+                <span className="wd-abl__stepnum" aria-hidden="true">
+                  <span className="wd-abl__stepcircle">0{i + 1}</span>
+                </span>
+                <div className="wd-abl__body">
+                  <h3 className="wd-abl__titel">{s.titel}</h3>
+                  <p className="wd-abl__text">{s.text}</p>
+                  <p className="wd-abl__erg">
+                    <span className="wd-abl__ergtag">Ergebnis</span>
+                    {s.ergebnis}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          {/* CTA erst beim letzten Schritt: die Szene endet auf "live", also
+              genau der Moment fuer den Entwurf-Einstieg. Dezent (Frame, kein
+              Sweep), damit Quiz-CTA und Schluss-CTA die Haupt-Buttons bleiben.
+              Mobile/reduced-motion: statisch nach der Liste sichtbar. */}
+          <div className={'wd-abl__cta' + (reduced || activeIndex === 3 ? ' is-show' : '')}>
+            <Link href="/kontakt" className="rr-btn-outline">
+              Mach den ersten Schritt
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .wd-abl {
+          padding: calc(var(--rr-section-y, clamp(96px, 12vw, 180px)) * 1.5) var(--rr-gutter, clamp(20px, 4vw, 64px)) var(--rr-section-y, clamp(96px, 12vw, 180px));
+          max-width: 1080px;
+          margin: 0 auto;
+        }
+        .wd-abl__head {
+          max-width: 780px;
+          margin-bottom: clamp(48px, 7vw, 88px);
+        }
+        .wd-abl__intro {
+          margin-top: clamp(20px, 2.6vw, 30px);
+          max-width: 42em;
+          color: var(--rr-ink-soft, #5a5e68);
+        }
+        .wd-abl__track {
+          position: relative;
+        }
+        .wd-abl__stage {
+          display: block;
+        }
+
+        /* Kreis-Reihe (nur Desktop-Szene sichtbar, siehe Media Query unten) */
+        .wd-abl__circles {
+          display: none;
+          position: relative;
+          align-items: center;
+          justify-content: space-between;
+          --circle: clamp(60px, 6.4vw, 92px);
+          width: min(880px, 92vw);
+          margin: 0 auto;
+        }
+        .wd-abl__linetrack {
+          position: absolute;
+          left: calc(var(--circle) / 2);
+          right: calc(var(--circle) / 2);
+          top: 50%;
+          height: 2px;
+          transform: translateY(-50%);
+          background: rgba(28, 40, 55, 0.16);
+          overflow: hidden;
+        }
+        .wd-abl__linefill {
+          position: absolute;
+          inset: 0;
+          background: var(--rr-red, #f12032);
+          transform-origin: left center;
+          transform: scaleX(0);
+          will-change: transform;
+        }
+        .wd-abl__circle {
+          position: relative;
+          z-index: 1;
+          width: var(--circle);
+          height: var(--circle);
+          border-radius: 50%;
+          /* Thomas 22.07.: nur eine ganz leichte navyblaue Hairline, die auch
+             am gefuellten (roten/navy) Kreis sichtbar bleibt. Border-Farbe wird
+             daher in keinem Zustand ueberschrieben. */
+          border: 1px solid rgba(28, 40, 55, 0.30);
+          background: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform ${TRANSITION_MS}ms ${TRANSITION_EASING}, background ${TRANSITION_MS}ms ${TRANSITION_EASING};
+        }
+        .wd-abl__circlenum {
+          font-family: var(--rr-font-display, inherit);
+          font-weight: 700;
+          font-size: clamp(0.95rem, 1.4vw, 1.3rem);
+          line-height: 1;
+          color: var(--rr-navy, #23262e);
+          transition: color ${TRANSITION_MS}ms ${TRANSITION_EASING};
+        }
+        .wd-abl__circle.is-done {
+          background: var(--rr-navy, #23262e);
+        }
+        .wd-abl__circle.is-done .wd-abl__circlenum {
+          color: #fff;
+        }
+        .wd-abl__circle.is-active {
+          background: var(--rr-red, #f12032);
+          transform: scale(1.12);
+        }
+        .wd-abl__circle.is-active .wd-abl__circlenum {
+          color: #fff;
+        }
+
+        /* Liste: mobile/reduced-motion Basis = statisch untereinander */
+        .wd-abl__list {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+        .wd-abl__step {
+          display: grid;
+          grid-template-columns: 44px minmax(0, 1fr);
+          gap: clamp(16px, 3vw, 32px);
+          margin-bottom: clamp(32px, 5vw, 56px);
+        }
+        .wd-abl__step:last-child {
+          margin-bottom: 0;
+        }
+        .wd-abl__stepnum {
+          display: flex;
+          justify-content: center;
+          padding-top: 2px;
+        }
+        .wd-abl__stepcircle {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          border: 2px solid var(--rr-navy, #23262e);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: var(--rr-font-display, inherit);
+          font-weight: 700;
+          font-size: 1rem;
+          color: var(--rr-red, #f12032);
+          flex-shrink: 0;
+        }
+        .wd-abl__titel {
+          margin: 0;
+          font-family: var(--rr-font-display, inherit);
+          font-weight: 700;
+          font-size: clamp(1.4rem, 2.4vw, 2.1rem);
+          line-height: 1.14;
+          color: var(--rr-navy, #23262e);
+          letter-spacing: -0.01em;
+        }
+        .wd-abl__text {
+          margin: 16px 0 0;
+          font-family: var(--rr-font-ui, inherit);
+          font-size: clamp(1.05rem, 1.25vw, 1.2rem);
+          line-height: 1.7;
+          color: var(--rr-ink, #23262e);
+        }
+        .wd-abl__erg {
+          margin: 18px 0 0;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: baseline;
+          gap: 10px 14px;
+          font-family: var(--rr-font-serif, Georgia, serif);
+          font-style: italic;
+          font-size: clamp(1.02rem, 1.25vw, 1.22rem);
+          line-height: 1.45;
+          color: var(--rr-navy, #23262e);
+        }
+        .wd-abl__ergtag {
+          font-family: var(--rr-font-ui, inherit);
+          font-style: normal;
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--rr-red, #f12032);
+          border: 1px solid var(--rr-red, #f12032);
+          border-radius: 0;
+          padding: 3px 8px;
+          transform: translateY(-2px);
+        }
+
+        .wd-abl__cta {
+          margin-top: clamp(28px, 4vw, 44px);
+          text-align: center;
+          opacity: 0;
+          transform: translateY(8px);
+          transition: opacity ${TRANSITION_MS}ms ${TRANSITION_EASING}, transform ${TRANSITION_MS}ms ${TRANSITION_EASING};
+          pointer-events: none;
+        }
+        .wd-abl__cta.is-show {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+        }
+        /* Statische Liste (nur reduced-motion): CTA immer sichtbar, linksbuendig.
+           Ohne reduced-motion laeuft auch auf Mobile die Szene, dort erscheint
+           der CTA wie am Desktop erst bei Schritt 4 (.is-show). */
+        @media (max-width: ${MOBILE_BREAKPOINT}px) and (prefers-reduced-motion: reduce) {
+          .wd-abl__cta {
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
+            text-align: left;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .wd-abl__cta {
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
+            transition: none;
+          }
+        }
+
+        /* Sticky-Szene: Kreis-Kette mit Scroll-Fortschritt (Bild #34). Laeuft
+           auf ALLEN Breiten, solange Motion erlaubt ist (Thomas 01.08.: auch
+           Handy/Tablet, nicht nur Desktop). Deckungsgleich mit
+           prefersReducedMotion() im rAF-Loop. Schmale Feinheiten fuers Handy
+           im @media (max-width: MOBILE_BREAKPOINT) darunter. */
+        @media (prefers-reduced-motion: no-preference) {
+          .wd-abl__track {
+            /* Thomas 22.07.: "ein Scroll = ein Punkt". 100vh Sticky-Pin +
+               STEP_TRACK_VH_PER_STEP je Schritt Scroll-Strecke. Der Fortschritt
+               q laeuft ueber diese Strecke, floor(q*4) verteilt die 4 Schritte
+               gleichmaessig, also rund eine Viewport-Hoehe Scroll pro Schritt.
+               Bewusst OHNE Bumper-Dwell-Aufschlag: der Wechsel ist eine
+               CSS-Blende, das Standbild haelt ohnehin die ganze Etappe, und der
+               lange Absatz in Schritt 3 haengt so in keinem Snap (NN/g). */
+            height: calc(100vh + ${SCHRITTE.length * STEP_TRACK_VH_PER_STEP}vh);
+          }
+          .wd-abl__stage {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(32px, 5vh, 56px);
+          }
+          .wd-abl__circles {
+            display: flex;
+          }
+          .wd-abl__list {
+            position: relative;
+            width: 100%;
+            max-width: 760px;
+            min-height: clamp(260px, 36vh, 360px);
+            /* Thomas 21.07.: Textblock (Titel/Text/Ergebnis) eine Spur weiter
+               weg von der Kreis-Reihe. Kreise selbst unveraendert. */
+            margin-top: clamp(16px, 2.4vw, 28px);
+          }
+          .wd-abl__step {
+            position: absolute;
+            inset: 0;
+            display: block;
+            margin: 0;
+            opacity: 0;
+            transform: translateY(8px);
+            pointer-events: none;
+            transition: opacity ${TRANSITION_MS}ms ${TRANSITION_EASING}, transform ${TRANSITION_MS}ms ${TRANSITION_EASING};
+            text-align: center;
+          }
+          .wd-abl__step.is-active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+          }
+          .wd-abl__stepnum {
+            display: none;
+          }
+          .wd-abl__body {
+            max-width: 720px;
+            margin: 0 auto;
+          }
+          .wd-abl__erg {
+            justify-content: center;
+          }
+        }
+
+        /* Zwischengroesse (schmales Desktop-Fenster/Tablet quer, knapp ueber dem
+           Mobile-Breakpoint): Kreise ruecken zusammen und der CTA kommt naeher an
+           den Text (Thomas 11.08., Screenshots ~820-900px: Kreise zu weit
+           auseinander, Button zu weit weg). Handy (<=820) und grosser Desktop
+           (>1040) bleiben unveraendert. */
+        @media (min-width: ${MOBILE_BREAKPOINT + 1}px) and (max-width: 1040px) and (prefers-reduced-motion: no-preference) {
+          .wd-abl__circles {
+            --circle: clamp(54px, 7.5vw, 74px);
+            width: min(560px, 78vw);
+          }
+          .wd-abl__list {
+            min-height: clamp(190px, 28vh, 290px);
+          }
+          .wd-abl__cta {
+            margin-top: clamp(10px, 1.8vh, 22px);
+          }
+        }
+
+        /* Schmale Feinheiten fuer die Szene auf Handy/Tablet: kleinster
+           Viewport (svh) gegen URL-Leisten-Sprung, engere Abstaende, Schrift
+           runter, damit jeder Schritt (auch der laengere Schritt 3) in EINE
+           Bildschirmhoehe passt. */
+        @media (max-width: ${MOBILE_BREAKPOINT}px) and (prefers-reduced-motion: no-preference) {
+          .wd-abl {
+            padding-top: var(--rr-section-y, clamp(96px, 12vw, 180px));
+          }
+          .wd-abl__stage {
+            height: 100svh;
+            gap: clamp(18px, 4vh, 30px);
+          }
+          .wd-abl__circles {
+            --circle: clamp(50px, 15vw, 70px);
+            width: min(440px, 88vw);
+          }
+          .wd-abl__list {
+            /* Platz fuer die absolut positionierten Schritt-Texte reservieren
+               (Schritt 3 ist der laengste); sonst kollabiert der Container und
+               der CTA rutscht in den Text. Kleiner als Desktop, damit alles in
+               100svh bleibt. */
+            min-height: clamp(280px, 42vh, 360px);
+            margin-top: clamp(12px, 3vh, 22px);
+          }
+          .wd-abl__body {
+            padding: 0 clamp(4px, 2vw, 14px);
+          }
+          .wd-abl__titel {
+            font-size: clamp(1.5rem, 6.2vw, 2rem);
+          }
+          .wd-abl__text {
+            font-size: clamp(1rem, 4vw, 1.12rem);
+            line-height: 1.55;
+            margin-top: 12px;
+          }
+          .wd-abl__erg {
+            font-size: clamp(0.98rem, 3.6vw, 1.1rem);
+            margin-top: 14px;
+          }
+        }
+      `}</style>
+    </section>
+  );
+}

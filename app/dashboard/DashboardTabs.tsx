@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Search, BarChart3, BrainCircuit, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Search, BarChart3, BrainCircuit, Sparkles, ListChecks } from 'lucide-react';
 
 const NAV = [
     { href: '/dashboard', label: 'Überblick', icon: LayoutDashboard },
     { href: '/dashboard/search', label: 'Search Console', icon: Search },
     { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
+    { href: '/dashboard/seo-monitor', label: 'SEO-Monitor', icon: ListChecks },
     { href: '/dashboard/wissen', label: 'Wissen & Moat', icon: BrainCircuit },
     { href: '/dashboard/verbesserungen', label: 'Verbesserungen', icon: Sparkles },
 ];

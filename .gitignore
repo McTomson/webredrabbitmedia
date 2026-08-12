@@ -52,3 +52,5 @@ graphify-out/
 
 # Scratch-Ordner fuer Medien-Rohdaten (Bilder/Audio vor Einbettung)
 .media-incoming/
+.claude/
+/scratchpad/
