@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChromeGate from "@/components/ChromeGate";
 import DeferredThirdParties from "@/components/DeferredThirdParties";
+import NoTrackFlag from "@/components/NoTrackFlag";
 import LeadProvider from "@/components/relaunch/lead/LeadProvider";
 import { aggregateRatingLd } from '@/lib/reviews';
 
@@ -290,6 +291,10 @@ export default function RootLayout({
         <ContactFormProvider>
           <LeadProvider>
           <AOSInit />
+          {/* Do-Not-Track-Schalter fuers Team (Thomas 2026-08-12): setzt/loescht das
+              Geraete-Flag aus ?rr_notrack. MUSS vor den Analytics-Komponenten stehen,
+              damit sein Effect zuerst laeuft. */}
+          <NoTrackFlag />
           <DeferredThirdParties gaId="G-09FNC6THTD" gtmId="GTM-MQXGT8FL" />
           <ClarityLoader />
           <AnalyticsListener />

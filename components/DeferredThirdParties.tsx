@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+import { isDoNotTrack } from '@/lib/doNotTrack';
 
 /**
  * Laedt GA4 + GTM erst NACH dem kritischen Ladefenster (Thomas 06.08., Mobile-Perf).
@@ -44,6 +45,11 @@ export default function DeferredThirdParties({ gaId, gtmId }: { gaId: string; gt
   }, [load]);
 
   if (!load) return null;
+  // Do-Not-Track fuers Team (Thomas 2026-08-12): Ist das Geraete-Flag gesetzt
+  // (?rr_notrack=1), werden GA4 + GTM GAR NICHT gemountet — kein gtag/js, kein
+  // gtm.js, NULL Hits von diesem Geraet. Deaktivierung via ?rr_notrack=0.
+  // Nur clientseitig geprueft (load wird erst nach Mount true) -> kein Hydration-Mismatch.
+  if (isDoNotTrack()) return null;
   return (
     <>
       <GoogleAnalytics gaId={gaId} />

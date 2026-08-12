@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { isDoNotTrack } from '@/lib/doNotTrack';
 
 /**
  * Microsoft Clarity, Consent-gesteuert (DSGVO) — OPT-OUT-Modell.
@@ -68,6 +69,12 @@ function loadClarity(id: string) {
 export default function ClarityLoader() {
   useEffect(() => {
     if (!CLARITY_ID) return;
+
+    // Do-Not-Track fuers Team (Thomas 2026-08-12): Ist das Geraete-Flag gesetzt
+    // (?rr_notrack=1), wird Clarity GAR NICHT geladen (kein clarity.ms) und auch
+    // nicht per Consent-Event nachgeladen — NULL Hits von diesem Geraet.
+    // Deaktivierung via ?rr_notrack=0.
+    if (isDoNotTrack()) return;
 
     // Opt-out: sofort laden, ausser es liegt eine explizite Ablehnung vor.
     if (!analyticsBlocked()) loadClarity(CLARITY_ID);
