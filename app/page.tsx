@@ -13,7 +13,7 @@ import ScrollExperience from "@/components/relaunch/ScrollExperience";
 import '@/app/styleguide/styleguide.css';
 
 export const metadata: Metadata = {
-  title: "Relaunch-Preview — Homepage nach Blaupause (intern)",
+  title: "Webdesign aus Österreich · Red Rabbit Media",
   description:
     "Webdesign aus Österreich: Websites, die bei Google und in der KI-Suche gefunden werden. Vorschläge ohne Vorkasse, mit Talos als digitalem Mitarbeiter.",
   // Self-referencing canonical (Haus-Regel, siehe app/layout.tsx). Fehlte als
