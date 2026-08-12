@@ -6,6 +6,7 @@ import BackToTop from "@/components/relaunch/BackToTop";
 import HomeMorph from "@/components/relaunch/HomeMorph";
 import CasePanels from "@/components/relaunch/CasePanels";
 import HomeClosing from "@/components/relaunch/HomeClosing";
+import TalosUsp from "@/components/relaunch/TalosUsp";
 import Ablauf from "@/components/subpages/leistungen/website/v2/Ablauf";
 import FooterReassembly from "@/components/relaunch/FooterReassembly";
 import ScrollExperience from "@/components/relaunch/ScrollExperience";
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
   title: "Relaunch-Preview — Homepage nach Blaupause (intern)",
   description:
     "Webdesign aus Österreich: Websites, die bei Google und in der KI-Suche gefunden werden. Vorschläge ohne Vorkasse, mit Talos als digitalem Mitarbeiter.",
+  // Self-referencing canonical (Haus-Regel, siehe app/layout.tsx). Fehlte als
+  // einzige Seite; alle anderen setzen ein alternates.canonical.
+  alternates: { canonical: 'https://web.redrabbit.media' },
 };
 
 // Screenreader-only Stil (identisch zu app/webdesign-tirol),
@@ -67,6 +71,11 @@ export default function RelaunchPreviewPage() {
           11.08.: auch auf der echten Home. Traegt das Entwurf-ohne-Vorkasse-
           Argument + CTA "Mach den ersten Schritt" sichtbar auf die Startseite. */}
       <Ablauf />
+
+      {/* USP-Block: Talos-Copilot grenzt uns von herkoemmlichen Webagenturen ab
+          (Thomas 12.08.). Sitzt nach Referenzen/Leistungen (CasePanels/Ablauf)
+          und vor dem Abschluss (HomeClosing). */}
+      <TalosUsp />
 
       {/* Sektionen 6-8: Zahlen, Firmen-Liste, CTA */}
       <HomeClosing />

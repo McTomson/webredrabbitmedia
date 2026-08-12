@@ -15,6 +15,10 @@ Red Rabbit Media ist eine Webagentur mit Sitz in Wien, tätig für Betriebe in g
 - Technik, Hosting, Backups, Sicherheitsupdates und SSL laufen im Hintergrund mit. Impressum und Datenschutzerklärung setzen wir nach österreichischem Recht auf.
 - Wächst dein Betrieb, wächst die Website mit: du hebst jederzeit von Starter auf Business oder Premium, ohne bei null anzufangen.
 
+## Was uns von herkömmlichen Webagenturen unterscheidet
+
+Die meisten Agenturen bauen die Website, schicken die Rechnung und sind danach weg. Ob der Kunde gefunden wird, woher seine Besucher kommen und wer sich meldet, sieht er nicht. Nach dem Launch ist er blind. Bei Red Rabbit ist auf jeder Website Talos dabei, der Copilot des Kunden. Talos ist ein eigener Bereich, den nur der Kunde sieht. Dort steht in Klartext, ob ihn Google und die KI-Suchen finden, woher seine Besucher kommen und wer sich bei ihm meldet. Ohne diesen Blick tappt man im Dunkeln, mit Talos nicht.
+
 ## Die drei Pakete
 
 ### Starter, ab 1.250 Euro

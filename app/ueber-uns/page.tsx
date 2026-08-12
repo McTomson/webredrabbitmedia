@@ -7,6 +7,7 @@ import CornerLogo from '@/components/relaunch/CornerLogo';
 import BackToTop from '@/components/relaunch/BackToTop';
 import FooterReassembly from '@/components/relaunch/FooterReassembly';
 import SiteClosing from '@/components/relaunch/SiteClosing';
+import TalosUsp from '@/components/relaunch/TalosUsp';
 import ScrollExperience from '@/components/relaunch/ScrollExperience';
 import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
@@ -140,6 +141,10 @@ export default function UeberUnsPage() {
       {/* Abschluss am Handy fensterhoch: site-weite Regel .rr-section.sc-full in
           styleguide.css (Thomas 02.08.) — kein Seiten-Sonderfall mehr noetig. */}
       <div className={`rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`} style={{ background: 'transparent', position: 'relative', zIndex: 2 }}>
+        {/* USP-Block: Talos-Copilot grenzt uns von herkoemmlichen Webagenturen
+            ab (Thomas 12.08.). Vor dem Abschluss-CTA, innerhalb des .rr-Scopes,
+            damit die Marken-Bauteile greifen. */}
+        <TalosUsp />
         <SiteClosing
           lines={[
             'Jetzt kennst du uns.',
