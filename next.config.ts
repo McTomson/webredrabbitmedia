@@ -273,6 +273,39 @@ const nextConfig = {
         destination: '/tipps/generative-engine-optimization',
         permanent: true,
       },
+      // SEO 2026-08-12: fehlende Redirect-Luecken (Sekundaerstaedte + Branche + Umlaut)
+      {
+        source: '/webdesign-schwaz',
+        destination: '/webdesign-tirol',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-oberwart',
+        destination: '/webdesign-burgenland',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-hohenems',
+        destination: '/webdesign-vorarlberg',
+        permanent: true,
+      },
+      // Umlaut-Quelle: Next.js matcht die dekodierte pathname; percent-encodete
+      // Variante zusaetzlich (wie /webdesign-kärnten oben) fuer maximale Robustheit.
+      {
+        source: '/webdesign-oberösterreich',
+        destination: '/webdesign-oberoesterreich',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-ober%C3%B6sterreich',
+        destination: '/webdesign-oberoesterreich',
+        permanent: true,
+      },
+      {
+        source: '/branchen/dienstleister',
+        destination: '/',
+        permanent: true,
+      },
     ]
   },
 

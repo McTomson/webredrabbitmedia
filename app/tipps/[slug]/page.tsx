@@ -21,6 +21,10 @@ import { crimson, dmsans, fraunces, grotesk } from '@/lib/relaunch/fonts';
 import '@/app/styleguide/styleguide.css';
 import '@/components/subpages/tipps-preview.css';
 
+// Marken-Default fuer og:image / Structured-Data, wenn das Artikelbild (noch)
+// nicht produziert wurde. Existiert siteweit (public/og/), liefert also 200.
+const OG_FALLBACK_IMAGE = '/og/og-image-redrabbit.jpg';
+
 /**
  * Artikel-Template im Relaunch-Look. Indexierbar; nur Drafts sind noindex
  * (siehe generateMetadata).
@@ -70,6 +74,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? AUTHORS.dmitry.name
     : AUTHORS.thomas.name;
 
+  // og:image faellt auf das Marken-Default-Bild zurueck, wenn das im
+  // Frontmatter referenzierte Bild (noch) nicht produziert wurde — sonst
+  // liefert die og:image-URL 404 (Medien-Pipeline laeuft erst nach Freigabe).
+  const ogImage = imageExists(post.featuredImage) ? post.featuredImage : OG_FALLBACK_IMAGE;
+
   return {
     title: `${post.title} | Red Rabbit Media`,
     description: metaDescription,
@@ -81,7 +90,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: post.title,
       description: metaDescription,
       url: `${SITE_URL}/tipps/${slug}`,
-      images: [post.featuredImage],
+      images: [ogImage],
       type: 'article',
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt,
@@ -91,7 +100,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary_large_image',
       title: post.title,
       description: metaDescription,
-      images: [post.featuredImage],
+      images: [ogImage],
     },
   };
 }
@@ -180,6 +189,9 @@ export default async function TippsArticlePreview({ params }: Props) {
       : 'Thomas Uhlir MBA ist Gründer von Red Rabbit. Er verbindet betriebswirtschaftliche Praxis mit technischem Webdesign und baut Websites, die im Netz auch tatsächlich gefunden werden.';
 
   const showHero = imageExists(post.featuredImage);
+  // Structured-Data-Bild wie og:image auf Default zuruecksetzen, wenn das
+  // Artikelbild fehlt (sonst 404-URL im BlogPosting-Schema).
+  const schemaImage = showHero ? post.featuredImage : OG_FALLBACK_IMAGE;
   const rrFonts = `rr ${dmsans.variable} ${fraunces.variable} ${grotesk.variable} ${crimson.variable}`;
 
   // --- Strukturierte Daten (wie Live-Seite; BASE = Root-Domain). ---
@@ -189,7 +201,7 @@ export default async function TippsArticlePreview({ params }: Props) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: { '@type': 'ImageObject', url: `${SITE_URL}${post.featuredImage}`, width: 1200, height: 630 },
+    image: { '@type': 'ImageObject', url: `${SITE_URL}${schemaImage}`, width: 1200, height: 630 },
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
     inLanguage: 'de-AT',
