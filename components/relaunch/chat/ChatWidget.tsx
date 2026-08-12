@@ -206,6 +206,18 @@ export default function ChatWidget() {
     }
   };
 
+  // Antippbare Beispiel-Frage (nur vor dem ersten Senden): schickt die Frage
+  // direkt, damit sofort klar ist, dass man hier fragen kann.
+  const askSuggestion = useCallback(
+    (question: string) => {
+      if (isSending) return;
+      if (hpRef.current?.value) return;
+      void send(question, hpRef.current?.value ?? "");
+      setInput("");
+    },
+    [isSending, send]
+  );
+
   // Klick auf die leere Stage-Flaeche (nicht auf das Panel) schliesst ebenfalls.
   const onStagePointer = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) closeWidget();
@@ -378,6 +390,21 @@ export default function ChatWidget() {
                   </button>
                 </div>
               </div>
+
+              {!hasStarted && (
+                <div className="rrchat-suggests" aria-label="Beispiel-Fragen">
+                  {SUGGESTIONS.slice(0, 3).map((q) => (
+                    <button
+                      key={q}
+                      type="button"
+                      className="rrchat-chip"
+                      onClick={() => askSuggestion(q)}
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              )}
 
               <div className="rrchat-fallback">
                 <p className="rrchat-fallback-lead">
@@ -617,6 +644,18 @@ const STYLE = `
 
 /* Honeypot: aus dem Blickfeld, aber nicht display:none. */
 .rrchat-hp{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+
+/* ---------- Beispiel-Frage-Chips (nur vor der ersten Frage, alle Groessen) ---------- */
+.rrchat-suggests{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:14px; }
+.rrchat-chip{
+  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.85rem; line-height:1.3;
+  color:var(--rrchat-ink); background:var(--rrchat-paper); border:1px solid var(--rrchat-line);
+  border-radius:999px; padding:8px 15px; cursor:pointer;
+  transition:border-color .2s, color .2s, background .2s, transform .12s;
+}
+.rrchat-chip:hover{ border-color:var(--rr-red,#f12032); color:var(--rr-red-deep,#c81222); background:#fff; }
+.rrchat-chip:active{ transform:translateY(1px); }
+.rrchat-chip:focus-visible{ outline:none; border-color:var(--rr-red,#f12032); box-shadow:0 0 0 2px color-mix(in srgb, var(--rr-red,#f12032) 30%, transparent); }
 
 /* ---------- Fallback ---------- */
 .rrchat-fallback{ margin-top:32px; text-align:center; }
