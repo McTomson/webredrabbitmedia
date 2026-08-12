@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Cookie, Settings, X, Check } from 'lucide-react';
+import { X } from 'lucide-react';
 import Link from 'next/link';
 
 // TypeScript interface for consent
@@ -41,6 +41,17 @@ const CookieBanner = () => {
             setShowBanner(true);
         }
     }, []);
+
+    // Solange der Banner sichtbar ist, markieren wir das am <html>. Der Chat-FAB
+    // (unten rechts, gleiche Ecke) blendet sich darueber aus, damit er den
+    // "Alle akzeptieren"-Button nicht ueberdeckt (Consent zuerst). Entkoppelt via
+    // Attribut, kein direkter Bezug zwischen den Komponenten.
+    useEffect(() => {
+        const root = document.documentElement;
+        if (showBanner) root.setAttribute('data-rr-cookiebanner', '1');
+        else root.removeAttribute('data-rr-cookiebanner');
+        return () => root.removeAttribute('data-rr-cookiebanner');
+    }, [showBanner]);
 
     // GTM/GA Consent-Update (Consent Mode v2). Analytics steuert analytics_storage,
     // Marketing steuert ALLE drei Google-Ads-Signale (ad_storage, ad_user_data,
@@ -97,148 +108,164 @@ const CookieBanner = () => {
 
     if (!showBanner) return null;
 
-    return (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-2xl">
-            <div className="max-w-7xl mx-auto px-6 py-6">
-                {!showDetails ? (
-                    // Simple Banner
-                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-4 lg:space-y-0 lg:space-x-6">
-                        <div className="flex items-start space-x-4 flex-1">
-                            <Cookie className="w-6 h-6 text-[#f12032] flex-shrink-0 mt-1" />
-                            <div>
-                                <h3 className="font-semibold mb-2 text-gray-900">Wir verwenden Cookies</h3>
-                                <p className="text-sm text-gray-600 leading-relaxed">
-                                    Wir verwenden Cookies, um dir die bestmögliche Erfahrung auf unserer Website zu bieten.
-                                    Technisch notwendige Cookies sind für die Grundfunktionen erforderlich.
-                                    Mit deiner Zustimmung verwenden wir auch Analytics-Cookies zur Verbesserung unserer Website.
-                                </p>
-                            </div>
-                        </div>
+    // Optik: minimalistisch + markengerecht (Instrument Sans, --rr-Tokens, scharfe
+    // Kanten wie das Site-Chrome), grosse Tap-Targets (min-h 48px) fuers Handy.
+    // Die Consent-LOGIK oben bleibt unberuehrt.
+    const uiFont = { fontFamily: 'var(--rr-font-ui, system-ui, sans-serif)' };
 
-                        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 flex-shrink-0 w-full sm:w-auto">
-                            <button
-                                className="px-4 py-2 border border-gray-300 rounded-none text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-                                onClick={() => setShowDetails(true)}
+    const Toggle = ({
+        checked,
+        onChange,
+        label,
+    }: { checked: boolean; onChange: (v: boolean) => void; label: string }) => (
+        <label className="relative inline-flex flex-shrink-0 cursor-pointer items-center">
+            <input
+                type="checkbox"
+                checked={checked}
+                aria-label={label}
+                onChange={(e) => onChange(e.target.checked)}
+                className="peer sr-only"
+            />
+            <div className="h-6 w-11 rounded-full bg-[#d9d9d3] transition-colors after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow-sm after:transition-all after:content-[''] peer-checked:bg-[color:var(--rr-red,#f12032)] peer-checked:after:translate-x-full peer-focus-visible:ring-2 peer-focus-visible:ring-[color:var(--rr-red,#f12032)] peer-focus-visible:ring-offset-2"></div>
+        </label>
+    );
+
+    return (
+        <div
+            className="fixed inset-x-0 bottom-0 z-50 border-t border-[color:var(--rr-line,#e4e4e0)] bg-white shadow-[0_-10px_40px_rgba(20,26,35,0.10)]"
+            style={uiFont}
+            role="dialog"
+            aria-label="Cookie-Hinweis"
+        >
+            <div className="mx-auto max-w-6xl px-5 py-4 sm:px-6 sm:py-5">
+                {!showDetails ? (
+                    // Minimalistischer Hinweis
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+                        <p className="text-[13.5px] leading-relaxed text-[color:var(--rr-ink-soft,#5a5e68)] sm:max-w-[62ch]">
+                            Wir nutzen Cookies für Statistik und Marketing, damit die Seite besser wird &ndash; du entscheidest.{' '}
+                            <Link
+                                href="/datenschutz/"
+                                className="font-medium text-[color:var(--rr-ink,#23262e)] underline underline-offset-2 transition-colors hover:text-[color:var(--rr-red,#f12032)]"
                             >
-                                <Settings className="w-4 h-4 inline mr-2" />
+                                Datenschutz
+                            </Link>
+                        </p>
+
+                        <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:gap-3">
+                            <button
+                                onClick={() => setShowDetails(true)}
+                                className="order-3 inline-flex min-h-[44px] items-center justify-center text-[14px] font-medium text-[color:var(--rr-ink-soft,#5a5e68)] underline underline-offset-2 transition-colors hover:text-[color:var(--rr-ink,#23262e)] sm:order-1 sm:min-h-0"
+                            >
                                 Einstellungen
                             </button>
                             <button
-                                className="px-4 py-2 border border-gray-300 rounded-none text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                                 onClick={rejectAll}
+                                className="order-2 min-h-[48px] border border-[color:var(--rr-ink,#23262e)] px-5 text-[15px] font-medium text-[color:var(--rr-ink,#23262e)] transition-colors hover:bg-[color:var(--rr-ink,#23262e)] hover:text-white"
                             >
                                 Nur notwendige
                             </button>
                             <button
                                 onClick={acceptAll}
-                                className="px-4 py-2 bg-[#f12032] text-white rounded-none text-sm font-medium hover:bg-[#c81222] transition-colors flex items-center justify-center"
+                                className="order-1 min-h-[48px] bg-[color:var(--rr-red,#f12032)] px-6 text-[15px] font-semibold text-white transition-colors hover:bg-[color:var(--rr-red-deep,#c81222)] sm:order-3"
                             >
-                                <Check className="w-4 h-4 mr-2" />
                                 Alle akzeptieren
                             </button>
                         </div>
                     </div>
                 ) : (
-                    // Detailed Settings
-                    <div className="max-w-3xl mx-auto">
-                        <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-xl font-semibold text-gray-900">Cookie-Einstellungen</h3>
+                    // Einstellungen
+                    <div className="mx-auto max-w-3xl">
+                        <div className="mb-5 flex items-center justify-between">
+                            <h3
+                                className="text-[19px] font-semibold text-[color:var(--rr-ink,#23262e)]"
+                                style={{ fontFamily: 'var(--rr-font-display, var(--rr-font-ui), sans-serif)' }}
+                            >
+                                Cookie-Einstellungen
+                            </h3>
                             <button
                                 onClick={() => setShowDetails(false)}
-                                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                                aria-label="Schließen"
+                                className="flex h-10 w-10 items-center justify-center text-[color:var(--rr-ink-soft,#5a5e68)] transition-colors hover:text-[color:var(--rr-ink,#23262e)]"
                             >
-                                <X className="w-5 h-5 text-gray-500" />
+                                <X className="h-5 w-5" />
                             </button>
                         </div>
 
-                        <div className="space-y-6">
-                            {/* Necessary Cookies */}
-                            <div className="border border-gray-200 rounded-lg p-4">
-                                <div className="flex items-center justify-between mb-3">
-                                    <h4 className="font-semibold text-gray-900">Technisch notwendige Cookies</h4>
-                                    <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
-                                        Immer aktiv
-                                    </div>
+                        <div className="space-y-3">
+                            {/* Necessary */}
+                            <div className="border border-[color:var(--rr-line,#e4e4e0)] p-4">
+                                <div className="mb-1.5 flex items-center justify-between gap-3">
+                                    <h4 className="text-[15px] font-semibold text-[color:var(--rr-ink,#23262e)]">Technisch notwendig</h4>
+                                    <span className="text-[12px] font-medium text-[color:var(--rr-ink-soft,#5a5e68)]">Immer aktiv</span>
                                 </div>
-                                <p className="text-sm text-gray-600">
-                                    Diese Cookies sind für die grundlegenden Funktionen der Website erforderlich und können nicht deaktiviert werden.
-                                    Sie werden normalerweise nur als Reaktion auf von dir durchgeführte Aktionen gesetzt.
+                                <p className="text-[13px] leading-relaxed text-[color:var(--rr-ink-soft,#5a5e68)]">
+                                    Für die Grundfunktionen der Seite erforderlich. Lässt sich nicht deaktivieren.
                                 </p>
                             </div>
 
-                            {/* Analytics Cookies */}
-                            <div className="border border-gray-200 rounded-lg p-4">
-                                <div className="flex items-center justify-between mb-3">
-                                    <h4 className="font-semibold text-gray-900">Analytics-Cookies</h4>
-                                    <label className="relative inline-flex items-center cursor-pointer">
-                                        <input
-                                            type="checkbox"
-                                            checked={preferences.analytics}
-                                            onChange={(e) => setPreferences(prev => ({ ...prev, analytics: e.target.checked }))}
-                                            className="sr-only peer"
-                                        />
-                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#f12032] transition-colors"></div>
-                                    </label>
+                            {/* Analytics */}
+                            <div className="border border-[color:var(--rr-line,#e4e4e0)] p-4">
+                                <div className="mb-1.5 flex items-center justify-between gap-3">
+                                    <h4 className="text-[15px] font-semibold text-[color:var(--rr-ink,#23262e)]">Statistik</h4>
+                                    <Toggle
+                                        checked={preferences.analytics}
+                                        onChange={(v) => setPreferences((prev) => ({ ...prev, analytics: v }))}
+                                        label="Statistik-Cookies erlauben"
+                                    />
                                 </div>
-                                <p className="text-sm text-gray-600">
-                                    Diese Cookies helfen uns zu verstehen, wie Besucher mit unserer Website interagieren,
-                                    indem sie Informationen anonym sammeln und melden.
+                                <p className="text-[13px] leading-relaxed text-[color:var(--rr-ink-soft,#5a5e68)]">
+                                    Hilft uns anonym zu verstehen, wie die Seite genutzt wird.
                                 </p>
                             </div>
 
-                            {/* Marketing Cookies */}
-                            <div className="border border-gray-200 rounded-lg p-4">
-                                <div className="flex items-center justify-between mb-3">
-                                    <h4 className="font-semibold text-gray-900">Marketing-Cookies</h4>
-                                    <label className="relative inline-flex items-center cursor-pointer">
-                                        <input
-                                            type="checkbox"
-                                            checked={preferences.marketing}
-                                            onChange={(e) => setPreferences(prev => ({ ...prev, marketing: e.target.checked }))}
-                                            className="sr-only peer"
-                                        />
-                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#f12032] transition-colors"></div>
-                                    </label>
+                            {/* Marketing */}
+                            <div className="border border-[color:var(--rr-line,#e4e4e0)] p-4">
+                                <div className="mb-1.5 flex items-center justify-between gap-3">
+                                    <h4 className="text-[15px] font-semibold text-[color:var(--rr-ink,#23262e)]">Marketing</h4>
+                                    <Toggle
+                                        checked={preferences.marketing}
+                                        onChange={(v) => setPreferences((prev) => ({ ...prev, marketing: v }))}
+                                        label="Marketing-Cookies erlauben"
+                                    />
                                 </div>
-                                <p className="text-sm text-gray-600">
-                                    Diese Cookies werden verwendet, um dir relevante Werbung und Inhalte zu zeigen
-                                    und die Effektivität unserer Werbekampagnen zu messen.
+                                <p className="text-[13px] leading-relaxed text-[color:var(--rr-ink-soft,#5a5e68)]">
+                                    Für relevante Anzeigen und die Messung unserer Kampagnen.
                                 </p>
                             </div>
                         </div>
 
-                        {/* Action Buttons */}
-                        <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 mt-6 pt-6 border-t border-gray-200">
+                        {/* Aktionen */}
+                        <div className="mt-5 flex flex-col gap-2.5 border-t border-[color:var(--rr-line,#e4e4e0)] pt-5 sm:flex-row sm:justify-end sm:gap-3">
                             <button
                                 onClick={rejectAll}
-                                className="px-4 py-2 border border-gray-300 rounded-none text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                                className="order-3 min-h-[48px] border border-[color:var(--rr-ink,#23262e)] px-5 text-[15px] font-medium text-[color:var(--rr-ink,#23262e)] transition-colors hover:bg-[color:var(--rr-ink,#23262e)] hover:text-white sm:order-1"
                             >
                                 Alle ablehnen
                             </button>
                             <button
                                 onClick={acceptSelected}
-                                className="px-4 py-2 bg-[#f12032] text-white rounded-none text-sm font-medium hover:bg-[#c81222] transition-colors"
+                                className="order-2 min-h-[48px] border border-[color:var(--rr-ink,#23262e)] px-5 text-[15px] font-medium text-[color:var(--rr-ink,#23262e)] transition-colors hover:bg-[color:var(--rr-ink,#23262e)] hover:text-white"
                             >
                                 Auswahl speichern
                             </button>
                             <button
                                 onClick={acceptAll}
-                                className="px-4 py-2 bg-[#f12032] text-white rounded-none text-sm font-medium hover:bg-[#c81222] transition-colors"
+                                className="order-1 min-h-[48px] bg-[color:var(--rr-red,#f12032)] px-6 text-[15px] font-semibold text-white transition-colors hover:bg-[color:var(--rr-red-deep,#c81222)] sm:order-3"
                             >
                                 Alle akzeptieren
                             </button>
                         </div>
 
-                        {/* Legal Info */}
-                        <div className="mt-6 pt-4 border-t border-gray-200 text-center">
-                            <p className="text-xs text-gray-500">
-                                Weitere Informationen findest du in unserer{' '}
-                                <Link href="/datenschutz/" className="underline hover:text-white transition-colors">
-                                    Datenschutzerklärung
-                                </Link>
-                                Du kannst deine Einstellungen jederzeit ändern.
-                            </p>
-                        </div>
+                        <p className="mt-4 text-center text-[12px] leading-relaxed text-[color:var(--rr-ink-soft,#5a5e68)]">
+                            Mehr in der{' '}
+                            <Link
+                                href="/datenschutz/"
+                                className="underline underline-offset-2 transition-colors hover:text-[color:var(--rr-red,#f12032)]"
+                            >
+                                Datenschutzerklärung
+                            </Link>
+                            . Du kannst deine Einstellungen jederzeit ändern.
+                        </p>
                     </div>
                 )}
             </div>

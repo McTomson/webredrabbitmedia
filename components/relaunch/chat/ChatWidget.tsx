@@ -6,19 +6,23 @@
 // SCHRIFTEN: ausschliesslich die echten Site-Tokens -- Headline = --rr-font-display
 // (DM Sans), alles andere = --rr-font-ui (Instrument Sans). KEIN Space Grotesk,
 // keine hardcodierten Familien (DESIGN_STANDARD.md). styled-jsx wird gemieden ->
-// namespaced <style> (Muster FragTalos.tsx). Blur ueber den Scrim (backdrop-filter,
-// fremdes Seiten-Markup ist nicht direkt bekleidbar). A11y: dialog/aria-modal,
+// namespaced <style> (Muster FragTalos.tsx). Scrim ist eine fast deckende, helle
+// Flaeche (KEIN backdrop-filter: Vollflaechen-Blur ueber der animierten Startseite
+// ruckelt und laesst den Hintergrund durchscheinen). A11y: dialog/aria-modal,
 // Fokus-Falle, ESC, role=log aria-live. Verdrahtung (useChatSession) unveraendert.
+// Haupt-CTA "Grafischen Vorschlag holen" oeffnet das Site-Kontakt-Modal (openForm).
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useLead } from "@/components/relaunch/lead/LeadProvider";
 import {
   useChatSession,
   type Turn,
 } from "./useChatSession";
 
 const TEL = "+436769000955";
+const MAIL = "office@redrabbit.media";
 const SUGGESTIONS = [
   "Was kostet eine Website bei euch?",
   "Wie läuft ein Projekt bei euch ab?",
@@ -105,6 +109,7 @@ export default function ChatWidget() {
 
   const { turns, isSending, notice, hasStarted, send, clearNotice } =
     useChatSession();
+  const { open: openLead } = useLead();
 
   const fabRef = useRef<HTMLButtonElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -203,6 +208,16 @@ export default function ChatWidget() {
   const onStagePointer = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) closeWidget();
   };
+
+  // Haupt-CTA: schliesst den Chat und oeffnet das geteilte Site-Anfrage-Popup
+  // (LeadDialog, Preset "standard" = "Entwurf ohne Vorkasse"). NICHT ueber
+  // data-rr-lead: der LeadProvider faengt solche Klicks in der Capture-Phase mit
+  // stopPropagation ab -> unser closeWidget wuerde nie feuern und der Chat bliebe
+  // deckend ueber dem Popup. Direkt via useLead().open() umgeht das.
+  const requestProposal = useCallback(() => {
+    closeWidget();
+    openLead({ preset: "standard", service: "Neue Website" });
+  }, [closeWidget, openLead]);
 
   return (
     <div className="rr rrchat" data-open={open ? "true" : "false"}>
@@ -361,19 +376,33 @@ export default function ChatWidget() {
 
               <div className="rrchat-fallback">
                 <p className="rrchat-fallback-lead">
-                  Keine passende Antwort gefunden? <b>Hast du noch Fragen?</b>
+                  Keine passende Antwort gefunden? Oder bereit, es umzusetzen? Wir
+                  machen dir zuerst einen <b>grafischen Vorschlag</b> &ndash; dein
+                  Angebot bekommst du danach.
                 </p>
+                <button
+                  type="button"
+                  className="rr-btn-sweep rr-btn-sweep--red rrchat-cta-primary"
+                  onClick={requestProposal}
+                >
+                  Grafischen Vorschlag holen
+                </button>
+                <p className="rrchat-fallback-alt">Lieber direkt reden?</p>
                 <div className="rrchat-fallback-actions">
-                  <a className="rr-btn-sweep rr-btn-sweep--red" href={`tel:${TEL}`}>
+                  <a
+                    className="rr-btn-outline"
+                    href={`tel:${TEL}`}
+                    onClick={closeWidget}
+                  >
                     Anrufen
                   </a>
-                  <Link
+                  <a
                     className="rr-btn-outline"
-                    href="/kontakt"
-                    data-rr-lead="chat"
+                    href={`mailto:${MAIL}`}
+                    onClick={closeWidget}
                   >
                     E-Mail senden
-                  </Link>
+                  </a>
                 </div>
               </div>
 
@@ -422,15 +451,20 @@ const STYLE = `
 .rrchat-fab:hover{ transform:translateY(-3px); box-shadow:0 16px 36px rgba(241,32,50,.22), 0 3px 8px rgba(28,40,55,.10); }
 .rrchat-fab:focus-visible{ outline:none; box-shadow:0 0 0 3px var(--rrchat-paper), 0 0 0 5.5px var(--rr-red,#f12032); }
 .rrchat-fab-logo{ width:32px; height:32px; object-fit:contain; }
+/* Cookie-Banner sitzt in derselben Ecke -> FAB weicht, solange er offen ist. */
+:root[data-rr-cookiebanner="1"] .rrchat-fab{ opacity:0; transform:translateY(10px) scale(.85); pointer-events:none; }
 
-/* ---------- Overlay + Scrim (hell, Seite dahinter wird geblurrt) ---------- */
+/* ---------- Overlay + Scrim ---------- */
+/* Fast deckende, helle Flaeche statt teurem backdrop-filter: die Startseite
+   animiert/rendert weiter, ein Vollflaechen-Blur ueber ihr ruckelt (blurrt
+   jeden Frame neu) und laesst den Hintergrund durchscheinen -> Fokus liegt
+   nicht klar auf dem Chat. Opake Flaeche = glatt + Chat klar im Vordergrund. */
 .rrchat-overlay{ position:fixed; inset:0; z-index:var(--rrchat-z); }
 .rrchat-scrim{
   position:absolute; inset:0; width:100%; height:100%; border:none; padding:0; margin:0;
-  background:rgba(244,244,242,.76);
-  -webkit-backdrop-filter:blur(9px) saturate(.98); backdrop-filter:blur(9px) saturate(.98);
+  background:var(--rrchat-bg,#f4f4f2);
   cursor:pointer;
-  animation:rrchat-fade .35s var(--rr-ease,ease) both;
+  animation:rrchat-fade .28s var(--rr-ease,ease) both;
 }
 
 /* ---------- Stage (Vollbild, scrollbar) ---------- */
@@ -554,13 +588,20 @@ const STYLE = `
 /* ---------- Fallback ---------- */
 .rrchat-fallback{ margin-top:32px; text-align:center; }
 .rrchat-fallback-lead{
-  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.98rem; line-height:1.5;
-  color:var(--rrchat-ink); margin:0 0 16px;
+  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.98rem; line-height:1.55;
+  color:var(--rrchat-ink); margin:0 auto 18px; max-width:48ch;
 }
 .rrchat-fallback-lead b{ font-weight:700; }
+/* Haupt-CTA: grafischen Vorschlag holen (prominent, roter Sweep) */
+.rrchat .rrchat-cta-primary{
+  display:inline-block; min-width:auto; font-size:18px; padding:13px 32px; margin:0 auto;
+}
+.rrchat-fallback-alt{
+  font-family:var(--rr-font-ui,'Instrument Sans',sans-serif); font-size:.82rem; letter-spacing:.02em;
+  color:var(--rrchat-hint); margin:20px 0 12px;
+}
 .rrchat-fallback-actions{ display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
-.rrchat .rrchat-fallback-actions .rr-btn-sweep,
-.rrchat .rrchat-fallback-actions .rr-btn-outline{ font-size:17px; padding:11px 24px; min-width:150px; }
+.rrchat .rrchat-fallback-actions .rr-btn-outline{ font-size:16px; padding:10px 22px; min-width:150px; }
 
 /* ---------- Fusszeile ---------- */
 .rrchat-foot{
@@ -578,9 +619,10 @@ const STYLE = `
 /* ---------- Mobile ---------- */
 @media (max-width:600px){
   .rrchat-stage{ padding:0 16px; }
-  .rrchat-panel{ margin-top:14vh; margin-bottom:40px; }
+  .rrchat-panel{ margin-top:12vh; margin-bottom:40px; }
   .rrchat-h{ font-size:1.6rem; }
-  .rrchat-log{ max-height:40vh; }
+  .rrchat-log{ max-height:38vh; }
+  .rrchat .rrchat-cta-primary{ display:block; width:100%; }
   .rrchat-fab{ width:58px; height:58px; right:18px; bottom:18px;
     right:calc(18px + env(safe-area-inset-right)); bottom:calc(18px + env(safe-area-inset-bottom)); }
   .rrchat-fallback-actions{ gap:12px; }
