@@ -22,14 +22,14 @@ import '@/components/relaunch/subpages.css';
 const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-wien';
 
 export const metadata: Metadata = {
-  title: 'Webdesign Wien: Website erstellen lassen | Red Rabbit Media',
+  title: 'Webdesign Wien muss nicht teuer sein.',
   description:
-    'Website erstellen lassen in Wien: Seiten für Kanzleien, Ordinationen und Betriebe, die bei Google und in der KI-Suche vorne stehen. Ohne Vorkasse.',
+    'Der Aufschlag steckt im großen Namen der Agentur. Was fair wäre und was du wirklich brauchst, siehst du hier. Zum Fixpreis.',
   alternates: { canonical: '/webdesign-wien' },
   openGraph: {
-    title: 'Webdesign Wien: Website erstellen lassen | Red Rabbit Media',
+    title: 'Webdesign Wien muss nicht teuer sein.',
     description:
-      'Website erstellen lassen in Wien: Seiten für Kanzleien, Ordinationen und Agenturen, die bei Google und in der KI-Suche gefunden werden und Anfragen bringen. Entwurf zuerst, ohne Vorkasse.',
+      'Der Aufschlag steckt im großen Namen der Agentur. Was fair wäre und was du wirklich brauchst, siehst du hier. Zum Fixpreis.',
     type: 'website',
     locale: 'de_AT',
     url: CANONICAL_GOLIVE,
@@ -98,7 +98,7 @@ const schema = {
       '@type': 'WebPage',
       '@id': `${CANONICAL_GOLIVE}#webpage`,
       url: CANONICAL_GOLIVE,
-      name: 'Webdesign Wien: Website erstellen lassen | Red Rabbit Media',
+      name: 'Webdesign Wien muss nicht teuer sein.',
       inLanguage: 'de-AT',
       isPartOf: { '@id': 'https://web.redrabbit.media/#website' },
       about: { '@id': 'https://web.redrabbit.media/#organization' },

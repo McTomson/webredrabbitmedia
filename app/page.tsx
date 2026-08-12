@@ -13,9 +13,9 @@ import ScrollExperience from "@/components/relaunch/ScrollExperience";
 import '@/app/styleguide/styleguide.css';
 
 export const metadata: Metadata = {
-  title: "Webdesign aus Österreich · Red Rabbit Media",
+  title: "Warum rufen keine Kunden an?",
   description:
-    "Webdesign aus Österreich: Websites, die bei Google und in der KI-Suche gefunden werden. Vorschläge ohne Vorkasse, mit Talos als digitalem Mitarbeiter.",
+    "Am Angebot liegt es selten. An der Seite fast immer. Wir bauen Websites, die man findet und die klingeln. Vorschlag gratis vorab ✓",
   // Self-referencing canonical (Haus-Regel, siehe app/layout.tsx). Fehlte als
   // einzige Seite; alle anderen setzen ein alternates.canonical.
   alternates: { canonical: 'https://web.redrabbit.media' },

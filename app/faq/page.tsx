@@ -20,9 +20,9 @@ const DEMO_DIR = path.join(process.cwd(), 'components/subpages/faq-demo');
 const readDemo = (f: string) => fs.readFileSync(path.join(DEMO_DIR, f), 'utf8');
 
 export const metadata: Metadata = {
-  title: 'FAQ · Red Rabbit Media',
+  title: 'Manche Fragen hört keine Agentur gern.',
   description:
-    'Ehrliche Antworten auf die häufigsten Fragen: Preise, Ablauf, Vorkasse, Förderung, Sichtbarkeit bei Google und in KI, Eigentum an der Website und Hosting.',
+    'Wem die Seite gehört zum Beispiel. Oder was Änderungen kosten. Wir haben die Antworten aufgeschrieben, auch wenn sie weh tun.',
   alternates: { canonical: '/faq' },
 };
 

@@ -32,9 +32,9 @@ const readHero = (f: string) => fs.readFileSync(path.join(HERO_DIR, f), 'utf8');
  * Detailseiten unter [slug] nutzen rrt-* unveraendert weiter).
  */
 export const metadata: Metadata = {
-  title: 'Tipps · Red Rabbit Media',
+  title: 'Ein Redesign löst dein Problem nicht.',
   description:
-    'Ehrliche Antworten auf die Fragen, die dich wirklich Geld kosten: Website-Preise, SEO, KI-Sichtbarkeit.',
+    'Neu und schön heißt nicht mehr Anfragen. Was wirklich zieht, sind Kleinigkeiten, die keiner verrät. Wir schon. Fang hier an.',
   alternates: { canonical: `${SITE_URL}/tipps` },
 };
 
@@ -58,7 +58,7 @@ export default async function TippsPreviewPage() {
   const collectionSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Tipps · Red Rabbit Media',
+    name: 'Ein Redesign löst dein Problem nicht.',
     description: metadata.description,
     url: `${BASE}/tipps`,
     inLanguage: 'de-AT',

@@ -45,9 +45,9 @@ import '@/components/subpages/leistungen/website/website.css';
  * identisch zum Hub uebernommen (UNTERSEITEN_STIL.md §1).
  */
 export const metadata: Metadata = {
-  title: 'Website · Leistungen · Red Rabbit Media',
+  title: 'Website erstellen lassen, ohne abhängig zu werden.',
   description:
-    'Individuell gebaute Website, neu erstellt oder von Grund auf erneuert. Fixpreis, kein Baukasten, kein Wartungsvertrag, Entwurf ohne Vorkasse.',
+    'Jede Änderung über die Agentur, jede Rechnung dazu? Muss nicht sein. Deine Seite gehört dir, samt Helfer, der rund um die Uhr zeigt, was los ist.',
   alternates: { canonical: '/leistungen/website' },
 };
 

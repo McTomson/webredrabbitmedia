@@ -19,14 +19,14 @@ import '@/components/relaunch/subpages.css';
 const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-oberoesterreich';
 
 export const metadata: Metadata = {
-  title: 'Webdesign Oberösterreich: Websites für Betriebe in OÖ | Red Rabbit Media',
+  title: 'Webdesign Oberösterreich: Warum rufen keine Kunden an?',
   description:
-    'Webdesign in Oberösterreich: Websites für Betriebe von Linz bis ins Salzkammergut, sichtbar bei Google und in der KI-Suche. Entwurf zuerst, ohne Vorkasse.',
+    'Deine Seite ist online, angerufen wird trotzdem der andere. Woran das liegt? Steht auf der Seite. Vorschlag gratis vorab ✓',
   alternates: { canonical: '/webdesign-oberoesterreich' },
   openGraph: {
-    title: 'Webdesign Oberösterreich: Websites für Betriebe in OÖ | Red Rabbit Media',
+    title: 'Webdesign Oberösterreich: Warum rufen keine Kunden an?',
     description:
-      'Webdesign in Oberösterreich: Websites für Betriebe von Linz bis ins Salzkammergut, die gefunden werden und Anfragen bringen. Entwurf zuerst, ohne Vorkasse.',
+      'Deine Seite ist online, angerufen wird trotzdem der andere. Woran das liegt? Steht auf der Seite. Vorschlag gratis vorab ✓',
     type: 'website',
     locale: 'de_AT',
     url: CANONICAL_GOLIVE,
@@ -95,7 +95,7 @@ const schema = {
       '@type': 'WebPage',
       '@id': `${CANONICAL_GOLIVE}#webpage`,
       url: CANONICAL_GOLIVE,
-      name: 'Webdesign Oberösterreich: Websites für Betriebe in OÖ | Red Rabbit Media',
+      name: 'Webdesign Oberösterreich: Warum rufen keine Kunden an?',
       inLanguage: 'de-AT',
       isPartOf: { '@id': 'https://web.redrabbit.media/#website' },
       about: { '@id': 'https://web.redrabbit.media/#organization' },

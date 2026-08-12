@@ -20,9 +20,9 @@ const DEMO_DIR = path.join(process.cwd(), 'components/subpages/kontakt-demo');
 const readDemo = (f: string) => fs.readFileSync(path.join(DEMO_DIR, f), 'utf8');
 
 export const metadata: Metadata = {
-  title: 'Kontakt · Red Rabbit Media',
+  title: 'Schreib uns. Wir beißen eh nicht.',
   description:
-    'Erzähl uns kurz, wo es hakt. Kein Verkaufsanruf, kein Newsletter: wir lesen, schauen uns deinen Betrieb an und schreiben dir zurück.',
+    'Sag uns kurz, was deine Seite bringen soll. Du bekommst 1 bis 2 Vorschläge, gratis. Gefällt dir nichts, kostet es dich keinen Cent. ✓',
   alternates: { canonical: '/kontakt' },
 };
 
@@ -43,9 +43,9 @@ export default function KontaktPage() {
               '@type': 'ContactPage',
               '@id': 'https://web.redrabbit.media/kontakt#contactpage',
               url: 'https://web.redrabbit.media/kontakt',
-              name: 'Kontakt · Red Rabbit Media',
+              name: 'Schreib uns. Wir beißen eh nicht.',
               description:
-                'Erzähl uns kurz, wo es hakt. Kein Verkaufsanruf, kein Newsletter: wir lesen, schauen uns deinen Betrieb an und schreiben dir zurück.',
+                'Sag uns kurz, was deine Seite bringen soll. Du bekommst 1 bis 2 Vorschläge, gratis. Gefällt dir nichts, kostet es dich keinen Cent. ✓',
               inLanguage: 'de-AT',
               isPartOf: { '@id': 'https://web.redrabbit.media/#website' },
               about: { '@id': 'https://web.redrabbit.media/#organization' },

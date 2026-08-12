@@ -19,14 +19,14 @@ import '@/components/relaunch/subpages.css';
 const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-kaernten';
 
 export const metadata: Metadata = {
-  title: 'Webdesign Kärnten: Homepage erstellen lassen | Red Rabbit Media',
+  title: 'Webdesign Kärnten: Warum rufen keine Kunden an?',
   description:
-    'Homepage erstellen lassen in Kärnten: Websites für Ordinationen und Betriebe von Klagenfurt bis zum Wörthersee, sichtbar bei Google und KI. Ohne Vorkasse.',
+    'Deine Seite ist online, angerufen wird trotzdem der andere. Woran das liegt? Steht auf der Seite. Vorschlag gratis vorab ✓',
   alternates: { canonical: '/webdesign-kaernten' },
   openGraph: {
-    title: 'Webdesign Kärnten: Homepage erstellen lassen | Red Rabbit Media',
+    title: 'Webdesign Kärnten: Warum rufen keine Kunden an?',
     description:
-      'Homepage erstellen lassen in Kärnten: Websites für Betriebe von Klagenfurt bis zum Wörthersee, die gefunden werden und Anfragen bringen. Entwurf ohne Vorkasse.',
+      'Deine Seite ist online, angerufen wird trotzdem der andere. Woran das liegt? Steht auf der Seite. Vorschlag gratis vorab ✓',
     type: 'website',
     locale: 'de_AT',
     url: CANONICAL_GOLIVE,
@@ -95,7 +95,7 @@ const schema = {
       '@type': 'WebPage',
       '@id': `${CANONICAL_GOLIVE}#webpage`,
       url: CANONICAL_GOLIVE,
-      name: 'Webdesign Kärnten: Homepage erstellen lassen | Red Rabbit Media',
+      name: 'Webdesign Kärnten: Warum rufen keine Kunden an?',
       inLanguage: 'de-AT',
       isPartOf: { '@id': 'https://web.redrabbit.media/#website' },
       about: { '@id': 'https://web.redrabbit.media/#organization' },

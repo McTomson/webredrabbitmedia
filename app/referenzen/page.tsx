@@ -28,15 +28,15 @@ import "@/components/relaunch/subpages.css";
 
 const CANONICAL = "https://web.redrabbit.media/referenzen";
 const META_DESC =
-  "Ausgewählte Webdesign-Projekte von Red Rabbit Media: Websites für Betriebe aus Österreich, " +
-  "von Gastronomie bis Immobilien. Sieh dir an, was wir bauen.";
+  "Genau das haben wir jeden Kunden gefragt. Sieh die Seiten, die danach entstanden sind, " +
+  "und was sie ihren Betreibern im Alltag bringen. ✓";
 
 export const metadata: Metadata = {
-  title: "Referenzen — Webdesign-Projekte aus Österreich | Red Rabbit Media",
+  title: "Würdest du bei dir selbst kaufen? Sieh die Referenzen.",
   description: META_DESC,
   alternates: { canonical: "/referenzen" },
   openGraph: {
-    title: "Referenzen — Red Rabbit Media",
+    title: "Würdest du bei dir selbst kaufen? Sieh die Referenzen.",
     description: META_DESC,
     type: "website",
     url: CANONICAL,

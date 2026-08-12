@@ -22,14 +22,14 @@ import '@/components/relaunch/subpages.css';
 const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-steiermark';
 
 export const metadata: Metadata = {
-  title: 'Webdesign Steiermark: Website erstellen lassen | Red Rabbit Media',
+  title: 'Webdesign Steiermark: Warum rufen keine Kunden an?',
   description:
-    'Website erstellen lassen in der Steiermark: Seiten für Betriebe von Graz bis ins Ennstal, gefunden bei Google und in der KI-Suche. Ohne Vorkasse.',
+    'Deine Seite ist online, angerufen wird trotzdem der andere. Woran das liegt? Steht auf der Seite. Vorschlag gratis vorab ✓',
   alternates: { canonical: '/webdesign-steiermark' },
   openGraph: {
-    title: 'Webdesign Steiermark: Website erstellen lassen | Red Rabbit Media',
+    title: 'Webdesign Steiermark: Warum rufen keine Kunden an?',
     description:
-      'Website erstellen lassen in der Steiermark: Seiten für Betriebe von Graz bis ins Ennstal, die gefunden werden und Anfragen bringen. Entwurf zuerst, ohne Vorkasse.',
+      'Deine Seite ist online, angerufen wird trotzdem der andere. Woran das liegt? Steht auf der Seite. Vorschlag gratis vorab ✓',
     type: 'website',
     locale: 'de_AT',
     url: CANONICAL_GOLIVE,
@@ -98,7 +98,7 @@ const schema = {
       '@type': 'WebPage',
       '@id': `${CANONICAL_GOLIVE}#webpage`,
       url: CANONICAL_GOLIVE,
-      name: 'Webdesign Steiermark: Website erstellen lassen | Red Rabbit Media',
+      name: 'Webdesign Steiermark: Warum rufen keine Kunden an?',
       inLanguage: 'de-AT',
       isPartOf: { '@id': 'https://web.redrabbit.media/#website' },
       about: { '@id': 'https://web.redrabbit.media/#organization' },

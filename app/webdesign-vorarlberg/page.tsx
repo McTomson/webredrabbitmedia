@@ -19,14 +19,14 @@ import '@/components/relaunch/subpages.css';
 const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-vorarlberg';
 
 export const metadata: Metadata = {
-  title: 'Webdesign Vorarlberg: Homepage erstellen lassen | Red Rabbit Media',
+  title: 'Webdesign Vorarlberg: Warum rufen keine Kunden an?',
   description:
-    'Homepage erstellen lassen in Vorarlberg: Websites für Betriebe vom Rheintal bis zum Arlberg, gebaut für Google und die KI-Suche. Ohne Vorkasse.',
+    'Deine Seite ist online, angerufen wird trotzdem der andere. Woran das liegt? Steht auf der Seite. Vorschlag gratis vorab ✓',
   alternates: { canonical: '/webdesign-vorarlberg' },
   openGraph: {
-    title: 'Webdesign Vorarlberg: Homepage erstellen lassen | Red Rabbit Media',
+    title: 'Webdesign Vorarlberg: Warum rufen keine Kunden an?',
     description:
-      'Homepage erstellen lassen in Vorarlberg: Websites für Betriebe vom Rheintal bis zum Arlberg, die gefunden werden und Anfragen bringen. Entwurf zuerst, ohne Vorkasse.',
+      'Deine Seite ist online, angerufen wird trotzdem der andere. Woran das liegt? Steht auf der Seite. Vorschlag gratis vorab ✓',
     type: 'website',
     locale: 'de_AT',
     url: CANONICAL_GOLIVE,
@@ -95,7 +95,7 @@ const schema = {
       '@type': 'WebPage',
       '@id': `${CANONICAL_GOLIVE}#webpage`,
       url: CANONICAL_GOLIVE,
-      name: 'Webdesign Vorarlberg: Homepage erstellen lassen | Red Rabbit Media',
+      name: 'Webdesign Vorarlberg: Warum rufen keine Kunden an?',
       inLanguage: 'de-AT',
       isPartOf: { '@id': 'https://web.redrabbit.media/#website' },
       about: { '@id': 'https://web.redrabbit.media/#organization' },

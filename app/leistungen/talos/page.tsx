@@ -43,9 +43,9 @@ import '@/components/subpages/leistungen/talos/v2/talos-v2.css';
  * angepasst; FAQPage-JSON-LD kommt weiter aus TalosFaqV2.
  */
 export const metadata: Metadata = {
-  title: 'Talos, Kommandozentrale deiner Website · Red Rabbit Media',
+  title: 'Findet dich ChatGPT, wenn einer nach dir fragt?',
   description:
-    'Talos steckt in jeder Website von uns: Texte selbst ändern, Besucher sehen, bei Google und ChatGPT gefunden werden, Alarm bei Ausfall. Alles an einem Ort.',
+    'Kunden googeln nicht mehr nur, sie fragen die KI. Ob du dort auftauchst, sagt dir Talos direkt in deiner Seite. Sehen kannst du\'s sofort.',
   alternates: { canonical: '/leistungen/talos' },
 };
 

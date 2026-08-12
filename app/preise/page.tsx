@@ -37,9 +37,9 @@ import '@/components/subpages/leistungen/wd-eyebrow.css';
  * identisch zu den anderen Preview-Seiten uebernommen.
  */
 export const metadata: Metadata = {
-  title: 'Preise · Red Rabbit Media',
+  title: 'Warum sagt dir keiner, was die Website kostet?',
   description:
-    'Klare Website-Pakete ab 1.250 Euro. Du bekommst zuerst 1-2 Vorschläge ohne Vorkasse und beauftragst uns erst, wenn sie dir gefallen. Talos immer dabei.',
+    'Weil Auf Anfrage länger dauert und teurer wird. Bei uns stehen die Preise da, samt gratis Vorschlag. Welcher passt, siehst du in zwei Minuten.',
   alternates: { canonical: '/preise' },
 };
 

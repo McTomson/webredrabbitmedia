@@ -19,14 +19,14 @@ import '@/components/relaunch/subpages.css';
 const CANONICAL_GOLIVE = 'https://web.redrabbit.media/webdesign-tirol';
 
 export const metadata: Metadata = {
-  title: 'Webdesign Tirol: Homepage erstellen lassen | Red Rabbit Media',
+  title: 'Webdesign Tirol: Warum rufen keine Kunden an?',
   description:
-    'Homepage erstellen lassen in Tirol: Websites für Hotels, Vermieter und Betriebe von Innsbruck bis ins Zillertal, sichtbar bei Google und KI. Ohne Vorkasse.',
+    'Deine Seite ist online, angerufen wird trotzdem der andere. Woran das liegt? Steht auf der Seite. Vorschlag gratis vorab ✓',
   alternates: { canonical: '/webdesign-tirol' },
   openGraph: {
-    title: 'Webdesign Tirol: Homepage erstellen lassen | Red Rabbit Media',
+    title: 'Webdesign Tirol: Warum rufen keine Kunden an?',
     description:
-      'Homepage erstellen lassen in Tirol: Websites für Hotels, Vermieter und Betriebe, die gefunden werden und buchen lassen. Entwurf zuerst, ohne Vorkasse.',
+      'Deine Seite ist online, angerufen wird trotzdem der andere. Woran das liegt? Steht auf der Seite. Vorschlag gratis vorab ✓',
     type: 'website',
     locale: 'de_AT',
     url: CANONICAL_GOLIVE,
@@ -95,7 +95,7 @@ const schema = {
       '@type': 'WebPage',
       '@id': `${CANONICAL_GOLIVE}#webpage`,
       url: CANONICAL_GOLIVE,
-      name: 'Webdesign Tirol: Homepage erstellen lassen | Red Rabbit Media',
+      name: 'Webdesign Tirol: Warum rufen keine Kunden an?',
       inLanguage: 'de-AT',
       isPartOf: { '@id': 'https://web.redrabbit.media/#website' },
       about: { '@id': 'https://web.redrabbit.media/#organization' },
