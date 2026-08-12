@@ -210,7 +210,7 @@ export default function ChatWidget() {
           onClick={() => setOpen(true)}
         >
           <Image
-            src="/favicon.png"
+            src="/images/rr-logo.png"
             alt=""
             width={30}
             height={30}
@@ -237,7 +237,7 @@ export default function ChatWidget() {
           >
             <div className="rrchat-panel-head">
               <Image
-                src="/favicon.png"
+                src="/images/rr-logo.png"
                 alt="Red Rabbit"
                 width={34}
                 height={34}
