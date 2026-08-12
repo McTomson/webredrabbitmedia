@@ -63,7 +63,8 @@ export async function getAllStaticPagesSitemap(): Promise<SitemapEntry[]> {
         // Blog-Index
         { url: `${BASE_URL}/tipps`, lastModified: currentDate, changeFrequency: 'weekly', priority: 0.8 },
 
-        // Bundesland-Hubs (ohne Wien — eigene Seite folgt separat)
+        // Bundesland-Hubs
+        { url: `${BASE_URL}/webdesign-wien`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.9 },
         { url: `${BASE_URL}/webdesign-oberoesterreich`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.9 },
         { url: `${BASE_URL}/webdesign-niederoesterreich`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
         { url: `${BASE_URL}/webdesign-steiermark`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },

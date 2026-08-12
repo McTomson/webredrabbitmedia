@@ -94,15 +94,6 @@ const nextConfig = {
         destination: '/webdesign-burgenland',
         permanent: true,
       },
-      // TEMPORAER: die eigene Wien-Seite wird separat gebaut. Solange sie fehlt,
-      // geht /webdesign-wien auf die Startseite. Diesen Redirect entfernen, sobald
-      // /webdesign-wien existiert.
-      {
-        source: '/webdesign-wien',
-        destination: '/',
-        permanent: true,
-      },
-
       // === Go-Live: entfernte Branchen-Seiten auf die Startseite ===
       {
         source: '/branchen',
