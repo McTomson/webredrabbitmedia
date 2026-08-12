@@ -22,10 +22,16 @@ declare global {
 const CookieBanner = () => {
     const [showBanner, setShowBanner] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
+    // OPT-OUT-Modell (Thomas 2026-08-12, NICHT auf Opt-in zuruecksetzen):
+    // Tracking ist ab Seitenaufruf aktiv (Consent-Mode-Default 'granted' im <head>,
+    // Clarity laedt sofort). Der Banner ist ein HINWEIS mit ehrlichem Ablehn-/
+    // Verwalten-Weg. Die Toggles sind daher per Default AN (spiegeln den Ist-Zustand);
+    // "Nur notwendige"/"Alle ablehnen" schaltet WIRKLICH ab (rejectAll -> denied +
+    // rr:consent:false -> ClarityLoader stoppt Clarity).
     const [preferences, setPreferences] = useState({
         necessary: true,  // Always true, can't be disabled
-        analytics: false, // Opt-in (DSGVO): nicht vorangehakt
-        marketing: false  // Opt-in (DSGVO): nicht vorangehakt
+        analytics: true,  // Opt-out: Default an, bis der Nutzer ablehnt
+        marketing: true   // Opt-out: Default an, bis der Nutzer ablehnt
     });
 
     useEffect(() => {
