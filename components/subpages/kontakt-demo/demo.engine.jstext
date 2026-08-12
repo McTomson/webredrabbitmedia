@@ -738,6 +738,10 @@
           email:email, phone:(fd.get("phone")||"").toString().trim()||undefined,
           message:message, honeyPot:(fd.get("website")||"").toString()})});
       if(!res.ok) throw new Error("send failed");
+      /* GA4-Conversion: erfolgreicher Lead vom /kontakt-Formular. Feldnamen
+         konsistent zum Popup (form_location + page_path). Vanilla-JS: gtag
+         bevorzugt, sonst dataLayer-Fallback im gtag-Format -> dieselbe GA4. */
+      try{ if(window.gtag){ window.gtag('event','generate_lead',{form_location:'kontakt', page_path: location.pathname}); } else { (window.dataLayer=window.dataLayer||[]).push(['event','generate_lead',{form_location:'kontakt', page_path: location.pathname}]); } }catch(e){}
       f.style.display="none";
       note.className="k-note k-note--ok";
       note.setAttribute("tabindex","-1");

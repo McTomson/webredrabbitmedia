@@ -8,6 +8,7 @@ import {
   type LeadOpenOpts,
 } from "@/lib/relaunch/leadPresets";
 import LeadSelect from "./LeadSelect";
+import { sendGAEvent } from "@next/third-parties/google";
 // Das Popup kann global (auch auf Seiten ohne eigenen styleguide-Import)
 // aufgehen. Es traegt sein eigenes .rr-Design-System mit, damit rr-field/
 // rr-label/rr-select-native/rr-btn-sweep IMMER greifen. Via LeadProvider
@@ -140,6 +141,19 @@ export default function LeadDialog({
       });
       if (!res.ok) throw new Error("send failed");
       setStatus("success");
+      // GA4-Conversion: erfolgreicher Lead aus dem Anfrage-Popup. Feldnamen
+      // konsistent zu ContactForm.tsx (form_location + page_path); page_path
+      // ordnet den Lead der Seite zu, von der aus das Popup gesendet wurde.
+      // Wird NUR hier gefeuert (LeadProvider feuert nur contact_form_open),
+      // damit pro Submit genau EIN generate_lead entsteht.
+      try {
+        sendGAEvent("event", "generate_lead", {
+          form_location: "lead_dialog",
+          page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+        });
+      } catch {
+        /* analytics must never break the form */
+      }
     } catch {
       setStatus("error");
     }
