@@ -1,0 +1,139 @@
+---
+title: "Next.js vs. React: Der Unterschied einfach erklärt (2026)"
+slug: was-ist-der-unterschied-zwischen-next-js-und-einer
+excerpt: "Was ist der Unterschied zwischen Next.js und React? React ist die Bibliothek für die Oberfläche, Next.js das Framework darum. Was das für Ladezeit, SEO und Kosten Ihrer Website bedeutet."
+featuredSnippetTitle: "Was ist der Unterschied zwischen Next.js und React?"
+featuredSnippet: "React ist eine JavaScript-Bibliothek zum Bauen von Benutzeroberflächen. Next.js ist ein Framework, das React um Routing, Rendering auf dem Server, Data Fetching und Build-Optimierung erweitert. Man setzt Next.js nicht statt React ein, sondern baut damit auf React auf, um daraus eine schnelle und suchmaschinenfreundliche Website zu machen."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-12"
+updatedAt: "2026-08-12"
+category: "Technik & Performance"
+tags:
+  - "Next.js"
+  - "React"
+  - "Webentwicklung"
+  - "Frontend"
+  - "Performance"
+featuredImage: "/images/blog/was-ist-der-unterschied-zwischen-next-js-und-einer.png"
+status: draft
+aiAssisted: true
+sources:
+  - name: "React Docs: Creating a React App / Start a New React Project (react.dev)"
+    url: "https://react.dev/learn/start-a-new-react-project"
+  - name: "Next.js Documentation - Introduction (nextjs.org)"
+    url: "https://nextjs.org/docs"
+  - name: "Next.js Docs: Server and Client Components (nextjs.org, App Router)"
+    url: "https://nextjs.org/docs/app/getting-started/server-and-client-components"
+keyTakeaways:
+  - "React ist laut eigener Dokumentation eine Bibliothek für Benutzeroberflächen. Next.js ist ein Full-Stack-Framework, das React um Routing, Rendering, Data Fetching und Build-Optimierung erweitert."
+  - "Sie schreiben in beiden Fällen React-Komponenten. Next.js ersetzt React nicht, es baut darauf auf. Das React-Team empfiehlt Next.js selbst als eine von mehreren Ebenen über React."
+  - "Der technische Kern ist das Rendering. Next.js nutzt im App Router standardmäßig Server Components, reines React als Single Page Application rendert im Browser und startet mit weitgehend leerem HTML."
+  - "Der Geschäftsnutzen von Server-Rendering: weniger JavaScript im Browser und ein früherer First Contentful Paint, also schnellere Ladezeit und bessere Ausgangslage für Suchmaschinen."
+  - "Faustregel: öffentliche, sichtbarkeitsgetriebene Website spricht für Next.js, internes Werkzeug hinter Login erlaubt auch reines React ohne Nachteil."
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Ist Next.js besser als React?"
+    answer: "Die Frage ist irreführend, weil Next.js kein Ersatz für React ist. Next.js ist ein Framework auf Basis von React, Sie schreiben in beiden Fällen React-Komponenten. Für öffentliche, sichtbarkeitsgetriebene Websites bietet Next.js durch Server-Rendering klare Vorteile, für rein interne Anwendungen kann reines React genau richtig sein."
+  - question: "Kann man React ohne Next.js verwenden?"
+    answer: "Ja. Reines React, oft in Kombination mit Vite, ist eine gute Wahl für stark interaktive Oberflächen hinter einem Login, etwa interne Dashboards oder Verwaltungswerkzeuge. Das React-Team nennt neben Next.js auch React Router mit Vite oder Expo als empfohlene Wege."
+  - question: "Warum ist Next.js gut für SEO?"
+    answer: "Next.js nutzt im App Router standardmäßig Server Components und rendert Inhalte bereits auf dem Server. Laut Next.js-Dokumentation reduziert das die Menge an JavaScript im Browser und verbessert den First Contentful Paint. Der Besucher und die Suchmaschine sehen echten Inhalt früher, was die Ausgangslage für die Sichtbarkeit verbessert."
+  - question: "Muss ich als Auftraggeber den Unterschied verstehen?"
+    answer: "Sie müssen keinen Code verstehen, aber Sie sollten im Angebot nachfragen, ob reines React oder ein Framework wie Next.js eingesetzt wird und warum. Ein gutes Team leitet die Wahl aus Ihrem Ziel ab und kann in einem Satz erklären, was auf dem Server und was im Browser rendert."
+  - question: "Ist jede React-Website automatisch langsam oder schlecht für Google?"
+    answer: "Nein. Entscheidend ist nicht React selbst, sondern wo gerendert wird. Eine rein im Browser gerenderte Single Page Application startet mit weitgehend leerem HTML, was für öffentliche Seiten ungünstig ist. Der Server-Rendering-Ansatz von Next.js liefert Inhalt früher aus und behebt genau diesen Nachteil."
+hookCandidates:
+  - "brauche ich next.js überhaupt für react?"
+---
+
+Stellen Sie sich einen hochwertigen Motor vor. Er ist stark und zuverlässig, die Grundlage für alles Weitere. Aber ein Motor allein bringt Sie nicht nach Hause. Es fehlen die Karosserie, die Lenkung, die Räder und das Navigationssystem. Genau so verhält sich reines React zu Next.js. React ist der Motor, Next.js ist das fertige Fahrzeug drumherum.
+
+Diese Unterscheidung klingt nach einem Detail für Entwickler, hat aber handfeste Folgen für Ladezeit, Google-Sichtbarkeit und am Ende für die Kosten Ihres Projekts. Wer die beiden verwechselt oder glaubt, es handle sich um Konkurrenten, trifft schnell die falsche technische Grundsatzentscheidung. Deshalb schauen wir uns in Ruhe an, was React wirklich ist, was Next.js ergänzt und wann welcher Weg für ein Wiener Unternehmen der richtige ist.
+
+## Die kurze Antwort für Eilige
+
+React ist eine JavaScript-Bibliothek zum Bauen von Benutzeroberflächen. Next.js ist ein vollständiges Framework, das React um Routing, Rendering auf dem Server, Data Fetching und Build-Optimierungen erweitert. Kurz gesagt: React liefert die Bausteine für die Oberfläche, Next.js liefert die komplette Struktur, in der diese Bausteine zu einer schnellen, suchmaschinenfreundlichen Website werden.
+
+## Was React eigentlich ist (und was bewusst fehlt)
+
+React bezeichnet sich in der offiziellen [Dokumentation](https://react.dev/learn/start-a-new-react-project) ausdrücklich als Bibliothek zum Bauen von Benutzeroberflächen, nicht als Komplettlösung. Das ist keine Bescheidenheit, sondern Absicht. React kümmert sich hervorragend darum, aus Daten sichtbare Komponenten zu machen, also Buttons, Formulare, Listen oder ganze Seitenbereiche. Wie diese Teile zusammengesetzt werden und woher die Daten kommen, überlässt React weitgehend Ihnen.
+
+Genau hier wird es interessant. Das React-Team schreibt in seiner Doku selbst, dass es für eine neue App oder Website empfiehlt, mit einem Framework zu starten. Der Grund steht direkt dabei: Wer bei null anfängt, muss die Werkzeuge für Routing, für das Laden von Daten und für weitere Standardmuster selbst auswählen und zusammenstecken. Ein Framework bringt fertige, eingebaute Lösungen dafür mit.
+
+Für Sie als Auftraggeber heißt das: Reines React ist selten eine fertige Website. Es ist der Ausgangsstoff. Ein Team kann daraus alles bauen, muss aber viele Grundentscheidungen von Hand treffen, die ein Framework bereits mitliefert. Ein praktischer Rat dazu: Fragen Sie bei einem Angebot immer nach, ob Ihnen "React" verkauft wird oder eine konkrete, framework-gestützte Lösung. Das ist ein technischer Unterschied, aber ein wichtiger, oder?
+
+## Was Next.js ergänzt: das Framework um React herum
+
+Next.js beschreibt sich in seiner [Dokumentation](https://nextjs.org/docs) als React-Framework zum Bauen von Full-Stack-Webanwendungen. Der entscheidende Satz: Sie bauen die Oberfläche weiterhin mit React-Komponenten, und Next.js liefert die zusätzlichen Features und Optimierungen obendrauf. Dazu gehört, dass Next.js tiefer liegende Werkzeuge wie den Bundler und den Compiler automatisch konfiguriert. Das sind genau die Dinge, um die Sie sich bei reinem React selbst kümmern müssten. Wenn Sie tiefer einsteigen wollen, haben wir die [Vorteile moderner Frameworks wie Next.js](/tipps/was-sind-die-vorteile-von-modernen-frameworks-wie-next) separat aufbereitet.
+
+Das ist der Kern der ganzen Frage. Reines React ist die Oberflächen-Bibliothek. Next.js ist das Full-Stack-Framework, das sich um Routing, Rendering, Data Fetching und die Build-Optimierung legt. Man setzt Next.js also nicht statt React ein, sondern auf React auf.
+
+Wichtig für das Vertrauen in die Wahl: Das React-Team führt Next.js in seiner eigenen Doku als empfohlenes Full-Stack-Framework, weil es die Architektur von React voll ausnutzt. Next.js ist damit kein Gegner von React, sondern eine offiziell empfohlene Ebene darüber. Das entkräftet einen weit verbreiteten Irrtum, auf den ich später noch zurückkomme.
+
+## Der technische Kernunterschied: Server Components gegen Client-Rendering
+
+Wenn Sie nur einen technischen Punkt aus diesem Artikel mitnehmen, dann diesen. Im modernen Next.js, konkret im sogenannten App Router, sind Layouts und Seiten standardmäßig sogenannte [React Server Components](https://nextjs.org/docs/app/getting-started/server-and-client-components). Sie holen Daten und rendern Teile der Oberfläche bereits auf dem Server, können das Ergebnis zwischenspeichern und an den Browser streamen. Der Browser bekommt also schon fertig aufbereitetes HTML.
+
+Eine klassische reine React-Anwendung, etwa eine Single Page Application auf Basis von Vite, funktioniert grundlegend anders. Sie rendert im Browser, also auf dem Gerät des Besuchers. Zu Beginn lädt der Browser weitgehend leeres HTML plus eine Menge JavaScript und baut die Seite erst danach sichtbar zusammen. Wie dieses serverseitige Rendern im Detail funktioniert, erklären wir in unserem Beitrag zu [serverseitigem Rendering (SSR)](/tipps/was-ist-serverseitiges-rendering-ssr-und-welche-vorteile-bietet).
+
+Interaktivität ist in Next.js weiterhin möglich, sie wird nur bewusst getrennt. Alles, was Zustand, Event-Handler wie einen Klick, Effekte oder Browser-Funktionen braucht, läuft in sogenannten Client Components, die eigens mit der Direktive "use client" markiert werden. So bleibt der interaktive Teil dort, wo er hingehört, während der Rest schon auf dem Server vorbereitet wird.
+
+Lassen Sie sich diesen Punkt bei einem technischen Gespräch konkret erklären. Ein seriöser Anbieter kann Ihnen in zwei Sätzen sagen, was bei Ihrem Projekt auf dem Server und was im Browser passiert. Wer das nicht klar beantworten kann, hat die Architektur oft selbst nicht durchdacht.
+
+## Was der Unterschied für Ihr Geschäft bedeutet
+
+Jetzt wird es für Sie als Unternehmerin oder Unternehmer wirklich relevant. Die Next.js-Dokumentation nennt den praktischen Nutzen des Server-Renderings direkt: Server Components reduzieren die Menge an JavaScript, die an den Browser geschickt wird, und verbessern den sogenannten First Contentful Paint, also den Moment, in dem der Besucher zum ersten Mal echten Inhalt sieht. Das bedeutet schnellere Ladezeiten und eine bessere Ausgangslage für die Sichtbarkeit in Suchmaschinen.
+
+Bei einer rein im Browser gerenderten React-Single-Page-Application ist dieser Vorteil nicht automatisch gegeben. Die Seite muss erst JavaScript laden und ausführen, bevor Inhalt erscheint. Für eine interne Verwaltungsoberfläche, bei der jeder Nutzer angemeldet ist, spielt das kaum eine Rolle. Für die öffentliche Website eines Wiener Restaurants, das über Google gefunden werden will, ist es dagegen zentral.
+
+Nehmen wir ein einfaches Szenario. Angenommen, ein Gast sucht am Handy nach einem Lokal im 7. Bezirk und Ihre Seite braucht spürbar lange, bis Speisekarte und Öffnungszeiten erscheinen. Dann ist der Gast oft schon beim Mitbewerber, dessen Seite sofort da war. Der Effekt lässt sich hier nicht in einer exakten Prozentzahl belegen, aber die Richtung ist durch die Dokumentation klar: weniger JavaScript und früherer sichtbarer Inhalt sind für öffentliche, auf Sichtbarkeit angewiesene Seiten ein echter Vorteil.
+
+Ein Rat, den ich jedem mitgebe: Ordnen Sie die Technikwahl Ihrem Ziel unter, nicht umgekehrt. Öffentliche, sichtbarkeitsgetriebene Website spricht klar für den Server-Rendering-Ansatz von Next.js. Interne, abgeschottete Anwendung erlaubt auch reines React ohne Nachteil.
+
+## Wann reicht reines React, wann brauchen Sie Next.js?
+
+Es gibt nicht die eine richtige Antwort, sondern eine Antwort pro Anwendungsfall. Reines React, oft in Kombination mit Vite, ist eine sehr gute Wahl für Oberflächen, die stark interaktiv sind und bei denen Suchmaschinen-Sichtbarkeit keine Rolle spielt. Denken Sie an ein internes Dashboard, ein Buchungs-Backend oder ein Werkzeug für Ihre Mitarbeiter, das ohnehin hinter einem Login liegt.
+
+Next.js spielt seine Stärken dort aus, wo öffentliche Sichtbarkeit, Ladezeit und Struktur zusammenkommen. Das trifft auf die meisten Firmen-Websites, Online-Auftritte von Dienstleistern, Shops und Content-lastige Seiten zu. Genau deshalb führt das React-Team Next.js als empfohlenes Full-Stack-Framework, wenn man die Architektur von React für eine vollständige Web-Anwendung nutzen will.
+
+Zur Vollständigkeit gehört ein weiterer Punkt aus der React-Doku: Next.js ist nicht die einzige empfohlene Ebene über React. Für Projekte, die bei reiner React-Nutzung bleiben wollen, nennt das Team etwa React Router in Version 7 zusammen mit Vite, oder Expo für den Weg in Richtung mobiler Apps. Next.js ist also eine sehr gute, aber nicht die einzige seriöse Option. Wer Ihnen erzählt, es gebe nur einen einzigen richtigen Weg, vereinfacht zu stark.
+
+## Schritt für Schritt: So entscheiden Sie konkret
+
+Damit Sie das nicht nur theoretisch verstehen, hier ein konkreter Ablauf, den Sie vor Ihrem nächsten Web-Projekt durchgehen können.
+
+1. Klären Sie das Hauptziel der Seite. Soll sie über Google gefunden werden und öffentlich sichtbar sein, oder ist sie ein internes Werkzeug hinter einem Login? Diese eine Frage entscheidet schon das meiste.
+
+2. Prüfen Sie den Anteil an echter Interaktivität. Eine Seite, die vor allem Inhalte zeigt, profitiert stark vom Server-Rendering. Eine hochinteraktive Anwendung braucht in jedem Fall viele Client Components, egal welches Fundament.
+
+3. Fragen Sie beim Angebot gezielt nach. Lassen Sie sich erklären, ob reines React oder ein Framework wie Next.js eingesetzt wird und warum. Bitten Sie um einen Satz dazu, was auf dem Server und was im Browser rendert.
+
+4. Achten Sie auf die Begründung, nicht auf das Schlagwort. Ein gutes Team leitet die Wahl aus Ihrem Ziel ab. Ein schwaches Team nennt nur die Technologie, die es zufällig am liebsten mag.
+
+5. Denken Sie an die Zukunft. Wenn heute ein internes Tool geplant ist, aber morgen eine öffentliche Marketing-Seite dazukommt, ist es sinnvoll, das früh anzusprechen, damit die Grundstruktur passt.
+
+Nehmen Sie diese fünf Punkte in ein Erstgespräch mit. Sie müssen kein Wort Code verstehen, um mit diesen Fragen sehr schnell zu erkennen, ob Ihr Gegenüber die Sache durchdacht hat. Wenn Sie dabei unsicher sind, schauen wir uns Ihr Vorhaben gerne unverbindlich an. Schreiben Sie uns einfach über unser [Kontaktformular](/kontakt).
+
+## Häufige Irrtümer und Fallen
+
+Der hartnäckigste Irrtum ist, dass Next.js und React Konkurrenten seien und man sich für eines von beiden entscheiden müsse. Das stimmt nicht. Next.js ist ein Framework auf Basis von React. Sie schreiben in beiden Fällen React-Komponenten. Die Frage lautet nie React oder Next.js, sondern reines React oder React mit Next.js darüber.
+
+Ein zweiter Irrtum ist die Annahme, mehr Framework bedeute automatisch besser. Für eine kleine, rein interne Anwendung kann reines React genau richtig sein, weil es weniger Struktur mitbringt, die man nicht braucht. Das React-Team selbst empfiehlt ein Framework vor allem für neue Apps und Websites, nicht als Zwang für jedes denkbare Projekt.
+
+Ein dritter, teurer Irrtum betrifft die SEO. Manche glauben, jede React-Seite sei automatisch schlecht für Google. Auch das stimmt so nicht. Der Unterschied liegt im Rendering. Eine rein im Browser gerenderte Single Page Application startet mit weitgehend leerem HTML, was für Sichtbarkeit ungünstig ist. Der Server-Rendering-Ansatz von Next.js liefert Inhalt früher aus und verbessert damit den First Contentful Paint. Nicht "React ist schlecht für SEO", sondern "im Browser rendern ohne Not ist schlecht für öffentliche Seiten" ist die korrekte Aussage.
+
+Lassen Sie sich von Schlagworten nicht einschüchtern und nicht blenden. Die richtige Frage ist immer, wo Ihr Inhalt gerendert wird und warum. Der Rest ergibt sich daraus.
+
+![Next.js und React im Vergleich: Server-Rendering gegen Client-Rendering und was das für Ladezeit und SEO einer Website bedeutet](/images/blog/was-ist-der-unterschied-zwischen-next-js-und-einer.png)
+
+## Key-Takeaways
+
+- React ist laut eigener Dokumentation eine Bibliothek für Benutzeroberflächen. Next.js ist ein Full-Stack-Framework, das React um Routing, Rendering, Data Fetching und Build-Optimierung erweitert.
+- Sie schreiben in beiden Fällen React-Komponenten. Next.js ersetzt React nicht, es baut darauf auf. Das React-Team empfiehlt Next.js selbst als eine von mehreren Ebenen über React.
+- Der technische Kern ist das Rendering. Next.js nutzt im App Router standardmäßig Server Components, reines React als Single Page Application rendert im Browser und startet mit weitgehend leerem HTML.
+- Der Geschäftsnutzen von Server-Rendering: weniger JavaScript im Browser und ein früherer First Contentful Paint, also schnellere Ladezeit und bessere Ausgangslage für Suchmaschinen.
+- Faustregel: öffentliche, sichtbarkeitsgetriebene Website spricht für Next.js, internes Werkzeug hinter Login erlaubt auch reines React ohne Nachteil.
+
+## Ihr nächster Schritt
+
+Die Technikwahl sollte immer aus Ihrem Ziel folgen, nicht aus einer Vorliebe für ein bestimmtes Schlagwort. Wenn Sie unsicher sind, ob Ihr Projekt reines React oder Next.js braucht, oder ob eine bestehende Seite von Server-Rendering profitieren würde, dann sprechen wir kurz darüber. Wir sehen uns Ihr Vorhaben ehrlich an und sagen Ihnen klar, was in Ihrem Fall sinnvoll ist. Über unser [Kontaktformular](/kontakt) erreichen Sie uns direkt und unverbindlich. Kein Verkaufsdruck.

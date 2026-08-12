@@ -2750,3 +2750,48 @@ quelle: https://web.dev/articles/ttfb
 quelle_name: web.dev (Google) - Time to First Byte (TTFB)
 geprueft_am: 2026-08-10
 recheck_nach: 2027-02-06
+
+## t66-2026-08-12-306
+cluster: 2
+keywords: unterschied, zwischen, next, einer, reinen, react, applikation
+aussage: React beschreibt sich offiziell als Bibliothek zum Bauen von User Interfaces und empfiehlt fuer neue Apps ausdruecklich, mit einem Framework zu starten: 'If you want to build a new app or website with React, we recommend starting with a framework.' Grund: Bei einem Start 'from scratch' muss man selbst Werkzeuge fuer Routing, Data Fetching und weitere Standardmuster waehlen, waehrend Frameworks dafuer eingebaute Loesungen mitbringen.
+quelle: https://react.dev/learn/start-a-new-react-project
+quelle_name: React Docs: Creating a React App / Start a New React Project (react.dev)
+geprueft_am: 2026-08-12
+recheck_nach: 2027-02-08
+
+## t66-2026-08-12-307
+cluster: 2
+keywords: unterschied, zwischen, next, einer, reinen, react, applikation
+aussage: Next.js ist laut offizieller Doku 'a React framework for building full-stack web applications': Man baut die UI mit React-Komponenten, Next.js liefert zusaetzliche Features und Optimierungen und konfiguriert automatisch tiefere Werkzeuge wie Bundler und Compiler. Der Kernunterschied: reines React ist die UI-Bibliothek, Next.js ist das Full-Stack-Framework darum herum (Routing, Rendering, Data Fetching, Build-Optimierung).
+quelle: https://nextjs.org/docs
+quelle_name: Next.js Documentation - Introduction (nextjs.org)
+geprueft_am: 2026-08-12
+recheck_nach: 2027-02-08
+
+## t66-2026-08-12-308
+cluster: 2
+keywords: unterschied, zwischen, next, einer, reinen, react, applikation
+aussage: Im Next.js App Router sind Layouts und Pages standardmaessig React Server Components, die Daten holen und Teile der UI auf dem Server rendern, cachen und zum Client streamen; Interaktivitaet (State, Event-Handler wie onClick, useEffect, Browser-APIs) erfordert Client Components, die per Direktive 'use client' markiert werden. Eine klassische reine React-App (SPA, z.B. mit Vite) rendert dagegen im Browser (Client-Side Rendering) und laedt zunaechst weitgehend leeres HTML plus JavaScript.
+quelle: https://nextjs.org/docs/app/getting-started/server-and-client-components
+quelle_name: Next.js Docs: Server and Client Components (nextjs.org, App Router)
+geprueft_am: 2026-08-12
+recheck_nach: 2027-02-08
+
+## t66-2026-08-12-309
+cluster: 2
+keywords: unterschied, zwischen, next, einer, reinen, react, applikation
+aussage: Das React-Team listet Next.js (App Router) als empfohlenes Full-Stack-Framework, weil es 'full advantage of React's architecture' fuer Full-Stack-Apps nutzt; Alternativen fuer reine React-Nutzung sind u.a. React Router (v7) mit Vite oder Expo. Das zeigt: Next.js ist eine von mehreren offiziell empfohlenen Ebenen ueber React, nicht ein Konkurrent von React.
+quelle: https://react.dev/learn/start-a-new-react-project
+quelle_name: React Docs: Full-stack frameworks (react.dev)
+geprueft_am: 2026-08-12
+recheck_nach: 2027-02-08
+
+## t66-2026-08-12-310
+cluster: 2
+keywords: unterschied, zwischen, next, einer, reinen, react, applikation
+aussage: Der praktische Geschaeftsnutzen des Server-Renderings: Server Components reduzieren die an den Browser gesendete JavaScript-Menge und verbessern den First Contentful Paint (FCP), was fuer schnellere Ladezeiten und bessere SEO-Sichtbarkeit relevant ist - ein Vorteil, der bei einer reinen client-gerenderten React-SPA nicht automatisch gegeben ist.
+quelle: https://nextjs.org/docs/app/getting-started/server-and-client-components
+quelle_name: Next.js Docs: Server and Client Components - 'When to use' (nextjs.org)
+geprueft_am: 2026-08-12
+recheck_nach: 2027-02-08
