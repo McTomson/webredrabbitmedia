@@ -27,7 +27,7 @@ const nextConfig = {
   // packen -> Vercel-250-MB-Limit, Deploy-Abbruch (22.07.). Die Route ist
   // SSG (dynamicParams=false), die Funktion braucht public/ nie.
   outputFileTracingExcludes: {
-    '/relaunch-preview/tipps/[slug]': ['./public/**'],
+    '/tipps/[slug]': ['./public/**'],
   },
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -44,6 +44,119 @@ const nextConfig = {
   // SEO - 301 Redirects für konsolidierte Landing Pages
   async redirects() {
     return [
+      // === Go-Live-Tausch: alte Preview-Praefixe auf Root ===
+      // Alte /relaunch-preview-Links (intern/geteilt) auf den finalen Root-Pfad.
+      {
+        source: '/relaunch-preview/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+      {
+        source: '/relaunch-preview',
+        destination: '/',
+        permanent: true,
+      },
+
+      // === Go-Live: alte Landeshauptstadt-Seiten auf die Bundesland-Hubs ===
+      // (Salzburg NICHT: /webdesign-salzburg existiert neu 1:1.)
+      {
+        source: '/webdesign-graz',
+        destination: '/webdesign-steiermark',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-linz',
+        destination: '/webdesign-oberoesterreich',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-innsbruck',
+        destination: '/webdesign-tirol',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-klagenfurt',
+        destination: '/webdesign-kaernten',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-st-poelten',
+        destination: '/webdesign-niederoesterreich',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-bregenz',
+        destination: '/webdesign-vorarlberg',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-eisenstadt',
+        destination: '/webdesign-burgenland',
+        permanent: true,
+      },
+      // TEMPORAER: die eigene Wien-Seite wird separat gebaut. Solange sie fehlt,
+      // geht /webdesign-wien auf die Startseite. Diesen Redirect entfernen, sobald
+      // /webdesign-wien existiert.
+      {
+        source: '/webdesign-wien',
+        destination: '/',
+        permanent: true,
+      },
+
+      // === Go-Live: entfernte Branchen-Seiten auf die Startseite ===
+      {
+        source: '/branchen',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/branchen/handwerk',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/branchen/gastronomie',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/branchen/einzelhandel',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/branchen/dienstleistung',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/branchen/aerzte',
+        destination: '/',
+        permanent: true,
+      },
+
+      // === Go-Live: alte Leistungs-Unterseiten auf die neuen zwei Produkte ===
+      {
+        source: '/leistungen/webdesign',
+        destination: '/leistungen/website',
+        permanent: true,
+      },
+      {
+        source: '/leistungen/seo',
+        destination: '/leistungen/website',
+        permanent: true,
+      },
+      {
+        source: '/leistungen/dashboard',
+        destination: '/leistungen/talos',
+        permanent: true,
+      },
+      {
+        source: '/leistungen/ki-sichtbarkeit',
+        destination: '/leistungen/talos',
+        permanent: true,
+      },
+
       // Oberösterreich - Secondary cities → Bundesland hub
       {
         source: '/webdesign-wels',

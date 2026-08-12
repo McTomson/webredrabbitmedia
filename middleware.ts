@@ -29,24 +29,10 @@ export function middleware(request: NextRequest) {
         return redirect;
     }
 
-    // 1b. v2-Test-Host: den Relaunch (/relaunch-preview) als WURZEL ausliefern, damit
-    //     v2.redrabbit.media/ = Relaunch-Startseite und v2.redrabbit.media/leistungen/talos
-    //     = Talos-Seite, ohne /relaunch-preview in der sichtbaren URL. Interner Rewrite
-    //     (kein Redirect) — nur auf v2.*, die Live-Domain web.redrabbit.media ist unberuehrt.
-    //     Bereits /relaunch-preview-Pfade werden NICHT doppelt praefixiert.
-    //     WICHTIG: statische /public-Dateien (mit Datei-Endung, z.B. /hero/x.mp4,
-    //     /favicon.png, /file.svg) duerfen NICHT umgeschrieben werden — sonst zeigt
-    //     der Rewrite auf /relaunch-preview/hero/x.mp4, das es nicht gibt (404).
-    //     Nur echte Routen (ohne Endung) bekommen das /relaunch-preview-Praefix.
-    const isPublicFile = /\.[^/]+$/.test(url.pathname);
-    if (isTestHost && !url.pathname.startsWith('/relaunch-preview') && !isPublicFile) {
-        const target = url.clone();
-        target.pathname = '/relaunch-preview' + (url.pathname === '/' ? '' : url.pathname);
-        const rewritten = NextResponse.rewrite(target);
-        rewritten.headers.set('X-Robots-Tag', 'noindex, nofollow');
-        rewritten.headers.set('Cache-Control', 'no-store, must-revalidate');
-        return rewritten;
-    }
+    // (Der fruehere v2-Host-Rewrite auf /relaunch-preview ist mit dem Go-Live
+    //  entfallen: die Relaunch-Seiten liegen jetzt auf den Root-Pfaden. Ein Rewrite
+    //  wuerde alles kaputt machen. v2.* bleibt Testdomain und behaelt nur die
+    //  noindex/no-store-Header oben.)
 
     // 2. Mobile-First Indexing Hint für Googlebot
     const userAgent = request.headers.get('user-agent') || '';
