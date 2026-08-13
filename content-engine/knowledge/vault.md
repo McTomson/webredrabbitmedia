@@ -2885,3 +2885,48 @@ quelle: https://vercel.com/docs/instant-rollback
 quelle_name: Vercel Docs - Performing an Instant Rollback on a Deployment
 geprueft_am: 2026-08-13
 recheck_nach: 2027-02-09
+
+## t69-2026-08-13-321
+cluster: 2
+keywords: unterschied, zwischen, http, http, website, performance
+aussage: HTTP/3 ersetzt bei der Datenübertragung TCP durch QUIC, ein UDP-basiertes Transportprotokoll mit eingebauter TLS-1.3-Verschlüsselung; HTTP/3 wurde im Juni 2022 offiziell als RFC 9114 veröffentlicht.
+quelle: https://http.dev/3
+quelle_name: http.dev - HTTP/3 explained
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t69-2026-08-13-322
+cluster: 2
+keywords: unterschied, zwischen, http, http, website, performance
+aussage: Bei HTTP/2 über TCP führt ein einzelnes verlorenes Netzwerkpaket dazu, dass ALLE gleichzeitig übertragenen Streams einer Verbindung blockieren ('Head-of-Line Blocking'), weil TCP eine strikt geordnete Zustellung aller Bytes garantiert. QUIC (HTTP/3) implementiert Stream-Bewusstsein direkt auf Transportebene: Geht ein Paket verloren, wird nur der betroffene Stream verzögert, alle anderen laufen ungestört weiter.
+quelle: https://http.dev/3
+quelle_name: http.dev - HTTP/3 explained
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t69-2026-08-13-323
+cluster: 2
+keywords: unterschied, zwischen, http, http, website, performance
+aussage: Der Verbindungsaufbau ist bei HTTP/3 messbar schneller: TCP+TLS 1.2 benötigt bei einer neuen Verbindung ca. 3 Round-Trips, QUIC bei einer neuen Verbindung nur 1 Round-Trip, und bei einer wiederaufgenommenen Verbindung (0-RTT) sogar 0 Round-Trips, da QUIC Transport- und kryptografischen Handshake in einem Schritt kombiniert.
+quelle: https://http.dev/3
+quelle_name: http.dev - HTTP/3 explained
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t69-2026-08-13-324
+cluster: 2
+keywords: unterschied, zwischen, http, http, website, performance
+aussage: Laut MDN sind die Kernziele von HTTP/2 die Reduzierung von Latenz und Head-of-Line-Blocking durch vollständiges Request/Response-Multiplexing sowie effiziente Header-Kompression (HPACK) – HTTP/2 bleibt dabei aber auf TCP als Transportprotokoll angewiesen, wodurch das Blocking-Problem auf TCP-Ebene bestehen bleibt. HTTP/3 als Nachfolger nutzt stattdessen QUIC über UDP, um Latenz weiter zu reduzieren und Head-of-Line-Blocking vollständig zu eliminieren.
+quelle: https://developer.mozilla.org/en-US/docs/Glossary/HTTP_2
+quelle_name: MDN Web Docs - Glossary: HTTP/2 und HTTP/3
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t69-2026-08-13-325
+cluster: 2
+keywords: unterschied, zwischen, http, http, website, performance
+aussage: Die tatsächliche Verbreitung von HTTP/3 ist trotz der Performance-Vorteile noch begrenzt: Laut W3Techs nutzen (Stand August 2026) 40,3% aller Websites HTTP/3 – HTTP/2 bzw. HTTP/1.1 sind weiterhin verbreitet, ein Wechsel auf HTTP/3 ist also noch kein Standard, sondern ein Differenzierungsfaktor.
+quelle: https://w3techs.com/technologies/details/ce-http3
+quelle_name: W3Techs - Usage Statistics of HTTP/3 for Websites
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
