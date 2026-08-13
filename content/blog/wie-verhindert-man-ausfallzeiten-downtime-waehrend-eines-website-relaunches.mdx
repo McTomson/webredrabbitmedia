@@ -1,0 +1,126 @@
+---
+title: "Downtime beim Website-Relaunch vermeiden 2026"
+slug: "wie-verhindert-man-ausfallzeiten-downtime-waehrend-eines-website-relaunches"
+excerpt: "Wie Sie einen Website-Relaunch ohne Ausfallzeiten planen: DNS-TTL rechtzeitig absenken, eine vollständige 301-Redirect-Map anlegen und den Go-Live über einen atomaren Umschaltvorgang durchführen statt über eine manuelle Serverumstellung."
+featuredSnippetTitle: "Wie verhindert man Ausfallzeiten (Downtime) während eines Website-Relaunches?"
+featuredSnippet: "Ausfallzeiten beim Relaunch verhindert man, indem man die neue Website zuerst vollständig isoliert testet, die DNS-TTL vorab absenkt, eine komplette 301-Redirect-Map von alten auf neue URLs erstellt und den Go-Live über einen atomaren Umschaltvorgang laufen lässt statt über eine manuelle Serverumstellung."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-13"
+updatedAt: "2026-08-13"
+category: "Technik & Performance"
+tags: ["Website Relaunch", "Downtime vermeiden", "DNS TTL", "301 Redirects", "Vercel Deployment"]
+featuredImage: "/images/blog/wie-verhindert-man-ausfallzeiten-downtime-waehrend-eines-website-relaunches.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "Cloudflare DNS Docs - Time to Live (TTL)"
+    url: "https://developers.cloudflare.com/dns/manage-dns-records/reference/ttl/"
+  - name: "Google Search Central - Site Moves and Migrations"
+    url: "https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes"
+  - name: "Vercel Docs - Environments"
+    url: "https://vercel.com/docs/deployments/environments"
+  - name: "Vercel Docs - Performing an Instant Rollback on a Deployment"
+    url: "https://vercel.com/docs/instant-rollback"
+keyTakeaways:
+  - "TTL des DNS-Eintrags mindestens 48 bis 72 Stunden vor dem Go-Live absenken, danach wieder erhöhen."
+  - "Vollständige 1:1-Redirect-Map (alte URL zu neuer URL) mit dauerhaften 301-Weiterleitungen erstellen, keine pauschale Weiterleitung auf die Startseite."
+  - "Neue Website zuerst komplett in einer Staging- oder Preview-Umgebung testen, erst nach Freigabe live schalten."
+  - "Bei Domain-Wechsel das Change-of-Address-Tool in der Google Search Console nutzen, um den Übergang der Ranking-Signale zu unterstützen."
+  - "Auf eine Deployment-Plattform mit atomarem Alias-Swap setzen und nach dem Go-Live mindestens 48 Stunden aktiv Traffic und Fehler beobachten."
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Wie lange sollte die TTL vor einem Website-Relaunch abgesenkt werden?"
+    answer: "Idealerweise 48 bis 72 Stunden vor dem geplanten Go-Live, damit DNS-Resolver weltweit den neuen, niedrigeren Wert bereits übernommen haben, bevor die eigentliche Umstellung passiert."
+  - question: "Was ist eine 301-Redirect-Map und warum ist sie beim Relaunch wichtig?"
+    answer: "Eine 301-Redirect-Map ist eine vollständige Liste, die jede alte URL auf die passende neue URL weiterleitet. Sie verhindert Fehlerseiten für Besucher und schützt gleichzeitig das bestehende Google-Ranking."
+  - question: "Was macht das Change-of-Address-Tool in der Google Search Console?"
+    answer: "Es signalisiert Google aktiv, dass eine Domain umzieht, sodass die neue Adresse bevorzugt gecrawlt wird und Ranking-Signale schneller von der alten auf die neue Domain übertragen werden."
+  - question: "Warum verhindert ein atomarer Alias-Swap Ausfallzeiten besser als eine manuelle Serverumstellung?"
+    answer: "Weil die Umstellung auf die neue Version in unter einer Sekunde passiert und laufende Anfragen auf der alten Version noch sauber zu Ende bedient werden, statt dass für Minuten ein instabiler Zwischenzustand entsteht."
+  - question: "Wie lange sollte man nach einem Relaunch das Monitoring aktiv betreiben?"
+    answer: "Mindestens 48 Stunden lang, mit regelmäßiger Prüfung von Erreichbarkeit, Formularen, Ladezeiten und der Google Search Console, um Probleme früh zu erkennen statt erst Wochen später."
+hookCandidates:
+  - "relaunch ohne ausfall, geht das?"
+  - "relaunch: website kurz offline?"
+  - "relaunch: alte links noch gueltig?"
+---
+
+Stellen Sie sich vor, ein Geschäft in der Mariahilfer Straße renoviert komplett um. Neue Regale, neue Kassa, das Schaufenster frisch gestrichen. Trotzdem bleibt die Tür während der ganzen Umbauzeit offen, Kunden können jederzeit rein und einkaufen. Genau das ist die Aufgabe bei einem professionellen Website-Relaunch. Die Baustelle läuft im Hintergrund, aber vorne bleibt alles erreichbar. Wer das nicht sauber plant, sperrt sein digitales Geschäft für Stunden oder sogar Tage zu, und das kostet in Wien wie überall Umsatz, Vertrauen, Ranking und Nerven.
+
+![Website Relaunch ohne Ausfallzeiten planen mit DNS TTL und Redirect Map](/images/blog/wie-verhindert-man-ausfallzeiten-downtime-waehrend-eines-website-relaunches.png)
+
+## Die kurze Antwort
+
+Ausfallzeiten beim Relaunch verhindert man, indem man die neue Website zuerst komplett isoliert testet (Staging oder Preview-Deployment), vorab die DNS-TTL absenkt, eine vollständige 301-Redirect-Map von alten auf neue URLs anlegt und den eigentlichen Go-Live über einen atomaren Umschaltvorgang laufen lässt statt über eine manuelle Serverumstellung. So bleibt die alte Seite bis zur letzten Sekunde online.
+
+Das klingt nach vier einzelnen Handgriffen, ist aber in Wirklichkeit ein zusammenhängender Prozess. Jeder Schritt baut auf dem vorherigen auf, und wer einen davon auslässt, riskiert genau das Loch, das er eigentlich vermeiden wollte. Schauen wir uns die einzelnen Teile im Detail an.
+
+## Warum Downtime beim Relaunch meistens hausgemacht ist
+
+Die wenigsten Ausfälle bei einem Relaunch passieren, weil ein Server explodiert oder das Internet kaputt geht. Sie passieren, weil jemand am Freitagnachmittag die alte Seite abschaltet, bevor die neue wirklich bereit ist. Oder weil die DNS-Umstellung eingeleitet wird, ohne zu wissen, dass ein Teil der Besucher noch stundenlang auf dem alten Server landet. Das ist kein technisches Wunder, sondern schlicht die Funktionsweise des Internets. DNS-Einträge werden von unzähligen Resolvern weltweit zwischengespeichert, und genau da liegt die erste Stolperfalle.
+
+Ein Relaunch ist im Kern ein Koordinationsproblem, kein reines Programmierproblem. Die Website selbst kann technisch perfekt sein, und trotzdem entsteht ein Ausfallfenster, weil die Reihenfolge der Schritte falsch war. Genau deshalb lohnt es sich, den Ablauf einmal sauber durchzugehen, bevor der Startknopf gedrückt wird.
+
+## DNS und TTL: der unsichtbare Zeitzünder
+
+TTL steht für Time to Live und legt fest, wie lange ein DNS-Eintrag von Resolvern rund um den Globus zwischengespeichert wird, bevor sie erneut nachfragen, wohin eine Domain eigentlich zeigt. Der Standardwert liegt häufig bei 24 Stunden, also 86.400 Sekunden. Das bedeutet im Klartext: Wenn Sie am Relaunch-Tag die IP-Adresse oder den Zielserver ändern, kann es sein, dass ein Teil Ihrer Besucher bis zu einen Tag lang noch auf der alten Version landet, während andere schon die neue sehen. Für ein Unternehmen, das an diesem Tag vielleicht eine Kampagne startet oder Presse ankündigt, ist das ein unangenehmer Flickenteppich.
+
+Die Lösung ist simpel und wird trotzdem regelmäßig vergessen. Man senkt die TTL für den betroffenen DNS-Eintrag schon einige Tage vor dem eigentlichen Umzug ab, oft auf wenige Minuten. Dadurch fragen die Resolver viel häufiger nach dem aktuellen Stand, und wenn am Stichtag die eigentliche Änderung passiert, verbreitet sie sich innerhalb kurzer Zeit statt erst nach Stunden. Nach dem erfolgreichen Umzug kann die TTL wieder auf einen höheren Wert gesetzt werden, das entlastet die DNS-Infrastruktur im Alltag.
+
+**Konkret bedeutet das:** Planen Sie die TTL-Absenkung mindestens 48 bis 72 Stunden vor dem geplanten Go-Live ein, nicht erst am Vortag. Wer die TTL erst kurz vorher senkt, hat den alten hohen Wert noch im Cache der Resolver sitzen, und der Vorteil verpufft.
+
+## Staging-Umgebung und die 301-Redirect-Map
+
+[Google](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes) selbst gibt für Website-Umzüge mit URL-Änderungen eine klare Empfehlung: eine vollständige 1:1-Weiterleitungs-Map von jeder alten URL auf die passende neue URL, umgesetzt mit dauerhaften 301-Redirects, und vorab getestet in einer Staging-Umgebung. Das ist kein bürokratischer Vorschlag. Wer das schlampig macht, riskiert beides auf einmal: schlechteres Ranking und echte Ausfallzeiten.
+
+Warum ist das so wichtig? Weil ein Relaunch fast nie eine 1:1-Kopie der alten Struktur ist. Neue Menüs, neue Kategorien, andere Slugs. Wenn ein Kunde über eine gespeicherte Lasche oder ein altes Google-Ergebnis auf Ihre Seite kommt und dort nur eine Fehlerseite findet, ist das für ihn faktisch dasselbe wie eine ausgefallene Website, auch wenn der Server technisch läuft. Eine gut gepflegte Redirect-Map verhindert genau das.
+
+In der Praxis heißt das für ein mittleres Wiener Unternehmen mit vielleicht 80 bis 150 indexierten Seiten: eine Tabelle anlegen mit zwei Spalten, alte URL und neue URL, jede einzelne Seite durchgehen, keine pauschale Weiterleitung aller URLs auf die Startseite verwenden. Das mag mühsam klingen, spart aber später Stunden an Fehlersuche und schützt gleichzeitig das mühsam aufgebaute Google-Ranking.
+
+Die Staging-Umgebung ist der zweite Teil dieser Empfehlung. Bevor irgendetwas live geht, wird die komplette neue Seite auf einer separaten, nicht öffentlich verlinkten Adresse aufgebaut und durchgetestet. Formulare, Ladezeiten, mobile Ansicht, alle wichtigen Klickpfade. Erst wenn dort alles funktioniert, kommt der nächste Schritt.
+
+## Domain-Umzug: die Search Console als Frühwarnsystem nutzen
+
+Wenn beim Relaunch nicht nur das Design, sondern auch die Domain selbst wechselt, etwa von einer alten auf eine neue Adresse, bietet die Google Search Console ein eigenes Werkzeug dafür an: das "Change of Address"-Tool. Damit signalisieren Sie Google aktiv, dass ein Umzug stattfindet, und Google priorisiert daraufhin das Crawlen und Indexieren der neuen Domain. Ranking-Signale werden nach Googles eigener Angabe für eine gewisse Übergangszeit von der alten auf die neue Domain übertragen.
+
+Das ist deshalb relevant für das Thema Ausfallzeiten, weil ein schlecht kommunizierter Domain-Wechsel für Google wie ein plötzliches Verschwinden der Seite aussehen kann. Verschwindet eine Domain aus dem Index, bevor die neue vollständig übernommen wurde, entsteht ein Sichtbarkeits-Loch, das sich für den Kunden genauso anfühlt wie eine echte Downtime: Die Seite ist da, aber niemand findet sie mehr über die Suche. Das Change-of-Address-Tool reduziert dieses Risiko erheblich, kostet aber nur wenige Minuten Einrichtung.
+
+Wichtig dabei: Das Tool ersetzt nicht die 301-Redirects, es ergänzt sie. Beide Maßnahmen zusammen sorgen dafür, dass sowohl Nutzer als auch Google ohne Bruch von der alten zur neuen Adresse finden.
+
+## Preview-Deployments und der atomare Alias-Swap
+
+Der technisch elegantere Teil der Lösung liegt heute meist gar nicht mehr beim DNS, sondern bei der Deployment-Plattform selbst. Moderne Hosting-Umgebungen wie [Vercel](https://vercel.com/docs/deployments/environments) erlauben es, eine neue Version der Website zunächst als vollständig isoliertes Preview-Deployment zu veröffentlichen. Diese Version hat eine eigene, nicht öffentlich beworbene URL und hat keinerlei Einfluss auf die produktive Seite. Man kann sie in Ruhe mit Kollegen, Kunden oder dem eigenen Team durchklicken, bis wirklich alles passt.
+
+Erst wenn diese Freigabe erfolgt ist, wird die neue Version auf Produktion "promoted", wie es im Fachjargon heißt. Der eigentliche Clou dabei: Deployments auf solchen Plattformen sind unveränderliche Artefakte. Die Umstellung der Produktions-Domain auf die neue Version läuft als atomarer Alias-Swap ab, der in unter einer Sekunde passiert. Laufende Anfragen auf der alten Version werden dabei noch sauber zu Ende bedient, niemand bekommt eine abgebrochene Verbindung oder eine leere Seite zu sehen.
+
+Das ist der entscheidende Unterschied zur klassischen Serverumstellung von früher, bei der Dateien manuell hochgeladen wurden. Für ein paar Minuten stand dann mal die alte Version online, mal eine kaputte Mischung aus beidem, ganz nach Zufall. Mit einem atomaren Swap gibt es diesen Zwischenzustand schlicht nicht. Für ein Unternehmen in Wien, das seinen Relaunch vielleicht bewusst am Vormittag durchführt, um beim Kunden nichts zu riskieren, ist das ein handfester Sicherheitsgewinn.
+
+## Nach dem Go-Live: Monitoring und der Rollback-Plan
+
+Ein Relaunch ist mit dem Klick auf "veröffentlichen" nicht fertig, das ist eher der Anfang der heikelsten Phase. Google empfiehlt ausdrücklich, den Traffic auf alten und neuen URLs nach dem Umzug weiter zu beobachten, um Probleme früh zu erkennen statt erst Wochen später beim Blick auf die Quartalszahlen.
+
+Praktisch heißt das: In den ersten 48 Stunden regelmäßig prüfen, ob die wichtigsten Seiten erreichbar sind, ob Formulare tatsächlich Anfragen verschicken, ob die Ladezeiten stimmen und ob in der Search Console plötzlich Crawling-Fehler auftauchen. Wer dabei technisch auf einer Plattform mit unveränderlichen Deployments arbeitet, hat einen entscheidenden Vorteil: Taucht doch ein Problem auf, ist ein [Rollback](https://vercel.com/docs/instant-rollback) auf die vorherige, stabile Version in kurzer Zeit möglich, ganz ohne Panik oder Nachtschicht.
+
+Für kleinere Unternehmen ohne eigene IT-Abteilung heißt das in der Praxis oft, sich vorab genau zu überlegen, wer in den ersten Tagen nach dem Relaunch erreichbar ist und wer im Ernstfall den Rollback auslösen kann. Ein Relaunch am Freitagnachmittag, bei dem am Wochenende niemand erreichbar ist, ist keine gute Idee, so einleuchtend das im Nachhinein klingt.
+
+## Die häufigsten Fehler beim Relaunch
+
+Aus der Praxis lassen sich ein paar Fallen immer wieder beobachten, die für unnötige Ausfallzeiten sorgen.
+
+Der erste Fehler ist, die TTL erst am Tag des Relaunches zu senken statt Tage vorher. Der zweite ist eine Redirect-Strategie, die einfach alles auf die Startseite umleitet, was bei Google als schwaches Signal gilt und Nutzer verwirrt, die eigentlich eine bestimmte Unterseite gesucht haben. Der dritte Fehler ist, den Relaunch direkt auf dem Produktivsystem zu testen, weil "es eh schnell geht", statt zuerst über eine Staging- oder Preview-Umgebung zu gehen. Der vierte, besonders unter Zeitdruck, ist ein fehlender Rollback-Plan, weil man optimistisch davon ausgeht, dass schon alles gut gehen wird.
+
+Alle vier Fehler haben eines gemeinsam: Sie lassen sich mit ein wenig Vorlaufzeit und einer sauberen Checkliste vollständig vermeiden. Keiner davon erfordert zusätzliches Budget, nur Planung.
+
+## Key Takeaways
+
+- TTL des DNS-Eintrags mindestens 48 bis 72 Stunden vor dem Go-Live absenken, danach wieder erhöhen.
+- Vollständige 1:1-Redirect-Map (alte URL zu neuer URL) mit dauerhaften 301-Weiterleitungen erstellen, keine pauschale Weiterleitung auf die Startseite.
+- Neue Website zuerst komplett in einer Staging- oder Preview-Umgebung testen, erst nach Freigabe live schalten.
+- Bei Domain-Wechsel das Change-of-Address-Tool in der Google Search Console nutzen, um den Übergang der Ranking-Signale zu unterstützen.
+- Auf eine Deployment-Plattform mit atomarem Alias-Swap setzen und nach dem Go-Live mindestens 48 Stunden aktiv Traffic und Fehler beobachten.
+
+## Fazit
+
+Ausfallzeiten beim Relaunch sind fast nie ein Schicksal, sondern das Ergebnis einer Reihenfolge, die nicht durchdacht wurde. Wer TTL, Redirects, Staging und einen sauberen Rollback-Plan von Anfang an mitdenkt, macht aus einem riskanten Umschaltmoment einen unauffälligen Übergang, den die Besucher gar nicht bemerken. Genau das ist am Ende das Ziel, oder? Eine neue Website, die aussieht, als wäre sie schon immer so gewesen.
+
+Wenn Sie einen Relaunch planen und sich nicht sicher sind, ob Ihre aktuelle Website oder Ihr Hosting-Setup dafür überhaupt vorbereitet ist, können Sie uns über die [Kontaktseite](/kontakt) unverbindlich schreiben. Wir sehen uns Ihren aktuellen Stand an und sagen ehrlich, wo die Stolperfallen liegen, bevor der Relaunch-Termin steht statt danach.

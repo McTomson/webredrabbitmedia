@@ -2840,3 +2840,48 @@ quelle: https://dsb.gv.at/eingabe-an-die-dsb/-meldung-data-breach
 quelle_name: Oesterreichische Datenschutzbehoerde (DSB) - Meldung Data Breach
 geprueft_am: 2026-08-13
 recheck_nach: 2027-02-09
+
+## t68-2026-08-13-316
+cluster: 2
+keywords: verhindert, ausfallzeiten, downtime, während, eines, website, relaunches
+aussage: TTL (Time to Live) legt fest, wie lange ein DNS-Eintrag von Resolvern weltweit zwischengespeichert wird; bevor eine DNS-Änderung (z. B. neue IP/Server beim Relaunch) live geht, sollte der TTL-Wert vorab abgesenkt werden, damit sich die Umstellung schnell verbreitet statt erst nach Stunden – Standard-TTLs liegen typischerweise bei 24 Stunden (86.400 Sekunden), reduzierbar bis auf wenige Minuten.
+quelle: https://developers.cloudflare.com/dns/manage-dns-records/reference/ttl/
+quelle_name: Cloudflare DNS Docs - Time to Live (TTL)
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t68-2026-08-13-317
+cluster: 2
+keywords: verhindert, ausfallzeiten, downtime, während, eines, website, relaunches
+aussage: Google empfiehlt für Website-Umzüge/Relaunches mit URL-Änderungen eine 1:1-Weiterleitungs-Map (alte URL → neue URL) mit dauerhaften 301-Redirects sowie den Einsatz einer Staging-Umgebung zum vorherigen Testen, um unerwartete Ausfallzeiten und Rankingverluste zu vermeiden; nach dem Umzug sollte der Traffic auf alten und neuen URLs weiterbeobachtet werden.
+quelle: https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes
+quelle_name: Google Search Central - Site Moves and Migrations
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t68-2026-08-13-318
+cluster: 2
+keywords: verhindert, ausfallzeiten, downtime, während, eines, website, relaunches
+aussage: Bei einem Domain-Umzug kann in der Google Search Console das 'Change of Address'-Tool genutzt werden, damit Google die neue Domain priorisiert crawlt/indexiert und Ranking-Signale für 180 Tage von der alten auf die neue Domain überträgt – reduziert das Risiko von Sichtbarkeits-Einbrüchen während des Relaunches.
+quelle: https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes
+quelle_name: Google Search Central - Site Moves and Migrations
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t68-2026-08-13-319
+cluster: 2
+keywords: verhindert, ausfallzeiten, downtime, während, eines, website, relaunches
+aussage: Auf modernen Deployment-Plattformen wie Vercel lässt sich eine neue Website-Version zunächst als isolierte Preview-Deployment (eigene URL, kein Einfluss auf die Live-Seite) vollständig testen; erst nach Freigabe wird sie auf Produktion befördert ('promote'), was Downtime beim eigentlichen Relaunch-Schritt vermeidet.
+quelle: https://vercel.com/docs/deployments/environments
+quelle_name: Vercel Docs - Environments
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t68-2026-08-13-320
+cluster: 2
+keywords: verhindert, ausfallzeiten, downtime, während, eines, website, relaunches
+aussage: Vercel-Deployments sind unveränderliche (immutable) Artefakte; die Umschaltung der Produktions-Domain auf eine neue Version erfolgt als atomarer Alias-Swap in unter einer Sekunde, laufende Requests auf der alten Version werden zu Ende bedient – dadurch entsteht beim Go-Live kein Ausfallfenster. Bei Problemen ist ein sofortiger Rollback auf die vorherige Version möglich.
+quelle: https://vercel.com/docs/instant-rollback
+quelle_name: Vercel Docs - Performing an Instant Rollback on a Deployment
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
