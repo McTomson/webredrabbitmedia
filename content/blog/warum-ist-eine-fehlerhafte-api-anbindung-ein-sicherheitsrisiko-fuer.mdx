@@ -1,0 +1,155 @@
+---
+title: "Fehlerhafte API-Anbindung als Sicherheitsrisiko 2026"
+slug: warum-ist-eine-fehlerhafte-api-anbindung-ein-sicherheitsrisiko-fuer
+excerpt: "Warum eine fehlerhafte API-Anbindung fremde Kundendaten preisgibt, wie die BOLA-Lücke entsteht und was für österreichische Firmen rechtlich auf dem Spiel steht."
+featuredSnippetTitle: "Warum ist eine fehlerhafte API-Anbindung ein Sicherheitsrisiko?"
+featuredSnippet: "Eine fehlerhafte API-Anbindung ist ein Sicherheitsrisiko, weil eine Schnittstelle ohne saubere Zugriffsprüfung fremde Kundendaten preisgibt. Laut OWASP genügt oft das Manipulieren einer ID in der Anfrage, um fremde Daten zu lesen oder zu verändern. Für österreichische Firmen wird daraus ein meldepflichtiger Datenschutzvorfall mit Bußgeldrisiko."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-13"
+updatedAt: "2026-08-13"
+category: "Technik & Performance"
+tags:
+  - API-Sicherheit
+  - Webentwicklung
+  - DSGVO
+  - Österreich
+  - Datenschutz
+featuredImage: /images/blog/warum-ist-eine-fehlerhafte-api-anbindung-ein-sicherheitsrisiko-fuer.png
+status: draft
+aiAssisted: true
+sources:
+  - name: "OWASP API Security Top 10 - API1:2023 Broken Object Level Authorization"
+    url: "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
+  - name: "OWASP Top 10 API Security Risks 2023 (Uebersicht)"
+    url: "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+  - name: "Salt Labs 2025 Q1 State of API Security Report (Pressemitteilung)"
+    url: "https://salt.security/press-releases/salt-labs-state-of-api-security-report-reveals-99-of-respondents-experienced-api-security-issues-in-past-12-months"
+  - name: "WKO - EU-DSGVO: Meldung von Datenschutzverletzungen (Data Breach Notification)"
+    url: "https://www.wko.at/datenschutz/eu-dsgvo-meldung-von-datenschutzverletzungen"
+  - name: "Oesterreichische Datenschutzbehoerde (DSB) - Meldung Data Breach"
+    url: "https://dsb.gv.at/eingabe-an-die-dsb/-meldung-data-breach"
+keyTakeaways:
+  - "Eine fehlerhafte API-Anbindung gibt fremde Kundendaten preis, oft schon durch simples Manipulieren einer ID in der Anfrage. Diese Lücke heißt BOLA und steht auf Platz 1 der OWASP API Security Top 10 (2023)."
+  - "Neben BOLA sind kaputte Authentifizierung (API2:2023) und Fehlkonfigurationen wie ausführliche Fehlermeldungen (API8:2023) eigenständige Top-Risiken, die bis zur Server-Übernahme führen können."
+  - "Die Gefahr ist real: Laut Salt Labs (Q1 2025) hatten 99 Prozent der Organisationen binnen zwölf Monaten API-Sicherheitsprobleme, angeführt von Schwachstellen und BOLA (37 Prozent)."
+  - "In Österreich wird aus dem Technikfehler ein Rechtsrisiko: Data Breach nach Artikel 33 DSGVO, Meldung binnen 72 Stunden an die Datenschutzbehörde, Bußgelder bis 10 Millionen Euro oder 2 Prozent des Jahresumsatzes."
+  - "Prävention ist fast immer günstiger als die Aufarbeitung. Zugriffsprüfung pro Objekt, keine sprechenden Fehlermeldungen und ein Notfallplan sind die wichtigsten Hebel."
+conclusionStats:
+  - label: "OWASP API Top 10 Rang"
+    value: "Platz 1 (BOLA)"
+  - label: "Organisationen mit API-Vorfall"
+    value: "99 %"
+  - label: "DSGVO-Meldefrist"
+    value: "72 Stunden"
+  - label: "Bußgeldrahmen"
+    value: "bis 10 Mio. €"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Was ist eine BOLA-Lücke bei einer API?"
+    answer: "BOLA steht für Broken Object Level Authorization und bedeutet, dass die Schnittstelle bei einer Datenabfrage nicht prüft, ob der angemeldete Nutzer dieses eine Objekt überhaupt sehen darf. Ein Angreifer ändert dann einfach die ID in der Anfrage, etwa von Rechnung 4711 auf 4712, und bekommt fremde Daten geliefert. BOLA steht auf Platz 1 der OWASP API Security Top 10 aus dem Jahr 2023."
+  - question: "Ist meine kleine Firmenwebsite überhaupt gefährdet?"
+    answer: "Ja. Angriffe auf Schnittstellen laufen automatisiert, Programme klappern das Netz ab und probieren IDs hochzuzählen, ohne die Firma gezielt auszuwählen. Eine kleine Website mit angebundenem Buchungs- oder Warenwirtschaftssystem hat dieselben Schnittstellen-Grundlagen wie ein Großkonzern, nur meist mit weniger Personal, das darauf schaut. Klein zu sein schützt nicht."
+  - question: "Schützt ein SSL-Zertifikat vor solchen API-Angriffen?"
+    answer: "Nein. Das Schloss in der Adressleiste verschlüsselt nur den Transportweg zwischen Browser und Server. Es sagt nichts darüber aus, ob der Server prüft, wer welche Daten abrufen darf. Eine BOLA-Lücke passiert hinter dem Schloss, nicht davor, und bleibt durch die Verschlüsselung völlig unberührt."
+  - question: "Was muss ich in Österreich tun, wenn Daten über eine API abgeflossen sind?"
+    answer: "Sobald personenbezogene Daten betroffen sind, handelt es sich um einen Data Breach nach Artikel 33 DSGVO. Die Verletzung ist unverzüglich und möglichst binnen 72 Stunden nach Bekanntwerden an die österreichische Datenschutzbehörde zu melden. Bei hohem Risiko müssen zusätzlich die betroffenen Personen benachrichtigt werden. Die Meldepflicht trifft Sie als Verantwortlichen, nicht die Agentur."
+  - question: "Wie hoch können die Strafen bei einem API-Datenleck sein?"
+    answer: "Bei Verstößen gegen die Melde- und Benachrichtigungspflichten drohen Geldbußen bis zu 10 Millionen Euro oder 2 Prozent des weltweiten Jahresumsatzes. Für kleine Unternehmen ist diese Summe der theoretische Deckel, nicht die Regelstrafe. Teuer werden vor allem die Aufarbeitung, die Kundenbenachrichtigung und der Vertrauensverlust, wenn bekannt wird, dass Kundendaten offen im Netz lagen."
+hookCandidates:
+  - "was passiert bei einer fehlerhaften api?"
+  - "wie sicher ist eure api wirklich?"
+---
+
+Stellen Sie sich einen Schalter im Magistrat vor. Sie schreiben eine Aktennummer auf einen Zettel, schieben ihn durch, und der Beamte holt Ihnen die passende Mappe. So arbeitet eine API im Hintergrund Ihrer Website: Der Browser fragt Daten mit einer Nummer an, der Server liefert sie aus. Das Problem beginnt dort, wo der Beamte jede Mappe herausgibt, deren Nummer Sie draufschreiben, ohne je zu prüfen, ob es überhaupt Ihre Akte ist. Genau das passiert bei einer fehlerhaften API-Anbindung. Und es passiert häufiger, als den meisten Firmenchefs lieb ist.
+
+APIs sind heute die unsichtbaren Adern fast jeder modernen Website. Das Kontaktformular, der Kundenbereich, der Terminkalender, die Anbindung an das Warenwirtschaftssystem oder an einen Zahlungsdienstleister: All das läuft über Schnittstellen. Sie sehen davon nichts, Ihre Kunden auch nicht. Aber wenn eine dieser Schnittstellen schlampig angebunden ist, wird aus dem stillen Datenaustausch im Hintergrund eine offene Tür. Und offene Türen zieht das Internet magisch an.
+
+## Die kurze Antwort für Eilige
+
+Eine fehlerhafte API-Anbindung ist ein Sicherheitsrisiko, weil eine Schnittstelle ohne saubere Zugriffsprüfung fremde Kundendaten preisgibt. Laut OWASP genügt oft das Manipulieren einer ID in der Anfrage, um fremde Daten zu lesen oder sogar zu verändern. Für österreichische Firmen wird daraus ein Datenschutzvorfall mit Meldepflicht und Bußgeldrisiko.
+
+Das ist der Kern. Alles Weitere erklärt, wie diese Lücken entstehen, wie oft sie in der Praxis auftreten und was Sie konkret dagegen tun.
+
+## Die häufigste Lücke heißt BOLA und ist erschreckend simpel
+
+Die mit Abstand gefährlichste Schwachstelle bei Schnittstellen trägt den sperrigen Namen [Broken Object Level Authorization, kurz BOLA](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/). Sie steht auf Platz 1 der [OWASP API Security Top 10](https://owasp.org/API-Security/editions/2023/en/0x11-t10/) aus dem Jahr 2023, also der maßgeblichen Referenzliste für API-Sicherheit. Und das aus gutem Grund.
+
+APIs geben ihre Endpunkte oft mit Objekt-IDs preis. Nehmen wir an, ein Kunde ruft nach dem Login seine Rechnung auf, und die Adresse dahinter lautet sinngemäß `/api/rechnung/4711`. Fehlt jetzt die Autorisierungsprüfung auf Objektebene, dann ändert ein Angreifer die Nummer einfach auf `4712`, `4713` und so weiter. Der Server prüft nicht, ob diese Rechnung wirklich zu diesem Kunden gehört, und liefert sie brav aus. Kein Passwort-Knacken, kein Hackertool aus dem Film. Nur das Hochzählen einer Zahl. So einfach ist der Weg zu fremden Rechnungen, Bestellungen oder Gesundheitsdaten.
+
+Das Tückische daran: Die Website funktioniert für jeden ehrlichen Nutzer völlig normal. Die Lücke sieht man nicht im Betrieb. Man sieht sie erst, wenn jemand sie ausnutzt, und dann ist es zu spät.
+
+Meine Empfehlung an dieser Stelle ist unmissverständlich: Jede Anfrage, die ein Objekt mit einer ID abruft, muss serverseitig prüfen, ob der angemeldete Nutzer dieses eine Objekt überhaupt sehen darf. Nicht der Browser prüft das, sondern der Server, bei jedem einzelnen Zugriff.
+
+## BOLA ist nicht die einzige Baustelle
+
+Eine Schnittstelle kann noch an anderen Stellen brechen, und OWASP führt diese Risiken als eigenständige Punkte. Zwei davon sehen wir in der Praxis besonders oft.
+
+Das erste ist Broken Authentication, in der OWASP-Liste als API2:2023 geführt. Hier ist der Mechanismus, der prüft, wer da überhaupt anfragt, falsch umgesetzt. Die Folge ist, dass ein Angreifer fremde Identitäten übernehmen kann. Er gibt sich also gegenüber der Schnittstelle als jemand aus, der er nicht ist, und bekommt damit dessen Rechte. Das ist besonders heikel, wenn dahinter ein Kundenkonto mit hinterlegten Zahlungsdaten oder ein Adminzugang steckt.
+
+Das zweite ist Security Misconfiguration, geführt als API8:2023. Klingt harmlos, ist es aber nicht. Ein klassisches Beispiel sind detaillierte Fehlermeldungen. Läuft etwas schief, wirft die Schnittstelle einen ausführlichen Stacktrace zurück, also eine technische Fehlermeldung mit Innenansicht des Systems. Darin stehen dann Pfade, Versionsnummern, manchmal Teile von Datenbankabfragen. Für einen Angreifer ist das die Bauanleitung Ihres Servers. Im schlimmsten Fall führt so eine Fehlkonfiguration bis zur vollständigen Übernahme des Servers.
+
+Der gemeinsame Nenner all dieser Punkte: Es sind keine exotischen Angriffe, sondern handwerkliche Fehler bei der Anbindung. Genau deshalb sind sie so verbreitet, und genau deshalb kann man sie mit sauberer Arbeit auch vermeiden.
+
+## Wie real ist die Gefahr wirklich?
+
+An dieser Stelle kommt oft der Einwand: Das betrifft doch nur die großen Konzerne mit ihren riesigen Systemen. Die Zahlen sagen etwas anderes.
+
+Der [State of API Security Report von Salt Labs](https://salt.security/press-releases/salt-labs-state-of-api-security-report-reveals-99-of-respondents-experienced-api-security-issues-in-past-12-months) aus dem ersten Quartal 2025 hält fest, dass 99 Prozent der befragten Organisationen in den vorangegangenen zwölf Monaten API-Sicherheitsprobleme hatten. Neununddreißig von vierzig sozusagen. Die häufigsten Probleme im laufenden Betrieb waren dabei Schwachstellen samt BOLA mit 37 Prozent, die Offenlegung sensibler Daten mit 34 Prozent und Schwächen bei der API-Authentifizierung mit 29 Prozent.
+
+Lesen Sie diese drei Zahlen noch einmal, denn sie beschreiben exakt die Baustellen aus den vorigen Abschnitten. Es sind nicht theoretische Risiken aus einem Lehrbuch, sondern die Probleme, die in echten Produktivsystemen tatsächlich auftreten. Und eine kleine Firmenwebsite mit angebundenem Buchungssystem hat dieselben Schnittstellen-Grundlagen wie ein Großkonzern, nur mit weniger Personal, das darauf schaut. Das macht sie nicht sicherer, eher im Gegenteil.
+
+## In Österreich wird aus dem Technikfehler ein Rechtsrisiko
+
+Jetzt kommt der Teil, der viele Geschäftsführer unterschätzt. Ein technisches Leck bleibt in Österreich nicht bei der Technik. Sobald über eine unsichere Schnittstelle personenbezogene Daten abfließen, wird daraus ein [Datenschutzvorfall im Sinne der DSGVO](https://www.wko.at/datenschutz/eu-dsgvo-meldung-von-datenschutzverletzungen), ein sogenannter Data Breach.
+
+Und dann läuft eine Uhr. Nach Artikel 33 DSGVO ist so eine Verletzung des Schutzes personenbezogener Daten unverzüglich und möglichst binnen 72 Stunden nach Bekanntwerden an die [österreichische Datenschutzbehörde](https://dsb.gv.at/eingabe-an-die-dsb/-meldung-data-breach) zu melden. Die Datenschutzbehörde bestätigt diese 72-Stunden-Frist ausdrücklich, und sie gilt auch dann, wenn der Vorfall durch eine unsichere Schnittstelle ausgelöst wurde. Drei Tage sind kurz, wenn Sie erst herausfinden müssen, was überhaupt passiert ist, welche Daten betroffen sind und wer benachrichtigt werden muss.
+
+Der finanzielle Rahmen ist ebenfalls klar geregelt. Bei Verstößen gegen die Melde- und Benachrichtigungspflichten drohen Geldbußen bis zu 10 Millionen Euro oder 2 Prozent des weltweiten Jahresumsatzes. Für ein kleines Wiener Unternehmen ist die absolute Summe natürlich der theoretische Deckel, nicht die Regelstrafe. Aber schon der Aufwand, ein Leck sauber zu melden, betroffene Kunden zu informieren und den Vorfall aufzuarbeiten, ist erheblich. Und der Vertrauensverlust, wenn Kunden erfahren, dass ihre Daten offen im Netz lagen, lässt sich mit keiner Zahl beziffern.
+
+## Ein kurzes Rechenbeispiel, damit die Größenordnung greifbar wird
+
+Nehmen wir einen kleinen Onlineshop aus dem 7. Bezirk, der über eine schlecht abgesicherte API die Bestelldaten seiner Kunden ausliefert. Angenommen, 3.000 Kundendatensätze mit Namen, Adresse und Bestellhistorie sind über eine BOLA-Lücke abrufbar.
+
+Der reine Vorfall selbst kostet zunächst nichts. Teuer wird der Rattenschwanz danach. Die 72-Stunden-Meldung erstellen, oft mit externer Rechts- und IT-Beratung. Alle 3.000 Kunden benachrichtigen, sofern ein hohes Risiko besteht. Die Lücke schließen und das System prüfen lassen. Und dann die Frage, wie viele dieser 3.000 Menschen noch einmal in einem Shop bestellen, dessen Datenleck in ihrem Postfach lag. Rechnen Sie selbst durch, was ein verlorener Stammkunde über die Jahre wert gewesen wäre. Die Prävention, also die saubere Anbindung von Anfang an, ist fast immer der günstigere Weg, oder?
+
+![Diagramm einer fehlerhaften API-Anbindung als Sicherheitsrisiko mit BOLA-Lücke bei einer Firmenwebsite in Österreich](/images/blog/warum-ist-eine-fehlerhafte-api-anbindung-ein-sicherheitsrisiko-fuer.png)
+
+## Schritt für Schritt: Was Sie konkret tun können
+
+Sie müssen kein Entwickler sein, um hier Verantwortung zu übernehmen. Sie müssen die richtigen Fragen stellen und auf ein paar Dinge bestehen.
+
+1. **Verschaffen Sie sich einen Überblick über Ihre Schnittstellen.** Fragen Sie Ihre Agentur oder Ihren Entwickler schlicht: Welche APIs hat unsere Website, was tun sie, und welche personenbezogenen Daten laufen darüber? Wer diese Liste nicht sofort liefern kann, hat ein Problem, das größer ist als die Schnittstelle selbst.
+
+2. **Bestehen Sie auf Zugriffsprüfung pro Objekt.** Lassen Sie sich bestätigen, dass bei jeder Datenabfrage serverseitig geprüft wird, ob der angemeldete Nutzer genau dieses Objekt sehen darf. Das ist die direkte Antwort auf BOLA.
+
+3. **Schalten Sie sprechende Fehlermeldungen ab.** Im Produktivbetrieb darf eine Schnittstelle nach außen keine technischen Details und keine Systeminterna zurückgeben. Der Nutzer bekommt eine neutrale Meldung, die Details bleiben im internen Log.
+
+4. **Lassen Sie die Authentifizierung prüfen.** Wie stellt das System sicher, dass eine Anfrage wirklich von dem kommt, der sie zu sein vorgibt? Diese Frage sollte eine klare, technische Antwort bekommen und nicht ein Achselzucken.
+
+5. **Halten Sie einen Notfallplan bereit.** Legen Sie vorab fest, wer im Fall eines Datenlecks was tut, damit die 72-Stunden-Frist nach Artikel 33 DSGVO nicht zur Panik wird. Ein Ansprechpartner und ein grober Ablauf, dazu die Kontaktdaten der Datenschutzbehörde. Mehr braucht es für den Anfang nicht.
+
+Wenn Sie bei diesen Punkten unsicher sind oder die Antworten Ihres Dienstleisters nicht überzeugen, dann lassen Sie Ihre Schnittstellen unabhängig ansehen. Wir schauen uns das im Rahmen einer [unverbindlichen Anfrage über unsere Kontaktseite](/kontakt) gerne an und sagen Ihnen ehrlich, wo Sie stehen.
+
+## Häufige Irrtümer, die teuer werden
+
+Der erste Irrtum: "Unsere Website ist zu klein, um interessant zu sein." Angriffe auf Schnittstellen laufen automatisiert. Da sitzt niemand, der Ihre Firma auswählt. Programme klappern schlicht das Netz ab und probieren, IDs hochzuzählen. Klein zu sein schützt hier nicht.
+
+Der zweite Irrtum: "Wir haben ein SSL-Zertifikat, also sind wir sicher." Das Schloss in der Adressleiste verschlüsselt nur den Transportweg zwischen Browser und Server. Es sagt nichts darüber aus, ob der Server prüft, wer welche Daten abrufen darf. BOLA passiert hinter dem Schloss, nicht davor.
+
+Der dritte Irrtum: "Das ist Sache der Agentur, damit habe ich nichts zu tun." Rechtlich ist der Datenschutzvorfall Ihr Vorfall. Die Meldepflicht trifft Sie als Verantwortlichen, nicht die Agentur. Deshalb ist es Ihr gutes Recht und Ihre Pflicht, die richtigen Fragen zu stellen.
+
+## Key Takeaways
+
+- Eine fehlerhafte API-Anbindung gibt fremde Kundendaten preis, oft schon durch simples Manipulieren einer ID in der Anfrage. Diese Lücke heißt BOLA und steht auf Platz 1 der OWASP API Security Top 10 (2023).
+- Neben BOLA sind kaputte Authentifizierung (API2:2023) und Fehlkonfigurationen wie ausführliche Fehlermeldungen (API8:2023) eigenständige Top-Risiken, die bis zur Server-Übernahme führen können.
+- Die Gefahr ist real: Laut Salt Labs (Q1 2025) hatten 99 Prozent der Organisationen binnen zwölf Monaten API-Sicherheitsprobleme, angeführt von Schwachstellen und BOLA (37 Prozent).
+- In Österreich wird aus dem Technikfehler ein Rechtsrisiko: Data Breach nach Artikel 33 DSGVO, Meldung binnen 72 Stunden an die Datenschutzbehörde, Bußgelder bis 10 Millionen Euro oder 2 Prozent des Jahresumsatzes.
+- Prävention ist fast immer günstiger als die Aufarbeitung. Zugriffsprüfung pro Objekt, keine sprechenden Fehlermeldungen und ein Notfallplan sind die wichtigsten Hebel.
+
+## Fazit und ein fairer Vorschlag
+
+Schnittstellen sind kein Nebenschauplatz, sie sind das Nervensystem Ihrer Website. Eine schlecht angebundene API sieht im Alltag aus wie eine perfekt funktionierende Seite und ist trotzdem eine offene Tür zu Ihren Kundendaten. Die gute Nachricht: Die häufigsten Lücken sind handwerkliche Fehler, und die lassen sich mit sauberer Arbeit vermeiden.
+
+Wenn Sie nicht sicher sind, wie es um die Schnittstellen Ihrer Firmenwebsite steht, drängen wir Sie zu nichts. Schildern Sie uns kurz Ihre Situation, und wir sagen Ihnen offen, ob Handlungsbedarf besteht. Kein Alarmismus, nur eine ehrliche Einschätzung. Am schnellsten geht das über unsere [Kontaktseite](/kontakt).
+
+*Dieser Beitrag behandelt technische und rechtliche Grundlagen und ersetzt keine individuelle Rechtsberatung.*

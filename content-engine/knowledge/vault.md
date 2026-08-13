@@ -2795,3 +2795,48 @@ quelle: https://nextjs.org/docs/app/getting-started/server-and-client-components
 quelle_name: Next.js Docs: Server and Client Components - 'When to use' (nextjs.org)
 geprueft_am: 2026-08-12
 recheck_nach: 2027-02-08
+
+## t67-2026-08-13-311
+cluster: 2
+keywords: warum, eine, fehlerhafte, anbindung, sicherheitsrisiko, firmenwebsites
+aussage: Broken Object Level Authorization (BOLA) steht auf Platz 1 der OWASP API Security Top 10 (2023): APIs geben oft Endpunkte mit Objekt-IDs preis; fehlt die Autorisierungspruefung auf Objektebene, kann ein Angreifer durch simples Manipulieren einer ID (z. B. Hochzaehlen einer Nummer) fremde Daten lesen, aendern oder loeschen - das ist die haeufigste und schwerwiegendste API-Schwachstelle.
+quelle: https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/
+quelle_name: OWASP API Security Top 10 - API1:2023 Broken Object Level Authorization
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t67-2026-08-13-312
+cluster: 2
+keywords: warum, eine, fehlerhafte, anbindung, sicherheitsrisiko, firmenwebsites
+aussage: Fehlerhafte API-Anbindungen sind mehr als BOLA: OWASP listet u. a. API2:2023 Broken Authentication (falsch implementierte Auth-Mechanismen erlauben das Uebernehmen fremder Identitaeten) und API8:2023 Security Misconfiguration (z. B. detaillierte Fehlermeldungen/Stacktraces, die sensible Daten und Systeminterna preisgeben und bis zur vollstaendigen Server-Uebernahme fuehren koennen) als eigenstaendige Top-Risiken.
+quelle: https://owasp.org/API-Security/editions/2023/en/0x11-t10/
+quelle_name: OWASP Top 10 API Security Risks 2023 (Uebersicht)
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t67-2026-08-13-313
+cluster: 2
+keywords: warum, eine, fehlerhafte, anbindung, sicherheitsrisiko, firmenwebsites
+aussage: Die Bedrohungslage ist real und breit: Laut Salt Labs State of API Security Report (Q1 2025) hatten 99 % der befragten Organisationen in den vorangegangenen 12 Monaten API-Sicherheitsprobleme; die haeufigsten Produktions-Probleme waren Schwachstellen/BOLA (37 %), Offenlegung sensibler Daten (34 %) und Schwaechen bei der API-Authentifizierung (29 %).
+quelle: https://salt.security/press-releases/salt-labs-state-of-api-security-report-reveals-99-of-respondents-experienced-api-security-issues-in-past-12-months
+quelle_name: Salt Labs 2025 Q1 State of API Security Report (Pressemitteilung)
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t67-2026-08-13-314
+cluster: 2
+keywords: warum, eine, fehlerhafte, anbindung, sicherheitsrisiko, firmenwebsites
+aussage: Fuehrt ein API-Fehler zum Abfluss personenbezogener Daten, wird daraus in Oesterreich ein Rechtsrisiko: Der Vorfall ist als Data Breach nach Art. 33 DSGVO unverzueglich und moeglichst binnen 72 Stunden nach Bekanntwerden an die oesterreichische Datenschutzbehoerde zu melden; bei Verstoessen gegen die Melde-/Benachrichtigungspflicht drohen Geldbussen bis 10 Mio. EUR oder 2 % des weltweiten Jahresumsatzes.
+quelle: https://www.wko.at/datenschutz/eu-dsgvo-meldung-von-datenschutzverletzungen
+quelle_name: WKO - EU-DSGVO: Meldung von Datenschutzverletzungen (Data Breach Notification)
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
+
+## t67-2026-08-13-315
+cluster: 2
+keywords: warum, eine, fehlerhafte, anbindung, sicherheitsrisiko, firmenwebsites
+aussage: Die oesterreichische Datenschutzbehoerde bestaetigt die 72-Stunden-Meldepflicht nach Art. 33 DSGVO fuer jede Verletzung des Schutzes personenbezogener Daten (die auch durch unsichere Schnittstellen ausgeloest werden kann) und weist darauf hin, dass Verstoesse gegen Melde- und Benachrichtigungspflichten Geldbussen bis 10 Mio. EUR bzw. 2 % des weltweiten Jahresumsatzes nach sich ziehen koennen.
+quelle: https://dsb.gv.at/eingabe-an-die-dsb/-meldung-data-breach
+quelle_name: Oesterreichische Datenschutzbehoerde (DSB) - Meldung Data Breach
+geprueft_am: 2026-08-13
+recheck_nach: 2027-02-09
