@@ -13,8 +13,8 @@
 // Haupt-CTA "Grafischen Vorschlag holen" oeffnet das Site-Kontakt-Modal (openForm).
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import { RabbitMark } from "@/components/relaunch/RabbitMark";
 import { useLead } from "@/components/relaunch/lead/LeadProvider";
 import {
   useChatSession,
@@ -245,13 +245,7 @@ export default function ChatWidget() {
           aria-label="Chat mit Red Rabbit öffnen"
           onClick={() => setOpen(true)}
         >
-          <Image
-            src="/images/rr-mark.png"
-            alt=""
-            width={32}
-            height={32}
-            className="rrchat-fab-logo"
-          />
+          <RabbitMark className="rrchat-fab-logo" title="" />
         </button>
       )}
 
@@ -273,13 +267,7 @@ export default function ChatWidget() {
             onMouseDown={onStagePointer}
           >
             <div className="rrchat-logotop" aria-hidden="true">
-              <Image
-                src="/images/rr-mark.png"
-                alt="Red Rabbit"
-                width={26}
-                height={26}
-                className="rrchat-logotop-img"
-              />
+              <RabbitMark className="rrchat-logotop-img" title="Red Rabbit" />
             </div>
             <button
               type="button"
@@ -464,7 +452,13 @@ const STYLE = `
   --rrchat-line:var(--rr-line,#e4e4e0);
   --rrchat-ink:var(--rr-ink,#23262e);
   --rrchat-bg:#f4f4f2;
-  --rrchat-z:2147483000;
+  /* Unter dem seitenweiten roten Cursor-Punkt (RelaunchMenu .rrmenu-cursor,
+     z-index:100000), aber ueber allem anderen Chrome (Header/Cookie=50,
+     Lead-Popup=10000). Der Punkt ist der EINZIGE sichtbare Cursor (Site setzt
+     cursor:none) -> er MUSS ueber dem Chat liegen, sonst klickt man im offenen
+     Chat blind (Thomas 13.08.). Frueher 2147483000 (Max-Int) -> verdeckte den
+     Cursor. */
+  --rrchat-z:90000;
 }
 .rrchat *{ box-sizing:border-box; }
 
@@ -485,7 +479,8 @@ const STYLE = `
 }
 .rrchat-fab:hover{ transform:translateY(-3px); box-shadow:0 16px 36px rgba(241,32,50,.22), 0 3px 8px rgba(28,40,55,.10); }
 .rrchat-fab:focus-visible{ outline:none; box-shadow:0 0 0 3px var(--rrchat-paper), 0 0 0 5.5px var(--rr-red,#f12032); }
-.rrchat-fab-logo{ width:32px; height:32px; object-fit:contain; }
+/* SVG-Marke (RabbitMark, Portrait-Ratio ~174:267) -> vektorscharf, Breite treibt. */
+.rrchat-fab-logo{ width:22px; height:auto; display:block; }
 
 /* ---------- Overlay + Scrim ---------- */
 /* Fast deckende, helle Flaeche statt teurem backdrop-filter: die Startseite
@@ -513,7 +508,7 @@ const STYLE = `
   left:calc(24px + env(safe-area-inset-left));
   pointer-events:none;
 }
-.rrchat-logotop-img{ width:30px; height:30px; object-fit:contain; opacity:1; }
+.rrchat-logotop-img{ width:20px; height:auto; display:block; opacity:1; }
 .rrchat-close{
   position:fixed; top:20px; right:24px; z-index:2;
   right:calc(24px + env(safe-area-inset-right));
