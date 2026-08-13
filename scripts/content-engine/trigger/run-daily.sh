@@ -224,8 +224,13 @@ git commit -q -m "feat(blog): add draft $SLUG (daily engine run)" || { echo "Nic
 git push origin main || { alert "git push fehlgeschlagen"; exit 1; }
 
 # Wait for Vercel to deploy the new draft, then send the review email via the deployed route.
+# Vercel-Builds fuer dieses Repo dauern ~15 Min (gemessen 13.08.2026: Push 12:14:58 -> Artikel
+# live 12:29:43). Das Warte-Fenster MUSS das abdecken, sonst laeuft review-notify ins 404
+# "article not found" und die Review-Mail wird NIE versendet (Root-Cause der ausbleibenden Mails,
+# gefunden beim VPS-Cutover). 100x12s = 20 Min Obergrenze mit Marge; die Schleife bricht sofort ab,
+# sobald der Artikel live ist (i.d.R. ~15 Min, nicht immer volle 20).
 echo "Warte auf Deploy ..."
-for i in $(seq 1 30); do
+for i in $(seq 1 100); do
   code=$(curl -s -o /dev/null -w '%{http_code}' -L --max-time 20 "$SITE_URL/tipps/$SLUG")
   [ "$code" = "200" ] && break
   sleep 12
