@@ -2930,3 +2930,48 @@ quelle: https://w3techs.com/technologies/details/ce-http3
 quelle_name: W3Techs - Usage Statistics of HTTP/3 for Websites
 geprueft_am: 2026-08-13
 recheck_nach: 2027-02-09
+
+## t70-2026-08-14-326
+cluster: 2
+keywords: warum, sollten, dateien, minifiziert, werden
+aussage: Minifizierung entfernt bei CSS- und JS-Dateien unnötige/redundante Daten (Whitespace, Kommentare, Formatierung), ohne dass der Browser den Code anders verarbeitet – Google empfiehlt dafür Tools wie CSSNano/csso für CSS und UglifyJS/Closure Compiler für JavaScript.
+quelle: https://developers.google.com/speed/docs/insights/MinifyResources
+quelle_name: Google Developers - Minify Resources (HTML, CSS, and JavaScript)
+geprueft_am: 2026-08-14
+recheck_nach: 2027-02-10
+
+## t70-2026-08-14-327
+cluster: 2
+keywords: warum, sollten, dateien, minifiziert, werden
+aussage: CSS ist eine render-blockierende Ressource; Minifizierung reduziert die Dateigröße und kann dadurch First Contentful Paint (FCP) und teils auch Largest Contentful Paint (LCP) verbessern, da die Datei schneller heruntergeladen und geparst wird.
+quelle: https://developer.chrome.com/docs/lighthouse/performance/unminified-css
+quelle_name: Chrome for Developers / Lighthouse - Minify CSS (unminified-css)
+geprueft_am: 2026-08-14
+recheck_nach: 2027-02-10
+
+## t70-2026-08-14-328
+cluster: 2
+keywords: warum, sollten, dateien, minifiziert, werden
+aussage: Unminifiziertes JavaScript erhöht sowohl die Übertragungsgröße als auch die Parse-Zeit des Scripts im Browser; der Lighthouse-Audit 'Minify JavaScript' listet betroffene Dateien inklusive möglicher Einsparung in KiB.
+quelle: https://developer.chrome.com/docs/lighthouse/performance/unminified-javascript
+quelle_name: Chrome for Developers / Lighthouse - Minify JavaScript (unminified-javascript)
+geprueft_am: 2026-08-14
+recheck_nach: 2027-02-10
+
+## t70-2026-08-14-329
+cluster: 2
+keywords: warum, sollten, dateien, minifiziert, werden
+aussage: Laut HTTP Archive Web Almanac bestehen nur 60% der Desktop- und 62% der Mobil-Seiten den Lighthouse-Audit für minifiziertes JavaScript vollständig (Score 0,9–1,0) – bei rund 38-40% der Seiten gäbe es noch Einsparpotenzial durch Minifizierung, im Median ca. 12 KB, am 90. Perzentil bis zu 76 KB pro Seite.
+quelle: https://almanac.httparchive.org/en/2024/javascript
+quelle_name: HTTP Archive - Web Almanac 2024, Kapitel JavaScript
+geprueft_am: 2026-08-14
+recheck_nach: 2027-02-10
+
+## t70-2026-08-14-330
+cluster: 2
+keywords: warum, sollten, dateien, minifiziert, werden
+aussage: 82,7% der durch fehlende JS-Minifizierung 'verschwendeten' Bytes stammen von First-Party-Code (eigene Skripte der Website-Betreiber), nur 17,3% von Third-Party-Skripten – der größte Hebel liegt also im eigenen Code, nicht bei externen Einbindungen.
+quelle: https://almanac.httparchive.org/en/2024/javascript
+quelle_name: HTTP Archive - Web Almanac 2024, Kapitel JavaScript
+geprueft_am: 2026-08-14
+recheck_nach: 2027-02-10
