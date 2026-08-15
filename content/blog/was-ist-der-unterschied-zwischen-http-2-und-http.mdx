@@ -1,67 +1,111 @@
 ---
-title: "HTTP/2 vs. HTTP/3: Unterschied für Performance 2026"
-slug: "was-ist-der-unterschied-zwischen-http-2-und-http"
-excerpt: "HTTP/3 loest mit dem Transportprotokoll QUIC das Head-of-Line-Blocking von HTTP/2 und beschleunigt so vor allem mobile Verbindungen bei der Website-Performance."
-featuredSnippetTitle: "Was ist der Unterschied zwischen HTTP/2 und HTTP/3?"
-featuredSnippet: "HTTP/3 ersetzt bei der Datenuebertragung das Transportprotokoll TCP durch QUIC, ein UDP-basiertes Protokoll mit eingebauter TLS-1.3-Verschluesselung. Dadurch verzoegert ein verlorenes Netzwerkpaket nur noch den betroffenen Datenstrom statt, wie bei HTTP/2 ueber TCP, alle gleichzeitig laufenden Verbindungen. Zusaetzlich baut HTTP/3 neue Verbindungen mit nur einem statt drei Round-Trips auf, bei wiederaufgenommenen Verbindungen sogar mit null."
-author: "Dmitry Pashlov"
-publishedAt: "2026-08-13"
-updatedAt: "2026-08-13"
-category: "Technik & Performance"
+title: 'HTTP/2 vs. HTTP/3: Unterschied für Performance 2026'
+slug: was-ist-der-unterschied-zwischen-http-2-und-http
+excerpt: >-
+  HTTP/3 loest mit dem Transportprotokoll QUIC das Head-of-Line-Blocking von
+  HTTP/2 und beschleunigt so vor allem mobile Verbindungen bei der
+  Website-Performance.
+featuredSnippetTitle: Was ist der Unterschied zwischen HTTP/2 und HTTP/3?
+featuredSnippet: >-
+  HTTP/3 ersetzt bei der Datenuebertragung das Transportprotokoll TCP durch
+  QUIC, ein UDP-basiertes Protokoll mit eingebauter TLS-1.3-Verschluesselung.
+  Dadurch verzoegert ein verlorenes Netzwerkpaket nur noch den betroffenen
+  Datenstrom statt, wie bei HTTP/2 ueber TCP, alle gleichzeitig laufenden
+  Verbindungen. Zusaetzlich baut HTTP/3 neue Verbindungen mit nur einem statt
+  drei Round-Trips auf, bei wiederaufgenommenen Verbindungen sogar mit null.
+author: Dmitry Pashlov
+publishedAt: '2026-08-13'
+updatedAt: '2026-08-13'
+category: Technik & Performance
 tags:
-  - "HTTP/3"
-  - "HTTP/2"
-  - "Website-Performance"
-  - "QUIC"
-  - "Technik"
-featuredImage: "/images/blog/was-ist-der-unterschied-zwischen-http-2-und-http.png"
-status: "published"
+  - HTTP/3
+  - HTTP/2
+  - Website-Performance
+  - QUIC
+  - Technik
+featuredImage: /images/blog/was-ist-der-unterschied-zwischen-http-2-und-http.png
+status: published
 aiAssisted: true
 sources:
-  - name: "http.dev - HTTP/3 explained"
-    url: "https://http.dev/3"
-  - name: "MDN Web Docs - Glossary: HTTP/2 und HTTP/3"
-    url: "https://developer.mozilla.org/en-US/docs/Glossary/HTTP_2"
-  - name: "W3Techs - Usage Statistics of HTTP/3 for Websites"
-    url: "https://w3techs.com/technologies/details/ce-http3"
+  - name: http.dev - HTTP/3 explained
+    url: 'https://http.dev/3'
+  - name: 'MDN Web Docs - Glossary: HTTP/2 und HTTP/3'
+    url: 'https://developer.mozilla.org/en-US/docs/Glossary/HTTP_2'
+  - name: W3Techs - Usage Statistics of HTTP/3 for Websites
+    url: 'https://w3techs.com/technologies/details/ce-http3'
 keyTakeaways:
-  - "HTTP/3 ersetzt TCP durch QUIC, ein UDP-basiertes Transportprotokoll mit eingebauter TLS-1.3-Verschluesselung, offiziell verabschiedet im Juni 2022 als RFC 9114."
-  - "Bei HTTP/2 ueber TCP blockiert ein einzelnes verlorenes Paket alle gleichzeitig laufenden Streams einer Verbindung, HTTP/3 verzoegert dank Stream-Bewusstsein auf Transportebene nur den betroffenen Stream."
-  - "Der Verbindungsaufbau ist bei HTTP/3 schneller, 1 Round-Trip bei einer neuen Verbindung statt 3 bei TCP mit TLS 1.2, bei wiederaufgenommenen Verbindungen sogar 0 Round-Trips."
-  - "HTTP/2 bleibt mit Multiplexing und HPACK-Header-Kompression die technische Basis, HTTP/3 verbessert vor allem den Transport, nicht die Struktur der Anfragen."
-  - "Stand August 2026 nutzen laut W3Techs 40,3 Prozent aller Websites HTTP/3, der Umstieg ist noch kein Standard, aber ein realer Vorsprung gegenueber der Konkurrenz."
+  - >-
+    HTTP/3 ersetzt TCP durch QUIC, ein UDP-basiertes Transportprotokoll mit
+    eingebauter TLS-1.3-Verschluesselung, offiziell verabschiedet im Juni 2022
+    als RFC 9114.
+  - >-
+    Bei HTTP/2 ueber TCP blockiert ein einzelnes verlorenes Paket alle
+    gleichzeitig laufenden Streams einer Verbindung, HTTP/3 verzoegert dank
+    Stream-Bewusstsein auf Transportebene nur den betroffenen Stream.
+  - >-
+    Der Verbindungsaufbau ist bei HTTP/3 schneller, 1 Round-Trip bei einer neuen
+    Verbindung statt 3 bei TCP mit TLS 1.2, bei wiederaufgenommenen Verbindungen
+    sogar 0 Round-Trips.
+  - >-
+    HTTP/2 bleibt mit Multiplexing und HPACK-Header-Kompression die technische
+    Basis, HTTP/3 verbessert vor allem den Transport, nicht die Struktur der
+    Anfragen.
+  - >-
+    Stand August 2026 nutzen laut W3Techs 40,3 Prozent aller Websites HTTP/3,
+    der Umstieg ist noch kein Standard, aber ein realer Vorsprung gegenueber der
+    Konkurrenz.
 conclusionStats:
-  - label: "HTTP/3-Nutzung weltweit (Aug 2026)"
-    value: "40,3 %"
-  - label: "Round-Trips bei neuer Verbindung"
-    value: "1 statt 3"
-  - label: "Round-Trips bei wiederaufgenommener Verbindung"
-    value: "0"
-  - label: "RFC-Verabschiedung von HTTP/3"
-    value: "Juni 2022"
+  - label: HTTP/3-Nutzung weltweit (Aug 2026)
+    value: '40,3 %'
+  - label: Round-Trips bei neuer Verbindung
+    value: 1 statt 3
+  - label: Round-Trips bei wiederaufgenommener Verbindung
+    value: '0'
+  - label: RFC-Verabschiedung von HTTP/3
+    value: Juni 2022
 autoGenerateFAQs: false
 customFAQs:
-  - question: "Was ist der Hauptunterschied zwischen HTTP/2 und HTTP/3?"
-    answer: "HTTP/2 ueberträgt Daten ueber TCP, wo ein einzelnes verlorenes Paket alle gleichzeitig laufenden Streams blockiert. HTTP/3 nutzt stattdessen QUIC ueber UDP, das jeden Stream einzeln behandelt, sodass ein verlorenes Paket nur den betroffenen Stream verzoegert."
-  - question: "Ist HTTP/3 sicherer als HTTP/2?"
-    answer: "HTTP/3 bringt TLS 1.3 als festen Bestandteil des Protokolls mit, nicht als nachtraeglich aufgesetzte Schicht. Verschluesselung und Verbindungsaufbau laufen dadurch in einem Schritt statt nacheinander wie bei klassischem HTTP ueber TCP."
-  - question: "Muss ich meine Website fuer HTTP/3 umprogrammieren?"
-    answer: "Nein. HTTP/3 veraendert nur die Transportebene, nicht die Anwendungsebene. Am Design, Code, an Bildern oder Skripten Ihrer Website aendert sich nichts, die Umstellung ist reine Serverkonfiguration beim Hosting-Anbieter oder CDN."
-  - question: "Wie pruefe ich, ob meine Website HTTP/3 nutzt?"
-    answer: "Oeffnen Sie die Entwicklertools Ihres Browsers, wechseln Sie zum Netzwerk-Tab und schauen Sie in die Spalte fuer das verwendete Protokoll. Steht dort h3, laeuft die Seite bereits ueber HTTP/3, bei h2 noch ueber HTTP/2."
-  - question: "Wie viele Websites nutzen HTTP/3 im Jahr 2026?"
-    answer: "Laut W3Techs nutzen mit Stand August 2026 rund 40,3 Prozent aller Websites weltweit HTTP/3. Der Grossteil laeuft also noch auf HTTP/2 oder HTTP/1.1, was den Umstieg zu einem echten Differenzierungsfaktor macht."
+  - question: Was ist der Hauptunterschied zwischen HTTP/2 und HTTP/3?
+    answer: >-
+      HTTP/2 ueberträgt Daten ueber TCP, wo ein einzelnes verlorenes Paket alle
+      gleichzeitig laufenden Streams blockiert. HTTP/3 nutzt stattdessen QUIC
+      ueber UDP, das jeden Stream einzeln behandelt, sodass ein verlorenes Paket
+      nur den betroffenen Stream verzoegert.
+  - question: Ist HTTP/3 sicherer als HTTP/2?
+    answer: >-
+      HTTP/3 bringt TLS 1.3 als festen Bestandteil des Protokolls mit, nicht als
+      nachtraeglich aufgesetzte Schicht. Verschluesselung und Verbindungsaufbau
+      laufen dadurch in einem Schritt statt nacheinander wie bei klassischem
+      HTTP ueber TCP.
+  - question: Muss ich meine Website fuer HTTP/3 umprogrammieren?
+    answer: >-
+      Nein. HTTP/3 veraendert nur die Transportebene, nicht die Anwendungsebene.
+      Am Design, Code, an Bildern oder Skripten Ihrer Website aendert sich
+      nichts, die Umstellung ist reine Serverkonfiguration beim Hosting-Anbieter
+      oder CDN.
+  - question: 'Wie pruefe ich, ob meine Website HTTP/3 nutzt?'
+    answer: >-
+      Oeffnen Sie die Entwicklertools Ihres Browsers, wechseln Sie zum
+      Netzwerk-Tab und schauen Sie in die Spalte fuer das verwendete Protokoll.
+      Steht dort h3, laeuft die Seite bereits ueber HTTP/3, bei h2 noch ueber
+      HTTP/2.
+  - question: Wie viele Websites nutzen HTTP/3 im Jahr 2026?
+    answer: >-
+      Laut W3Techs nutzen mit Stand August 2026 rund 40,3 Prozent aller Websites
+      weltweit HTTP/3. Der Grossteil laeuft also noch auf HTTP/2 oder HTTP/1.1,
+      was den Umstieg zu einem echten Differenzierungsfaktor macht.
 hookCandidates:
-  - "website ruckelt: http/2 oder http/3?"
+  - 'website ruckelt: http/2 oder http/3?'
 ---
 
 Stellen Sie sich eine einspurige Zufahrtsstraße zu einem Wiener Bürohaus vor, auf der zehn Lieferwagen gleichzeitig unterwegs sind. Bleibt einer davon liegen, weil ihm die Reifenpanne einen Strich durch die Rechnung macht, stehen automatisch auch die neun anderen still. Keiner kann überholen, alle warten, bis das Problem an der Spitze gelöst ist. Genau das passiert technisch gesehen bei HTTP/2, sobald im Netzwerk ein einzelnes Datenpaket verloren geht. HTTP/3 baut stattdessen mehrere parallele Fahrspuren, auf denen ein liegen gebliebener Lieferwagen nur seine eigene Spur blockiert, alle anderen fahren ungestört weiter.
 
 **Kurz beantwortet:** HTTP/3 ersetzt bei der Datenübertragung das Transportprotokoll TCP durch QUIC, ein UDP-basiertes Protokoll mit eingebauter TLS-1.3-Verschlüsselung. Dadurch verzögert ein verlorenes Netzwerkpaket nur noch den betroffenen Datenstrom statt, wie bei HTTP/2 über TCP, alle gleichzeitig laufenden Verbindungen. Zusätzlich baut HTTP/3 neue Verbindungen mit nur einem statt drei Round-Trips auf, bei wiederaufgenommenen Verbindungen sogar mit null.
 
-![Vergleichsgrafik HTTP/2 und HTTP/3 Datenübertragung für die Website-Performance](/images/blog/was-ist-der-unterschied-zwischen-http-2-und-http.png)
-
 ## Das Problem bei HTTP/2: Ein verlorenes Paket blockiert alles
+
+
+![HTTP/2 gegen HTTP/3](/images/blog/was-ist-der-unterschied-zwischen-http-2-und-http-infografik-t481y.png)
 
 HTTP/2 war 2015 ein großer Fortschritt gegenüber HTTP/1.1, weil es endlich erlaubte, viele Anfragen gleichzeitig über eine einzige Verbindung zu schicken, statt für jedes Bild, jedes Skript und jede Schriftart eine eigene Verbindung aufzubauen. Das Grundproblem liegt dabei aber tiefer, nämlich im Transportprotokoll TCP selbst. TCP garantiert, dass Daten in exakt der Reihenfolge ankommen, in der sie abgeschickt wurden. Klingt erst einmal vernünftig, hat aber einen Haken: Geht unterwegs ein einzelnes Paket verloren, etwa weil ein Nutzer in der Straßenbahn kurz das Netz wechselt, dann müssen alle folgenden Pakete warten, bis das verlorene erneut angekommen ist. Das gilt selbst dann, wenn die wartenden Pakete zu einem völlig anderen Bild oder einer anderen Datei gehören als das verlorene. Dieses Phänomen nennt man Head-of-Line-Blocking, und es betrifft bei HTTP/2 über TCP sämtliche gleichzeitig übertragenen Streams einer Verbindung, nicht nur den einen, der tatsächlich betroffen ist.
 
@@ -75,11 +119,17 @@ Das ist auch der Grund, warum HTTP/3 offiziell im Juni 2022 als RFC 9114 verabsc
 
 ## Schneller da: weniger Round-Trips bis zur ersten Antwort
 
+
+![Junge Frau in einer Wiener Straßenbahn kauft mobil in einem Online-Shop ein, während die Seite trotz wechselnder Mobilverbindung dank HTTP/3 flüssig lädt](/images/blog/was-ist-der-unterschied-zwischen-http-2-und-http-ctx1-t48n1.png)
+
 Neben dem Blocking-Problem gibt es einen zweiten, für die gefühlte Ladegeschwindigkeit mindestens genauso wichtigen Unterschied: wie schnell eine Verbindung überhaupt steht. Bei einer klassischen Verbindung über TCP mit TLS 1.2 braucht es für den Aufbau einer neuen Verbindung rund drei Round-Trips, also drei komplette Hin- und Rückwege zwischen Browser und Server, bevor überhaupt die erste Nutzdatei übertragen wird. QUIC kombiniert den Transport-Handshake und den kryptografischen Handshake in einem einzigen Schritt und kommt bei einer neuen Verbindung mit nur einem Round-Trip aus. Wird eine Verbindung wiederaufgenommen, etwa weil ein Besucher kurz zuvor schon einmal auf der Seite war, schafft QUIC das sogar mit null zusätzlichen Round-Trips, dem sogenannten 0-RTT-Verfahren.
 
 Was heißt das konkret? Jeder eingesparte Round-Trip zählt doppelt, sobald die Verbindung zwischen Nutzer und Server nicht ideal ist, etwa bei mobilen Verbindungen mit schwankender Signalstärke oder bei Besuchern, die geografisch weiter vom Server entfernt sind als ein Nutzer direkt in Wien. Ein Online-Shop, dessen Kunden übers Land verteilt sind und häufig mobil einkaufen, profitiert von diesem Effekt spürbar öfter als eine reine Firmenseite mit wenigen, stets vom selben Standort aus zugreifenden Besuchern. Die Regel dahinter ist einfach: Je instabiler oder langsamer die Verbindung eines Besuchers, desto mehr bringt ihm der schlankere Verbindungsaufbau von HTTP/3.
 
 ## Verschlüsselung ohne Umweg: TLS 1.3 ist fix eingebaut
+
+
+![Nahaufnahme von Händen bei einer kontaktlosen Kartenzahlung an einem Bäckerei-Terminal als Sinnbild für eingebaute, sichere Verschlüsselung wie bei TLS 1.3 in HTTP/3](/images/blog/was-ist-der-unterschied-zwischen-http-2-und-http-ctx2-t48n2.png)
 
 Ein Detail, das in der Diskussion um HTTP/3 oft untergeht, betrifft die Sicherheit. QUIC bringt die TLS-1.3-Verschlüsselung nicht als nachträglich aufgesetzte Schicht mit, sondern als festen Bestandteil des Protokolls selbst. Bei klassischem HTTP über TCP laufen Transport-Handshake und Verschlüsselungs-Handshake nacheinander ab, das kostet zusätzliche Zeit. Bei QUIC passiert beides gemeinsam in einem Schritt. Das bedeutet für Betreiber einer Website auch: Wer auf HTTP/3 wechselt, bekommt eine moderne, aktuelle Verschlüsselung quasi automatisch mitgeliefert, ohne dass man Verschlüsselung und Geschwindigkeit gegeneinander abwägen müsste. Gerade für Websites, die personenbezogene Daten verarbeiten und damit ohnehin an die DSGVO gebunden sind, ist das ein angenehmer Nebeneffekt, auch wenn HTTP/3 allein natürlich keine DSGVO-Konformität ersetzt.
 
@@ -92,6 +142,9 @@ Man könnte jetzt meinen, HTTP/2 sei mit diesen Vorteilen von HTTP/3 quasi über
 Trotz der klaren technischen Vorteile ist HTTP/3 noch längst nicht überall Standard. Laut [W3Techs](https://w3techs.com/technologies/details/ce-http3) nutzen mit Stand August 2026 rund 40,3 Prozent aller Websites weltweit HTTP/3. HTTP/2 und HTTP/1.1 sind also weiterhin auf einem beträchtlichen Teil des Webs im Einsatz. Für Sie als Website-Betreiber bedeutet dieser Wert vor allem eines: Der Umstieg auf HTTP/3 ist derzeit noch kein Muss, um im Vergleich zur Konkurrenz nicht abgehängt zu werden, aber er ist ein handfester Differenzierungsfaktor gegenüber Mitbewerbern, die noch nicht umgestiegen sind. Wer heute schon auf HTTP/3 setzt, verschafft sich real messbar schnellere Ladezeiten unter schwierigen Netzwerkbedingungen, während der Großteil des Wettbewerbs diesen Vorteil noch liegen lässt.
 
 ## Schritt für Schritt: Was Sie konkret prüfen sollten
+
+
+![Unternehmer und Web-Fachfrau prüfen gemeinsam am Laptop, ob die Website bereits HTTP/3 unterstützt, als Beispiel für die konkrete Schritt-für-Schritt-Prüfung](/images/blog/was-ist-der-unterschied-zwischen-http-2-und-http-ctx3-t48n3.png)
 
 Die gute Nachricht vorweg: Für die meisten Website-Betreiber ist HTTP/3 keine Frage von aufwendigem Programmieren, sondern von Infrastruktur.
 
