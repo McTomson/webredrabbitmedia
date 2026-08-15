@@ -2975,3 +2975,57 @@ quelle: https://almanac.httparchive.org/en/2024/javascript
 quelle_name: HTTP Archive - Web Almanac 2024, Kapitel JavaScript
 geprueft_am: 2026-08-14
 recheck_nach: 2027-02-10
+
+## t71-2026-08-15-331
+cluster: 2
+keywords: misst, echte, performance, einer, website, abseits, synthetischen, tests
+aussage: Das Chrome User Experience Report (CrUX) ist ein Datensatz, der die reale Nutzung populärer Webseiten durch echte Chrome-Nutzer abbildet ('field data'), im Gegensatz zu synthetischen Labortests wie Lighthouse, die auf einem einzelnen simulierten Gerät und Netzwerk basieren.
+quelle: https://developer.chrome.com/docs/crux
+quelle_name: Chrome for Developers - Overview of CrUX
+geprueft_am: 2026-08-15
+recheck_nach: 2027-02-11
+
+## t71-2026-08-15-332
+cluster: 2
+keywords: misst, echte, performance, einer, website, abseits, synthetischen, tests
+aussage: Google empfiehlt explizit: Wenn sowohl Feld- als auch Labordaten für eine Seite vorliegen, sollten Feld-/Real-User-Daten zur Priorisierung von Performance-Maßnahmen genutzt werden, da nur sie widerspiegeln, was echte Nutzer tatsächlich erleben (z. B. Cache-Effekte, Scroll-Verhalten, reale Geräte-/Netzwerkvielfalt, die Labortests nicht abbilden).
+quelle: https://web.dev/articles/lab-and-field-data-differences
+quelle_name: web.dev - Why lab and field data can be different (and what to do about it)
+geprueft_am: 2026-08-15
+recheck_nach: 2027-02-11
+
+## t71-2026-08-15-333
+cluster: 2
+keywords: misst, echte, performance, einer, website, abseits, synthetischen, tests
+aussage: CrUX-Daten werden als rollierender 28-Tage-Durchschnitt erhoben und täglich aktualisiert; die Metriken (u. a. LCP, INP, CLS) werden dabei am 75. Perzentil gemessen.
+quelle: https://web.dev/articles/crux-and-rum-differences
+quelle_name: web.dev - Why is CrUX data different from my RUM data?
+geprueft_am: 2026-08-15
+recheck_nach: 2027-02-11
+
+## t71-2026-08-15-334
+cluster: 2
+keywords: misst, echte, performance, einer, website, abseits, synthetischen, tests
+aussage: Der Core Web Vitals-Bericht in der Google Search Console basiert nicht auf Labortests, sondern ausschließlich auf 'real world usage data' (Feld-/Nutzerdaten) aus dem CrUX-Report, der anonymisierte Performance-Metriken echter Besucher der jeweiligen URL sammelt.
+quelle: https://support.google.com/webmasters/answer/9205520?hl=en
+quelle_name: Google Search Console Hilfe - Core Web Vitals report
+geprueft_am: 2026-08-15
+recheck_nach: 2027-02-11
+
+## t71-2026-08-15-335
+cluster: 2
+keywords: misst, echte, performance, einer, website, abseits, synthetischen, tests
+aussage: CrUX ist auf den Chrome-Browser beschränkt ('Chrome-only') und erfasst nur einen opt-in-Ausschnitt der Chrome-Nutzer; eigene Real User Monitoring (RUM)-Lösungen können dagegen browserübergreifend (z. B. Safari, Firefox) sowie feingranularer pro Seite und Nutzersegment messen – das deckt CrUX allein nicht ab.
+quelle: https://web.dev/articles/crux-and-rum-differences
+quelle_name: web.dev - Why is CrUX data different from my RUM data?
+geprueft_am: 2026-08-15
+recheck_nach: 2027-02-11
+
+## t71-2026-08-15-336
+cluster: 2
+keywords: misst, echte, performance, einer, website, abseits, synthetischen, tests
+aussage: PageSpeed Insights zeigt sowohl Lab-Daten (simulierte Seitenaufrufe) als auch Feld-Daten aus dem CrUX-Report gemeinsam an, damit Nutzer synthetische Diagnose-Werte und reale Nutzererfahrung unterscheiden und für Priorisierung getrennt bewerten können.
+quelle: https://developer.chrome.com/docs/crux
+quelle_name: web.dev / Chrome for Developers - PageSpeed Insights & CrUX
+geprueft_am: 2026-08-15
+recheck_nach: 2027-02-11
