@@ -1060,7 +1060,7 @@ export default function DesignSystemPage() {
             <p className="rr-faq__eyebrow">Haeufige Fragen</p>
             <details open>
               <summary>Was kostet eine Website?<span className="rr-faq__plus" /></summary>
-              <div className="rr-faq__answer"><div className="rr-faq__answer-in"><p>Der Starter (One-Pager) beginnt bei 790 Euro. Mehrseitige Websites kalkulieren wir fix nach Umfang, den Preis bekommst du vorher schriftlich.</p></div></div>
+              <div className="rr-faq__answer"><div className="rr-faq__answer-in"><p>Der Starter (One-Pager) beginnt bei 1.250 Euro. Mehrseitige Websites kalkulieren wir fix nach Umfang, den Preis bekommst du vorher schriftlich.</p></div></div>
             </details>
             <details>
               <summary>Muss ich in Vorkasse gehen?<span className="rr-faq__plus" /></summary>
@@ -1074,7 +1074,7 @@ export default function DesignSystemPage() {
           <p className="rr-faq__eyebrow">Haeufige Fragen</p>
           <details open>
             <summary><span className="rr-faq__idx">01</span><span className="rr-faq__q">Was kostet eine Website?</span></summary>
-            <div className="rr-faq__answer"><div className="rr-faq__answer-in"><p>Der Starter (One-Pager) beginnt bei 790 Euro. Mehrseitige Websites kalkulieren wir fix nach Umfang, den Preis bekommst du vorher schriftlich.</p></div></div>
+            <div className="rr-faq__answer"><div className="rr-faq__answer-in"><p>Der Starter (One-Pager) beginnt bei 1.250 Euro. Mehrseitige Websites kalkulieren wir fix nach Umfang, den Preis bekommst du vorher schriftlich.</p></div></div>
           </details>
           <details>
             <summary><span className="rr-faq__idx">02</span><span className="rr-faq__q">Gibt es versteckte Kosten?</span></summary>
@@ -1088,7 +1088,7 @@ export default function DesignSystemPage() {
             <p className="rr-faq__eyebrow">Haeufige Fragen</p>
             <details open>
               <summary>Was kostet eine Website?</summary>
-              <div className="rr-faq__answer"><div className="rr-faq__answer-in"><div className="rr-faq__bubble">Der Starter (One-Pager) beginnt bei 790 Euro. Mehrseitige Websites kalkulieren wir fix nach Umfang, den Preis bekommst du vorher schriftlich.</div></div></div>
+              <div className="rr-faq__answer"><div className="rr-faq__answer-in"><div className="rr-faq__bubble">Der Starter (One-Pager) beginnt bei 1.250 Euro. Mehrseitige Websites kalkulieren wir fix nach Umfang, den Preis bekommst du vorher schriftlich.</div></div></div>
             </details>
             <details>
               <summary>Muss ich in Vorkasse gehen?</summary>
