@@ -300,8 +300,37 @@ _gemini_render_once() {
 # Pre-warm the daemon ONCE: pay the slow cold-start here (outside any per-image retry budget) so
 # every per-image render below opens a warm, fast daemon. Non-fatal: if this can't reach Gemini the
 # per-image _ensure_gemini_loaded still retries, and the hero fail-closed guard catches a real outage.
+# ── Login-Health-Check: ausgeloggtes Profil erkennen und SOFORT + LAUT abbrechen ──
+# Root-Cause 2026-08-15: ein ausgeloggtes gemini-immo-Profil laesst JEDES Bild scheitern
+# ("Bild nicht gefunden in Konversation ..."), waehrend die 5x-Retries pro Bild ~20 Min STILL
+# verbrennen und die Ursache (Login weg) NICHT nennen. Wir pruefen den Login EINMAL nach dem
+# Prewarm: ist das Profil ausgeloggt UND fehlt der Hero (wir muessen also wirklich generieren),
+# brechen wir sofort mit klarer Meldung + macOS-Notification ab. Persistenz-Fix dazu: die Login-
+# Cookies ueberleben nur ein GRACEFULES close (kein kill -9 mitten im Lauf) + ein frisches
+# CLEAN-loggedin-Backup. Neu einloggen: `generate-images-gemini.sh login` (Konto t.uhlir@immo.red).
+_gemini_logged_in() {
+    # OUT nur bei POSITIVEM Logout-Signal (Signin-URL oder eigenstaendiger Anmelden-Button) —
+    # nie allein aus fehlendem Konto-Element (das variiert sprachlich und wuerde false-positiv sein).
+    local js res
+    js='(()=>{const onSignin=/accounts\.google\.com/.test(location.href);const anmelden=[...document.querySelectorAll("a,button")].some(e=>/^\s*(Anmelden|Sign in)\s*$/i.test((e.textContent||"").trim()));return (onSignin||anmelden)?"OUT":"IN";})()'
+    res="$("${AB[@]}" eval -b "$(printf '%s' "$js" | base64 | tr -d '\n')" 2>/dev/null | tr -d '"[:space:]')"
+    [ "$res" = "IN" ]
+}
+
 if _ensure_gemini_loaded; then
     echo "  prewarm: Gemini geladen (Daemon warm)" | tee -a "$LOG"
+    "${AB[@]}" wait --load networkidle >>"$LOG" 2>&1 || true
+    sleep 3
+    # Nur fail-fast, wenn der Hero NOCH fehlt (sonst ist es ein Resume/Apply-Lauf ohne Generierung).
+    if ! valid_png "$STAGE/hero.png" && ! _gemini_logged_in; then
+        echo "FATAL: GEMINI_LOGGED_OUT — Profil gemini-immo ist nicht angemeldet; Bilder koennen nicht erzeugt werden." | tee -a "$LOG"
+        echo "  -> Einmalig einloggen: scripts/content-engine/media/generate-images-gemini.sh login (Konto t.uhlir@immo.red)," | tee -a "$LOG"
+        echo "     danach Backup erneuern: cp -a '$GEMINI_PROFILE' '$_CLEAN_BACKUP'" | tee -a "$LOG"
+        osascript -e "display notification \"Gemini-Profil ist ausgeloggt — Bild-Automation blockiert. Einmalig 'generate-images-gemini.sh login' (t.uhlir@immo.red) ausfuehren.\" with title \"Red Rabbit Media\" subtitle \"LOGIN noetig: Bilder\" sound name \"Basso\"" 2>/dev/null || true
+        "${AB[@]}" close --all >/dev/null 2>&1 || true
+        exit 7
+    fi
+    echo "  login: eingeloggt (OK)" | tee -a "$LOG"
 else
     echo "  WARN prewarm: Gemini nicht erreichbar — pro-Bild-Retry greift, Hero-Guard sichert ab" | tee -a "$LOG"
 fi
