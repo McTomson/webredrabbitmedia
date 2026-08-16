@@ -3029,3 +3029,48 @@ quelle: https://developer.chrome.com/docs/crux
 quelle_name: web.dev / Chrome for Developers - PageSpeed Insights & CrUX
 geprueft_am: 2026-08-15
 recheck_nach: 2027-02-11
+
+## t72-2026-08-16-337
+cluster: 2
+keywords: sind, nachteile, vielen, aktiven, plugins, einer, wordpress, seite
+aussage: 91% aller neu entdeckten WordPress-Sicherheitsluecken 2025 entfielen auf Plugins, 9% auf Themes und nur 6 Luecken (Bagatellfaelle) auf den WordPress-Core selbst — Plugins sind damit die dominante Angriffsflaeche einer WordPress-Seite.
+quelle: https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/
+quelle_name: Patchstack - State of WordPress Security in 2026 (Whitepaper)
+geprueft_am: 2026-08-16
+recheck_nach: 2027-02-12
+
+## t72-2026-08-16-338
+cluster: 2
+keywords: sind, nachteile, vielen, aktiven, plugins, einer, wordpress, seite
+aussage: Eine durchschnittliche WordPress-Website laeuft mit 20-30 aktiven Plugins, von denen jedes eigenes CSS/JavaScript einbindet; diese Skripte konkurrieren im Browser um Ressourcen und verschlechtern nachweislich LCP- und INP-Werte, teils selbst auf Unterseiten, auf denen die jeweilige Plugin-Funktion gar nicht sichtbar ist.
+quelle: https://www.zavabuild.com/blog/javascript-performance-for-wordpress-sites
+quelle_name: Zava Build - JavaScript Performance for WordPress Sites
+geprueft_am: 2026-08-16
+recheck_nach: 2027-02-12
+
+## t72-2026-08-16-339
+cluster: 2
+keywords: sind, nachteile, vielen, aktiven, plugins, einer, wordpress, seite
+aussage: Laut der offiziellen WordPress-Lernplattform entstehen Plugin-Konflikte typischerweise durch Code-Inkompatibilitaeten mit der aktuellen WordPress-Version, JavaScript-Fehler und veraltete Funktionen; haeufigstes Symptom ist der 'White Screen of Death', bei dem die Seite (Front- und/oder Backend) komplett unzugaenglich wird.
+quelle: https://learn.wordpress.org/lesson/troubleshooting-your-site-plugin-and-theme-conflicts/
+quelle_name: Learn WordPress (offiziell) - Troubleshooting your site: Plugin and theme conflicts
+geprueft_am: 2026-08-16
+recheck_nach: 2027-02-12
+
+## t72-2026-08-16-340
+cluster: 2
+keywords: sind, nachteile, vielen, aktiven, plugins, einer, wordpress, seite
+aussage: Die offizielle WordPress.org-Dokumentation zum Plugin-Management beschreibt als Standard-Fehlersuche bei Website-Problemen, Plugins einzeln zu deaktivieren, bis der Verursacher gefunden ist — ein Hinweis darauf, dass mit steigender Plugin-Zahl auch die Fehlersuche und der Wartungsaufwand ueberproportional zunehmen.
+quelle: https://wordpress.org/documentation/article/manage-plugins/
+quelle_name: WordPress.org Documentation - Manage Plugins
+geprueft_am: 2026-08-16
+recheck_nach: 2027-02-12
+
+## t72-2026-08-16-341
+cluster: 2
+keywords: sind, nachteile, vielen, aktiven, plugins, einer, wordpress, seite
+aussage: Plugins setzen bei in der wp_options-Tabelle gespeicherten Einstellungen haeufig das 'autoload'-Flag unnoetig auf 'yes', wodurch diese Daten bei JEDEM Seitenaufruf mitgeladen werden; in dokumentierten Praxisfaellen blaehte dies die Datenbank auf bis zu 137 MB autoloaded Data bzw. 600 MB Tabellengroesse auf und verursachte MySQL-Lastspitzen (Zielwert waere unter 1 MB).
+quelle: https://kinsta.com/blog/wp-options-autoloaded-data/
+quelle_name: Kinsta - How to Clean up Your wp_options Table and Autoloaded Data
+geprueft_am: 2026-08-16
+recheck_nach: 2027-02-12
