@@ -1,0 +1,1260 @@
+{
+  "takenAt": "2026-08-16T12:40:03.001Z",
+  "source": "demo",
+  "center": {
+    "lat": 48.20859,
+    "lng": 16.368577,
+    "label": "Red Rabbit GmbH · Habsburgergasse 8, 1010 Wien"
+  },
+  "gridSize": 7,
+  "spacingKm": 0.6,
+  "scanDepth": 20,
+  "keywords": [
+    {
+      "keyword": "webdesign wien",
+      "cells": [
+        {
+          "pointId": "r-3_c-3",
+          "row": -3,
+          "col": -3,
+          "rank": 15
+        },
+        {
+          "pointId": "r-3_c-2",
+          "row": -3,
+          "col": -2,
+          "rank": 14
+        },
+        {
+          "pointId": "r-3_c-1",
+          "row": -3,
+          "col": -1,
+          "rank": 13
+        },
+        {
+          "pointId": "r-3_c0",
+          "row": -3,
+          "col": 0,
+          "rank": 12
+        },
+        {
+          "pointId": "r-3_c1",
+          "row": -3,
+          "col": 1,
+          "rank": 13
+        },
+        {
+          "pointId": "r-3_c2",
+          "row": -3,
+          "col": 2,
+          "rank": 14
+        },
+        {
+          "pointId": "r-3_c3",
+          "row": -3,
+          "col": 3,
+          "rank": 15
+        },
+        {
+          "pointId": "r-2_c-3",
+          "row": -2,
+          "col": -3,
+          "rank": 14
+        },
+        {
+          "pointId": "r-2_c-2",
+          "row": -2,
+          "col": -2,
+          "rank": 12
+        },
+        {
+          "pointId": "r-2_c-1",
+          "row": -2,
+          "col": -1,
+          "rank": 10
+        },
+        {
+          "pointId": "r-2_c0",
+          "row": -2,
+          "col": 0,
+          "rank": 10
+        },
+        {
+          "pointId": "r-2_c1",
+          "row": -2,
+          "col": 1,
+          "rank": 10
+        },
+        {
+          "pointId": "r-2_c2",
+          "row": -2,
+          "col": 2,
+          "rank": 12
+        },
+        {
+          "pointId": "r-2_c3",
+          "row": -2,
+          "col": 3,
+          "rank": 14
+        },
+        {
+          "pointId": "r-1_c-3",
+          "row": -1,
+          "col": -3,
+          "rank": 13
+        },
+        {
+          "pointId": "r-1_c-2",
+          "row": -1,
+          "col": -2,
+          "rank": 10
+        },
+        {
+          "pointId": "r-1_c-1",
+          "row": -1,
+          "col": -1,
+          "rank": 8
+        },
+        {
+          "pointId": "r-1_c0",
+          "row": -1,
+          "col": 0,
+          "rank": 7
+        },
+        {
+          "pointId": "r-1_c1",
+          "row": -1,
+          "col": 1,
+          "rank": 8
+        },
+        {
+          "pointId": "r-1_c2",
+          "row": -1,
+          "col": 2,
+          "rank": 10
+        },
+        {
+          "pointId": "r-1_c3",
+          "row": -1,
+          "col": 3,
+          "rank": 13
+        },
+        {
+          "pointId": "r0_c-3",
+          "row": 0,
+          "col": -3,
+          "rank": 12
+        },
+        {
+          "pointId": "r0_c-2",
+          "row": 0,
+          "col": -2,
+          "rank": 10
+        },
+        {
+          "pointId": "r0_c-1",
+          "row": 0,
+          "col": -1,
+          "rank": 7
+        },
+        {
+          "pointId": "r0_c0",
+          "row": 0,
+          "col": 0,
+          "rank": 5
+        },
+        {
+          "pointId": "r0_c1",
+          "row": 0,
+          "col": 1,
+          "rank": 7
+        },
+        {
+          "pointId": "r0_c2",
+          "row": 0,
+          "col": 2,
+          "rank": 10
+        },
+        {
+          "pointId": "r0_c3",
+          "row": 0,
+          "col": 3,
+          "rank": 12
+        },
+        {
+          "pointId": "r1_c-3",
+          "row": 1,
+          "col": -3,
+          "rank": 13
+        },
+        {
+          "pointId": "r1_c-2",
+          "row": 1,
+          "col": -2,
+          "rank": 10
+        },
+        {
+          "pointId": "r1_c-1",
+          "row": 1,
+          "col": -1,
+          "rank": 8
+        },
+        {
+          "pointId": "r1_c0",
+          "row": 1,
+          "col": 0,
+          "rank": 7
+        },
+        {
+          "pointId": "r1_c1",
+          "row": 1,
+          "col": 1,
+          "rank": 8
+        },
+        {
+          "pointId": "r1_c2",
+          "row": 1,
+          "col": 2,
+          "rank": 10
+        },
+        {
+          "pointId": "r1_c3",
+          "row": 1,
+          "col": 3,
+          "rank": 13
+        },
+        {
+          "pointId": "r2_c-3",
+          "row": 2,
+          "col": -3,
+          "rank": 14
+        },
+        {
+          "pointId": "r2_c-2",
+          "row": 2,
+          "col": -2,
+          "rank": 12
+        },
+        {
+          "pointId": "r2_c-1",
+          "row": 2,
+          "col": -1,
+          "rank": 10
+        },
+        {
+          "pointId": "r2_c0",
+          "row": 2,
+          "col": 0,
+          "rank": 10
+        },
+        {
+          "pointId": "r2_c1",
+          "row": 2,
+          "col": 1,
+          "rank": 10
+        },
+        {
+          "pointId": "r2_c2",
+          "row": 2,
+          "col": 2,
+          "rank": 12
+        },
+        {
+          "pointId": "r2_c3",
+          "row": 2,
+          "col": 3,
+          "rank": 14
+        },
+        {
+          "pointId": "r3_c-3",
+          "row": 3,
+          "col": -3,
+          "rank": 15
+        },
+        {
+          "pointId": "r3_c-2",
+          "row": 3,
+          "col": -2,
+          "rank": 14
+        },
+        {
+          "pointId": "r3_c-1",
+          "row": 3,
+          "col": -1,
+          "rank": 13
+        },
+        {
+          "pointId": "r3_c0",
+          "row": 3,
+          "col": 0,
+          "rank": 12
+        },
+        {
+          "pointId": "r3_c1",
+          "row": 3,
+          "col": 1,
+          "rank": 13
+        },
+        {
+          "pointId": "r3_c2",
+          "row": 3,
+          "col": 2,
+          "rank": 14
+        },
+        {
+          "pointId": "r3_c3",
+          "row": 3,
+          "col": 3,
+          "rank": 15
+        }
+      ],
+      "kpis": {
+        "points": 49,
+        "solv": 0,
+        "atrp": 11.37,
+        "arp": 11.37,
+        "top3": 0,
+        "top10": 21,
+        "ranked": 49,
+        "unranked": 0
+      }
+    },
+    {
+      "keyword": "webagentur wien",
+      "cells": [
+        {
+          "pointId": "r-3_c-3",
+          "row": -3,
+          "col": -3,
+          "rank": 11
+        },
+        {
+          "pointId": "r-3_c-2",
+          "row": -3,
+          "col": -2,
+          "rank": 10
+        },
+        {
+          "pointId": "r-3_c-1",
+          "row": -3,
+          "col": -1,
+          "rank": 9
+        },
+        {
+          "pointId": "r-3_c0",
+          "row": -3,
+          "col": 0,
+          "rank": 8
+        },
+        {
+          "pointId": "r-3_c1",
+          "row": -3,
+          "col": 1,
+          "rank": 9
+        },
+        {
+          "pointId": "r-3_c2",
+          "row": -3,
+          "col": 2,
+          "rank": 10
+        },
+        {
+          "pointId": "r-3_c3",
+          "row": -3,
+          "col": 3,
+          "rank": 11
+        },
+        {
+          "pointId": "r-2_c-3",
+          "row": -2,
+          "col": -3,
+          "rank": 10
+        },
+        {
+          "pointId": "r-2_c-2",
+          "row": -2,
+          "col": -2,
+          "rank": 8
+        },
+        {
+          "pointId": "r-2_c-1",
+          "row": -2,
+          "col": -1,
+          "rank": 6
+        },
+        {
+          "pointId": "r-2_c0",
+          "row": -2,
+          "col": 0,
+          "rank": 6
+        },
+        {
+          "pointId": "r-2_c1",
+          "row": -2,
+          "col": 1,
+          "rank": 6
+        },
+        {
+          "pointId": "r-2_c2",
+          "row": -2,
+          "col": 2,
+          "rank": 8
+        },
+        {
+          "pointId": "r-2_c3",
+          "row": -2,
+          "col": 3,
+          "rank": 10
+        },
+        {
+          "pointId": "r-1_c-3",
+          "row": -1,
+          "col": -3,
+          "rank": 9
+        },
+        {
+          "pointId": "r-1_c-2",
+          "row": -1,
+          "col": -2,
+          "rank": 6
+        },
+        {
+          "pointId": "r-1_c-1",
+          "row": -1,
+          "col": -1,
+          "rank": 4
+        },
+        {
+          "pointId": "r-1_c0",
+          "row": -1,
+          "col": 0,
+          "rank": 3
+        },
+        {
+          "pointId": "r-1_c1",
+          "row": -1,
+          "col": 1,
+          "rank": 4
+        },
+        {
+          "pointId": "r-1_c2",
+          "row": -1,
+          "col": 2,
+          "rank": 6
+        },
+        {
+          "pointId": "r-1_c3",
+          "row": -1,
+          "col": 3,
+          "rank": 9
+        },
+        {
+          "pointId": "r0_c-3",
+          "row": 0,
+          "col": -3,
+          "rank": 8
+        },
+        {
+          "pointId": "r0_c-2",
+          "row": 0,
+          "col": -2,
+          "rank": 6
+        },
+        {
+          "pointId": "r0_c-1",
+          "row": 0,
+          "col": -1,
+          "rank": 3
+        },
+        {
+          "pointId": "r0_c0",
+          "row": 0,
+          "col": 0,
+          "rank": 1
+        },
+        {
+          "pointId": "r0_c1",
+          "row": 0,
+          "col": 1,
+          "rank": 3
+        },
+        {
+          "pointId": "r0_c2",
+          "row": 0,
+          "col": 2,
+          "rank": 6
+        },
+        {
+          "pointId": "r0_c3",
+          "row": 0,
+          "col": 3,
+          "rank": 8
+        },
+        {
+          "pointId": "r1_c-3",
+          "row": 1,
+          "col": -3,
+          "rank": 9
+        },
+        {
+          "pointId": "r1_c-2",
+          "row": 1,
+          "col": -2,
+          "rank": 6
+        },
+        {
+          "pointId": "r1_c-1",
+          "row": 1,
+          "col": -1,
+          "rank": 4
+        },
+        {
+          "pointId": "r1_c0",
+          "row": 1,
+          "col": 0,
+          "rank": 3
+        },
+        {
+          "pointId": "r1_c1",
+          "row": 1,
+          "col": 1,
+          "rank": 4
+        },
+        {
+          "pointId": "r1_c2",
+          "row": 1,
+          "col": 2,
+          "rank": 6
+        },
+        {
+          "pointId": "r1_c3",
+          "row": 1,
+          "col": 3,
+          "rank": 9
+        },
+        {
+          "pointId": "r2_c-3",
+          "row": 2,
+          "col": -3,
+          "rank": 10
+        },
+        {
+          "pointId": "r2_c-2",
+          "row": 2,
+          "col": -2,
+          "rank": 8
+        },
+        {
+          "pointId": "r2_c-1",
+          "row": 2,
+          "col": -1,
+          "rank": 6
+        },
+        {
+          "pointId": "r2_c0",
+          "row": 2,
+          "col": 0,
+          "rank": 6
+        },
+        {
+          "pointId": "r2_c1",
+          "row": 2,
+          "col": 1,
+          "rank": 6
+        },
+        {
+          "pointId": "r2_c2",
+          "row": 2,
+          "col": 2,
+          "rank": 8
+        },
+        {
+          "pointId": "r2_c3",
+          "row": 2,
+          "col": 3,
+          "rank": 10
+        },
+        {
+          "pointId": "r3_c-3",
+          "row": 3,
+          "col": -3,
+          "rank": 11
+        },
+        {
+          "pointId": "r3_c-2",
+          "row": 3,
+          "col": -2,
+          "rank": 10
+        },
+        {
+          "pointId": "r3_c-1",
+          "row": 3,
+          "col": -1,
+          "rank": 9
+        },
+        {
+          "pointId": "r3_c0",
+          "row": 3,
+          "col": 0,
+          "rank": 8
+        },
+        {
+          "pointId": "r3_c1",
+          "row": 3,
+          "col": 1,
+          "rank": 9
+        },
+        {
+          "pointId": "r3_c2",
+          "row": 3,
+          "col": 2,
+          "rank": 10
+        },
+        {
+          "pointId": "r3_c3",
+          "row": 3,
+          "col": 3,
+          "rank": 11
+        }
+      ],
+      "kpis": {
+        "points": 49,
+        "solv": 0.10204081632653061,
+        "atrp": 7.37,
+        "arp": 7.37,
+        "top3": 5,
+        "top10": 45,
+        "ranked": 49,
+        "unranked": 0
+      }
+    },
+    {
+      "keyword": "webdesigner wien",
+      "cells": [
+        {
+          "pointId": "r-3_c-3",
+          "row": -3,
+          "col": -3,
+          "rank": 14
+        },
+        {
+          "pointId": "r-3_c-2",
+          "row": -3,
+          "col": -2,
+          "rank": 13
+        },
+        {
+          "pointId": "r-3_c-1",
+          "row": -3,
+          "col": -1,
+          "rank": 12
+        },
+        {
+          "pointId": "r-3_c0",
+          "row": -3,
+          "col": 0,
+          "rank": 11
+        },
+        {
+          "pointId": "r-3_c1",
+          "row": -3,
+          "col": 1,
+          "rank": 12
+        },
+        {
+          "pointId": "r-3_c2",
+          "row": -3,
+          "col": 2,
+          "rank": 13
+        },
+        {
+          "pointId": "r-3_c3",
+          "row": -3,
+          "col": 3,
+          "rank": 14
+        },
+        {
+          "pointId": "r-2_c-3",
+          "row": -2,
+          "col": -3,
+          "rank": 13
+        },
+        {
+          "pointId": "r-2_c-2",
+          "row": -2,
+          "col": -2,
+          "rank": 11
+        },
+        {
+          "pointId": "r-2_c-1",
+          "row": -2,
+          "col": -1,
+          "rank": 9
+        },
+        {
+          "pointId": "r-2_c0",
+          "row": -2,
+          "col": 0,
+          "rank": 9
+        },
+        {
+          "pointId": "r-2_c1",
+          "row": -2,
+          "col": 1,
+          "rank": 9
+        },
+        {
+          "pointId": "r-2_c2",
+          "row": -2,
+          "col": 2,
+          "rank": 11
+        },
+        {
+          "pointId": "r-2_c3",
+          "row": -2,
+          "col": 3,
+          "rank": 13
+        },
+        {
+          "pointId": "r-1_c-3",
+          "row": -1,
+          "col": -3,
+          "rank": 12
+        },
+        {
+          "pointId": "r-1_c-2",
+          "row": -1,
+          "col": -2,
+          "rank": 9
+        },
+        {
+          "pointId": "r-1_c-1",
+          "row": -1,
+          "col": -1,
+          "rank": 7
+        },
+        {
+          "pointId": "r-1_c0",
+          "row": -1,
+          "col": 0,
+          "rank": 6
+        },
+        {
+          "pointId": "r-1_c1",
+          "row": -1,
+          "col": 1,
+          "rank": 7
+        },
+        {
+          "pointId": "r-1_c2",
+          "row": -1,
+          "col": 2,
+          "rank": 9
+        },
+        {
+          "pointId": "r-1_c3",
+          "row": -1,
+          "col": 3,
+          "rank": 12
+        },
+        {
+          "pointId": "r0_c-3",
+          "row": 0,
+          "col": -3,
+          "rank": 11
+        },
+        {
+          "pointId": "r0_c-2",
+          "row": 0,
+          "col": -2,
+          "rank": 9
+        },
+        {
+          "pointId": "r0_c-1",
+          "row": 0,
+          "col": -1,
+          "rank": 6
+        },
+        {
+          "pointId": "r0_c0",
+          "row": 0,
+          "col": 0,
+          "rank": 4
+        },
+        {
+          "pointId": "r0_c1",
+          "row": 0,
+          "col": 1,
+          "rank": 6
+        },
+        {
+          "pointId": "r0_c2",
+          "row": 0,
+          "col": 2,
+          "rank": 9
+        },
+        {
+          "pointId": "r0_c3",
+          "row": 0,
+          "col": 3,
+          "rank": 11
+        },
+        {
+          "pointId": "r1_c-3",
+          "row": 1,
+          "col": -3,
+          "rank": 12
+        },
+        {
+          "pointId": "r1_c-2",
+          "row": 1,
+          "col": -2,
+          "rank": 9
+        },
+        {
+          "pointId": "r1_c-1",
+          "row": 1,
+          "col": -1,
+          "rank": 7
+        },
+        {
+          "pointId": "r1_c0",
+          "row": 1,
+          "col": 0,
+          "rank": 6
+        },
+        {
+          "pointId": "r1_c1",
+          "row": 1,
+          "col": 1,
+          "rank": 7
+        },
+        {
+          "pointId": "r1_c2",
+          "row": 1,
+          "col": 2,
+          "rank": 9
+        },
+        {
+          "pointId": "r1_c3",
+          "row": 1,
+          "col": 3,
+          "rank": 12
+        },
+        {
+          "pointId": "r2_c-3",
+          "row": 2,
+          "col": -3,
+          "rank": 13
+        },
+        {
+          "pointId": "r2_c-2",
+          "row": 2,
+          "col": -2,
+          "rank": 11
+        },
+        {
+          "pointId": "r2_c-1",
+          "row": 2,
+          "col": -1,
+          "rank": 9
+        },
+        {
+          "pointId": "r2_c0",
+          "row": 2,
+          "col": 0,
+          "rank": 9
+        },
+        {
+          "pointId": "r2_c1",
+          "row": 2,
+          "col": 1,
+          "rank": 9
+        },
+        {
+          "pointId": "r2_c2",
+          "row": 2,
+          "col": 2,
+          "rank": 11
+        },
+        {
+          "pointId": "r2_c3",
+          "row": 2,
+          "col": 3,
+          "rank": 13
+        },
+        {
+          "pointId": "r3_c-3",
+          "row": 3,
+          "col": -3,
+          "rank": 14
+        },
+        {
+          "pointId": "r3_c-2",
+          "row": 3,
+          "col": -2,
+          "rank": 13
+        },
+        {
+          "pointId": "r3_c-1",
+          "row": 3,
+          "col": -1,
+          "rank": 12
+        },
+        {
+          "pointId": "r3_c0",
+          "row": 3,
+          "col": 0,
+          "rank": 11
+        },
+        {
+          "pointId": "r3_c1",
+          "row": 3,
+          "col": 1,
+          "rank": 12
+        },
+        {
+          "pointId": "r3_c2",
+          "row": 3,
+          "col": 2,
+          "rank": 13
+        },
+        {
+          "pointId": "r3_c3",
+          "row": 3,
+          "col": 3,
+          "rank": 14
+        }
+      ],
+      "kpis": {
+        "points": 49,
+        "solv": 0,
+        "atrp": 10.37,
+        "arp": 10.37,
+        "top3": 0,
+        "top10": 21,
+        "ranked": 49,
+        "unranked": 0
+      }
+    },
+    {
+      "keyword": "website erstellen lassen wien",
+      "cells": [
+        {
+          "pointId": "r-3_c-3",
+          "row": -3,
+          "col": -3,
+          "rank": 12
+        },
+        {
+          "pointId": "r-3_c-2",
+          "row": -3,
+          "col": -2,
+          "rank": 11
+        },
+        {
+          "pointId": "r-3_c-1",
+          "row": -3,
+          "col": -1,
+          "rank": 10
+        },
+        {
+          "pointId": "r-3_c0",
+          "row": -3,
+          "col": 0,
+          "rank": 9
+        },
+        {
+          "pointId": "r-3_c1",
+          "row": -3,
+          "col": 1,
+          "rank": 10
+        },
+        {
+          "pointId": "r-3_c2",
+          "row": -3,
+          "col": 2,
+          "rank": 11
+        },
+        {
+          "pointId": "r-3_c3",
+          "row": -3,
+          "col": 3,
+          "rank": 12
+        },
+        {
+          "pointId": "r-2_c-3",
+          "row": -2,
+          "col": -3,
+          "rank": 11
+        },
+        {
+          "pointId": "r-2_c-2",
+          "row": -2,
+          "col": -2,
+          "rank": 9
+        },
+        {
+          "pointId": "r-2_c-1",
+          "row": -2,
+          "col": -1,
+          "rank": 7
+        },
+        {
+          "pointId": "r-2_c0",
+          "row": -2,
+          "col": 0,
+          "rank": 7
+        },
+        {
+          "pointId": "r-2_c1",
+          "row": -2,
+          "col": 1,
+          "rank": 7
+        },
+        {
+          "pointId": "r-2_c2",
+          "row": -2,
+          "col": 2,
+          "rank": 9
+        },
+        {
+          "pointId": "r-2_c3",
+          "row": -2,
+          "col": 3,
+          "rank": 11
+        },
+        {
+          "pointId": "r-1_c-3",
+          "row": -1,
+          "col": -3,
+          "rank": 10
+        },
+        {
+          "pointId": "r-1_c-2",
+          "row": -1,
+          "col": -2,
+          "rank": 7
+        },
+        {
+          "pointId": "r-1_c-1",
+          "row": -1,
+          "col": -1,
+          "rank": 5
+        },
+        {
+          "pointId": "r-1_c0",
+          "row": -1,
+          "col": 0,
+          "rank": 4
+        },
+        {
+          "pointId": "r-1_c1",
+          "row": -1,
+          "col": 1,
+          "rank": 5
+        },
+        {
+          "pointId": "r-1_c2",
+          "row": -1,
+          "col": 2,
+          "rank": 7
+        },
+        {
+          "pointId": "r-1_c3",
+          "row": -1,
+          "col": 3,
+          "rank": 10
+        },
+        {
+          "pointId": "r0_c-3",
+          "row": 0,
+          "col": -3,
+          "rank": 9
+        },
+        {
+          "pointId": "r0_c-2",
+          "row": 0,
+          "col": -2,
+          "rank": 7
+        },
+        {
+          "pointId": "r0_c-1",
+          "row": 0,
+          "col": -1,
+          "rank": 4
+        },
+        {
+          "pointId": "r0_c0",
+          "row": 0,
+          "col": 0,
+          "rank": 2
+        },
+        {
+          "pointId": "r0_c1",
+          "row": 0,
+          "col": 1,
+          "rank": 4
+        },
+        {
+          "pointId": "r0_c2",
+          "row": 0,
+          "col": 2,
+          "rank": 7
+        },
+        {
+          "pointId": "r0_c3",
+          "row": 0,
+          "col": 3,
+          "rank": 9
+        },
+        {
+          "pointId": "r1_c-3",
+          "row": 1,
+          "col": -3,
+          "rank": 10
+        },
+        {
+          "pointId": "r1_c-2",
+          "row": 1,
+          "col": -2,
+          "rank": 7
+        },
+        {
+          "pointId": "r1_c-1",
+          "row": 1,
+          "col": -1,
+          "rank": 5
+        },
+        {
+          "pointId": "r1_c0",
+          "row": 1,
+          "col": 0,
+          "rank": 4
+        },
+        {
+          "pointId": "r1_c1",
+          "row": 1,
+          "col": 1,
+          "rank": 5
+        },
+        {
+          "pointId": "r1_c2",
+          "row": 1,
+          "col": 2,
+          "rank": 7
+        },
+        {
+          "pointId": "r1_c3",
+          "row": 1,
+          "col": 3,
+          "rank": 10
+        },
+        {
+          "pointId": "r2_c-3",
+          "row": 2,
+          "col": -3,
+          "rank": 11
+        },
+        {
+          "pointId": "r2_c-2",
+          "row": 2,
+          "col": -2,
+          "rank": 9
+        },
+        {
+          "pointId": "r2_c-1",
+          "row": 2,
+          "col": -1,
+          "rank": 7
+        },
+        {
+          "pointId": "r2_c0",
+          "row": 2,
+          "col": 0,
+          "rank": 7
+        },
+        {
+          "pointId": "r2_c1",
+          "row": 2,
+          "col": 1,
+          "rank": 7
+        },
+        {
+          "pointId": "r2_c2",
+          "row": 2,
+          "col": 2,
+          "rank": 9
+        },
+        {
+          "pointId": "r2_c3",
+          "row": 2,
+          "col": 3,
+          "rank": 11
+        },
+        {
+          "pointId": "r3_c-3",
+          "row": 3,
+          "col": -3,
+          "rank": 12
+        },
+        {
+          "pointId": "r3_c-2",
+          "row": 3,
+          "col": -2,
+          "rank": 11
+        },
+        {
+          "pointId": "r3_c-1",
+          "row": 3,
+          "col": -1,
+          "rank": 10
+        },
+        {
+          "pointId": "r3_c0",
+          "row": 3,
+          "col": 0,
+          "rank": 9
+        },
+        {
+          "pointId": "r3_c1",
+          "row": 3,
+          "col": 1,
+          "rank": 10
+        },
+        {
+          "pointId": "r3_c2",
+          "row": 3,
+          "col": 2,
+          "rank": 11
+        },
+        {
+          "pointId": "r3_c3",
+          "row": 3,
+          "col": 3,
+          "rank": 12
+        }
+      ],
+      "kpis": {
+        "points": 49,
+        "solv": 0.02040816326530612,
+        "atrp": 8.37,
+        "arp": 8.37,
+        "top3": 1,
+        "top10": 37,
+        "ranked": 49,
+        "unranked": 0
+      }
+    }
+  ],
+  "overall": {
+    "points": 196,
+    "solv": 0.030612244897959183,
+    "atrp": 9.37,
+    "arp": 9.37,
+    "top3": 6,
+    "top10": 124,
+    "ranked": 196,
+    "unranked": 0
+  }
+}

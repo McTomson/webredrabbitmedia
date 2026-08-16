@@ -11,6 +11,7 @@
     "test:watch": "vitest",
     "engine": "tsx scripts/content-engine/pipeline.ts",
     "engine:indexation": "tsx scripts/content-engine/dashboard/check_indexation.ts",
+    "local-rank": "tsx scripts/content-engine/local-rank/pull.ts",
     "vault:backfill": "tsx scripts/content-engine/knowledge/backfill_vault.ts",
     "cluster:relink": "tsx scripts/content-engine/knowledge/backfill_cluster_links.ts",
     "notebooklm:plan": "tsx scripts/content-engine/knowledge/notebooklm_plan.ts",
