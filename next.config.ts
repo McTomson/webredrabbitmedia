@@ -29,6 +29,12 @@ const nextConfig = {
   outputFileTracingExcludes: {
     '/tipps/[slug]': ['./public/**'],
   },
+  // Der Blog-Dashboard-Tab liest zur Laufzeit den Medien-Marker-Ordner
+  // (.media-requests, ein Dot-Verzeichnis -> nft übersieht es sonst) und die
+  // Artikel-MDX. Explizit einbündeln, sonst zeigt der Tab in Prod fälschlich 0.
+  outputFileTracingIncludes: {
+    '/dashboard/blog': ['./content-engine/.media-requests/**', './content/blog/**'],
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [320, 384, 420, 640, 750, 828, 1080, 1200, 1920],
