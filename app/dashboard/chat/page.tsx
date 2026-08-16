@@ -57,6 +57,24 @@ export default async function ChatPage() {
                 <Kpi label="Leads aus Chat" value={data.leadsFromChat} />
             </div>
 
+            <SectionCard
+                title="Mögliche Wissenslücken"
+                hint="Heuristik: Fragen, bei denen die Bot-Antwort offen 'keine Info dazu' signalisierte — Kandidaten für neuen Seiten-/FAQ-Inhalt. Bitte prüfen, nicht jede ist eine echte Lücke."
+            >
+                {data.gaps.length === 0 ? (
+                    <EmptyState message="Keine Lücken erkannt (oder noch zu wenige Chats)." />
+                ) : (
+                    <ul className="divide-y divide-slate-50">
+                        {data.gaps.map((g, i) => (
+                            <li key={i} className="flex items-start gap-3 py-2 text-sm">
+                                <span className="mt-0.5 w-10 shrink-0 text-xs tabular-nums text-slate-400">{fmt(g.ts)}</span>
+                                <span className="text-slate-800">{g.text}</span>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </SectionCard>
+
             <SectionCard title="Häufige Themen" hint="Wörter, die in den Fragen am öftesten vorkommen — grobe Themen-Signale, keine KI-Deutung.">
                 {data.topTerms.length === 0 ? (
                     <EmptyState message="Noch keine Fragen erfasst." />

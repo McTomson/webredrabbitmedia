@@ -19,6 +19,8 @@ export interface ChatInsights {
     leadsFromChat: number;
     recentQuestions: { text: string; ts: string }[];
     topTerms: { term: string; count: number }[];
+    /** Heuristik: Fragen, bei denen die Bot-Antwort ein "hab ich nicht"-Signal trug. */
+    gaps: { text: string; ts: string }[];
 }
 
 function cfg(): { url: string; key: string } {
@@ -78,22 +80,63 @@ export function computeTopTerms(questions: string[], top = 12): { term: string; 
         .slice(0, top);
 }
 
+// Heuristik: der Bot hat keine feste "kann nicht antworten"-Phrase (er formuliert es
+// jedes Mal neu, laut System-Prompt: "sagst du das offen ... rätst nicht herum").
+// Diese Signale treffen das Eingestaendnis "steht nicht im Kontext" — bewusst
+// konservativ, damit Lead-Uebergaben ("das Team meldet sich") NICHT mitzaehlen.
+const GAP_CUES =
+    /(kann ich dir (das |dazu )?(leider )?nicht sagen|wei(ß|ss) ich (leider )?nicht|hab(e)? ich (dazu )?(leider )?(keine|nichts)|keine (genaue(n)? )?(info(rmation)?|angabe|antwort)(en)? (dazu|darüber|hierzu)|dazu (kann|habe) ich (nichts|keine)|steht (leider )?nicht (in|im)|da bin ich überfragt|das (kann|weiß) ich (dir )?nicht|nicht sicher, ob)/i;
+
+export function isGap(botText: string): boolean {
+    return GAP_CUES.test(botText || '');
+}
+
+interface Msg {
+    session_id: string;
+    rolle: string;
+    text: string;
+    ts: string;
+}
+
+/** Pair each user question with the bot reply that follows it in the same session; a
+ *  reply carrying a gap-cue flags that question as a possible knowledge gap. */
+export function findGaps(messages: Msg[]): { text: string; ts: string }[] {
+    const bySession = new Map<string, Msg[]>();
+    for (const m of messages) {
+        const arr = bySession.get(m.session_id) || [];
+        arr.push(m);
+        bySession.set(m.session_id, arr);
+    }
+    const out: { text: string; ts: string }[] = [];
+    for (const arr of bySession.values()) {
+        arr.sort((a, b) => (a.ts < b.ts ? -1 : a.ts > b.ts ? 1 : 0));
+        for (let i = 0; i < arr.length - 1; i++) {
+            if (arr[i].rolle === 'user' && arr[i + 1].rolle === 'bot' && isGap(arr[i + 1].text)) {
+                out.push({ text: arr[i].text, ts: arr[i].ts });
+            }
+        }
+    }
+    return out.sort((a, b) => (a.ts < b.ts ? 1 : -1));
+}
+
 export async function getChatInsights(nowMs: number, weekStartMs: number): Promise<ChatInsights> {
     const weekIso = new Date(weekStartMs).toISOString();
-    const [sessions, sessionsThisWeek, userMessages, leadsFromChat, recent] = await Promise.all([
+    const [sessions, sessionsThisWeek, userMessages, leadsFromChat, recentMsgs] = await Promise.all([
         count('sessions?select=session_id'),
         count(`sessions?select=session_id&created_at=gte.${weekIso}`),
         count('messages_compact?select=id&rolle=eq.user'),
         count('leads?select=id'),
-        rows<{ text: string; ts: string }>('messages_compact?select=text,ts&rolle=eq.user&order=ts.desc&limit=200'),
+        rows<Msg>('messages_compact?select=session_id,rolle,text,ts&order=ts.desc&limit=600'),
     ]);
     void nowMs;
+    const userMsgs = recentMsgs.filter((m) => m.rolle === 'user');
     return {
         sessions,
         sessionsThisWeek,
         userMessages,
         leadsFromChat,
-        recentQuestions: recent.slice(0, 40),
-        topTerms: computeTopTerms(recent.map((r) => r.text)),
+        recentQuestions: userMsgs.slice(0, 40).map((m) => ({ text: m.text, ts: m.ts })),
+        topTerms: computeTopTerms(userMsgs.map((m) => m.text)),
+        gaps: findGaps(recentMsgs).slice(0, 30),
     };
 }
