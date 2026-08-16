@@ -197,6 +197,17 @@ async function main() {
         log(`3.5/6 Cluster-Verlinkung uebersprungen: ${e.message}`);
     }
 
+    // Engine-Status fuers Dashboard (Blog-Tab). Best-effort: darf den Medien-Lauf NIE abbrechen.
+    const produced = [podcast && 'podcast', video && 'video', substack && 'substack'].filter(Boolean).join(',');
+    try {
+        execFileSync('node', [
+            path.join(ROOT, 'scripts/content-engine/status/record-status.cjs'),
+            'media', '--ok', '1', '--slug', slug, ...(produced ? ['--produced', produced] : []),
+        ], { cwd: ROOT, stdio: 'ignore' });
+    } catch {
+        // ignore — status is best-effort
+    }
+
     // 4) commit + push
     if (!flag('no-push')) {
         // Stage only published .mdx (cluster-mate edits from 3.5) — NOT the whole dir, so a stray
@@ -205,7 +216,7 @@ async function main() {
         // cursor + records motifs there during planning, and the next run does `git reset --hard
         // origin/main` — without committing it the colour rotation would reset to the same colour every
         // article (root cause of the "always blue" bug fixed 2026-06-28).
-        execFileSync('git', ['add', 'content/blog/*.mdx', 'public/audio', 'public/images/blog', 'public/videos', 'content-engine/knowledge/recent-image-motifs.json'], { cwd: ROOT, stdio: 'inherit' });
+        execFileSync('git', ['add', 'content/blog/*.mdx', 'public/audio', 'public/images/blog', 'public/videos', 'content-engine/knowledge/recent-image-motifs.json', 'content-engine/status/engine-status.json'], { cwd: ROOT, stdio: 'inherit' });
         try {
             const msg = `feat(blog): add media to ${slug}` + (clusterTouched ? ` (+${clusterTouched} cluster links)` : '');
             execFileSync('git', ['commit', '-q', '-m', msg], { cwd: ROOT, stdio: 'inherit' });

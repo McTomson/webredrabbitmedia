@@ -217,9 +217,13 @@ SLUG="$(git status --porcelain content/blog | grep -E '\.mdx$' | head -1 | sed -
 if [ -z "$SLUG" ]; then echo "Kein neuer Artikel erkannt."; exit 0; fi
 echo "Neuer Artikel: $SLUG"
 
+# Engine-Status fuers Dashboard (Blog-Tab). Best-effort: darf den Lauf NIE abbrechen.
+TITLE="$(node -e 'try{const m=require("gray-matter"),fs=require("fs");process.stdout.write(String(m(fs.readFileSync(process.argv[1],"utf8")).data.title||""))}catch(e){}' "content/blog/$SLUG.mdx" 2>/dev/null)"
+node scripts/content-engine/status/record-status.cjs daily --ok 1 --slug "$SLUG" --title "$TITLE" 2>/dev/null || true
+
 # Include vault.md: the pipeline's --emit backflow appends verified facts there; without staging
 # it the knowledge SoT drifts uncommitted in the working tree (caused a dirty-tree surprise 11.06).
-git add content/blog public/images/blog content-engine/topics/status.json content-engine/knowledge/vault.md
+git add content/blog public/images/blog content-engine/topics/status.json content-engine/knowledge/vault.md content-engine/status/engine-status.json
 git commit -q -m "feat(blog): add draft $SLUG (daily engine run)" || { echo "Nichts zu committen"; exit 0; }
 git push origin main || { alert "git push fehlgeschlagen"; exit 1; }
 

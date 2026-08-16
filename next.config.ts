@@ -33,7 +33,11 @@ const nextConfig = {
   // (.media-requests, ein Dot-Verzeichnis -> nft übersieht es sonst) und die
   // Artikel-MDX. Explizit einbündeln, sonst zeigt der Tab in Prod fälschlich 0.
   outputFileTracingIncludes: {
-    '/dashboard/blog': ['./content-engine/.media-requests/**', './content/blog/**'],
+    '/dashboard/blog': [
+      './content-engine/.media-requests/**',
+      './content/blog/**',
+      './content-engine/status/**',
+    ],
   },
   images: {
     formats: ['image/avif', 'image/webp'],

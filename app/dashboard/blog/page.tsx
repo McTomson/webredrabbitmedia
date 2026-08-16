@@ -1,8 +1,9 @@
 import { getBlogBoard } from '@/lib/dashboard/blog';
 import { getSearchConsoleData } from '@/lib/dashboard/google';
+import { getEngineStatus, isEngineAlive, agoLabel } from '@/lib/dashboard/engineStatus';
 import { int } from '@/lib/dashboard/format';
-import { Kpi, SectionCard, EmptyState, StateNotice, Th, Td } from '../ui';
-import { FileClock, Clapperboard, FileText, ExternalLink } from 'lucide-react';
+import { Kpi, SectionCard, Card, EmptyState, StateNotice, Th, Td } from '../ui';
+import { FileClock, Clapperboard, FileText, ExternalLink, CheckCircle2, XCircle } from 'lucide-react';
 
 // Blog tab. A lean, read-only status board over the content-engine's own files:
 // what waits for Thomas' Freigabe (drafts), what still needs media (leftover markers),
@@ -29,8 +30,64 @@ function mediaLabel(status: string): string {
     }
 }
 
+// One "Tageslauf / Media-Check" line in the engine-status panel.
+function RunLine({
+    label,
+    entry,
+    now,
+    kind,
+}: {
+    label: string;
+    entry: { at: string; ok: boolean; slug?: string; title?: string; produced?: string[] } | undefined;
+    now: number;
+    kind: 'daily' | 'media';
+}) {
+    if (!entry) {
+        return (
+            <div className="flex items-center gap-2 text-sm text-slate-400">
+                <span className="w-24 shrink-0 text-slate-500">{label}</span>
+                noch nichts erfasst
+            </div>
+        );
+    }
+    const ok = entry.ok !== false;
+    const detail =
+        kind === 'media'
+            ? entry.produced?.length
+                ? entry.produced.join(' + ')
+                : '—'
+            : entry.title || entry.slug || '—';
+    return (
+        <div className="flex items-center gap-2 text-sm">
+            <span className="w-24 shrink-0 text-slate-500">{label}</span>
+            {ok ? (
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+            ) : (
+                <XCircle className="h-4 w-4 shrink-0 text-rose-500" />
+            )}
+            <span className="shrink-0 text-slate-400">{agoLabel(entry.at, now)}</span>
+            <span className="truncate text-slate-700">{detail}</span>
+        </div>
+    );
+}
+
 export default async function BlogPage() {
     const [board, gsc] = await Promise.all([getBlogBoard(), getSearchConsoleData(28)]);
+
+    const now = Date.now();
+    const engine = getEngineStatus();
+    const alive = isEngineAlive(engine, now);
+    const steckt = { both: 0, video: 0, images: 0 };
+    for (const m of board.openMedia) {
+        if (m.status === 'needs-video') steckt.video += 1;
+        else if (m.status === 'needs-images') steckt.images += 1;
+        else steckt.both += 1;
+    }
+    const stecktParts = [
+        steckt.both ? `${steckt.both}× Podcast+Video` : null,
+        steckt.video ? `${steckt.video}× Video` : null,
+        steckt.images ? `${steckt.images}× Bilder` : null,
+    ].filter(Boolean);
 
     // Join published articles with GSC per-page clicks where available (top pages only).
     const clicksByPath = new Map<string, { clicks: number; impressions: number }>();
@@ -56,6 +113,33 @@ export default async function BlogPage() {
                     Was auf deine Freigabe wartet, wo noch Medien fehlen, und ob die Live-Artikel Klicks bringen.
                 </p>
             </div>
+
+            {/* ── Engine-Status ──────────────────────────────────────────── */}
+            <Card>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                        <span
+                            className={`inline-block h-2.5 w-2.5 rounded-full ${alive ? 'bg-emerald-500' : 'bg-rose-500'}`}
+                            aria-hidden
+                        />
+                        <span className="text-sm font-semibold text-slate-900">
+                            {alive ? 'Engine lebt' : 'Engine still — bitte prüfen'}
+                        </span>
+                    </div>
+                    <span className="text-xs text-slate-400">
+                        letzter Lauf {agoLabel(engine?.daily?.at, now)}
+                        {engine?.daily?.seed ? ' · aus letztem Artikel' : ''}
+                    </span>
+                </div>
+                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    <RunLine label="Tageslauf" entry={engine?.daily} now={now} kind="daily" />
+                    <RunLine label="Media-Check" entry={engine?.media} now={now} kind="media" />
+                </div>
+                <div className="mt-2 text-xs text-slate-500">
+                    <span className="text-slate-400">Steckt:</span>{' '}
+                    {stecktParts.length ? stecktParts.join(' · ') : 'nichts offen'}
+                </div>
+            </Card>
 
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                 <Kpi label="Live-Artikel" value={board.published.length} sub={latest ? `zuletzt ${dateOnly(latest)}` : undefined} />
