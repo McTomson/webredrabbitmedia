@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { z } from 'zod';
 import rateLimit from '@/lib/rate-limit';
+import { insertLead, leadsConfigured } from '@/lib/leads/store';
 
 // Rate Limiter: 5 requests per minute per IP
 const limiter = rateLimit({
@@ -17,6 +18,7 @@ const contactSchema = z.object({
     phone: z.string().max(50).optional(),
     service: z.string().optional(),
     message: z.string().max(2000, "Nachricht zu lang (max 2000 Zeichen)").optional(),
+    source: z.string().max(30).optional(),
     honeyPot: z.string().optional()
 });
 
@@ -61,7 +63,7 @@ export async function POST(req: Request) {
             );
         }
 
-        const { name, company, email, phone, service, message } = result.data;
+        const { name, company, email, phone, service, message, source } = result.data;
 
         // Escape outputs
         const safeName = escapeHtml(name);
@@ -140,6 +142,17 @@ Gesendet von der Red Rabbit Media Website
         // Send email (an das Team; SMTP_TO darf mehrere Empfaenger enthalten,
         // komma-separiert, z.B. "office@redrabbit.media,thomas.uhlir@gmail.com")
         await transporter.sendMail(mailOptions);
+
+        // Lead zusaetzlich in Supabase erfassen (Dashboard-Tab). STRIKT fail-safe:
+        // die Team-Mail ist oben schon raus — ein DB-Fehler darf die Antwort NIE
+        // scheitern lassen. Ohne konfigurierte Env wird still uebersprungen.
+        if (leadsConfigured()) {
+            try {
+                await insertLead({ name, company, email, phone, service, message, source });
+            } catch (e) {
+                console.error('Lead-Erfassung fehlgeschlagen (Mail ist raus):', e);
+            }
+        }
 
         // Bestaetigungs-Mail an den Absender (Thomas 07.08.). Best effort: ein
         // Fehler hier darf die Lead-Erfassung NICHT scheitern lassen, die
