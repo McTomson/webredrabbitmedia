@@ -205,6 +205,18 @@ const nextConfig = {
         destination: '/webdesign-kaernten',
         permanent: true,
       },
+      // Kärnten-Orte aus GSC-404-Altbestand (15.06.): themenrelevant auf den
+      // Kärnten-Hub statt über den Catch-all auf die Startseite (Soft-404-Schutz).
+      {
+        source: '/webdesign-feldkirchen',
+        destination: '/webdesign-kaernten',
+        permanent: true,
+      },
+      {
+        source: '/webdesign-voelkermarkt',
+        destination: '/webdesign-kaernten',
+        permanent: true,
+      },
 
       // Vorarlberg - Secondary cities → Bundesland hub (to be created)
       {
