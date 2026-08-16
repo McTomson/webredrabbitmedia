@@ -5,19 +5,26 @@ import http from 'node:http';
 import { execFileSync } from 'node:child_process';
 import { google } from 'googleapis';
 
-// One-time OAuth login for the dashboard's read-only access to Search Console + GA4.
-// Mirrors the proven YouTube auth pattern (OAuth loopback + persistent refresh token).
-// Personal Gmail accounts cannot add service accounts as GSC users, so we use the OWNER
-// account (thomas.uhlir) via OAuth instead.
+// One-time OAuth login for the dashboard: read-only Search Console + GA4, PLUS the
+// Google Business Profile APIs (Performance + Reviews) via the business.manage scope.
+// One login covers all three. Mirrors the proven YouTube auth pattern (OAuth loopback
+// + persistent refresh token). Personal Gmail accounts cannot add service accounts as
+// GSC users, so we use the OWNER account (thomas.uhlir) via OAuth instead.
 //
 // Prerequisite (in Google Cloud Console, project claude-email-manager-484501):
 //   - OAuth 2.0 Client ID of type "Desktop app", client_secret JSON downloaded to:
 //       ~/.config/redrabbit-dashboard/oauth_client.json
-//   - APIs enabled: "Google Search Console API" + "Google Analytics Data API"
+//   - APIs enabled: "Google Search Console API" + "Google Analytics Data API" +
+//     the Business Profile family (mybusinessaccountmanagement, mybusinessbusinessinformation,
+//     businessprofileperformance, and the legacy "Google My Business API" for reviews).
+//     The Business Profile APIs are FREE (no billing/card) — see content-engine/local-rank/GBP-API-SETUP.md.
 //   - OAuth consent screen exists; thomas.uhlir@gmail.com is a test user (Testing mode is fine).
+//   - business.manage is a sensitive scope but stays unverified for an internal single-owner tool.
 //
-// Run once:  npx tsx scripts/content-engine/dashboard/google_auth.ts
+// Run once (re-run to add the new GBP scope):
+//   npx tsx scripts/content-engine/dashboard/google_auth.ts
 // Saves the refresh token to ~/.config/redrabbit-dashboard/token.json (never commit).
+// NOTE: GBP calls only start working once Google approves "Basic API Access" for the project.
 
 const CFG_DIR = path.join(os.homedir(), '.config/redrabbit-dashboard');
 const CLIENT_FILE = path.join(CFG_DIR, 'oauth_client.json');
@@ -26,6 +33,7 @@ const PORT = Number(process.env.RR_OAUTH_PORT || 8766);
 const SCOPES = [
     'https://www.googleapis.com/auth/webmasters.readonly',
     'https://www.googleapis.com/auth/analytics.readonly',
+    'https://www.googleapis.com/auth/business.manage',
 ];
 
 function loadClient(): { client_id: string; client_secret: string } {

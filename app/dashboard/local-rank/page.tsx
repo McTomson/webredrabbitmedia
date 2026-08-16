@@ -2,8 +2,9 @@ import { getLocalRank } from '@/lib/dashboard/localRank';
 import { heatLevel } from '@/lib/localrank/kpi';
 import { initialRequest, followUp, replyDraft, reviewLink } from '@/lib/localrank/reviewOutreach';
 import { BUSINESS } from '@/lib/localrank/config';
+import { totalImpressions, metricTotal, type MetricSeries } from '@/lib/localrank/performance';
 import { int, pct, pos } from '@/lib/dashboard/format';
-import { Kpi, SectionCard, EmptyState, Card, HealthCard } from '../ui';
+import { Kpi, SectionCard, EmptyState, Card, HealthCard, Sparkline, Th, Td } from '../ui';
 import type { KeywordGrid, RankCell } from '@/lib/localrank/types';
 import { Star, MessageSquare, AlertTriangle } from 'lucide-react';
 
@@ -71,9 +72,62 @@ function TemplatePreview({ title, subject, body }: { title: string; subject: str
     );
 }
 
+// Sum all impression metrics per date into one "gesehen" series for the sparkline.
+function mergedImpressions(metrics: MetricSeries[]): number[] {
+    const byDate = new Map<string, number>();
+    for (const m of metrics) {
+        if (!m.metric.startsWith('BUSINESS_IMPRESSIONS')) continue;
+        for (const p of m.points) byDate.set(p.date, (byDate.get(p.date) ?? 0) + p.value);
+    }
+    return [...byDate.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([, v]) => v);
+}
+
+function PerformanceSection({ perf }: { perf: NonNullable<ReturnType<typeof getLocalRank>['performance']> }) {
+    const impr = totalImpressions(perf.metrics);
+    const spark = mergedImpressions(perf.metrics);
+    return (
+        <SectionCard title="Sichtbarkeit (Google-Performance)" hint={`letzte ${perf.rangeDays} Tage · gratis, offiziell`}>
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                <Kpi label="Impressionen" value={int(impr)} sub="Maps + Suche" />
+                <Kpi label="Website-Klicks" value={int(metricTotal(perf.metrics, 'WEBSITE_CLICKS'))} />
+                <Kpi label="Anrufe" value={int(metricTotal(perf.metrics, 'CALL_CLICKS'))} />
+                <Kpi label="Routen-Anfragen" value={int(metricTotal(perf.metrics, 'BUSINESS_DIRECTION_REQUESTS'))} />
+            </div>
+            {spark.length >= 2 && (
+                <div className="mt-5">
+                    <div className="mb-1 text-[11px] font-medium uppercase tracking-wide text-slate-400">Impressionen-Verlauf</div>
+                    <Sparkline data={spark} />
+                </div>
+            )}
+            {perf.keywords.length > 0 && (
+                <div className="mt-6">
+                    <div className="mb-2 text-[13px] font-semibold text-slate-800">Womit Leute uns finden</div>
+                    <table className="w-full">
+                        <thead>
+                            <tr className="border-b border-black/[0.06]">
+                                <Th>Suchbegriff</Th>
+                                <Th numeric>Impressionen</Th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {perf.keywords.slice(0, 12).map((k) => (
+                                <tr key={k.keyword} className="border-b border-black/[0.04]">
+                                    <Td strong>{k.keyword}</Td>
+                                    <Td numeric>{k.isThreshold ? `≥ ${int(k.value)}` : int(k.value)}</Td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <p className="mt-2 text-[11px] text-slate-400">Das sind die tatsächlichen Suchbegriffe aus der Google-Performance — die beste Vorlage für Profil-Texte und Posts.</p>
+                </div>
+            )}
+        </SectionCard>
+    );
+}
+
 export default function LocalRankPage() {
     const view = getLocalRank();
-    const { grid, reviews, signals, configured } = view;
+    const { grid, reviews, performance, signals, configured } = view;
 
     return (
         <div className="space-y-8">
@@ -104,6 +158,15 @@ export default function LocalRankPage() {
             )}
 
             {signals.length > 0 && <HealthCard signals={signals} />}
+
+            {/* Performance — the free, official visibility backbone */}
+            {performance ? (
+                <PerformanceSection perf={performance} />
+            ) : (
+                <SectionCard title="Sichtbarkeit (Google-Performance)" hint="gratis, offiziell — kein Grid-Ersatz nötig">
+                    <EmptyState message="Noch keine Performance-Daten. Nach GBP-API-Freigabe: npx tsx scripts/content-engine/local-rank/performance-pull.ts — zeigt Impressionen, Klicks, Anrufe und die echten Suchbegriffe." />
+                </SectionCard>
+            )}
 
             {/* Overall KPIs */}
             {grid ? (
@@ -192,23 +255,27 @@ export default function LocalRankPage() {
 
             {/* Go-live status */}
             <SectionCard title="Live schalten">
+                <p className="mb-4 max-w-3xl text-[13px] leading-relaxed text-slate-500">
+                    Alles kostenlos — kein bezahlter Dienst, keine Kreditkarte. Die Google-Business-Profile-APIs sind gratis
+                    (nur ein kostenloser Freigabe-Antrag), Texte macht das Claude-Abo, Versand die bestehende Mail-Route.
+                </p>
                 <ul className="space-y-2 text-[13px] leading-relaxed text-slate-600">
                     <li className="flex items-center gap-2">
-                        <StatusDot on={configured.dataForSeo} />
-                        <span><strong>DataForSEO-Zugang</strong> (DATAFORSEO_LOGIN / DATAFORSEO_PASSWORD) — schaltet echte Grid-Messungen frei (~$0,39 pro Woche). {configured.dataForSeo ? 'Hinterlegt.' : 'Noch nicht hinterlegt.'}</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                        <StatusDot on={configured.placeId} />
-                        <span><strong>RR_GBP_PLACE_ID</strong> — für exakte Zuordnung im Local Finder und den Bewertungs-Direktlink. {configured.placeId ? 'Hinterlegt.' : 'Noch nicht hinterlegt.'}</span>
+                        <StatusDot on={configured.gbpToken} />
+                        <span><strong>Google-Login (OAuth, Scope business.manage)</strong> — ein Login deckt Performance + Reviews ab. {configured.gbpToken ? 'Token vorhanden.' : 'Noch nicht eingeloggt: npx tsx scripts/content-engine/dashboard/google_auth.ts'}</span>
                     </li>
                     <li className="flex items-center gap-2">
                         <StatusDot on={false} />
-                        <span><strong>Business-Profile-API</strong> (Reviews lesen/antworten) — Google-Cloud-Projekt + „Basic API Access“, braucht Thomas-Login. Danach echte Velocity/Antwortrate + Draft-Assist.</span>
+                        <span><strong>„Basic API Access“ (gratis, ~3–10 Werktage)</strong> — Cloud-Projekt + 4 APIs aktivieren + Antrag. Schritt-für-Schritt in GBP-API-SETUP.md. Danach: Performance + Reviews laufen automatisch.</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                        <StatusDot on={configured.placeId} />
+                        <span><strong>Grid-Rang (optional)</strong> — kostenlos per eigenem Browser auf Abruf (kein bezahlter Dienst); Position rund um den Standort. Nicht nötig für „besser gefunden werden“ — das misst die Performance oben.</span>
                     </li>
                 </ul>
                 <p className="mt-4 text-[11px] leading-relaxed text-slate-400">
-                    Details, Kosten und Ablauf: content-engine/local-rank/README.md. Der Puller läuft read-only und wird
-                    (später) wöchentlich zu unregelmäßiger Uhrzeit eingeplant — wie die Blog-Engine, nichts postet ohne Freigabe.
+                    Details, Ablauf, Compliance: content-engine/local-rank/README.md + GBP-API-SETUP.md. Alles read-only bzw.
+                    freigabepflichtig; nichts postet oder antwortet ohne Thomas-Freigabe.
                 </p>
             </SectionCard>
         </div>

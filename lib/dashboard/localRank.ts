@@ -1,7 +1,9 @@
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import type { HealthSignal } from './health';
 import type { LocalRankSnapshot, ReviewHealth, ReviewItem } from '@/lib/localrank/types';
+import type { PerformanceSnapshot } from '@/lib/localrank/performance';
 import { computeReviewHealth } from '@/lib/localrank/reviewHealth';
 import { buildLocalSignals } from '@/lib/localrank/signals';
 import { REVIEWS, hasRealRating } from '@/lib/reviews';
@@ -16,15 +18,18 @@ const DIR = path.join(ROOT, 'content-engine/local-rank');
 const GRID_LATEST = path.join(DIR, 'latest.json');
 const GRID_DEMO = path.join(DIR, 'demo.json');
 const REVIEWS_FILE = path.join(DIR, 'reviews.json');
+const PERFORMANCE_FILE = path.join(DIR, 'performance.json');
+const GBP_TOKEN_FILE = path.join(os.homedir(), '.config/redrabbit-dashboard/token.json');
 
 export type ReviewsSource = 'api' | 'demo' | 'manual';
 
 export interface LocalRankView {
     grid: { snapshot: LocalRankSnapshot; isDemo: boolean } | null;
     reviews: { health: ReviewHealth; source: ReviewsSource } | null;
+    performance: PerformanceSnapshot | null;
     signals: HealthSignal[];
     /** What is wired up, for the "how to go live" hints on the page. */
-    configured: { dataForSeo: boolean; placeId: boolean };
+    configured: { gbpToken: boolean; placeId: boolean };
 }
 
 function readJson<T>(file: string): T | null {
@@ -80,6 +85,7 @@ function loadReviews(now: Date): { health: ReviewHealth; source: ReviewsSource }
 export function getLocalRank(now: Date = new Date()): LocalRankView {
     const grid = loadGrid();
     const reviews = loadReviews(now);
+    const performance = readJson<PerformanceSnapshot>(PERFORMANCE_FILE);
 
     // Only feed per-review (api/demo) data into the alarm logic — manual totals can't
     // support velocity/response signals and would raise misleading warnings.
@@ -89,10 +95,19 @@ export function getLocalRank(now: Date = new Date()): LocalRankView {
     return {
         grid,
         reviews,
+        performance: performance && Array.isArray(performance.metrics) ? performance : null,
         signals,
         configured: {
-            dataForSeo: Boolean(process.env.DATAFORSEO_LOGIN && process.env.DATAFORSEO_PASSWORD),
+            gbpToken: fileExists(GBP_TOKEN_FILE),
             placeId: Boolean(process.env.RR_GBP_PLACE_ID),
         },
     };
+}
+
+function fileExists(f: string): boolean {
+    try {
+        return fs.existsSync(f);
+    } catch {
+        return false;
+    }
 }

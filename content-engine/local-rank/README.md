@@ -25,40 +25,52 @@ profile — the guiding principle for the whole GBP project is **Draft → Freig
 - `lib/localrank/` — pure logic (grid geometry, KPI math, review health, outreach, signals) + tests.
 - `lib/dashboard/localRank.ts` — read-only data layer the dashboard tab consumes.
 - `app/dashboard/local-rank/page.tsx` — the dashboard tab.
-- `scripts/content-engine/local-rank/provider.ts` — `RankProvider` (DataForSEO + Fixture).
-- `scripts/content-engine/local-rank/pull.ts` — the puller CLI.
-- `content-engine/local-rank/latest.json` — real snapshot (written by a live pull; supersedes demo).
-- `content-engine/local-rank/demo.json` — synthetic snapshot so the tab has something to show.
-- `content-engine/local-rank/reviews.json` — real review snapshot (written once the API is wired).
+- `lib/localrank/gbpClient.ts` — fail-closed token client for the (free) GBP APIs (raw REST for v4 reviews).
+- `lib/localrank/reviewsParse.ts` / `performance.ts` — pure parsers (v4 reviews + Performance API), unit-tested.
+- `scripts/content-engine/local-rank/reviews-pull.ts` — reviews puller (free GBP API) → `reviews.json`.
+- `scripts/content-engine/local-rank/performance-pull.ts` — Performance puller (free GBP API) → `performance.json`.
+- `scripts/content-engine/local-rank/provider.ts` / `pull.ts` — grid puller (`RankProvider`: browser/DataForSEO/Fixture).
+- `content-engine/local-rank/{demo,latest,reviews,performance}.json` — snapshots (real supersede demo; none = EmptyState).
 
-## Running
+## The free plan (no paid service, no credit card)
+
+Thomas refuses any paid service. So:
+
+1. **Sichtbarkeit — automated backbone = Performance API (free, official, no ToS issue).** Impressions
+   (Maps/Search × desktop/mobile), calls, website clicks, directions, and the real search terms people
+   used. This directly measures "getting found more" and needs no scraping. → `npm run gbp:performance`.
+2. **Reviews — free GBP v4 API.** Volume, velocity, response rate, unanswered list + human-approved replies.
+   → `npm run gbp:reviews`.
+3. **Copy** (post drafts, review replies, profile texts) — the Claude subscription (`claude -p`, 0 API cost),
+   same as the blog engine.
+4. **Grid rank (position) — optional, free, on-demand only.** There is NO free official rank API. The only
+   free way is self-driving a logged-in Chrome to Google Maps `.../maps/search/<kw>/@<lat>,<lng>,<zoom>z`
+   and reading the result order — ToS grey area, CAPTCHA risk at volume. So the grid stays a **manual,
+   low-volume browser check** (stop on the first CAPTCHA, never bypass bot-protection). The paid
+   `DataForSeoProvider` remains in the code as a dormant option but is **not used** (costs money).
+
+### Setup (once) → then it just works
+See **`GBP-API-SETUP.md`** for the click-path. Short version: enable 4 free APIs → request "Basic API
+Access" (free, ~3–10 days) → `npm run gbp:auth` (one Google login, scope `business.manage`). After
+Google's approval the two pullers write real data and the dashboard lights up. No card at any step.
 
 ```bash
-npx tsx scripts/content-engine/local-rank/pull.ts --dry    # print grid + cost estimate, no calls
-npx tsx scripts/content-engine/local-rank/pull.ts --demo   # regenerate demo.json (fixture, no cost)
-npx tsx scripts/content-engine/local-rank/pull.ts          # LIVE (needs DataForSEO creds) → latest.json
+npm run gbp:auth          # one-time Google login (GSC + GA4 + GBP in one consent)
+npm run gbp:performance   # → performance.json (after Basic Access approval)
+npm run gbp:reviews       # → reviews.json
+npm run local-rank -- --demo   # grid demo (fixture, 0 cost); live grid = browser check, see above
 ```
 
-The puller is **fail-closed**: without `DATAFORSEO_LOGIN` / `DATAFORSEO_PASSWORD` it falls back
-to the fixture provider and writes `demo.json`, never a fake `latest.json`.
+All pullers are **fail-closed**: without the token / before approval they print a hint and write nothing.
 
-## Going live — credentials (all server-only, `.env.local` or the VPS `.env`, never committed)
-
-| Var | Unlocks | Notes |
-|-----|---------|-------|
-| `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD` | real grid measurements | DataForSEO Live Maps SERP, HTTP Basic. ~$0.002 / SERP → 49 points × 4 keywords = **~$0.39 per weekly pull**. DataForSEO handles scraping/proxying, so we stay ToS-safe (no self-scraping of Google). |
-| `RR_GBP_PLACE_ID` | exact listing match + review deep link | Google Place ID of the GBP listing. Without it we match by name substring (less reliable). |
-| Business Profile API (OAuth `business.manage`) | real review velocity/response-rate + reply drafts | Needs a Google-Cloud project + "Basic API Access" request (3–10 business days) and Thomas's Google login. Reuses the `googleapis` OAuth pattern in `lib/dashboard/google.ts`. Profile must be verified + ~60 days active. |
-
-Optional overrides: `RR_LOCALRANK_LAT` / `RR_LOCALRANK_LNG` (test another centre).
+Env (server-only, `.env.local`, never committed): `RR_GBP_ACCOUNT_ID`, `RR_GBP_LOCATION_ID`,
+`RR_GBP_PLACE_ID` (optional — skip the discovery call + build the review deep link).
 
 ## Scheduling (later — not auto-enabled)
 
-Same pattern as the blog engine: **weekly, at an irregular off-peak time**. Either a launchd
-job from the Mac bot-worktree (`~/dev/redrabbit-daily`, always `main`) or the `redrabbit-blog`
-systemd-timer Docker oneshot on the IONOS VPS. The puller only reads Google via DataForSEO; it
-never edits the profile. A history copy is kept in `content-engine/local-rank/history/<date>.json`
-so the dashboard can later show a trend.
+Same pattern as the blog engine: **weekly, at an irregular off-peak time**, from the Mac bot-worktree
+(`~/dev/redrabbit-daily`, always `main`) or the `redrabbit-blog` systemd timer on the VPS. All pullers are
+read-only; nothing edits the profile or sends without approval.
 
 ## Review compliance (hard rules — Google review policy Apr-2026 + AT-UWG Anh. Z 23b/c, EU-RL 2019/2161)
 
