@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Search, BarChart3, BrainCircuit, Sparkles, ListChecks, MapPin, Newspaper, Inbox } from 'lucide-react';
+import { LayoutDashboard, Search, BarChart3, BrainCircuit, Sparkles, ListChecks, MapPin, Newspaper, Inbox, MessagesSquare } from 'lucide-react';
 
 const NAV = [
     { href: '/dashboard', label: 'Überblick', icon: LayoutDashboard },
     { href: '/dashboard/leads', label: 'Leads', icon: Inbox },
+    { href: '/dashboard/chat', label: 'Chat-Insights', icon: MessagesSquare },
     { href: '/dashboard/search', label: 'Search Console', icon: Search },
     { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
     { href: '/dashboard/seo-monitor', label: 'SEO-Monitor', icon: ListChecks },

@@ -39,7 +39,7 @@ export async function insertLead(lead: NewLead): Promise<void> {
         source: normalizeSource(lead.source),
         status: 'neu' as LeadStatus,
     };
-    const res = await fetch(`${url}/rest/v1/leads`, {
+    const res = await fetch(`${url}/rest/v1/web_leads`, {
         method: 'POST',
         headers: headers({ Prefer: 'return=minimal' }),
         body: JSON.stringify(row),
@@ -50,7 +50,7 @@ export async function insertLead(lead: NewLead): Promise<void> {
 
 export async function listLeads(limit = 200): Promise<Lead[]> {
     const { url } = base();
-    const res = await fetch(`${url}/rest/v1/leads?select=*&order=created_at.desc&limit=${limit}`, {
+    const res = await fetch(`${url}/rest/v1/web_leads?select=*&order=created_at.desc&limit=${limit}`, {
         headers: headers(),
         cache: 'no-store',
     });
@@ -60,7 +60,7 @@ export async function listLeads(limit = 200): Promise<Lead[]> {
 
 export async function updateLead(id: string, patch: { status?: LeadStatus; note?: string }): Promise<void> {
     const { url } = base();
-    const res = await fetch(`${url}/rest/v1/leads?id=eq.${encodeURIComponent(id)}`, {
+    const res = await fetch(`${url}/rest/v1/web_leads?id=eq.${encodeURIComponent(id)}`, {
         method: 'PATCH',
         headers: headers({ Prefer: 'return=minimal' }),
         body: JSON.stringify(patch),
@@ -71,7 +71,7 @@ export async function updateLead(id: string, patch: { status?: LeadStatus; note?
 
 export async function deleteLead(id: string): Promise<void> {
     const { url } = base();
-    const res = await fetch(`${url}/rest/v1/leads?id=eq.${encodeURIComponent(id)}`, {
+    const res = await fetch(`${url}/rest/v1/web_leads?id=eq.${encodeURIComponent(id)}`, {
         method: 'DELETE',
         headers: headers({ Prefer: 'return=minimal' }),
         cache: 'no-store',

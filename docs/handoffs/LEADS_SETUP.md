@@ -1,14 +1,24 @@
-# Leads-Tab — Setup (Supabase + Vercel)
+# Leads-Tab + Chat-Insights — Setup (Supabase + Vercel)
+
+> Dieselben zwei Env-Variablen (`SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`) schalten
+> **beide** neuen Tabs frei: **Leads** (Tabelle `web_leads`, unten anlegen) und
+> **Chat-Insights** (liest die bestehenden Chatbot-Tabellen `sessions`/`messages_compact`
+> — nichts anzulegen). Ein Setup, zwei Tabs.
+
 
 Der Code ist fertig auf `main`. Damit der Leads-Tab live Anfragen zeigt, sind noch **zwei
 Handgriffe** nötig (beide in Oberflächen, in denen du eingeloggt bist — ich sehe die Secrets nie):
 
 ## 1. Tabelle im Chatbot-Supabase anlegen
 Supabase-Dashboard → dein **Chatbot-Projekt** (dasselbe, das der Chatbot nutzt) → **SQL Editor** →
-folgendes einfügen und ausführen:
+folgendes einfügen und ausführen.
+
+**Wichtig:** Die Tabelle heißt `web_leads` — NICHT `leads`. Der Chatbot hat schon eine eigene,
+anders geformte `leads`-Tabelle (chat-session-gebunden); die lassen wir unangetastet. `web_leads`
+sind die Website-Anfragen (Formular/Popup/CTA) mit vollem Kontakt + Status.
 
 ```sql
-create table if not exists public.leads (
+create table if not exists public.web_leads (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
   name text,
@@ -24,9 +34,9 @@ create table if not exists public.leads (
 
 -- RLS an, KEINE Policy: nur der service_role-Key (Server) kommt ran.
 -- Der anon-Key kann die Kunden-PII damit nie lesen, selbst wenn er leakt.
-alter table public.leads enable row level security;
+alter table public.web_leads enable row level security;
 
-create index if not exists leads_created_at_idx on public.leads (created_at desc);
+create index if not exists web_leads_created_at_idx on public.web_leads (created_at desc);
 ```
 
 ## 2. Zwei Env-Variablen in Vercel setzen

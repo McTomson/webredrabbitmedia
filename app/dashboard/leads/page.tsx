@@ -21,7 +21,7 @@ export default async function LeadsPage() {
                 <Header />
                 <StateNotice
                     kind="unconfigured"
-                    message="Supabase noch nicht verbunden. In Vercel SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY setzen (Chatbot-Projekt) und die leads-Tabelle anlegen (docs/handoffs/LEADS_SETUP.md), dann erscheinen hier die Anfragen."
+                    message="Supabase noch nicht verbunden. In Vercel SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY setzen (Chatbot-Projekt) und die web_leads-Tabelle anlegen (docs/handoffs/LEADS_SETUP.md), dann erscheinen hier die Anfragen."
                 />
             </div>
         );
