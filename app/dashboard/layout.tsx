@@ -27,7 +27,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         <div className="flex items-center gap-2">
                             <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-red-600 text-[11px] font-bold text-white">RR</span>
                             <span className="text-[15px] font-semibold tracking-tight text-slate-900">Dashboard</span>
-                            <span className="ml-auto rounded-full bg-black/[0.05] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-slate-500">lokal</span>
+                            <span className="ml-auto rounded-full bg-black/[0.05] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-slate-500">privat</span>
                         </div>
                         <p className="mt-2 hidden text-[12px] leading-snug text-slate-400 md:block">Red Rabbit Media · Sichtbarkeit, Suche und Traffic.</p>
                     </div>

@@ -1,7 +1,5 @@
-import fs from 'node:fs';
-import os from 'node:os';
-import path from 'node:path';
 import { google } from 'googleapis';
+import { loadGoogleCreds } from '@/lib/dashboard/googleCreds';
 
 // Thin, fail-closed client for the (free, no-billing) Google Business Profile APIs.
 // Reuses the SAME OAuth token as the GSC/GA4 dashboard (~/.config/redrabbit-dashboard),
@@ -12,8 +10,6 @@ import { google } from 'googleapis';
 // package does NOT expose as a typed client — so we mint an access token here and call
 // the REST endpoints directly with fetch. Everything degrades to null/typed-error when
 // the token is missing, so nothing ever throws a 500 into the dashboard.
-
-const CFG = path.join(os.homedir(), '.config/redrabbit-dashboard');
 
 export const GBP_HOSTS = {
     account: 'https://mybusinessaccountmanagement.googleapis.com/v1',
@@ -28,14 +24,11 @@ export type GbpResult<T> =
     | { state: 'error'; message: string };
 
 function oauthClient() {
-    const clientPath = path.join(CFG, 'oauth_client.json');
-    const tokenPath = path.join(CFG, 'token.json');
-    if (!fs.existsSync(clientPath) || !fs.existsSync(tokenPath)) return null;
-    const c = JSON.parse(fs.readFileSync(clientPath, 'utf8'));
-    const cc = c.installed || c.web || c;
-    const tok = JSON.parse(fs.readFileSync(tokenPath, 'utf8'));
-    const o = new google.auth.OAuth2(cc.client_id, cc.client_secret);
-    o.setCredentials(tok);
+    // Creds from local files OR base64 env vars (Vercel) — see lib/dashboard/googleCreds.ts.
+    const creds = loadGoogleCreds();
+    if (!creds) return null;
+    const o = new google.auth.OAuth2(creds.clientId, creds.clientSecret);
+    o.setCredentials(creds.token);
     return o;
 }
 

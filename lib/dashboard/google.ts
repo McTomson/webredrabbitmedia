@@ -1,7 +1,7 @@
-import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { google } from 'googleapis';
+import { loadGoogleCreds } from './googleCreds';
 
 // ──────────────────────────────────────────────────────────────────────────
 // Local-only dashboard data layer for Google Search Console + GA4.
@@ -26,16 +26,11 @@ export type Loaded<T> =
     | { state: 'error'; message: string };
 
 function authClient() {
-    const clientPath = path.join(CFG, 'oauth_client.json');
-    const tokenPath = path.join(CFG, 'token.json');
-    if (!fs.existsSync(clientPath) || !fs.existsSync(tokenPath)) {
-        return null;
-    }
-    const c = JSON.parse(fs.readFileSync(clientPath, 'utf8'));
-    const cc = c.installed || c.web || c;
-    const tok = JSON.parse(fs.readFileSync(tokenPath, 'utf8'));
-    const o = new google.auth.OAuth2(cc.client_id, cc.client_secret);
-    o.setCredentials(tok);
+    // Creds come from the local config files OR base64 env vars (Vercel) — see googleCreds.ts.
+    const creds = loadGoogleCreds();
+    if (!creds) return null;
+    const o = new google.auth.OAuth2(creds.clientId, creds.clientSecret);
+    o.setCredentials(creds.token);
     return o;
 }
 

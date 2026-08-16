@@ -149,9 +149,10 @@ export default function LocalRankPage() {
                     <div className="flex items-start gap-3">
                         <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-600" strokeWidth={2} />
                         <p className="text-[13px] leading-relaxed text-amber-800">
-                            <strong>Demo-Daten.</strong> Es liegen noch keine echten Messungen vor. Die Zahlen sind synthetisch
-                            (nahe Standort = besser) und zeigen nur, wie die Auswertung aussieht. Für echte Messungen einen
-                            DataForSEO-Zugang hinterlegen (siehe „Live schalten“ unten) und den Puller wöchentlich laufen lassen.
+                            <strong>Demo-Daten.</strong> Es liegen noch keine echten Grid-Messungen vor. Die Zahlen sind synthetisch
+                            (nahe Standort = besser) und zeigen nur, wie die Auswertung aussieht. Echte Grid-Position kommt kostenlos
+                            über den Browser-Check auf Abruf (siehe „Live schalten“ unten); die automatische Sichtbarkeit liefert die
+                            Google-Performance-API.
                         </p>
                     </div>
                 </Card>
@@ -178,7 +179,7 @@ export default function LocalRankPage() {
                 </section>
             ) : (
                 <SectionCard title="Grid-Rang">
-                    <EmptyState message="Noch keine Messung. npx tsx scripts/content-engine/local-rank/pull.ts --demo erzeugt eine Demo-Auswertung; mit DataForSEO-Zugang schreibt der Puller echte Daten." />
+                    <EmptyState message="Noch keine Grid-Messung. npx tsx scripts/content-engine/local-rank/pull.ts --demo erzeugt eine Demo-Auswertung; echte Positionen kommen über den kostenlosen Browser-Check auf Abruf." />
                 </SectionCard>
             )}
 
