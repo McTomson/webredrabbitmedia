@@ -209,6 +209,7 @@ async function main() {
     }
 
     // 4) commit + push
+    const marker = path.join(ROOT, 'content-engine/.media-requests', `${slug}.json`);
     if (!flag('no-push')) {
         // Stage only published .mdx (cluster-mate edits from 3.5) — NOT the whole dir, so a stray
         // non-mdx file under content/blog can never be swept into this unattended push to main.
@@ -216,6 +217,12 @@ async function main() {
         // cursor + records motifs there during planning, and the next run does `git reset --hard
         // origin/main` — without committing it the colour rotation would reset to the same colour every
         // article (root cause of the "always blue" bug fixed 2026-06-28).
+        // The media-request marker deletion MUST be committed too (fix 2026-08-17): the markers are
+        // TRACKED on origin/main, and the old code only did fs.rmSync locally (step 6) without staging
+        // the removal — so the next checker `git reset --hard origin/main` restored every "done" marker,
+        // turning them into permanent orphans that piled up a fake backlog (12 stale markers found today).
+        // git rm --ignore-unmatch stages the deletion here (no-op + exit 0 if the marker is untracked).
+        execFileSync('git', ['rm', '-f', '-q', '--ignore-unmatch', `content-engine/.media-requests/${slug}.json`], { cwd: ROOT, stdio: 'inherit' });
         execFileSync('git', ['add', 'content/blog/*.mdx', 'public/audio', 'public/images/blog', 'public/videos', 'content-engine/knowledge/recent-image-motifs.json', 'content-engine/status/engine-status.json'], { cwd: ROOT, stdio: 'inherit' });
         try {
             const msg = `feat(blog): add media to ${slug}` + (clusterTouched ? ` (+${clusterTouched} cluster links)` : '');
@@ -247,13 +254,14 @@ async function main() {
         log('5/6 Schluss-Mail uebersprungen');
     }
 
-    // 6) clear the media marker (local file, if present; committed clear handled by watcher)
-    const marker = path.join(ROOT, 'content-engine/.media-requests', `${slug}.json`);
+    // 6) clear the media marker. In the push path the deletion was already staged+committed in step 4
+    // (so it clears on origin/main permanently). This is the fallback for --no-push runs and any
+    // leftover local file (e.g. an untracked marker that git rm --ignore-unmatch skipped).
     if (fs.existsSync(marker)) {
         fs.rmSync(marker);
-        log('6/6 Medien-Marker entfernt');
+        log('6/6 Medien-Marker entfernt (lokal)');
     } else {
-        log('6/6 kein lokaler Marker');
+        log('6/6 Marker bereits entfernt');
     }
 
     log(`\nFertig fuer ${slug}. YouTube: ${youtubeUrl || '(kein Video)'} | Substack: ${substack || '(keiner)'}`);
