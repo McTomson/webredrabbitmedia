@@ -3074,3 +3074,48 @@ quelle: https://kinsta.com/blog/wp-options-autoloaded-data/
 quelle_name: Kinsta - How to Clean up Your wp_options Table and Autoloaded Data
 geprueft_am: 2026-08-16
 recheck_nach: 2027-02-12
+
+## t73-2026-08-17-342
+cluster: 2
+keywords: funktioniert, gzip, oder, brotli, komprimierung, webservern
+aussage: Kompression läuft über HTTP-Content-Negotiation: Der Browser listet unterstützte Algorithmen im Request-Header 'Accept-Encoding' (z. B. 'br, gzip'), der Server wählt einen davon aus und bestätigt die Wahl im Response-Header 'Content-Encoding'; zusätzlich muss der Server 'Vary: Accept-Encoding' senden, damit zwischengeschaltete Caches unterschiedliche Versionen pro Encoding korrekt vorhalten. MDN nennt gzip als verbreitetsten Algorithmus und Brotli ('br') als moderne Alternative — von historisch vielen Verfahren seien 'heute nur noch zwei relevant'. Textkompression kann die übertragene Dateigröße um bis zu 70% reduzieren.
+quelle: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Compression
+quelle_name: MDN Web Docs - HTTP Compression Guide
+geprueft_am: 2026-08-17
+recheck_nach: 2027-02-13
+
+## t73-2026-08-17-343
+cluster: 2
+keywords: funktioniert, gzip, oder, brotli, komprimierung, webservern
+aussage: Brotli ist ein von Google entwickeltes, verlustfreies Kompressionsverfahren (spezifiziert in RFC 7932), das eine moderne LZ77-Variante mit Huffman-Kodierung und einem Kontextmodell zweiter Ordnung kombiniert. Im direkten Vergleich erzielt Brotli bessere Kompressionsraten als gzip bei vergleichbarer Dekompressionsgeschwindigkeit (ähnlich Deflate) — die Kompression selbst ist bei Brotli jedoch langsamer als bei gzip, weshalb gzip laut MDN für nicht cachebare, dynamisch erzeugte Inhalte oft die bessere Wahl bleibt.
+quelle: https://developer.mozilla.org/en-US/docs/Glossary/Brotli_compression
+quelle_name: MDN Web Docs - Glossary: Brotli compression
+geprueft_am: 2026-08-17
+recheck_nach: 2027-02-13
+
+## t73-2026-08-17-344
+cluster: 2
+keywords: funktioniert, gzip, oder, brotli, komprimierung, webservern
+aussage: Cloudflare wählt den Kompressionsalgorithmus abhängig vom Tarif automatisch: Free-Plan nutzt standardmäßig Zstandard, Pro/Business-Plan Brotli, Enterprise-Plan Gzip — die tatsächlich eingesetzte Methode hängt zusätzlich davon ab, was der Browser des Besuchers per 'Accept-Encoding'-Header anfragt. Für Gzip gilt eine Mindestgröße von 48 Byte, für Brotli und Zstandard von 50 Byte, unterhalb derer Cloudflare nicht komprimiert.
+quelle: https://developers.cloudflare.com/speed/optimization/content/compression/
+quelle_name: Cloudflare Docs - Content compression (Speed)
+geprueft_am: 2026-08-17
+recheck_nach: 2027-02-13
+
+## t73-2026-08-17-345
+cluster: 2
+keywords: funktioniert, gzip, oder, brotli, komprimierung, webservern
+aussage: Next.js aktiviert standardmäßig gzip-Kompression für gerenderte Inhalte und statische Dateien, wenn die App über 'next start' oder einen Custom Server läuft. Ist Kompression bereits über einen eigenen Server (z. B. Nginx mit Brotli) oder ein CDN konfiguriert, sollte die eingebaute Option 'compress: false' im next.config.js gesetzt werden, um doppelte Kompression zu vermeiden; für Brotli-Auslieferung muss der vorgeschaltete Server/CDN den 'Accept-Encoding: br'-Header des Clients erkennen und passende Assets ausliefern.
+quelle: https://nextjs.org/docs/app/api-reference/config/next-config-js/compress
+quelle_name: Next.js Docs - next.config.js: compress
+geprueft_am: 2026-08-17
+recheck_nach: 2027-02-13
+
+## t73-2026-08-17-346
+cluster: 2
+keywords: funktioniert, gzip, oder, brotli, komprimierung, webservern
+aussage: Google/web.dev stuft eine Time to First Byte (TTFB) von 0,8 Sekunden oder weniger als 'gut' ein, 0,8–1,8 Sekunden als verbesserungswürdig und über 1,8 Sekunden als 'schlecht'. TTFB ist zwar selbst kein Core-Web-Vitals-Wert, wirkt sich aber direkt auf FCP und LCP aus; web.dev warnt zugleich, dass Kompression 'on the fly' bei dynamisch generiertem Markup in bestimmten Fällen die Antwortzeit sogar verlangsamen kann, wenn sie nicht sauber konfiguriert ist.
+quelle: https://web.dev/articles/optimize-ttfb
+quelle_name: web.dev (Google) - Optimize Time to First Byte
+geprueft_am: 2026-08-17
+recheck_nach: 2027-02-13

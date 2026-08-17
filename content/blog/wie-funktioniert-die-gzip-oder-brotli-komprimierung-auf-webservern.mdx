@@ -1,0 +1,136 @@
+---
+title: "Gzip vs. Brotli: Komprimierung auf Webservern (2026)"
+slug: wie-funktioniert-die-gzip-oder-brotli-komprimierung-auf-webservern
+excerpt: "Gzip und Brotli komprimieren HTML, CSS und JavaScript auf dem Server, bevor sie beim Besucher ankommen, und sparen dabei oft bis zu 70 Prozent Datenvolumen. Wie der Handshake zwischen Browser und Server funktioniert und worauf Sie bei Next.js und Cloudflare achten sollten."
+featuredSnippetTitle: "Wie funktioniert Gzip oder Brotli Komprimierung auf Webservern?"
+featuredSnippet: "Gzip und Brotli sind Kompressionsverfahren, die Text-Dateien wie HTML, CSS und JavaScript auf dem Server verkleinern, oft um bis zu 70 Prozent, bevor sie zum Browser geschickt werden. Der Browser meldet per Accept-Encoding-Header, welches Verfahren er versteht, der Server wählt eines aus und bestätigt es per Content-Encoding-Header."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-17"
+updatedAt: "2026-08-17"
+category: "Technik & Performance"
+cluster: 2
+tags: ["Gzip", "Brotli", "Serverkomprimierung", "Core Web Vitals", "Cloudflare", "Next.js"]
+featuredImage: /images/blog/wie-funktioniert-die-gzip-oder-brotli-komprimierung-auf-webservern.png
+status: draft
+aiAssisted: true
+sources:
+  - name: "MDN Web Docs - HTTP Compression Guide"
+    url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Compression"
+  - name: "MDN Web Docs - Glossary: Brotli compression"
+    url: "https://developer.mozilla.org/en-US/docs/Glossary/Brotli_compression"
+  - name: "Cloudflare Docs - Content compression (Speed)"
+    url: "https://developers.cloudflare.com/speed/optimization/content/compression/"
+  - name: "Next.js Docs - next.config.js: compress"
+    url: "https://nextjs.org/docs/app/api-reference/config/next-config-js/compress"
+  - name: "web.dev (Google) - Optimize Time to First Byte"
+    url: "https://web.dev/articles/optimize-ttfb"
+keyTakeaways:
+  - "Kompression läuft über Content-Negotiation: Der Browser fragt per Accept-Encoding an, der Server bestätigt per Content-Encoding, und Vary: Accept-Encoding schützt Caches vor falschen Varianten."
+  - "Textdateien lassen sich um bis zu 70 Prozent verkleinern, Bilder in gängigen Formaten dagegen kaum, weil sie bereits komprimiert sind."
+  - "Brotli komprimiert stärker als Gzip, braucht dafür aber mehr Rechenzeit, weshalb Gzip bei dynamischen, nicht cachebaren Inhalten oft die bessere Wahl bleibt."
+  - "Cloudflare wählt das Verfahren tarifabhängig automatisch: Zstandard im Free-Plan, Brotli im Pro- und Business-Plan, Gzip im Enterprise-Plan."
+  - "Next.js komprimiert mit Gzip von Haus aus, bei einem vorgeschalteten Server oder CDN sollte compress: false gesetzt werden, um doppelte Kompression zu vermeiden."
+conclusionStats:
+  - label: "Kleinere Textdateien"
+    value: "bis zu 70 %"
+  - label: "Gute Time to First Byte"
+    value: "0,8 s"
+  - label: "Mindestgröße für Gzip (Cloudflare)"
+    value: "48 Byte"
+  - label: "Mindestgröße für Brotli (Cloudflare)"
+    value: "50 Byte"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Was ist der Unterschied zwischen Gzip und Brotli Komprimierung?"
+    answer: "Brotli komprimiert Text-Dateien stärker als Gzip, weil es ein modernes Kontextmodell nutzt, braucht dafür aber mehr Rechenzeit beim Komprimieren selbst. Gzip ist schneller im Erzeugen und deshalb bei dynamischen, nicht cachebaren Inhalten oft die praktischere Wahl, während Brotli sich für statische, oft wiederverwendete Dateien lohnt."
+  - question: "Wie aktiviere ich Gzip oder Brotli Komprimierung auf meinem Server?"
+    answer: "Bei Next.js ist Gzip standardmäßig aktiv, sobald die Anwendung über next start läuft. Läuft ein CDN oder ein Server wie Nginx davor, übernimmt dieser die Kompression, dann sollte compress: false in der next.config.js gesetzt werden, damit nicht doppelt komprimiert wird."
+  - question: "Welches Kompressionsverfahren nutzt Cloudflare?"
+    answer: "Cloudflare wählt das Verfahren abhängig vom Tarif automatisch aus. Der kostenlose Free-Plan nutzt Zstandard, der Pro- und der Business-Plan setzen auf Brotli, und der Enterprise-Plan verwendet Gzip. Welches Verfahren tatsächlich ausgeliefert wird, hängt zusätzlich vom Accept-Encoding-Header des jeweiligen Besuchers ab."
+  - question: "Komprimiert Next.js Websites automatisch?"
+    answer: "Ja, Next.js aktiviert Gzip-Kompression standardmäßig für gerenderte Seiten und statische Dateien, sobald die Anwendung über next start oder einen eigenen Server läuft. Ein separates Setup ist dafür nicht nötig, außer ein vorgeschalteter Dienst komprimiert bereits selbst."
+  - question: "Lohnt sich Kompression auch für Bilder wie JPEG oder PNG?"
+    answer: "Nein, gängige Bildformate wie JPEG, PNG oder WebP sind bereits selbst komprimiert. Ein zweiter Durchlauf mit Gzip oder Brotli bringt praktisch keine zusätzliche Ersparnis und kostet nur Rechenzeit. Kompression auf Server-Ebene lohnt sich vor allem bei Text-basierten Dateien wie HTML, CSS, JavaScript, JSON oder SVG."
+hookCandidates:
+  - "gzip oder brotli: was ist schneller?"
+  - "html & css: bis zu 70% komprimiert?"
+  - "welche kompression nutzt dein server?"
+---
+
+Stellen Sie sich vor, Sie packen einen Koffer für eine Woche Wien und quetschen die Pullover in einen Vakuumbeutel. Gleicher Inhalt, aber deutlich weniger Platz im Gepäck. Genau das passiert mit Ihrer Website, bevor sie beim Besucher ankommt. Der Server steckt HTML, CSS und JavaScript in einen digitalen Vakuumbeutel, bevor er sie über das Internet schickt, und der Browser packt sie beim Empfang wieder aus.
+
+Bei jeder Anfrage listet der Browser im Header "Accept-Encoding", welche Kompressionsverfahren er versteht, meist Gzip und Brotli. Der Server wählt eines davon, komprimiert Text-Dateien wie HTML, CSS oder JavaScript und schickt sie mit dem Header "Content-Encoding" zurück, oft um bis zu 70 Prozent kleiner.
+
+Das klingt nach einem technischen Detail für Entwickler, das Ergebnis spüren aber alle. Eine Seite, die schneller lädt, wird öfter zu Ende gelesen und häufiger durchgeklickt. Am Ende schlägt sich das auch in mehr Käufen nieder. Wer eine Website betreibt oder betreiben lässt, sollte zumindest verstehen, was hier im Hintergrund passiert und worauf es ankommt.
+
+![Schema der Gzip- und Brotli-Komprimierung zwischen Browser und Webserver mit Accept-Encoding- und Content-Encoding-Header](/images/blog/wie-funktioniert-die-gzip-oder-brotli-komprimierung-auf-webservern.png)
+
+## Der Handshake zwischen Browser und Server
+
+Kompression im Web läuft über einen Mechanismus, den man HTTP-Content-Negotiation nennt. Klingt sperrig, ist aber simpel erklärt. Ihr Browser schickt bei jeder Anfrage an einen Server einen Header mit dem Namen "Accept-Encoding" mit, und darin steht schlicht, welche Kompressionsverfahren er verarbeiten kann, etwa "br, gzip". Der Server schaut sich diese Liste an, entscheidet sich für ein Verfahren und bestätigt seine Wahl im Antwort-Header "Content-Encoding".
+
+Wichtig ist dabei ein dritter Header, den viele übersehen: "Vary: Accept-Encoding". Er sagt jedem Cache, der zwischen Server und Besucher sitzt, etwa einem CDN oder einem Proxy, dass er die Datei nicht einfach einmal speichern und für alle ausliefern darf. Stattdessen muss er für jede Encoding-Variante eine eigene Kopie vorhalten. Fehlt dieser Header, kann es passieren, dass ein Besucher mit einem älteren Browser plötzlich eine kaputte oder unkomprimierte Version ausgeliefert bekommt, weil der Cache die falsche Variante gespeichert hat. Genau an diesem Header schlampen Agenturen bei eigenen Serverkonfigurationen erstaunlich oft, mit spürbaren Folgen für einzelne Besucher.
+
+[MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Compression) beschreibt Gzip als das verbreitetste Verfahren im Web und Brotli als die modernere Alternative. Historisch gab es deutlich mehr Kompressionsverfahren, heute sind laut MDN nur noch diese zwei wirklich relevant.
+
+## Gzip gegen Brotli: Wer gewinnt wann
+
+[Brotli](https://developer.mozilla.org/en-US/docs/Glossary/Brotli_compression) wurde von Google entwickelt und ist in RFC 7932 spezifiziert. Technisch kombiniert es eine moderne Variante des LZ77-Algorithmus mit Huffman-Kodierung und einem Kontextmodell zweiter Ordnung, das Muster im Text besser erkennt als ältere Verfahren. Das Ergebnis: Brotli komprimiert im direkten Vergleich stärker als Gzip, bei einer Dekompressionsgeschwindigkeit, die etwa auf Höhe von Deflate liegt, also für den Besucher praktisch nicht spürbar langsamer.
+
+Der Haken liegt woanders. Die Kompression selbst, also der Vorgang, bei dem der Server die Datei erst einmal klein macht, dauert bei Brotli länger als bei Gzip. Für eine statische Datei, die Sie einmal komprimieren und dann tausendfach unverändert ausliefern, spielt das keine Rolle. Für Inhalte, die bei jeder Anfrage neu und dynamisch generiert werden, etwa eine personalisierte Ergebnisseite, kann dieser zusätzliche Rechenaufwand den Vorteil auffressen. MDN empfiehlt deshalb, für nicht cachebare, dynamisch erzeugte Inhalte oft lieber bei Gzip zu bleiben und Brotli dort einzusetzen, wo eine Datei einmal komprimiert und danach oft wiederverwendet wird, etwa bei statischen CSS- oder JavaScript-Dateien.
+
+Als Faustregel für die Praxis: Selten geänderte Dateien, die oft ausgeliefert werden, gehören mit Brotli komprimiert, alles, was sich bei jeder Anfrage neu zusammensetzt, darf ruhig bei Gzip bleiben.
+
+## Was CDNs wie Cloudflare automatisch übernehmen
+
+Viele Websites laufen heute hinter einem [Content Delivery Network](/tipps/was-ist-ein-content-delivery-network-cdn-und-wann), und [Cloudflare](https://developers.cloudflare.com/speed/optimization/content/compression/) ist in Österreich eines der am häufigsten eingesetzten. Cloudflare wählt das Kompressionsverfahren abhängig vom gebuchten Tarif automatisch aus: Der kostenlose Free-Plan nutzt standardmäßig Zstandard, der Pro- und der Business-Plan setzen auf Brotli, und der Enterprise-Plan verwendet Gzip. Welches Verfahren am Ende tatsächlich zum Einsatz kommt, hängt zusätzlich davon ab, was der Browser des jeweiligen Besuchers im "Accept-Encoding"-Header überhaupt anfragt.
+
+Nicht jede Datei wird dabei komprimiert. Cloudflare setzt Mindestgrößen an: Für Gzip müssen es mindestens 48 Byte sein, für Brotli und Zstandard mindestens 50 Byte. Winzige Dateien unterhalb dieser Grenze bringt eine Kompression ohnehin nichts, der Overhead der Kompressions-Header würde die Datei am Ende sogar vergrößern. Das ist auch der Grund, warum Sie in den Entwicklertools des Browsers manchmal eine kleine JavaScript-Datei ohne "Content-Encoding"-Header sehen, während die große Bilddatei daneben komprimiert ankommt oder eben gar nicht, weil sie bereits ein eigenes Kompressionsformat mitbringt.
+
+Wenn Sie eine Website über Cloudflare betreiben, müssen Sie sich um die Wahl des Algorithmus in der Regel nicht kümmern. Das System entscheidet im Hintergrund. Wichtiger ist zu wissen, welcher Tarif eingesetzt wird, weil sich davon ableitet, welches Verfahren Ihre Seite tatsächlich verwendet.
+
+## Next.js und die Falle der doppelten Kompression
+
+Für Websites, die mit [Next.js](/tipps/was-ist-der-unterschied-zwischen-next-js-und-einer) gebaut sind, wie viele moderne österreichische Unternehmensauftritte, gibt es eine Besonderheit. Next.js aktiviert die Gzip-Kompression standardmäßig, sobald die Anwendung über "next start" oder einen eigenen Server läuft. Sie müssen also nichts konfigurieren, damit gerenderte Seiten und statische Dateien komprimiert ausgeliefert werden.
+
+Problematisch wird es, wenn zusätzlich ein vorgeschalteter Server oder ein CDN eingesetzt wird, das ebenfalls komprimiert, etwa ein Nginx-Server mit aktivierter Brotli-Unterstützung oder ein CDN wie Cloudflare. Dann komprimiert Next.js die Datei einmal, und der vorgeschaltete Dienst versucht es ein zweites Mal, was in der Praxis meist nichts bringt und unnötig Rechenzeit auf dem Server kostet. Die [Next.js-Dokumentation](https://nextjs.org/docs/app/api-reference/config/next-config-js/compress) empfiehlt in diesem Fall, die eingebaute Option im "next.config.js" mit "compress: false" zu deaktivieren und die Kompression komplett dem vorgeschalteten System zu überlassen.
+
+Damit am Ende tatsächlich Brotli ausgeliefert wird, muss dieser vorgeschaltete Server oder das CDN den "Accept-Encoding: br"-Header des jeweiligen Besuchers erkennen und die passende Variante ausliefern. Läuft eine Next.js-Seite direkt ohne CDN, bleibt es bei Gzip, weil Next.js selbst kein Brotli erzeugt. Wer also unbedingt Brotli-Kompression will, kommt um ein CDN oder einen entsprechend konfigurierten eigenen Server nicht herum.
+
+## Warum das für Ladezeit und Core Web Vitals zählt
+
+[Google beziehungsweise das dazugehörige Entwicklerportal web.dev](https://web.dev/articles/optimize-ttfb) stuft eine Time to First Byte, also die Zeit bis zum ersten Datenpaket vom Server, von 0,8 Sekunden oder weniger als gut ein. Werte zwischen 0,8 und 1,8 Sekunden gelten als verbesserungswürdig, alles darüber als schlecht. Die Time to First Byte selbst zählt nicht direkt zu den Core Web Vitals, wirkt sich aber unmittelbar auf zwei Werte aus, die sehr wohl gemessen und von Google bewertet werden: den First Contentful Paint und den Largest Contentful Paint, also wie schnell sichtbarer Inhalt auf dem Bildschirm erscheint.
+
+Hier liegt allerdings eine Falle, vor der web.dev ausdrücklich warnt: Kompression, die live und "on the fly" bei dynamisch generiertem Markup passiert, kann die Antwortzeit in bestimmten Fällen sogar verlangsamen, wenn sie nicht sauber konfiguriert ist. Der Server verbringt dann Zeit damit, eine Antwort zu komprimieren, die er ohnehin nur einmal ausliefert, statt sie einfach schnell zu verschicken. Genau deshalb ist die Unterscheidung zwischen statischen, wiederverwendbaren Dateien und dynamisch erzeugten Inhalten so wichtig, wie sie im Abschnitt zu Gzip und Brotli oben schon anklang. Wie stark die [Ladezeit direkt den Umsatz beeinflusst](/tipps/warum-ist-die-ladezeit-pagespeed-entscheidend-fuer-den-umsatz), zeigt sich spätestens bei den Absprungraten auf langsamen Seiten.
+
+Für Betreiber heißt das: Eine korrekt eingerichtete Kompression macht eine Seite spürbar schneller. Schlecht konfiguriert bewirkt sie das Gegenteil, und von außen sehen beide Fälle zunächst gleich aus.
+
+## Schritt für Schritt: Was Sie konkret prüfen können
+
+Sie müssen kein Entwickler sein, um den Status Ihrer eigenen Website zu prüfen. Öffnen Sie die Entwicklertools Ihres Browsers, meist über die Taste F12, wechseln Sie zum Reiter "Netzwerk" und laden Sie Ihre Startseite neu. Klicken Sie auf die HTML-Datei ganz oben in der Liste und schauen Sie sich die Antwort-Header an.
+
+Steht dort "content-encoding: br" oder "content-encoding: gzip", wird bereits komprimiert. Fehlt der Header komplett, liefert Ihr Server oder Ihr CDN die Datei unkomprimiert aus, und das ist bei Text-Dateien wie HTML, CSS und JavaScript in aller Regel ein vermeidbarer Nachteil. Prüfen Sie das Gleiche auch bei den größeren JavaScript-Dateien, die Ihre Seite lädt, weil dort der Effekt der Kompression am größten ausfällt.
+
+Nutzen Sie ein CDN wie Cloudflare, prüfen Sie als Nächstes, welcher Tarif gebucht ist, weil sich daraus ergibt, ob Brotli, Gzip oder Zstandard zum Einsatz kommt. Läuft Ihre Website direkt über Next.js ohne vorgeschaltetes CDN, ist die Gzip-Kompression normalerweise bereits automatisch aktiv, hier lohnt sich eher ein Blick darauf, ob nicht versehentlich doppelt komprimiert wird, weil sowohl Next.js als auch ein Server davor aktiv sind. Ein einfacher Blick in die Antwort-Header verrät das schnell, doppelte Kompression erkennen Sie oft daran, dass die Antwortzeit unerklärlich hoch ist, obwohl die Datei selbst klein ist.
+
+## Häufige Irrtümer bei Gzip und Brotli
+
+Ein häufiger Irrtum: Bilder nachträglich noch einmal per Gzip oder Brotli komprimieren zu wollen. Formate wie JPEG, PNG oder WebP sind bereits selbst komprimiert, ein zweiter Durchlauf bringt praktisch nichts und kostet nur Rechenzeit. Kompression auf Server-Ebene lohnt sich fast ausschließlich bei Text-basierten Dateien wie HTML, CSS, JavaScript, JSON oder SVG.
+
+Genauso hartnäckig hält sich die Annahme, mehr Kompression sei automatisch besser. Brotli lässt sich in verschiedenen Qualitätsstufen konfigurieren, und die höchste Stufe braucht deutlich mehr Rechenzeit für minimal kleinere Dateien. Bei dynamischen Inhalten, die sich ständig ändern, ist eine mittlere Kompressionsstufe oft die klügere Wahl als die maximale.
+
+Teuer wird es, wenn Betreiber glauben, ein CDN erledige automatisch alles richtig, ohne dass man je einen Blick in die Konfiguration wirft. Der Tarif entscheidet über das Verfahren, wie oben beschrieben, und wer beim günstigsten Plan bleibt, während die Konkurrenz mit Brotli ausliefert, verschenkt Ladezeit, ohne es zu merken.
+
+## Key Takeaways
+
+- Kompression läuft über Content-Negotiation: Der Browser fragt per "Accept-Encoding" an, der Server bestätigt per "Content-Encoding", und "Vary: Accept-Encoding" schützt Caches vor falschen Varianten.
+- Textdateien lassen sich um bis zu 70 Prozent verkleinern, Bilder in gängigen Formaten dagegen kaum, weil sie bereits komprimiert sind.
+- Brotli komprimiert stärker als Gzip, braucht dafür aber mehr Rechenzeit, weshalb Gzip bei dynamischen, nicht cachebaren Inhalten oft die bessere Wahl bleibt.
+- Cloudflare wählt das Verfahren tarifabhängig automatisch: Zstandard im Free-Plan, Brotli im Pro- und Business-Plan, Gzip im Enterprise-Plan.
+- Next.js komprimiert mit Gzip von Haus aus, bei einem vorgeschalteten Server oder CDN sollte "compress: false" gesetzt werden, um doppelte Kompression zu vermeiden.
+
+## Fazit
+
+Gzip und Brotli klingen nach einem Detail für die IT-Abteilung, entscheiden aber mit darüber, wie schnell sich eine Website anfühlt und wie gut sie bei Google performt. Die gute Nachricht: Bei den meisten modernen Setups, ob Next.js, Cloudflare oder ein solide konfigurierter Server, läuft die Grundkompression bereits automatisch. Die Aufgabe besteht eher darin, Doppelarbeit zu vermeiden und zu wissen, welcher Tarif oder welche Konfiguration tatsächlich im Einsatz ist.
+
+Wenn Sie unsicher sind, ob Ihre eigene Website hier sauber eingestellt ist, oder wenn ein Redesign ohnehin ansteht, werfen wir gerne gemeinsam einen Blick auf Ihre Server-Header. [Kontaktieren Sie uns](/kontakt), wir sagen Ihnen ehrlich, ob sich hier noch Ladezeit herausholen lässt oder ob bei Ihnen bereits alles passt.
