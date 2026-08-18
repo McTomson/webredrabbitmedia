@@ -1,45 +1,93 @@
 ---
-title: "Echte Website Performance messen abseits von Lighthouse 2026"
+title: Echte Website Performance messen abseits von Lighthouse 2026
 slug: wie-misst-man-die-echte-performance-einer-website-abseits
-excerpt: "Ein guter Lighthouse Score ist nur ein Labortest. Wie Sie mit Felddaten aus dem Chrome User Experience Report die echte Performance Ihrer Website messen."
-featuredSnippetTitle: "Wie misst man die echte Performance einer Website?"
-featuredSnippet: "Die echte Performance einer Website misst man mit Felddaten aus dem Chrome User Experience Report (CrUX) oder eigenem Real User Monitoring, nicht mit einem einzelnen Lighthouse Test. Felddaten zeigen, was echte Besucher mit echten Geräten und Netzwerken erleben, während ein Labortest nur eine simulierte Momentaufnahme liefert."
-author: "Dmitry Pashlov"
-publishedAt: "2026-08-15"
-updatedAt: "2026-08-15"
-category: "Technik & Performance"
-tags: ["Performance", "Core Web Vitals", "CrUX", "PageSpeed", "Technik", "Österreich"]
+excerpt: >-
+  Ein guter Lighthouse Score ist nur ein Labortest. Wie Sie mit Felddaten aus
+  dem Chrome User Experience Report die echte Performance Ihrer Website messen.
+featuredSnippetTitle: Wie misst man die echte Performance einer Website?
+featuredSnippet: >-
+  Die echte Performance einer Website misst man mit Felddaten aus dem Chrome
+  User Experience Report (CrUX) oder eigenem Real User Monitoring, nicht mit
+  einem einzelnen Lighthouse Test. Felddaten zeigen, was echte Besucher mit
+  echten Geräten und Netzwerken erleben, während ein Labortest nur eine
+  simulierte Momentaufnahme liefert.
+author: Dmitry Pashlov
+publishedAt: '2026-08-15'
+updatedAt: '2026-08-15'
+category: Technik & Performance
+tags:
+  - Performance
+  - Core Web Vitals
+  - CrUX
+  - PageSpeed
+  - Technik
+  - Österreich
 featuredImage: /images/blog/wie-misst-man-die-echte-performance-einer-website-abseits.png
-status: "published"
+status: published
 aiAssisted: true
 sources:
-  - name: "Chrome for Developers - Overview of CrUX"
-    url: "https://developer.chrome.com/docs/crux"
-  - name: "web.dev - Why lab and field data can be different (and what to do about it)"
-    url: "https://web.dev/articles/lab-and-field-data-differences"
-  - name: "web.dev - Why is CrUX data different from my RUM data?"
-    url: "https://web.dev/articles/crux-and-rum-differences"
-  - name: "Google Search Console Hilfe - Core Web Vitals report"
-    url: "https://support.google.com/webmasters/answer/9205520?hl=en"
+  - name: Chrome for Developers - Overview of CrUX
+    url: 'https://developer.chrome.com/docs/crux'
+  - name: >-
+      web.dev - Why lab and field data can be different (and what to do about
+      it)
+    url: 'https://web.dev/articles/lab-and-field-data-differences'
+  - name: web.dev - Why is CrUX data different from my RUM data?
+    url: 'https://web.dev/articles/crux-and-rum-differences'
+  - name: Google Search Console Hilfe - Core Web Vitals report
+    url: 'https://support.google.com/webmasters/answer/9205520?hl=en'
 keyTakeaways:
-  - "Ein einzelner Lighthouse oder PageSpeed Labortest zeigt nur eine simulierte Momentaufnahme, keine echte Nutzererfahrung."
-  - "Google empfiehlt ausdrücklich, bei Unterschieden zwischen Lab und Felddaten die echten Feldwerte für die Priorisierung zu nutzen."
-  - "CrUX Daten sind ein rollierender 28 Tage Schnitt am 75. Perzentil gemessen, also erst nach Wochen aussagekräftig."
-  - "Der Core Web Vitals Bericht in der Google Search Console basiert vollständig auf echten Besucherdaten aus CrUX, nicht auf Labortests."
-  - "CrUX erfasst nur Chrome Nutzer und keine feingranularen Segmente. Wer mehr braucht, ergänzt mit eigenem Real User Monitoring."
+  - >-
+    Ein einzelner Lighthouse oder PageSpeed Labortest zeigt nur eine simulierte
+    Momentaufnahme, keine echte Nutzererfahrung.
+  - >-
+    Google empfiehlt ausdrücklich, bei Unterschieden zwischen Lab und Felddaten
+    die echten Feldwerte für die Priorisierung zu nutzen.
+  - >-
+    CrUX Daten sind ein rollierender 28 Tage Schnitt am 75. Perzentil gemessen,
+    also erst nach Wochen aussagekräftig.
+  - >-
+    Der Core Web Vitals Bericht in der Google Search Console basiert vollständig
+    auf echten Besucherdaten aus CrUX, nicht auf Labortests.
+  - >-
+    CrUX erfasst nur Chrome Nutzer und keine feingranularen Segmente. Wer mehr
+    braucht, ergänzt mit eigenem Real User Monitoring.
 autoGenerateFAQs: false
 customFAQs:
-  - question: "Was ist der Unterschied zwischen Lab Daten und Feld Daten?"
-    answer: "Labordaten stammen aus einem einzelnen simulierten Test wie Lighthouse, unter kontrollierten Bedingungen. Felddaten stammen aus dem Chrome User Experience Report und bilden ab, wie echte Besucher mit echten Geräten und Netzwerken Ihre Seite tatsächlich erleben."
-  - question: "Warum zeigt Lighthouse einen guten Score, obwohl Nutzer Probleme melden?"
-    answer: "Lighthouse testet unter Idealbedingungen mit einer festgelegten Verbindung und einem festgelegten Gerät. Echte Nutzer, etwa mit älteren Smartphones oder schwankendem Mobilfunknetz, erleben die Seite oft deutlich langsamer als im Labortest simuliert."
-  - question: "Wie oft aktualisieren sich die CrUX Daten in der Search Console?"
-    answer: "CrUX Daten werden täglich aktualisiert, zeigen aber einen rollierenden Durchschnitt der letzten 28 Tage. Eine Verbesserung an der Website wirkt sich deshalb erst nach ein bis vier Wochen sichtbar auf die Zahlen aus."
-  - question: "Was bedeutet das 75. Perzentil bei den Core Web Vitals?"
-    answer: "Das 75. Perzentil bedeutet, dass mindestens 75 von 100 Besuchern eine mindestens so gute Erfahrung hatten wie der angezeigte Wert. Google wählt diesen konservativen Wert, damit einzelne sehr schnelle Aufrufe den Gesamteindruck nicht beschönigen."
-  - question: "Reicht der CrUX Bericht für jede Website aus?"
-    answer: "Für kleinere Websites mit überwiegend Chrome Traffic reicht der kostenlose CrUX Bericht in der Search Console meist aus. Größere Shops mit viel Safari oder Firefox Traffic profitieren zusätzlich von einem eigenen Real User Monitoring für granularere Auswertungen."
+  - question: Was ist der Unterschied zwischen Lab Daten und Feld Daten?
+    answer: >-
+      Labordaten stammen aus einem einzelnen simulierten Test wie Lighthouse,
+      unter kontrollierten Bedingungen. Felddaten stammen aus dem Chrome User
+      Experience Report und bilden ab, wie echte Besucher mit echten Geräten und
+      Netzwerken Ihre Seite tatsächlich erleben.
+  - question: 'Warum zeigt Lighthouse einen guten Score, obwohl Nutzer Probleme melden?'
+    answer: >-
+      Lighthouse testet unter Idealbedingungen mit einer festgelegten Verbindung
+      und einem festgelegten Gerät. Echte Nutzer, etwa mit älteren Smartphones
+      oder schwankendem Mobilfunknetz, erleben die Seite oft deutlich langsamer
+      als im Labortest simuliert.
+  - question: Wie oft aktualisieren sich die CrUX Daten in der Search Console?
+    answer: >-
+      CrUX Daten werden täglich aktualisiert, zeigen aber einen rollierenden
+      Durchschnitt der letzten 28 Tage. Eine Verbesserung an der Website wirkt
+      sich deshalb erst nach ein bis vier Wochen sichtbar auf die Zahlen aus.
+  - question: Was bedeutet das 75. Perzentil bei den Core Web Vitals?
+    answer: >-
+      Das 75. Perzentil bedeutet, dass mindestens 75 von 100 Besuchern eine
+      mindestens so gute Erfahrung hatten wie der angezeigte Wert. Google wählt
+      diesen konservativen Wert, damit einzelne sehr schnelle Aufrufe den
+      Gesamteindruck nicht beschönigen.
+  - question: Reicht der CrUX Bericht für jede Website aus?
+    answer: >-
+      Für kleinere Websites mit überwiegend Chrome Traffic reicht der kostenlose
+      CrUX Bericht in der Search Console meist aus. Größere Shops mit viel
+      Safari oder Firefox Traffic profitieren zusätzlich von einem eigenen Real
+      User Monitoring für granularere Auswertungen.
 ---
+
+<SimpleAudioPlayer src="/audio/wie-misst-man-die-echte-performance-einer-website-abseits-podcast.mp3" title="Podcast: Echte Website Performance messen abseits von Lighthouse 2026" />
+
+<VideoEmbed src="/videos/wie-misst-man-die-echte-performance-einer-website-abseits-video.mp4" poster="/videos/wie-misst-man-die-echte-performance-einer-website-abseits-poster.jpg" id="LrUZpp9Y1U8" title="Video: Echte Website Performance messen abseits von Lighthouse 2026" />
 
 Ein Auto, das auf dem Prüfstand fünf Liter verbraucht, kann im Stau der Wiener Gürtelkreuzung locker acht Liter schlucken. Der Prüfstand lügt nicht, er misst nur unter Laborbedingungen, die mit der echten Fahrt wenig zu tun haben. Genau dieses Problem haben Sie, wenn Sie die Geschwindigkeit Ihrer Website ausschließlich mit einem einzelnen Lighthouse Test oder PageSpeed Score beurteilen.
 
@@ -49,6 +97,9 @@ Für Betreiber von Webseiten in Österreich ist dieser Unterschied kein akademis
 
 ## Lab-Test und echte Nutzer: der Unterschied, der wirklich zählt
 
+
+![Labordaten oder Felddaten?](/images/blog/wie-misst-man-die-echte-performance-einer-website-abseits-infografik-pxq99.png)
+
 Ein Lighthouse-Test oder ein klassischer PageSpeed-Check läuft auf einem simulierten Gerät mit einer simulierten Internetverbindung, meist ein Mal, von einem Server aus. Das nennt man Labordaten. Sie sind reproduzierbar, gut zum Debuggen einzelner technischer Probleme und praktisch, weil Sie sie jederzeit selbst auslösen können.
 
 Das Gegenstück dazu ist der [Chrome User Experience Report](https://developer.chrome.com/docs/crux), kurz CrUX. Er bildet die reale Nutzung populärer Webseiten durch echte Chrome-Nutzerinnen und -Nutzer ab, sogenannte Felddaten. Statt eines einzelnen simulierten Aufrufs fließen hier tausende tatsächliche Seitenbesuche ein, mit echten Smartphones und schwankenden Mobilfunk- oder WLAN-Verbindungen, so wie sie draußen tatsächlich vorkommen. Der Unterschied ist also nicht nur technischer Natur, sondern grundsätzlich: Der eine Test zeigt Ihnen, wie schnell Ihre Seite unter Idealbedingungen sein könnte. Der andere zeigt Ihnen, wie schnell sie für echte Menschen tatsächlich war.
@@ -57,11 +108,17 @@ Stellen Sie sich einen Wiener Online-Shop vor, dessen Lighthouse-Score bei saube
 
 ## Warum Google im Zweifel den Felddaten vertraut
 
+
+![Webberaterin erklärt einem Café-Besitzer anhand eines ausgedruckten Performance-Berichts, warum die Felddaten der echten Website-Performance wichtiger sind als der Labortest](/images/blog/wie-misst-man-die-echte-performance-einer-website-abseits-ctx1-pxr9q.png)
+
 [Google selbst empfiehlt ausdrücklich](https://web.dev/articles/lab-and-field-data-differences): Wenn sowohl Feld- als auch Labordaten für eine Seite vorliegen, sollen Sie zur Priorisierung von Performance-Maßnahmen die Feld- beziehungsweise Real-User-Daten heranziehen. Der Grund ist einleuchtend. Nur echte Nutzerdaten spiegeln Effekte wider, die ein Labortest gar nicht abbilden kann, etwa Cache-Verhalten bei wiederkehrenden Besuchern oder die enorme Vielfalt an Geräten und Netzwerken, mit denen Menschen tatsächlich unterwegs sind.
 
 Für Sie als Websitebetreiber heißt das ganz praktisch: Wenn Ihr Labortest grün zeigt, Ihre Felddaten aber rot, sollten Sie den Feldwerten glauben und dort ansetzen. Der Labortest ist in diesem Fall kein Beweis, dass alles passt, sondern lediglich ein Hinweis, dass das konkrete Testszenario zufällig gut lief. Wer Optimierungsbudget in ein Problem steckt, das nur im Labor sichtbar ist, aber die echten Nutzer nicht betrifft, verschwendet Zeit und Geld an der falschen Stelle.
 
 ## So funktioniert CrUX: das 28-Tage-Fenster und das 75. Perzentil
+
+
+![Hände markieren nacheinander die Tage auf einem Wandkalender und veranschaulichen das rollierende 28-Tage-Fenster, über das CrUX die Performance-Daten einer Website erhebt](/images/blog/wie-misst-man-die-echte-performance-einer-website-abseits-ctx2-pxr9t.png)
 
 Damit Sie CrUX-Zahlen richtig lesen können, müssen Sie zwei technische Eigenheiten kennen. Erstens werden die Daten als rollierender 28-Tage-Durchschnitt erhoben und täglich aktualisiert. Das bedeutet, ein CrUX-Wert von heute zeigt Ihnen nicht die Performance von gestern, sondern einen gleitenden Schnitt über die letzten vier Wochen. Eine Verbesserung, die Sie heute ausrollen, taucht deshalb nicht morgen in den Zahlen auf, sondern setzt sich erst über Tage und Wochen langsam durch, während der alte, langsamere Zustand aus dem Fenster herausfällt.
 
@@ -86,6 +143,9 @@ Das praktischste Werkzeug für den Einstieg bleibt PageSpeed Insights, denn es z
 Wenn Sie das nächste Mal Ihre URL bei PageSpeed Insights eingeben, schauen Sie zuerst auf den Feldbereich oben, nicht auf den Laborbereich darunter. Nur wenn für Ihre Seite noch zu wenig CrUX-Daten vorliegen, etwa weil sie neu ist oder zu wenig Besucher hat, fehlt dieser Abschnitt und Sie sind vorübergehend auf die Labordaten angewiesen. Das ist besonders bei frisch gelaunchten Seiten oder sehr spezifischen Unterseiten mit wenig Traffic der Fall, etwa einer einzelnen Kampagnenlandingpage.
 
 ## Schritt für Schritt: So messen Sie die echte Performance Ihrer Seite
+
+
+![Kleinunternehmer sitzt am Laptop und arbeitet Schritt für Schritt durch die Performance-Messung seiner Website im Core Web Vitals Bericht der Search Console](/images/blog/wie-misst-man-die-echte-performance-einer-website-abseits-ctx3-pxr9v.png)
 
 Damit das keine Theorie bleibt, hier der konkrete Ablauf, den Sie selbst durchgehen können. Erstens, öffnen Sie die Google Search Console für Ihre Domain und rufen Sie den Bericht zu den Core Web Vitals auf. Das ist Ihre wichtigste Quelle, weil sie komplett kostenlos ist und auf echten Nutzerdaten beruht. Zweitens, notieren Sie sich, welche URL-Gruppen dort als schlecht oder verbesserungswürdig markiert sind, und sortieren Sie diese nach Traffic-Volumen. Eine schlecht bewertete Seite mit wenig Besuchern hat für Sie geringere Priorität als eine schlecht bewertete Kategorieseite, über die der Großteil Ihres Umsatzes läuft.
 
