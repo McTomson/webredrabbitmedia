@@ -3119,3 +3119,48 @@ quelle: https://web.dev/articles/optimize-ttfb
 quelle_name: web.dev (Google) - Optimize Time to First Byte
 geprueft_am: 2026-08-17
 recheck_nach: 2027-02-13
+
+## t74-2026-08-18-347
+cluster: 2
+keywords: warum, führt, fehlerhaftes, skript, laden, visuellem, ruckeln, cumulative
+aussage: Dynamisch nachgeladene Inhalte wie Werbung, Embeds und iFrames ohne reservierte Groessenangabe sind eine der Hauptursachen fuer Cumulative Layout Shift: Sie schieben bereits sichtbaren Content nach unten, sobald das Skript spaeter laedt und den Platzbedarf erst dann bestimmt. Werbenetzwerke mit dynamischen Ad-Groessen verstaerken das Problem zusaetzlich, weil die tatsaechliche Groesse vor dem Laden nicht feststeht.
+quelle: https://web.dev/articles/optimize-cls
+quelle_name: web.dev - Optimize Cumulative Layout Shift
+geprueft_am: 2026-08-18
+recheck_nach: 2027-02-14
+
+## t74-2026-08-18-348
+cluster: 2
+keywords: warum, führt, fehlerhaftes, skript, laden, visuellem, ruckeln, cumulative
+aussage: Auch Web-Fonts koennen einen Layout Shift ausloesen: Wird zunaechst eine Fallback-Schrift angezeigt (FOUT) oder Text unsichtbar gerendert (FOIT), belegt der Fallback bereits einen Platz nach seinen eigenen Metriken; laedt danach die eigentliche Web-Font mit abweichenden Zeichenbreiten, verschiebt sich der Textblock samt umliegendem Inhalt. font-display: optional vermeidet dieses Nach-Layout, weil die Web-Font nur verwendet wird, wenn sie rechtzeitig vor dem ersten Rendering verfuegbar ist.
+quelle: https://web.dev/articles/optimize-cls
+quelle_name: web.dev - Optimize Cumulative Layout Shift
+geprueft_am: 2026-08-18
+recheck_nach: 2027-02-14
+
+## t74-2026-08-18-349
+cluster: 2
+keywords: warum, führt, fehlerhaftes, skript, laden, visuellem, ruckeln, cumulative
+aussage: Drittanbieter-Skripte sollten grundsaetzlich mit async oder defer geladen werden, um das Dokumenten-Parsing nicht zu blockieren; unsauber eingebundene, synchron geladene Skripte verzoegern das Rendering und begünstigen nachtraegliche DOM-Aenderungen ohne reservierten Platz - beides Treiber von Cumulative Layout Shift bei Embeds wie Werbung, Video oder Social-Media-Feeds.
+quelle: https://web.dev/articles/efficiently-load-third-party-javascript
+quelle_name: web.dev - Efficiently load third-party JavaScript
+geprueft_am: 2026-08-18
+recheck_nach: 2027-02-14
+
+## t74-2026-08-18-350
+cluster: 2
+keywords: warum, führt, fehlerhaftes, skript, laden, visuellem, ruckeln, cumulative
+aussage: Google definiert fuer Cumulative Layout Shift feste Schwellenwerte: ein CLS-Wert unter 0.1 gilt als 'gut', 0.1-0.25 als 'verbesserungswuerdig' und ueber 0.25 als 'schlecht' - gemessen am 75. Perzentil der Seitenaufrufe, getrennt nach Mobile und Desktop. CLS ist neben LCP und INP einer der drei Core Web Vitals und Teil des Page-Experience-Rankingsignals von Google.
+quelle: https://developers.google.com/search/docs/appearance/core-web-vitals
+quelle_name: Google Search Central - Understanding Core Web Vitals and Google search results
+geprueft_am: 2026-08-18
+recheck_nach: 2027-02-14
+
+## t74-2026-08-18-351
+cluster: 2
+keywords: warum, führt, fehlerhaftes, skript, laden, visuellem, ruckeln, cumulative
+aussage: Next.js bietet fuer genau dieses Problem eine eigene Script-Loading-Strategie (next/script mit den Optionen beforeInteractive, afterInteractive, lazyOnload): Damit laesst sich steuern, wann Dritt-Skripte relativ zum Rendering ausgefuehrt werden, um render-blockierendes Verhalten und nachtraegliche, unangekuendigte DOM-Einschuebe - und damit Layout Shifts - zu vermeiden.
+quelle: https://developer.chrome.com/blog/script-component
+quelle_name: Chrome for Developers - Optimizing third-party script loading in Next.js
+geprueft_am: 2026-08-18
+recheck_nach: 2027-02-14

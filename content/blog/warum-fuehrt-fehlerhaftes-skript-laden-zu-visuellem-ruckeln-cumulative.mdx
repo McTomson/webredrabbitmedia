@@ -1,0 +1,124 @@
+---
+title: "Cumulative Layout Shift 2026: Skript-Fehler beheben"
+slug: "warum-fuehrt-fehlerhaftes-skript-laden-zu-visuellem-ruckeln-cumulative"
+excerpt: "Fehlerhaftes Skript-Laden ist die häufigste Ursache für Cumulative Layout Shift. Wir zeigen, warum Werbung, Embeds und Web-Fonts Ihre Seite zum Ruckeln bringen und wie Sie das 2026 mit next/script sauber lösen."
+featuredSnippetTitle: "Warum führt fehlerhaftes Skript-Laden zu Cumulative Layout Shift?"
+featuredSnippet: "Fehlerhaftes Skript-Laden verursacht Cumulative Layout Shift, weil Drittanbieter-Skripte wie Werbung oder Tracking-Tools erst nach dem ersten Rendering ihre tatsächliche Größe bestimmen und dann nachträglich Platz beanspruchen. Ohne reservierten Speicherplatz oder saubere Ladestrategie wie async, defer oder next/script schieben sie sichtbaren Content brutal zur Seite."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-18"
+updatedAt: "2026-08-18"
+category: "Technik & Performance"
+tags: ["Cumulative Layout Shift", "Core Web Vitals", "Next.js", "Performance", "SEO", "Wien"]
+featuredImage: "/images/blog/warum-fuehrt-fehlerhaftes-skript-laden-zu-visuellem-ruckeln-cumulative.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "web.dev - Optimize Cumulative Layout Shift"
+    url: "https://web.dev/articles/optimize-cls"
+  - name: "web.dev - Efficiently load third-party JavaScript"
+    url: "https://web.dev/articles/efficiently-load-third-party-javascript"
+  - name: "Google Search Central - Understanding Core Web Vitals and Google search results"
+    url: "https://developers.google.com/search/docs/appearance/core-web-vitals"
+  - name: "Chrome for Developers - Optimizing third-party script loading in Next.js"
+    url: "https://developer.chrome.com/blog/script-component"
+keyTakeaways:
+  - "Cumulative Layout Shift entsteht vor allem, wenn Drittanbieter-Skripte ihre tatsächliche Größe erst nach dem ersten Rendering bekannt geben."
+  - "Ein CLS-Wert unter 0,1 gilt bei Google als gut, über 0,25 als schlecht, gemessen am 75. Perzentil der Seitenaufrufe."
+  - "Werbung, Embeds und iFrames ohne reservierten Platz sind die häufigste Ursache, weil ihre Größe vor dem Laden nicht feststeht."
+  - "Web-Fonts ohne font-display: optional können durch abweichende Zeichenbreiten den ganzen Textblock verschieben."
+  - "Next.js löst das strukturell über next/script mit den Strategien beforeInteractive, afterInteractive und lazyOnload."
+conclusionStats:
+  - label: "Guter CLS-Wert"
+    value: "unter 0,1"
+  - label: "Schlechter CLS-Wert"
+    value: "über 0,25"
+  - label: "Messgrundlage"
+    value: "75. Perzentil der Seitenaufrufe"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Was bedeutet Cumulative Layout Shift einfach erklärt?"
+    answer: "Cumulative Layout Shift, kurz CLS, misst, wie stark sichtbare Elemente einer Website unerwartet ihre Position verändern, während die Seite lädt. Springt der Text nach unten, weil eine Werbeanzeige nachträglich Platz beansprucht, zählt Google das als Layout Shift."
+  - question: "Welcher CLS-Wert ist gut?"
+    answer: "Ein CLS-Wert unter 0,1 gilt laut Google als gut. Werte zwischen 0,1 und 0,25 sind verbesserungswürdig, alles über 0,25 gilt als schlecht und wirkt sich negativ auf das Page-Experience-Signal in der Suche aus."
+  - question: "Wie verhindere ich Layout Shifts durch Werbeanzeigen?"
+    answer: "Reservieren Sie für jeden Anzeigen- oder Embed-Container eine feste oder minimale Höhe per CSS, etwa über min-height oder aspect-ratio. So blockiert der Browser von Anfang an den nötigen Platz, und die Anzeige füllt später nur den bereits reservierten Bereich."
+  - question: "Warum verursachen Web-Fonts Cumulative Layout Shift?"
+    answer: "Wenn eine Web-Font mit abweichenden Zeichenbreiten die Fallback-Schrift ersetzt, verschiebt sich der gesamte Textblock. Die CSS-Eigenschaft font-display: optional verhindert das, indem sie die Web-Font nur bei rechtzeitiger Verfügbarkeit einsetzt und sonst beim Fallback bleibt."
+  - question: "Wie lädt Next.js Skripte ohne Layout Shifts zu verursachen?"
+    answer: "Next.js bietet mit next/script die Strategien beforeInteractive, afterInteractive und lazyOnload. Damit lässt sich genau steuern, wann ein Drittanbieter-Skript relativ zum Rendering ausgeführt wird, statt unkontrolliert nachträglich in die Seite einzugreifen."
+hookCandidates:
+  - "website springt beim laden, oder?"
+  - "warum schiebt werbung den text weg?"
+  - "warum ist mein layout nie stabil?"
+---
+
+Stellen Sie sich vor, Sie stehen in der Straßenbahn, lesen auf dem Handy einen Artikel und wollen gerade auf einen Link tippen. In genau diesem Moment schiebt sich von oben eine Werbeanzeige ins Bild, der ganze Text rutscht nach unten, und Sie landen mit dem Finger auf etwas völlig anderem. Genau das ist Cumulative Layout Shift, kurz CLS, nur eben nicht in der Straßenbahn, sondern auf jeder zweiten schlecht gebauten Website.
+
+**Direktantwort:** Fehlerhaftes Skript-Laden verursacht Cumulative Layout Shift, weil Drittanbieter-Skripte wie Werbung oder Tracking-Tools erst nach dem ersten Rendering ihre tatsächliche Größe bestimmen und dann nachträglich Platz beanspruchen. Ohne reservierten Speicherplatz oder saubere Ladestrategie (async, defer, next/script) schieben sie sichtbaren Content brutal zur Seite.
+
+Das Problem ist technisch klar umrissen, aber im Alltag vieler Websites trotzdem allgegenwärtig. Warum das so ist und was Sie konkret dagegen tun können, sehen wir uns jetzt Schritt für Schritt an.
+
+## Was Cumulative Layout Shift genau misst
+
+CLS ist eine der drei [Core Web Vitals von Google](https://developers.google.com/search/docs/appearance/core-web-vitals), gemeinsam mit Largest Contentful Paint (LCP) und Interaction to Next Paint (INP). Google definiert dafür feste Schwellenwerte: Ein CLS-Wert unter 0,1 gilt als gut, zwischen 0,1 und 0,25 als verbesserungswürdig, und alles über 0,25 als schlecht. Gemessen wird das am 75. Perzentil aller Seitenaufrufe, getrennt nach Mobilgeräten und Desktop. Das heißt konkret: Wenn drei Viertel Ihrer Besucher einen ruckelfreien Seitenaufbau erleben, sind Sie im grünen Bereich. Reicht dieser Wert regelmäßig über die Schwelle, wertet Google das als schlechtes Nutzererlebnis. Das wirkt sich aufs Ranking aus, denn CLS ist Teil des Page-Experience-Signals in der Suche.
+
+Für ein Wiener Dienstleistungsunternehmen mit Terminbuchung oder Online-Formular ist das kein abstraktes SEO-Detail. Jeder Klick, der wegen eines Layout-Sprungs daneben geht, ist ein potenzieller Kunde, der die Seite frustriert verlässt statt den Termin zu buchen. Wie stark sich Ladezeiten insgesamt auf Ihren Umsatz auswirken, haben wir bereits in unserem Artikel zu [Pagespeed und Umsatz](/blog/warum-ist-die-ladezeit-pagespeed-entscheidend-fuer-den-umsatz) im Detail durchgerechnet.
+
+## Der eigentliche Kernfehler: Skripte, die zu spät ihre Größe verraten
+
+Der Grund, warum Skript-Ladeverhalten so eng mit CLS verknüpft ist, liegt in der Natur von JavaScript selbst. Ein Drittanbieter-Skript, etwa für ein Werbebanner oder einen Video-Embed, bringt seinen eigenen Inhalt erst mit, wenn es tatsächlich ausgeführt wurde. Der Browser weiß beim ersten Rendern der Seite noch gar nicht, wie groß dieser Bereich am Ende sein wird. Er reserviert also keinen Platz, baut die Seite fertig, und erst danach poltert das Skript mit seinem Inhalt hinein und drückt alles darunter nach unten.
+
+Genau deshalb gilt laut [web.dev](https://web.dev/articles/efficiently-load-third-party-javascript) die Grundregel, dass Drittanbieter-Skripte immer mit `async` oder `defer` geladen werden sollten, statt das Dokumenten-Parsing synchron zu blockieren. Ein unsauber eingebundenes Skript ohne diese Attribute verzögert das Rendering insgesamt. Und es begünstigt genau jene nachträglichen DOM-Änderungen ohne reservierten Platz, die CLS in die Höhe treiben. Bei Embeds für Werbung oder Video ist dieses Muster besonders häufig, weil diese Skripte fast immer von externen Anbietern kommen und Sie als Websitebetreiber wenig Kontrolle über deren internes Ladeverhalten haben.
+
+## Werbung und Embeds: die häufigste CLS-Falle
+
+Dynamisch nachgeladene Inhalte wie Werbeanzeigen und Embeds ohne reservierte Größenangabe zählen laut [web.dev](https://web.dev/articles/optimize-cls) zu den Hauptursachen für Cumulative Layout Shift. Das Grundproblem: Diese Elemente schieben bereits sichtbaren Content nach unten, sobald ihr Skript später lädt und erst dann seinen tatsächlichen Platzbedarf bestimmt. Werbenetzwerke mit dynamischen Ad-Größen verschärfen das Problem zusätzlich, weil die endgültige Größe der Anzeige vor dem Laden schlicht nicht feststeht, mal ein schmales Rechteck, mal ein hohes Format.
+
+Ein typisches Beispiel aus der Praxis: Ein Blog bindet unterhalb des ersten Absatzes ein Werbenetzwerk ein, ohne dem Container eine feste Höhe zu geben. Solange die Anzeige lädt, ist der Platz null Pixel hoch. Sobald sie da ist, wächst der Container plötzlich auf 250 oder 300 Pixel, und der gesamte restliche Text rutscht ruckartig nach unten. Wer gerade den zweiten Absatz gelesen hat, findet sich plötzlich mitten im vierten wieder. Genau dieser Sprung ist es, den Google misst und bestraft.
+
+Die Lösung ist im Grunde simpel, auch wenn sie in der Praxis gerne vergessen wird: Reservieren Sie für jeden Embed-Container eine feste oder zumindest eine minimale Höhe per CSS, etwa über `min-height` oder ein definiertes `aspect-ratio`. Der Browser blockiert dann von Anfang an den nötigen Platz, und wenn die Anzeige oder das Video nachlädt, füllt es einfach den bereits reservierten Bereich, ohne den Rest der Seite zu verschieben.
+
+## Web-Fonts: der unterschätzte zweite Treiber
+
+Neben Skripten sind Web-Fonts ein zweiter, oft übersehener Auslöser für Layout Shifts. Wenn eine benutzerdefinierte Schriftart lädt, hat der Browser zwei Möglichkeiten. Entweder er zeigt zuerst eine Systemschrift als Fallback an und tauscht sie später gegen die eigentliche Web-Font (das nennt man FOUT, Flash of Unstyled Text). Oder er blendet den Text zunächst komplett aus, bis die Web-Font fertig geladen ist (FOIT, Flash of Invisible Text).
+
+Das Tückische daran: Die Fallback-Schrift belegt bereits Platz nach ihren eigenen Zeichenmetriken. Lädt danach die eigentliche Web-Font mit abweichenden Zeichenbreiten, etwa weil sie insgesamt schmaler oder breiter gesetzt ist, verschiebt sich der gesamte Textblock samt umliegendem Inhalt. Bei einer Überschrift in großer Schriftgröße kann das schon spürbar sein, bei mehreren Absätzen Fließtext summiert sich der Effekt schnell auf einen deutlichen Sprung.
+
+Eine wirksame Gegenmaßnahme ist die CSS-Eigenschaft `font-display: optional`. Sie sorgt dafür, dass die Web-Font nur dann verwendet wird, wenn sie rechtzeitig vor dem ersten Rendering der Seite verfügbar ist. Ist sie das nicht, bleibt der Browser einfach beim Fallback und tauscht später nicht mehr nach. Das kostet Sie im schlimmsten Fall etwas visuelle Markenkonsistenz beim ersten Seitenaufbau, verhindert aber zuverlässig den nachträglichen Ruckler.
+
+## Wie Next.js das Problem strukturell löst
+
+Wer seine Website mit Next.js baut, hat hier einen echten Vorteil gegenüber einer klassischen, händisch zusammengesteckten Seite. Next.js bringt mit [next/script](https://developer.chrome.com/blog/script-component) eine eigene Script-Loading-Strategie mit, die genau für dieses Problem gedacht ist. Über die Optionen `beforeInteractive`, `afterInteractive` und `lazyOnload` lässt sich präzise steuern, wann ein Drittanbieter-Skript relativ zum Rendering der Seite ausgeführt wird.
+
+`beforeInteractive` reserviert sich für Skripte, die wirklich vor jeder Interaktion vorhanden sein müssen, etwa Consent-Management-Tools. `afterInteractive`, die Standardeinstellung, lädt das Skript, sobald die Seite grundsätzlich interaktiv ist, was für die meisten Tracking- und Analyse-Skripte passt. Und `lazyOnload` schiebt weniger dringende Skripte, etwa Chat-Widgets oder Social-Media-Embeds, ganz ans Ende der Ladephase. Richtig eingesetzt, verhindert diese Strategie sowohl render-blockierendes Verhalten als auch die unangekündigten, nachträglichen DOM-Einschübe, die letztlich zu Layout Shifts führen.
+
+Wenn Sie eine Website bei uns umsetzen lassen, bauen wir diese Ladestrategie von Anfang an ein, nicht erst als Reparatur im Nachhinein. Das macht am Ende den Unterschied: Eine Seite kann im ersten Moment gut aussehen und trotzdem ruckeln, sobald echte Nutzer mit echten Verbindungen draufklicken.
+
+## Schritt für Schritt: Was Sie konkret tun können
+
+Falls Sie den Verdacht haben, dass Ihre eigene Seite unter CLS leidet, lohnt sich ein strukturiertes Vorgehen statt wildem Herumprobieren:
+
+1. **Messen Sie zuerst den Ist-Zustand.** Öffnen Sie die Google Search Console unter dem Bericht "Core Web Vitals" oder nutzen Sie PageSpeed Insights für einzelne URLs. Dort sehen Sie sofort, ob Ihr CLS-Wert im grünen, gelben oder roten Bereich liegt.
+2. **Identifizieren Sie die Verursacher.** In den Chrome DevTools zeigt der Performance-Tab unter "Experience" jeden einzelnen Layout-Shift-Eintrag mit dem betroffenen Element. So sehen Sie schwarz auf weiß, ob es die Werbeanzeige, ein Embed oder die Schriftart ist.
+3. **Reservieren Sie Platz für alle dynamischen Elemente.** Setzen Sie `min-height` oder `aspect-ratio` für Bilder, Videos, iFrames und Anzeigen-Container, bevor der Inhalt überhaupt lädt.
+4. **Prüfen Sie Ihre Skript-Einbindung.** Läuft ein Skript synchron ohne `async` oder `defer`? Bei Next.js-Projekten: Nutzen Sie `next/script` mit der passenden Strategie statt eines rohen `<script>`-Tags im Head.
+5. **Kontrollieren Sie Ihre Web-Fonts.** Setzen Sie `font-display: optional` oder zumindest `swap`, und prüfen Sie, ob Ihre Fallback-Schrift den Zeichenmetriken der eigentlichen Web-Font halbwegs ähnlich ist.
+6. **Testen Sie erneut nach jeder Änderung.** CLS-Probleme sind oft ein Zusammenspiel mehrerer kleiner Ursachen, nicht eine einzelne. Nach jeder Korrektur lohnt sich ein neuer Messlauf.
+
+## Häufige Irrtümer bei der CLS-Behebung
+
+Ein häufiger Irrtum: Viele glauben, CLS sei ausschließlich ein Bilderproblem, und kümmern sich nur um `width` und `height` bei `<img>`-Tags. Das ist wichtig, aber eben nur die halbe Miete. Skripte und Fonts verursachen oft die größeren, störenderen Sprünge, gerade weil sie später im Ladeprozess passieren, wenn der Nutzer schon zu lesen begonnen hat.
+
+Genauso oft hört man: "Wir laden das Skript halt am Ende des `<body>`, dann ist es doch egal." Das hilft gegen render-blockierendes Verhalten, verhindert aber nicht, dass das Skript nach dem Laden trotzdem ungebremst in die Seite eingreift und Platz beansprucht, den niemand reserviert hat. Die Position im Dokument löst also nicht automatisch das Platzproblem.
+
+Und ein sehr österreichischer Klassiker: Man testet nur auf dem eigenen schnellen Bürointernet und wundert sich dann, warum die Search Console trotzdem rote Werte zeigt. CLS betrifft überproportional mobile Nutzer mit langsamerer Verbindung, weil dort die zeitliche Lücke zwischen erstem Rendering und vollständig geladenem Drittanbieter-Skript größer ausfällt. Testen Sie also unbedingt auch unter gedrosselter, mobiler Verbindung.
+
+## Key Takeaways
+
+- Cumulative Layout Shift entsteht vor allem, wenn Drittanbieter-Skripte ihre tatsächliche Größe erst nach dem ersten Rendering bekannt geben.
+- Ein CLS-Wert unter 0,1 gilt bei Google als gut, über 0,25 als schlecht, gemessen am 75. Perzentil der Seitenaufrufe.
+- Werbung, Embeds und iFrames ohne reservierten Platz sind die häufigste Ursache, weil ihre Größe vor dem Laden nicht feststeht.
+- Web-Fonts ohne `font-display: optional` können durch abweichende Zeichenbreiten den ganzen Textblock verschieben.
+- Next.js löst das strukturell über `next/script` mit den Strategien `beforeInteractive`, `afterInteractive` und `lazyOnload`.
+
+Wenn Ihre Website unter genau diesen Rucklern leidet und Sie nicht selbst jedes Skript einzeln durchforsten wollen, schauen wir uns das gerne gemeinsam an. Schreiben Sie uns über [/kontakt](/kontakt), wir analysieren Ihre Core Web Vitals und sagen Ihnen ehrlich, wo die konkreten Ursachen liegen und was sich davon wirklich lohnt zu beheben.
