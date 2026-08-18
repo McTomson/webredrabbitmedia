@@ -72,42 +72,46 @@ if awk -v a="${LOAD1:-0}" 'BEGIN{exit !(a+0 > 12)}'; then
     exit 0
 fi
 
-# Schon heute getriggert — nichts tun.
-if [ -f "$STAMP" ]; then
-    echo "Heute schon getriggert. Abbruch."
-    exit 0
-fi
-
-# Nur den Marker von HEUTE pruefen (requestedAt == heute).
-# Alte offene Marker von anderen Tagen werden bewusst ignoriert.
-TODAY="$(date +%F)"
+# Backlog-Drain (fix 2026-08-18): FRUEHER wurde nur der Marker mit requestedAt==heute verarbeitet UND
+# ein Tages-Stempel ($STAMP) gesetzt -> alte freigegebene Artikel blieben ewig liegen (Rueckstau: 6
+# offene Marker im Dashboard von 05.07.-17.08., die NIE liefen). JETZT: pro Zyklus den AELTESTEN offenen
+# Marker nehmen (status requested|needs-video|needs-images), unabhaengig vom Datum. Eine Pro-Marker-Drossel
+# (ATTEMPT-Stempel, ${THROTTLE_MIN}min) verhindert das Hammern eines dauernd scheiternden Markers und
+# laesst den Checker durch ALLE offenen rotieren (einer pro 30-Min-Zyklus). Der alte $STAMP entfaellt;
+# der LOCKDIR (oben) verhindert weiterhin ueberlappende Laeufe.
 MEDIA_DIR="content-engine/.media-requests"
+THROTTLE_MIN=180   # ein Marker wird fruehestens nach 3h erneut versucht (Video-Selbstheilung bei Google-Ausfall)
 SLUG=""
 
 if [ -d "$MEDIA_DIR" ]; then
-    for marker in "$MEDIA_DIR"/*.json; do
+    # aelteste zuerst: nach requestedAt (JSON, ISO-Datum lexikografisch sortierbar) + Dateiname
+    while IFS=$'\t' read -r _rq marker; do
         [ -f "$marker" ] || continue
-        # Robust JSON parse via node. The old grep '"requestedAt":"..."' required NO space after the
-        # colon, but the marker is pretty-printed ('"requestedAt": "..."') -> it never matched, so no
-        # media ever triggered (co-root-cause 16.06). node JSON.parse is whitespace-agnostic.
-        requested="$(node -e 'const fs=require("fs");try{process.stdout.write(String(JSON.parse(fs.readFileSync(process.argv[1],"utf8")).requestedAt||""))}catch(e){}' "$marker" 2>/dev/null)"
         status="$(node -e 'const fs=require("fs");try{process.stdout.write(String(JSON.parse(fs.readFileSync(process.argv[1],"utf8")).status||""))}catch(e){}' "$marker" 2>/dev/null)"
-        if [ "$requested" = "$TODAY" ] && [ "$status" = "requested" ]; then
-            SLUG="$(basename "$marker" .json)"
-            break
+        case "$status" in requested|needs-video|needs-images) ;; *) continue ;; esac
+        cand="$(basename "$marker" .json)"
+        # Drossel: kuerzlich versucht? ueberspringen -> rotiert zum naechsten offenen Marker.
+        if [ -n "$(find "$WORK/media-attempt-$cand" -mmin -"$THROTTLE_MIN" 2>/dev/null)" ]; then
+            continue
         fi
-    done
+        SLUG="$cand"
+        break
+    done < <(for m in "$MEDIA_DIR"/*.json; do
+                 [ -f "$m" ] || continue
+                 r="$(node -e 'const fs=require("fs");try{process.stdout.write(String(JSON.parse(fs.readFileSync(process.argv[1],"utf8")).requestedAt||"9999-99-99"))}catch(e){process.stdout.write("9999-99-99")}' "$m" 2>/dev/null)"
+                 printf '%s\t%s\n' "$r" "$m"
+             done | sort)
 fi
 
 if [ -z "$SLUG" ]; then
-    echo "Kein offener Media-Request fuer heute ($TODAY). Warte weiter."
+    echo "Kein offener Media-Request (oder alle in Drossel-Wartezeit). Warte weiter."
     exit 0
 fi
 
-echo "Offener Media-Request fuer heute gefunden: $SLUG"
+echo "Bearbeite aeltesten offenen Media-Request: $SLUG"
 
-# Stempel setzen — nicht doppelt triggern.
-touch "$STAMP"
+# Drossel-Stempel setzen — dieser Marker wird fruehestens in ${THROTTLE_MIN}min erneut versucht.
+touch "$WORK/media-attempt-$SLUG"
 
 # Bilder: die SCHWERE Gemini-Browser-Last laeuft auf dem IONOS-VPS (Mac wurde davon ueberlastet, 27.06).
 # Aufteilung (0 API-Kosten, alles unter dem claude-Abo): der MAC baut NUR den Art-Director-Plan
@@ -166,19 +170,26 @@ render_images_via_vps() {
     return 0
 }
 
-echo "Generiere Bilder fuer $SLUG (VPS-Render, Mac bettet ein) ..."
-if render_images_via_vps "$SLUG"; then
-    echo "Bilder fertig (VPS-Render + lokales Einbetten)."
-elif scripts/content-engine/media/generate-images-gemini.sh "$SLUG" 2>&1; then
-    echo "Bilder fertig (LOKALER Fallback — VPS war nicht verfuegbar)."
+# Idempotent (fix 2026-08-18): sind die Bilder schon da (z.B. bei einem needs-video-Retry, wo nur noch
+# das Video fehlt), den TEUREN Bildschritt (VPS/Gemini-Render, ~20 Min) ueberspringen. Sonst wuerde jeder
+# 3h-Retry das Hero unnoetig neu rendern.
+HERO="public/images/blog/${SLUG}.png"
+if [ -f "$HERO" ]; then
+    echo "Bilder bereits vorhanden ($HERO) — Bildschritt uebersprungen (idempotent)."
 else
-    echo "WARN: Bilder fehlgeschlagen (weiter; Hero-Guard + needs-images greifen)."
+    echo "Generiere Bilder fuer $SLUG (VPS-Render, Mac bettet ein) ..."
+    if render_images_via_vps "$SLUG"; then
+        echo "Bilder fertig (VPS-Render + lokales Einbetten)."
+    elif scripts/content-engine/media/generate-images-gemini.sh "$SLUG" 2>&1; then
+        echo "Bilder fertig (LOKALER Fallback — VPS war nicht verfuegbar)."
+    else
+        echo "WARN: Bilder fehlgeschlagen (weiter; Hero-Guard + needs-images greifen)."
+    fi
 fi
 
 # HERO-GUARD: fehlt nach dem Bildschritt das Hero (Gemini-Login abgelaufen / Google-Block / Render-
 # Timeout), LAUT alarmieren. Wir brechen NICHT ab (Podcast/Video laufen trotzdem); der needs-images-
 # Marker weiter unten haelt den Bildschritt offen, bis er nachgezogen ist.
-HERO="public/images/blog/${SLUG}.png"
 if [ ! -f "$HERO" ]; then
     echo "ALARM: Hero-Bild fehlt ($HERO) — Gemini-Bildschritt fehlgeschlagen (Login? Google-Block?). Profil pruefen: generate-images-gemini.sh login."
     osascript -e "display notification \"Artikel '$SLUG': Bilder FEHLEN (Gemini-Bildschritt). Login/Profil pruefen.\" with title \"Red Rabbit Media\" subtitle \"Bilder fehlen — Hero kaputt\" sound name \"Basso\"" 2>/dev/null || true
@@ -224,6 +235,17 @@ if { [ -n "$PODCAST_FILE" ] && [ -f "$PODCAST_FILE" ]; } || [ -n "$VIDEO_FILE" ]
                 "$MEDIA_DIR/${SLUG}.json" "$SLUG" 2>/dev/null || true
             echo "NEEDS-IMAGES: Marker fuer $SLUG behalten — Gemini-Bildschritt steht aus."
             osascript -e "display notification \"$WHAT fuer '$SLUG' live, aber BILDER fehlen (Codex leer) -> Gemini-Bildschritt nachziehen.\" with title \"Red Rabbit Media\" subtitle \"Bilder ausstehend (needs-images)\" sound name \"Basso\"" 2>/dev/null || true
+        elif ! grep -q 'VideoEmbed' "content/blog/${SLUG}.mdx" 2>/dev/null; then
+            # SELBSTHEILUNG VIDEO (fix 2026-08-18): Bild+Podcast sind live, aber das Video fehlt noch —
+            # typisch bei einem NotebookLM-Landscape-Ausfall (GENERATION_FAILED, server-seitig). Statt den
+            # Artikel als "fertig" abzuhaken, einen needs-video-Marker BEHALTEN. Der Checker nimmt ihn beim
+            # naechsten Zyklus (gedrosselt via ATTEMPT-Stempel, ${THROTTLE_MIN}min) erneut, ueberspringt Bild+
+            # Podcast (idempotent) und versucht NUR das Video — bis NotebookLM wieder liefert. Kein manuelles Zutun.
+            mkdir -p "$MEDIA_DIR"
+            node -e 'const fs=require("fs");const f=process.argv[1],slug=process.argv[2];fs.writeFileSync(f,JSON.stringify({slug,status:"needs-video",reason:"notebooklm-video",requestedAt:new Date().toISOString().slice(0,10)},null,2))' \
+                "$MEDIA_DIR/${SLUG}.json" "$SLUG" 2>/dev/null || true
+            echo "NEEDS-VIDEO: Marker fuer $SLUG behalten — Video steht aus (NotebookLM). Auto-Retry naechster Zyklus."
+            osascript -e "display notification \"$WHAT fuer '$SLUG' live; Video fehlt noch (NotebookLM) -> wird automatisch nachgezogen.\" with title \"Red Rabbit Media\" subtitle \"Video ausstehend (needs-video)\" sound name \"Glass\"" 2>/dev/null || true
         else
             osascript -e "display notification \"$WHAT fuer '$SLUG' ist automatisch live. Substack-Draft ggf. noch manuell.\" with title \"Red Rabbit Media\" subtitle \"Medien auto-publiziert\" sound name \"Glass\"" 2>/dev/null || true
         fi
