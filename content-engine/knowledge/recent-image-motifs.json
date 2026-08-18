@@ -1,5 +1,6 @@
 {
   "heroes": [
+    "A friendly Austrian woman in her early thirties pressing the air out of a transparent vacuum storage bag filled with neatly folded sweaters using both flat hands, the bag visibly shrinking and tightening under her palms as she packs it into an open suitcase held close to her body, an amused, satisfied expression as if delighted by how much smaller everything gets, upper body and hands only, soft natural daylight on her face and hands, no text, no logos",
     "A friendly Austrian shop owner in his late forties with rolled-up sleeves, holding a paint roller loosely in one hand while cheerfully handing a wrapped purchase to a customer with the other hand, a relaxed and confident 'business as usual, even mid-renovation' smile, upper body and hands only, soft natural daylight on his face and hands, no text, no logos",
     "A friendly Austrian data-center technician in his mid-thirties wearing a light grey zip pullover, holding a bundled network patch cable in one hand and inspecting the connector closely with a careful, checking expression as if verifying exactly where a website is hosted, upper body and hands only, soft natural daylight on his face and hands, no text, no logos",
     "A friendly Austrian small business owner in her early forties, holding a printed checklist of installed website plugins in one hand and crossing several items off with a pen in the other, a decisive, tidying-up expression as if clearing out software she no longer needs, upper body and hands only, soft natural daylight on her face and hands, no text, no logos",
@@ -10,11 +11,9 @@
     "A friendly Austrian winegrower in his early fifties, wearing a simple work shirt, carefully tying a young grapevine shoot to a wire trellis with both hands, a patient and quietly focused expression as if tending something that needs time to mature, upper body and hands only, soft natural daylight on his face and hands, no text, no logos",
     "A friendly Austrian sign painter in his early forties, carefully painting the first gold letter of a new shop name onto a glass window pane using a fine brush, focused and precise expression, upper body and hands only, soft natural daylight on his face and hands, no text, no logos",
     "A friendly Austrian web designer, a woman in her late thirties with her hair in a loose bun, turning her open laptop around with both hands so the screen faces the viewer, presenting it with a proud, trust-inspiring smile like a shopkeeper showing a freshly polished storefront window, the screen showing only a clean bright blurred layout, upper body only, soft natural daylight on her face and hands, no text, no logos",
-    "A friendly Austrian business consultant, a woman in her late forties with short grey-streaked hair, holding up three fingers with one raised hand while gesturing openly with the other, a warm knowing smile as if explaining that just three inquiries out of a hundred visitors is already an above-average result, upper body only, soft natural daylight on her face and hands, no text, no logos",
-    "A friendly Austrian craftsman in his late fifties wearing a dark work apron, typing a message into his smartphone with one thumb while his eyebrows lift in pleased surprise at how instantly the answer comes back, as if chatting with an assistant that never goes home, upper body only, soft natural daylight on his face and hands, no text, no logos"
+    "A friendly Austrian business consultant, a woman in her late forties with short grey-streaked hair, holding up three fingers with one raised hand while gesturing openly with the other, a warm knowing smile as if explaining that just three inquiries out of a hundred visitors is already an above-average result, upper body only, soft natural daylight on her face and hands, no text, no logos"
   ],
   "layouts": [
-    "comparison",
     "keypoints",
     "comparison",
     "keypoints",
@@ -25,7 +24,8 @@
     "comparison",
     "keypoints",
     "comparison",
-    "keypoints"
+    "keypoints",
+    "comparison"
   ],
-  "colorCursor": 18
+  "colorCursor": 19
 }
