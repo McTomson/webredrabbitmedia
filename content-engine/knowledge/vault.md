@@ -3164,3 +3164,48 @@ quelle: https://developer.chrome.com/blog/script-component
 quelle_name: Chrome for Developers - Optimizing third-party script loading in Next.js
 geprueft_am: 2026-08-18
 recheck_nach: 2027-02-14
+
+## t75-2026-08-19-352
+cluster: 2
+keywords: unterschied, zwischen, shared, hosting, einem, dedicated, server
+aussage: Bei Shared Hosting teilen sich mehrere Kund:innen einen gemeinsamen Ressourcenpool (Speicherplatz, RAM, CPU) auf demselben physischen Server; jeder Nutzer bekommt dadurch nur einen Teil der Gesamtkapazität.
+quelle: https://www.ionos.com/digitalguide/hosting/technical-matters/shared-hosting-vs-dedicated-hosting/
+quelle_name: IONOS Digital Guide: Shared Hosting vs. Dedicated Hosting
+geprueft_am: 2026-08-19
+recheck_nach: 2027-02-15
+
+## t75-2026-08-19-353
+cluster: 2
+keywords: unterschied, zwischen, shared, hosting, einem, dedicated, server
+aussage: Bei einem Dedicated Server sind CPU, RAM und Speicher zu 100% exklusiv einem einzigen Kunden zugewiesen; es laufen keine fremden Websites oder Dienste auf derselben Maschine, und der Nutzer erhält Root-Rechte inkl. voller Kontrolle über Software, Betriebssystem und Serverkonfiguration.
+quelle: https://www.ionos.com/digitalguide/server/know-how/what-is-a-dedicated-server/
+quelle_name: IONOS Digital Guide: What is a dedicated server?
+geprueft_am: 2026-08-19
+recheck_nach: 2027-02-15
+
+## t75-2026-08-19-354
+cluster: 2
+keywords: unterschied, zwischen, shared, hosting, einem, dedicated, server
+aussage: Bei Shared Hosting liegt die grundlegende Sicherheitsverantwortung beim Provider, dafür besteht ein Risiko durch 'Mitbewohner' auf demselben Server (z.B. IP-Blacklisting durch unsichere Websites anderer Kunden); bei Dedicated Hosting liegt die Sicherheit vollständig im eigenen Verantwortungsbereich, inkl. eigener Installation und Überwachung von Schutzmaßnahmen.
+quelle: https://www.ionos.com/digitalguide/hosting/technical-matters/shared-hosting-vs-dedicated-hosting/
+quelle_name: IONOS Digital Guide: Shared Hosting vs. Dedicated Hosting
+geprueft_am: 2026-08-19
+recheck_nach: 2027-02-15
+
+## t75-2026-08-19-355
+cluster: 2
+keywords: unterschied, zwischen, shared, hosting, einem, dedicated, server
+aussage: Preislich ist Shared Hosting die günstigste Hosting-Form ('low cost', geeignet für kleine Budgets und Projekte mit geringem Ressourcenbedarf), während Dedicated Hosting deutlich teurer ist, dafür maximale Kontrolle, Leistung und Sicherheit bietet.
+quelle: https://www.ionos.com/digitalguide/hosting/technical-matters/shared-hosting-vs-dedicated-hosting/
+quelle_name: IONOS Digital Guide: Shared Hosting vs. Dedicated Hosting
+geprueft_am: 2026-08-19
+recheck_nach: 2027-02-15
+
+## t75-2026-08-19-356
+cluster: 2
+keywords: unterschied, zwischen, shared, hosting, einem, dedicated, server
+aussage: Als konkreter AT-Marktanker: Der österreichische Hoster world4you (Linz) bietet Shared-Webhosting-Pakete aktuell ab 4 €/Monat (Einstieg, 25 GB) bis 16 €/Monat (Ultra, 500 GB); dedizierte physische Server werden im Einstiegsbereich nicht separat gelistet, stattdessen vServer/VPS-Modelle ab 9 €/Monat (Aktionspreis) mit 2 Kernen/4 GB RAM.
+quelle: https://www.world4you.com/hosting/webhosting-vergleich
+quelle_name: world4you Webhosting-Vergleich
+geprueft_am: 2026-08-19
+recheck_nach: 2027-02-15
