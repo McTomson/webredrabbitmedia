@@ -3209,3 +3209,48 @@ quelle: https://www.world4you.com/hosting/webhosting-vergleich
 quelle_name: world4you Webhosting-Vergleich
 geprueft_am: 2026-08-19
 recheck_nach: 2027-02-15
+
+## t76-2026-08-20-357
+cluster: 2
+keywords: warum, eine, relationale, datenbank, manchmal, langsamer, eine, dateibasierte
+aussage: Google/web.dev nennt kostenintensive Datenbank-Abfragen explizit als TTFB-Verzögerung: 'Server infrastructure may need to generate content from costly database lookups when cached content cannot be reused' – erst wenn kein Cache greift, muss die Anfrage live gegen die Datenbank aufgelöst werden, was Zeit kostet.
+quelle: https://web.dev/articles/optimize-ttfb
+quelle_name: web.dev (Google) - Optimize Time to First Byte
+geprueft_am: 2026-08-20
+recheck_nach: 2027-02-16
+
+## t76-2026-08-20-358
+cluster: 2
+keywords: warum, eine, relationale, datenbank, manchmal, langsamer, eine, dateibasierte
+aussage: SQLite (offizielle Doku) zeigt, dass 'langsamer' nicht pauschal für relationale Datenbanken gilt: Bei kleinen Blobs (8–12 KB) liest/schreibt die eingebettete SQL-Engine rund 35% schneller als einzelne Dateien via fread()/fwrite() – der Vorteil kippt aber bei größeren Blobs und kaltem Filesystem-Cache, ist also stark workload-abhängig.
+quelle: https://sqlite.org/fasterthanfs.html
+quelle_name: SQLite.org - 35% Faster Than The Filesystem
+geprueft_am: 2026-08-20
+recheck_nach: 2027-02-16
+
+## t76-2026-08-20-359
+cluster: 2
+keywords: warum, eine, relationale, datenbank, manchmal, langsamer, eine, dateibasierte
+aussage: Der eigentliche Architektur-Grund, warum relationale Datenbanken (mit ACID-Garantien) Overhead gegenüber simplen Dateisystem-Schreibvorgängen haben, ist Write-Ahead-Logging: Jede Transaktion muss vor dem Commit ins WAL geflusht werden (fsync), bevor sie als sicher gilt – ein reiner Datei-Write ohne diese Durability-Garantie spart genau diesen Schritt, ist dafür aber nicht crash-sicher. Zusätzlich verstärkt Journaling auf Dateisystemebene den Effekt, wenn es Daten mit flushen muss.
+quelle: https://www.postgresql.org/docs/current/wal-intro.html
+quelle_name: PostgreSQL Documentation - Reliability and the Write-Ahead Log
+geprueft_am: 2026-08-20
+recheck_nach: 2027-02-16
+
+## t76-2026-08-20-360
+cluster: 2
+keywords: warum, eine, relationale, datenbank, manchmal, langsamer, eine, dateibasierte
+aussage: Next.js empfiehlt offiziell, Seiten wo möglich per Static Generation vorzurendern statt sie bei jedem Request aus einer Datenbank zu bauen: 'your page can be built once and served by CDN, which makes it much faster than having a server render the page on every request' – der DB-Zugriff passiert einmalig zur Build-Zeit statt bei jeder Anfrage.
+quelle: https://nextjs.org/docs/pages/building-your-application/rendering/static-site-generation
+quelle_name: Next.js Docs - Static Site Generation (SSG)
+geprueft_am: 2026-08-20
+recheck_nach: 2027-02-16
+
+## t76-2026-08-20-361
+cluster: 2
+keywords: warum, eine, relationale, datenbank, manchmal, langsamer, eine, dateibasierte
+aussage: SQLite-Entwickler-Doku bringt den Kernpunkt für Client-Server-Datenbanken auf den Punkt: Ein klassisches relationales Datenbanksystem (z. B. MySQL/Postgres im Netzwerkbetrieb) erzwingt einen Netzwerk-Round-Trip pro Query, während eine lokale/dateibasierte Lösung diesen Overhead nicht hat – deshalb nutzen manche Anwendungen SQLite explizit als lokalen Cache 'to reduce latency, since most queries now occur against the local cache and avoid a network round-trip'.
+quelle: https://www.sqlite.org/whentouse.html
+quelle_name: SQLite.org - Appropriate Uses For SQLite
+geprueft_am: 2026-08-20
+recheck_nach: 2027-02-16
