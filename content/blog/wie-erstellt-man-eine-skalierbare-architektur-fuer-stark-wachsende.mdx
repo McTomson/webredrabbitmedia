@@ -1,0 +1,190 @@
+---
+title: 'Skalierbare Architektur für wachsende Besucherzahlen 2026'
+slug: wie-erstellt-man-eine-skalierbare-architektur-fuer-stark-wachsende
+excerpt: >-
+  Warum klassische WordPress Setups bei Traffic Spitzen einbrechen und wie
+  eine skalierbare Architektur mit ISR, Origin Shield und Serverless
+  Funktionen Wachstum ohne Ausfall trägt.
+featuredSnippetTitle: >-
+  Wie erstellt man eine skalierbare Architektur für stark wachsende
+  Besucherzahlen?
+featuredSnippet: >-
+  Eine skalierbare Architektur liefert die meisten Seiten als vorgerenderte,
+  statische Inhalte aus dem Cache statt sie bei jeder Anfrage neu zu
+  berechnen, schützt den Ursprungsserver mit einem Origin Shield vor
+  Lastspitzen und lagert nur echte dynamische Vorgänge an automatisch
+  mitwachsende Serverless Funktionen aus.
+author: Dmitry Pashlov
+publishedAt: '2026-08-21'
+updatedAt: '2026-08-21'
+category: Technik & Performance
+cluster: 2
+tags:
+  - Skalierbarkeit
+  - Performance
+  - Next.js
+  - Serverless
+  - Core Web Vitals
+  - Österreich
+featuredImage: /images/blog/wie-erstellt-man-eine-skalierbare-architektur-fuer-stark-wachsende.png
+status: draft
+aiAssisted: true
+sources:
+  - name: Vercel Docs - Concurrency scaling
+    url: 'https://vercel.com/docs/functions/concurrency-scaling'
+  - name: Next.js Docs - How to implement Incremental Static Regeneration (ISR)
+    url: 'https://nextjs.org/docs/app/guides/incremental-static-regeneration'
+  - name: AWS Documentation - Use Amazon CloudFront Origin Shield
+    url: 'https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/origin-shield.html'
+  - name: web.dev (Google) - Time to First Byte (TTFB)
+    url: 'https://web.dev/articles/ttfb'
+  - name: Handelsverband Österreich - eCommerce Studie Österreich 2026
+    url: 'https://www.handelsverband.at/publikationen/studien/ecommerce-studie-oesterreich/'
+  - name: 'CoreWebVitals.io - Core Web Vitals for WordPress: Optimization Guide'
+    url: 'https://www.corewebvitals.io/core-web-vitals/wordpress-guide'
+keyTakeaways:
+  - >-
+    Skalierbare Architektur bedeutet: statische Inhalte aus dem Cache
+    ausliefern, dynamische Arbeit nur dort, wo sie wirklich nötig ist.
+  - >-
+    Nur rund 32 Prozent aller WordPress Seiten erreichen einen guten TTFB
+    Wert, weil jede Seite bei jeder Anfrage neu berechnet wird.
+  - >-
+    Google definiert einen guten TTFB Wert als 0,8 Sekunden oder weniger, das
+    beeinflusst direkt die Core Web Vitals.
+  - >-
+    Origin Shield bündelt gleichzeitige Anfragen zu einer einzigen Anfrage an
+    den Ursprungsserver und schützt so bei Lastspitzen.
+  - >-
+    Serverless Funktionen heben ihr Concurrency Limit bei Vercel automatisch
+    an, bis zu 30.000 gleichzeitige Ausführungen bei Hobby und Pro, bis zu
+    100.000 bei Enterprise.
+conclusionStats:
+  - label: Guter TTFB Wert
+    value: unter 0,8 Sek.
+  - label: WordPress Seiten mit gutem TTFB
+    value: 32%
+  - label: Serverless Concurrency Enterprise
+    value: '100.000'
+  - label: Österreich E-Commerce 2026
+    value: 12,3 Mrd. €
+autoGenerateFAQs: false
+customFAQs:
+  - question: Was bedeutet eine skalierbare Architektur bei einer Website?
+    answer: >-
+      Eine skalierbare Architektur liefert die meisten Inhalte als
+      vorgerenderte, statische Seiten aus dem Cache aus und verarbeitet nur
+      echte dynamische Vorgänge wie Formulare oder Warenkörbe live über
+      Serverless Funktionen, die bei Bedarf automatisch mitwachsen.
+  - question: Warum werden WordPress Websites bei hohem Traffic langsam?
+    answer: >-
+      Weil ein klassisches CMS wie WordPress jede Anfrage bei jedem Aufruf
+      neu aus PHP Code und Datenbank zusammensetzt. Laut CoreWebVitals.io
+      erreichen dadurch nur rund 32 Prozent aller WordPress Seiten einen
+      guten TTFB Wert.
+  - question: Was ist Incremental Static Regeneration bei Next.js?
+    answer: >-
+      Incremental Static Regeneration, kurz ISR, rendert eine Seite einmal
+      vor und speichert sie als statisches HTML. Erst nach Ablauf einer
+      festgelegten Zeitspanne wird sie im Hintergrund neu generiert, während
+      Besucher in der Zwischenzeit die zwischengespeicherte Version erhalten.
+  - question: Was macht ein Origin Shield bei einem Content Delivery Network?
+    answer: >-
+      Ein Origin Shield wie bei AWS CloudFront bündelt mehrere gleichzeitige
+      Anfragen nach demselben Inhalt zu einer einzigen Anfrage an den
+      Ursprungsserver und schützt ihn so vor Überlastung bei plötzlichen
+      Traffic Spitzen.
+  - question: Was gilt als guter TTFB Wert nach Google?
+    answer: >-
+      Google definiert einen guten TTFB Wert mit 0,8 Sekunden oder weniger,
+      gemessen am 75. Perzentil aller Seitenaufrufe. Werte über 1,8 Sekunden
+      gelten als schlecht und wirken sich negativ auf die Core Web Vitals
+      aus.
+hookCandidates:
+  - "übersteht deine website den ansturm?"
+  - "website: warum ist sie so schnell?"
+  - "wächst dein server mit den besuchern?"
+---
+
+## Was macht eine Architektur wirklich skalierbar?
+
+Stellen Sie sich zwei Restaurants vor. Das eine kocht jedes Gericht von Grund auf neu, sobald ein Gast bestellt, selbst wenn zehn Leute am selben Abend dasselbe Schnitzel wollen. Das andere hat die Basis schon vorbereitet und muss beim Ansturm nur noch aufwärmen und servieren. Genau das ist der Unterschied zwischen einer Website, die bei einem Besucheransturm in die Knie geht, und einer, die ihn kaum bemerkt.
+
+Eine skalierbare Architektur beantwortet die meisten Anfragen mit vorbereiteten, statischen Inhalten aus einem Cache nahe am Besucher, statt bei jedem Klick Datenbank und Server neu zu bemühen, und lagert nur die tatsächlich dynamische Arbeit an Serverless-Funktionen aus, die automatisch mitwachsen. Das Ergebnis: konstant schnelle Ladezeiten, egal ob zehn oder zehntausend Menschen gleichzeitig auf der Seite sind.
+
+Diese Definition klingt einfach, aber die Umsetzung entscheidet über Erfolg oder Absturz an genau dem Tag, an dem es zählt, etwa beim großen Sale, nach einer TV-Erwähnung oder wenn eine Kampagne plötzlich einschlägt. Schauen wir uns an, woran klassische Setups scheitern und wie man es besser baut.
+
+![Grafik zu einer skalierbaren Architektur mit Cache, Origin Shield und Serverless Funktionen für stark wachsende Besucherzahlen](/images/blog/wie-erstellt-man-eine-skalierbare-architektur-fuer-stark-wachsende.png)
+
+## Warum klassische CMS-Setups bei Wachstum in die Knie gehen
+
+Der Großteil der österreichischen Business-Websites läuft nach wie vor auf klassischen Content-Management-Systemen wie WordPress. Das Prinzip dahinter: Jede Anfrage eines Besuchers löst auf dem Server einen frischen Vorgang aus. PHP-Code wird ausgeführt, die Datenbank wird abgefragt, das Ergebnis wird zu HTML zusammengebaut und erst dann an den Browser geschickt. Bei zehn Besuchern pro Minute merkt das niemand. Bei tausend gleichzeitigen Besuchern wird aus diesem Ablauf ein Nadelöhr.
+
+Die Zahlen bestätigen das eindeutig. Laut [CoreWebVitals.io](https://www.corewebvitals.io/core-web-vitals/wordpress-guide) erreichen nur rund 32 Prozent aller WordPress-Seiten einen guten [TTFB-Wert](https://web.dev/articles/ttfb), jenen Wert also, der misst, wie lange der Browser auf das erste Datenpaket vom Server wartet. Zwei von drei WordPress-Seiten liegen darunter. Das ist kein Zufall, sondern eine direkte Folge der Architektur: Jede Seite wird bei jeder Anfrage neu aus PHP und Datenbank zusammengesetzt, egal ob sich der Inhalt seit Stunden verändert hat oder nicht.
+
+Für einen Blog mit überschaubarem Traffic mag das nie zum Problem werden. Für einen Webshop am Black Friday, eine Eventseite kurz vor Ticketstart oder eine Kanzleiseite, die plötzlich in den Medien zitiert wird, wird genau dieser Mechanismus zum Flaschenhals. Der Server arbeitet dann nicht mehr an neuen Inhalten, sondern kämpft damit, dieselbe Seite hundertfach parallel neu zu berechnen, obwohl sie sich seit dem letzten Aufruf keinen Millimeter verändert hat.
+
+## Statisch ausliefern statt dynamisch berechnen
+
+Der wirksamste Schritt gegen wachsenden Traffic ist paradoxerweise, möglichst wenig live zu berechnen. Next.js löst das mit einem Verfahren namens [Incremental Static Regeneration](https://nextjs.org/docs/app/guides/incremental-static-regeneration), kurz ISR. Dabei wird eine Seite einmal vorgerendert und als fertiges, statisches HTML gespeichert. Besucher bekommen diese fertige Version sofort ausgeliefert, ohne dass Server oder Datenbank bei ihrem Klick überhaupt aktiv werden müssen.
+
+Erst wenn eine festgelegte Revalidierungszeit abläuft, wird die Seite im Hintergrund einmal neu generiert, während alle anderen Besucher in der Zwischenzeit ganz normal die zwischengespeicherte Version weiter ausgeliefert bekommen. Niemand wartet auf eine Neuberechnung. Next.js empfiehlt dabei bewusst großzügige Zeitfenster, etwa eine Stunde statt einer Sekunde, denn kurze Intervalle bei hohem Traffic können sonst selbst zu einem Ansturm auf den Server führen, weil viele Regenerierungen gleichzeitig ausgelöst werden.
+
+Für die Praxis heißt das: Ein Produktkatalog, eine Leistungsseite oder ein Blogartikel muss nicht bei jedem Aufruf neu gebaut werden, nur weil sich theoretisch etwas geändert haben könnte. Es reicht völlig, wenn die Seite alle sechzig Minuten aktualisiert wird und dazwischen als fertiges, blitzschnelles HTML aus dem Cache kommt. Nur echte Live-Daten, ein Warenkorbstand, ein Login-Status, gehören überhaupt noch in dynamische Anfragen.
+
+## Ein Schutzschild vor dem Ursprungsserver
+
+Selbst die beste statische Architektur hat einen Ursprung, den sogenannten Origin, an dem die Inhalte tatsächlich herkommen. Bei einem plötzlichen Ansturm, etwa wenn ein Artikel viral geht, würden ohne zusätzlichen Schutz trotzdem tausende Anfragen gleichzeitig bei diesem einen Server ankommen und ihn möglicherweise überlasten.
+
+Genau hier kommt eine Technik namens [Origin Shield](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/origin-shield.html) ins Spiel, wie sie etwa AWS CloudFront anbietet. Das Prinzip ist bestechend einfach: Mehrere gleichzeitige Anfragen nach demselben Inhalt werden gebündelt und im Idealfall nur als eine einzige Anfrage an den Ursprungsserver weitergereicht. Der Server merkt vom Ansturm praktisch nichts, weil das Content Delivery Network die Last vorher abfängt und verteilt. Das senkt nicht nur das Risiko eines Ausfalls, sondern spart nebenbei auch noch Kosten für Datenübertragung, weil der teure Weg zum Ursprungsserver seltener nötig wird.
+
+Für Unternehmen mit internationalem Publikum oder stark schwankendem Traffic, etwa saisonale Anbieter oder Eventveranstalter, ist ein solcher Schutzschild kein Luxus, sondern eine der wirksamsten Versicherungen gegen den berühmten Absturz zur Unzeit.
+
+## Serverless-Funktionen, die automatisch mitwachsen
+
+Nicht jede Funktion einer Website lässt sich statisch vorrendern. Ein Kontaktformular, eine Preisberechnung, ein personalisierter Warenkorb, all das braucht echte, dynamische Verarbeitung im Moment der Anfrage. Genau dafür sind Serverless-Funktionen gemacht, wie sie moderne Hosting-Plattformen wie [Vercel](https://vercel.com/docs/functions/concurrency-scaling) anbieten.
+
+Der entscheidende Vorteil gegenüber einem klassischen, fest gemieteten Server: Erkennt die Plattform einen plötzlichen Lastanstieg, hebt sie das Concurrency-Limit, also die Anzahl gleichzeitig laufender Funktionsausführungen, automatisch und temporär an. Bei Hobby- und Pro-Tarifen sind bis zu 30.000 gleichzeitige Ausführungen möglich, bei Enterprise-Verträgen sogar bis zu 100.000, ganz ohne dass jemand vorab manuell hochskalieren oder größere Server buchen muss.
+
+So ähnlich funktioniert das auch bei einem Restaurant. Eines plant für den erwarteten Gästeansturm im Vorfeld extra Personal ein. Beim anderen vergrößert sich die Küche gewissermaßen von selbst, sobald mehr Bestellungen hereinkommen. Für ein wachsendes Unternehmen bedeutet das: Sie müssen nicht Monate im Voraus abschätzen, wie viel Serverkapazität eine Kampagne braucht. Die Architektur reagiert von selbst.
+
+## Die Messlatte: Was ein guter TTFB-Wert bedeutet
+
+Damit all diese Maßnahmen nicht nur gut klingen, sondern messbar wirken, braucht es eine klare Kennzahl. Google selbst definiert hier einen konkreten Schwellenwert: Ein guter TTFB-Wert, also die Zeit bis zum ersten Datenpaket vom Server, liegt bei 0,8 Sekunden oder weniger, gemessen am 75. Perzentil aller Seitenaufrufe. Alles über 1,8 Sekunden gilt bereits als schlecht.
+
+Dieser Wert ist keine akademische Spielerei. Ein niedriger TTFB ist die Grundvoraussetzung für einen guten Largest-Contentful-Paint-Wert, also dafür, wie schnell der wichtigste sichtbare Inhalt einer Seite geladen ist, und damit für stabile Core Web Vitals. Und Core Web Vitals fließen direkt in das Google-Ranking ein. Eine Architektur, die bei steigendem Traffic langsamer wird, verliert also nicht nur Umsatz durch frustrierte Besucher, sondern langfristig auch Sichtbarkeit in der Suche. Wer die eigene Website skalierbar bauen will, sollte den TTFB-Wert deshalb regelmäßig mit [Felddaten statt Labortests](/tipps/wie-misst-man-die-echte-performance-einer-website-abseits) unter echter Last prüfen, nicht nur an einem ruhigen Dienstagvormittag mit fünf Besuchern.
+
+## Warum das gerade in Österreich jetzt an Bedeutung gewinnt
+
+Man könnte meinen, dieses Thema betrifft nur internationale Konzerne mit Millionen Besuchern. Das stimmt so nicht mehr. Der österreichische E-Commerce-Markt wächst laut [Handelsverband Österreich](https://www.handelsverband.at/publikationen/studien/ecommerce-studie-oesterreich/) im Jahr 2026 auf ein Rekordvolumen von 12,3 Milliarden Euro, ein Plus von drei Prozent gegenüber dem Vorjahr. 13 Prozent aller einzelhandelsrelevanten Konsumausgaben fließen mittlerweile online, ebenfalls ein Rekordanteil.
+
+Diese Entwicklung erhöht die Lastanforderungen an heimische Websites und Shops strukturell, nicht nur bei den großen Playern. Ein kleiner Möbelhändler aus Graz, der plötzlich in einem überregionalen Vergleichsportal auftaucht, oder ein Wiener Dienstleister, dessen Angebot in einer Facebook-Gruppe mit zehntausend Mitgliedern geteilt wird, kann binnen Stunden mit dem zehnfachen des üblichen Traffics konfrontiert sein. Wer seine Architektur erst dann skalierbar macht, wenn der Ansturm schon da ist, kommt zu spät. Die Vorbereitung muss vorher passieren.
+
+## Schritt für Schritt: Was Sie konkret tun sollten
+
+Wenn Sie prüfen wollen, wie belastbar Ihre eigene Website tatsächlich ist, empfiehlt sich folgende Reihenfolge. Erstens: Messen Sie den aktuellen TTFB-Wert Ihrer wichtigsten Seiten unter realistischer Last, nicht nur im Ruhezustand, etwa mit einem Lasttest-Tool. Zweitens: Prüfen Sie, welcher Anteil Ihrer Seiten aktuell bei jedem Aufruf neu aus einer Datenbank berechnet wird, und identifizieren Sie, welche davon problemlos als statische, regelmäßig aktualisierte Seiten ausgeliefert werden könnten. Drittens: Klären Sie, ob Ihr Hosting ein Content Delivery Network mit Origin-Schutz einsetzt oder ob jede einzelne Anfrage direkt bis zum Ursprungsserver durchgereicht wird. Viertens: Trennen Sie in Ihrer Anwendung sauber zwischen wirklich dynamischen Funktionen, etwa Formularen oder Warenkörben, und Inhalten, die sich selten ändern, etwa Leistungsbeschreibungen oder Blogartikeln. Fünftens: Legen Sie für Letztere eine sinnvolle Revalidierungszeit fest, meist reicht eine Stunde völlig aus, und lassen Sie den Rest automatisiert laufen.
+
+Diese fünf Schritte lassen sich unabhängig vom eigenen technischen Vorwissen mit einer erfahrenen Agentur oder einem technischen Ansprechpartner durchgehen. Wichtig ist nur, sie vor dem nächsten großen Ansturm zu erledigen, nicht während er läuft.
+
+## Häufige Irrtümer bei der Skalierung
+
+Ein verbreiteter Irrtum: Ein teurerer, größerer Server löse das Problem automatisch. Das stimmt bei klassischen CMS-Architekturen nur bedingt. Das Grundproblem bleibt bestehen, jede Seite wird bei jeder Anfrage neu berechnet, es wird nur mit mehr Rechenleistung überdeckt, bis auch diese an ihre Grenzen stößt.
+
+Skalierbarkeit sei außerdem ein Thema nur für riesige Konzerne, hört man oft. Die Zahlen zum österreichischen E-Commerce-Wachstum zeigen etwas anderes. Jedes wachsende Unternehmen kann unerwartet in eine Lastspitze geraten, egal wie klein es angefangen hat.
+
+Und bei der Revalidierungszeit statischer Seiten wird gern zu kurz gedacht, um immer topaktuell zu wirken. Genau das riskiert die Regenerierungs-Stampedes, vor denen Next.js ausdrücklich warnt. Länger ist hier, entgegen der Intuition, oft die bessere Wahl.
+
+## Key Takeaways
+
+- Skalierbare Architektur bedeutet: statische Inhalte aus dem Cache ausliefern, dynamische Arbeit nur dort, wo sie wirklich nötig ist.
+- Nur rund 32 Prozent aller WordPress-Seiten erreichen einen guten TTFB-Wert, weil jede Seite bei jeder Anfrage neu berechnet wird.
+- Google definiert einen guten TTFB als 0,8 Sekunden oder weniger, über 1,8 Sekunden gilt als schlecht, und der Wert beeinflusst direkt die Core Web Vitals.
+- Origin Shield bündelt gleichzeitige Anfragen zu einer einzigen Anfrage an den Ursprungsserver und schützt so gezielt bei Lastspitzen.
+- Serverless-Funktionen heben ihr Concurrency-Limit bei Vercel automatisch an, bis zu 30.000 gleichzeitige Ausführungen bei Hobby und Pro, bis zu 100.000 bei Enterprise.
+- Der österreichische E-Commerce-Markt wächst 2026 auf 12,3 Milliarden Euro, das erhöht die Lastanforderungen an heimische Websites strukturell, nicht nur bei Großunternehmen.
+
+## Fazit und nächster Schritt
+
+Eine skalierbare Architektur ist kein Projekt, das man an dem Tag beginnt, an dem die Seite erstmals überlastet ist. Sie ist eine Entscheidung, die man beim Bau der Website trifft, lange bevor der erste große Ansturm überhaupt absehbar ist. Statische Auslieferung statt ständiger Neuberechnung macht dabei den größten Unterschied. Dazu kommen ein Schutzschild vor dem Ursprungsserver und Funktionen, die bei Bedarf automatisch mitwachsen. Wer diese Kombination von Anfang an mitdenkt, baut eine Website, die Wachstum aushält, statt daran zu zerbrechen.
+
+Wenn Sie nicht sicher sind, wie belastbar Ihre eigene Website oder Ihr Shop aktuell wirklich ist, lohnt sich ein ehrlicher, unabhängiger Blick von außen. Nehmen Sie über unsere [Kontaktseite](/kontakt) Kontakt auf, wir schauen uns Ihre aktuelle Architektur gemeinsam an und sagen Ihnen offen, wo die Grenzen liegen, bevor der nächste Ansturm es Ihnen zeigt.

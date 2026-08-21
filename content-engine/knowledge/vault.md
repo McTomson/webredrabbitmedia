@@ -3254,3 +3254,48 @@ quelle: https://www.sqlite.org/whentouse.html
 quelle_name: SQLite.org - Appropriate Uses For SQLite
 geprueft_am: 2026-08-20
 recheck_nach: 2027-02-16
+
+## t77-2026-08-21-362
+cluster: 2
+keywords: erstellt, eine, skalierbare, architektur, stark, wachsende, besucherzahlen
+aussage: Vercel-Serverless-Functions skalieren bei Traffic-Spitzen automatisch: Erkennt die Plattform einen plötzlichen Lastanstieg, hebt sie das Concurrency-Limit temporär an – auf bis zu 30.000 gleichzeitige Ausführungen bei Hobby/Pro und 100.000 bei Enterprise –, ohne dass manuelle Vorab-Skalierung nötig ist.
+quelle: https://vercel.com/docs/functions/concurrency-scaling
+quelle_name: Vercel Docs - Concurrency scaling
+geprueft_am: 2026-08-21
+recheck_nach: 2027-02-17
+
+## t77-2026-08-21-363
+cluster: 2
+keywords: erstellt, eine, skalierbare, architektur, stark, wachsende, besucherzahlen
+aussage: Next.js Incremental Static Regeneration (ISR) reduziert die Serverlast, indem für die meisten Requests vorgerenderte, statische Seiten ausgeliefert werden; nur beim Ablauf der Revalidierungszeit wird eine Seite im Hintergrund neu generiert, während Besucher weiterhin die zwischengespeicherte Version sofort erhalten. Next.js empfiehlt für hohen Traffic bewusst lange Revalidierungszeiten (z. B. 1 Stunde statt 1 Sekunde), um Regenerierungs-Stampedes zu vermeiden.
+quelle: https://nextjs.org/docs/app/guides/incremental-static-regeneration
+quelle_name: Next.js Docs - How to implement Incremental Static Regeneration (ISR)
+geprueft_am: 2026-08-21
+recheck_nach: 2027-02-17
+
+## t77-2026-08-21-364
+cluster: 2
+keywords: erstellt, eine, skalierbare, architektur, stark, wachsende, besucherzahlen
+aussage: AWS CloudFront Origin Shield buendelt mehrere gleichzeitige Anfragen nach demselben Objekt zu im Idealfall nur einer einzigen Anfrage an den Origin-Server – das schuetzt den Origin gezielt waehrend Lastspitzen oder unerwarteten Traffic-Anstiegen und senkt gleichzeitig Kosten fuer Datenuebertragung.
+quelle: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/origin-shield.html
+quelle_name: AWS Documentation - Use Amazon CloudFront Origin Shield
+geprueft_am: 2026-08-21
+recheck_nach: 2027-02-17
+
+## t77-2026-08-21-365
+cluster: 2
+keywords: erstellt, eine, skalierbare, architektur, stark, wachsende, besucherzahlen
+aussage: Google definiert einen 'guten' TTFB-Wert (Time to First Byte) als 0,8 Sekunden oder weniger beim 75. Perzentil der Seitenaufrufe; ueber 1,8 Sekunden gilt als 'schlecht'. Ein niedriger TTFB ist die Voraussetzung fuer gute Largest-Contentful-Paint-Werte und damit fuer stabile Core Web Vitals bei steigendem Besucheraufkommen.
+quelle: https://web.dev/articles/ttfb
+quelle_name: web.dev (Google) - Time to First Byte (TTFB)
+geprueft_am: 2026-08-21
+recheck_nach: 2027-02-17
+
+## t77-2026-08-21-366
+cluster: 2
+keywords: erstellt, eine, skalierbare, architektur, stark, wachsende, besucherzahlen
+aussage: Der oesterreichische E-Commerce-Markt waechst 2026 auf ein Rekordvolumen von 12,3 Milliarden Euro (+3% ggue. 2025); 13% aller einzelhandelsrelevanten Konsumausgaben fliessen mittlerweile online – ein Rekordanteil, der die Lastanforderungen an Webseiten und Shops in AT strukturell erhoeht.
+quelle: https://www.handelsverband.at/publikationen/studien/ecommerce-studie-oesterreich/
+quelle_name: Handelsverband Österreich - eCommerce Studie Österreich 2026
+geprueft_am: 2026-08-21
+recheck_nach: 2027-02-17
