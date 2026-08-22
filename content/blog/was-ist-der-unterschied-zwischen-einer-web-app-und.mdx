@@ -1,0 +1,122 @@
+---
+title: "Web-App vs. Website: Der Unterschied 2026 erklärt"
+slug: "was-ist-der-unterschied-zwischen-einer-web-app-und"
+excerpt: "Web-App oder klassische Website? Der Unterschied liegt im Verhalten dahinter, nicht im Aussehen: dynamische Datenverarbeitung, Login-Funktionen und Offline-Fähigkeit als Progressive Web App entscheiden über die richtige Wahl."
+featuredSnippetTitle: "Was ist der Unterschied zwischen einer Web-App und einer Website?"
+featuredSnippet: "Eine klassische Website liefert bei jedem Aufruf dieselben, fest hinterlegten Inhalte ohne Datenbank. Eine Web-App verarbeitet Anfragen serverseitig dynamisch, meist mit Datenbank, für individuelle Inhalte wie Login oder Buchung. Als Progressive Web App kann sie zusätzlich installiert werden und offline funktionieren, teilweise sogar im Hintergrund aktiv bleiben."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-22"
+updatedAt: "2026-08-22"
+category: "Technik & Performance"
+tags: ["Web-App", "Website", "Progressive Web App", "Technik", "Österreich"]
+featuredImage: "/images/blog/was-ist-der-unterschied-zwischen-einer-web-app-und.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "MDN Web Docs - What is a progressive web app?"
+    url: "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/What_is_a_progressive_web_app"
+  - name: "web.dev - What makes a good Progressive Web App?"
+    url: "https://web.dev/articles/pwa-checklist"
+  - name: "MDN Web Docs - Client-Server overview (Learn web development)"
+    url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Client-Server_overview"
+  - name: "Red Rabbit Media - Was ist der technologische Unterschied zwischen statischer und dynamischer Website?"
+    url: "https://web.redrabbit.media/tipps/was-ist-der-technologische-unterschied-zwischen-einer-statischen-und"
+keyTakeaways:
+  - "Der Unterschied zwischen Website und Web-App liegt im Verhalten dahinter, nicht im äußeren Erscheinungsbild."
+  - "Eine klassische Website liefert bei jeder Anfrage dieselben, fest hinterlegten Inhalte vom Server, ohne Datenbank-Logik im Hintergrund."
+  - "Eine Web-App verarbeitet Anfragen serverseitig dynamisch, meist mit Datenbank, für individuelle Inhalte pro Nutzer wie Login oder Buchung."
+  - "Eine Progressive Web App ist eine Erweiterung der Web-App, installierbar und offline nutzbar, dazu Hintergrundaktivität wie Push-Benachrichtigungen."
+  - "Die passende Variante hängt davon ab, ob Inhalte personalisiert werden müssen, nicht davon, was aktuell als modern gilt."
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Was ist der Unterschied zwischen einer Web-App und einer Website?"
+    answer: "Eine klassische Website liefert bei jedem Aufruf dieselben, fest hinterlegten Inhalte ohne Datenbank im Hintergrund. Eine Web-App verarbeitet Anfragen serverseitig dynamisch, meist mit einer Datenbank, damit jeder Nutzer individuelle Inhalte wie Login oder Buchung sieht."
+  - question: "Ist eine Progressive Web App dasselbe wie eine Web-App?"
+    answer: "Nein, eine Progressive Web App ist eine Erweiterung einer bestehenden Web-App. Sie ergänzt Installierbarkeit ohne App Store, eine eigene Offline-Seite und Hintergrundaktivität wie Push-Benachrichtigungen, wie die PWA-Checkliste von web.dev beschreibt."
+  - question: "Wann brauche ich statt einer klassischen Website eine Web-App?"
+    answer: "Sobald sich Inhalte pro Besucher unterscheiden sollen, etwa durch Login, personalisierte Inhalte, Buchung oder Warenkorb, braucht es eine Web-App mit Datenbank im Hintergrund. Zeigt die Seite allen Besuchern dieselben Inhalte, reicht eine klassische Website."
+  - question: "Ist eine statische Website sicherer als eine Web-App?"
+    answer: "In der Regel ja, weil eine statische Website ohne Datenbank und ohne Login-Logik weniger Angriffsfläche bietet. Eine Web-App verarbeitet dagegen Nutzerdaten und braucht deshalb laufende Sicherheitsupdates und Backups."
+  - question: "Kann ich eine Progressive Web App ohne App Store installieren?"
+    answer: "Ja, genau das ist der Kern einer Progressive Web App. Nutzer installieren sie direkt über den Browser auf dem Homescreen, ganz ohne Umweg über Google Play oder den Apple App Store."
+hookCandidates:
+  - "website oder web-app: was passt?"
+  - "web-app: brauche ich das wirklich?"
+  - "kann eine website offline laufen?"
+---
+
+Stellen Sie sich zwei Geschäfte in der Wiener Innenstadt vor. Das eine ist ein Schaufenster mit fein drapierter Ware, Sie schauen hinein, sehen genau das, was dort liegt, und gehen wieder. Das andere ist eine Werkstatt mit Personal dahinter, das auf Zuruf Maß nimmt, etwas anpasst und Ihnen am Ende ein individuelles Ergebnis mitgibt. Beide haben eine Glasfront, beide stehen in derselben Straße, trotzdem passiert dahinter etwas völlig anderes. Genauso verhält es sich mit einer klassischen Website und einer Web-App.
+
+Die kurze Antwort vorweg, damit Sie sie sofort mitnehmen können: Eine klassische Website liefert bei jedem Aufruf fertige, fest hinterlegte Inhalte unverändert vom Server aus, ohne Login und ohne Datenbank-Logik im Hintergrund. Eine Web-App verarbeitet Anfragen serverseitig dynamisch, meist mit einer Datenbank. Als Progressive Web App kann sie sogar installiert werden und offline funktionieren, teilweise bleibt sie dabei sogar im Hintergrund aktiv. Der Unterschied liegt also im Verhalten, nicht im Aussehen.
+
+![Vergleich zwischen Web-App und klassischer Website für Unternehmen in Österreich](/images/blog/was-ist-der-unterschied-zwischen-einer-web-app-und.png)
+
+## Warum diese Frage überhaupt wichtig ist
+
+Viele Unternehmerinnen und Unternehmer, die wir bei Red Rabbit Media beraten, verwenden die Begriffe "Website" und "Web-App" munter durcheinander, weil beide im selben Browserfenster landen. Das ist verständlich, führt aber schnell zu falschen Entscheidungen. Wer eine reine Informationsseite plant und sich von einem Anbieter eine komplexe Web-App mit Login-Bereich und Datenbank verkaufen lässt, zahlt für Technik, die er nie braucht. Wer umgekehrt ein Buchungssystem oder einen Mitgliederbereich plant und mit einer einfachen statischen Seite startet, stößt spätestens beim ersten Login-Formular an eine Wand. Klingt nach Kleinigkeit, ist im Ernstfall aber ein teurer Umbau, oder? Die Unterscheidung ist also keine akademische Spielerei, sondern entscheidet direkt über Budget und Zeitplan, und am Ende auch über die richtige Technologiewahl.
+
+## Was eine klassische Website technisch ausmacht
+
+Eine statische Website liefert fertige Dateien unverändert vom Server aus. Das macht sie schnell und günstig im Betrieb, weil kein Rechenaufwand pro Anfrage entsteht, keine Datenbank abgefragt werden muss und der Server im Grunde nur Dateien weiterreicht, die längst fertig auf der Platte liegen. Wenn Sie also eine Landingpage für Ihr Restaurant, eine Portfolioseite für Ihre Fotografie oder eine Informationsseite für Ihre Rechtsanwaltskanzlei betreiben, reicht in den allermeisten Fällen genau dieses Modell aus.
+
+[MDN Web Docs](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Client-Server_overview) beschreiben eine Web-Anwendung technisch als serverseitigen Code, der HTTP-Anfragen verarbeitet und HTTP-Antworten zurückgibt, typischerweise zusammen mit einer Datenbank und HTML-Templates, um Inhalte dynamisch zu erzeugen. Eine statische Seite dagegen liefert bei jeder Anfrage exakt denselben, fest hinterlegten Inhalt. Der Server einer klassischen Website "denkt" also nicht mit, er reicht einfach aus, was schon da ist.
+
+Der praktische Vorteil liegt auf der Hand: weniger technische Angriffsfläche und geringere Wartungskosten. Die Ladezeiten sind kürzer, weil keine Datenbankabfrage zwischengeschaltet ist. Der Nachteil ist ebenso klar. Alles, was sich pro Besucher unterscheiden soll, ein individuelles Login oder ein persönliches Dashboard, lässt sich mit einer rein statischen Seite nicht abbilden. Auch ein Warenkorb mit Live-Bestand fällt darunter. Mehr zum technischen Unterschied zwischen statischen und dynamischen Websites lesen Sie in unserem Artikel [Was ist der technologische Unterschied zwischen statischer und dynamischer Website?](/tipps/was-ist-der-technologische-unterschied-zwischen-einer-statischen-und).
+
+## Was eine Web-App von einer Website unterscheidet
+
+Eine dynamische Website beziehungsweise Web-App nutzt zusätzlich Anwendungsserver und Datenbank, um Inhalte erst bei jeder Anfrage neu zu erzeugen. Das klingt technisch, bedeutet aber im Alltag etwas ganz Konkretes: Wenn Sie sich auf einer Plattform einloggen und Ihren eigenen, individuellen Kontostand oder Ihre eigene Bestellhistorie sehen, während der Nachbar in seinem Account etwas ganz anderes sieht, läuft im Hintergrund eine Datenbankabfrage, die speziell für Sie zusammengestellt wird. Genau das ist der Kern einer Web-App.
+
+Diese Flexibilität hat ihren Preis. Ein Anwendungsserver, der bei jeder Anfrage neu rechnet, braucht mehr Infrastruktur und mehr laufende Wartung. Dazu kommen zusätzliche Sicherheitsvorkehrungen, denn überall dort, wo Nutzerdaten verarbeitet werden, entstehen auch Angriffsflächen. Wer schon einmal ein Online-Buchungssystem, einen Mitgliederbereich mit Login oder einen Webshop mit Warenkorb betrieben hat, weiß, dass hier laufend Updates und Sicherheitspatches anfallen, von den regelmäßigen Backups ganz zu schweigen, die eine reine Informationsseite schlicht nicht kennt.
+
+Die Faustregel, die wir Kundinnen und Kunden mitgeben: Sobald sich Inhalte pro Nutzer unterscheiden sollen, Buchung, Login, personalisierter Content, Warenkorb, braucht es eine Web-App. Solange alle Besucher dasselbe sehen, reicht eine klassische Website.
+
+## Progressive Web Apps: die dritte, oft übersehene Kategorie
+
+Neben der klaren Zweiteilung statisch gegen dynamisch gibt es eine dritte Kategorie, die viele Betriebe in Österreich noch gar nicht auf dem Schirm haben: die Progressive Web App, kurz PWA. [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/What_is_a_progressive_web_app) beschreiben den grundlegenden Unterschied so: Eine klassische Website ist eher "ein Ort, den man besucht", sie hat keine Präsenz auf dem Gerät, wenn sie nicht gerade geöffnet ist, ist nur über den Browser erreichbar und stark von der Netzwerkverbindung abhängig. Web- beziehungsweise Progressive-Web-Apps hingegen können installiert werden und offline funktionieren. Im Hintergrund bleiben sie aktiv, etwa über Push-Benachrichtigungen oder Hintergrund-Synchronisation.
+
+Google definiert in der offiziellen [PWA-Checkliste von web.dev](https://web.dev/articles/pwa-checklist) die technischen Basiskriterien, die eine solche Web-App von einer klassischen Website abheben: Sie muss installierbar sein, eine eigene Offline-Seite bereitstellen statt der Standard-Fehlerseite des Browsers, auf jedem Bildschirm responsiv funktionieren und schnell starten und bleiben. Praktisch bedeutet das: Ein Fitnessstudio in Graz, dessen Mitglieder die Trainingspläne auch in der U-Bahn ohne Netz aufrufen wollen, oder ein Handwerksbetrieb, dessen Außendienst am Land oft ohne stabiles Netz unterwegs ist, profitiert stark von einer PWA. Der Nutzer installiert die Seite wie eine App auf dem Homescreen, ganz ohne App Store, und sie funktioniert trotzdem teilweise offline weiter.
+
+Wichtig dabei: Eine PWA ist keine dritte, komplett neue Technologie neben Website und Web-App, sondern eine Erweiterung. Sie bauen auf einer bestehenden Web-App auf und rüsten Installierbarkeit, Offline-Fähigkeit und Hintergrundaktivität nach. Für eine rein statische Informationsseite ergibt eine PWA in den seltensten Fällen Sinn, weil es dort schlicht nichts gibt, das offline synchronisiert werden müsste.
+
+## Ein Rechenbeispiel aus der Praxis
+
+Nehmen wir zwei fiktive, aber typische Betriebe aus Wien. Ein Frisörsalon im siebten Bezirk möchte Öffnungszeiten, Preisliste, Adresse und ein paar Fotos zeigen, dazu ein Kontaktformular. Das ist im Kern eine klassische, statische Website. Kein Login, keine individuellen Inhalte pro Besucher, die Seite sieht für jeden gleich aus.
+
+Ein Fitnessstudio in derselben Straße möchte hingegen, dass Mitglieder sich einloggen, ihren persönlichen Trainingsplan sehen, Kurse buchen und stornieren können, und dass das Ganze auch am Handy zuverlässig funktioniert, selbst wenn im Keller-Trainingsraum kurz kein Netz da ist. Das ist eine Web-App, im Idealfall sogar mit PWA-Erweiterung, damit die Buchung auch offline vorbereitet und synchronisiert werden kann, sobald wieder Netz da ist.
+
+Der Unterschied zeigt sich nicht im ersten Eindruck, beide Seiten können optisch ähnlich hochwertig aussehen, sondern in der Technik dahinter und im laufenden Aufwand. Der Frisörsalon braucht im Grunde nur ein einmal aufgesetztes, gepflegtes Gerüst. Das Fitnessstudio braucht laufende Betreuung der Datenbank und der Login-Sicherheit. Dazu kommt die Buchungslogik, die ständig mitwachsen muss.
+
+## Schritt für Schritt: So finden Sie heraus, was Sie brauchen
+
+Bevor Sie mit einer Agentur oder einem Entwickler sprechen, lohnt sich eine kurze, ehrliche Bestandsaufnahme:
+
+1. **Prüfen Sie, ob sich Inhalte pro Besucher unterscheiden sollen.** Sieht jeder Nutzer dasselbe, reicht eine klassische Website.
+2. **Prüfen Sie, ob ein Login nötig ist.** Sobald sich jemand anmelden muss, um individuelle Inhalte zu sehen, brauchen Sie eine Web-App mit Datenbank im Hintergrund.
+3. **Prüfen Sie, ob Offline-Nutzung eine Rolle spielt.** Wenn Ihre Zielgruppe die Seite auch ohne stabiles Netz nutzen soll, etwa unterwegs oder in Gebieten mit schlechtem Empfang, ist eine PWA-Erweiterung sinnvoll.
+4. **Schätzen Sie den Wartungsaufwand realistisch ein.** Eine Web-App mit Datenbank braucht laufende Sicherheitsupdates, eine statische Seite braucht davon deutlich weniger.
+5. **Sprechen Sie diese Punkte konkret mit Ihrer Agentur durch**, bevor ein Angebot erstellt wird. Wer die vier Punkte oben vorher klärt, bekommt ein passendes, nicht ein überdimensioniertes Angebot.
+
+Wenn Sie sich dabei unsicher sind, welche Variante zu Ihrem konkreten Vorhaben passt, sprechen Sie uns direkt über unser [Kontaktformular](/kontakt) an, wir sehen uns Ihr Vorhaben unverbindlich an und sagen Ihnen ehrlich, ob eine einfache Website reicht oder ob es eine Web-App braucht.
+
+## Häufige Irrtümer bei Website versus Web-App
+
+**Irrtum eins: "Jede moderne Website ist ja eigentlich eine Web-App."** Nein. Auch eine 2026 gebaute, technisch aktuelle Seite kann rein statisch sein, wenn sie keine personalisierten Inhalte ausliefert. Modern und dynamisch sind zwei verschiedene Eigenschaften.
+
+**Irrtum zwei: "Eine Web-App ist immer besser, weil flexibler."** Auch das stimmt nicht. Flexibilität kostet laufend Wartung und Sicherheitsaufwand. Wer diese Flexibilität nicht braucht, zahlt nur für Komplexität, die nie zum Einsatz kommt.
+
+**Irrtum drei: "PWA heißt, ich brauche eine eigene App im Store."** Im Gegenteil, der ganze Charme einer PWA ist, dass sie ohne App Store installierbar ist, direkt über den Browser.
+
+**Irrtum vier: "Statische Seiten sind unsicherer, weil einfacher gebaut."** Tatsächlich ist es meist umgekehrt. Weniger bewegliche Teile, keine Datenbank im Hintergrund, das bedeutet auch weniger Angriffsfläche für Angreifer. Auch die fehlende Login-Logik spielt hier mit rein.
+
+## Key Takeaways
+
+- Der Unterschied zwischen Website und Web-App liegt im Verhalten dahinter, nicht im äußeren Erscheinungsbild.
+- Eine klassische Website liefert bei jeder Anfrage dieselben, fest hinterlegten Inhalte vom Server, ohne Datenbank-Logik im Hintergrund.
+- Eine Web-App verarbeitet Anfragen serverseitig dynamisch, meist mit Datenbank, für individuelle Inhalte pro Nutzer wie Login oder Buchung.
+- Eine Progressive Web App ist eine Erweiterung der Web-App, installierbar und offline nutzbar, dazu Hintergrundaktivität wie Push-Benachrichtigungen.
+- Die passende Variante hängt davon ab, ob Inhalte personalisiert werden müssen, nicht davon, was aktuell als modern gilt.
+
+## Was Sie jetzt tun können
+
+Wenn Sie noch unsicher sind, ob Ihr Vorhaben eine klassische Website, eine Web-App oder eine PWA braucht, müssen Sie das nicht allein herausfinden. Schreiben Sie uns über das [Kontaktformular](/kontakt), schildern Sie kurz, was Ihre Website oder App am Ende können soll, und wir sagen Ihnen ehrlich und ohne Verkaufsdruck, welche Lösung tatsächlich zu Ihrem Vorhaben passt, und welche Sie nur unnötig Geld kosten würde.

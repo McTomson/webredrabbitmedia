@@ -3299,3 +3299,39 @@ quelle: https://www.handelsverband.at/publikationen/studien/ecommerce-studie-oes
 quelle_name: Handelsverband Österreich - eCommerce Studie Österreich 2026
 geprueft_am: 2026-08-21
 recheck_nach: 2027-02-17
+
+## t78-2026-08-22-367
+cluster: 2
+keywords: unterschied, zwischen, einer, einer, klassischen, website
+aussage: Laut MDN Web Docs ist eine klassische Website eher 'ein Ort, den man besucht' als 'etwas, das man hat': Sie hat keine Präsenz auf dem Gerät, wenn sie nicht gerade aufgerufen wird, ist nur über den Browser erreichbar und stark von der Netzwerkverbindung abhängig. Web-/Progressive-Web-Apps hingegen können installiert werden, offline funktionieren und im Hintergrund aktiv sein (Push-Benachrichtigungen, Hintergrund-Sync).
+quelle: https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/What_is_a_progressive_web_app
+quelle_name: MDN Web Docs - What is a progressive web app?
+geprueft_am: 2026-08-22
+recheck_nach: 2027-02-18
+
+## t78-2026-08-22-368
+cluster: 2
+keywords: unterschied, zwischen, einer, einer, klassischen, website
+aussage: Google definiert im offiziellen PWA-Checklist (web.dev) die technischen Basiskriterien, die eine Web-App von einer klassischen Website abheben: sie muss installierbar sein, eine eigene Offline-Seite bereitstellen (statt der Standard-Browser-Offline-Seite), auf jedem Bildschirm responsiv funktionieren und schnell starten/bleiben.
+quelle: https://web.dev/articles/pwa-checklist
+quelle_name: web.dev - What makes a good Progressive Web App?
+geprueft_am: 2026-08-22
+recheck_nach: 2027-02-18
+
+## t78-2026-08-22-369
+cluster: 2
+keywords: unterschied, zwischen, einer, einer, klassischen, website
+aussage: MDN definiert eine 'Web Application' technisch als Server-seitigen Code, der HTTP-Requests verarbeitet und HTTP-Responses zurückgibt, typischerweise in Kombination mit einer Datenbank und HTML-Templates, um Inhalte dynamisch zu generieren. Eine statische Site liefert dagegen bei jeder Anfrage denselben fest hinterlegten Inhalt vom Server aus.
+quelle: https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Client-Server_overview
+quelle_name: MDN Web Docs - Client-Server overview (Learn web development)
+geprueft_am: 2026-08-22
+recheck_nach: 2027-02-18
+
+## t78-2026-08-22-370
+cluster: 2
+keywords: unterschied, zwischen, einer, einer, klassischen, website
+aussage: Eine statische Website liefert fertige Dateien unverändert vom Server aus (schnell, günstig), eine dynamische Website/Web-App nutzt zusätzlich Anwendungsserver und Datenbank, um Inhalte erst bei jeder Anfrage neu zu erzeugen (flexibler für Logins, personalisierte Inhalte, Shops).
+quelle: https://web.redrabbit.media/tipps/was-ist-der-technologische-unterschied-zwischen-einer-statischen-und
+quelle_name: Red Rabbit Media - Was ist der technologische Unterschied zwischen statischer und dynamischer Website?
+geprueft_am: 2026-08-22
+recheck_nach: 2027-02-18
