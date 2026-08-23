@@ -3335,3 +3335,57 @@ quelle: https://web.redrabbit.media/tipps/was-ist-der-technologische-unterschied
 quelle_name: Red Rabbit Media - Was ist der technologische Unterschied zwischen statischer und dynamischer Website?
 geprueft_am: 2026-08-22
 recheck_nach: 2027-02-18
+
+## t79-2026-08-23-371
+cluster: 2
+keywords: warum, sind, custom, code, lösungen, sichurer, automatisierten, hacker
+aussage: Automatisierter Web-Traffic übertraf 2025 erstmals seit einem Jahrzehnt den menschlichen Traffic (51% des gesamten Web-Traffics), Malicious Bots allein machten 37% aus (2023: 32%) - diese Bots scannen systematisch nach bekannten CMS-/Plugin-Signaturen statt nach individuellem Custom-Code.
+quelle: https://www.imperva.com/blog/2025-imperva-bad-bot-report-how-ai-is-supercharging-the-bot-threat/
+quelle_name: Imperva (Thales) - 2025 Bad Bot Report
+geprueft_am: 2026-08-23
+recheck_nach: 2027-02-19
+
+## t79-2026-08-23-372
+cluster: 2
+keywords: warum, sind, custom, code, lösungen, sichurer, automatisierten, hacker
+aussage: 2025 wurden 11.334 neue Sicherheitslücken im WordPress-Ökosystem gemeldet (Höchststand, +42% ggü. 7.966 in 2024), davon 91% in Plugins und nur 6 Lücken (alle 'low risk') im WordPress-Core selbst - die Angriffsfläche liegt also fast vollständig in generischem, wiederverwendetem Drittanbieter-Code, den automatisierte Scanner gezielt per Signatur erkennen können.
+quelle: https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/
+quelle_name: Patchstack - State of WordPress Security in 2026
+geprueft_am: 2026-08-23
+recheck_nach: 2027-02-19
+
+## t79-2026-08-23-373
+cluster: 2
+keywords: warum, sind, custom, code, lösungen, sichurer, automatisierten, hacker
+aussage: Die mediane Zeit von der Veröffentlichung einer Sicherheitslücke bis zur ersten aktiven Ausnutzung liegt laut Patchstack bei nur 5 Stunden - automatisierte Bot-Netzwerke scannen das Web kontinuierlich nach bekannten Versions-/Plugin-Signaturen, sodass ungepatchte Standard-Software praktisch sofort angreifbar wird, während individueller Custom-Code kein bekanntes Angriffsmuster liefert.
+quelle: https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/
+quelle_name: Patchstack - State of WordPress Security in 2026
+geprueft_am: 2026-08-23
+recheck_nach: 2027-02-19
+
+## t79-2026-08-23-374
+cluster: 2
+keywords: warum, sind, custom, code, lösungen, sichurer, automatisierten, hacker
+aussage: Über die Hälfte der von Patchstack informierten Plugin-Entwickler patchte eine gemeldete Schwachstelle nicht vor der öffentlichen Bekanntgabe, und rund 35% aller 2024 offengelegten WordPress-Schwachstellen waren 2025 noch immer ungepatcht - fehlende laufende Pflege bei generischer Plugin-Software lässt Angriffsflächen dauerhaft offen, ein Risiko, das bei eigenständigem Custom-Code entfällt, da es keine öffentlich bekannten CVEs für individuellen Code gibt.
+quelle: https://patchstack.com/whitepaper/state-of-wordpress-security-in-2025/
+quelle_name: Patchstack - State of WordPress Security in 2025
+geprueft_am: 2026-08-23
+recheck_nach: 2027-02-19
+
+## t79-2026-08-23-375
+cluster: 2
+keywords: warum, sind, custom, code, lösungen, sichurer, automatisierten, hacker
+aussage: 43% der 2024 neu entdeckten WordPress-Schwachstellen waren ohne jede Authentifizierung ausnutzbar (7.966 Lücken gesamt, 96% in Plugins) - automatisierte Angriffsskripte können solche Lücken massenhaft und ohne Zutun eines Nutzers ausnutzen, sobald sie ein bekanntes Plugin/CMS anhand seiner Signatur identifiziert haben.
+quelle: https://www.securityweek.com/8000-new-wordpress-vulnerabilities-reported-in-2024/
+quelle_name: SecurityWeek (Basis: Patchstack State of WordPress Security 2025)
+geprueft_am: 2026-08-23
+recheck_nach: 2027-02-19
+
+## t79-2026-08-23-376
+cluster: 2
+keywords: warum, sind, custom, code, lösungen, sichurer, automatisierten, hacker
+aussage: PHP 7 gilt seit 28. November 2022 als End of Life und erhält keine Sicherheitspatches mehr, wird laut W3Techs aber weiterhin von 29,4% aller PHP-Websites genutzt (weitere 8% laufen sogar auf PHP 5) - Standard-CMS-Stacks bleiben oft auf veralteten, öffentlich als unsicher bekannten Runtime-Versionen stehen, was automatisierten Exploit-Scannern bekannte Angriffsvektoren liefert; individueller Custom-Code kann dagegen gezielt auf aktuellen, unterstützten Versionen gehalten werden.
+quelle: https://www.php.net/eol.php
+quelle_name: PHP.net - Unsupported Branches (offizielle EOL-Liste)
+geprueft_am: 2026-08-23
+recheck_nach: 2027-02-19

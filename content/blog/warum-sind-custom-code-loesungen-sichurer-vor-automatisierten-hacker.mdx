@@ -1,0 +1,147 @@
+---
+title: "Custom Code vs. WordPress: Sicherer vor Hacker-Skripten 2026"
+slug: warum-sind-custom-code-loesungen-sichurer-vor-automatisierten-hacker
+excerpt: "Warum sind Custom-Code-Lösungen sicherer vor automatisierten Hacker-Skripten? Individueller Code hat keine öffentliche Signatur und fällt durch das Raster der meisten Massenscans."
+featuredSnippetTitle: "Warum sind Custom-Code-Lösungen sicherer vor automatisierten Hacker-Skripten?"
+featuredSnippet: "Automatisierte Hacker-Skripte scannen das Web nach bekannten Signaturen wie WordPress-Plugin-Kennungen oder veralteten PHP-Versionen. Individueller Custom-Code hat keine dieser Signaturen und taucht in keiner öffentlichen Schwachstellen-Datenbank auf. Das macht ihn nicht unhackbar, aber für die überwiegende Mehrheit automatisierter Massenangriffe praktisch unsichtbar."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-23"
+updatedAt: "2026-08-23"
+category: "Technik & Performance"
+cluster: 2
+tags:
+  - "Custom Code"
+  - "Website-Sicherheit"
+  - "WordPress"
+  - "Hackerangriffe"
+  - "PHP"
+  - "Österreich"
+featuredImage: "/images/blog/warum-sind-custom-code-loesungen-sichurer-vor-automatisierten-hacker.png"
+status: draft
+aiAssisted: true
+sources:
+  - name: "Imperva (Thales) - 2025 Bad Bot Report"
+    url: "https://www.imperva.com/blog/2025-imperva-bad-bot-report-how-ai-is-supercharging-the-bot-threat/"
+  - name: "Patchstack - State of WordPress Security in 2026"
+    url: "https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/"
+  - name: "Patchstack - State of WordPress Security in 2025"
+    url: "https://patchstack.com/whitepaper/state-of-wordpress-security-in-2025/"
+  - name: "SecurityWeek (Basis: Patchstack State of WordPress Security 2025)"
+    url: "https://www.securityweek.com/8000-new-wordpress-vulnerabilities-reported-in-2024/"
+  - name: "PHP.net - Unsupported Branches (offizielle EOL-Liste)"
+    url: "https://www.php.net/eol.php"
+keyTakeaways:
+  - "Automatisierter Bot-Traffic hat 2025 erstmals seit zehn Jahren den menschlichen Traffic überholt, 51 Prozent des gesamten Web-Verkehrs, davon 37 Prozent bösartig."
+  - "91 Prozent aller 2025 gemeldeten WordPress-Sicherheitslücken (11.334 insgesamt) stecken in Plugins, nicht im Kernsystem."
+  - "Die mediane Zeit bis zur ersten aktiven Ausnutzung einer neuen Lücke liegt bei nur 5 Stunden."
+  - "Rund 35 Prozent der 2024 bekannten Lücken waren 2025 noch immer ungepatcht, unabhängig vom eigenen Update-Verhalten."
+  - "Fast 30 Prozent aller PHP-Websites laufen noch auf dem seit 2022 ungepatchten PHP 7."
+conclusionStats:
+  - label: "WordPress-Lücken in Plugins"
+    value: "91 %"
+  - label: "Zeit bis zur ersten Ausnutzung"
+    value: "5 Stunden"
+  - label: "Ungepatchte Lücken (Vorjahr)"
+    value: "rund 35 %"
+  - label: "PHP-Websites auf PHP 7"
+    value: "29,4 %"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Ist Custom-Code automatisch unhackbar?"
+    answer: "Nein. Individueller Code kann genauso Programmierfehler enthalten wie jede andere Software. Der Unterschied liegt in der Auffindbarkeit, nicht in der Fehlerfreiheit. Ein Fehler in individuellem Code lässt sich nicht per Massenscan auf tausend andere Seiten übertragen, gezielte manuelle Angriffe bleiben aber theoretisch möglich."
+  - question: "Warum sind WordPress-Plugins so oft betroffen?"
+    answer: "Laut Patchstack stecken 91 Prozent aller 2025 gemeldeten WordPress-Sicherheitslücken in Plugins, die auf tausenden Websites identisch installiert sind. Ein Bot, der eine Lücke in einem Plugin kennt, kann damit gezielt jede Website durchsuchen, die dieses Plugin einsetzt."
+  - question: "Wie schnell werden neue Sicherheitslücken ausgenutzt?"
+    answer: "Die mediane Zeit zwischen der Veröffentlichung einer Sicherheitslücke und ihrer ersten aktiven Ausnutzung liegt laut Patchstack bei nur 5 Stunden. Wer sein System nicht binnen dieses Zeitfensters aktualisiert, kann bereits kompromittiert sein, bevor das Update eingespielt ist."
+  - question: "Reicht regelmäßiges Updaten, um ein Standard-CMS sicher zu halten?"
+    answer: "Updates allein reichen nicht immer, weil die Pflege bei fremden Plugin-Entwicklern liegt. Rund 35 Prozent der 2024 offengelegten WordPress-Schwachstellen waren laut Patchstack auch 2025 noch immer ungepatcht, unabhängig vom eigenen Update-Verhalten des Website-Betreibers."
+  - question: "Welche Rolle spielt die PHP-Version für die Sicherheit?"
+    answer: "Eine große Rolle. PHP 7 gilt seit November 2022 offiziell als End of Life und erhält keine Sicherheitspatches mehr. Laut W3Techs laufen trotzdem noch immer fast 30 Prozent aller PHP-Websites auf dieser veralteten Version, was ein von Scannern leicht erkennbares Risiko darstellt."
+---
+
+Ein Einbrecher, der mit einem Dietrich durch eine Wiener Wohnhausanlage geht, probiert nicht bei jeder Tür ein neues Werkzeug. Er sucht das eine Schloss, das bei tausenden Wohnungen baugleich ist, weil er weiß, dass sein Nachschlüssel dort überall passt. Genau so funktionieren automatisierte Hacker-Skripte im Internet. Sie suchen nicht nach Ihrer Website im Speziellen, sie suchen nach dem Schloss, das sie schon kennen.
+
+**Die Direktantwort:** Automatisierte Hacker-Skripte scannen das Web nach bekannten Signaturen, WordPress-Versionsnummern, Plugin-Kennungen, veralteten PHP-Ständen. Individueller Custom-Code hat keine dieser Signaturen, taucht in keiner öffentlichen Schwachstellen-Datenbank auf und lässt sich nicht per Massenscan finden. Das macht ihn nicht unhackbar, aber für die überwiegende Mehrheit der Angriffe im Netz praktisch unsichtbar.
+
+Das ist keine Werbeaussage, sondern eine Zahlenfrage. Und die Zahlen sind eindeutiger, als man auf den ersten Blick glauben würde.
+
+## Wie automatisierte Bots das Web tatsächlich durchsuchen
+
+2025 ist ein stiller Meilenstein passiert, den die wenigsten Unternehmer mitbekommen haben. Laut dem [Bad Bot Report von Imperva (Thales)](https://www.imperva.com/blog/2025-imperva-bad-bot-report-how-ai-is-supercharging-the-bot-threat/) hat automatisierter Web-Traffic erstmals seit einem Jahrzehnt wieder den menschlichen Traffic überholt. Über die Hälfte des gesamten Datenverkehrs im Web, 51 Prozent, wird nicht mehr von Menschen erzeugt, sondern von Skripten und Bots. Ein gutes Drittel davon, 37 Prozent, sind sogenannte Malicious Bots, also Programme mit böser Absicht. Zum Vergleich, 2023 lag dieser Anteil noch bei 32 Prozent. Die Kurve zeigt steil nach oben.
+
+Was tun diese Bots konkret? Sie klopfen nicht individuell an jede Tür und überlegen sich etwas Neues. Sie scannen systematisch nach bekannten Mustern, nach CMS-Signaturen, nach Plugin-Namen in URL-Pfaden, nach HTTP-Headern, die verraten, welche Software im Hintergrund läuft. Ein Bot, der weiß, dass ein bestimmtes WordPress-Plugin eine Sicherheitslücke hat, sucht im gesamten Web gezielt nach genau diesem Plugin, egal ob es auf einer Seite in Wien-Favoriten oder in Sydney installiert ist. Individueller Code, den kein Bot kennt, weil es ihn kein zweites Mal gibt, fällt durch dieses Raster einfach durch.
+
+## Die Zahlen hinter WordPress: eine Angriffsfläche, die fast nur aus Plugins besteht
+
+Ein Blick auf die reinen Zahlen zeigt, warum Standard-Software so oft im Visier steht. Laut dem [State of WordPress Security-Report von Patchstack für 2026](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) wurden im Jahr 2025 insgesamt 11.334 neue Sicherheitslücken im WordPress-Ökosystem gemeldet. Das ist ein neuer Höchststand und ein Plus von 42 Prozent gegenüber den bereits hohen 7.966 Lücken aus 2024.
+
+Der entscheidende Teil dieser Zahl liegt aber woanders. 91 Prozent dieser Lücken stecken in Plugins, also in Drittanbieter-Erweiterungen, die auf tausenden Seiten identisch installiert sind. Im WordPress-Kernsystem selbst wurden im gleichen Zeitraum gerade einmal 6 Lücken gefunden, alle als low risk eingestuft. Die Angriffsfläche liegt also fast vollständig in generischem, wiederverwendetem Code, den ein Bot per Signatur erkennen kann, weil er auf zehntausenden anderen Seiten exakt gleich aussieht. Ein Restaurant in Salzburg, das für seine Online-Reservierung ein populäres Buchungs-Plugin einsetzt, teilt sich diese Angriffsfläche mit jedem anderen Betrieb, der dasselbe Plugin nutzt, ob er davon weiß oder nicht.
+
+Individuell programmierter Code hat dieses Problem strukturell nicht. Er ist kein Massenprodukt, das auf zehntausenden Seiten gleich aussieht, sondern ein Einzelstück. Es gibt keine öffentliche Liste bekannter Schwachstellen dafür, weil es keine zwei Websites gibt, die exakt denselben Code teilen.
+
+## Fünf Stunden bis zum ersten Angriff: warum Geschwindigkeit alles entscheidet
+
+Noch beunruhigender als die reine Anzahl der Lücken ist die Geschwindigkeit, mit der sie ausgenutzt werden. Patchstack beziffert die mediane Zeit zwischen der Veröffentlichung einer Sicherheitslücke und ihrer ersten aktiven Ausnutzung auf nur 5 Stunden. Nicht fünf Tage, nicht fünf Wochen. Fünf Stunden.
+
+Das bedeutet in der Praxis: Sobald eine Schwachstelle in einem bekannten Plugin öffentlich dokumentiert ist, etwa in einer Sicherheitsdatenbank oder einem Patch-Hinweis des Herstellers, beginnen automatisierte Botnetze binnen Stunden damit, das gesamte Web systematisch nach Websites zu durchsuchen, die dieses Plugin noch in der verwundbaren Version einsetzen. Ein Betrieb, der sein CMS nicht binnen dieses Zeitfensters aktualisiert, ist im schlimmsten Fall bereits kompromittiert, bevor er das Update-Symbol im Dashboard überhaupt bemerkt hat.
+
+Bei individuellem Code gibt es diesen Wettlauf schlicht nicht. Es existiert keine öffentliche Ankündigung "Schwachstelle in Version X gefunden", weil es keine Version X gibt, die außer Ihrer Website noch irgendjemand betreibt. Ein Angreifer müsste sich die Mühe machen, genau Ihren Code manuell zu analysieren, was für einen automatisierten Massenangriff wirtschaftlich uninteressant ist. Der Aufwand steht in keinem Verhältnis zum Ertrag.
+
+## Das Patch-Problem: warum Standard-Software oft dauerhaft offen bleibt
+
+Man könnte einwenden, dass man Sicherheitslücken ja einfach durch Updates schließen kann. In der Theorie stimmt das. In der Praxis zeigt sich ein anderes Bild. Laut [Patchstack](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2025/) patchte mehr als die Hälfte der informierten Plugin-Entwickler eine gemeldete Schwachstelle nicht, bevor sie öffentlich bekannt wurde. Und noch drastischer, rund 35 Prozent aller 2024 offengelegten WordPress-Schwachstellen waren auch 2025 noch immer ungepatcht.
+
+Das heißt, mehr als ein Drittel der bekannten Lücken aus dem Vorjahr stand ein Jahr später immer noch offen, öffentlich dokumentiert, für jeden Bot auffindbar. Das liegt selten an Böswilligkeit der Entwickler, sondern oft schlicht an fehlenden Ressourcen. Ein kostenloses Plugin mit tausenden Installationen wird häufig von einer einzelnen Person oder einem kleinen Team in der Freizeit gepflegt. Wenn diese Pflege ausbleibt, weil der Entwickler das Projekt aufgibt oder keine Zeit mehr findet, bleibt die Lücke bestehen, oft über Jahre.
+
+Bei individuellem Code gibt es dieses Risiko in dieser Form nicht, weil es schlicht keine öffentlich bekannten Schwachstellen gibt, die gepatcht werden müssten oder eben nicht gepatcht werden. Die Wartungsverantwortung liegt bei einer klar definierten Agentur oder einem Entwickler, nicht bei einer anonymen Open-Source-Community, deren Kapazität schwankt.
+
+## Ungesicherte Türen: Schwachstellen ganz ohne Anmeldung
+
+Ein weiterer Punkt, den viele Betreiber unterschätzen, betrifft die Art der Schwachstellen selbst. Laut [SecurityWeek](https://www.securityweek.com/8000-new-wordpress-vulnerabilities-reported-in-2024/), basierend auf dem Patchstack-Report State of WordPress Security 2025, waren 43 Prozent der 2024 neu entdeckten WordPress-Schwachstellen ohne jede Authentifizierung ausnutzbar. Von insgesamt 7.966 Lücken in diesem Jahr steckten 96 Prozent in Plugins.
+
+Ohne Authentifizierung ausnutzbar bedeutet, ein Angreifer braucht keinen Benutzernamen und kein Passwort. Einen internen Zugang schon gar nicht. Er muss die Website nicht einmal kennen. Ein Skript findet die verwundbare Signatur und sendet die passende Anfrage. Die Lücke ist ausgenutzt, vollautomatisch und auf tausenden Seiten gleichzeitig. Genau diese Art von Lücken sind für Bot-Netzwerke am attraktivsten, weil sie sich beliebig skalieren lassen. Ein Angreifer, der eine solche Lücke in einem Plugin findet, das auf 50.000 Websites installiert ist, kann theoretisch alle 50.000 in derselben Nacht angreifen.
+
+## Die unsichtbare Zeitbombe: veraltete PHP-Versionen
+
+Ein besonders hartnäckiges Problem bei Standard-CMS-Installationen ist die zugrunde liegende Server-Technologie. [PHP 7 gilt seit dem 28. November 2022 offiziell als End of Life](https://www.php.net/eol.php), es erhält also seit über drei Jahren keine Sicherheitspatches mehr. Laut W3Techs läuft trotzdem noch immer fast ein Drittel aller PHP-Websites, genau 29,4 Prozent, auf dieser veralteten Version. Weitere 8 Prozent laufen sogar noch auf dem uralten PHP 5.
+
+Das bedeutet, ein erheblicher Teil des Webs basiert auf einer Programmiersprachen-Version, deren bekannte Sicherheitslücken öffentlich dokumentiert sind und nie wieder geschlossen werden. Wer ein Standard-CMS betreibt und das Server-Update aus Angst vor Kompatibilitätsproblemen mit alten Plugins verschiebt, sitzt buchstäblich auf einem offiziell unsicheren Fundament, das jeder Scanner anhand des Server-Headers erkennen kann.
+
+Bei individuell entwickeltem Code besteht diese Abhängigkeit von einer historisch gewachsenen Plugin-Landschaft nicht. Eine Agentur, die Ihren Code selbst schreibt und wartet, kann die zugrunde liegende Umgebung ohne Rücksicht auf Dutzende fremde Erweiterungen auf dem aktuellen, unterstützten Stand halten.
+
+## Häufige Irrtümer, die Sie kennen sollten
+
+An dieser Stelle lohnt sich Ehrlichkeit, zwei Missverständnisse halten sich hartnäckig.
+
+Erster Irrtum: "Custom-Code bedeutet unhackbar." Das stimmt nicht. Individueller Code kann genauso Programmierfehler enthalten wie jede andere Software. Der Unterschied liegt nicht in der Fehlerfreiheit, sondern in der Auffindbarkeit. Ein Fehler in Ihrem individuellen Code ist für einen automatisierten Massenscanner uninteressant, weil er sich nicht auf tausend andere Seiten übertragen lässt. Gezielte, manuelle Angriffe auf eine einzelne Website bleiben theoretisch weiterhin möglich, sie sind nur ungleich seltener als die automatisierten Massenscans, die den Großteil des bösartigen Traffics ausmachen.
+
+Zweiter Irrtum: "Ein Baukasten-System ist per se genauso sicher, solange ich brav update." Das Update-Problem selbst ist Teil des Risikos. Wie oben gezeigt, bleibt ein erheblicher Teil bekannter Lücken über Jahre ungepatcht, unabhängig vom eigenen Fleiß, weil die Pflege bei fremden Plugin-Entwicklern liegt. Selbst der disziplinierteste Website-Betreiber kann eine Lücke nicht schließen, die der zuständige Plugin-Entwickler nie behebt.
+
+## Schritt für Schritt: Was Sie konkret prüfen können
+
+Unabhängig davon, ob Sie bereits auf Custom-Code setzen oder noch ein Standard-System betreiben, lohnt sich eine kurze, ehrliche Bestandsaufnahme:
+
+1. **PHP-Version prüfen.** Fragen Sie Ihren Hoster oder Entwickler nach der aktuell laufenden PHP-Version. Alles unter Version 8.1 sollte kurzfristig aktualisiert werden.
+2. **Plugin-Liste durchgehen.** Zählen Sie, wie viele aktive Plugins Ihre Website nutzt, und wann jedes davon zuletzt aktualisiert wurde. Ein Plugin ohne Update seit über einem Jahr ist ein Warnsignal.
+3. **Wartungsverantwortung klären.** Wer genau ist dafür zuständig, Updates einzuspielen, wenn eine Lücke bekannt wird? Wenn die Antwort "eigentlich niemand" lautet, ist das ein strukturelles Risiko, kein technisches Detail.
+4. **Angriffsfläche realistisch einschätzen.** Je mehr Drittanbieter-Code auf Ihrer Seite läuft, desto größer die Fläche, die ein automatisierter Scanner treffen kann.
+
+Wenn Sie sich bei diesen vier Punkten unsicher sind, ist das ein guter Anlass für ein Gespräch mit jemandem, der Ihre konkrete Ausgangslage kennt. Mehr zu den größten Sicherheitsrisiken für Firmen-Websites in Österreich lesen Sie auch in unserem Artikel [Website-Sicherheit 2026: Schutz vor Hackerangriffen](/tipps/wie-sicher-ist-die-neue-website-gegen-hackerangriffe). Über unsere [Kontaktseite](/kontakt) können wir Ihre aktuelle Website gemeinsam durchgehen und ehrlich einschätzen, wo das größte Risiko tatsächlich liegt.
+
+## Fazit: Was am Ende bleibt
+
+Custom-Code macht eine Website nicht unangreifbar. Das wäre eine Übertreibung, die der Realität nicht standhält. Was individueller Code aber tatsächlich bewirkt, ist eine Verschiebung aus dem Radar der überwiegenden Mehrheit automatisierter Angriffe heraus. Und die machten 2025 bereits mehr als die Hälfte des gesamten Web-Traffics aus.
+
+91 Prozent aller WordPress-Lücken liegen in Plugins, die tausende Websites identisch teilen. Angriffe beginnen binnen 5 Stunden, nachdem eine Lücke bekannt wird. Die Frage ist deshalb nicht mehr, ob ein Standard-System irgendwann ins Visier gerät, sondern wann.
+
+## Key Takeaways
+
+- Automatisierter Bot-Traffic hat 2025 erstmals seit zehn Jahren den menschlichen Traffic überholt, 51 Prozent des gesamten Web-Verkehrs, davon 37 Prozent bösartig.
+- 91 Prozent aller 2025 gemeldeten WordPress-Sicherheitslücken (11.334 insgesamt) stecken in Plugins, nicht im Kernsystem.
+- Die mediane Zeit bis zur ersten aktiven Ausnutzung einer neuen Lücke liegt bei nur 5 Stunden.
+- Rund 35 Prozent der 2024 bekannten Lücken waren 2025 noch immer ungepatcht, unabhängig vom eigenen Update-Verhalten.
+- Fast 30 Prozent aller PHP-Websites laufen noch auf dem seit 2022 ungepatchten PHP 7.
+
+## Was das für Ihre Website bedeutet
+
+Custom-Code ist kein Freibrief für schlechte Wartung. Aber es macht Ihre Website zu einem deutlich kleineren, schwerer auffindbaren Ziel. Wenn Sie wissen möchten, wie es um die Angriffsfläche Ihrer aktuellen Website steht, sprechen wir gerne ehrlich darüber, ohne Verkaufsdruck, mit echten Zahlen zu Ihrer konkreten Situation. Schreiben Sie uns über unsere [Kontaktseite](/kontakt).
