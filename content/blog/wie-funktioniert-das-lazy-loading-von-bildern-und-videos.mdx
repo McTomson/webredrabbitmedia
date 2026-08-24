@@ -1,0 +1,170 @@
+---
+title: 'Lazy Loading von Bildern und Videos: So funktioniert es 2026'
+slug: wie-funktioniert-das-lazy-loading-von-bildern-und-videos
+excerpt: >-
+  Lazy Loading verzögert das Nachladen von Bildern und Videos, bis sie sich
+  dem Viewport nähern. So funktioniert die Technik hinter loading="lazy" und
+  der Intersection Observer API im Detail.
+featuredSnippetTitle: Wie funktioniert Lazy Loading von Bildern und Videos technisch?
+featuredSnippet: >-
+  Lazy Loading verzögert das Laden von Bildern und Videos, bis sie sich dem
+  Viewport nähern, statt alle Medien sofort zu laden. Beim Attribut
+  loading="lazy" steuert allein der Browser das Nachladen. Bei Videos und
+  komplexeren Fällen erkennt zusätzlich die Intersection Observer API per
+  JavaScript, wann ein Element sichtbar wird.
+author: Dmitry Pashlov
+publishedAt: '2026-08-24'
+updatedAt: '2026-08-24'
+category: 'Technik & Performance'
+tags:
+  - Lazy Loading
+  - Performance
+  - Core Web Vitals
+  - Bilder
+  - Technik
+featuredImage: /images/blog/wie-funktioniert-das-lazy-loading-von-bildern-und-videos.png
+status: draft
+aiAssisted: true
+sources:
+  - name: MDN Web Docs - Lazy loading
+    url: 'https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading'
+  - name: web.dev (Google) - Browser-level image lazy loading
+    url: 'https://web.dev/articles/browser-level-image-lazy-loading'
+  - name: MDN Web Docs - Intersection Observer API
+    url: 'https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API'
+  - name: web.dev (Google) - Lazy loading video
+    url: 'https://web.dev/articles/lazy-loading-video'
+keyTakeaways:
+  - 'Lazy Loading verschiebt das Laden von Bildern und Videos, bis sie sich dem Viewport nähern, gesteuert entweder nativ per loading="lazy" oder per Intersection Observer API.'
+  - 'Chrome lädt Bilder bereits vorausschauend nach, bei 4G rund 1.250 Pixel und bei 3G rund 2.500 Pixel vor dem Sichtbarwerden, mit 97,5 Prozent Ladeerfolg innerhalb von 10 Millisekunden.'
+  - 'Das LCP-Bild oder LCP-Video darf niemals lazy geladen werden, sonst verschlechtert sich die Core-Web-Vitals-Bewertung der Seite.'
+  - 'Bei Videos entscheidet zusätzlich das preload-Attribut über den Datenverbrauch, loading="lazy" allein reicht nicht aus.'
+  - 'Das Facade-Pattern mit Poster-Bild und Intersection Observer ist der robusteste Weg, Videos außerhalb des ersten Bildschirms sauber lazy zu laden.'
+conclusionStats:
+  - label: 'Vorlade-Abstand bei 4G'
+    value: '1.250 px'
+  - label: 'Vorlade-Abstand bei 3G'
+    value: '2.500 px'
+  - label: 'Ladeerfolg innerhalb 10ms'
+    value: '97,5 %'
+autoGenerateFAQs: false
+customFAQs:
+  - question: Was bedeutet loading="lazy" bei Bildern?
+    answer: >-
+      Das HTML-Attribut loading="lazy" weist den Browser an, ein Bild oder
+      iframe erst zu laden, wenn es sich dem sichtbaren Bereich der Seite
+      annähert. Der Mechanismus ist nativ im Browser eingebaut und benötigt
+      kein zusätzliches JavaScript.
+  - question: Warum darf das LCP-Bild nicht lazy geladen werden?
+    answer: >-
+      Das LCP-Bild bestimmt den Largest Contentful Paint, einen der zentralen
+      Core-Web-Vitals-Werte. Wird es lazy geladen, verzögert sich genau der
+      Moment, den Google als wichtigsten Ladeindikator misst, was die
+      Bewertung der Seite verschlechtert.
+  - question: Reicht loading="lazy" auch für Videos aus?
+    answer: >-
+      Nein. Bei Videos entscheidet zusätzlich das preload-Attribut über den
+      Datenverbrauch. Der Standardwert preload="metadata" lädt trotz des
+      Namens oft schon substanzielle Datenmengen nach, weshalb preload="none"
+      oder das Facade-Pattern die verlässlichere Wahl sind.
+  - question: Was ist die Intersection Observer API?
+    answer: >-
+      Die Intersection Observer API beobachtet asynchron, wann ein Element
+      einen definierten Sichtbarkeits-Schwellenwert im Viewport kreuzt, ohne
+      laufende Positionsabfragen im Scroll-Event. Sie ist der technische
+      Unterbau für JavaScript-basiertes Lazy Loading, etwa bei Videos.
+  - question: Was ist das Facade-Pattern beim Video-Lazy-Loading?
+    answer: >-
+      Beim Facade-Pattern besetzt zunächst nur ein Platzhalterbild den Platz
+      des Videos. Das eigentliche Video-Element wird erst geladen, wenn die
+      Intersection Observer API meldet, dass es tatsächlich sichtbar
+      geworden ist. Das reduziert den unnötigen initialen Datenverbrauch.
+hookCandidates:
+  - "warum laedt nicht jedes bild sofort?"
+  - "video laden erst beim scrollen?"
+  - "wer steuert, wann bilder laden?"
+---
+
+Stellen Sie sich einen Möbelpacker vor, der beim Einzug nicht sofort die ganze Wohnung mit Kartons vollstellt, sondern zuerst nur das Zimmer einräumt, in dem Sie gerade stehen. Die restlichen Räume kommen später dran, sobald Sie dort tatsächlich hingehen. Genau so funktioniert Lazy Loading im Web. Der Browser liefert nicht sämtliche Bilder und Videos einer Seite auf einmal aus, sondern erst dann, wenn sie sich tatsächlich Ihrem Blickfeld nähern.
+
+## Die kurze Antwort
+
+Lazy Loading verzögert das Laden von Bildern und Videos, bis sie sich dem sichtbaren Bereich der Seite, dem sogenannten Viewport, nähern, statt alle Medien sofort beim Seitenaufruf zu laden. Beim HTML-Attribut `loading="lazy"` übernimmt allein der Browser die Steuerung, ganz ohne JavaScript. Bei komplexeren Fällen, etwa bei Videos, kommt zusätzlich die [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) zum Einsatz, die per JavaScript erkennt, wann ein Element tatsächlich sichtbar wird.
+
+Das klingt simpel, steckt technisch aber in zwei völlig getrennten Mechanismen, je nachdem ob es sich um ein Bild oder ein Video handelt. Und genau da liegt der Punkt, an dem viele Websites Fehler machen, die am Ende die Ladezeit verschlechtern statt verbessern.
+
+## Das Attribut loading="lazy": Was im Browser wirklich passiert
+
+Der einfachste und heute verbreitetste Weg, Lazy Loading einzusetzen, ist ein einziges HTML-Attribut. Setzen Sie `loading="lazy"` auf ein `<img>` oder ein `<iframe>`, weist das den Browser an, das Laden der jeweiligen Ressource zu verschieben, bis sie sich dem Viewport annähert. Laut [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading) regelt bei diesem Ansatz ausschließlich der Browser-Rendering-Prozess das Nachladen, es ist kein zusätzliches JavaScript nötig.
+
+Nehmen wir ein Beispiel: eine Restaurant-Website in Wien mit einer Speisekarten-Seite, auf der zwanzig Gerichte jeweils mit einem Foto abgebildet sind. Ohne Lazy Loading lädt der Browser beim Öffnen der Seite alle zwanzig Bilder gleichzeitig, obwohl der Besucher anfangs nur die ersten drei bis vier auf dem Bildschirm sieht. Mit `loading="lazy"` auf den Bildern ab der fünften Position lädt der Browser diese erst, wenn der Gast tatsächlich weiterscrollt. Das spart bei einem typischen Smartphone-Aufruf über mobiles Datennetz spürbar Datenvolumen und Ladezeit, ohne dass an der Bilddatei selbst etwas verändert werden muss.
+
+Der Clou an diesem nativen Ansatz: Er ist browserseitig eingebaut und braucht keine zusätzliche Bibliothek. Für die allermeisten Websites reicht dieses eine Attribut bereits aus, um beim Bilder-Lazy-Loading alles richtig zu machen.
+
+## Warum Chrome schon vorausschauend nachlädt
+
+Ein Detail, das viele überrascht, wenn sie es zum ersten Mal hören: Der Browser wartet nicht, bis ein Bild tatsächlich im sichtbaren Bereich steht, sondern lädt es bereits vorher nach, und zwar abhängig von der Verbindungsgeschwindigkeit. Laut Tests von [web.dev](https://web.dev/articles/browser-level-image-lazy-loading), dem Entwicklerportal von Google, lädt Chromes native Lazy-Loading-Implementierung Bilder bei einer 4G-Verbindung bereits etwa 1.250 Pixel unterhalb des Viewports vor. Bei einer 3G-Verbindung oder langsamer erhöht sich dieser Vorlade-Abstand sogar auf rund 2.500 Pixel.
+
+Was heißt das konkret? Auf einem durchschnittlichen Smartphone-Bildschirm mit einer sichtbaren Höhe von rund 700 bis 800 Pixel entspricht ein Abstand von 1.250 Pixel bei 4G ungefähr eineinhalb bis zwei Bildschirmhöhen. Der Browser lädt ein Bild also praktisch schon während des Scrollens vor, bevor der Nutzer es überhaupt zu Gesicht bekommt. Das Ergebnis dieser vorausschauenden Strategie ist beeindruckend: Laut den Chrome-Tests von Google waren 97,5 Prozent der lazy geladenen Bilder bereits innerhalb von 10 Millisekunden nach dem Sichtbarwerden vollständig geladen. Der Nutzer merkt vom Nachladen in der Praxis also fast nie etwas. Vorausgesetzt, die Verbindung ist einigermaßen stabil.
+
+Für Sie als Website-Betreiber bedeutet das: Sie müssen sich um diese Feinjustierung nicht selbst kümmern. Der Browser übernimmt das ausgesprochen zuverlässig, sofern Sie das Attribut korrekt setzen.
+
+## Die Ausnahme: Das LCP-Bild darf niemals lazy laden
+
+Hier liegt die häufigste und teuerste Falle. Bilder, die beim Laden der Seite voraussichtlich sofort im sichtbaren Bereich stehen, insbesondere das sogenannte LCP-Bild, sollten laut Google-Empfehlung ausdrücklich nicht mit `loading="lazy"` versehen werden. LCP steht für Largest Contentful Paint und ist einer der zentralen Core-Web-Vitals-Werte, mit denen Google die wahrgenommene Ladegeschwindigkeit einer Seite misst. Wie Sie diese Werte im Detail selbst überprüfen können, erklären wir in unserem Beitrag zum [Messen der echten Website-Performance](/tipps/wie-misst-man-die-echte-performance-einer-website-abseits). Meist ist das LCP-Element das große Titelbild ganz oben auf der Seite, etwa ein Header-Foto oder ein Produktbild.
+
+Wenn Sie ausgerechnet dieses Bild lazy laden, verzögern Sie künstlich genau jenen Moment, den Google als wichtigsten Ladeindikator heranzieht, und verschlechtern damit Ihre Core-Web-Vitals-Bewertung. Das ist ein Widerspruch in sich: Lazy Loading soll die Ladezeit verbessern, bei falscher Anwendung auf das oberste Bild verschlechtert es genau diese Kennzahl.
+
+Zusätzlich empfiehlt web.dev, für alle Bilder feste `width`- und `height`-Attribute zu setzen. Das hat mit Lazy Loading direkt nichts zu tun, verhindert aber Layout-Verschiebungen, den sogenannten Cumulative Layout Shift, während die Seite lädt. Der Browser reserviert dank dieser Angaben schon vor dem Laden des Bildes den passenden Platz, der Inhalt springt beim Nachladen nicht mehr herum.
+
+Die Empfehlung für die Praxis ist damit klar: Alles, was oberhalb des ersten Bildschirms sichtbar ist, allen voran das LCP-Bild, lädt regulär und sofort. Alles, was erst nach dem Scrollen sichtbar wird, bekommt `loading="lazy"`.
+
+## Intersection Observer API: Der Mechanismus hinter JavaScript-Lazy-Loading
+
+Für Fälle, in denen das simple Attribut nicht ausreicht, etwa bei Videos oder in seltenen Fällen von veralteten Browsern ohne native Unterstützung, kommt ein anderer technischer Mechanismus zum Einsatz: die Intersection Observer API. Sie gilt laut MDN Web Docs seit März 2019 browserübergreifend als "Baseline widely available", das heißt, sie funktioniert heute praktisch in jedem gängigen Browser zuverlässig.
+
+Das Prinzip dahinter ist elegant gelöst. Die API beobachtet asynchron, wann ein Zielelement einen definierten Sichtbarkeits-Schwellenwert relativ zum Viewport oder zu einem übergeordneten Element kreuzt. Der entscheidende technische Vorteil dabei: Es werden keine laufenden `getBoundingClientRect()`-Abfragen im Scroll-Event ausgelöst. Das mag nach einem Detail für Entwickler klingen, hat aber spürbare Auswirkungen. Wiederholte Positionsabfragen bei jedem Scroll-Ereignis belasten den Haupt-Thread des Browsers erheblich, weil sie das Layout ständig neu berechnen müssen. Die Intersection Observer API umgeht dieses Problem komplett und schont damit die Performance, besonders auf schwächeren Smartphones, wie sie viele Nutzer in Österreich unterwegs verwenden.
+
+Für Sie als Betreiber einer Website ist wichtig zu wissen: Diese API ist der technische Unterbau, auf dem praktisch jedes moderne JavaScript-Lazy-Loading-Skript aufbaut, ob für Videos oder komplexe Widgets, die erst beim Sichtbarwerden initialisiert werden sollen.
+
+## Videos sind ein anderes Spiel: preload, Poster-Bild und das Facade-Pattern
+
+Bei Videos reicht das Attribut `loading="lazy"` allein nicht aus, um den Datenverbrauch wirklich in den Griff zu bekommen. Laut [web.dev](https://web.dev/articles/lazy-loading-video) unterstützt das `<video>`-Element Lazy Loading technisch anders als ein Bild. Selbst wenn `loading="lazy"` gesetzt ist, entscheidet zusätzlich das `preload`-Attribut darüber, wie viele Daten schon vor dem Sichtbarwerden geladen werden. Der Wert `preload="none"` verhindert jegliches Vorladen. Der Standardwert `preload="metadata"` dagegen lädt oft, trotz des harmlosen Namens, per Content-Range-Header bereits eine substanzielle Datenmenge nach, deutlich mehr als reine Metadaten wie Länge oder Auflösung.
+
+Das bedeutet in der Praxis: Eine Seite mit fünf eingebetteten Videos, bei denen nur `loading="lazy"` gesetzt wurde, aber `preload` auf dem Standardwert belassen wurde, lädt trotzdem unnötig viele Daten im Hintergrund, sobald die Videos näher an den Viewport rücken. Für Video-Elemente, die als LCP-Kandidat infrage kommen, etwa ein großes Hero-Video auf einer Startseite, empfiehlt Google entsprechend, gar kein Lazy Loading zu verwenden, sondern stattdessen ein vorab geladenes Poster-Bild mit `fetchpriority="high"` einzusetzen. Das Poster-Bild liefert dem Besucher sofort einen visuellen Eindruck, während das eigentliche Video im Hintergrund nachlädt.
+
+Für alle anderen Videos, die weiter unten auf der Seite eingebettet sind, hat sich ein robustes Muster etabliert, das sogenannte Facade-Pattern, manchmal auch Poster-Pattern genannt. Dabei besetzt zunächst nur ein Platzhalterbild den Platz des Videos. Das eigentliche Video-Element, seine Autoplay-Aktivierung und die Entfernung von `preload="none"` werden erst dann ausgelöst, wenn die Intersection Observer API meldet, dass das Element tatsächlich in den sichtbaren Bereich eingetreten ist. Das verbessert die gefühlte Ladezeit der Seite spürbar und reduziert den unnötigen initialen Datenverbrauch, was gerade bei mobilen Datentarifen in Österreich einen echten Unterschied machen kann. Wie stark sich solche Ladezeit-Optimierungen tatsächlich auf den Umsatz auswirken, zeigen wir im Beitrag [Warum PageSpeed über Umsatz entscheidet](/tipps/warum-ist-die-ladezeit-pagespeed-entscheidend-fuer-den-umsatz).
+
+## Schritt für Schritt: Lazy Loading in Ihrem Projekt richtig einbauen
+
+Wenn Sie Lazy Loading auf Ihrer eigenen Website sauber umsetzen wollen, hilft eine feste Reihenfolge:
+
+Erstens identifizieren Sie das LCP-Element Ihrer wichtigsten Seiten, meist das größte Bild oder Video im oberen Bereich. Dieses Element bleibt bewusst ohne `loading="lazy"`, im Idealfall sogar mit `fetchpriority="high"` versehen, damit es so schnell wie möglich lädt.
+
+Zweitens versehen Sie alle Bilder, die erst nach dem Scrollen sichtbar werden, mit `loading="lazy"` sowie festen `width`- und `height`-Angaben, um Layout-Sprünge zu vermeiden.
+
+Drittens prüfen Sie bei eingebetteten Videos, ob sie LCP-relevant sind. Ist das nicht der Fall, setzen Sie entweder auf das Facade-Pattern mit Poster-Bild und Intersection Observer, oder Sie kombinieren `loading="lazy"` mit `preload="none"`, damit tatsächlich keine unnötigen Daten vorab geladen werden.
+
+Viertens testen Sie das Ergebnis, etwa mit Google PageSpeed Insights oder den Lighthouse-Werkzeugen in den Chrome-Entwicklertools. Beide zeigen zuverlässig an, ob das LCP-Element korrekt priorisiert wird und ob Layout-Verschiebungen auftreten.
+
+Wenn Sie sich bei der technischen Umsetzung unsicher sind oder Ihre Website grundlegend auf Ladezeit und Core Web Vitals prüfen lassen möchten, unterstützen wir Sie gerne dabei, [nehmen Sie einfach Kontakt mit uns auf](/kontakt).
+
+![Lazy Loading von Bildern und Videos auf einer Website schematisch dargestellt](/images/blog/wie-funktioniert-das-lazy-loading-von-bildern-und-videos.png)
+
+## Häufige Fehler, die Lazy Loading ins Gegenteil verkehren
+
+In der Praxis tauchen vor allem vier wiederkehrende Fehler auf. Der erste und teuerste ist, das LCP-Bild oder LCP-Video versehentlich ebenfalls lazy zu laden, meist weil ein Bildoptimierungs-Plugin pauschal jedes Bild der Seite mit `loading="lazy"` versieht, ohne Rücksicht auf dessen Position. Der zweite Fehler ist das Fehlen von `width` und `height` bei lazy geladenen Bildern, was zu störenden Layout-Sprüngen führt, sobald das Bild tatsächlich nachlädt.
+
+Der dritte Fehler betrifft Videos: Viele Websites setzen zwar `loading="lazy"` auf Video-Elemente, vergessen aber, dass `preload` weiterhin auf dem Standardwert steht und damit trotzdem Daten im Hintergrund lädt. Der vierte Fehler ist eine Übervorsicht in die andere Richtung, bei der auch kleine, textnahe Icons oder Logos lazy geladen werden, obwohl der Effekt bei so kleinen Dateien vernachlässigbar ist und der zusätzliche JavaScript-Overhead den Nutzen zunichtemacht.
+
+Die gute Nachricht dabei: Alle vier Fehler lassen sich mit den oben beschriebenen Schritten und ein wenig Sorgfalt beim technischen Review vollständig vermeiden.
+
+## Key Takeaways
+
+- Lazy Loading verschiebt das Laden von Bildern und Videos, bis sie sich dem Viewport nähern, gesteuert entweder nativ per `loading="lazy"` oder per Intersection Observer API.
+- Chrome lädt Bilder bereits vorausschauend nach, bei 4G rund 1.250 Pixel und bei 3G rund 2.500 Pixel vor dem Sichtbarwerden, mit 97,5 Prozent Ladeerfolg innerhalb von 10 Millisekunden.
+- Das LCP-Bild oder LCP-Video darf niemals lazy geladen werden, sonst verschlechtert sich die Core-Web-Vitals-Bewertung der Seite.
+- Bei Videos entscheidet zusätzlich das `preload`-Attribut über den Datenverbrauch, `loading="lazy"` allein reicht nicht aus.
+- Das Facade-Pattern mit Poster-Bild und Intersection Observer ist der robusteste Weg, Videos außerhalb des ersten Bildschirms sauber lazy zu laden.
+
+Lazy Loading ist keine große Sache, wenn man es richtig einbaut. Aber ein einziges falsch gesetztes Attribut auf dem falschen Bild kann die gemessene Ladezeit Ihrer Seite spürbar verschlechtern. Wenn Sie unsicher sind, ob Ihre Website das technisch sauber umsetzt, [sprechen Sie uns an](/kontakt), wir sehen uns das gerne im Detail an.

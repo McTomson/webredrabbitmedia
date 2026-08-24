@@ -3389,3 +3389,57 @@ quelle: https://www.php.net/eol.php
 quelle_name: PHP.net - Unsupported Branches (offizielle EOL-Liste)
 geprueft_am: 2026-08-23
 recheck_nach: 2027-02-19
+
+## t80-2026-08-24-377
+cluster: 2
+keywords: funktioniert, lazy, loading, bildern, videos, technisch
+aussage: Der HTML-Attributwert loading="lazy" auf <img>- und <iframe>-Elementen weist den Browser an, das Laden von Ressourcen zu verschieben, bis sie sich dem sichtbaren Bereich (Viewport) nähern; ohne JavaScript regelt allein der Browser-Rendering-Prozess das Nachladen.
+quelle: https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading
+quelle_name: MDN Web Docs - Lazy loading
+geprueft_am: 2026-08-24
+recheck_nach: 2027-02-20
+
+## t80-2026-08-24-378
+cluster: 2
+keywords: funktioniert, lazy, loading, bildern, videos, technisch
+aussage: Chromes native Lazy-Loading-Implementierung lädt Bilder abhängig von der Verbindungsgeschwindigkeit vorausschauend: bei 4G-Verbindungen bereits ca. 1.250 Pixel unterhalb des Viewports, bei 3G oder langsamer bereits ca. 2.500 Pixel unterhalb des Viewports - dadurch waren laut Chrome-Tests 97,5% der lazy geladenen Bilder innerhalb von 10ms nach Sichtbarwerden bereits vollständig geladen.
+quelle: https://web.dev/articles/browser-level-image-lazy-loading
+quelle_name: web.dev (Google) - Browser-level image lazy loading
+geprueft_am: 2026-08-24
+recheck_nach: 2027-02-20
+
+## t80-2026-08-24-379
+cluster: 2
+keywords: funktioniert, lazy, loading, bildern, videos, technisch
+aussage: Bilder, die beim Laden der Seite voraussichtlich sofort im sichtbaren Bereich stehen - insbesondere das LCP-Bild (Largest Contentful Paint) - sollen laut Google-Empfehlung NICHT mit loading="lazy" versehen werden, da dies das LCP-Timing und damit die Core-Web-Vitals-Bewertung verschlechtert; zusätzlich sollten width/height gesetzt werden, um Layout-Verschiebungen (CLS) zu vermeiden.
+quelle: https://web.dev/articles/browser-level-image-lazy-loading
+quelle_name: web.dev (Google) - Browser-level image lazy loading
+geprueft_am: 2026-08-24
+recheck_nach: 2027-02-20
+
+## t80-2026-08-24-380
+cluster: 2
+keywords: funktioniert, lazy, loading, bildern, videos, technisch
+aussage: Für JavaScript-basiertes Lazy Loading (z. B. bei Videos oder in Browsern ohne native Unterstützung) ist die Intersection Observer API der technische Standardmechanismus: Sie beobachtet asynchron, wann ein Zielelement einen definierten Sichtbarkeits-Schwellenwert (threshold) relativ zum Viewport oder einem Root-Element kreuzt, ohne dabei laufende getBoundingClientRect()-Abfragen im Scroll-Event auszulösen, was die Hauptthread-Performance schont. Die API gilt seit März 2019 browserübergreifend als 'Baseline widely available'.
+quelle: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+quelle_name: MDN Web Docs - Intersection Observer API
+geprueft_am: 2026-08-24
+recheck_nach: 2027-02-20
+
+## t80-2026-08-24-381
+cluster: 2
+keywords: funktioniert, lazy, loading, bildern, videos, technisch
+aussage: Das <video>-Element unterstützt Lazy Loading technisch anders als <img>: Selbst wenn loading="lazy" gesetzt ist, entscheidet zusätzlich das preload-Attribut über den Datenverbrauch vor dem Sichtbarwerden - preload="none" verhindert jegliches Vorladen, während der Standardwert preload="metadata" oft trotzdown per Content-Range-Header bereits substanzielle Datenmengen nachlädt. Für Video-Elemente, die LCP-Kandidat sind, empfiehlt Google, KEIN loading="lazy" zu verwenden, sondern stattdessen ein vorab geladenes Poster-Bild mit fetchpriority="high".
+quelle: https://web.dev/articles/lazy-loading-video
+quelle_name: web.dev (Google) - Lazy loading video
+geprueft_am: 2026-08-24
+recheck_nach: 2027-02-20
+
+## t80-2026-08-24-382
+cluster: 2
+keywords: funktioniert, lazy, loading, bildern, videos, technisch
+aussage: Ein verbreitetes, robustes Muster für Video-Lazy-Loading ist das 'Facade'/Poster-Pattern: Ein Platzhalterbild (Poster) besetzt den Platz des Videos, das eigentliche Video-Element bzw. dessen autoplay-Aktivierung und die Entfernung von preload="none" werden erst per Intersection Observer ausgelöst, sobald das Element in den Viewport eintritt - dies verbessert die gefühlte Ladezeit und reduziert unnötigen initialen Datenverbrauch.
+quelle: https://web.dev/articles/lazy-loading-video
+quelle_name: web.dev (Google) - Lazy loading video
+geprueft_am: 2026-08-24
+recheck_nach: 2027-02-20
