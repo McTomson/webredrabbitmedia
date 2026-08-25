@@ -3443,3 +3443,39 @@ quelle: https://web.dev/articles/lazy-loading-video
 quelle_name: web.dev (Google) - Lazy loading video
 geprueft_am: 2026-08-24
 recheck_nach: 2027-02-20
+
+## t81-2026-08-25-383
+cluster: 2
+keywords: warum, blockieren, externe, schriften, google, fonts, seitenaufbau
+aussage: CSS wird von Browsern standardmaessig als render-blocking behandelt: Der Browser rendert keinen verarbeiteten Inhalt, bevor das CSSOM (also auch extern eingebundene Font-Stylesheets wie bei Google Fonts) vollstaendig aufgebaut ist.
+quelle: https://web.dev/articles/critical-rendering-path/render-blocking-css
+quelle_name: web.dev (Google) - Render-blocking CSS
+geprueft_am: 2026-08-25
+recheck_nach: 2027-02-21
+
+## t81-2026-08-25-384
+cluster: 2
+keywords: warum, blockieren, externe, schriften, google, fonts, seitenaufbau
+aussage: Ohne explizite Steuerung nutzen die meisten Browser fuer Web-Fonts eine Strategie aehnlich 'font-display: block': Waehrend der Ladezeit wird Text mit unsichtbaren Buchstabenformen gerendert (Flash of Invisible Text, FOIT). Chrome und Firefox brechen dieses Verhalten nach einem Timeout von 3 Sekunden ab und zeigen dann eine Fallback-Schrift.
+quelle: https://developer.chrome.com/blog/font-display
+quelle_name: Chrome for Developers - Controlling Font Performance with font-display
+geprueft_am: 2026-08-25
+recheck_nach: 2027-02-21
+
+## t81-2026-08-25-385
+cluster: 2
+keywords: warum, blockieren, externe, schriften, google, fonts, seitenaufbau
+aussage: Google selbst empfiehlt gegen das Blockieren des sichtbaren Textaufbaus durch externe Schriften die CSS-Eigenschaft 'font-display: swap' zu setzen, damit Text sofort mit einer Systemschrift angezeigt und erst nach dem Laden durch die Web-Font ersetzt wird - allerdings mit dem Risiko eines Layout-Shifts beim Austausch.
+quelle: https://web.dev/articles/avoid-invisible-text
+quelle_name: web.dev (Google) - Avoid invisible text during font loading
+geprueft_am: 2026-08-25
+recheck_nach: 2027-02-21
+
+## t81-2026-08-25-386
+cluster: 2
+keywords: warum, blockieren, externe, schriften, google, fonts, seitenaufbau
+aussage: Die CSS-Spezifikation (CSS Fonts Module Level 4) definiert einen eigenen 'Font Block Period' genannten Zeitabschnitt: Ist die Schriftdatei zu diesem Zeitpunkt noch nicht geladen, muss jedes Element, das diese Font-Face nutzt, mit einer unsichtbaren Ersatzschrift gerendert werden - erst danach folgen Swap- bzw. Failure-Period.
+quelle: https://drafts.csswg.org/css-fonts/
+quelle_name: W3C CSSWG Drafts - CSS Fonts Module Level 4
+geprueft_am: 2026-08-25
+recheck_nach: 2027-02-21
