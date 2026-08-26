@@ -3479,3 +3479,48 @@ quelle: https://drafts.csswg.org/css-fonts/
 quelle_name: W3C CSSWG Drafts - CSS Fonts Module Level 4
 geprueft_am: 2026-08-25
 recheck_nach: 2027-02-21
+
+## t82-2026-08-26-387
+cluster: 2
+keywords: bedeutet, clean, code, webdesign, kontrolliert
+aussage: Der Begriff „Clean Code“ im Softwarekontext geht massgeblich auf das Buch „Clean Code: A Handbook of Agile Software Craftsmanship“ von Robert C. Martin (Pearson, 2008) zurueck; darin wird sauberer Code definiert als Code, der gut gestaltet ist, sich gut lesen laesst und die Absicht des Autors klar ausdrueckt.
+quelle: https://www.pearson.com/en-us/subject-catalog/p/clean-code-a-handbook-of-agile-software-craftsmanship/P200000009044/9780136083252
+quelle_name: Pearson - Clean Code: A Handbook of Agile Software Craftsmanship
+geprueft_am: 2026-08-26
+recheck_nach: 2027-02-22
+
+## t82-2026-08-26-388
+cluster: 2
+keywords: bedeutet, clean, code, webdesign, kontrolliert
+aussage: Es gibt keine zentrale Zertifizierungsstelle, die „Clean Code“ im Webdesign kontrolliert; kontrolliert wird faktisch ueber offene, kostenlose Pruefwerkzeuge wie den W3C Markup Validation Service, der HTML/XHTML-Dokumente gegen die offiziellen W3C-Webstandards prueft.
+quelle: https://validator.w3.org/about.html
+quelle_name: W3C Markup Validation Service
+geprueft_am: 2026-08-26
+recheck_nach: 2027-02-22
+
+## t82-2026-08-26-389
+cluster: 2
+keywords: bedeutet, clean, code, webdesign, kontrolliert
+aussage: Google Lighthouse (integriert in die Chrome-Entwicklertools) prueft Webseiten automatisiert in vier Kategorien – Performance, Accessibility, Best Practices und SEO – und dient in der Praxis als eines der meistgenutzten Tools, um Code- und Umsetzungsqualitaet einer Website objektiv zu bewerten.
+quelle: https://developer.chrome.com/docs/lighthouse/overview/
+quelle_name: Chrome for Developers - Introduction to Lighthouse
+geprueft_am: 2026-08-26
+recheck_nach: 2027-02-22
+
+## t82-2026-08-26-390
+cluster: 2
+keywords: bedeutet, clean, code, webdesign, kontrolliert
+aussage: Die Web Content Accessibility Guidelines (WCAG) 2.1 wurden am 5. Juni 2018 vom W3C als offizielle „Recommendation“ verabschiedet und legen mit Konformitaetsstufe AA einen international anerkannten Massstab fuer barrierefreien, sauber strukturierten Code fest.
+quelle: https://www.w3.org/TR/WCAG21/
+quelle_name: W3C - Web Content Accessibility Guidelines (WCAG) 2.1
+geprueft_am: 2026-08-26
+recheck_nach: 2027-02-22
+
+## t82-2026-08-26-391
+cluster: 2
+keywords: bedeutet, clean, code, webdesign, kontrolliert
+aussage: In Oesterreich verpflichtet das Barrierefreiheitsgesetz (BaFG, BGBl. I Nr. 76/2023, Umsetzung der EU-Richtlinie 2019/882) seit 28.06.2025 viele B2C-Onlineangebote gesetzlich zu barrierefreiem, WCAG-2.1-AA-konformem Code; Verstoesse koennen mit Verwaltungsstrafen geahndet werden – das ist die einzige echte rechtliche „Kontrollinstanz“ fuer Code-Qualitaet im Web in AT.
+quelle: https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=20012316&FassungVom=2025-06-28
+quelle_name: RIS - Barrierefreiheitsgesetz (BaFG), geltende Fassung
+geprueft_am: 2026-08-26
+recheck_nach: 2027-02-22
