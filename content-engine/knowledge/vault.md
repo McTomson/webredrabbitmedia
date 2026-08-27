@@ -3524,3 +3524,48 @@ quelle: https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Geset
 quelle_name: RIS - Barrierefreiheitsgesetz (BaFG), geltende Fassung
 geprueft_am: 2026-08-26
 recheck_nach: 2027-02-22
+
+## t83-2026-08-27-392
+cluster: 2
+keywords: bindet, externe, skripte, tracking, tools, geschwindigkeitsoptimiert
+aussage: Skripte mit dem HTML-Attribut 'async' laden parallel im Hintergrund und werden sofort nach Download ausgefuehrt (koennen das HTML-Parsing dabei noch unterbrechen); Skripte mit 'defer' werden dagegen erst nach Abschluss des HTML-Parsings und in der Reihenfolge ihres Auftretens ausgefuehrt und blockieren den Parser nicht. Fuer nicht-kritische Third-Party-Skripte wie Tracking-Tools wird generell async oder defer statt synchronem Laden empfohlen.
+quelle: https://web.dev/articles/efficiently-load-third-party-javascript
+quelle_name: web.dev (Google) - Efficiently load third-party JavaScript
+geprueft_am: 2026-08-27
+recheck_nach: 2027-02-23
+
+## t83-2026-08-27-393
+cluster: 2
+keywords: bindet, externe, skripte, tracking, tools, geschwindigkeitsoptimiert
+aussage: Durch fruehzeitiges Verbinden zu wichtigen Third-Party-Origins per 'rel=preconnect' lassen sich 100-500 ms sparen; Browser schliessen jedoch ungenutzte Preconnect-Verbindungen nach rund 10 Sekunden wieder, weshalb Preconnect sparsam (nur fuer die wichtigsten 1-2 Domains) eingesetzt werden sollte, waehrend fuer weitere Domains 'dns-prefetch' reicht.
+quelle: https://web.dev/articles/efficiently-load-third-party-javascript
+quelle_name: web.dev (Google) - Efficiently load third-party JavaScript
+geprueft_am: 2026-08-27
+recheck_nach: 2027-02-23
+
+## t83-2026-08-27-394
+cluster: 2
+keywords: bindet, externe, skripte, tracking, tools, geschwindigkeitsoptimiert
+aussage: Next.js liefert mit der 'Script'-Komponente eine eigene Ladestrategie fuer Tracking-Skripte: 'afterInteractive' (Standard, entspricht funktional 'defer') laedt Skripte nach der Hydration, 'lazyOnload' erst waehrend Browser-Leerlaufzeit. In einem dokumentierten Fallbeispiel verbesserte der Wechsel von Google Tag Manager auf die 'afterInteractive'-Strategie den Largest Contentful Paint (LCP) um rund 1 Sekunde; die Verlagerung von vier Drittanbieter-Skripten auf 'lazyOnload' verbesserte den First Contentful Paint (FCP) von 0,9 auf 0,4 Sekunden.
+quelle: https://developer.chrome.com/blog/script-component
+quelle_name: Chrome for Developers - Optimizing third-party script loading in Next.js
+geprueft_am: 2026-08-27
+recheck_nach: 2027-02-23
+
+## t83-2026-08-27-395
+cluster: 2
+keywords: bindet, externe, skripte, tracking, tools, geschwindigkeitsoptimiert
+aussage: Fuer Tag-Manager-Container (z. B. Google Tag Manager) empfiehlt Google, nicht-essenzielle Tags erst nach dem 'Window Loaded'-Event feuern zu lassen, die Containergroesse unter 70 KB zu halten (Median liegt bei rund 50 KB) und pro Seite nur einen Container einzusetzen, da mehrere Container gleichzeitig erhebliche Performance-Probleme verursachen koennen. Der Ladezeitpunkt des Tag-Managers selbst hat dabei einen mindestens ebenso grossen Effekt auf die Performance wie die Optimierung einzelner Tag-Trigger.
+quelle: https://web.dev/articles/tag-best-practices
+quelle_name: web.dev (Google) - Best practices for tags and tag managers
+geprueft_am: 2026-08-27
+recheck_nach: 2027-02-23
+
+## t83-2026-08-27-396
+cluster: 2
+keywords: bindet, externe, skripte, tracking, tools, geschwindigkeitsoptimiert
+aussage: Das Open-Source-Tool Partytown verlagert ressourcenintensive Third-Party-Skripte (z. B. Tracking- oder Analytics-Skripte) in einen Web Worker und damit vom Haupt-Thread weg; die Kommunikation mit dem DOM erfolgt dabei ueber synchrone Proxy-Zugriffe via Service Worker, sodass die Skripte weiterlaufen, ohne die Rendering-Performance der eigentlichen Seite zu blockieren.
+quelle: https://github.com/QwikDev/partytown
+quelle_name: Partytown (Builder.io/Qwik) - GitHub-Repository und offizielle Dokumentation
+geprueft_am: 2026-08-27
+recheck_nach: 2027-02-23
