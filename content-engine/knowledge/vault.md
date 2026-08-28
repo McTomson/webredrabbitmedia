@@ -3569,3 +3569,57 @@ quelle: https://github.com/QwikDev/partytown
 quelle_name: Partytown (Builder.io/Qwik) - GitHub-Repository und offizielle Dokumentation
 geprueft_am: 2026-08-27
 recheck_nach: 2027-02-23
+
+## t84-2026-08-28-397
+cluster: 2
+keywords: warum, führt, schlechtes, mobile, rendering, schlechteren, desktop, rankings
+aussage: Google verwendet für Indexierung und Ranking die von einem Smartphone-Useragent gecrawlte mobile Version einer Seite ('mobile-first indexing') – das gilt für alle Suchergebnisse, auch auf dem Desktop, da es nur EINEN Index-Eintrag pro Seite gibt.
+quelle: https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing
+quelle_name: Google Search Central - Mobile-first indexing best practices
+geprueft_am: 2026-08-28
+recheck_nach: 2027-02-24
+
+## t84-2026-08-28-398
+cluster: 2
+keywords: warum, führt, schlechtes, mobile, rendering, schlechteren, desktop, rankings
+aussage: Wenn die mobile Version weniger Inhalt, weniger interne Links oder unvollständige strukturierte Daten im Vergleich zur Desktop-Version hat, bekommt Google 'weniger Informationen von der Seite als zuvor' – das schwächt die Rankingbasis, die dann für ALLE Geräte inklusive Desktop gilt, nicht nur für die mobile Suche.
+quelle: https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing
+quelle_name: Google Search Central - Mobile-first indexing best practices
+geprueft_am: 2026-08-28
+recheck_nach: 2027-02-24
+
+## t84-2026-08-28-399
+cluster: 2
+keywords: warum, führt, schlechtes, mobile, rendering, schlechteren, desktop, rankings
+aussage: Google lädt keine Inhalte, die erst durch eine Nutzerinteraktion (z. B. Swipen, Klicken, Tippen) nachgeladen werden ('lazy-load primary content upon user interaction'). Ist ein solches Muster nur mobil vorhanden, fehlt dieser Content im Index vollständig – mit Folgen für Rankings auf allen Endgeräten.
+quelle: https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing
+quelle_name: Google Search Central - Mobile-first indexing best practices
+geprueft_am: 2026-08-28
+recheck_nach: 2027-02-24
+
+## t84-2026-08-28-400
+cluster: 2
+keywords: warum, führt, schlechtes, mobile, rendering, schlechteren, desktop, rankings
+aussage: Unterschiedliche robots-Meta-Tags zwischen mobiler und Desktop-Version (v. a. noindex/nofollow nur auf einer Variante) können dazu führen, dass Google die Seite gar nicht crawlt oder indexiert – ein rein mobiles Konfigurationsproblem kann so den gesamten Index-Eintrag und damit auch das Desktop-Ranking blockieren.
+quelle: https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing
+quelle_name: Google Search Central - Mobile-first indexing best practices
+geprueft_am: 2026-08-28
+recheck_nach: 2027-02-24
+
+## t84-2026-08-28-401
+cluster: 2
+keywords: warum, führt, schlechtes, mobile, rendering, schlechteren, desktop, rankings
+aussage: Core Web Vitals werden am 75. Perzentil der Seitenaufrufe gemessen und dabei explizit 'getrennt nach Mobile und Desktop' ausgewertet ('segmented across mobile and desktop devices') – schlechte mobile Werte fließen separat in die Page-Experience-Bewertung ein und tauchen unabhängig von der Desktop-Performance im Search-Console-Bericht auf.
+quelle: https://web.dev/articles/vitals
+quelle_name: web.dev - Core Web Vitals
+geprueft_am: 2026-08-28
+recheck_nach: 2027-02-24
+
+## t84-2026-08-28-402
+cluster: 2
+keywords: warum, führt, schlechtes, mobile, rendering, schlechteren, desktop, rankings
+aussage: Google Search Console führt den Core-Web-Vitals-Bericht in zwei getrennten Ansichten (Mobile und Desktop); der Status je URL-Gruppe richtet sich nach der jeweils schlechtesten Metrik dieser Gerätegruppe – schlechte mobile Werte werden also unabhängig ausgewiesen und farblich als 'Poor' markiert, selbst wenn Desktop gut abschneidet.
+quelle: https://support.google.com/webmasters/answer/9205520?hl=en
+quelle_name: Google Search Console Help - Core Web Vitals report
+geprueft_am: 2026-08-28
+recheck_nach: 2027-02-24
