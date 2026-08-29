@@ -3623,3 +3623,57 @@ quelle: https://support.google.com/webmasters/answer/9205520?hl=en
 quelle_name: Google Search Console Help - Core Web Vitals report
 geprueft_am: 2026-08-28
 recheck_nach: 2027-02-24
+
+## t85-2026-08-29-403
+cluster: 2
+keywords: unterschied, zwischen, node, traditionellen, webservern
+aussage: Node.js beschreibt sich in der offiziellen Dokumentation selbst als 'asynchronous event-driven JavaScript runtime', die für den Bau skalierbarer Netzwerkanwendungen entwickelt wurde.
+quelle: https://nodejs.org/en/about
+quelle_name: Node.js Docs - About Node.js
+geprueft_am: 2026-08-29
+recheck_nach: 2027-02-25
+
+## t85-2026-08-29-404
+cluster: 2
+keywords: unterschied, zwischen, node, traditionellen, webservern
+aussage: Laut Node.js-Doku führt fast keine Funktion in Node.js I/O direkt blockierend aus; der Prozess blockiert nur bei explizit synchronen Methoden. Das steht im Gegensatz zum 'heute üblicheren Nebenläufigkeitsmodell' mit OS-Threads, das die Doku als 'relatively inefficient and very difficult to use' bezeichnet.
+quelle: https://nodejs.org/en/about
+quelle_name: Node.js Docs - About Node.js
+geprueft_am: 2026-08-29
+recheck_nach: 2027-02-25
+
+## t85-2026-08-29-405
+cluster: 2
+keywords: unterschied, zwischen, node, traditionellen, webservern
+aussage: Node.js implementiert die Event-Loop als eingebautes Runtime-Konstrukt statt als Bibliothek: Node.js tritt nach Ausführung des Eingabe-Skripts in die Event-Loop ein und verlässt sie erst, wenn keine Callbacks mehr ausstehen.
+quelle: https://nodejs.org/en/about
+quelle_name: Node.js Docs - About Node.js
+geprueft_am: 2026-08-29
+recheck_nach: 2027-02-25
+
+## t85-2026-08-29-406
+cluster: 2
+keywords: unterschied, zwischen, node, traditionellen, webservern
+aussage: Traditionelle Webserver-Architekturen wie der Apache-'Worker'-MPM nutzen ein hybrides Multi-Prozess/Multi-Thread-Modell: Ein Kontroll-Prozess startet Kindprozesse, jeder Kindprozess erzeugt eine feste Anzahl an Server-Threads (ThreadsPerChild); jeder Thread bearbeitet jeweils eine Verbindung/einen Request und wird danach wieder freigegeben.
+quelle: https://httpd.apache.org/docs/2.4/mod/worker.html
+quelle_name: Apache HTTP Server Docs - mod_worker (v2.4)
+geprueft_am: 2026-08-29
+recheck_nach: 2027-02-25
+
+## t85-2026-08-29-407
+cluster: 2
+keywords: unterschied, zwischen, node, traditionellen, webservern
+aussage: Bei Apache mit Worker-MPM ist die maximal gleichzeitig bedienbare Client-Anzahl direkt durch die Direktive MaxRequestWorkers (Gesamtzahl der Threads über alle Prozesse) begrenzt — die Kapazität ist also an eine fest konfigurierte Thread-/Prozess-Anzahl gekoppelt statt an ein ereignisgesteuertes Modell ohne feste Worker-Zuteilung.
+quelle: https://httpd.apache.org/docs/2.4/mod/worker.html
+quelle_name: Apache HTTP Server Docs - mod_worker (v2.4)
+geprueft_am: 2026-08-29
+recheck_nach: 2027-02-25
+
+## t85-2026-08-29-408
+cluster: 2
+keywords: unterschied, zwischen, node, traditionellen, webservern
+aussage: Obwohl JavaScript-Ausführung in Node.js standardmäßig single-threaded ist, kann Node.js über das Cluster-Modul bzw. Child-Prozesse mehrere CPU-Kerne nutzen — Single-Threading ist laut offizieller Doku kein Hindernis für Mehrkern-Nutzung.
+quelle: https://nodejs.org/en/about
+quelle_name: Node.js Docs - About Node.js
+geprueft_am: 2026-08-29
+recheck_nach: 2027-02-25
