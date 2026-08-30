@@ -3677,3 +3677,48 @@ quelle: https://nodejs.org/en/about
 quelle_name: Node.js Docs - About Node.js
 geprueft_am: 2026-08-29
 recheck_nach: 2027-02-25
+
+## t86-2026-08-30-409
+cluster: 2
+keywords: strukturiert, code, großen, websites, redundanzen, vermeiden
+aussage: Die CSS-@layer-Regel (Cascade Layers) erlaubt es, Stylesheets in explizite Prioritaets-Ebenen (z.B. reset, base, components, utilities) zu unterteilen; einmal festgelegt, gewinnt die Layer-Reihenfolge unabhaengig von der Selektor-Spezifitaet. Das loest 'Spezifitaets-Kriege' zwischen Teams mit unterschiedlichen Konventionen (z.B. ID-Selektoren vs. niedrige Spezifitaet), die sonst zu redundanten !important-Overrides fuehren.
+quelle: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Cascade_layers
+quelle_name: MDN Web Docs - Cascade layers (Learn Web Development)
+geprueft_am: 2026-08-30
+recheck_nach: 2027-02-26
+
+## t86-2026-08-30-410
+cluster: 2
+keywords: strukturiert, code, großen, websites, redundanzen, vermeiden
+aussage: CSS Cascade Layers (@layer) sind seit 2022 in allen grossen Browsern verfuegbar (Chrome 99, Firefox 97, Safari 15.4) und gelten 2026 als etabliertes, breit unterstuetztes Feature - technisch also einsetzbar fuer jedes aktuelle Next.js-Projekt.
+quelle: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@layer
+quelle_name: MDN Web Docs - @layer CSS at-rule
+geprueft_am: 2026-08-30
+recheck_nach: 2027-02-26
+
+## t86-2026-08-30-411
+cluster: 2
+keywords: strukturiert, code, großen, websites, redundanzen, vermeiden
+aussage: Next.js (offizielle Doku, Next.js 16) empfiehlt fuer grosse Anwendungen: Tailwind CSS fuer die meisten Styling-Faelle, CSS Modules fuer komponentenspezifische, lokal gescopte Styles (verhindert Klassennamen-Kollisionen ueber Dateien hinweg) sowie das explizite Auslagern gemeinsamer Styles in geteilte Komponenten, um doppelte Imports/Redundanzen zu vermeiden.
+quelle: https://nextjs.org/docs/app/getting-started/css
+quelle_name: Next.js Docs - CSS (App Router)
+geprueft_am: 2026-08-30
+recheck_nach: 2027-02-26
+
+## t86-2026-08-30-412
+cluster: 2
+keywords: strukturiert, code, großen, websites, redundanzen, vermeiden
+aussage: Laut HTTP Archive Web Almanac 2022 laden Desktop-Websites am 90. Perzentil rund 256 KB CSS, bei median rund 31 Regeln pro Stylesheet und bis zu ueber 2.000 Style-Regeln am 90. Perzentil auf Mobile - ein klarer Beleg dafuer, dass CSS auf grossen, ungepflegten Websites unkontrolliert waechst, wenn keine Architektur/Deduplizierung stattfindet.
+quelle: https://almanac.httparchive.org/en/2022/css
+quelle_name: HTTP Archive - The Web Almanac 2022, Kapitel CSS
+geprueft_am: 2026-08-30
+recheck_nach: 2027-02-26
+
+## t86-2026-08-30-413
+cluster: 2
+keywords: strukturiert, code, großen, websites, redundanzen, vermeiden
+aussage: PurgeCSS und aehnliche Tools entfernen ungenutzte CSS-Selektoren durch Abgleich mit dem tatsaechlich verwendeten Markup; das Entfernen von ungenutztem CSS gilt als eine der wirkungsvollsten Performance-Optimierungen, da sie ohne Aenderung an Design oder Funktionalitaet die zu ladende und zu parsende Codemenge reduziert.
+quelle: https://blog.logrocket.com/removing-unused-css-code-with-purgecss/
+quelle_name: LogRocket Blog - Guide to removing unused CSS code with PurgeCSS
+geprueft_am: 2026-08-30
+recheck_nach: 2027-02-26

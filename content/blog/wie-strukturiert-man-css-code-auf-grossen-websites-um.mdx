@@ -1,0 +1,83 @@
+---
+title: "CSS-Code auf großen Websites strukturieren: Guide 2026"
+slug: "wie-strukturiert-man-css-code-auf-grossen-websites-um"
+excerpt: "Große, gewachsene Websites vermeiden CSS-Redundanzen mit Cascade Layers, CSS Modules und PurgeCSS, damit das Stylesheet auch nach Jahren wartbar bleibt."
+featuredSnippetTitle: "Wie strukturiert man CSS-Code auf großen Websites um?"
+featuredSnippet: "Große Websites vermeiden CSS-Redundanzen, indem sie Styles in klar getrennte Ebenen aufteilen, sogenannte CSS Cascade Layers, Komponenten lokal scopen statt global zu vererben, etwa mit CSS Modules, gemeinsame Styles konsequent in wiederverwendbare Bausteine auslagern und ungenutztes CSS regelmäßig mit Tools wie PurgeCSS automatisiert entfernen. So bleibt das Stylesheet wartbar."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-30"
+updatedAt: "2026-08-30"
+category: "Technik & Performance"
+tags:
+  - "CSS"
+  - "Performance"
+  - "Frontend-Architektur"
+  - "Next.js"
+  - "Technik"
+  - "Code-Qualität"
+featuredImage: "/images/blog/wie-strukturiert-man-css-code-auf-grossen-websites-um.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "MDN Web Docs - Cascade layers (Learn Web Development)"
+    url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Cascade_layers"
+  - name: "MDN Web Docs - @layer CSS at-rule"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@layer"
+  - name: "Next.js Docs - CSS (App Router)"
+    url: "https://nextjs.org/docs/app/getting-started/css"
+  - name: "HTTP Archive - The Web Almanac 2022, Kapitel CSS"
+    url: "https://almanac.httparchive.org/en/2022/css"
+  - name: "LogRocket Blog - Guide to removing unused CSS code with PurgeCSS"
+    url: "https://blog.logrocket.com/removing-unused-css-code-with-purgecss/"
+keyTakeaways:
+  - "CSS Cascade Layers (@layer) legen die Priorität über eine bewusst gewählte Reihenfolge fest statt über Selektor-Spezifität, das beendet die meisten !important-Kriege."
+  - "CSS Modules scopen Styles automatisch auf die jeweilige Komponente, sodass Klassennamen zwischen Teams nie mehr kollidieren, Next.js unterstützt das eingebaut."
+  - "Gemeinsame Werte wie Farben und Abstände gehören einmalig als CSS Custom Properties in eine zentrale Basis-Ebene, nicht in jede Komponente neu definiert."
+  - "Laut Web Almanac 2022 laden Desktop-Websites am 90. Perzentil rund 256 Kilobyte CSS, mobile Seiten enthalten am 90. Perzentil teils über 2000 Style-Regeln in einer Datei."
+  - "Ungenutztes CSS sollte automatisiert im Build-Prozess entfernt werden, zum Beispiel mit PurgeCSS, ein einmaliges manuelles Aufräumen reicht bei laufender Weiterentwicklung nicht."
+conclusionStats:
+  - label: "CSS-Größe am 90. Perzentil (Desktop)"
+    value: "256 KB"
+  - label: "Style-Regeln im Median pro Stylesheet"
+    value: "31"
+  - label: "Style-Regeln am 90. Perzentil (Mobil)"
+    value: "über 2000"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Was sind CSS Cascade Layers und wozu dienen sie?"
+    answer: "CSS Cascade Layers, geschrieben als @layer, teilen ein Stylesheet in explizit benannte Prioritätsebenen wie reset, base, components und utilities auf. Ist die Reihenfolge der Ebenen einmal festgelegt, gewinnt eine spätere Ebene automatisch, unabhängig von der Spezifität der einzelnen Selektoren innerhalb der Ebenen."
+  - question: "Was ist der Unterschied zwischen CSS Modules und klassischem globalem CSS?"
+    answer: "Bei klassischem globalem CSS landen alle Klassennamen in einem gemeinsamen Namensraum, wodurch Kollisionen zwischen Komponenten entstehen können. CSS Modules generieren beim Build für jede Komponente eindeutige, lokal gültige Klassennamen, sodass Styles nie ungewollt in andere Komponenten hineinwirken."
+  - question: "Was macht ein Tool wie PurgeCSS genau?"
+    answer: "PurgeCSS analysiert das tatsächliche Markup einer Website, also HTML, JSX oder Templates, und entfernt aus dem finalen CSS-Bundle alle Selektoren, die im Code nirgends verwendet werden. Das reduziert die ausgelieferte Dateigröße oft erheblich, sollte aber automatisiert im Build laufen statt einmalig von Hand."
+  - question: "Ab welcher Website-Größe lohnt sich eine CSS-Architektur-Überarbeitung?"
+    answer: "Spürbar wird das Problem meist, sobald mehrere Personen oder Teams über Jahre am selben Stylesheet arbeiten, etwa nach mehreren Relaunches oder Agenturwechseln. Dann lohnt sich die Umstellung auf Cascade Layers und CSS Modules unabhängig von der reinen Seitenzahl der Website."
+  - question: "Unterstützt Next.js CSS Modules und Cascade Layers direkt?"
+    answer: "Ja. Next.js unterstützt CSS Modules im App Router eingebaut über die Namenskonvention *.module.css ohne zusätzliche Konfiguration. CSS Cascade Layers sind natives CSS und funktionieren in jedem modernen Browser unabhängig vom verwendeten Framework."
+hookCandidates:
+  - "website: css sauber strukturieren, wie?"
+  - "css-guide 2026: was hat sich geändert?"
+  - "große website, chaos-css: lösung?"
+---
+
+Stellen Sie sich einen Kleiderschrank vor, in den seit zehn Jahren niemand mehr aufgeräumt hat. Jede Saison kam etwas Neues dazu, nichts wurde konsequent aussortiert, und irgendwann findet niemand mehr das passende Hemd, obwohl der Schrank aus allen Nähten platzt. Genau so verhält sich CSS auf gewachsenen Websites. Jeder Entwickler bringt neue Klassen mit. Jede Kampagne, jedes neue Feature legt noch ein paar drauf, und nach zwei oder drei Jahren weiß niemand mehr, welche Regel gerade wofür zuständig ist.
+
+**Große Websites vermeiden CSS-Redundanzen, indem sie Styles in klar getrennte Ebenen aufteilen (CSS Cascade Layers), Komponenten lokal scopen (CSS Modules) statt global zu vererben, gemeinsame Styles konsequent auslagern und ungenutztes CSS regelmäßig mit Tools wie PurgeCSS entfernen.** So wächst das Stylesheet kontrolliert, unabhängig davon, wie viele Personen gleichzeitig daran arbeiten.
+
+Das klingt zunächst nach reiner Entwickler-Hygiene, hat aber einen handfesten wirtschaftlichen Hintergrund. Unstrukturiertes CSS ist unschön, vor allem aber kostet es Ladezeit und Wartungsaufwand. Am Ende zahlt dafür jemand, in barer Münze. Dieser Artikel zeigt, wie das Problem entsteht und mit welchen modernen Werkzeugen es sich in den Griff bekommen lässt, ganz konkret für Betreiber einer größeren Website.
+
+![Struktur-Diagramm von CSS Cascade Layers und CSS Modules zur Vermeidung von Redundanzen auf großen Websites](/images/blog/wie-strukturiert-man-css-code-auf-grossen-websites-um.png)
+
+## Wie groß ist das Problem wirklich?
+
+Die Zahlen sprechen eine deutliche Sprache. Laut dem [Web Almanac 2022 des HTTP Archive](https://almanac.httparchive.org/en/2022/css) laden Desktop-Websites am 90. Perzentil rund 256 Kilobyte CSS, im Median liegen etwa 31 Regeln pro Stylesheet vor, und auf mobilen Seiten finden sich am 90. Perzentil teilweise über 2000 Style-Regeln in einer einzigen Datei. Diese Zahlen zeigen etwas Wichtiges: CSS wächst auf großen, ungepflegten Websites praktisch von selbst, wenn niemand aktiv gegensteuert. Es gibt keinen natürlichen Mechanismus, der überflüssige Regeln von allein wieder entfernt.
+
+Riesige Konzern-Websites sind dabei nicht das einzige Beispiel. Auch ein Wiener Online-Shop mit fünf Jahren Geschichte, mehreren Relaunches und wechselnden Agenturen sammelt auf diese Weise CSS-Leichen an, die niemand mehr zu löschen wagt, weil unklar ist, ob irgendwo im Footer oder in einer alten Landingpage noch etwas davon abhängt. Genau diese Unsicherheit ist der eigentliche Kern des Problems. Nicht die Menge an CSS allein macht Ärger, sondern die fehlende Übersicht darüber, was gebraucht wird und was nicht.
+
+## Cascade Layers: Ordnung statt Spezifitäts-Kriege
+
+Ein Grund, warum CSS-Dateien so leicht aus dem Ruder laufen, liegt in der sogenannten Spezifität. Vereinfacht gesagt entscheidet CSS bei widersprüchlichen Regeln danach, welcher Selektor stärker ist, ein ID-Selektor schlägt eine Klasse, eine Klasse schlägt ein Element. Arbeiten mehrere Teams mit unterschiedlichen Konventionen an derselben Website, entstehen daraus schnell kleine Kriege. Team A überschreibt Team B mit einem noch spezifischeren Selektor, Team B kontert mit `!important`, und am Ende hat niemand mehr Freude an der Lösung.
+
+Genau hier setzt eine relativ neue CSS-Funktion an, die sogenannten [Cascade Layers](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Cascade_layers), geschrieben als [`@layer`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@layer). Damit lassen sich Stylesheets in explizite Prioritätsebenen unterteilen, zum Beispiel `reset`, `base`, `components` und `utilities`. Das Entscheidende: Ist die Reihenfolge dieser Ebenen einmal festgelegt, gewinnt sie unabhängig von der Spezifität der einzelnen Selektoren innerhalb der Ebenen. Eine Regel aus der `utilities`-Ebene schlägt also automatisch eine Regel aus `base`, selbst wenn der Selektor in `base` eigentlich stärker wäre. Damit fällt der Grund für endlose `!important`-Ketten weitgehend weg, weil die Priorität nicht mehr über Selektor-Tricks, sondern über eine bewusst gewählte Reihenfolge gesteuert wird.
+
+Für die Praxis bedeutet das: Sie definieren am Anfang Ihres globalen Stylesheets die Reihenfolge Ihrer Ebenen, etwa so:
