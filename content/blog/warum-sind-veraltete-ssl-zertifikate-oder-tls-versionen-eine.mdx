@@ -1,0 +1,134 @@
+---
+title: "Veraltete SSL-Zertifikate und TLS-Versionen: Risiko 2026"
+slug: "warum-sind-veraltete-ssl-zertifikate-oder-tls-versionen-eine"
+excerpt: "Veraltete SSL-Zertifikate und alte TLS-Versionen wie TLS 1.0 gelten seit RFC 8996 offiziell als überholt, sind vom BSI verboten und werden für Websites zu einem echten Sicherheits- und Compliance-Risiko."
+featuredSnippetTitle: "Warum sind veraltete SSL-Zertifikate oder TLS-Versionen ein Sicherheitsrisiko?"
+featuredSnippet: "Veraltete TLS-Versionen wie TLS 1.0 und TLS 1.1 gelten seit 2021 offiziell als überholt (RFC 8996) und sind vom deutschen BSI ausdrücklich verboten. Ein abgelaufenes Zertifikat blockiert eine Website in Firefox und Chrome vollständig. Bei Zahlungsprozessen verstößt ein solches Zertifikat zudem gegen PCI DSS und erschwert den Nachweis einer DSGVO-konformen Verschlüsselung nach Artikel 32."
+author: "Dmitry Pashlov"
+publishedAt: "2026-08-31"
+updatedAt: "2026-08-31"
+category: "Technik & Performance"
+cluster: 2
+tags:
+  - "SSL"
+  - "TLS"
+  - "IT-Sicherheit"
+  - "DSGVO"
+  - "Website-Wartung"
+  - "Technik"
+featuredImage: "/images/blog/warum-sind-veraltete-ssl-zertifikate-oder-tls-versionen-eine.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "IETF/RFC Editor - RFC 8996: Deprecating TLS 1.0 and TLS 1.1"
+    url: "https://www.rfc-editor.org/info/rfc8996/"
+  - name: "PCI Security Standards Council Blog - Are You Ready for 30 June 2018? Saying Goodbye to SSL/early TLS"
+    url: "https://blog.pcisecuritystandards.org/are-you-ready-for-30-june-2018-sayin-goodbye-to-ssl-early-tls"
+  - name: "BSI (Bundesamt für Sicherheit in der Informationstechnik) - TR-02102-2: Kryptographische Verfahren - Verwendung von TLS"
+    url: "https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/TechnischeRichtlinien/TR02102/BSI-TR-02102-2.html"
+  - name: "Mozilla Support - What does 'Your connection is not secure' mean?"
+    url: "https://support.mozilla.org/en-US/kb/what-does-your-connection-is-not-secure-mean"
+  - name: "Let's Encrypt - Decreasing Certificate Lifetimes to 45 Days"
+    url: "https://letsencrypt.org/2025/12/02/from-90-to-45"
+keyTakeaways:
+  - "TLS 1.0 und TLS 1.1 gelten seit RFC 8996 offiziell als überholt und sind vom BSI ausdrücklich verboten."
+  - "Abgelaufene Zertifikate blockieren eine Website in Firefox und Chrome komplett, nicht nur mit einer Warnung."
+  - "Seit 30. Juni 2018 verlangt PCI DSS zwingend die Abschaltung von SSL und frühem TLS bei Zahlungsprozessen."
+  - "Die BSI-Richtlinie TR-02102-2 verlangt für neue Systeme TLS 1.3, Mindest-Schlüssellängen und Perfect Forward Secrecy."
+  - "Zertifikatslaufzeiten sinken schrittweise auf 45 Tage, ab Jänner 2026 sind sogar 6-Tage-Zertifikate möglich, ohne Automatisierung geht das nicht mehr."
+conclusionStats:
+  - label: "TLS 1.0/1.1 offiziell überholt seit"
+    value: "RFC 8996 (2021)"
+  - label: "PCI DSS Pflicht-Abschaltung SSL/frühes TLS seit"
+    value: "30.06.2018"
+  - label: "Zertifikatslaufzeit ab Mai 2026"
+    value: "45 Tage"
+  - label: "Kürzeste optionale Laufzeit seit Jänner 2026"
+    value: "6 Tage"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Sind TLS 1.0 und TLS 1.1 heute noch sicher?"
+    answer: "Nein. Die IETF hat TLS 1.0 und TLS 1.1 mit RFC 8996 offiziell für obsolet erklärt, weil beide Versionen keine modernen kryptografischen Verfahren mehr unterstützen. Das deutsche BSI verbietet den Einsatz in seiner Technischen Richtlinie TR-02102-2 ausdrücklich."
+  - question: "Was passiert, wenn ein SSL-Zertifikat abläuft?"
+    answer: "Firefox und Chrome blockieren den Zugriff auf die Website aktiv, statt nur eine Warnung anzuzeigen. Firefox meldet Verbindung ist nicht sicher, Chrome zeigt den Fehler NET::ERR_CERT_DATE_INVALID. Besucherinnen und Besucher erreichen die Seite ohne bewusstes Umgehen der Warnung nicht mehr."
+  - question: "Welche TLS Version verlangt PCI DSS für Zahlungsprozesse?"
+    answer: "Seit 30. Juni 2018 verlangt der PCI Security Standards Council mindestens TLS 1.2, SSL und frühes TLS 1.0 gelten seither nicht mehr als gültige Sicherheitskontrolle. Wer online Zahlungen abwickelt, muss diesen Standard einhalten, um PCI-DSS-konform zu bleiben."
+  - question: "Wie lange sind SSL-Zertifikate von Let's Encrypt künftig gültig?"
+    answer: "Let's Encrypt verkürzt die Standard-Laufzeit schrittweise von 90 auf 45 Tage, optional ab Mai 2026 und verpflichtend ab Februar 2028. Seit Jänner 2026 gibt es sogar optionale Zertifikate mit nur sechs Tagen Laufzeit, weshalb eine automatisierte Erneuerung inzwischen Pflicht ist."
+  - question: "Ist ein grünes Schloss-Symbol im Browser ein Sicherheitsnachweis?"
+    answer: "Nein. Das Schloss-Symbol zeigt lediglich, dass überhaupt eine Verschlüsselung aktiv ist, nicht welche TLS-Version dahinter steckt. Eine Seite kann verschlüsselt wirken und trotzdem ein veraltetes, unsicheres Protokoll wie TLS 1.0 verwenden."
+hookCandidates:
+  - "warum blockiert chrome meine website?"
+  - "ist tls 1.0 auf deiner website erlaubt?"
+  - "erfüllt dein ssl-zertifikat die dsgvo?"
+---
+
+Ein altes Türschloss sieht von außen oft noch tadellos aus. Der Schlüssel dreht sich, die Tür geht zu. Von außen wirkt alles in Ordnung. Trotzdem knackt ein geübter Einbrecher ein Schloss aus den Neunzigern in Sekunden, weil die Technik dahinter längst überholt ist. Genau so verhält es sich mit veralteten SSL-Zertifikaten und alten TLS-Versionen auf einer Website. Von außen läuft die Seite scheinbar normal, das kleine Schloss-Symbol im Browser ist da, aber die Verschlüsselung dahinter kann längst ausgehebelt werden.
+
+**Veraltete TLS-Versionen wie TLS 1.0 und TLS 1.1 gelten seit 2021 offiziell als überholt ([RFC 8996](https://www.rfc-editor.org/info/rfc8996/)) und sind vom deutschen [BSI](https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/TechnischeRichtlinien/TR02102/BSI-TR-02102-2.html) ausdrücklich verboten.** Ein abgelaufenes Zertifikat blockiert eine Website in Firefox und Chrome vollständig. Bei Zahlungsprozessen verstößt ein solches Zertifikat zudem gegen [PCI DSS](https://blog.pcisecuritystandards.org/are-you-ready-for-30-june-2018-sayin-goodbye-to-ssl-early-tls) und erschwert den Nachweis einer DSGVO-konformen Verschlüsselung nach Artikel 32.
+
+![Symbolbild für veraltete SSL-Zertifikate und TLS-Versionen als Sicherheitsrisiko einer Website](/images/blog/warum-sind-veraltete-ssl-zertifikate-oder-tls-versionen-eine.png)
+
+## Was genau bedeutet "veraltet" bei SSL und TLS?
+
+SSL und TLS sind die Protokolle, die den Datenverkehr zwischen einer Website und dem Browser der Besucherin oder des Besuchers verschlüsseln. SSL ist der ältere Name, TLS die Weiterentwicklung, in der Praxis wird beides oft synonym verwendet. Über die Jahre kamen mehrere Versionen dazu, TLS 1.0, TLS 1.1, TLS 1.2 und seit einigen Jahren TLS 1.3. Jede neue Version hat Schwächen der Vorgängerversion behoben.
+
+Das Problem ist, dass die alten Versionen technisch weiterlaufen, obwohl sie längst nicht mehr sicher sind. Ein Server, der noch TLS 1.0 anbietet, öffnet damit ein Einfallstor, das mit heutigen Mitteln relativ leicht ausgenutzt werden kann. Die IETF, das internationale Gremium hinter den Internet-Standards, hat deshalb TLS 1.0 und TLS 1.1 offiziell für obsolet erklärt. Die Begründung ist einfach: Beide Versionen unterstützen keine der heute empfohlenen kryptografischen Verfahren, und das Entfernen der Unterstützung verringert sowohl die Angriffsfläche als auch das Risiko von Fehlkonfigurationen. Wer also noch einen Server betreibt, der diese Protokolle akzeptiert, fährt technisch gesehen mit einem Auto, dessen Bremsen offiziell zurückgerufen wurden.
+
+## Was passiert technisch, wenn ein Zertifikat abläuft?
+
+Viele Betreiberinnen und Betreiber einer Website glauben, ein abgelaufenes Zertifikat sei ein kosmetisches Problem, vielleicht eine kleine Warnung, die man wegklicken kann. Das stimmt nicht mehr. Moderne Browser blockieren den Zugriff auf Websites mit abgelaufenem Zertifikat aktiv. Firefox zeigt eine Warnseite mit dem Hinweis "[Verbindung ist nicht sicher](https://support.mozilla.org/en-US/kb/what-does-your-connection-is-not-secure-mean)" und verweigert standardmäßig den Verbindungsaufbau. Chrome zeigt den technischen Fehler NET::ERR_CERT_DATE_INVALID an und lässt Besucherinnen und Besucher ebenfalls nicht ohne Weiteres auf die Seite.
+
+Für ein Unternehmen bedeutet das im Ernstfall: Die Website ist nicht mehr "unsicher", sie ist schlicht nicht mehr erreichbar. Stellen Sie sich vor, ein Wiener Restaurant hat sein Zertifikat über die Feiertage auslaufen lassen, weil niemand daran gedacht hat. Am Jänner-Wochenende, wenn viele nach einem Tisch für die Neujahrsbrunch-Reservierung suchen, landen potenzielle Gäste stattdessen auf einer roten Warnseite und drehen sofort wieder ab. Ein technisches Detail wird so zu einem echten Umsatzproblem, ganz ohne dass ein Hacker überhaupt aktiv geworden sein muss.
+
+## Die rechtliche Seite: PCI DSS, BSI und die DSGVO
+
+Wer online Zahlungen abwickelt, kommt an einem Datum nicht vorbei: dem 30. Juni 2018. Seit diesem Stichtag verlangt der PCI Security Standards Council, das Gremium hinter dem Sicherheitsstandard der Kreditkartenindustrie, verbindlich die Abschaltung von SSL und "frühem" TLS, also TLS 1.0. Seither dürfen diese Protokolle nicht mehr als gültige Sicherheitskontrolle für die PCI-DSS-Konformität gelten, TLS 1.2 oder höher wird ausdrücklich empfohlen. Wer heute noch alte Protokolle im Zahlungsprozess einsetzt, verstößt damit gegen einen seit Jahren etablierten Standard.
+
+Auch aus deutschem und damit indirekt österreichischem Blickwinkel wird die Lage strenger. Das deutsche BSI, das Bundesamt für Sicherheit in der Informationstechnik, schreibt in seiner aktuellen Technischen Richtlinie TR-02102-2 klare Vorgaben fest: TLS 1.3 ist für neue Systeme verpflichtend, TLS 1.2 ist nur noch mit sogenannten AEAD-Chiffren zulässig, ältere CBC-Verschlüsselungsmodi sind nicht mehr erlaubt. TLS 1.0 und TLS 1.1 sind ausdrücklich verboten. Zusätzlich verlangt die Richtlinie Perfect Forward Secrecy, also einen Verschlüsselungsmechanismus, der verhindert, dass ein einmal kompromittierter Schlüssel auch vergangenen Datenverkehr entschlüsseln kann, sowie Mindest-Schlüssellängen von 3000 Bit bei RSA-Verfahren und 250 Bit bei ECC-Verfahren.
+
+Warum ist das für ein österreichisches Unternehmen relevant, obwohl die BSI-Richtlinie formal eine deutsche Vorgabe ist? Weil die DSGVO in Österreich unmittelbar gilt und in Artikel 32 eine "dem Risiko angemessene Verschlüsselung" verlangt, ohne selbst einen technischen Standard festzulegen. Wer im Streitfall oder bei einer Prüfung nachweisen muss, dass die eigene Verschlüsselung dem Stand der Technik entspricht, orientiert sich in der Praxis an anerkannten technischen Richtlinien wie TR-02102-2. Eine Website, die noch TLS 1.0 zulässt, hat in diesem Punkt schlicht keine gute Ausgangsposition.
+
+## Warum Zertifikate jetzt auch noch kürzer laufen
+
+Als wäre das noch nicht genug, ändert sich gerade auch die Lebensdauer von Zertifikaten selbst. [Let's Encrypt](https://letsencrypt.org/2025/12/02/from-90-to-45), eine der größten Zertifizierungsstellen im Web, verkürzt die Standard-Gültigkeitsdauer schrittweise von bisher 90 Tagen auf künftig 45 Tage. Ab Mai 2026 wird das optional angeboten, ab Februar 2028 verpflichtend. Seit Jänner 2026 gibt es sogar optionale Zertifikate mit nur sechs Tagen Laufzeit. Die Begründung dahinter ist nachvollziehbar: Je kürzer ein Zertifikat gültig ist, desto kleiner ist das Zeitfenster, in dem ein kompromittiertes oder fälschlicherweise ausgestelltes Zertifikat Schaden anrichten kann, bevor es durch Sperrung oder Ablauf automatisch ungültig wird.
+
+Für die Praxis heißt das: Wer Zertifikate bisher einmal im Quartal manuell verlängert hat, kommt mit dieser Vorgehensweise bald nicht mehr durch. Bei 45 oder gar sechs Tagen Laufzeit braucht es zwingend eine automatisierte Erneuerung, etwa über ein Tool wie Certbot oder eine entsprechend konfigurierte Hosting-Umgebung. Manuelles Verlängern wird bei diesen Fristen schlicht zu fehleranfällig, ein einziger vergessener Termin reicht, und die Website steht wie im Beispiel des Wiener Restaurants plötzlich vor einer roten Warnseite.
+
+## Schritt für Schritt: Was Sie jetzt konkret prüfen sollten
+
+Der aktuelle Stand einer Website lässt sich mit wenigen Handgriffen überprüfen.
+
+Erstens: Prüfen Sie, welche TLS-Version Ihr Server aktuell anbietet. Kostenlose Online-Tools zeigen das in Sekunden an, ohne dass Sie selbst tief in die Serverkonfiguration eintauchen müssen. Taucht dort noch TLS 1.0 oder TLS 1.1 in der Liste der unterstützten Protokolle auf, sollte das umgehend deaktiviert werden.
+
+Zweitens: Kontrollieren Sie das Ablaufdatum des aktuellen Zertifikats und wer für die Verlängerung zuständig ist. Ist die Erneuerung automatisiert, oder hängt sie an einer einzelnen Person, die im Urlaub sein könnte, wenn der Termin fällig wird?
+
+Drittens: Klären Sie mit Ihrem Hosting-Anbieter oder Ihrer Agentur, ob im Hintergrund bereits eine automatisierte Erneuerung läuft, etwa über Let's Encrypt und ein entsprechendes Tool. Falls nicht, sollte das noch vor der nächsten Verkürzung der Laufzeiten eingerichtet werden.
+
+Viertens: Wenn über Ihre Website Zahlungen abgewickelt werden, prüfen Sie gezielt die PCI-DSS-Konformität. Ein veraltetes Protokoll an dieser Stelle ist nicht nur ein Sicherheitsrisiko, sondern auch ein handfestes Compliance-Problem gegenüber dem Zahlungsdienstleister.
+
+Fünftens: Dokumentieren Sie den Stand, idealerweise schriftlich. Falls es je zu einer Nachfrage im Rahmen der DSGVO kommt, ist ein Nachweis, dass Sie sich am Stand der Technik orientiert haben, deutlich mehr wert als eine vage Zusicherung.
+
+Wer sich dabei unsicher fühlt oder die technische Prüfung lieber an eine erfahrene Stelle abgeben möchte, kann sich über die [Kontaktseite](/kontakt) direkt an uns wenden. Wir sehen uns die aktuelle Konfiguration gerne unverbindlich an.
+
+## Häufige Irrtümer bei SSL und TLS
+
+Ein verbreiteter Irrtum ist die Annahme, ein grünes Schloss-Symbol im Browser bedeute automatisch, dass alles auf dem neuesten Stand ist. Das Symbol zeigt lediglich, dass überhaupt eine Verschlüsselung aktiv ist, nicht welche Version davon. Eine Seite kann also durchaus "verschlüsselt" wirken und trotzdem ein veraltetes, unsicheres Protokoll verwenden.
+
+Viele kleinere Betriebe gehen zudem davon aus, für Angreifer ohnehin uninteressant zu sein. Automatisierte Scans, die gezielt nach veralteten TLS-Versionen suchen, unterscheiden aber nicht zwischen einem Konzern und einem Einzelunternehmen. Wird eine Schwachstelle gefunden, wird sie in der Regel unabhängig von der Firmengröße ausgenutzt.
+
+Und dann ist da noch der Glaube, ein einmal eingerichtetes Zertifikat halte für immer. Gerade mit der Verkürzung der Laufzeiten auf 45 oder sechs Tage wird das zunehmend zur Falle für alle, die sich auf manuelle Prozesse verlassen.
+
+## Fazit: Kleine Ursache, große Wirkung
+
+Veraltete SSL-Zertifikate und TLS-Versionen sind kein Detail für Technik-Fans, sondern ein handfestes Geschäftsrisiko. Sie betreffen die Erreichbarkeit der Website, die Sicherheit der Kundendaten, die Einhaltung von Zahlungsstandards und im Zweifel auch die Nachweispflicht nach der DSGVO. Der Aufwand, das zu beheben, ist überschaubar, vor allem im Vergleich zum Schaden eines Ausfalls oder einer Datenschutzverletzung.
+
+**Key Takeaways:**
+
+- TLS 1.0 und TLS 1.1 gelten seit RFC 8996 offiziell als überholt und sind vom BSI ausdrücklich verboten.
+- Abgelaufene Zertifikate blockieren eine Website in Firefox und Chrome komplett, nicht nur mit einer Warnung.
+- Seit 30. Juni 2018 verlangt PCI DSS zwingend die Abschaltung von SSL und frühem TLS bei Zahlungsprozessen.
+- Die BSI-Richtlinie TR-02102-2 verlangt für neue Systeme TLS 1.3, Mindest-Schlüssellängen und Perfect Forward Secrecy.
+- Zertifikatslaufzeiten sinken schrittweise auf 45 Tage, ab Jänner 2026 sind sogar 6-Tage-Zertifikate möglich, ohne Automatisierung geht das nicht mehr.
+
+Wenn Sie nicht sicher sind, auf welchem Stand Ihre eigene Website aktuell ist, lohnt sich ein kurzer, unverbindlicher Check. Über die [Kontaktseite](/kontakt) erreichen Sie uns direkt, wir sehen uns die Konfiguration gerne an und sagen Ihnen ehrlich, wo Handlungsbedarf besteht.

@@ -3722,3 +3722,48 @@ quelle: https://blog.logrocket.com/removing-unused-css-code-with-purgecss/
 quelle_name: LogRocket Blog - Guide to removing unused CSS code with PurgeCSS
 geprueft_am: 2026-08-30
 recheck_nach: 2027-02-26
+
+## t87-2026-08-31-414
+cluster: 2
+keywords: warum, sind, veraltete, zertifikate, oder, versionen, eine, gefahr
+aussage: Die IETF hat TLS 1.0 und TLS 1.1 mit RFC 8996 offiziell deprecated (Status 'Historic') und begründet dies damit, dass beide Versionen keine modernen, empfohlenen kryptografischen Verfahren unterstützen; das Entfernen der Unterstützung verringert die Angriffsfläche und das Risiko von Fehlkonfigurationen.
+quelle: https://www.rfc-editor.org/info/rfc8996/
+quelle_name: IETF/RFC Editor - RFC 8996: Deprecating TLS 1.0 and TLS 1.1
+geprueft_am: 2026-08-31
+recheck_nach: 2027-02-27
+
+## t87-2026-08-31-415
+cluster: 2
+keywords: warum, sind, veraltete, zertifikate, oder, versionen, eine, gefahr
+aussage: Der PCI Security Standards Council (Kreditkartenindustrie-Sicherheitsstandard) verlangt seit dem Stichtag 30. Juni 2018 verbindlich die Abschaltung von SSL und 'frühem' TLS (TLS 1.0); danach dürfen diese Protokolle nicht mehr als Sicherheitskontrolle für PCI-DSS-Konformität gelten, TLS 1.2 oder höher wird ausdrücklich empfohlen.
+quelle: https://blog.pcisecuritystandards.org/are-you-ready-for-30-june-2018-sayin-goodbye-to-ssl-early-tls
+quelle_name: PCI Security Standards Council Blog - Are You Ready for 30 June 2018? Saying Goodbye to SSL/early TLS
+geprueft_am: 2026-08-31
+recheck_nach: 2027-02-27
+
+## t87-2026-08-31-416
+cluster: 2
+keywords: warum, sind, veraltete, zertifikate, oder, versionen, eine, gefahr
+aussage: Das deutsche BSI schreibt in der aktuellen Technischen Richtlinie TR-02102-2 (Version 2026-01) vor: TLS 1.3 ist für neue Systeme verpflichtend, TLS 1.2 nur noch mit AEAD-Chiffren zulässig (CBC-Modi nicht mehr erlaubt), TLS 1.0/1.1 sind ausdrücklich verboten, Perfect Forward Secrecy ist Pflicht und es gelten Mindest-Schlüssellängen (RSA ab 3000 Bit, ECC ab 250 Bit). Wer eine DSGVO-konforme Verschlüsselung nach Art. 32 nachweisen will, muss sich an TR-02102 orientieren - relevant auch für AT-Unternehmen, da die DSGVO in Österreich unmittelbar gilt.
+quelle: https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/TechnischeRichtlinien/TR02102/BSI-TR-02102-2.html
+quelle_name: BSI (Bundesamt für Sicherheit in der Informationstechnik) - TR-02102-2: Kryptographische Verfahren - Verwendung von TLS
+geprueft_am: 2026-08-31
+recheck_nach: 2027-02-27
+
+## t87-2026-08-31-417
+cluster: 2
+keywords: warum, sind, veraltete, zertifikate, oder, versionen, eine, gefahr
+aussage: Aktuelle Browser blockieren den Zugriff auf Websites mit abgelaufenem SSL/TLS-Zertifikat aktiv: Firefox zeigt eine 'Verbindung ist nicht sicher'-Warnseite und verweigert standardmäßig den Verbindungsaufbau, Chrome zeigt den Fehler NET::ERR_CERT_DATE_INVALID - ein abgelaufenes Zertifikat macht eine Seite damit faktisch für Besucher unerreichbar, nicht nur 'unsicher'.
+quelle: https://support.mozilla.org/en-US/kb/what-does-your-connection-is-not-secure-mean
+quelle_name: Mozilla Support - What does 'Your connection is not secure' mean?
+geprueft_am: 2026-08-31
+recheck_nach: 2027-02-27
+
+## t87-2026-08-31-418
+cluster: 2
+keywords: warum, sind, veraltete, zertifikate, oder, versionen, eine, gefahr
+aussage: Die Zertifizierungsstelle Let's Encrypt verkürzt die Standard-Gültigkeitsdauer von TLS-Zertifikaten schrittweise von bisher 90 Tagen auf künftig 45 Tage (ab Mai 2026 opt-in, ab Februar 2028 verpflichtend) und bietet bereits seit Januar 2026 optionale 6-Tage-Zertifikate an; Begründung ist die Reduktion des Zeitfensters, in dem ein kompromittiertes oder falsch ausgestelltes Zertifikat Schaden anrichten kann, bevor es durch Sperrung/Ablauf ungültig wird.
+quelle: https://letsencrypt.org/2025/12/02/from-90-to-45
+quelle_name: Let's Encrypt - Decreasing Certificate Lifetimes to 45 Days
+geprueft_am: 2026-08-31
+recheck_nach: 2027-02-27
