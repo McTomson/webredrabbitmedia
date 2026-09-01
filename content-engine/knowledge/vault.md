@@ -3767,3 +3767,57 @@ quelle: https://letsencrypt.org/2025/12/02/from-90-to-45
 quelle_name: Let's Encrypt - Decreasing Certificate Lifetimes to 45 Days
 geprueft_am: 2026-08-31
 recheck_nach: 2027-02-27
+
+## t88-2026-09-01-419
+cluster: 2
+keywords: funktionieren, service, worker, machen, einer, website
+aussage: Ein Service Worker ist ein event-gesteuerter Worker (eine JavaScript-Datei), der gegen einen Origin und einen Pfad registriert wird und als Proxy-Server zwischen Web-App, Browser und Netzwerk fungiert.
+quelle: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
+quelle_name: MDN Web Docs - Service Worker API
+geprueft_am: 2026-09-01
+recheck_nach: 2027-02-28
+
+## t88-2026-09-01-420
+cluster: 2
+keywords: funktionieren, service, worker, machen, einer, website
+aussage: Service Worker laufen in einem eigenen Worker-Kontext auf einem anderen Thread als das Haupt-JavaScript, haben keinen DOM-Zugriff, sind nicht-blockierend/vollstaendig asynchron und stehen nur in sicheren Kontexten (HTTPS oder localhost) zur Verfuegung.
+quelle: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
+quelle_name: MDN Web Docs - Service Worker API
+geprueft_am: 2026-09-01
+recheck_nach: 2027-02-28
+
+## t88-2026-09-01-421
+cluster: 2
+keywords: funktionieren, service, worker, machen, einer, website
+aussage: Der Lebenszyklus eines Service Workers durchlaeuft die Phasen Download, Install (Event 'install', z.B. zum Anlegen von Caches), Activate (Event 'activate', z.B. zum Aufraeumen alter Caches) und Fetch (Event 'FetchEvent' bei Netzwerkanfragen, gesteuert ueber FetchEvent.respondWith()).
+quelle: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
+quelle_name: MDN Web Docs - Service Worker API
+geprueft_am: 2026-09-01
+recheck_nach: 2027-02-28
+
+## t88-2026-09-01-422
+cluster: 2
+keywords: funktionieren, service, worker, machen, einer, website
+aussage: Die Installation eines Service Workers laeuft 'silently, without requiring user permission' ab: Die Seite ruft navigator.serviceWorker.register() auf, der Browser laedt und parst die Datei, und ein aktivierter Service Worker kontrolliert die Seite, die ihn registriert hat, erst ab dem naechsten Seitenaufruf.
+quelle: https://web.dev/learn/pwa/service-workers
+quelle_name: web.dev (Google) - Service workers
+geprueft_am: 2026-09-01
+recheck_nach: 2027-02-28
+
+## t88-2026-09-01-423
+cluster: 2
+keywords: funktionieren, service, worker, machen, einer, website
+aussage: Innerhalb seines Scopes faengt der Service Worker Netzwerkanfragen ab und entscheidet als Proxy, ob die Ressource aus dem Cache (Cache Storage API), aus dem Netzwerk oder durch einen lokalen Algorithmus bereitgestellt wird — das ermoeglicht Offline-Faehigkeit, Push-Benachrichtigungen und Background Sync.
+quelle: https://web.dev/learn/pwa/service-workers
+quelle_name: web.dev (Google) - Service workers
+geprueft_am: 2026-09-01
+recheck_nach: 2027-02-28
+
+## t88-2026-09-01-424
+cluster: 2
+keywords: funktionieren, service, worker, machen, einer, website
+aussage: Laut web.dev kann bereits eine Ladezeit-Verbesserung von 0,1 Sekunden die Conversion um bis zu 10% steigern — ein zentrales Business-Argument fuer den Einsatz von Service-Worker-Caching zur Performance-Optimierung.
+quelle: https://web.dev/learn/pwa/service-workers
+quelle_name: web.dev (Google) - Service workers
+geprueft_am: 2026-09-01
+recheck_nach: 2027-02-28
