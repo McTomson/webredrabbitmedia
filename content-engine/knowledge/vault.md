@@ -3821,3 +3821,48 @@ quelle: https://web.dev/learn/pwa/service-workers
 quelle_name: web.dev (Google) - Service workers
 geprueft_am: 2026-09-01
 recheck_nach: 2027-02-28
+
+## t89-2026-09-02-425
+cluster: 2
+keywords: eine, progressive, wann, ersetzt, eine, native
+aussage: Google definiert in der offiziellen PWA-Checkliste (web.dev), dass eine Progressive Web App installierbar sein muss, eine eigene Offline-Seite bereitstellt (statt der Standard-Browser-Offline-Seite), auf jedem Bildschirm responsiv funktioniert und schnell startet/bleibt.
+quelle: https://web.dev/articles/pwa-checklist
+quelle_name: web.dev (Google) - What makes a good Progressive Web App?
+geprueft_am: 2026-09-02
+recheck_nach: 2027-03-01
+
+## t89-2026-09-02-426
+cluster: 2
+keywords: eine, progressive, wann, ersetzt, eine, native
+aussage: MDN Web Docs beschreibt den Kernunterschied: Eine klassische Website ist 'ein Ort, den man besucht' – keine Präsenz auf dem Gerät, nur über den Browser erreichbar, netzwerkabhängig. Progressive Web Apps können dagegen installiert werden, offline funktionieren und im Hintergrund aktiv sein (z. B. Push-Benachrichtigungen, Hintergrund-Sync).
+quelle: https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/What_is_a_progressive_web_app
+quelle_name: MDN Web Docs - What is a progressive web app?
+geprueft_am: 2026-09-02
+recheck_nach: 2027-03-01
+
+## t89-2026-09-02-427
+cluster: 2
+keywords: eine, progressive, wann, ersetzt, eine, native
+aussage: Damit eine Web-App in Chrome überhaupt installierbar ist, verlangt Chrome zwingend HTTPS, ein registriertes Service Worker mit Fetch-Handler sowie ein Web App Manifest (u. a. Name, Icons, start_url); fehlt eines dieser Kriterien, erscheint kein Installations-Prompt.
+quelle: https://web.dev/articles/install-criteria
+quelle_name: web.dev (Google) - What does it take to be installable?
+geprueft_am: 2026-09-02
+recheck_nach: 2027-03-01
+
+## t89-2026-09-02-428
+cluster: 2
+keywords: eine, progressive, wann, ersetzt, eine, native
+aussage: Seit iOS/iPadOS 16.4 unterstützt Apple Web Push für zum Homescreen hinzugefügte Web-Apps sowie die Badging API – Push-Benachrichtigungen und App-Badge-Zähler funktionieren auf iPhone/iPad damit nur, wenn die PWA zuvor manuell zum Homescreen hinzugefügt wurde (kein automatischer Install-Banner wie bei Android).
+quelle: https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/
+quelle_name: WebKit Blog (Apple) - Web Push for Web Apps on iOS and iPadOS
+geprueft_am: 2026-09-02
+recheck_nach: 2027-03-01
+
+## t89-2026-09-02-429
+cluster: 2
+keywords: eine, progressive, wann, ersetzt, eine, native
+aussage: Safari unterstützt die Background Sync API weder auf macOS noch auf iOS/iPadOS in irgendeiner Version, und Apple/WebKit hat dazu keine öffentliche Positionierung veröffentlicht – ein zentraler technischer Funktionsunterschied zu nativen Apps, der bei Offline-Synchronisation gegen PWA (zumindest auf Apple-Geräten) sprechen kann.
+quelle: https://developer.mozilla.org/en-US/docs/Web/API/Web_Periodic_Background_Synchronization_API
+quelle_name: MDN Web Docs / caniuse-Daten - Background Synchronization API Browser Compatibility
+geprueft_am: 2026-09-02
+recheck_nach: 2027-03-01

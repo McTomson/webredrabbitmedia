@@ -1,0 +1,126 @@
+---
+title: "Progressive Web App (PWA) 2026: Wann sie App ersetzt"
+slug: "was-ist-eine-progressive-web-app-pwa-und-wann"
+excerpt: "Eine Progressive Web App ist eine installierbare, teilweise offline nutzbare Website und ersetzt eine native App vor allem dann, wenn kein tiefer Hardwarezugriff nötig ist."
+featuredSnippetTitle: "Was ist eine Progressive Web App und wann ersetzt sie eine native App?"
+featuredSnippet: "Eine Progressive Web App ist eine Website, die sich wie eine App verhält: installierbar am Homescreen, offline nutzbar und schnell startend auf jedem Gerät. Sie ersetzt eine native App vor allem dann, wenn kein tiefer Zugriff auf Kamera, Bluetooth oder Sensoren nötig ist und eine Codebasis für alle Plattformen reichen soll."
+author: "Dmitry Pashlov"
+publishedAt: "2026-09-02"
+updatedAt: "2026-09-02"
+category: "Technik & Performance"
+tags:
+  - "Progressive Web App"
+  - "PWA"
+  - "Web-Entwicklung"
+  - "iOS"
+  - "Native App"
+  - "Österreich"
+featuredImage: "/images/blog/was-ist-eine-progressive-web-app-pwa-und-wann.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "web.dev (Google) - What makes a good Progressive Web App?"
+    url: "https://web.dev/articles/pwa-checklist"
+  - name: "MDN Web Docs - What is a progressive web app?"
+    url: "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/What_is_a_progressive_web_app"
+  - name: "web.dev (Google) - What does it take to be installable?"
+    url: "https://web.dev/articles/install-criteria"
+  - name: "WebKit Blog (Apple) - Web Push for Web Apps on iOS and iPadOS"
+    url: "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/"
+  - name: "MDN Web Docs / caniuse-Daten - Background Synchronization API Browser Compatibility"
+    url: "https://developer.mozilla.org/en-US/docs/Web/API/Web_Periodic_Background_Synchronization_API"
+keyTakeaways:
+  - "Eine PWA ist eine Website mit App-Eigenschaften: installierbar, offline nutzbar, im Hintergrund aktiv, laut MDN im Kern der Unterschied zur klassischen besuchten Website."
+  - "Chrome verlangt für die Installierbarkeit zwingend HTTPS, einen Service Worker mit Fetch-Handler und ein vollständiges Web App Manifest, sonst erscheint kein Install-Prompt."
+  - "Seit iOS 16.4 unterstützt Apple Web Push und die Badging API für PWAs, aber nur nach manuellem Hinzufügen zum Homescreen, es gibt keinen automatischen Install-Banner wie bei Android."
+  - "Safari unterstützt die Background Sync API auf keinem Apple-Gerät, das ist ein klarer technischer Unterschied zu nativen Apps bei der Offline-Synchronisation."
+  - "Eine PWA ersetzt die native App vor allem dann, wenn kein tiefer Hardwarezugriff nötig ist und Ihre Zielgruppe auch mit den iOS-Einschränkungen gut leben kann."
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Was ist der Unterschied zwischen einer Progressive Web App und einer normalen Website?"
+    answer: "Eine normale Website existiert nur im Browser und braucht immer eine Internetverbindung. Eine Progressive Web App lässt sich installieren, hat ein eigenes Icon am Homescreen und funktioniert dank Service Worker auch teilweise offline."
+  - question: "Welche technischen Voraussetzungen braucht eine PWA, damit sie installierbar ist?"
+    answer: "Chrome verlangt laut web.dev zwingend HTTPS, einen registrierten Service Worker mit Fetch-Handler und ein vollständiges Web App Manifest mit Name, Icons und Start-URL. Fehlt eines davon, erscheint kein Installations-Prompt."
+  - question: "Funktionieren Progressive Web Apps auf dem iPhone genauso wie auf Android?"
+    answer: "Nicht ganz. Seit iOS 16.4 unterstützt Apple Web Push und Badges für PWAs, aber nur nach manuellem Hinzufügen zum Homescreen über die Teilen-Funktion, einen automatischen Install-Banner wie bei Android gibt es nicht."
+  - question: "Kann eine Progressive Web App eine native App komplett ersetzen?"
+    answer: "Bei Anwendungen mit einfachen Inhalten, Buchungen oder einem Kundenbereich meistens ja. Bei tiefem Hardwarezugriff wie Bluetooth, speziellen Kamerafunktionen oder verlässlichem Hintergrund-Sync auf iPhones stößt eine PWA an technische Grenzen."
+  - question: "Warum funktioniert die Offline-Synchronisation bei einer PWA auf dem iPhone nicht zuverlässig?"
+    answer: "Safari unterstützt laut MDN und caniuse-Daten die Background Sync API weder auf macOS noch auf iOS und iPadOS. Offline erfasste Aktionen werden auf Apple-Geräten deshalb nicht automatisch nachgeholt, sobald wieder Internet verfügbar ist."
+hookCandidates:
+  - "website 2026: braucht's noch die app?"
+  - "app 2026: warum die website reicht"
+  - "pwa 2026: app-ersatz oder hype, oder?"
+---
+
+Eine Progressive Web App ist im Grunde eine Website, die sich benimmt wie eine App. Sie läuft im Browser, lässt sich aber auf den Homescreen installieren, funktioniert auch ohne Internetverbindung und startet schnell, egal ob am Handy, Tablet oder Desktop. Sie ersetzt eine native App vor allem dann, wenn Sie keine tiefen Zugriffe auf Kamera, Sensoren oder Bluetooth brauchen und Ihr Budget eher für eine Lösung reicht als für zwei getrennte Apps in App Store und Play Store.
+
+Um diese Antwort einzuordnen, braucht es ein bisschen Kontext. Denn "PWA" ist kein Marketingbegriff, den sich irgendeine Agentur ausgedacht hat, sondern ein von Google und Mozilla klar definiertes technisches Konzept mit konkreten Kriterien. Und genau diese Kriterien entscheiden am Ende, ob eine PWA für Ihr Vorhaben die native App wirklich ersetzen kann oder ob Sie an eine harte Grenze stoßen.
+
+![Progressive Web App PWA Definition und Installation auf dem Smartphone](/images/blog/was-ist-eine-progressive-web-app-pwa-und-wann.png)
+
+## Der Kernunterschied: Website, PWA oder native App?
+
+[MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/What_is_a_progressive_web_app) bringt den Unterschied zwischen klassischer Website und Progressive Web App auf einen einfachen Nenner. Eine klassische Website ist "ein Ort, den man besucht". Sie hat keine eigene Präsenz auf Ihrem Gerät. Sie existiert nur, solange Sie im Browser sind, und funktioniert nur mit Netzverbindung. Eine Progressive Web App dagegen lässt sich installieren, kann offline funktionieren und bleibt auch im Hintergrund aktiv, etwa für Push-Benachrichtigungen oder für einen Hintergrund-Sync, der Daten nachträgt, sobald wieder Netz da ist.
+
+Stellen Sie sich eine Website wie ein Geschäftslokal vor, das Sie jedes Mal neu betreten müssen, wenn Sie etwas brauchen. Eine PWA ist eher wie ein Schlüssel zu diesem Geschäft, den Sie sich in die Tasche stecken. Sie liegt am Homescreen und öffnet sich mit einem Fingertipp. Ein Teil davon funktioniert sogar dann, wenn das Geschäft gerade zugesperrt hat, wenn also keine Internetverbindung da ist.
+
+Google hat diese Idee in der [offiziellen PWA-Checkliste auf web.dev](https://web.dev/articles/pwa-checklist) noch genauer gefasst. Eine gute Progressive Web App muss demnach installierbar sein, sie muss eine eigene Offline-Seite bereitstellen statt der nackten Standard-Fehlerseite des Browsers, sie muss auf jedem Bildschirm responsiv funktionieren, egal ob Smartphone oder großer Monitor, und sie muss schnell starten und auch schnell bleiben. Das sind keine vagen Ideale, sondern Kriterien, an denen sich eine PWA technisch messen lässt.
+
+Eine native App ist die dritte Kategorie. Sie wird eigens für iOS oder Android programmiert und landet im jeweiligen App Store. Sie hat vollen Zugriff auf alles, was das Betriebssystem hergibt, von der Kamera über Bluetooth bis zum Standort im Hintergrund und komplexer Sensorik. Der Preis dafür ist, dass Sie im Zweifel zwei separate Anwendungen bauen und pflegen müssen, eine für iOS und eine für Android, während eine PWA aus einer einzigen Codebasis für alle Plattformen läuft.
+
+## Was eine PWA technisch überhaupt installierbar macht
+
+Damit eine Web-App in Chrome installierbar ist, verlangt der Browser laut [web.dev](https://web.dev/articles/install-criteria) drei Dinge zwingend: eine HTTPS-Verbindung, einen registrierten Service Worker mit einem Fetch-Handler, und ein Web App Manifest, das unter anderem Name, Icons und die Start-URL der Anwendung definiert. Fehlt auch nur eines dieser drei Kriterien, erscheint schlicht kein Installations-Prompt. Chrome fragt den Nutzer dann gar nicht erst, ob er die Seite zum Homescreen hinzufügen möchte.
+
+Klingt nach viel Technik-Kleinkram, oder? Ist es auch, aber genau diese Details entscheiden, ob der Install-Button am Ende überhaupt auftaucht. Das ist der Punkt, an dem viele PWA-Projekte in der Praxis scheitern, bevor sie richtig gestartet sind. HTTPS ist heute Standard und meistens kein Thema mehr. Aber ein Service Worker, der Netzwerk-Anfragen abfängt und zwischenspeichert, muss aktiv programmiert und getestet werden, das passiert nicht von selbst. Und ein Manifest ohne saubere Icon-Sets in mehreren Auflösungen führt dazu, dass die App am Homescreen unscharf oder mit einem Platzhalter-Symbol landet. Das sieht schlicht unprofessionell aus.
+
+Für Wien und Österreich heißt das konkret: Wer eine PWA in Auftrag gibt oder selbst bauen lässt, sollte sich diese drei Punkte technisch abnehmen lassen und nicht einfach glauben, dass "responsive Design" allein schon reicht. Eine responsive Website ohne Service Worker und Manifest ist keine PWA, sie sieht am Handy nur gut aus.
+
+## Der Sonderfall iOS: Was auf dem iPhone anders läuft
+
+Hier wird es für viele Unternehmer in Österreich unangenehm, weil Apple die Spielregeln lange Zeit deutlich enger gehalten hat als Google. Seit iOS und iPadOS 16.4 unterstützt Apple laut dem offiziellen [WebKit-Blog](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/) Web Push für Web-Apps, die zum Homescreen hinzugefügt wurden, sowie die Badging API, also die kleinen roten Zahlen-Badges auf dem App-Icon. Das ist ein echter Fortschritt gegenüber früheren iOS-Versionen.
+
+Der Haken dabei: Diese Funktionen greifen ausschließlich, wenn die PWA vorher manuell zum Homescreen hinzugefügt wurde. Es gibt auf iPhone und iPad keinen automatischen Install-Banner wie bei Android, der den Nutzer von sich aus zum Hinzufügen auffordert. Der Nutzer muss selbst über "Teilen" und dann "Zum Home-Bildschirm" gehen, ein Schritt, den viele Menschen schlicht nicht kennen oder nicht machen, weil ihn niemand aktiv erklärt.
+
+Für Ihr Projekt bedeutet das: Wenn ein relevanter Teil Ihrer Zielgruppe mit dem iPhone unterwegs ist, etwa weil Sie ein Café am Naschmarkt betreiben und viele Ihrer Stammgäste iPhone-Nutzer sind, müssen Sie den Installationsprozess aktiv kommunizieren. Ein kleiner Hinweis-Screen direkt in der Web-App, der zeigt, wie man sie zum Homescreen hinzufügt, ist hier keine nette Zugabe, sondern notwendig, damit Push-Benachrichtigungen und Badges auf iOS überhaupt funktionieren.
+
+## Wo eine PWA an ihre Grenzen stößt: Background Sync
+
+Ein Bereich, in dem PWAs auf Apple-Geräten technisch klar limitiert sind, ist die Offline-Synchronisation. Laut [MDN Web Docs und den zugehörigen caniuse-Kompatibilitätsdaten](https://developer.mozilla.org/en-US/docs/Web/API/Web_Periodic_Background_Synchronization_API) unterstützt Safari die Background Sync API weder auf macOS noch auf iOS und iPadOS, in keiner Version. Apple beziehungsweise WebKit hat dazu bislang auch keine öffentliche Positionierung veröffentlicht. Es gibt also keine Ankündigung, dass sich das in absehbarer Zeit ändert.
+
+Was heißt das praktisch? Background Sync sorgt bei anderen Browsern dafür, dass eine Aktion, die Sie offline ausgeführt haben, etwa das Absenden eines Formulars ohne Internetverbindung, automatisch im Hintergrund nachgeholt wird, sobald das Gerät wieder online ist. Auf Safari und damit auf jedem iPhone und iPad funktioniert dieser Mechanismus nicht. Wenn Ihre Anwendung also stark davon lebt, dass Daten zuverlässig im Hintergrund synchronisiert werden, etwa bei einer Lieferlogistik-App oder einem Werkzeug für Handwerker auf Baustellen ohne WLAN, ist das ein echter Unterschied zu einer nativen App. Das kann gegen eine reine PWA-Lösung sprechen, zumindest solange ein relevanter Teil Ihrer Nutzer auf Apple-Geräten unterwegs ist.
+
+Das ist kein Grund, das PWA-Konzept zu verwerfen. Es ist aber ein Punkt, den Sie vor der Entscheidung klären sollten, und keiner, den man erst nach dem Launch entdecken will.
+
+## Wann eine PWA die native App tatsächlich ersetzt
+
+In der Praxis lässt sich die Entscheidung an wenigen klaren Fragen festmachen. Braucht Ihre Anwendung tiefen Zugriff auf Hardware-Funktionen wie Kamera-APIs mit Spezialmodus, Bluetooth-Geräte oder dauerhaften Standortzugriff im Hintergrund? Dann kommen Sie an einer nativen App kaum vorbei. Geht es dagegen im Kern um Inhalte, Formulare, Buchungen, einen Katalog, eine Terminverwaltung oder einen Kundenbereich, den Nutzer schnell erreichen und gelegentlich offline einsehen wollen, ist eine PWA in den meisten Fällen die wirtschaftlich klügere Wahl.
+
+Ein Restaurant, das seine Speisekarte, Reservierungen und vielleicht ein kleines Treueprogramm anbietet, braucht keine zwei getrennte Store-Apps mit getrenntem Freigabeprozess bei Apple und Google. Eine PWA mit sauberem Manifest, funktionierendem Service Worker und einer echten Offline-Seite deckt das ab, lässt sich in einer Codebasis pflegen und spart Ihnen die jährlichen Entwicklerkonten bei beiden Stores. Für ein Fitnessstudio, das Kursbuchungen und einen digitalen Mitgliedsausweis anbieten will, gilt dasselbe Prinzip, solange kein tiefer Gerätezugriff nötig ist.
+
+Anders sieht es aus, wenn Sie zum Beispiel eine App für Lieferfahrer bauen, die zuverlässig offline Aufträge erfassen und automatisch synchronisieren muss, sobald wieder Netz da ist, und ein großer Teil Ihrer Fahrer mit iPhones arbeitet. Dann trifft Sie die fehlende Background-Sync-Unterstützung auf Apple-Geräten direkt. Eine native Lösung, oder zumindest eine hybride Lösung mit nativem Anteil, ist dann oft der sicherere Weg.
+
+## Schritt für Schritt: So prüfen Sie, ob eine PWA für Sie passt
+
+Bevor Sie sich für eine Progressive Web App entscheiden, lohnt sich eine kurze, ehrliche Prüfung in vier Schritten.
+
+Erstens: Schauen Sie sich Ihre Zielgruppe an. Wie viele Ihrer Kunden nutzen iPhone, wie viele Android? Das entscheidet, wie stark die iOS-Einschränkungen bei Push und Background Sync tatsächlich ins Gewicht fallen.
+
+Zweitens: Listen Sie auf, welche Funktionen Ihre Anwendung wirklich braucht. Reicht responsives Design, Offline-Ansicht der wichtigsten Inhalte und gelegentliche Benachrichtigungen? Oder brauchen Sie zwingend Hardware-Zugriffe, die nur nativ zuverlässig funktionieren?
+
+Drittens: Klären Sie mit Ihrer Agentur oder Ihrem Entwickler konkret, ob HTTPS, Service Worker mit Fetch-Handler und ein vollständiges Manifest mit allen Icon-Größen umgesetzt werden. Lassen Sie sich das nicht nur zusagen, sondern in der Browser-Konsole oder mit den Chrome DevTools tatsächlich zeigen.
+
+Viertens: Wenn Sie iOS-Nutzer erreichen wollen, planen Sie von Anfang an eine kurze, verständliche Anleitung ein, wie man die Web-App zum Homescreen hinzufügt. Ohne diesen Schritt bleiben Push-Benachrichtigungen und Badges auf dem iPhone für die meisten Nutzer unsichtbar, ganz gleich wie gut Ihre Technik im Hintergrund funktioniert.
+
+Wenn Sie sich bei einem dieser Punkte unsicher sind, sprechen Sie das lieber vorab mit uns durch, als nach dem Launch draufzukommen, dass die Installierbarkeit fehlt oder die Offline-Funktion auf dem iPhone anders funktioniert als gedacht. Über unsere [Kontaktseite](/kontakt) erreichen Sie uns direkt für eine erste, unverbindliche Einschätzung Ihres konkreten Vorhabens.
+
+## Key Takeaways
+
+- Eine PWA ist eine Website mit App-Eigenschaften: installierbar, offline nutzbar, im Hintergrund aktiv, laut MDN im Kern der Unterschied zur klassischen "besuchten" Website.
+- Chrome verlangt für die Installierbarkeit zwingend HTTPS, einen Service Worker mit Fetch-Handler und ein vollständiges Web App Manifest, sonst erscheint kein Install-Prompt.
+- Seit iOS 16.4 unterstützt Apple Web Push und die Badging API für PWAs, aber nur nach manuellem Hinzufügen zum Homescreen, es gibt keinen automatischen Install-Banner wie bei Android.
+- Safari unterstützt die Background Sync API auf keinem Apple-Gerät, das ist ein klarer technischer Unterschied zu nativen Apps bei der Offline-Synchronisation.
+- Eine PWA ersetzt die native App vor allem dann, wenn kein tiefer Hardwarezugriff nötig ist und Ihre Zielgruppe auch mit den iOS-Einschränkungen gut leben kann.
+
+Wenn Sie überlegen, ob für Ihr Unternehmen eine Progressive Web App, eine native App oder eine klassische Website die richtige Lösung ist, sprechen wir das gerne konkret anhand Ihres Vorhabens durch. Kontaktieren Sie uns über die [Kontaktseite](/kontakt), wir sehen uns Ihren Fall an und sagen Ihnen ehrlich, was technisch und wirtschaftlich am meisten Sinn ergibt.
