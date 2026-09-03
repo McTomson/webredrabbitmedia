@@ -3866,3 +3866,57 @@ quelle: https://developer.mozilla.org/en-US/docs/Web/API/Web_Periodic_Background
 quelle_name: MDN Web Docs / caniuse-Daten - Background Synchronization API Browser Compatibility
 geprueft_am: 2026-09-02
 recheck_nach: 2027-03-01
+
+## t90-2026-09-03-430
+cluster: 2
+keywords: warum, führt, fehlerhafte, server, konfiguration, permanenten, 500er, fehlern
+aussage: Der HTTP-Standard RFC 9110 definiert die gesamte 5xx-Klasse als Fälle, in denen 'der Server einen gültigen Request nicht erfüllen konnte' - darunter 500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable und 504 Gateway Timeout. Ein 500er ist damit per Definition ein Serverproblem, kein Client-/Content-Fehler.
+quelle: https://www.rfc-editor.org/rfc/rfc9110.html#section-15.6
+quelle_name: IETF RFC 9110 - HTTP Semantics, Section 15.6 (Server Error 5xx)
+geprueft_am: 2026-09-03
+recheck_nach: 2027-03-02
+
+## t90-2026-09-03-431
+cluster: 2
+keywords: warum, führt, fehlerhafte, server, konfiguration, permanenten, 500er, fehlern
+aussage: 500 Internal Server Error ist laut MDN ein generischer Statuscode: Der Server ist auf eine unerwartete Situation gestoßen und kann keinen passenderen 5xx-Code zurückgeben. Das erklärt, warum derselbe Code sowohl kurzfristige Bugs als auch dauerhafte Konfigurationsfehler (z. B. falsche Umgebungsvariablen, kaputte Rewrites) anzeigen kann - ohne dass der Code selbst zwischen 'temporär' und 'permanent' unterscheidet.
+quelle: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/500
+quelle_name: MDN Web Docs - 500 Internal Server Error
+geprueft_am: 2026-09-03
+recheck_nach: 2027-03-02
+
+## t90-2026-09-03-432
+cluster: 2
+keywords: warum, führt, fehlerhafte, server, konfiguration, permanenten, 500er, fehlern
+aussage: Google reduziert laut offizieller Search-Central-Dokumentation aktiv das Crawl-Limit einer Domain, wenn Googlebot eine signifikante Zahl an 500-, 503- oder 429-Statuscodes bzw. Verbindungs-Timeouts feststellt - eine dauerhaft falsch konfigurierte Server-/Deploy-Umgebung führt also nicht nur zu Nutzerfehlern, sondern messbar zu weniger Crawling und in der Folge zu Indexierungs- und Ranking-Verlusten.
+quelle: https://developers.google.com/search/docs/crawling-indexing/large-site-managing-crawl-budget
+quelle_name: Google for Developers - Crawl Budget Management, Google Search Central
+geprueft_am: 2026-09-03
+recheck_nach: 2027-03-02
+
+## t90-2026-09-03-433
+cluster: 2
+keywords: warum, führt, fehlerhafte, server, konfiguration, permanenten, 500er, fehlern
+aussage: Bei Vercel (häufige Hosting-Plattform für Next.js-Projekte im DACH-Raum) haben Serverless/Edge Functions harte Laufzeit-Limits (z. B. 60 Sekunden im Hobby-Plan, 300 Sekunden im Pro-Plan); wird eine Function falsch konfiguriert (zu lange DB-Verbindungen, falsche Region, fehlende Timeouts), bricht die Plattform sie systematisch ab - das erzeugt reproduzierbare 500/504-Fehler bei jedem Aufruf, nicht nur bei Lastspitzen.
+quelle: https://vercel.com/docs/functions/configuring-functions/duration
+quelle_name: Vercel Docs - Configuring Maximum Duration for Vercel Functions
+geprueft_am: 2026-09-03
+recheck_nach: 2027-03-02
+
+## t90-2026-09-03-434
+cluster: 2
+keywords: warum, führt, fehlerhafte, server, konfiguration, permanenten, 500er, fehlern
+aussage: OWASP führt 'Security Misconfiguration' als eigenständige Top-10-Kategorie (A05:2021) und nennt explizit fehlerhafte Standardeinstellungen, unnötig aktivierte Features/Ports und mangelhaftes Error-Handling als Ursachen; laut OWASP wurden 90 % der getesteten Anwendungen auf irgendeine Form von Fehlkonfiguration geprüft, mit über 208.000 zugeordneten Schwachstellen-Fällen (CWEs) - Fehlkonfiguration ist damit keine Seltenheit, sondern ein häufiges, wiederkehrendes Muster.
+quelle: https://owasp.org/Top10/2021/A05_2021-Security_Misconfiguration/
+quelle_name: OWASP Top 10:2021 - A05 Security Misconfiguration
+geprueft_am: 2026-09-03
+recheck_nach: 2027-03-02
+
+## t90-2026-09-03-435
+cluster: 2
+keywords: warum, führt, fehlerhafte, server, konfiguration, permanenten, 500er, fehlern
+aussage: In der offiziellen nginx-Dokumentation zum Upstream-Modul wird beschrieben, dass bei einem Fehler in der Kommunikation mit einem Backend-Server (z. B. falsch konfigurierter proxy_pass/Socket) der Request an den nächsten Upstream-Server weitergereicht wird, bis alle konfigurierten Server durchprobiert wurden - ist aber die komplette Upstream-Konfiguration fehlerhaft (falscher Port, falscher Socket-Pfad, fehlende Berechtigungen), schlagen alle Versuche fehl und der Fehler wird dauerhaft statt sporadisch ausgeliefert.
+quelle: https://nginx.org/en/docs/http/ngx_http_upstream_module.html
+quelle_name: nginx.org - Module ngx_http_upstream_module
+geprueft_am: 2026-09-03
+recheck_nach: 2027-03-02
