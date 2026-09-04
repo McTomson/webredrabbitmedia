@@ -1,0 +1,93 @@
+---
+title: "WOFF2 richtig einsetzen: Schriftdateien optimieren 2026"
+slug: wie-optimiert-man-schriftdateien-durch-das-woff2-format
+excerpt: "WOFF2 komprimiert Schriftdateien mit Brotli und macht Websites spürbar schneller. So setzen Sie das Format samt Subsetting und font-display richtig ein."
+featuredSnippetTitle: "Was bringt das WOFF2-Format für die Ladezeit einer Website?"
+featuredSnippet: "WOFF2 komprimiert Schriftdateien mit dem Brotli-Algorithmus und erreicht laut Google rund 30 Prozent bessere Kompression als das ältere WOFF-Format. Kombiniert mit Font-Subsetting und font-display: swap sinken Dateigröße und wahrgenommene Ladezeit spürbar, was Largest Contentful Paint und Cumulative Layout Shift direkt verbessert."
+author: "Dmitry Pashlov"
+publishedAt: "2026-09-04"
+updatedAt: "2026-09-04"
+category: "Technik & Performance"
+tags: ["WOFF2", "Ladezeit", "Core Web Vitals", "Performance", "Webfonts", "Österreich"]
+featuredImage: /images/blog/wie-optimiert-man-schriftdateien-durch-das-woff2-format.png
+status: draft
+aiAssisted: true
+sources:
+  - name: "web.dev (Google) - Best practices for fonts"
+    url: "https://web.dev/articles/font-best-practices"
+  - name: "W3C - WOFF File Format 2.0"
+    url: "https://www.w3.org/TR/WOFF2/"
+  - name: "Can I Use - WOFF 2.0"
+    url: "https://caniuse.com/woff2"
+keyTakeaways:
+  - "WOFF2 nutzt Brotli-Kompression und ist laut Google rund 30 Prozent kleiner als WOFF mit Flate-Kompression."
+  - "Die W3C-Spezifikation schreibt Brotli für WOFF2 verbindlich vor, es handelt sich also um einen offenen Standard."
+  - "Font-Subsetting reduziert lateinische Schriften oft auf 100 bis 1.000 Glyphen statt tausender ungenutzter Zeichen."
+  - "font-display: swap zeigt Text sofort in einer Fallback-Schrift und verhindert unsichtbaren Text während des Ladens."
+  - "Mit 97,02 Prozent globaler Browser-Unterstützung ist WOFF2 heute der Standardfall, nur der Internet Explorer bleibt außen vor."
+conclusionStats:
+  - label: "Kompressionsvorteil gegenüber WOFF"
+    value: "rund 30 %"
+  - label: "Globale Browser-Unterstützung"
+    value: "97,02 %"
+  - label: "Glyphen bei lateinischen Schriften nach Subsetting"
+    value: "100 bis 1.000"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Ist WOFF2 immer besser als WOFF?"
+    answer: "In fast allen Fällen ja. WOFF2 komprimiert mit Brotli und erreicht laut Google rund 30 Prozent kleinere Dateien als WOFF. Nur wenn Sie den nicht mehr gepflegten Internet Explorer aktiv unterstützen müssen, lohnt sich ein zusätzliches WOFF-Fallback in der src-Liste der @font-face-Regel."
+  - question: "Welche Browser unterstützen WOFF2 nicht?"
+    answer: "Laut Can I Use unterstützen alle aktuellen Major-Browser WOFF2, darunter Chrome ab Version 36, Firefox ab Version 39, Edge ab Version 14 und Safari ab Version 12. Die einzige nennenswerte Lücke ist der Internet Explorer, der das Format nie eingeführt hat."
+  - question: "Was ist Font-Subsetting und lohnt sich das für jede Website?"
+    answer: "Font-Subsetting entfernt Zeichen aus einer Schriftdatei, die auf der Website nie vorkommen, etwa kyrillische oder griechische Glyphen. Für deutschsprachige Seiten genügen meist 100 bis 1.000 lateinische Glyphen, was die Dateigröße deutlich reduziert. Google Fonts übernimmt das automatisch über den unicode-range-Descriptor."
+  - question: "Was macht font-display: swap genau?"
+    answer: "Die CSS-Eigenschaft zeigt Text sofort in einer Fallback-Schrift an, statt ihn bis zum vollständigen Laden der Webfont zu verstecken. Laut web.dev ist das die meistgenutzte Strategie gegen unsichtbaren Text und verbessert die wahrgenommene Ladezeit ohne das Rendering zu blockieren."
+  - question: "Verbessert WOFF2 tatsächlich die Core Web Vitals?"
+    answer: "Ja, indirekt aber messbar. Kleinere Schriftdateien verkürzen die Ladezeit und verbessern damit den Largest Contentful Paint. Da font-display: swap Text sofort anzeigt statt Layout-Sprünge beim Nachladen zu erzeugen, sinkt zusätzlich der Cumulative Layout Shift."
+hookCandidates:
+  - "schriftdateien: warum so schwer?"
+  - "woff2: bringt das wirklich tempo?"
+  - "webfonts: wie schnell geht das?"
+---
+
+Eine Webseite ohne eigene Schriftart wirkt heute schnell unfertig. Aber jede eingebundene Schriftdatei kostet Ladezeit, und genau hier entscheidet sich, ob Ihre Website flott wirkt oder träge lädt. Stellen Sie sich eine Schriftdatei wie einen Koffer für eine Reise vor. Packen Sie ihn mit jedem Kleidungsstück, das Sie theoretisch je brauchen könnten, wird er schwer und unhandlich. Packen Sie nur das, was für die konkrete Reise wirklich nötig ist, kommen Sie leichter und schneller ans Ziel. Beim Verpacken von Schriftdateien heißt dieses Prinzip WOFF2, kombiniert mit Subsetting und der richtigen Ladestrategie.
+
+Wer eine Website in Wien oder anderswo in Österreich betreibt und im Jänner die nächste Runde an Performance-Optimierung plant, landet bei der Frage nach Schriftdateien fast zwangsläufig beim Kürzel WOFF2. Was das genau ist, warum es das ältere WOFF-Format ablöst und wie Sie es in Ihrem Projekt richtig einsetzen, zeigt dieser Leitfaden Schritt für Schritt.
+
+## Was bringt WOFF2 konkret, und wie schnell sehe ich Ergebnisse?
+
+**WOFF2 optimiert Schriftdateien, indem es sie mit dem Brotli-Algorithmus komprimiert. Das erreicht laut [Google](https://web.dev/articles/font-best-practices) im Schnitt rund 30 Prozent bessere Kompression als das ältere WOFF-Format mit Flate-Kompression.** Kommt dazu noch Font-Subsetting, bei dem nur tatsächlich benötigte Zeichen in die Datei wandern, sinkt die Dateigröße noch einmal. Und mit der CSS-Eigenschaft `font-display: swap`, die Text sofort in einer Fallback-Schrift anzeigt, sinkt zusätzlich die wahrgenommene Ladezeit spürbar, oft schon nach einer einzigen Umstellung im Build-Prozess.
+
+Das Ergebnis merken Sie in der Praxis zuerst an den Core Web Vitals. Largest Contentful Paint verbessert sich, weil weniger Daten über die Leitung müssen, und Cumulative Layout Shift sinkt, weil Text nicht mehr unsichtbar auf die fertige Schrift wartet. Für Google Rankings und für Besucher auf einer mobilen Verbindung macht das einen spürbaren Unterschied im Alltag der Seite. Wie Sie solche Performance-Effekte über Lighthouse hinaus messen, zeigt unser Leitfaden zur [echten Website-Performance abseits einzelner Tools](/tipps/wie-misst-man-die-echte-performance-einer-website-abseits).
+
+## Warum WOFF2 das ältere WOFF-Format ablöst
+
+Das ursprüngliche WOFF-Format aus den frühen 2010er Jahren komprimierte Schriftdaten mit Flate, demselben Verfahren, das auch in ZIP-Dateien steckt, solide, aber nicht besonders effizient für die speziellen Datenmuster von Schriftdateien. WOFF2 setzt stattdessen auf Brotli, einen von Google entwickelten Kompressionsalgorithmus, der Muster in den Glyphen-Daten deutlich besser erkennt und ausnutzt.
+
+Das ist kein Zufall und keine Marketingentscheidung eines einzelnen Anbieters. Die offizielle [W3C-Spezifikation](https://www.w3.org/TR/WOFF2/) für WOFF File Format 2.0 schreibt Brotli explizit als Pflicht-Kompressionsalgorithmus für den Font-Datenstream vor. Als Ziel nennt die Spezifikation wörtlich eine verbesserte Kompression und dadurch geringeren Bandbreitenverbrauch gegenüber WOFF 1.0. Wenn ein Font-Anbieter oder ein Build-Tool Ihnen WOFF2-Dateien ausliefert, folgt das also einem offenen, standardisierten Verfahren und keiner proprietären Bastellösung.
+
+Für Sie als Website-Betreiber bedeutet das vor allem eines: Es gibt praktisch keinen Grund mehr, noch WOFF 1.0 auszuliefern, wenn WOFF2 zur Verfügung steht. Die einzige Ausnahme sind sehr alte Browser, und dazu kommen wir gleich.
+
+## Können Sie sich auf die Browser-Unterstützung verlassen?
+
+Eine berechtigte Sorge, bevor man ein Format flächendeckend einsetzt, ist die Frage, ob es beim Besucher überhaupt ankommt. Bei WOFF2 fällt die Antwort eindeutig aus. Laut [Can I Use](https://caniuse.com/woff2) unterstützen alle aktuellen Major-Browser das Format bereits seit Jahren, Chrome ab Version 36, Firefox ab Version 39, Edge ab Version 14 und Safari ab Version 12. In Summe kommt WOFF2 damit auf eine globale Browser-Unterstützung von 97,02 Prozent.
+
+Die einzige nennenswerte Lücke ist der Internet Explorer, der WOFF2 nie unterstützt hat. Für die allermeisten österreichischen Websites, egal ob Handwerksbetrieb, Kanzlei oder Onlineshop, spielt das inzwischen keine Rolle mehr, weil der Internet Explorer selbst von Microsoft seit Jahren nicht mehr gepflegt wird und in den Analytics-Zahlen kaum noch auftaucht. Prüfen Sie das trotzdem kurz in Ihrer eigenen Statistiksoftware, bevor Sie ältere Formate komplett aus dem Projekt entfernen. Ein Blick auf die Browser-Verteilung der letzten drei Monate reicht meist, um sich sicher zu fühlen.
+
+Für den Praxisfall heißt das: WOFF2 als einziges Format auszuliefern ist heute der Standardfall, nicht die Ausnahme. Nur wenn Sie aus geschäftlichen Gründen wirklich noch sehr alte Browser unterstützen müssen, lohnt sich ein zusätzliches WOFF-Fallback, das über die `src`-Liste in der `@font-face`-Regel eingebunden wird.
+
+## Font-Subsetting: Nur laden, was Sie wirklich brauchen
+
+Der zweite große Hebel neben der Kompression selbst ist die Frage, welche Zeichen überhaupt in der Datei landen. Eine komplette Schriftfamilie enthält oft weit mehr, als eine einzelne Website je braucht, etwa griechische und kyrillische Zeichen oder mathematische Symbole und Sonderzeichen für Sprachen, die auf Ihrer Seite nie vorkommen.
+
+Lateinische Schriften, wie sie für deutschsprachige Websites relevant sind, brauchen typischerweise nur 100 bis 1.000 Glyphen. Zum Vergleich, CJK-Schriften für Chinesisch, Japanisch oder Koreanisch können über 10.000 Zeichen umfassen, weil es sich dort um Silben- und Wortzeichen statt eines kleinen Alphabets handelt. Diese Differenz zeigt, wie viel Spielraum beim Subsetting steckt, wenn eine Schriftdatei ursprünglich für den globalen Einsatz gedacht war.
+
+Google Fonts bietet dafür bereits ein automatisches Subsetting über den `unicode-range`-Descriptor an. Praktisch bedeutet das: Der Browser lädt nur den Zeichenbereich, den er für den tatsächlich angezeigten Text braucht, statt der kompletten Schriftdatei. Binden Sie eine Schrift selbst gehostet ein, etwa über ein Tool wie `fonttools`, sollten Sie denselben Gedanken manuell umsetzen. Legen Sie vorab fest, welche Zeichensätze Ihre Website wirklich braucht, in der Regel Standard-Latein plus deutsche Sonderzeichen wie ä, ö, ü und ß, und schneiden Sie den Rest heraus.
+
+Ein typischer Fehler in der Praxis sieht so aus: Ein Unternehmen bindet eine variable Schriftart mit vollem Zeichenumfang und allen Schriftschnitten von Dünn bis Extrafett ein, verwendet auf der Website aber tatsächlich nur zwei Schnitte. Hier lohnt sich ein zweiter Blick auf das CSS und die tatsächlich genutzten `font-weight`-Werte, bevor Sie die Schriftdatei erneut exportieren.
+
+## font-display: swap richtig einsetzen
+
+Kompression und Subsetting sorgen dafür, dass die Schriftdatei kleiner wird. Die dritte Stellschraube betrifft, was passiert, während die Datei noch unterwegs ist. Ohne besondere Einstellung verstecken viele Browser standardmäßig den Text, bis die Webfont vollständig geladen ist, den sogenannten Flash of Invisible Text. Auf einer langsamen mobilen Verbindung kann das mehrere Sekunden dauern, in denen Besucher eine leere oder halbfertige Seite sehen.
+
+Die CSS-Eigenschaft `font-display: swap` löst genau dieses Problem, indem sie den Text sofort in einer Systemschrift oder einer definierten Fallback-Schrift anzeigt und erst nach dem vollständigen Laden zur eigentlichen Webfont wechselt. Laut [web.dev](https://web.dev/articles/font-best-practices) ist das die meistgenutzte Strategie für Webfont-Performance überhaupt, weil sie das Rendering nicht blockiert und Besucher sofort etwas Lesbares sehen. Die Einbindung ist unkompliziert und lässt sich direkt in der `@font-face`-Regel ergänzen:

@@ -3920,3 +3920,48 @@ quelle: https://nginx.org/en/docs/http/ngx_http_upstream_module.html
 quelle_name: nginx.org - Module ngx_http_upstream_module
 geprueft_am: 2026-09-03
 recheck_nach: 2027-03-02
+
+## t91-2026-09-04-436
+cluster: 2
+keywords: optimiert, schriftdateien, durch, woff2, format
+aussage: WOFF2 komprimiert Font-Dateien mit dem Brotli-Algorithmus (statt Flate/zlib wie WOFF 1.0) und erreicht dadurch laut Google/web.dev im Schnitt 30% bessere Kompression als WOFF - das bedeutet weniger Daten zum Download und schnelleres Laden.
+quelle: https://web.dev/articles/font-best-practices
+quelle_name: web.dev (Google) - Best practices for fonts
+geprueft_am: 2026-09-04
+recheck_nach: 2027-03-03
+
+## t91-2026-09-04-437
+cluster: 2
+keywords: optimiert, schriftdateien, durch, woff2, format
+aussage: Die offizielle W3C-WOFF2-Spezifikation schreibt Brotli als Pflicht-Kompressionsalgorithmus fuer den Font-Datenstream vor und nennt als Ziel explizit 'improved compression and thus lower use of network bandwidth' gegenueber WOFF 1.0.
+quelle: https://www.w3.org/TR/WOFF2/
+quelle_name: W3C - WOFF File Format 2.0
+geprueft_am: 2026-09-04
+recheck_nach: 2027-03-03
+
+## t91-2026-09-04-438
+cluster: 2
+keywords: optimiert, schriftdateien, durch, woff2, format
+aussage: WOFF2 wird von allen aktuellen Major-Browsern unterstuetzt (Chrome ab Version 36, Firefox ab 39, Edge ab 14, Safari ab 12) und erreicht laut Can I Use eine globale Browser-Unterstuetzung von 97,02% - der Internet Explorer hat das Format nie unterstuetzt.
+quelle: https://caniuse.com/woff2
+quelle_name: Can I Use - WOFF 2.0
+geprueft_am: 2026-09-04
+recheck_nach: 2027-03-03
+
+## t91-2026-09-04-439
+cluster: 2
+keywords: optimiert, schriftdateien, durch, woff2, format
+aussage: Font-Subsetting reduziert die Dateigroesse durch Beschraenkung auf tatsaechlich benoetigte Glyphen: Lateinische Schriften brauchen typischerweise nur 100-1.000 Glyphen, waehrend CJK-Schriften (Chinesisch/Japanisch/Koreanisch) ueber 10.000 Zeichen umfassen koennen; Google Fonts bietet automatisches Subsetting ueber den unicode-range-Descriptor.
+quelle: https://web.dev/articles/font-best-practices
+quelle_name: web.dev (Google) - Best practices for fonts
+geprueft_am: 2026-09-04
+recheck_nach: 2027-03-03
+
+## t91-2026-09-04-440
+cluster: 2
+keywords: optimiert, schriftdateien, durch, woff2, format
+aussage: Die CSS-Eigenschaft font-display: swap sorgt dafuer, dass Text sofort in einer Fallback-Schrift angezeigt wird und erst nach dem Laden zur Webfont wechselt, statt das Rendering zu blockieren - das ist die von web.dev meistgenutzte Strategie fuer Webfont-Performance.
+quelle: https://web.dev/articles/font-best-practices
+quelle_name: web.dev (Google) - Best practices for fonts
+geprueft_am: 2026-09-04
+recheck_nach: 2027-03-03
