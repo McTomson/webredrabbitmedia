@@ -3965,3 +3965,57 @@ quelle: https://web.dev/articles/font-best-practices
 quelle_name: web.dev (Google) - Best practices for fonts
 geprueft_am: 2026-09-04
 recheck_nach: 2027-03-03
+
+## t92-2026-09-05-441
+cluster: 2
+keywords: warum, sollten, iframes, modernen, business, websites, vermieden, werden
+aussage: MDN warnt offiziell, dass jedes iframe-Element einen eigenen, vollstaendigen Dokument-Kontext (Browsing Context) erzeugt und dadurch zusaetzlichen Speicher und Rechenressourcen benoetigt – bei mehreren iframes auf einer Seite soll man explizit auf Performance-Probleme pruefen.
+quelle: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe
+quelle_name: MDN Web Docs - <iframe>: The Inline Frame element
+geprueft_am: 2026-09-05
+recheck_nach: 2027-03-04
+
+## t92-2026-09-05-442
+cluster: 2
+keywords: warum, sollten, iframes, modernen, business, websites, vermieden, werden
+aussage: Chrome/web.dev-Forschung (Google) zeigt, dass allein das verzoegerte Laden (lazy-loading) von Offscreen-iframes im Median 2-3% Daten-Ersparnis, 1-2% schnelleren First Contentful Paint und am 95. Perzentil 2% besseren First Input Delay bringt – ein Hinweis darauf, wie stark unkontrolliert eingebundene iframes die Ladezeit einer Seite von vornherein belasten.
+quelle: https://web.dev/articles/iframe-lazy-loading
+quelle_name: web.dev (Google Chrome Team) - It's time to lazy-load offscreen iframes!
+geprueft_am: 2026-09-05
+recheck_nach: 2027-03-04
+
+## t92-2026-09-05-443
+cluster: 2
+keywords: warum, sollten, iframes, modernen, business, websites, vermieden, werden
+aussage: Konkrete Fallzahlen von Google/Chrome: Ein eingebettetes YouTube-Video spart beim Lazy-Loading rund 500 KB beim initialen Seitenaufbau, ein Spotify-Embed 514 KB und ein Instagram-Embed rund 100 KB – Ressourcen, die bei klassischer (nicht optimierter) iframe-Einbindung sofort mitgeladen werden und die Ladezeit einer Business-Seite unnoetig verlaengern.
+quelle: https://web.dev/articles/iframe-lazy-loading
+quelle_name: web.dev (Google Chrome Team) - It's time to lazy-load offscreen iframes!
+geprueft_am: 2026-09-05
+recheck_nach: 2027-03-04
+
+## t92-2026-09-05-444
+cluster: 2
+keywords: warum, sollten, iframes, modernen, business, websites, vermieden, werden
+aussage: MDN weist als Accessibility-Anforderung aus, dass jedes iframe ein title-Attribut braucht, das den eingebetteten Inhalt kurz beschreibt – fehlt es, muessen Screenreader-Nutzer erst in das iframe hineinnavigieren, um zu verstehen, was darin steckt, was besonders bei mehreren iframes oder interaktiven Inhalten wie Video/Audio verwirrend und zeitaufwendig ist.
+quelle: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe
+quelle_name: MDN Web Docs - <iframe>: The Inline Frame element (Accessibility concerns)
+geprueft_am: 2026-09-05
+recheck_nach: 2027-03-04
+
+## t92-2026-09-05-445
+cluster: 2
+keywords: warum, sollten, iframes, modernen, business, websites, vermieden, werden
+aussage: Das W3C fuehrt in den offiziellen WCAG-2.0-Techniken (H64) die Verwendung eines aussagekraeftigen title-Attributs auf frame/iframe-Elementen als anerkannte Technik zur Erfuellung von WCAG-Erfolgskriterien; ohne diese Kennzeichnung ist ein iframe fuer assistive Technologien nicht selbsterklaerend.
+quelle: https://www.w3.org/TR/WCAG20-TECHS/H64.html
+quelle_name: W3C - H64: Using the title attribute of the frame and iframe elements
+geprueft_am: 2026-09-05
+recheck_nach: 2027-03-04
+
+## t92-2026-09-05-446
+cluster: 2
+keywords: warum, sollten, iframes, modernen, business, websites, vermieden, werden
+aussage: Laut OWASP ist das Einbetten einer fremden Seite per iframe die technische Grundlage von Clickjacking-Angriffen (UI-Redress-Attacken): Angreifer legen eine unsichtbare/transparente Ziel-Seite per iframe uebereinander, um Klicks des Nutzers auf verdeckte Buttons/Links umzuleiten – als Schutz empfiehlt OWASP primaer die CSP-Direktive frame-ancestors (ergaenzt um den aelteren X-Frame-Options-Header als Fallback), was zusaetzliche Server-/Security-Konfiguration noetig macht, sobald man selbst Inhalte per iframe einbindet oder einbetten laesst.
+quelle: https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html
+quelle_name: OWASP Cheat Sheet Series - Clickjacking Defense Cheat Sheet
+geprueft_am: 2026-09-05
+recheck_nach: 2027-03-04
