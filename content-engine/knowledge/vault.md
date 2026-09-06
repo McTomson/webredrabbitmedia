@@ -4019,3 +4019,57 @@ quelle: https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Chea
 quelle_name: OWASP Cheat Sheet Series - Clickjacking Defense Cheat Sheet
 geprueft_am: 2026-09-05
 recheck_nach: 2027-03-04
+
+## t93-2026-09-06-447
+cluster: 2
+keywords: stellt, sicher, dass, formulare, auch, hoher, serverlast, zuverlässig
+aussage: Serverlose Funktionen (z.B. auf Vercel, wie sie auch Next.js-API-Routes/Route Handler ausführen) haben ein hartes Zeitlimit: Standard sind 300 Sekunden, maximal 800 Sekunden (Pro/Enterprise, in Beta bis 1800 Sekunden) – läuft eine Funktion länger, bricht die Plattform mit HTTP 504 (FUNCTION_INVOCATION_TIMEOUT) ab. Ein Formular-Handler, der synchron auf E-Mail-Versand oder eine langsame Datenbank wartet, kann bei Lastspitzen genau daran scheitern.
+quelle: https://vercel.com/docs/functions/limitations
+quelle_name: Vercel Docs - Functions Limitations
+geprueft_am: 2026-09-06
+recheck_nach: 2027-03-05
+
+## t93-2026-09-06-448
+cluster: 2
+keywords: stellt, sicher, dass, formulare, auch, hoher, serverlast, zuverlässig
+aussage: Zusätzlich gibt es ein Payload-Limit: Serverlose Funktionen akzeptieren maximal 4,5 MB Request-Body; wird das überschritten, kommt HTTP 413 (FUNCTION_PAYLOAD_TOO_LARGE) zurück – relevant, wenn ein Kontaktformular z.B. Datei-Uploads erlaubt.
+quelle: https://vercel.com/docs/functions/limitations
+quelle_name: Vercel Docs - Functions Limitations (Request body size)
+geprueft_am: 2026-09-06
+recheck_nach: 2027-03-05
+
+## t93-2026-09-06-449
+cluster: 2
+keywords: stellt, sicher, dass, formulare, auch, hoher, serverlast, zuverlässig
+aussage: Wenn ein Server überlastet ist, sollte er mit HTTP-Status 429 (Too Many Requests) antworten und dabei optional einen Retry-After-Header mitschicken, der dem Client exakt mitteilt, wie viele Sekunden er warten soll, bevor er es erneut versucht – das ist der offiziell vorgesehene Mechanismus, um Absender bei Lastspitzen kontrolliert zu drosseln statt Anfragen einfach zu verlieren.
+quelle: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/429
+quelle_name: MDN Web Docs - 429 Too Many Requests
+geprueft_am: 2026-09-06
+recheck_nach: 2027-03-05
+
+## t93-2026-09-06-450
+cluster: 2
+keywords: stellt, sicher, dass, formulare, auch, hoher, serverlast, zuverlässig
+aussage: Für automatische Wiederholungsversuche (z.B. im Formular-Frontend, wenn der Server kurz nicht antwortet) empfiehlt Google Cloud explizit 'exponential backoff with jitter': Wartezeit verdoppelt sich pro Versuch (z.B. 1s, 2s, 4s...) bis zu einer Obergrenze, plus zufälliger Zufallsanteil (Jitter). Ohne Jitter senden alle wartenden Clients gleichzeitig erneut und erzeugen einen 'Thundering-Herd'-Effekt, der den gerade erst erholten Server erneut überlastet.
+quelle: https://docs.cloud.google.com/storage/docs/retry-strategy
+quelle_name: Google Cloud Docs - Retry strategy (Cloud Storage)
+geprueft_am: 2026-09-06
+recheck_nach: 2027-03-05
+
+## t93-2026-09-06-451
+cluster: 2
+keywords: stellt, sicher, dass, formulare, auch, hoher, serverlast, zuverlässig
+aussage: Um zu verhindern, dass ein bei Lastspitzen wiederholt gesendetes Formular zweimal verarbeitet wird (z.B. doppelte Bestätigungsmail oder doppelter Datenbankeintrag), setzen robuste APIs auf Idempotency-Keys: Der Client schickt einen eindeutigen Schlüssel mit; der Server speichert das Ergebnis der ersten Anfrage für diesen Schlüssel (bei Stripe 24 Stunden) und liefert bei jedem Retry mit demselben Schlüssel exakt dieselbe Antwort zurück, statt die Aktion erneut auszuführen.
+quelle: https://docs.stripe.com/api/idempotent_requests
+quelle_name: Stripe Docs - Idempotent requests
+geprueft_am: 2026-09-06
+recheck_nach: 2027-03-05
+
+## t93-2026-09-06-452
+cluster: 2
+keywords: stellt, sicher, dass, formulare, auch, hoher, serverlast, zuverlässig
+aussage: Die architektonisch robusteste Lösung gegen Lastspitzen ist eine Warteschlange (Message Queue) zwischen Formular-Endpunkt und Verarbeitung: Der Empfang der Formulardaten wird von der eigentlichen Verarbeitung (E-Mail-Versand, CRM-Eintrag) entkoppelt. Amazon SQS z.B. speichert eingehende Nachrichten redundant auf mehreren Servern und puffert Lastspitzen, sodass auch bei einem kurzzeitigen Ausfall der Verarbeitung keine Formulardaten verloren gehen ('at-least-once delivery').
+quelle: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html
+quelle_name: AWS Docs - What is Amazon Simple Queue Service?
+geprueft_am: 2026-09-06
+recheck_nach: 2027-03-05
