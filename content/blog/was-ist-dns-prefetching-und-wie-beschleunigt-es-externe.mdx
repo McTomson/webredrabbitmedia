@@ -1,0 +1,60 @@
+---
+title: "DNS-Prefetching 2026: So beschleunigt es externe Links"
+slug: "was-ist-dns-prefetching-und-wie-beschleunigt-es-externe"
+excerpt: "DNS-Prefetching lässt den Browser fremde Domains schon im Hintergrund auflösen, bevor ein Nutzer klickt. Das spart bei jedem externen Link spürbar Ladezeit."
+featuredSnippetTitle: "Was ist DNS-Prefetching und wie beschleunigt es externe Links?"
+featuredSnippet: "DNS-Prefetching ist ein HTML-Hinweis, der den Browser anweist, die Namensauflösung einer fremden Domain vorab im Hintergrund durchzuführen, während der Besucher die Seite noch liest. Klickt der Nutzer später auf einen externen Link zu dieser Domain, entfällt die DNS-Auflösung, und die Verbindung steht spürbar schneller."
+author: "Dmitry Pashlov"
+publishedAt: "2026-09-07"
+updatedAt: "2026-09-07"
+category: "Technik & Performance"
+tags: ["DNS-Prefetching", "Ladezeit", "Performance", "Resource Hints", "Core Web Vitals", "Österreich"]
+featuredImage: "/images/blog/was-ist-dns-prefetching-und-wie-beschleunigt-es-externe.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "MDN Web Docs - rel=\"dns-prefetch\" HTML attribute value"
+    url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/dns-prefetch"
+  - name: "MDN Web Docs - Using dns-prefetch"
+    url: "https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/dns-prefetch"
+  - name: "web.dev (Google) - Assist the browser with resource hints"
+    url: "https://web.dev/learn/performance/resource-hints"
+  - name: "The Chromium Projects - DNS Prefetching (Design Document)"
+    url: "https://www.chromium.org/developers/design-documents/dns-prefetching/"
+  - name: "MDN Web Docs - Speculative loading"
+    url: "https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Speculative_loading"
+keyTakeaways:
+  - "DNS-Prefetching löst den Domainnamen einer externen Ressource schon vor dem Klick auf, spart also genau den Zeitanteil der Namensauflösung."
+  - "Ein Link-Tag im Kopfbereich der Seite genügt: rel=\"dns-prefetch\" href=\"//domain.tld\", pro Domain nur einmal setzen."
+  - "Am meisten bringt es bei Domains, die erst spät oder nur bei Interaktion geladen werden, etwa YouTube-Einbettungen, Zahlungsanbieter oder externe Fonts."
+  - "Für die wichtigste externe Ressource einer Seite ist preconnect oft wirksamer, weil es zusätzlich TCP- und TLS-Handshake vorbereitet."
+  - "Zu viele Prefetch-Hints gleichzeitig verpuffen wirkungslos oder verlangsamen sogar, deshalb gezielt einsetzen statt pauschal auf jede Domain anzuwenden."
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Was ist der Unterschied zwischen dns-prefetch und preconnect?"
+    answer: "dns-prefetch löst nur den Domainnamen in eine IP-Adresse auf. preconnect geht weiter und baut zusätzlich TCP-Verbindung und bei HTTPS gleich den TLS-Handshake auf. preconnect ist wirksamer, aber teurer für den Browser, deshalb nur für die wichtigsten ein bis zwei Domains einsetzen."
+  - question: "Wie viele dns-prefetch-Hints sollte eine Seite maximal setzen?"
+    answer: "Eine Handvoll reicht in der Regel aus, etwa für Schriftarten, Analytics und eingebettete Widgets. Wer zwanzig oder mehr Domains gleichzeitig prefetcht, verteilt die Browser-Ressourcen zu dünn, sodass der Effekt für einzelne Domains kaum noch messbar ist."
+  - question: "Bringt DNS-Prefetching auch etwas für interne Links auf der eigenen Domain?"
+    answer: "Nein. Der Browser hat die IP-Adresse der aktuell besuchten Domain bereits aufgelöst, sobald die Seite lädt. DNS-Prefetching lohnt sich ausschließlich für fremde Domains, zu denen noch keine Verbindung besteht."
+  - question: "Funktioniert DNS-Prefetching in allen Browsern gleich?"
+    answer: "Die grundlegende Unterstützung ist laut MDN in allen modernen Browsern vorhanden, Chrome hat das Verfahren laut den Chromium-Projektdokumenten ursprünglich mitentwickelt. Details wie die maximale Anzahl paralleler Anfragen unterscheiden sich jedoch je nach Browser-Engine."
+  - question: "Kann DNS-Prefetching die Privatsphäre der Besucher beeinträchtigen?"
+    answer: "Ja, indirekt. Da der Browser Domains auflöst, bevor ein Klick erfolgt, erfährt der DNS-Resolver bereits, welche externen Dienste eine Seite potenziell einbindet. Für sensible Drittanbieter-Domains lohnt sich deshalb eine bewusste Auswahl statt eines pauschalen Prefetch für alles."
+hookCandidates:
+  - "was ist dns-prefetching eigentlich?"
+  - "externe links jetzt schneller, oder?"
+  - "website: schnellere links dank dns?"
+---
+
+Stellen Sie sich vor, Sie müssen zum ersten Mal zu einem Kunden in Wien Liesing fahren, den Sie noch nie besucht haben. Wenn Sie die Adresse erst im Auto nachschlagen, während der Motor schon läuft, verlieren Sie wertvolle Minuten. Schauen Sie die Adresse aber schon zu Hause nach, während Sie noch Ihre Unterlagen packen, fahren Sie los, sobald Sie einsteigen. Genau nach diesem Prinzip funktioniert DNS-Prefetching im Web.
+
+**DNS-Prefetching ist ein HTML-Hinweis an den Browser, die Namensauflösung für eine fremde Domain schon durchzuführen, während der Besucher die aktuelle Seite noch liest.** Der Browser übersetzt die Domain im Hintergrund in eine IP-Adresse, bevor der Nutzer den externen Link überhaupt anklickt. Klickt er dann darauf, entfällt dieser Schritt. Die Verbindung steht spürbar schneller.
+
+Für Betreiber von Websites mit vielen externen Einbindungen, etwa Google Fonts, YouTube-Videos oder Zahlungsanbieter, ist das eine der günstigsten Stellschrauben für gefühlte Geschwindigkeit. Schauen wir uns an, wie es technisch funktioniert, wo es wirklich etwas bringt und wo es reine Kosmetik bleibt.
+
+## Was passiert bei DNS-Prefetching genau?
+
+Jedes Mal, wenn ein Browser eine Ressource von einer Domain laden möchte, muss er zuerst herausfinden, unter welcher IP-Adresse diese Domain erreichbar ist. Dieser Vorgang heißt DNS-Auflösung. Er passiert normalerweise erst in dem Moment, in dem die Ressource tatsächlich gebraucht wird, also wenn der Nutzer auf einen Link klickt oder eine eingebettete Ressource geladen werden muss.
+
+DNS-Prefetching verschiebt genau diesen einen Schritt nach vorne. Laut [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/dns-prefetch) ist `dns-prefetch` ein Hinweis an den Browser, dass eine Seite Ressourcen von einer fremden Domain benötigen wird. Der Browser führt die DNS-Auflösung für diese Domain daraufhin vorab und im Hintergrund durch, während der Nutzer die Seite noch liest. Technisch sieht das im Kopfbereich einer Seite so aus:

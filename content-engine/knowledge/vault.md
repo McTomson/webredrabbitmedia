@@ -4073,3 +4073,48 @@ quelle: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGui
 quelle_name: AWS Docs - What is Amazon Simple Queue Service?
 geprueft_am: 2026-09-06
 recheck_nach: 2027-03-05
+
+## t94-2026-09-07-453
+cluster: 2
+keywords: prefetching, beschleunigt, externe, links
+aussage: dns-prefetch ist ein Hinweis an den Browser, dass eine Seite Ressourcen von einer fremden Domain (Origin) benoetigen wird, worauf der Browser die DNS-Aufloesung fuer diese Domain vorab und im Hintergrund durchfuehrt, waehrend der Nutzer die Seite noch liest.
+quelle: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/dns-prefetch
+quelle_name: MDN Web Docs - rel="dns-prefetch" HTML attribute value
+geprueft_am: 2026-09-07
+recheck_nach: 2027-03-06
+
+## t94-2026-09-07-454
+cluster: 2
+keywords: prefetching, beschleunigt, externe, links
+aussage: dns-prefetch ist nur fuer fremde (cross-origin) Domains sinnvoll: Die eigene Domain wurde vom Browser bereits aufgeloest, bevor er den Hinweis im Code ueberhaupt verarbeitet, daher bringt ein dns-prefetch auf die eigene Domain keinen Vorteil.
+quelle: https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/dns-prefetch
+quelle_name: MDN Web Docs - Using dns-prefetch
+geprueft_am: 2026-09-07
+recheck_nach: 2027-03-06
+
+## t94-2026-09-07-455
+cluster: 2
+keywords: prefetching, beschleunigt, externe, links
+aussage: Im Unterschied zu 'preconnect' (das DNS-Aufloesung, TCP-Verbindungsaufbau UND TLS-Handshake vorab erledigt) fuehrt dns-prefetch NUR den ersten Schritt aus, die DNS-Aufloesung. Google empfiehlt preconnect nur fuer die wichtigsten kritischen externen Verbindungen zu reservieren, waehrend dns-prefetch als 'deutlich guenstigerer' Hinweis fuer alle uebrigen externen (cross-origin) Links/Domains einer Seite genutzt werden kann.
+quelle: https://web.dev/learn/performance/resource-hints
+quelle_name: web.dev (Google) - Assist the browser with resource hints
+geprueft_am: 2026-09-07
+recheck_nach: 2027-03-06
+
+## t94-2026-09-07-456
+cluster: 2
+keywords: prefetching, beschleunigt, externe, links
+aussage: Chrome-Nutzer sparen im Schnitt rund 200 Millisekunden bei der Navigation zu einem Link, dessen Domain per DNS-Prefetching bereits vorab aufgeloest wurde (sofern die Domain nicht kuerzlich schon besucht wurde); ohne Prefetching liegen 'worst case'-Verzoegerungen bei der DNS-Aufloesung regelmaessig ueber 1 Sekunde, in ungünstigen Faellen (Paketverlust, ueberlastete Resolver) zwischen 1 und 10 Sekunden.
+quelle: https://www.chromium.org/developers/design-documents/dns-prefetching/
+quelle_name: The Chromium Projects - DNS Prefetching (Design Document)
+geprueft_am: 2026-09-07
+recheck_nach: 2027-03-06
+
+## t94-2026-09-07-457
+cluster: 2
+keywords: prefetching, beschleunigt, externe, links
+aussage: dns-prefetch wird als das mit Abstand leichtgewichtigste 'speculative loading'-Verfahren eingestuft: Es fuehrt ausschliesslich die DNS-Aufloesung aus, waehrend preconnect zusaetzlich TCP- und TLS-Handshake vornimmt und prefetch/prerender ganze Ressourcen bzw. Seiten im Hintergrund laden - Empfehlung ist, dns-prefetch fuer ALLE externen Verbindungen einzusetzen und preconnect nur fuer die wichtigsten.
+quelle: https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Speculative_loading
+quelle_name: MDN Web Docs - Speculative loading
+geprueft_am: 2026-09-07
+recheck_nach: 2027-03-06
