@@ -4118,3 +4118,39 @@ quelle: https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Speculat
 quelle_name: MDN Web Docs - Speculative loading
 geprueft_am: 2026-09-07
 recheck_nach: 2027-03-06
+
+## t95-2026-09-08-458
+cluster: 2
+keywords: warum, eine, versionskontrolle, github, projekten, standard
+aussage: GitHub zählt (Stand September 2025) mehr als 180 Millionen Entwickler:innen und 630 Millionen Repositories weltweit; 2025 wurden allein rund 1 Milliarde Commits gepusht (+25,1% ggü. Vorjahr) und im Schnitt 43,2 Millionen Pull Requests pro Monat gemerged (+23% ggü. Vorjahr) – Versionskontrolle via Git/GitHub ist damit de facto der globale Standard-Workflow für Softwareentwicklung, nicht ein optionales Tool für Großteams.
+quelle: https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/
+quelle_name: GitHub Octoverse 2025 (offizieller GitHub Blog)
+geprueft_am: 2026-09-08
+recheck_nach: 2027-03-07
+
+## t95-2026-09-08-459
+cluster: 2
+keywords: warum, eine, versionskontrolle, github, projekten, standard
+aussage: Die offizielle Git-Dokumentation definiert Versionskontrolle als System, das Änderungen an Dateien über die Zeit aufzeichnet, sodass man frühere Versionen wiederherstellen, Änderungen vergleichen, nachvollziehen kann wer wann ein Problem verursacht hat – und sich bei Fehlern oder Datenverlust 'easily recover' kann, mit sehr geringem Mehraufwand ('very little overhead'). Das gilt laut Doku ausdrücklich auch für Einzelentwickler und Designer, nicht nur große Teams.
+quelle: https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control
+quelle_name: Git - Official Documentation (git-scm.com), Kapitel 'About Version Control'
+geprueft_am: 2026-09-08
+recheck_nach: 2027-03-07
+
+## t95-2026-09-08-460
+cluster: 2
+keywords: warum, eine, versionskontrolle, github, projekten, standard
+aussage: Vercel (die Plattform, auf der auch Next.js-Projekte wie web.redrabbit.media typischerweise deployt werden) verknüpft Deployments direkt mit Git: Jeder Branch-Push erzeugt automatisch ein Preview-Deployment, jeder Merge in den Produktions-Branch ein Produktions-Deployment, und Änderungen lassen sich per 'Instant Rollback' sofort rückgängig machen – diese Kernfunktionen (Preview pro Pull Request, sichere Rollbacks) setzen technisch zwingend eine Git-Anbindung voraus.
+quelle: https://vercel.com/docs/git
+quelle_name: Vercel Docs - Deploying Git Repositories with Vercel
+geprueft_am: 2026-09-08
+recheck_nach: 2027-03-07
+
+## t95-2026-09-08-461
+cluster: 2
+keywords: warum, eine, versionskontrolle, github, projekten, standard
+aussage: Die Wirtschaftskammer Österreich (WKO) bezeichnet ordentliche Datensicherung als eines der wesentlichsten Elemente der IT-Sicherheit für Unternehmen und beschreibt Backups als 'das letzte Auffangnetz bei Datenverlust' – etwa bei defekten Festplatten, Ransomware-Trojanern oder gestohlenen Geräten. Versionskontrolle erfüllt für Code-/Projektstände genau diese Schutzfunktion (verteilte Historie statt Single-Point-of-Failure auf einem Rechner).
+quelle: https://www.wko.at/it-sicherheit/anleitung-zur-datensicherung
+quelle_name: WKO - Anleitung zur Datensicherung
+geprueft_am: 2026-09-08
+recheck_nach: 2027-03-07
