@@ -1,0 +1,183 @@
+---
+title: 'Webhooks 2026: Website-Daten automatisch synchronisieren'
+slug: wie-funktionieren-webhooks-bei-der-synchronisation-von-website-daten
+excerpt: >-
+  Webhooks synchronisieren Website-Daten in Echtzeit: Statt per Polling
+  ständig nachzufragen, meldet sich das System automatisch bei jeder
+  Änderung. So funktioniert das technisch und worauf Sie bei der Sicherheit
+  achten müssen.
+featuredSnippetTitle: Wie funktionieren Webhooks bei der Synchronisation von Website-Daten?
+featuredSnippet: >-
+  Ein Webhook ist ein automatischer HTTP-POST-Callback, der bei einem
+  Ereignis, etwa einer Content-Änderung im CMS, ausgelöst wird und Daten
+  aktiv an eine registrierte URL sendet. Statt dass eine Website ständig per
+  Polling nachfragt, erfährt sie sofort von Änderungen und kann gezielt nur
+  den betroffenen Cache aktualisieren.
+author: Dmitry Pashlov
+publishedAt: '2026-09-09'
+updatedAt: '2026-09-09'
+category: Technik & Performance
+tags:
+  - Webhooks
+  - Website-Synchronisation
+  - Next.js
+  - Performance
+  - CMS
+  - Wien
+featuredImage: /images/blog/wie-funktionieren-webhooks-bei-der-synchronisation-von-website-daten.png
+status: draft
+aiAssisted: true
+sources:
+  - name: Red Hat - What is a webhook?
+    url: 'https://www.redhat.com/en/topics/automation/what-is-a-webhook'
+  - name: Vercel Docs - Deploy Hooks
+    url: 'https://vercel.com/docs/deploy-hooks'
+  - name: GitHub Docs - Validating webhook deliveries
+    url: 'https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries'
+  - name: 'Next.js Docs - Functions: revalidateTag'
+    url: 'https://nextjs.org/docs/app/api-reference/functions/revalidateTag'
+  - name: Hookdeck - When to Use Webhooks, WebSocket, Pub/Sub, and Polling
+    url: 'https://hookdeck.com/webhooks/guides/when-to-use-webhooks'
+keyTakeaways:
+  - >-
+    Ein Webhook pusht Daten aktiv per HTTP-POST an eine registrierte URL,
+    sobald ein Ereignis eintritt, statt dass die Website in Intervallen
+    selbst nachfragen muss.
+  - >-
+    Polling verschwendet laut einer Auswertung von über 30 Millionen
+    Anfragen in 98,5 Prozent der Fälle Ressourcen und verbraucht rund
+    66-mal mehr Kapazität als Webhooks.
+  - >-
+    Vercel Deploy Hooks lösen mit einem einfachen HTTP-POST-Request ein
+    komplettes neues Deployment aus, ganz ohne Authentifizierung, weshalb
+    die URL trotzdem geheim gehalten werden sollte.
+  - >-
+    Eingehende Webhook-Payloads sollten immer über eine zeitkonstante
+    Vergleichsfunktion wie crypto.timingSafeEqual geprüft werden, um
+    Timing-Angriffe zu verhindern.
+  - >-
+    In Next.js aktualisiert revalidateTag() gezielt nur den betroffenen
+    Cache-Bereich, sodass nach einer Content-Änderung nicht die gesamte
+    Website neu gebaut werden muss.
+conclusionStats:
+  - label: Ergebnislose Poll-Requests
+    value: 98,5 %
+  - label: Analysierte Poll-Requests
+    value: 30 Mio.+
+  - label: Ressourcenverbrauch Polling vs. Webhook
+    value: 66x höher
+autoGenerateFAQs: false
+customFAQs:
+  - question: Was ist der Unterschied zwischen einem Webhook und einer klassischen API?
+    answer: >-
+      Bei einer klassischen API fragt Ihre Website aktiv nach, ob es etwas
+      Neues gibt, das nennt man Polling. Ein Webhook dreht das um: Die
+      Datenquelle meldet sich von selbst per HTTP-POST, sobald tatsächlich
+      ein Ereignis eintritt, ohne dass jemand nachfragen muss.
+  - question: Sind Webhooks sicher?
+    answer: >-
+      Ja, sofern die Payload geprüft wird. Anbieter wie GitHub signieren
+      jede Nachricht mit einem HMAC-Hash, den der Empfänger vor der
+      Verarbeitung zeitkonstant vergleichen sollte. Ohne diese
+      Signaturprüfung kann jeder, der die URL kennt, gefälschte Ereignisse
+      einschleusen.
+  - question: Was ist ein Vercel Deploy Hook?
+    answer: >-
+      Ein Vercel Deploy Hook ist eine eindeutige, projekt- und
+      branchgebundene URL, die per HTTP-POST-Request ein neues Deployment
+      auslöst. Sie wird meist im CMS hinterlegt, sodass eine
+      Content-Änderung automatisch einen neuen Build startet.
+  - question: Warum sind Webhooks schneller als Polling?
+    answer: >-
+      Weil bei Webhooks nur dann eine Anfrage entsteht, wenn sich
+      tatsächlich etwas geändert hat. Beim Polling wird in festen
+      Abständen nachgefragt, egal ob es Neuigkeiten gibt oder nicht, was
+      laut einer ausgewerteten Studie in den allermeisten Fällen ins Leere
+      läuft.
+  - question: Wie richte ich einen Webhook in einer Next.js-Website ein?
+    answer: >-
+      Sie legen einen Route-Handler an, etwa unter /api/revalidate, der ein
+      geheimes Token oder eine Signatur prüft und danach revalidateTag()
+      für das betroffene Content-Tag aufruft. Diese URL tragen Sie dann als
+      Webhook-Ziel im CMS oder in der Datenbank ein.
+hookCandidates:
+  - "webhook: woher weiß die website das?"
+---
+
+Stellen Sie sich vor, Sie erwarten ein wichtiges Paket. Die eine Möglichkeit ist, alle zehn Minuten die Wohnungstür zu öffnen und nachzusehen, ob es schon da liegt. Die andere ist, dass der Postbote klingelt, sobald er es abgestellt hat. Klingt einleuchtend, oder? Genau diesen Unterschied macht ein Webhook bei der Synchronisation von Website-Daten aus. Statt dass Ihre Website ständig bei einer Datenbank oder einem CMS nachfragt, ob sich etwas geändert hat, meldet sich das andere System von selbst, sobald es etwas zu melden gibt.
+
+Für Betreiber von Websites in Wien und ganz Österreich ist das kein akademisches Detail, sondern ein handfester Unterschied bei Ladezeiten und Serverkosten. Wer versteht, wie Webhooks funktionieren, kann seine Website so bauen, dass Änderungen im CMS binnen Sekunden live sind, ohne dass irgendjemand manuell auf "Veröffentlichen" und dann noch einmal auf "Neu laden" klicken muss.
+
+## Direkt zur Antwort: Was macht ein Webhook bei der Datensynchronisation?
+
+![Diagramm zur Funktionsweise von Webhooks bei der automatischen Synchronisation von Website-Daten](/images/blog/wie-funktionieren-webhooks-bei-der-synchronisation-von-website-daten.png)
+
+Ein Webhook ist laut [Red Hat](https://www.redhat.com/en/topics/automation/what-is-a-webhook) ein user-definierter HTTP-Callback: Ein Ereignis in einem System, etwa eine Änderung im CMS, löst automatisch eine HTTP-POST-Anfrage an eine vorher registrierte URL eines anderen Systems aus. Die Daten werden aktiv an das Zielsystem gepusht, statt dass dieses in Intervallen selbst nachfragen muss. Bei Websites bedeutet das: Ändert sich Content in der Datenquelle, erfährt die Website davon sofort und kann ihren Cache gezielt aktualisieren, ohne die gesamte Seite neu aufzubauen.
+
+## Push statt Pull: Der Kernunterschied, den Sie verstehen sollten
+
+Um Webhooks wirklich zu verstehen, hilft es, sich das Gegenmodell anzusehen: das Polling. Beim Polling fragt Ihre Website in festen Abständen aktiv bei einer anderen Quelle nach, ob es etwas Neues gibt, egal ob sich tatsächlich etwas verändert hat oder nicht. Das ist so, als würden Sie jede einzelne Minute aus dem Fenster schauen, ob der Postbote schon kommt. Meistens kommt er nicht, und Sie haben trotzdem den Aufwand.
+
+Ein Webhook dreht dieses Prinzip um. Die Datenquelle, zum Beispiel Ihr Content-Management-System, weiß selbst am besten, wann sich etwas geändert hat. Also übernimmt sie die Initiative und schickt eine Nachricht an Ihre Website, sobald ein Ereignis eintritt, etwa das Speichern eines neuen Blogartikels oder die Änderung eines Preises im Onlineshop. Die Website muss nicht raten, wann sie nachfragen soll, sie wartet einfach, bis die Nachricht eintrifft.
+
+## Die Zahlen hinter dem Polling-Problem
+
+Wie teuer ständiges Nachfragen wirklich ist, zeigt eine laut [Hookdeck](https://hookdeck.com/webhooks/guides/when-to-use-webhooks) ausgewertete Studie von Zapier über mehr als 30 Millionen Poll-Requests. Das Ergebnis: 98,5 Prozent dieser Abfragen blieben ergebnislos, es gab schlicht nichts Neues zu melden. Gleichzeitig verbrauchte dieses Vorgehen laut derselben Auswertung rund 66-mal mehr Ressourcen als ereignisbasierte Push-Mechanismen wie Webhooks.
+
+Rechnen wir das für ein realistisches Beispiel durch. Angenommen, eine Website fragt einmal pro Minute bei einem CMS nach, ob sich Inhalte geändert haben. Das sind 1.440 Anfragen pro Tag, über 43.000 im Monat. Wenn an einem durchschnittlichen Tag zwei oder drei Artikel tatsächlich aktualisiert werden, war praktisch jede einzelne dieser tausenden Anfragen umsonst. Bei einem Webhook fallen genau diese zwei oder drei Ereignisse an, weil nur dann tatsächlich etwas passiert ist. Der Unterschied zwischen 1.440 unnötigen Anfragen und drei echten Ereignissen ist der Grund, warum moderne Systeme fast durchgehend auf Webhooks setzen, sobald es um Datensynchronisation geht.
+
+## Vercel Deploy Hooks: So löst eine Content-Änderung ein neues Deployment aus
+
+Ein besonders praktisches Beispiel für Websites, die auf Next.js und Vercel laufen, sind sogenannte [Deploy Hooks](https://vercel.com/docs/deploy-hooks). Vercel stellt dafür eindeutige, projekt- und branchgebundene URLs bereit, die per HTTP-POST-Request ein neues Deployment auslösen, und zwar ohne Authentifizierung oder besonderen Payload. Diese URL wird typischerweise in einem Headless-CMS oder einer Datenbank hinterlegt.
+
+In der Praxis sieht das so aus: Eine Redakteurin trägt in ihrem CMS einen neuen Beitrag ein und klickt auf "Veröffentlichen". Das CMS ruft daraufhin die hinterlegte Deploy-Hook-URL bei Vercel auf. Vercel startet automatisch einen neuen Build, und wenige Minuten später ist die aktualisierte Version der Website live, ganz ohne dass jemand manuell ins Vercel-Dashboard gehen und den Deploy-Button drücken musste. Für ein Restaurant in Wien, das seine Speisekarte über ein CMS pflegt, heißt das konkret: Die neue Mittagskarte ist online, sobald sie im System gespeichert wird, nicht erst nach dem nächsten geplanten Update.
+
+Wichtig dabei ist, dass diese Deploy-Hook-URLs zwar keine eingebaute Authentifizierung besitzen, aber trotzdem als geheim behandelt werden sollten. Wer die URL kennt, kann ein Deployment auslösen. Das ist selten ein echtes Sicherheitsrisiko, weil dabei keine Daten preisgegeben werden, aber unnötige Deployments kosten Bauzeit und sollten vermieden werden.
+
+## Sicherheit zuerst: Warum die Signaturprüfung kein optionales Extra ist
+
+Sobald ein Webhook echte Daten überträgt, etwa bei GitHub-Integrationen oder Formular-Eingängen, wird Sicherheit zum entscheidenden Thema. [GitHub](https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries) signiert seine Webhook-Payloads, sofern ein Secret konfiguriert wurde, im Header X-Hub-Signature-256 mit einem HMAC-SHA256-Hash, der aus dem Secret und den Rohdaten des Payloads gebildet wird. Der Empfänger soll diesen Hash vor jeder Verarbeitung prüfen.
+
+Entscheidend ist dabei die Art des Vergleichs. GitHub empfiehlt ausdrücklich eine zeitkonstante Vergleichsfunktion, etwa crypto.timingSafeEqual, statt eines einfachen Gleichheitszeichens. Der Grund ist ein sogenannter Timing-Angriff: Ein einfacher String-Vergleich bricht bei der ersten falschen Stelle ab, wodurch minimal unterschiedliche Antwortzeiten entstehen, aus denen ein Angreifer Zeichen für Zeichen das richtige Secret erraten könnte. Eine zeitkonstante Funktion vergleicht immer die volle Länge, egal ob die Zeichen übereinstimmen oder nicht, und schließt diese Lücke.
+
+Für Sie als Websitebetreiber bedeutet das eine klare Empfehlung: Wenn Sie oder Ihre Agentur einen eigenen Webhook-Empfänger bauen, muss die Signaturprüfung mit einer zeitkonstanten Methode zwingend Teil des Codes sein. Ein Webhook ohne Signaturprüfung ist im Grunde eine offene Tür, durch die jeder, der die URL errät oder abfängt, gefälschte Ereignisse einschleusen könnte.
+
+## Webhooks in Next.js: Vom Trigger bis zum aktualisierten Cache
+
+Bei einer modernen [Next.js](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)-Website läuft die Synchronisation über Webhooks meist über einen eigenen Route-Handler, häufig unter einem Pfad wie /api/revalidate. Dieser Handler wird von der Datenquelle aufgerufen, sobald sich Inhalte geändert haben, und er nimmt dabei ein geheimes Token entgegen, das nur der Anwendung selbst bekannt ist. Erst wenn dieses Token stimmt, wird die Anfrage überhaupt verarbeitet.
+
+Ist die Anfrage bestätigt, ruft die Anwendung die Funktion revalidateTag() auf. Diese Funktion leert den serverseitigen Cache gezielt für ein bestimmtes Content-Tag. Der entscheidende Vorteil dabei: Es wird nicht die komplette Website neu aufgebaut, sondern nur jener Teil, der sich tatsächlich geändert hat. Ändert sich zum Beispiel nur ein einzelner Blogartikel, muss nicht die gesamte Produktübersicht eines Onlineshops neu berechnet werden. Das spart Rechenzeit auf dem Server und sorgt dafür, dass Besucher fast immer eine schnell geladene, aber trotzdem aktuelle Seite sehen.
+
+## Schritt für Schritt: So richten Sie eine Webhook-Synchronisation praktisch ein
+
+Wenn Sie eine solche Synchronisation für Ihre Website aufsetzen wollen, hilft es, die Sache in klare Einzelschritte zu zerlegen, statt alles auf einmal zu planen.
+
+Zuerst legen Sie in Ihrer Next.js-Anwendung einen Route-Handler an, etwa unter /api/revalidate, der eingehende POST-Anfragen entgegennimmt. Dieser Handler prüft als Erstes ein geheimes Token oder, bei Diensten wie GitHub, die HMAC-Signatur im Header, bevor überhaupt irgendetwas weiterverarbeitet wird.
+
+Danach entscheiden Sie, welches Content-Tag durch welches Ereignis aktualisiert werden soll. Ein Blogartikel bekommt zum Beispiel das Tag "blog", eine Produktseite das Tag "shop". Beim Speichern eines Eintrags im CMS wird dann genau dieses Tag im Aufruf von revalidateTag() mitgegeben.
+
+Anschließend tragen Sie im CMS oder in der Datenbank die URL Ihres Route-Handlers als Webhook-Ziel ein, meist unter einer Einstellung wie "Webhooks" oder "Outgoing Webhooks". Läuft Ihre Website auf Vercel und Sie wollen zusätzlich ein komplettes Deployment auslösen, hinterlegen Sie dort auch die Vercel Deploy-Hook-URL als zweites Ziel.
+
+Zum Schluss testen Sie den gesamten Ablauf einmal bewusst. Ändern Sie testweise einen Inhalt und prüfen Sie, ob die Anfrage im Log Ihres Route-Handlers ankommt und ob die Signatur korrekt geprüft wird. Schauen Sie danach nach, ob die Website tatsächlich innerhalb weniger Sekunden den neuen Inhalt zeigt. Erst wenn dieser Testlauf sauber durchläuft, sollten Sie sich auf die Automatisierung verlassen.
+
+## Häufige Fallen bei Webhooks, die Sie sich sparen können
+
+In der Praxis tauchen bei Webhook-Integrationen immer wieder dieselben Probleme auf. Der häufigste Fehler ist, die Signaturprüfung wegzulassen, weil "es ja eh nur intern verwendet wird". Genau diese Annahme ist gefährlich, weil eine öffentlich erreichbare URL nie wirklich nur intern ist.
+
+Genauso oft fehlt auf der Empfängerseite jede Fehlerbehandlung. Schlägt die Verarbeitung eines Webhooks fehl, etwa weil der Server gerade überlastet ist, sollte das absendende System eine Möglichkeit zur Wiederholung haben. Viele Anbieter, darunter GitHub, versuchen fehlgeschlagene Zustellungen automatisch erneut, aber nur, wenn der Empfänger den Fehler auch korrekt mit einem entsprechenden HTTP-Statuscode meldet, statt stillschweigend nichts zu tun.
+
+Und dann ist da noch das zu grobe Cache-Tag, das mehr Schaden anrichtet als es nützt. Wer bei jeder kleinen Änderung den kompletten Cache der Website leert statt nur das betroffene Tag, verliert genau den Geschwindigkeitsvorteil, den die gezielte Synchronisation eigentlich bringen sollte. Hier zahlt sich eine saubere Planung der Content-Tags von Anfang an aus.
+
+## Key Takeaways
+
+- Ein Webhook pusht Daten aktiv per HTTP-POST an eine registrierte URL, sobald ein Ereignis eintritt, statt dass die Website in Intervallen selbst nachfragen muss.
+- Polling verschwendet laut einer ausgewerteten Studie von über 30 Millionen Anfragen in 98,5 Prozent der Fälle Ressourcen und verbraucht rund 66-mal mehr Kapazität als Webhooks.
+- Vercel Deploy Hooks lösen mit einem einfachen HTTP-POST-Request ein komplettes neues Deployment aus, ganz ohne Authentifizierung, weshalb die URL trotzdem geheim gehalten werden sollte.
+- Eingehende Webhook-Payloads sollten immer über eine zeitkonstante Vergleichsfunktion wie crypto.timingSafeEqual geprüft werden, um Timing-Angriffe zu verhindern.
+- In Next.js aktualisiert revalidateTag() gezielt nur den betroffenen Cache-Bereich, sodass nach einer Content-Änderung nicht die gesamte Website neu gebaut werden muss.
+
+## Fazit
+
+Webhooks sind kein Nischenthema für Entwickler, sondern der Grund, warum moderne Websites Inhalte in Sekunden statt Minuten aktualisieren, ohne dabei unnötig Serverressourcen zu verbrennen. Wer eine Website mit CMS-Anbindung oder Onlineshop betreibt und regelmäßig Inhalte aktualisiert, sollte wissen, wie diese Mechanik funktioniert, auch wenn die technische Umsetzung natürlich Aufgabe der Agentur oder des Entwicklungsteams bleibt.
+
+Wenn Sie sich nicht sicher sind, ob Ihre Website Änderungen aktuell über Polling, manuelle Deployments oder bereits über eine saubere Webhook-Synchronisation abbildet, sprechen Sie uns einfach an. Wir sehen uns Ihre bestehende Lösung gerne unverbindlich an und sagen Ihnen ehrlich, wo eine Umstellung tatsächlich etwas bringt und wo nicht. Kontaktieren Sie uns über unsere [Kontaktseite](/kontakt).

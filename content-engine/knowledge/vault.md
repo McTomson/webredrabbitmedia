@@ -4154,3 +4154,48 @@ quelle: https://www.wko.at/it-sicherheit/anleitung-zur-datensicherung
 quelle_name: WKO - Anleitung zur Datensicherung
 geprueft_am: 2026-09-08
 recheck_nach: 2027-03-07
+
+## t96-2026-09-09-462
+cluster: 2
+keywords: funktionieren, webhooks, synchronisation, website, daten
+aussage: Ein Webhook ist ein user-definierter HTTP-Callback: Ein Ereignis in einem System löst eine automatische HTTP-POST-Anfrage an eine vorher registrierte URL eines anderen Systems aus – im Gegensatz zu Polling muss der Empfänger nicht aktiv nachfragen, sondern die Daten werden ihm 'gepusht'.
+quelle: https://www.redhat.com/en/topics/automation/what-is-a-webhook
+quelle_name: Red Hat - What is a webhook?
+geprueft_am: 2026-09-09
+recheck_nach: 2027-03-08
+
+## t96-2026-09-09-463
+cluster: 2
+keywords: funktionieren, webhooks, synchronisation, website, daten
+aussage: Vercel Deploy Hooks sind eindeutige, projekt- und branch-gebundene URLs, die per HTTP-POST-Request einen neuen Build/Deployment auslösen – ohne Authentifizierung oder Payload –, typischerweise verknüpft mit einem Headless-CMS oder einer Datenbank, damit Content-Änderungen automatisch eine Website-Synchronisation anstoßen.
+quelle: https://vercel.com/docs/deploy-hooks
+quelle_name: Vercel Docs - Deploy Hooks
+geprueft_am: 2026-09-09
+recheck_nach: 2027-03-08
+
+## t96-2026-09-09-464
+cluster: 2
+keywords: funktionieren, webhooks, synchronisation, website, daten
+aussage: GitHub signiert Webhook-Payloads (sofern ein Secret konfiguriert ist) im Header X-Hub-Signature-256 mit einem HMAC-SHA256-Hash aus Secret und Rohdaten des Payloads; Empfänger sollen diesen Hash vor jeder Verarbeitung mit einer zeitkonstanten Vergleichsfunktion (z. B. crypto.timingSafeEqual) prüfen, statt eines einfachen '==', um Timing-Angriffe zu verhindern.
+quelle: https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries
+quelle_name: GitHub Docs - Validating webhook deliveries
+geprueft_am: 2026-09-09
+recheck_nach: 2027-03-08
+
+## t96-2026-09-09-465
+cluster: 2
+keywords: funktionieren, webhooks, synchronisation, website, daten
+aussage: In Next.js dient ein Webhook typischerweise dazu, eine Route-Handler-API (z. B. /api/revalidate) mit einem geheimen, nur der App bekannten Token aufzurufen, der die Anfrage validiert, bevor revalidateTag() den serverseitigen Cache gezielt für ein bestimmtes Content-Tag leert – so werden nur geänderte Inhalte neu geholt statt der gesamten Seite.
+quelle: https://nextjs.org/docs/app/api-reference/functions/revalidateTag
+quelle_name: Next.js Docs - Functions: revalidateTag
+geprueft_am: 2026-09-09
+recheck_nach: 2027-03-08
+
+## t96-2026-09-09-466
+cluster: 2
+keywords: funktionieren, webhooks, synchronisation, website, daten
+aussage: Beim reinen Pull-Modell (Polling) fragt das empfangende System in festen Intervallen aktiv nach Änderungen, was laut einer Auswertung von Zapier über 30 Millionen Poll-Requests dazu führte, dass 98,5 % der Abfragen ergebnislos blieben und rund 66-mal mehr Ressourcen verbrauchten als ereignisbasierte Push-Mechanismen wie Webhooks.
+quelle: https://hookdeck.com/webhooks/guides/when-to-use-webhooks
+quelle_name: Hookdeck - When to Use Webhooks, WebSocket, Pub/Sub, and Polling
+geprueft_am: 2026-09-09
+recheck_nach: 2027-03-08
