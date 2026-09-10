@@ -4199,3 +4199,57 @@ quelle: https://hookdeck.com/webhooks/guides/when-to-use-webhooks
 quelle_name: Hookdeck - When to Use Webhooks, WebSocket, Pub/Sub, and Polling
 geprueft_am: 2026-09-09
 recheck_nach: 2027-03-08
+
+## t97-2026-09-10-467
+cluster: 2
+keywords: unterschied, zwischen, clientseitigem, serverseitigem, tracking
+aussage: Google unterscheidet offiziell: Beim clientseitigen Tagging (Client-side Tagging) sendet der Browser/das Gerät die Event-Daten direkt per HTTP-Request an Google-Produkte bzw. Drittanbieter, wodurch der Websitebetreiber wenig Kontrolle darüber hat, welche Daten an Dritte gehen ('the user's browser communicates directly to third parties, which can make it challenging to control the information that is shared').
+quelle: https://support.google.com/tagmanager/answer/13387731?hl=en
+quelle_name: Google Tag Manager Hilfe: Client-side tagging vs. server-side tagging
+geprueft_am: 2026-09-10
+recheck_nach: 2027-03-09
+
+## t97-2026-09-10-468
+cluster: 2
+keywords: unterschied, zwischen, clientseitigem, serverseitigem, tracking
+aussage: Beim serverseitigen Tagging gibt der Websitebetreiber 'volle Kontrolle über die an Dritte verteilten Daten': Innerhalb des Server-Containers können personenbezogene Daten (PII) entfernt werden, und wenn der Server-Container im First-Party-Kontext betrieben wird, bleiben Website-Daten und Cookies auf der eigenen Domain – Drittanbieter erhalten dann keinen Zugriff auf Third-Party-Cookies.
+quelle: https://support.google.com/tagmanager/answer/13387731?hl=en
+quelle_name: Google Tag Manager Hilfe: Client-side tagging vs. server-side tagging
+geprueft_am: 2026-09-10
+recheck_nach: 2027-03-09
+
+## t97-2026-09-10-469
+cluster: 2
+keywords: unterschied, zwischen, clientseitigem, serverseitigem, tracking
+aussage: Serverseitiges Tagging verschiebt laut offizieller Google-Dokumentation die Mess-Tag-Instrumentierung von der Website/App weg auf einen serverseitigen Verarbeitungscontainer (z. B. auf Google Cloud Platform oder einer anderen Plattform). Vorteile laut Google: weniger clientseitig ausgeführter Code (Performance) und besser geschützte/gesicherte Besucherdaten in einer selbstverwalteten Server-Umgebung.
+quelle: https://developers.google.com/tag-platform/tag-manager/server-side/overview
+quelle_name: Google for Developers: Server-side tagging overview
+geprueft_am: 2026-09-10
+recheck_nach: 2027-03-09
+
+## t97-2026-09-10-470
+cluster: 2
+keywords: unterschied, zwischen, clientseitigem, serverseitigem, tracking
+aussage: Safari (WebKit) blockiert seit iOS/iPadOS 13.4 und Safari 13.1 auf macOS (Update vom 24.03.2020) Third-Party-Cookies vollständig und standardmäßig ('Cookies for cross-site resources are now blocked by default across the board'); Safari war damit laut WebKit der erste marktrelevante Browser mit vollständiger Drittanbieter-Cookie-Blockade per Default. Das ist ein zentraler technischer Grund, warum rein clientseitiges (Cookie-basiertes) Tracking an Genauigkeit verliert, während serverseitiges Tracking im First-Party-Kontext davon nicht betroffen ist.
+quelle: https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/
+quelle_name: WebKit Blog: Full Third-Party Cookie Blocking and More
+geprueft_am: 2026-09-10
+recheck_nach: 2027-03-09
+
+## t97-2026-09-10-471
+cluster: 2
+keywords: unterschied, zwischen, clientseitigem, serverseitigem, tracking
+aussage: Die österreichische Datenschutzbehörde unterscheidet: Technisch nicht notwendige Cookies – dazu zählen Tracking- und Werbe-Cookies zur Analyse des Nutzerverhaltens – sind 'aus technischer Sicht nicht notwendig und daher einwilligungsbedürftig'; nur unbedingt erforderliche (technisch notwendige) Cookies dürfen ohne Einwilligung gesetzt werden. Wirtschaftliche Notwendigkeit (Finanzierung der Website über personalisierte Werbung) rechtfertigt laut Behörde keine Ausnahme von der Einwilligungspflicht.
+quelle: https://dsb.gv.at/faqs/datenschutz-cookies
+quelle_name: Datenschutzbehörde Österreich (dsb.gv.at): FAQ Datenschutz & Cookies
+geprueft_am: 2026-09-10
+recheck_nach: 2027-03-09
+
+## t97-2026-09-10-472
+cluster: 2
+keywords: unterschied, zwischen, clientseitigem, serverseitigem, tracking
+aussage: Werbe-/Content-Blocker (z. B. uBlock Origin, AdBlock Plus) erkennen clientseitige Tracking-Skripte wie gtag.js oder Anfragen an Google-Tag-Manager-Domains als Tracker und blockieren sie direkt im Browser; dadurch gehen bei rein clientseitigem Tracking laufend Messdaten verloren. Läuft die Datenerhebung stattdessen zuerst über einen serverseitigen Container auf der eigenen Domain, wirkt der Request wie ein First-Party-Aufruf und wird von vielen Blockern nicht erkannt.
+quelle: https://stape.io/blog/avoiding-google-tag-manager-ga4-blocking-by-adblockers
+quelle_name: Stape.io Blog: Avoid Google Tag Manager and GA4 blocking by ad blockers
+geprueft_am: 2026-09-10
+recheck_nach: 2027-03-09

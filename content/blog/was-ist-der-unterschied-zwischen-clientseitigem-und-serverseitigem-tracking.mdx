@@ -1,0 +1,122 @@
+---
+title: "Clientseitiges vs. Serverseitiges Tracking: Unterschied 2026"
+slug: "was-ist-der-unterschied-zwischen-clientseitigem-und-serverseitigem-tracking"
+excerpt: "Clientseitiges Tracking sendet Browserdaten direkt an Google und Meta, serverseitiges Tracking leitet sie zuerst über einen eigenen Server. Der Unterschied entscheidet über Datenqualität bei Safari und Werbeblockern."
+featuredSnippetTitle: "Was ist der Unterschied zwischen clientseitigem und serverseitigem Tracking?"
+featuredSnippet: "Clientseitiges Tracking sendet Messdaten direkt vom Browser an Google, Meta und Co., ohne dass Websitebetreiber steuern können, was übermittelt wird. Serverseitiges Tracking leitet diese Daten zuerst über einen eigenen Server auf der eigenen Domain, wo personenbezogene Daten gefiltert oder anonymisiert werden können, bevor sie an Drittanbieter weitergehen."
+author: "Dmitry Pashlov"
+publishedAt: "2026-09-10"
+updatedAt: "2026-09-10"
+category: "Technik & Performance"
+cluster: 2
+tags: ["Tracking", "Datenschutz", "Serverseitiges Tagging", "Google Tag Manager", "DSGVO Österreich"]
+featuredImage: "/images/blog/was-ist-der-unterschied-zwischen-clientseitigem-und-serverseitigem-tracking.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "Google Tag Manager Hilfe: Client-side tagging vs. server-side tagging"
+    url: "https://support.google.com/tagmanager/answer/13387731?hl=en"
+  - name: "Google for Developers: Server-side tagging overview"
+    url: "https://developers.google.com/tag-platform/tag-manager/server-side/overview"
+  - name: "WebKit Blog: Full Third-Party Cookie Blocking and More"
+    url: "https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/"
+  - name: "Datenschutzbehörde Österreich (dsb.gv.at): FAQ Datenschutz & Cookies"
+    url: "https://dsb.gv.at/faqs/datenschutz-cookies"
+  - name: "Stape.io Blog: Avoid Google Tag Manager and GA4 blocking by ad blockers"
+    url: "https://stape.io/blog/avoiding-google-tag-manager-ga4-blocking-by-adblockers"
+keyTakeaways:
+  - "Clientseitiges Tracking sendet Daten direkt vom Browser an Drittanbieter, mit wenig Kontrolle für den Websitebetreiber darüber, was tatsächlich übermittelt wird."
+  - "Serverseitiges Tracking leitet die Daten zuerst über einen eigenen Server-Container, wo personenbezogene Daten gefiltert werden können, bevor sie an Dritte gehen."
+  - "Seit dem 24. März 2020 blockiert Safari Third-Party-Cookies standardmäßig vollständig, was clientseitiges Tracking auf iPhones spürbar unschärfer macht."
+  - "Werbeblocker erkennen First-Party-Requests eines Server-Containers oft nicht als Tracker, während klassische GTM-Skripte häufig direkt blockiert werden."
+  - "Serverseitiges Tagging ersetzt keine Cookie-Einwilligung, es verbessert nur die Datenqualität bei Nutzern, die bereits zugestimmt haben."
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Ist serverseitiges Tracking auch ohne Cookie-Banner DSGVO-konform?"
+    answer: "Nein. Serverseitiges Tracking ändert nichts an der Einwilligungspflicht, wie die österreichische Datenschutzbehörde klarstellt. Technisch nicht notwendige Cookies bleiben zustimmungspflichtig, unabhängig davon, ob die Daten über den Browser oder einen eigenen Server laufen."
+  - question: "Warum blockiert Safari clientseitiges Tracking?"
+    answer: "Safari blockiert seit dem WebKit Update vom 24. März 2020 Third-Party-Cookies standardmäßig vollständig. Dadurch werden wiederkehrende Besuche und Conversions bei clientseitigem, cookiebasiertem Tracking auf iPhones und iPads deutlich schlechter erfasst."
+  - question: "Erkennen Werbeblocker wie uBlock Origin auch serverseitiges Tracking?"
+    answer: "Seltener. Werbeblocker suchen nach bekannten Mustern wie googletagmanager.com. Läuft die Messung über einen First-Party-Server-Container auf der eigenen Domain, wirkt der Request wie ein normaler Seitenaufruf und wird von vielen Blockern nicht gestoppt."
+  - question: "Was kostet die Einrichtung eines Server-Containers?"
+    answer: "Ein Google Tag Manager Server-Container verursacht laufende Hostingkosten, etwa auf der Google Cloud Platform, plus Pflegeaufwand, wenn sich Schnittstellen von Google oder Meta ändern. Es handelt sich um eine dauerhafte technische Aufgabe, kein einmaliges Setup."
+  - question: "Bringt serverseitiges Tracking alle verlorenen Daten zurück?"
+    answer: "Nein. Nutzer, die dem Tracking im Cookie-Banner aktiv widersprechen, bleiben weiterhin unerfasst. Serverseitiges Tagging verbessert nur die Datenqualität bei Nutzern, die bereits eingewilligt haben, es umgeht keine Einwilligungsentscheidung."
+hookCandidates:
+  - "website: client- oder server-tracking?"
+  - "server-tracking: mehr kontrolle, oder?"
+---
+
+Stellen Sie sich zwei Postboten vor. Der eine läuft mit Ihrem Brief quer durch die Stadt und lässt sich von jedem Blockwart am Weg in die Tasche schauen. Der andere gibt den Brief zuerst bei Ihnen im Büro ab, Sie prüfen ihn kurz, entfernen was nicht raus soll, und erst dann geht er weiter. Genau das ist im Kern der Unterschied zwischen clientseitigem und serverseitigem Tracking auf Ihrer Website.
+
+**Die kurze Antwort:** Beim clientseitigen Tracking sendet der Browser Ihrer Besucher die Messdaten direkt an Google, Meta und Co., ohne dass Sie kontrollieren können, was dabei mitgeschickt wird. Beim serverseitigen Tracking laufen diese Daten zuerst über einen eigenen Server auf Ihrer Domain, wo Sie filtern und steuern können, bevor überhaupt etwas an Drittanbieter geht. [Google](https://support.google.com/tagmanager/answer/13387731?hl=en) selbst beschreibt genau diesen Kontrollverlust beim clientseitigen Modell als zentrales Problem.
+
+Für die meisten Websitebetreiber in Österreich ist das keine akademische Frage. Wer heute noch ausschließlich mit dem klassischen Google Tag Manager Snippet im Browser misst, verliert längst spürbar an Daten, ohne es zu merken. Warum das so ist und was Sie konkret ändern können, gehen wir Schritt für Schritt durch.
+
+![Vergleich clientseitiges und serverseitiges Tracking mit Datenfluss über Server-Container](/images/blog/was-ist-der-unterschied-zwischen-clientseitigem-und-serverseitigem-tracking.png)
+
+## Wie clientseitiges Tracking technisch funktioniert
+
+Beim klassischen, clientseitigen Tagging läuft das Messskript direkt im Browser Ihrer Besucherin oder Ihres Besuchers. Öffnet jemand Ihre Website in Wien über das Handy, lädt der Browser den Google Tag Manager Code, führt ihn aus und schickt von dort aus HTTP-Requests direkt an Google Analytics, Google Ads oder Meta. Der Browser kommuniziert also unmittelbar mit den Servern der Drittanbieter, ohne dass Ihre eigene Infrastruktur dazwischenhängt.
+
+Das klingt zunächst unproblematisch, hat aber einen entscheidenden Haken. Google selbst hält in der offiziellen Dokumentation fest, dass der Websitebetreiber bei diesem Modell wenig Kontrolle darüber hat, welche Daten tatsächlich an Dritte übermittelt werden. Der Browser sendet, was das Skript ihm mitgibt, und das war es. Sie als Betreiber sehen im Grunde erst im Nachhinein im jeweiligen Tool, was angekommen ist, nicht was unterwegs vielleicht schon gefiltert oder verändert wurde.
+
+Dazu kommt ein technisches Problem, das mit der Zeit größer geworden ist statt kleiner. Diese Skripte laufen als klar erkennbarer Drittanbieter-Code, oft von leicht identifizierbaren Domains wie googletagmanager.com. Genau solche Muster sind es, nach denen [Werbeblocker wie uBlock Origin oder AdBlock Plus](https://stape.io/blog/avoiding-google-tag-manager-ga4-blocking-by-adblockers) suchen.
+
+## Wie serverseitiges Tracking den Umweg über Ihren eigenen Server nimmt
+
+Serverseitiges Tagging verschiebt genau diesen Schritt. Statt dass der Browser direkt mit Google oder Meta spricht, schickt er die Messdaten zunächst an einen Server-Container, den Sie selbst betreiben, etwa auf der Google Cloud Platform oder einer anderen Plattform Ihrer Wahl. Erst von dort aus werden die Daten, gefiltert und aufbereitet, an die eigentlichen Zielsysteme weitergeleitet.
+
+Der entscheidende Vorteil dabei: Wenn dieser Server-Container im First-Party-Kontext läuft, also unter Ihrer eigenen Domain erreichbar ist, bleiben die Website-Daten und Cookies technisch gesehen bei Ihnen. [Google beschreibt](https://developers.google.com/tag-platform/tag-manager/server-side/overview) das als volle Kontrolle über die an Dritte verteilten Daten, weil innerhalb dieses Containers personenbezogene Daten wie IP-Adressen oder E-Mail-Adressen vor der Weiterleitung entfernt oder anonymisiert werden können. Drittanbieter bekommen dadurch gar nicht erst Zugriff auf Third-Party-Cookies, weil aus deren Sicht der gesamte Vorgang wie eine Anfrage an Ihre eigene Domain aussieht.
+
+Ein zweiter, oft unterschätzter Effekt betrifft die Ladezeit. Weniger Code, der clientseitig im Browser ausgeführt werden muss, bedeutet laut Google auch eine bessere Performance der Website selbst. Wer schon einmal eine Seite mit einem Dutzend Tracking-Skripten im Netzwerktab des Browsers beobachtet hat, weiß, wie viel davon allein für Messzwecke draufgeht.
+
+## Warum Safari und Werbeblocker clientseitiges Tracking ausbremsen
+
+Hier wird es konkret unangenehm für alle, die ausschließlich clientseitig messen. Seit dem Update vom 24. März 2020 blockiert [Safari, also WebKit](https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/), auf iOS und iPadOS ab Version 13.4 sowie auf macOS ab Safari 13.1 Third-Party-Cookies vollständig und standardmäßig. WebKit selbst hat das damals so formuliert: Cookies für seitenübergreifende Ressourcen werden jetzt grundsätzlich blockiert. Safari war damit der erste marktrelevante Browser, der diese Blockade als Standardeinstellung ausgerollt hat, nicht als optionales Feature, das Nutzer erst aktivieren müssen.
+
+Für Sie als Betreiber heißt das ganz praktisch: Jeder Besucher, der mit dem iPhone auf Ihre Website kommt, und das ist in Österreich ein erheblicher Teil des mobilen Traffics, wird beim rein clientseitigen, cookiebasierten Tracking schon technisch schlechter erfasst. Nicht weil der Nutzer aktiv widerspricht, sondern weil der Browser selbst die Third-Party-Cookies gar nicht erst zulässt.
+
+Dazu kommt die zweite Front, die Werbeblocker. Tools wie uBlock Origin oder AdBlock Plus erkennen klassische Tracking-Skripte wie gtag.js oder Anfragen an bekannte Google-Tag-Manager-Domains zuverlässig und blockieren sie direkt im Browser. Läuft die Datenerhebung dagegen zuerst über einen serverseitigen Container auf der eigenen Domain, wirkt der Request für den Blocker wie ein ganz normaler First-Party-Aufruf. Viele Blocker erkennen und stoppen ihn deshalb gar nicht erst. Das ist kein Trick, um Nutzer zu täuschen, sondern schlicht die Folge davon, dass die Anfrage technisch von einer anderen Adresse kommt.
+
+## Was sich beim Datenschutz wirklich ändert, und was nicht
+
+Jetzt kommt der Punkt, an dem viele einem Irrtum aufsitzen. Serverseitiges Tracking macht die Einwilligungspflicht nicht überflüssig. Die [österreichische Datenschutzbehörde](https://dsb.gv.at/faqs/datenschutz-cookies) stellt klar, dass technisch nicht notwendige Cookies, und dazu zählen ausdrücklich Tracking- und Werbe-Cookies zur Analyse des Nutzerverhaltens, aus technischer Sicht nicht notwendig und daher einwilligungsbedürftig sind. Nur unbedingt erforderliche, also technisch notwendige Cookies, dürfen ohne Einwilligung gesetzt werden. Ob die Messdaten dabei über den Browser direkt an Google gehen oder zuerst über Ihren eigenen Server laufen, ändert an dieser rechtlichen Einordnung grundsätzlich nichts. Ein Analyse-Cookie bleibt ein Analyse-Cookie, egal welchen Weg die Daten danach nehmen.
+
+Die Behörde stellt außerdem klar, dass die wirtschaftliche Notwendigkeit, etwa die Finanzierung der Website über personalisierte Werbung, keine Ausnahme von der Einwilligungspflicht rechtfertigt. Wer also glaubt, mit einem Server-Container die Cookie-Bannerpflicht umgehen zu können, irrt sich. Was sich durch den serverseitigen Ansatz tatsächlich ändert, ist die Möglichkeit, innerhalb des eigenen Containers gezielt zu steuern, welche Daten überhaupt weitergegeben werden, etwa IP-Adressen zu kürzen oder bestimmte Parameter erst gar nicht an Drittanbieter zu senden. Das ist ein Gewinn an Kontrolle, aber kein Ersatz für eine rechtskonforme Einwilligungslösung.
+
+## Rechenbeispiel: Was serverseitiges Tagging an Datenqualität konkret bringt
+
+Nehmen wir ein einfaches, realistisches Beispiel für einen Wiener Onlineshop mit spürbarem iPhone-Anteil im Traffic, wie es in Österreich mittlerweile die Regel ist. Kommen von 1.000 Besuchern rund 400 über Safari auf iOS, verliert das rein clientseitige, cookiebasierte Tracking bei diesen 400 durch die Third-Party-Cookie-Blockade systematisch an Genauigkeit, weil wiederkehrende Besuche und Conversions über mehrere Sitzungen hinweg schwerer korrekt zugeordnet werden können. Rechnen Sie dazu noch den Anteil an Werbeblocker-Nutzern, der je nach Branche und Zielgruppe durchaus bei 10 bis 20 Prozent liegen kann, wird schnell klar, warum viele Betreiber in ihren Analytics-Zahlen ein Loch spüren, das sie sich nicht erklären können.
+
+Serverseitiges Tagging behebt nicht jedes einzelne dieser Probleme automatisch, aber es setzt an zwei Stellen an. Erstens läuft der Request im First-Party-Kontext und wird von vielen Werbeblockern gar nicht erst als Tracker erkannt. Zweitens bleibt die First-Party-Cookie-Logik auf der eigenen Domain intakt, unabhängig davon, wie Safari mit Third-Party-Cookies umgeht. Für den Wiener Shop aus dem Beispiel bedeutet das in der Praxis eine spürbar vollständigere und konsistentere Datenbasis, gerade bei den Conversion-Pfaden, die über mehrere Tage und Geräte laufen.
+
+## Schritt für Schritt: Wie Sie serverseitiges Tagging einführen
+
+Wenn Sie sich für den Umstieg entscheiden, läuft das in der Praxis über ein paar klar abgrenzbare Schritte.
+
+Zuerst richten Sie einen Google Tag Manager Server-Container ein, üblicherweise gehostet auf der Google Cloud Platform. Danach binden Sie diesen Container über eine eigene Subdomain ein, zum Beispiel messung.ihredomain.at, damit die Anfragen wirklich im First-Party-Kontext ablaufen und nicht wie ein Fremdaufruf aussehen. Anschließend konfigurieren Sie innerhalb des Containers, welche Daten überhaupt weiterverarbeitet werden dürfen, hier legen Sie fest, ob und wie IP-Adressen gekürzt, E-Mail-Adressen entfernt oder bestimmte Parameter herausgefiltert werden. Erst danach verbinden Sie die einzelnen Zieltools wie Google Analytics 4, Google Ads oder Meta Conversions API mit dem Server-Container.
+
+Ganz wichtig dabei, und das wird oft übersehen: Ihre bestehende Cookie-Consent-Lösung muss weiterhin sauber vor dem Server-Container greifen. Die Einwilligung entscheidet nach wie vor darüber, ob überhaupt Tracking-Daten erhoben werden, der Server-Container entscheidet nur, wie diese Daten danach behandelt und weitergegeben werden. Wer diese Reihenfolge vertauscht, hat am Ende zwar eine technisch elegantere Lösung, aber immer noch ein Datenschutzproblem.
+
+## Häufige Irrtümer und Fallen
+
+In Projekten begegnet uns immer wieder die Annahme, serverseitiges Tracking sei automatisch DSGVO-konform, weil die Daten ja nicht mehr direkt an Google gehen. Das ist schlicht falsch. Die Einwilligungspflicht bleibt bestehen, ganz unabhängig vom technischen Weg.
+
+Ein anderes Missverständnis betrifft Kosten und Aufwand. Ein Server-Container läuft nicht von selbst, er verursacht laufende Hosting-Kosten und muss gepflegt werden, etwa wenn sich API-Schnittstellen von Google oder Meta ändern. Wer sich dafür entscheidet, sollte das als dauerhafte technische Aufgabe einplanen, nicht als einmaliges Setup, das man danach vergisst.
+
+Und manche erwarten, serverseitiges Tracking würde hundert Prozent der verlorenen Daten zurückbringen. Das stimmt nicht. Nutzer, die dem Tracking über das Cookie-Banner aktiv widersprechen, bleiben zu Recht unerfasst, ganz gleich über welchen technischen Weg die Messung läuft. Serverseitiges Tagging verbessert nur die Datenqualität bei den Nutzern, die eingewilligt haben. Es umgeht keine Einwilligungsentscheidung.
+
+## Key Takeaways
+
+- Clientseitiges Tracking sendet Daten direkt vom Browser an Drittanbieter, mit wenig Kontrolle für den Websitebetreiber darüber, was tatsächlich übermittelt wird.
+- Serverseitiges Tracking leitet die Daten zuerst über einen eigenen Server-Container, wo personenbezogene Daten gefiltert werden können, bevor sie an Dritte gehen.
+- Seit dem 24. März 2020 blockiert Safari Third-Party-Cookies standardmäßig vollständig, was clientseitiges Tracking auf iPhones spürbar unschärfer macht.
+- Werbeblocker erkennen First-Party-Requests eines Server-Containers oft nicht als Tracker, während klassische GTM-Skripte häufig direkt blockiert werden.
+- Serverseitiges Tagging ersetzt keine Cookie-Einwilligung, es verbessert nur die Datenqualität bei Nutzern, die bereits zugestimmt haben.
+
+## Fazit
+
+Clientseitiges und serverseitiges Tracking unterscheiden sich vor allem darin, wer die Kontrolle über die Daten auf dem Weg zu Google, Meta und Co. behält, der Browser direkt oder Ihr eigener Server dazwischen. Für die meisten österreichischen Websites mit spürbarem iPhone-Anteil und wachsendem Werbeblocker-Einsatz lohnt sich der Umstieg auf serverseitiges Tagging inzwischen handfest, gerade wenn Marketingbudgets auf sauberen Conversion-Daten aufbauen. Wichtig bleibt dabei die Trennung der beiden Fragen: Die technische Architektur entscheidet über Datenqualität, die Einwilligung entscheidet weiterhin darüber, ob überhaupt gemessen werden darf.
+
+Wenn Sie unsicher sind, ob sich der Aufwand für Ihre Website lohnt oder wie ein Server-Container sauber in Ihre bestehende Consent-Lösung eingebunden wird, nehmen Sie gerne [Kontakt](/kontakt) mit uns auf. Wir schauen uns Ihre aktuelle Tracking-Struktur an und sagen Ihnen ehrlich, ob sich der Umstieg für Ihren Fall rechnet.
