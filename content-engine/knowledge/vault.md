@@ -4253,3 +4253,48 @@ quelle: https://stape.io/blog/avoiding-google-tag-manager-ga4-blocking-by-adbloc
 quelle_name: Stape.io Blog: Avoid Google Tag Manager and GA4 blocking by ad blockers
 geprueft_am: 2026-09-10
 recheck_nach: 2027-03-09
+
+## t98-2026-09-11-473
+cluster: 2
+keywords: warum, lohnen, sich, serverstandorte, österreich, oder, deutschland, lokale
+aussage: Beim Datentransfer personenbezogener Daten in Drittländer wie die USA gilt seit dem EuGH-Urteil Schrems II (16.07.2020, Rs. C-311/18) ein zweistufiges Prüfschema: Es reicht nicht, Standardvertragsklauseln zu unterschreiben – Unternehmen müssen im Einzelfall per Transfer Impact Assessment prüfen, ob das Schutzniveau im Zielland (z. B. Zugriffsmöglichkeiten von US-Geheimdiensten) tatsächlich gewahrt bleibt, und nötigenfalls zusätzliche technische Maßnahmen (z. B. Verschlüsselung) ergreifen. Ein Serverstandort in Österreich/Deutschland vermeidet dieses Prüf- und Haftungsrisiko von vornherein.
+quelle: https://www.wko.at/datenschutz/eu-dsgvo-internationaler-datenverkehr
+quelle_name: WKO - Internationaler Datenverkehr DSGVO: Drittstaaten
+geprueft_am: 2026-09-11
+recheck_nach: 2027-03-10
+
+## t98-2026-09-11-474
+cluster: 2
+keywords: warum, lohnen, sich, serverstandorte, österreich, oder, deutschland, lokale
+aussage: Ein Serverstandort mit Firmensitz des Betreibers in Österreich/EU schützt personenbezogene Daten zusätzlich vor dem direkten Zugriff durch Behörden aus Drittstaaten (z. B. US-Behörden über den CLOUD Act): Ein Zugriff müsste formal über die österreichischen/EU-Behörden beantragt werden, statt direkt beim US-Anbieter angefordert zu werden.
+quelle: https://www.hosttech.at/blog/server/serverstandort-bedeutung-vorteile/
+quelle_name: hosttech.at - Der optimale Serverstandort: Vorteile und wichtige Überlegungen
+geprueft_am: 2026-09-11
+recheck_nach: 2027-03-10
+
+## t98-2026-09-11-475
+cluster: 2
+keywords: warum, lohnen, sich, serverstandorte, österreich, oder, deutschland, lokale
+aussage: Google (web.dev) empfiehlt für die Ladeleistung einer Website einen Time to First Byte (TTFB) von höchstens 0,8 Sekunden ('gut'), gemessen am 75. Perzentil der Seitenaufrufe; über 1,8 Sekunden gilt als 'schlecht'. TTFB hängt direkt von der physischen Entfernung zwischen Nutzer und Server ab – ein Serverstandort in Österreich/Deutschland verkürzt die Signallaufzeit zu DACH-Besuchern gegenüber Servern in den USA oder Asien spürbar.
+quelle: https://web.dev/articles/ttfb
+quelle_name: web.dev (Google) - Time to First Byte (TTFB)
+geprueft_am: 2026-09-11
+recheck_nach: 2027-03-10
+
+## t98-2026-09-11-476
+cluster: 2
+keywords: warum, lohnen, sich, serverstandorte, österreich, oder, deutschland, lokale
+aussage: Niedrige Serverlatenz wirkt sich über den Time to First Byte auf Core-Web-Vitals-Metriken wie Largest Contentful Paint (Zielwert unter 2,5 Sekunden) aus, die seit dem Google Page Experience Update als Rankingfaktor in die Suchergebnisse einfließen. Ein Serverstandort nahe der Zielgruppe gilt neben CDN-Einsatz als einer der drei wichtigsten Hebel zur Latenzreduzierung.
+quelle: https://klaax.at/blog/core-web-vitals-ladezeit-seo-wien/
+quelle_name: Klaax - Core Web Vitals & Ranking: Ladezeit-Optimierung Wien
+geprueft_am: 2026-09-11
+recheck_nach: 2027-03-10
+
+## t98-2026-09-11-477
+cluster: 2
+keywords: warum, lohnen, sich, serverstandorte, österreich, oder, deutschland, lokale
+aussage: Führt ein API-Fehler oder ein Datenleck zum Abfluss personenbezogener Daten, muss dies in Österreich als Data Breach nach Art. 33 DSGVO binnen 72 Stunden an die Datenschutzbehörde gemeldet werden; bei Verstößen drohen Bußgelder bis zu 10 Mio. EUR bzw. 2 % des weltweiten Jahresumsatzes – ein Risiko, das bei Datenverarbeitung außerhalb der EU durch die zusätzliche Drittland-Prüfpflicht noch verschärft wird.
+quelle: https://www.wko.at/datenschutz/eu-dsgvo-meldung-von-datenschutzverletzungen
+quelle_name: WKO - EU-DSGVO: Meldung von Datenschutzverletzungen (Data Breach Notification)
+geprueft_am: 2026-09-11
+recheck_nach: 2027-03-10
