@@ -1,0 +1,146 @@
+---
+title: "Veraltete Dependencies managen: Der Leitfaden 2026"
+slug: "wie-geht-man-mit-veralteten-programmierbibliotheken-dependencies-um"
+excerpt: "Veraltete Programmbibliotheken zaehlen laut OWASP zu den groessten Sicherheitsrisiken fuer Websites. Der Leitfaden zeigt, wie Sie Dependencies systematisch aktuell halten und sich auf den Cyber Resilience Act vorbereiten."
+featuredSnippetTitle: "Wie geht man mit veralteten Dependencies um?"
+featuredSnippet: "Man geht mit veralteten Dependencies um, indem man zuerst alle eingesetzten Bibliotheken samt Versionsnummer inventarisiert, sie laufend automatisiert gegen bekannte Schwachstellen abgleicht, etwa mit GitHub Dependabot, Updates nach ihrem Versionssprung gestaffelt einspielt und das Ergebnis dokumentiert, so wie es der EU Cyber Resilience Act ab 2026 ohnehin verlangt."
+author: "Dmitry Pashlov"
+publishedAt: "2026-09-12"
+updatedAt: "2026-09-12"
+category: "Technik & Performance"
+tags:
+  - "Dependencies"
+  - "Websicherheit"
+  - "Softwarewartung"
+  - "Cyber Resilience Act"
+  - "OWASP"
+featuredImage: "/images/blog/wie-geht-man-mit-veralteten-programmierbibliotheken-dependencies-um.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "OWASP Top 10:2021 - A06 Vulnerable and Outdated Components"
+    url: "https://owasp.org/Top10/2021/A06_2021-Vulnerable_and_Outdated_Components/"
+  - name: "GitHub Docs - About Dependabot security updates"
+    url: "https://docs.github.com/en/code-security/concepts/supply-chain-security/about-dependabot-security-updates"
+  - name: "npm Docs - Auditing package dependencies for security vulnerabilities"
+    url: "https://docs.npmjs.com/auditing-package-dependencies-for-security-vulnerabilities/"
+  - name: "Semantic Versioning 2.0.0"
+    url: "https://semver.org/"
+  - name: "Europaeische Kommission - Cyber Resilience Act (Shaping Europe's digital future)"
+    url: "https://digital-strategy.ec.europa.eu/en/policies/cyber-resilience-act"
+  - name: "PHP.net - Unsupported Branches (offizielle EOL-Liste)"
+    url: "https://www.php.net/eol.php"
+keyTakeaways:
+  - "Veraltete, ungepatchte Komponenten zaehlen laut OWASP Top 10 (A06:2021) zu den zehn kritischsten Sicherheitsrisiken fuer Webanwendungen."
+  - "npm audit fix behebt nur Schwachstellen innerhalb der bestehenden Semver-Bandbreite, fuer MAJOR-Updates ist manuelles Eingreifen noetig."
+  - "GitHub Dependabot automatisiert die Erkennung veralteter und unsicherer Abhaengigkeiten ueber Pull Requests, das Einspielen bleibt Handarbeit."
+  - "Der EU Cyber Resilience Act verlangt ab 11. September 2026 (Meldepflichten) und ab 11. Dezember 2027 (Hauptpflichten) eine SBOM und laufende Schwachstellenueberwachung."
+  - "Rund 29,4 Prozent aller PHP-Websites laufen laut W3Techs noch auf dem seit 2022 ungepatchten PHP 7, ein Beleg dafuer, wie verbreitet das Problem in der Praxis ist."
+conclusionStats:
+  - label: "PHP-Websites auf veraltetem PHP 7"
+    value: "29,4 %"
+  - label: "CRA Meldepflicht ab"
+    value: "11.09.2026"
+  - label: "CRA Hauptpflichten ab"
+    value: "11.12.2027"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Was sind veraltete Dependencies?"
+    answer: "Veraltete Dependencies sind Programmbibliotheken oder Frameworks in einer Website, die seit laengerem keine Sicherheitsupdates mehr erhalten haben, obwohl neuere, gepatchte Versionen verfuegbar sind. Wird in ihnen eine Schwachstelle bekannt, bleibt diese ungeschlossen und oeffentlich auffindbar."
+  - question: "Warum reicht npm audit fix nicht als alleinige Loesung aus?"
+    answer: "npm audit fix loest Updates nur innerhalb der in der package.json deklarierten Versionsbereiche auf. Schwachstellen, die einen Sprung ueber eine MAJOR-Version hinweg erfordern, werden dabei nicht automatisch behoben, dafuer braucht es manuelles Testen und Eingreifen."
+  - question: "Was verlangt der Cyber Resilience Act von Website-Betreibern?"
+    answer: "Der Cyber Resilience Act verpflichtet Hersteller von Produkten mit digitalen Elementen zu einer maschinenlesbaren Software Bill of Materials sowie zu einer laufenden Schwachstellenueberwachung. Aktiv ausgenutzte Schwachstellen muessen binnen 24 Stunden gemeldet werden."
+  - question: "Wie oft sollte man Dependencies aktualisieren?"
+    answer: "Sicherheitsrelevante PATCH-Updates sollten binnen weniger Tage eingespielt werden, da sie in der Regel abwaertskompatibel sind. MAJOR-Updates gehoeren dagegen in einen geplanten Wartungszyklus mit ausreichend Testzeit."
+  - question: "Was ist eine Software Bill of Materials (SBOM)?"
+    answer: "Eine SBOM ist eine vollstaendige, automatisiert auslesbare Inventarliste aller in einer Software verwendeten Komponenten samt Versionsnummern. Der Cyber Resilience Act macht sie fuer Hersteller digitaler Produkte in der EU verpflichtend."
+hookCandidates:
+  - "dependencies: wie alt sind eure?"
+  - "sicherheitslücken: wer entdeckt die?"
+  - "veraltete software: bald pflicht?"
+---
+
+In einem Wiener Altbau reicht oft ein einziges Fenster, das sich nicht mehr richtig schliessen laesst, damit im Jaenner die Kaelte hereinzieht und mit ihr die Feuchtigkeit, die sich dann monatelang unbemerkt in der Wand ausbreitet. Bei einer Website funktioniert eine veraltete Programmbibliothek nach demselben Prinzip. Man merkt tagelang nichts, bis irgendjemand genau diese Luecke findet und durchsteigt.
+
+**Direktantwort:** Man geht mit veralteten Dependencies um, indem man zuerst alle eingesetzten Bibliotheken samt Versionsnummer inventarisiert, sie laufend automatisiert gegen bekannte Schwachstellen abgleicht, etwa mit GitHub Dependabot, Updates nach ihrem Versionssprung gestaffelt einspielt und das Ergebnis dokumentiert, so wie es der EU Cyber Resilience Act ab 2026 ohnehin verlangt.
+
+![Veraltete Programmbibliotheken und Dependency-Management bei Websites](/images/blog/wie-geht-man-mit-veralteten-programmierbibliotheken-dependencies-um.png)
+
+Das klingt nach viel Verwaltungsaufwand fuer ein paar Zeilen Code, die irgendjemand vor Jahren einmal eingebunden hat. Ist es auch. Aber genau diese Verwaltung entscheidet heute darueber, ob eine Website ein solides Fundament hat oder ein Einfallstor mit einem huebschen Vorhang davor.
+
+## Warum veraltete Bibliotheken ueberhaupt ein Sicherheitsrisiko sind
+
+Jede moderne Website besteht nicht nur aus dem Code, den ein Entwickler selbst geschrieben hat. Ein typisches Projekt zieht Dutzende bis Hunderte fremde Bibliotheken nach, die Funktionen wie Formulare, Bildbearbeitung oder Zahlungsabwicklung uebernehmen. Das spart enorm viel Zeit, bringt aber eine Abhaengigkeit mit sich, die man leicht aus den Augen verliert.
+
+Die [OWASP Foundation](https://owasp.org/Top10/2021/A06_2021-Vulnerable_and_Outdated_Components/), eine der wichtigsten unabhaengigen Organisationen fuer Webanwendungssicherheit, fuehrt veraltete und ungepatchte Komponenten deshalb als eigene Kategorie in ihren OWASP Top 10, konkret als Punkt A06:2021. Damit gehoeren veraltete Bibliotheken, Frameworks und Laufzeitumgebungen offiziell zu den zehn kritischsten Sicherheitsrisiken, die eine Webanwendung ueberhaupt haben kann. Die empfohlene Gegenmassnahme der OWASP ist denkbar nuechtern: eine kontinuierliche Inventarisierung aller Komponenten samt Versionsnummern und ein laufender Abgleich mit oeffentlichen Schwachstellendatenbanken wie der CVE- beziehungsweise NVD-Datenbank.
+
+Was bedeutet das fuer Sie in der Praxis? Eine Bibliothek, die seit zwei Jahren kein Update mehr bekommen hat, ist nicht automatisch unsicher. Aber sobald in ihr eine Schwachstelle entdeckt wird und niemand sie schliesst, weiss jeder, der die entsprechende CVE-Datenbank durchsucht, genau, wo er ansetzen muss. Das ist der Unterschied zwischen einem Fenster, das zufaellig offensteht, und einem Fenster, dessen Standort oeffentlich dokumentiert ist.
+
+## Die Semver-Falle: Warum npm audit fix allein nicht reicht
+
+Viele Teams verlassen sich auf einen einzigen Befehl und glauben damit, das Thema erledigt zu haben. [npm audit fix](https://docs.npmjs.com/auditing-package-dependencies-for-security-vulnerabilities/) klingt nach einer Komplettloesung, ist aber nur die halbe Miete. Der Befehl loest automatisch Updates innerhalb der in der package.json deklarierten Versionsbereiche auf und aktualisiert dabei package-lock.json sowie die node_modules. Schwachstellen, die ausserhalb dieser Bereiche liegen oder ein groesseres Versionsupdate erfordern, werden dabei jedoch nicht automatisch behoben. Dafuer braucht es manuelles Eingreifen oder den riskanteren Parameter --force.
+
+Um zu verstehen, warum das so ist, hilft ein Blick auf die [Semantic-Versioning-Spezifikation](https://semver.org/), kurz Semver, die vom GitHub-Mitgruender Tom Preston-Werner verfasst wurde und heute als Standard fuer Versionsnummern gilt. Eine Versionsnummer wie 3.4.2 folgt dem Schema MAJOR.MINOR.PATCH. Erhoeht sich die erste Zahl, die MAJOR-Version, signalisiert das inkompatible Aenderungen an der Schnittstelle, Code, der bisher funktioniert hat, kann danach kaputt sein. Die MINOR-Version steht fuer neue, abwaertskompatible Funktionen, und die PATCH-Version fuer abwaertskompatible Fehlerbehebungen.
+
+Praktisch heisst das fuer Sie: Ein Sicherheitsupdate innerhalb derselben MAJOR-Version ist in aller Regel ungefaehrlich und sollte zuegig eingespielt werden. Ein Update ueber eine MAJOR-Version hinweg ist dagegen ein eigenes kleines Projekt. Da koennen Funktionen wegfallen, Namen sich aendern, ganze Konfigurationen neu geschrieben werden muessen. Genau deshalb bleibt npm audit fix bei solchen Faellen stehen und wartet auf eine bewusste Entscheidung von Ihnen oder Ihrer Agentur.
+
+Ein Rechenbeispiel aus der Praxis: Ein Onlineshop nutzt eine Bildverarbeitungs-Bibliothek in Version 2.1.0. Eine Schwachstelle wird bekannt, der Patch erscheint in Version 2.1.4. Das laesst sich in der Regel binnen Minuten automatisiert einspielen. Ist der Patch aber erst in Version 5.0.0 enthalten, weil die Bibliothek zwischenzeitlich komplett neu geschrieben wurde, kann die Migration je nach Umfang der Website mehrere Personentage kosten. Wer das im Vorfeld nicht einplant, wird von einer eigentlich planbaren Wartungsaufgabe kalt erwischt.
+
+## Automatisierung statt Handarbeit: Was Dependabot leisten kann
+
+Die gute Nachricht ist, dass sich ein grosser Teil dieser Arbeit automatisieren laesst. GitHub bietet mit [Dependabot](https://docs.github.com/en/code-security/concepts/supply-chain-security/about-dependabot-security-updates) ein Werkzeug, das genau fuer dieses Problem entwickelt wurde. Dependabot-Security-Updates erstellen automatisch einen Pull Request, sobald im sogenannten Dependency-Graph eines Repositorys eine bekannte Schwachstelle erkannt wird. Zusaetzlich gibt es Dependabot-Version-Updates, die Pakete unabhaengig von konkreten Sicherheitsluecken generell aktuell halten, also auch dann, wenn noch keine Schwachstelle bekannt ist, aber schon laenger keine neue Version mehr eingespielt wurde.
+
+Konfiguriert wird das Ganze ueber eine einzelne Datei namens dependabot.yml im Repository, in der Sie festlegen, welche Verzeichnisse ueberwacht werden und wie oft geprueft werden soll. Fuer ein durchschnittliches Website-Projekt ist das in weniger als einer Stunde eingerichtet und laeuft danach im Hintergrund, ohne dass jemand haendisch Versionslisten pflegen muss.
+
+Wichtig dabei: Dependabot erstellt die Pull Requests, das Zusammenfuehren und Testen bleibt weiterhin Aufgabe eines Menschen. Wer die Pull Requests einfach unbeachtet liegen laesst, hat zwar die Erkennung automatisiert, aber nicht das eigentliche Problem geloest. Die Empfehlung ist daher, fuer kleine PATCH-Updates einen moeglichst kurzen Freigabeweg zu definieren, waehrend MAJOR-Updates weiterhin bewusst getestet und geplant werden sollten.
+
+## Der Cyber Resilience Act macht aus einer guten Idee eine Pflicht
+
+Bislang war die Pflege von Abhaengigkeiten in erster Linie eine Frage der Sorgfalt. Das aendert sich in der Europaeischen Union gerade grundlegend. Der [Cyber Resilience Act](https://digital-strategy.ec.europa.eu/en/policies/cyber-resilience-act), kurz CRA, verpflichtet Hersteller von Produkten mit digitalen Elementen, wozu auch Software mit Drittanbieter-Bibliotheken zaehlt, zur Erstellung einer maschinenlesbaren Software Bill of Materials, kurz SBOM. Das ist im Grunde eine vollstaendige, automatisiert auslesbare Inventarliste aller verwendeten Komponenten samt Versionen, also genau das, was OWASP schon laenger als Best Practice empfiehlt, nur eben jetzt als gesetzliche Anforderung.
+
+Zusaetzlich verlangt der CRA eine laufende Schwachstellenueberwachung der eingesetzten Komponenten waehrend des gesamten Produktlebenszyklus sowie eine Meldepflicht von 24 Stunden, sobald eine aktiv ausgenutzte Schwachstelle bekannt wird. Die Meldepflichten gelten ab dem 11. September 2026, die Hauptpflichten des Gesetzes ab dem 11. Dezember 2027, und zwar in der gesamten EU, also auch in Oesterreich und Deutschland.
+
+Fuer Betreiber von Websites und Onlineshops bedeutet das konkret: Wer bislang gedacht hat, eine SBOM sei etwas fuer grosse Softwarehersteller, sollte diese Annahme jetzt ueberdenken. Die Fristen liegen keine zwei Jahre in der Zukunft, und eine belastbare Inventarliste laesst sich nicht ueber Nacht aus dem Boden stampfen, wenn im Projekt bislang niemand systematisch mitgeschrieben hat, welche Bibliothek in welcher Version wo eingesetzt wird.
+
+## Das PHP-7-Beispiel: Wie verbreitet das Problem in der Praxis wirklich ist
+
+Manchmal hilft eine einzelne Zahl mehr als jede Theorie. [PHP 7 gilt seit dem 28. November 2022 offiziell als End-of-Life](https://www.php.net/eol.php), es gibt seither keine Sicherheitspatches mehr fuer diese Version. Trotzdem laufen laut den Erhebungen von W3Techs weiterhin rund 29,4 Prozent aller PHP-Websites auf genau dieser unterstuetzten Version, und weitere rund 8 Prozent sogar noch auf dem noch aelteren PHP 5.
+
+Das heisst: Ein erheblicher Teil des Webs laeuft aktuell auf einer Laufzeitumgebung, fuer die neu entdeckte Schwachstellen niemals mehr geschlossen werden. Nicht weil die Betreiber das absichtlich in Kauf nehmen, sondern weil ein Update der PHP-Version oft an alten Plugins, Themes oder Individualcode haengt, den niemand mehr anfassen will. Genau das ist das Muster, das sich bei Dependencies im Kleinen staendig wiederholt: Man schiebt das Update auf, weil es Aufwand bedeutet, und irgendwann ist der Aufwand so gross geworden, dass man ihn erst recht nicht mehr angehen will.
+
+## Schritt fuer Schritt: Was Sie konkret tun sollten
+
+Die Theorie ist die eine Sache, der Alltag eines Betreibers eine andere. Eine praxistaugliche Vorgehensweise laesst sich in wenigen Schritten zusammenfassen:
+
+Erstens, verschaffen Sie sich einen vollstaendigen Ueberblick. Lassen Sie sich von Ihrer Entwicklungsagentur oder Ihrem internen Team eine Liste aller eingesetzten Bibliotheken samt Versionsnummer geben, im Idealfall automatisiert generiert, nicht haendisch getippt.
+
+Zweitens, richten Sie eine automatisierte Ueberwachung ein, etwa mit Dependabot oder einem vergleichbaren Werkzeug, damit Sie Schwachstellen erfahren, sobald sie oeffentlich bekannt werden, und nicht erst, wenn jemand sie bei Ihnen ausnutzt.
+
+Drittens, unterscheiden Sie beim Einspielen von Updates konsequent zwischen PATCH-, MINOR- und MAJOR-Aenderungen. PATCH-Updates mit Sicherheitsbezug sollten innerhalb weniger Tage eingespielt werden. MAJOR-Updates gehoeren in einen geplanten Wartungszyklus mit ausreichend Testzeit, nicht in eine Hauruck-Aktion am Freitagnachmittag.
+
+Viertens, dokumentieren Sie, was Sie tun. Auch wenn der Cyber Resilience Act fuer viele kleinere Websites noch nicht unmittelbar greift, ist eine saubere Dokumentation die Grundlage fuer alles Weitere, von der SBOM bis zur naechsten Wartungsbesprechung.
+
+Fuenftens, planen Sie ein festes Budget fuer Wartung ein, statt Updates nur dann zu machen, wenn ohnehin gerade ein anderes Projekt an der Website ansteht. Wer regelmaessige Wartung als eigenen Posten einplant, spart sich spaeter die teure Notfall-Migration.
+
+## Haeufige Irrtuemer, die Sie sich sparen koennen
+
+Ein verbreiteter Irrtum ist die Annahme, eine Website, die seit Jahren "problemlos laeuft", brauche keine Updates. Problemlos heisst in diesem Zusammenhang nur, dass bisher niemand die vorhandene Luecke genutzt hat, nicht, dass keine existiert.
+
+Genauso haeufig haelt jemand npm audit fix oder ein vergleichbares Werkzeug fuer die Komplettloesung, laesst es einmal laufen und legt das Thema ad acta. Wie oben gezeigt, deckt das nur einen Teil der moeglichen Updates ab. Alles, was einen MAJOR-Sprung erfordert, bleibt liegen, bis jemand aktiv wird.
+
+Und dann ist da noch die Kostenfrage. Viele Betreiber schaetzen die laufende Wartung als teuer ein und schieben sie deshalb auf. Tatsaechlich ist ein kleines, regelmaessiges PATCH-Update fast immer guenstiger als eine spaetere Migration ueber mehrere MAJOR-Versionen hinweg, ganz zu schweigen von den Kosten eines tatsaechlichen Sicherheitsvorfalls.
+
+## Fazit: Regelmaessige Wartung lohnt sich
+
+Veraltete Dependencies sind kein exotisches Nischenproblem fuer grosse Konzerne, sie betreffen praktisch jede Website, die mit modernen Werkzeugen gebaut wurde. Die gute Nachricht ist, dass sich das Risiko mit ueberschaubarem Aufwand deutlich senken laesst: eine saubere Inventarliste, automatisierte Ueberwachung, ein klar gestaffeltes Vorgehen bei Updates und eine ordentliche Dokumentation. Mit dem Cyber Resilience Act wird aus dieser guten Praxis ab 2026 schrittweise eine gesetzliche Pflicht. Wer schon jetzt sauber arbeitet, muss sich davor nicht fuerchten.
+
+Wenn Sie nicht sicher sind, auf welchem Stand Ihre eigene Website in Sachen Abhaengigkeiten und Wartung gerade ist, sprechen Sie uns ueber unsere [Kontaktseite](/kontakt) an. Wir sehen uns Ihr Projekt gerne unverbindlich an und sagen Ihnen ehrlich, wo tatsaechlich Handlungsbedarf besteht und wo nicht.
+
+**Key Takeaways**
+
+- Veraltete, ungepatchte Komponenten zaehlen laut OWASP Top 10 (A06:2021) zu den zehn kritischsten Sicherheitsrisiken fuer Webanwendungen.
+- npm audit fix behebt nur Schwachstellen innerhalb der bestehenden Semver-Bandbreite, fuer MAJOR-Updates ist manuelles Eingreifen noetig.
+- GitHub Dependabot automatisiert die Erkennung veralteter und unsicherer Abhaengigkeiten ueber Pull Requests, das Einspielen bleibt Handarbeit.
+- Der EU Cyber Resilience Act verlangt ab 11. September 2026 (Meldepflichten) und ab 11. Dezember 2027 (Hauptpflichten) eine SBOM und laufende Schwachstellenueberwachung.
+- Rund 29,4 Prozent aller PHP-Websites laufen laut W3Techs noch auf dem seit 2022 ungepatchten PHP 7, ein Beleg dafuer, wie verbreitet das Problem in der Praxis ist.

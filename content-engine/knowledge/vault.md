@@ -4298,3 +4298,57 @@ quelle: https://www.wko.at/datenschutz/eu-dsgvo-meldung-von-datenschutzverletzun
 quelle_name: WKO - EU-DSGVO: Meldung von Datenschutzverletzungen (Data Breach Notification)
 geprueft_am: 2026-09-11
 recheck_nach: 2027-03-10
+
+## t99-2026-09-12-478
+cluster: 2
+keywords: geht, veralteten, programmierbibliotheken, dependencies
+aussage: OWASP führt „Vulnerable and Outdated Components“ als eigene Kategorie A06:2021 in den OWASP Top 10 – veraltete, ungepatchte Bibliotheken/Frameworks/Laufzeitumgebungen gelten als eines der zehn kritischsten Sicherheitsrisiken für Webanwendungen; empfohlene Gegenmaßnahme ist eine kontinuierliche Inventarisierung aller Komponenten samt Versionsnummern und laufender Abgleich mit CVE/NVD-Datenbanken.
+quelle: https://owasp.org/Top10/2021/A06_2021-Vulnerable_and_Outdated_Components/
+quelle_name: OWASP Top 10:2021 - A06 Vulnerable and Outdated Components
+geprueft_am: 2026-09-12
+recheck_nach: 2027-03-11
+
+## t99-2026-09-12-479
+cluster: 2
+keywords: geht, veralteten, programmierbibliotheken, dependencies
+aussage: GitHub Dependabot kann Abhängigkeiten automatisiert pflegen: Dependabot-Security-Updates erstellen automatisch Pull Requests, sobald im Dependency-Graph eines Repos eine bekannte Schwachstelle erkannt wird, und Dependabot-Version-Updates halten Pakete unabhängig von Sicherheitslücken generell aktuell – konfigurierbar über eine dependabot.yml im Repository.
+quelle: https://docs.github.com/en/code-security/concepts/supply-chain-security/about-dependabot-security-updates
+quelle_name: GitHub Docs - About Dependabot security updates
+geprueft_am: 2026-09-12
+recheck_nach: 2027-03-11
+
+## t99-2026-09-12-480
+cluster: 2
+keywords: geht, veralteten, programmierbibliotheken, dependencies
+aussage: npm audit fix löst automatisch Updates innerhalb der im package.json deklarierten Semver-Ranges auf und aktualisiert package-lock.json sowie node_modules; Schwachstellen, die außerhalb dieser Ranges liegen oder ein Major-Update erfordern, werden dabei NICHT automatisch behoben, sondern erfordern manuelles Eingreifen bzw. --force.
+quelle: https://docs.npmjs.com/auditing-package-dependencies-for-security-vulnerabilities/
+quelle_name: npm Docs - Auditing package dependencies for security vulnerabilities
+geprueft_am: 2026-09-12
+recheck_nach: 2027-03-11
+
+## t99-2026-09-12-481
+cluster: 2
+keywords: geht, veralteten, programmierbibliotheken, dependencies
+aussage: Nach der offiziellen Semantic-Versioning-Spezifikation (semver.org, ursprünglich von GitHub-Mitgründer Tom Preston-Werner verfasst) signalisiert eine Erhöhung der MAJOR-Version inkompatible API-Änderungen, MINOR neue, abwärtskompatible Funktionalität und PATCH abwärtskompatible Bugfixes – Teams können daraus ableiten, welches Update-Risiko ein veraltetes Dependency-Upgrade jeweils birgt.
+quelle: https://semver.org/
+quelle_name: Semantic Versioning 2.0.0
+geprueft_am: 2026-09-12
+recheck_nach: 2027-03-11
+
+## t99-2026-09-12-482
+cluster: 2
+keywords: geht, veralteten, programmierbibliotheken, dependencies
+aussage: Der EU Cyber Resilience Act (CRA) verpflichtet Hersteller von Produkten mit digitalen Elementen – also auch Software mit Drittanbieter-Bibliotheken – zur Erstellung einer maschinenlesbaren Software Bill of Materials (SBOM), zur laufenden Schwachstellenüberwachung ihrer Komponenten während des gesamten Produktlebenszyklus sowie zu einer 24-Stunden-Frühwarnung bei aktiv ausgenutzten Schwachstellen; die Meldepflichten gelten ab 11. September 2026, die Hauptpflichten ab 11. Dezember 2027 in der gesamten EU inkl. Österreich und Deutschland.
+quelle: https://digital-strategy.ec.europa.eu/en/policies/cyber-resilience-act
+quelle_name: Europäische Kommission - Cyber Resilience Act (Shaping Europe's digital future)
+geprueft_am: 2026-09-12
+recheck_nach: 2027-03-11
+
+## t99-2026-09-12-483
+cluster: 2
+keywords: geht, veralteten, programmierbibliotheken, dependencies
+aussage: PHP 7 gilt seit 28. November 2022 offiziell als End-of-Life ohne weitere Sicherheitspatches, wird laut W3Techs aber weiterhin von rund 29,4% aller PHP-Websites eingesetzt (weitere ca. 8% laufen sogar auf PHP 5) – ein Beleg dafür, wie verbreitet das Weiterbetreiben veralteter, unsicherer Abhängigkeiten/Laufzeitversionen in der Praxis ist.
+quelle: https://www.php.net/eol.php
+quelle_name: PHP.net - Unsupported Branches (offizielle EOL-Liste)
+geprueft_am: 2026-09-12
+recheck_nach: 2027-03-11
