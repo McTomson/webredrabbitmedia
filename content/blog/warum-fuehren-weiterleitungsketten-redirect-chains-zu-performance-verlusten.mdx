@@ -1,0 +1,140 @@
+---
+title: "Redirect Chains 2026: Warum sie die Performance bremsen"
+slug: warum-fuehren-weiterleitungsketten-redirect-chains-zu-performance-verlusten
+excerpt: "Redirect Chains, also mehrere Weiterleitungen in Serie, kosten spuerbar Ladezeit und schaden dem Google-Crawling. Wir erklaeren, warum jeder Hop einen eigenen Netzwerk-Roundtrip erzwingt und wie sich lange Ketten in wenigen Schritten aufloesen lassen."
+featuredSnippetTitle: "Warum fuehren Weiterleitungsketten (Redirect Chains) zu Performance-Verlusten?"
+featuredSnippet: "Redirect Chains bremsen die Ladezeit, weil jede Weiterleitung einen zusaetzlichen Netzwerk-Roundtrip erzwingt: Der Browser muss die neue Ziel-URL erst per eigener HTTP-Anfrage abrufen, bevor die eigentliche Seite laedt. Bei mehreren Weiterleitungen in Serie summiert sich diese Verzoegerung auf mehrere hundert Millisekunden und verzoegert zusaetzlich Core Web Vitals wie LCP."
+author: "Dmitry Pashlov"
+publishedAt: "2026-09-13"
+updatedAt: "2026-09-13"
+category: "Technik & Performance"
+tags:
+  - "Redirect Chains"
+  - "Website Performance"
+  - "Core Web Vitals"
+  - "SEO Technik"
+  - "Crawl Budget"
+featuredImage: "/images/blog/warum-fuehren-weiterleitungsketten-redirect-chains-zu-performance-verlusten.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "Chrome for Developers / Lighthouse - Avoid multiple page redirects"
+    url: "https://developer.chrome.com/docs/lighthouse/performance/redirects"
+  - name: "web.dev - Optimize Time to First Byte"
+    url: "https://web.dev/articles/optimize-ttfb"
+  - name: "Google Search Central - Site Moves and Migrations"
+    url: "https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes"
+  - name: "Google Search Central - Crawl Budget Management for Large Sites"
+    url: "https://developers.google.com/search/docs/crawling-indexing/large-site-managing-crawl-budget"
+keyTakeaways:
+  - "Jede Weiterleitung erzwingt einen kompletten zusaetzlichen Netzwerk-Roundtrip und kann die Ladezeit um mehrere hundert Millisekunden verzoegern."
+  - "Bei mehreren Weiterleitungen in Serie summiert sich diese Verzoegerung auf die Time to First Byte, bevor der eigentliche Seiteninhalt laedt."
+  - "Redirects verschieben First Contentful Paint und Largest Contentful Paint nach hinten und wirken sich damit direkt auf die Core Web Vitals aus."
+  - "Google folgt Redirect Chains maximal zehn Hops weit und empfiehlt, eine Kette auf drei bis vier Weiterleitungen zu begrenzen."
+  - "Lange Ketten belasten zusaetzlich das Crawl Budget, weil jede Weiterleitung als eigene Anfrage gegen dieses Budget zaehlt."
+conclusionStats:
+  - label: "Max. Hops laut Google"
+    value: "10"
+  - label: "Empfohlene Kettenlaenge"
+    value: "3-4 Redirects"
+  - label: "Verzoegerung pro Hop"
+    value: "100-300 ms"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Wie viele Weiterleitungen sind bei einer Redirect Chain noch akzeptabel?"
+    answer: "Google empfiehlt idealerweise nicht mehr als drei bis vier Weiterleitungen in einer Kette. Der Googlebot folgt einer Kette maximal zehn Hops weit, danach bricht er den Vorgang ab und erreicht die Zielseite nicht mehr."
+  - question: "Wie erkenne ich Redirect Chains auf meiner eigenen Website?"
+    answer: "Mit Tools wie Screaming Frog, Sitebulb oder dem Netzwerk-Tab der Chrome DevTools laesst sich fuer jede URL nachvollziehen, ueber wie viele Zwischenstationen sie beim Aufruf tatsaechlich laeuft, bevor die finale Seite laedt."
+  - question: "Wie schnell laesst sich eine Redirect Chain beheben?"
+    answer: "In der Regel reicht es, die Serverkonfiguration oder die htaccess Datei so anzupassen, dass die alte URL direkt auf das finale Ziel zeigt. Fuer die meisten Websites ist das innerhalb weniger Stunden erledigt."
+  - question: "Wirken sich Redirect Chains auf die Core Web Vitals aus?"
+    answer: "Ja. Da Weiterleitungen abgeschlossen sein muessen, bevor das HTML geladen wird, verschieben sie First Contentful Paint und Largest Contentful Paint nach hinten und verschlechtern damit die Core Web Vitals Werte."
+  - question: "Warum entstehen Redirect Chains ueberhaupt?"
+    answer: "Meist durch mehrfache Domain-Umzuege, CMS-Migrationen oder alte Marketing-Links, bei denen fruehere Weiterleitungen nie auf das aktuelle Ziel umgebogen wurden, sondern als Zwischenstation stehen blieben."
+hookCandidates:
+  - "bremst eine weiterleitung die website?"
+  - "wie viele weiterleitungen sind ok?"
+  - "warum ist die website so langsam?"
+---
+
+Stellen Sie sich vor, Sie wollen von der Wiener Innenstadt zum Flughafen Schwechat und muessen dafuer dreimal umsteigen, obwohl es eine direkte Linie gibt. Jede Umsteigestation kostet Zeit, jede Verbindung kann verpasst werden, und am Ende sind Sie spaeter dran als noetig, obwohl die Strecke eigentlich kurz ist. Genau das passiert technisch, wenn eine Webseite ueber mehrere Weiterleitungen hintereinander zum eigentlichen Ziel fuehrt.
+
+**Redirect Chains bremsen die Ladezeit, weil jede einzelne Weiterleitung einen vollstaendigen zusaetzlichen Netzwerk-Roundtrip erzwingt: Der Browser muss die neue Ziel-URL erst per eigener HTTP-Anfrage abrufen, bevor er ueberhaupt mit dem Laden der eigentlichen Seite beginnen kann.** Bei mehreren Weiterleitungen in Serie addiert sich diese Verzoegerung, oft um mehrere hundert Millisekunden, bevor der Nutzer auch nur den ersten Pixel der Seite sieht.
+
+![Diagramm einer Redirect Chain mit mehreren Weiterleitungen und Ladezeit-Verzögerung](/images/blog/warum-fuehren-weiterleitungsketten-redirect-chains-zu-performance-verlusten.png)
+
+## Was eine Redirect-Chain ueberhaupt ist
+
+Eine einzelne Weiterleitung, etwa von der alten auf die neue Domain, ist im Alltag voellig normal und meist unproblematisch. Problematisch wird es erst, wenn mehrere Weiterleitungen aneinandergereiht sind: Die alte URL zeigt auf eine zweite URL, die wiederum auf eine dritte zeigt, und erst die dritte liefert endlich den Inhalt aus. Genau diese Kette nennt man Redirect Chain, und je laenger sie wird, desto teurer wird sie fuer Ladezeit und Suchmaschinen-Crawling gleichermassen.
+
+Solche Ketten entstehen selten absichtlich. Meistens sind sie das Ergebnis mehrerer Website-Umzuege ueber die Jahre: Erst der Wechsel von http auf https, dann von www auf die nackte Domain, spaeter eine neue Domain nach einer Umbenennung, und irgendwann noch eine Anpassung der URL-Struktur wegen einer neuen SEO-Strategie. Jede dieser Aenderungen fuer sich war sinnvoll, in Summe entsteht daraus aber eine Kette mit drei, vier oder mehr Hops.
+
+## Der technische Grund: jeder Hop ist ein eigener Roundtrip
+
+Um zu verstehen, warum das so teuer ist, muss man sich ansehen, was der Browser bei jeder einzelnen Weiterleitung tatsaechlich tut. Laut den Performance-Richtlinien von [Chrome for Developers und dem Lighthouse-Tool](https://developer.chrome.com/docs/lighthouse/performance/redirects) erzeugt jede Weiterleitung einen zusaetzlichen Netzwerk-Roundtrip: Der Browser muss die neue Ziel-URL erst ueber eine weitere HTTP-Anfrage abrufen, was das Laden der Ressource um mehrere hundert Millisekunden verzoegern kann.
+
+Das bedeutet konkret: Bevor der Browser ueberhaupt anfangen kann, das HTML der eigentlichen Seite zu laden, muss er erst eine Anfrage an die alte URL schicken. Er bekommt eine Antwort mit Statuscode 301 oder 302 und der neuen Adresse, und stellt dann eine komplett neue Anfrage an diese neue Adresse. Bei jeder dieser Anfragen fallen DNS-Aufloesung, TCP-Verbindungsaufbau und bei https zusaetzlich der TLS-Handshake erneut an, sofern keine bestehende Verbindung wiederverwendet werden kann. Eine einzelne Weiterleitung kostet so schnell 100 bis 300 Millisekunden, je nach Serverstandort und Verbindungsqualitaet.
+
+## Wie sich die Verzoegerung Kette fuer Kette aufsummiert
+
+Bei einer echten Redirect-Chain, in der eine Weiterleitung auf eine weitere Ressource zeigt, die selbst wieder weiterleitet, addiert sich die Latenz jeder einzelnen Umleitung. Das erklaert [web.dev in seinem Leitfaden zur Time to First Byte (TTFB)](https://web.dev/articles/optimize-ttfb) sehr deutlich: Die Verzoegerung jeder Weiterleitung summiert sich auf die TTFB, bevor der eigentliche Seiteninhalt ueberhaupt zu laden beginnt.
+
+Nehmen wir ein realistisches Beispiel fuer einen Wiener Handwerksbetrieb, dessen Website schon drei Umzuege hinter sich hat. Ein Nutzer klickt auf einen alten Google-Ads-Link von vor zwei Jahren, der noch auf die urspruengliche Domain zeigt. Diese leitet auf die https-Version weiter, die wiederum auf die neue Firmendomain zeigt, die schliesslich auf die aktuelle Kampagnen-Landingpage verweist. Das sind drei Weiterleitungen hintereinander. Rechnet man pro Hop nur 150 Millisekunden, sind das schon 450 Millisekunden reine Wartezeit, bevor ueberhaupt die erste Anfrage an den richtigen Server gestellt wird, der dann noch selbst Zeit braucht, um die Seite auszuliefern.
+
+Diese 450 Millisekunden klingen erst einmal nach wenig. Fuer die Nutzerwahrnehmung sind sie es nicht. Wahrnehmungsstudien zur Ladezeit deuten darauf hin, dass Verzoegerungen ab etwa 300 Millisekunden von vielen Nutzern schon als spuerbares Haengen empfunden werden. Eine Redirect-Chain mit drei Hops reicht also allein aus, um diese Schwelle zu ueberschreiten, noch bevor der eigentliche Server ueberhaupt zu arbeiten beginnt.
+
+## Warum Core Web Vitals darunter besonders leiden
+
+Weiterleitungen wirken sich nicht nur allgemein auf gefuehlte Ladezeit aus, sondern verzoegern direkt die Messwerte, die Google fuer die Bewertung der Nutzererfahrung heranzieht. Da Redirects zwingend abgeschlossen sein muessen, bevor das HTML-Dokument ueberhaupt geladen werden kann, verschieben sie sowohl den First Contentful Paint (FCP) als auch den Largest Contentful Paint (LCP) nach hinten. Beide Werte fliessen direkt in die Core Web Vitals ein, die wiederum Teil der Ranking-Faktoren von Google sind.
+
+Laut web.dev wird ein hoher Waiting-Anteil an der TTFB fast immer durch unnoetige Redirects verursacht, weil sie zusaetzliche Roundtrips vor der eigentlichen Serververarbeitung einfuegen. Das heisst: Wenn Sie in Ihren Performance-Reports eine auffaellig hohe Wartezeit sehen, bevor ueberhaupt der Server anfaengt zu antworten, lohnt sich als Erstes ein Blick darauf, ob Ihre URL ueber eine oder mehrere Weiterleitungen laeuft, statt direkt auf den finalen Server zu zeigen.
+
+## Was Google zu Redirect-Ketten fuer das Crawling sagt
+
+Neben der reinen Ladezeit fuer Nutzer hat eine lange Redirect-Chain auch Folgen dafuer, wie gut Google Ihre Seite ueberhaupt findet und einordnet. [Google Search Central erklaert in seinen Richtlinien zu Site-Umzuegen](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes), dass der Googlebot einer Redirect-Kette maximal zehn Hops weit folgt. Danach bricht der Crawler ab, und die Zielseite wird schlicht nicht mehr erreicht.
+
+Google empfiehlt deshalb ausdruecklich, direkt zur finalen Ziel-URL weiterzuleiten, statt mehrere Weiterleitungen zu verketten. Ist das aus technischen Gruenden einmal nicht vermeidbar, sollte die Kette laut Google idealerweise nicht mehr als drei und weniger als fuenf Weiterleitungen umfassen. Der Grund dafuer ist zweifach: Lange Ketten erzeugen spuerbare Latenz fuer echte Nutzer, und sie werden nicht von allen User-Agents und Browsern gleichermassen zuverlaessig unterstuetzt.
+
+Zusaetzlich verweist Google in seinen [Richtlinien zum Crawl-Budget-Management fuer grosse Websites](https://developers.google.com/search/docs/crawling-indexing/large-site-managing-crawl-budget) darauf, dass jede Weiterleitung in einer Kette als eigene Anfrage gegen das Crawl-Budget einer Website zaehlt. Google raet explizit dazu, lange Redirect-Ketten zu vermeiden, weil sie sich negativ auf das Crawling insgesamt auswirken. Fuer kleinere Websites mit wenigen hundert Seiten mag das kaum spuerbar sein. Fuer groessere Auftritte mit tausenden Unterseiten, etwa Onlineshops oder Portale, kann ein aufgeblaehtes Crawl-Budget aber dazu fuehren, dass wichtige neue Seiten seltener oder spaeter erfasst werden.
+
+## Typische Fallen: Wie Redirect-Chains ueberhaupt entstehen
+
+In der Praxis entstehen Redirect-Ketten fast nie durch eine einzelne bewusste Entscheidung, sondern schleichend ueber Jahre. Ein paar Muster tauchen dabei immer wieder auf.
+
+Am haeufigsten ist der mehrfache Domain-Umzug. Eine Firma wechselt von `firma.at` auf `www.firma.at`, spaeter auf `https://www.firma.at`, und nach einem Rebranding schliesslich auf `firma-neu.at`. Jede einzelne Weiterleitung wurde zum jeweiligen Zeitpunkt korrekt eingerichtet. Nur hat danach niemand die aelteren Weiterleitungen direkt auf das neue, finale Ziel umgebogen.
+
+Auch [Website-Relaunches](/tipps/was-kostet-ein-professioneller-website-relaunch) sind ein Klassiker. Beim Wechsel von einem alten System auf ein neues, etwa von einem selbstgebauten System auf WordPress oder ein Headless-CMS, werden oft automatisch generierte Weiterleitungsregeln uebernommen. Die verweisen dann noch auf Zwischenstationen aus frueheren Migrationen, statt direkt auf die aktuelle URL-Struktur.
+
+Und dann sind da noch alte Marketing-Links. Kampagnen-URLs aus Google Ads, Print-Anzeigen oder QR-Codes auf Flyern zeigen oft noch auf laengst ueberholte Adressen, die ueber zwei oder drei Zwischenstationen erst bei der aktuellen Seite ankommen. Gerade bei Print-Material laesst sich der Link im Nachhinein nicht mehr aendern. Umso wichtiger, dass die technische Kette dahinter so kurz wie moeglich bleibt.
+
+## Schritt fuer Schritt: Was Sie konkret dagegen tun koennen
+
+Der erste Schritt ist immer eine vollstaendige Bestandsaufnahme. Pruefen Sie mit einem Tool wie Screaming Frog, Sitebulb oder direkt ueber die Chrome-DevTools im Netzwerk-Tab, welche Ihrer wichtigsten Einstiegs-URLs, insbesondere aus alten Kampagnen, Backlinks und internen Verlinkungen, ueber mehr als eine Weiterleitung laufen. Notieren Sie sich dabei nicht nur, ob eine Kette existiert, sondern wie viele Hops sie tatsaechlich hat.
+
+Im zweiten Schritt biegen Sie jede gefundene Kette direkt auf das finale Ziel um. Technisch bedeutet das: Statt A leitet auf B, B leitet auf C weiterzuleiten, tragen Sie in der Serverkonfiguration ein, dass A direkt auf C zeigt. Das laesst sich bei den meisten Setups ueber die `.htaccess`-Datei, die Nginx-Konfiguration oder die Weiterleitungsregeln des Hosting-Providers beziehungsweise CMS erledigen.
+
+Im dritten Schritt sollten Sie diese Pruefung nicht einmalig, sondern regelmaessig wiederholen, etwa halbjaehrlich oder bei jedem groesseren Website-Relaunch. Denn genau bei Relaunches entstehen erfahrungsgemaess die meisten neuen Ketten, weil alte Weiterleitungen aus Zeitdruck einfach eins zu eins uebernommen werden, statt sie zu bereinigen.
+
+Viertens lohnt sich ein Blick in die Google Search Console unter dem Bereich Crawling-Statistiken. Dort sehen Sie, wie viele Anfragen Google insgesamt an Ihre Domain stellt und wie sich diese auf verschiedene Statuscodes verteilen. Ein auffaellig hoher Anteil an 301- oder 302-Antworten ist ein direktes Warnsignal fuer unnoetig lange Ketten.
+
+## Die haeufigsten Irrtuemer rund um Weiterleitungen
+
+Ein verbreiteter Irrtum ist die Annahme, eine einzelne Weiterleitung sei grundsaetzlich unproblematisch und muesse nie behoben werden. Das stimmt zur Haelfte. Eine einzelne, korrekt eingerichtete Weiterleitung ist tatsaechlich unkritisch. Kritisch wird es erst, wenn sich mehrere davon zu einer Kette summieren, weil niemand die Zwischenstationen aufgeraeumt hat.
+
+Genauso hartnaeckig haelt sich die Annahme, Weiterleitungen seien reine Serverangelegenheit und haetten mit der gefuehlten Ladezeit der Website wenig zu tun. Das Gegenteil ist der Fall. Jede Weiterleitung ist ein zusaetzlicher, spuerbarer Roundtrip, den der Nutzer im Browser als Wartezeit erlebt, lange bevor der eigentliche Server ueberhaupt antwortet.
+
+Dazu kommt oft eine falsch gesetzte Prioritaet. Viele Betriebe investieren viel Aufwand in Bildkomprimierung, Caching oder ein schnelleres Hosting, waehrend parallel eine drei- oder vierstufige Redirect-Kette auf der Startseite unbemerkt Hunderte Millisekunden kostet. Dabei ist die Bereinigung von Redirect-Ketten im Vergleich zu vielen anderen Performance-Massnahmen technisch einfach und schnell umsetzbar. Der Effekt ist trotzdem oft ueberproportional gross.
+
+## Key Takeaways
+
+- Jede einzelne Weiterleitung erzwingt einen kompletten zusaetzlichen Netzwerk-Roundtrip und kann die Ladezeit um mehrere hundert Millisekunden verzoegern.
+- Bei mehreren Weiterleitungen in Serie summiert sich diese Verzoegerung auf die Time to First Byte, bevor der eigentliche Seiteninhalt ueberhaupt zu laden beginnt.
+- Redirects verschieben First Contentful Paint und Largest Contentful Paint nach hinten und wirken sich damit direkt auf die Core Web Vitals aus.
+- Google folgt Redirect-Ketten maximal zehn Hops weit und empfiehlt, eine Kette idealerweise auf drei bis vier Weiterleitungen zu begrenzen.
+- Lange Ketten belasten zusaetzlich das Crawl-Budget, weil jede Weiterleitung als eigene Anfrage gegen dieses Budget zaehlt.
+
+## Fazit und naechster Schritt
+
+Redirect-Ketten sind kein Nischenthema fuer Technik-Nerds, sondern ein handfester Wettbewerbsfaktor. Jede zusaetzliche Weiterleitung kostet reale Millisekunden, die sich bei mehreren Hops schnell zu einer spuerbaren Verzoegerung summieren, sowohl fuer Ihre Besucher als auch fuer den Googlebot beim Crawling. Die gute Nachricht: Anders als viele Performance-Probleme laesst sich eine Redirect-Chain meist innerhalb weniger Stunden identifizieren und direkt auf das finale Ziel umbiegen.
+
+Wenn Sie nicht sicher sind, ob Ihre eigene Website solche verdeckten Ketten mit sich herumtraegt, oder wenn Sie generell wissen moechten, wo bei Ihrem Auftritt technisch noch Potenzial liegt, nehmen Sie gerne ueber unsere [Kontaktseite](/kontakt) Verbindung mit uns auf. Wir werfen einen unabhaengigen Blick auf Ihre Website und sagen Ihnen ehrlich, wo es hakt und was sich davon wirklich lohnt zu beheben.

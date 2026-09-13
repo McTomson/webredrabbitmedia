@@ -4352,3 +4352,48 @@ quelle: https://www.php.net/eol.php
 quelle_name: PHP.net - Unsupported Branches (offizielle EOL-Liste)
 geprueft_am: 2026-09-12
 recheck_nach: 2027-03-11
+
+## t100-2026-09-13-484
+cluster: 2
+keywords: warum, führen, weiterleitungsketten, redirect, chains, performance, verlusten
+aussage: Jede Weiterleitung erzeugt einen zusätzlichen Netzwerk-Roundtrip: Der Browser muss die neue Ziel-URL erst per weiterer HTTP-Anfrage abrufen, was das Laden der Ressource um mehrere hundert Millisekunden verzögern kann ('This additional trip across the network can delay the loading of the resource by hundreds of milliseconds').
+quelle: https://developer.chrome.com/docs/lighthouse/performance/redirects
+quelle_name: Chrome for Developers / Lighthouse - Avoid multiple page redirects
+geprueft_am: 2026-09-13
+recheck_nach: 2027-03-12
+
+## t100-2026-09-13-485
+cluster: 2
+keywords: warum, führen, weiterleitungsketten, redirect, chains, performance, verlusten
+aussage: Bei Redirect-Ketten summiert sich die Verzögerung: Zeigt eine Weiterleitung auf eine weitere Ressource, die selbst wieder weiterleitet ('another redirect - and so on'), addiert sich die Latenz jeder einzelnen Umleitung auf die Time to First Byte (TTFB), bevor der eigentliche Seiteninhalt überhaupt zu laden beginnt.
+quelle: https://web.dev/articles/optimize-ttfb
+quelle_name: web.dev - Optimize Time to First Byte
+geprueft_am: 2026-09-13
+recheck_nach: 2027-03-12
+
+## t100-2026-09-13-486
+cluster: 2
+keywords: warum, führen, weiterleitungsketten, redirect, chains, performance, verlusten
+aussage: Googlebot folgt einer Redirect-Kette maximal 10 Hops weit; Google empfiehlt aber, direkt zur finalen Ziel-URL weiterzuleiten statt zu verketten - falls unvermeidbar, sollte die Kette 'idealerweise nicht mehr als 3 und weniger als 5' Weiterleitungen umfassen, da lange Ketten Latenz für Nutzer erzeugen und nicht von allen User-Agents/Browsern unterstützt werden.
+quelle: https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes
+quelle_name: Google Search Central - Site Moves and Migrations
+geprueft_am: 2026-09-13
+recheck_nach: 2027-03-12
+
+## t100-2026-09-13-487
+cluster: 2
+keywords: warum, führen, weiterleitungsketten, redirect, chains, performance, verlusten
+aussage: Lange Redirect-Ketten wirken sich zusätzlich negativ auf das Crawling selbst aus: Jede Weiterleitung in der Kette zählt als eigene Anfrage gegen das Crawl-Budget einer Website, wodurch Google explizit empfiehlt, lange Redirect-Ketten zu vermeiden ('Avoid long redirect chains, which have a negative effect on crawling').
+quelle: https://developers.google.com/search/docs/crawling-indexing/large-site-managing-crawl-budget
+quelle_name: Google Search Central - Crawl Budget Management for Large Sites
+geprueft_am: 2026-09-13
+recheck_nach: 2027-03-12
+
+## t100-2026-09-13-488
+cluster: 2
+keywords: warum, führen, weiterleitungsketten, redirect, chains, performance, verlusten
+aussage: Redirects verzögern direkt die für Core Web Vitals relevanten Ladephasen: Da sie zwingend vor dem Laden des HTML-Dokuments abgeschlossen sein müssen, verschieben sie First Contentful Paint (FCP) und Largest Contentful Paint (LCP) nach hinten - ein hoher 'Waiting'-Anteil der TTFB wird laut web.dev fast immer durch unnötige Redirects verursacht, die zusätzliche Roundtrips vor der eigentlichen Serververarbeitung einfügen.
+quelle: https://web.dev/articles/optimize-ttfb
+quelle_name: web.dev - Optimize Time to First Byte
+geprueft_am: 2026-09-13
+recheck_nach: 2027-03-12
