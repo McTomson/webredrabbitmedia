@@ -4397,3 +4397,48 @@ quelle: https://web.dev/articles/optimize-ttfb
 quelle_name: web.dev - Optimize Time to First Byte
 geprueft_am: 2026-09-13
 recheck_nach: 2027-03-12
+
+## t101-2026-09-14-489
+cluster: 2
+keywords: tree, warum, verlangsamt, tiefer, baum, rendering
+aussage: Der DOM-Tree ist eine Baumstruktur, deren Knoten den Inhalt eines HTML- oder XML-Dokuments repraesentieren; jedes Branch endet in einem Node, der Objekte enthaelt, und der Baum wird vom Browser beim Parsen des HTML-Dokuments aufgebaut.
+quelle: https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction
+quelle_name: MDN Web Docs - Document Object Model (DOM) Introduction
+geprueft_am: 2026-09-14
+recheck_nach: 2027-03-13
+
+## t101-2026-09-14-490
+cluster: 2
+keywords: tree, warum, verlangsamt, tiefer, baum, rendering
+aussage: Lighthouse warnt, wenn das body-Element mehr als ca. 800 Knoten enthaelt, und meldet einen Fehler (excessive DOM size) bei mehr als ca. 1.400 Knoten.
+quelle: https://developer.chrome.com/docs/lighthouse/performance/dom-size
+quelle_name: Chrome for Developers - Avoid an excessive DOM size (Lighthouse)
+geprueft_am: 2026-09-14
+recheck_nach: 2027-03-13
+
+## t101-2026-09-14-491
+cluster: 2
+keywords: tree, warum, verlangsamt, tiefer, baum, rendering
+aussage: Je groesser der DOM ist, desto teurer ist sowohl das initiale Rendering der Seite als auch jedes spaetere Update des Renderings im Lebenszyklus der Seite; dieser Mehraufwand kann die Interaction to Next Paint (INP) negativ beeinflussen.
+quelle: https://web.dev/articles/dom-size-and-interactivity
+quelle_name: web.dev - How large DOM sizes affect interactivity, and what you can do about it
+geprueft_am: 2026-09-14
+recheck_nach: 2027-03-13
+
+## t101-2026-09-14-492
+cluster: 2
+keywords: tree, warum, verlangsamt, tiefer, baum, rendering
+aussage: Bei Interaktionen muss der Browser staendig Position und Styling der Knoten neu berechnen; ein grosser DOM-Tree in Kombination mit komplizierten Style-Regeln kann Rendering und Interaktivitaet deutlich verlangsamen.
+quelle: https://developer.chrome.com/docs/lighthouse/performance/dom-size
+quelle_name: Chrome for Developers - Avoid an excessive DOM size (Lighthouse)
+geprueft_am: 2026-09-14
+recheck_nach: 2027-03-13
+
+## t101-2026-09-14-493
+cluster: 2
+keywords: tree, warum, verlangsamt, tiefer, baum, rendering
+aussage: Wenn JavaScript den DOM abfragt (z. B. document.querySelectorAll), werden Referenzen auf die gefundenen Elemente im Speicher gehalten – bei einem grossen DOM kann das den Speicherbedarf des Geraets erheblich erhoehen.
+quelle: https://web.dev/articles/dom-size-and-interactivity
+quelle_name: web.dev - How large DOM sizes affect interactivity, and what you can do about it
+geprueft_am: 2026-09-14
+recheck_nach: 2027-03-13
