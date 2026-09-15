@@ -1,0 +1,152 @@
+---
+title: 'Interne Suche integrieren, ohne die Datenbank zu überlasten'
+slug: wie-integriert-man-interne-suchfunktionen-ohne-die-datenbank-zu
+excerpt: >-
+  Wie Sie eine interne Website-Suche so integrieren, dass sie auch bei
+  wachsendem Datenbestand die Produktionsdatenbank nicht überlastet, von
+  Indizes über Caching bis zur dedizierten Such-Engine.
+featuredSnippetTitle: >-
+  Wie integriert man interne Suchfunktionen, ohne die Datenbank zu überlasten?
+featuredSnippet: >-
+  Eine interne Suche überlastet die Datenbank fast nie durch die Suche
+  selbst, sondern durch Abfragen ohne passenden Index. Die Lösung ist eine
+  Kombination aus Trigram oder Volltextindizes in PostgreSQL, Read-Replicas
+  für Leselast, einem Cache für wiederkehrende Suchbegriffe und, ab
+  bestimmter Größe, einer dedizierten Such-Engine statt roher
+  Datenbankabfragen.
+author: Dmitry Pashlov
+publishedAt: '2026-09-15'
+updatedAt: '2026-09-15'
+category: 'Technik & Performance'
+tags:
+  - Datenbank
+  - Performance
+  - PostgreSQL
+  - Suchfunktion
+  - Webentwicklung
+featuredImage: /images/blog/wie-integriert-man-interne-suchfunktionen-ohne-die-datenbank-zu.png
+status: draft
+aiAssisted: true
+sources:
+  - name: PostgreSQL Documentation - pg_trgm
+    url: 'https://www.postgresql.org/docs/current/pgtrgm.html'
+  - name: PostgreSQL Documentation - Text Search Indexes
+    url: 'https://www.postgresql.org/docs/current/textsearch-indexes.html'
+  - name: PostgreSQL Documentation - Comparison of Different Replication Solutions
+    url: 'https://www.postgresql.org/docs/current/different-replication-solutions.html'
+  - name: Redis Documentation - Cache-aside pattern
+    url: 'https://redis.io/docs/latest/develop/use-cases/cache-aside/'
+  - name: Meilisearch Blog - Meilisearch vs Typesense
+    url: 'https://www.meilisearch.com/blog/meilisearch-vs-typesense'
+  - name: Algolia Documentation - Debounce sources
+    url: 'https://www.algolia.com/doc/ui-libraries/autocomplete/guides/debouncing-sources'
+keyTakeaways:
+  - Eine interne Suche überlastet die Datenbank meist nicht wegen der Suche an sich, sondern wegen fehlender Indizes bei LIKE Abfragen.
+  - Trigram-Indizes (pg_trgm) sind der schnelle erste Schritt für Teilstring-Suche, native Volltextsuche mit tsvector und GIN-Index bringt zusätzlich Relevanz-Ranking.
+  - Read-Replicas nehmen Suchtraffic von der primären, schreibenden Datenbank und sind erst ab spürbarer Last sinnvoll.
+  - Ein Redis-Cache nach dem Cache-Aside-Muster spart wiederholte Abfragen bei populären Suchbegriffen, braucht aber eine saubere Invalidierung.
+  - Debouncing im Frontend ist die günstigste Maßnahme überhaupt und sollte unabhängig von allen anderen Schritten umgesetzt werden.
+autoGenerateFAQs: false
+customFAQs:
+  - question: Warum wird meine Website-Suche mit mehr Daten immer langsamer?
+    answer: >-
+      Meist weil eine LIKE Abfrage mit führendem Prozentzeichen ohne
+      passenden Index läuft. Die Datenbank muss dann jede Zeile einzeln
+      prüfen, statt über ein Register nachzuschlagen, und das kostet mit
+      wachsendem Datenbestand spürbar mehr Zeit und Ressourcen.
+  - question: Was ist der Unterschied zwischen einem Trigram-Index und Volltextsuche in PostgreSQL?
+    answer: >-
+      Ein Trigram-Index über pg_trgm eignet sich gut für schnelle
+      Teilstring-Treffer, liefert aber keine Relevanzsortierung. Die native
+      Volltextsuche mit tsvector und GIN-Index zerlegt Text in Grundformen
+      und erlaubt zusätzlich, den relevantesten Treffer nach oben zu stellen.
+  - question: Wann braucht meine Website eine Read-Replica für die Suche?
+    answer: >-
+      Erst dann, wenn trotz passendem Index die Leselast durch parallele
+      Suchanfragen und Bestellprozesse spürbar steigt. Für kleinere Websites
+      mit wenigen gleichzeitigen Nutzern reicht ein guter Index meist
+      dauerhaft aus.
+  - question: Lohnt sich eine dedizierte Such-Engine wie Meilisearch für jede Website?
+    answer: >-
+      Nein. Für einen kleinen Betrieb mit wenigen Seiten ist ein Index in der
+      bestehenden Datenbank völlig ausreichend. Eine dedizierte Such-Engine
+      lohnt sich erst bei großen, sich häufig ändernden Datenmengen oder wenn
+      Facettensuche und Tippfehlertoleranz gefragt sind.
+  - question: Was bringt Debouncing bei der Sucheingabe konkret?
+    answer: >-
+      Ohne Debouncing löst jeder Tastenanschlag eine eigene Anfrage an die
+      Datenbank aus. Mit einer kurzen Verzögerung von etwa zwei- bis
+      dreihundert Millisekunden nach der letzten Eingabe sinkt die Anzahl der
+      Abfragen drastisch, bei minimalem Aufwand im Frontend.
+hookCandidates:
+  - "suche überlastet die datenbank, oder?"
+  - "fehlt der index, crasht die suche?"
+---
+
+Stellen Sie sich eine Bibliothek vor, in der niemand ein Regalsystem angelegt hat. Jedes Mal, wenn jemand ein Buch sucht, muss ein Bibliothekar sämtliche Regale von vorne bis hinten durchgehen, Buch für Buch. Bei zehn Büchern kein Problem. Bei hunderttausend Büchern und fünfzig gleichzeitigen Besuchern bricht das System zusammen, nicht weil die Bücher zu viele sind, sondern weil niemand ein Register angelegt hat. Genau das passiert mit einer Website-Suche, die naiv gegen die Produktionsdatenbank läuft.
+
+Die kurze Antwort vorweg, denn die ist wichtiger als jede Theorie dahinter: Eine interne Suche überlastet die Datenbank fast nie wegen der Suche selbst, sondern wegen ungeeigneter Abfragen ohne Index. Die Lösung besteht aus einer Kombination aus Trigram oder Volltextindizes in PostgreSQL, Read-Replicas für die Leselast, einem Cache für wiederkehrende Suchbegriffe und, ab einer gewissen Größe, einer dedizierten Such-Engine statt roher Datenbankabfragen.
+
+## Warum eine simple Datenbanksuche irgendwann in die Knie geht
+
+Die meisten internen Suchen starten harmlos. Ein Entwickler baut ein Eingabefeld, schreibt eine Abfrage mit `LIKE '%suchbegriff%'` und testet sie mit den zwanzig Testprodukten in der lokalen Datenbank. Alles läuft flüssig, der Launch erfolgt, und monatelang merkt niemand etwas. Das Problem zeigt sich erst, wenn der Datenbestand wächst und mehrere Besucher gleichzeitig suchen.
+
+Der Grund dafür liegt in der Funktionsweise von `LIKE`-Abfragen mit einem führenden Prozentzeichen. Ohne passenden Index kann die Datenbank den Suchbegriff nicht über ein Register nachschlagen, sie muss jede einzelne Zeile der Tabelle lesen und prüfen, ob der Text passt. Bei zwanzig Produkten dauert das Millisekunden. Bei hunderttausend Produkten und mehreren parallelen Suchanfragen bindet das spürbar CPU und I/O-Ressourcen der Datenbank, die eigentlich für Bestellungen, Logins und andere geschäftskritische Abfragen gebraucht werden. Genau da beginnt das eigentliche Problem. Eine überlastete Datenbank bremst am Ende nicht nur die Suche allein, sie bremst den ganzen Shop mit. Ein verwandtes Muster, bei dem eine an sich sichere Architektur unerwartet langsam wirkt, beschreiben wir auch in [Warum ist eine relationale Datenbank manchmal langsamer als eine dateibasierte Lösung](/tipps/warum-ist-eine-relationale-datenbank-manchmal-langsamer-als-eine).
+
+## Trigram-Indizes: der schnelle erste Schritt für Teilstring-Suche
+
+Der einfachste und oft unterschätzte Hebel heißt Trigram-Index. [PostgreSQL](https://www.postgresql.org/docs/current/pgtrgm.html) bringt dafür die Erweiterung `pg_trgm` mit, die Suchbegriffe in Dreier-Zeichenfolgen zerlegt und darüber einen GIN- oder GiST-Index aufbaut. Statt die ganze Tabelle zu durchsuchen, schaut die Datenbank im Index nach, welche Zeilen die passenden Zeichenfolgen enthalten, und muss nur noch diese Kandidaten prüfen. Das funktioniert auch für Abfragen mit führendem Prozentzeichen wie `%tisch%`, die klassische B-Tree-Indizes nicht sinnvoll unterstützen können.
+
+Für ein österreichisches Möbelhaus mit einigen Tausend Artikeln reicht das oft schon aus, um aus einer spürbar zähen Suche eine zu machen, die sich sofort flüssig anfühlt. Die Aktivierung ist überschaubarer Aufwand, Erweiterung installieren, Index auf der Suchspalte anlegen, mehr braucht es nicht. Der Nachteil ist, dass Trigram-Indizes gut für Teilstring-Treffer sind, aber kein echtes Relevanz-Ranking liefern. Wer nach "tisch" sucht, bekommt Treffer, aber keine sinnvolle Sortierung danach, welcher Treffer am besten passt.
+
+## Native Volltextsuche statt reiner Mustersuche
+
+Sobald Relevanz eine Rolle spielt, also wenn der beste Treffer oben stehen soll und nicht einfach der erste gefundene, lohnt sich der Umstieg auf die [native Volltextsuche von PostgreSQL](https://www.postgresql.org/docs/current/textsearch-indexes.html). Dabei werden Texte in sogenannte `tsvector`-Spalten umgewandelt, die Wörter in ihre Grundformen zerlegen und mit einem GIN-Index versehen. Dieser Index bildet ab, in welchen Zeilen welches Wort vorkommt, ähnlich einem Stichwortverzeichnis am Ende eines Fachbuchs. Eine Suchanfrage wird dann nicht mehr Zeichen für Zeichen abgeglichen, sondern gegen dieses Verzeichnis geprüft. Das ist deutlich schneller und erlaubt zusätzlich eine Relevanzbewertung.
+
+Für die meisten Content-Websites, Blogs und kleineren Shops im deutschsprachigen Raum ist das die solide Standardlösung, weil sie direkt in der bestehenden Datenbank läuft, keine zusätzliche Infrastruktur braucht und mit Produktbeschreibungen, Blogartikeln oder FAQ-Einträgen gut umgehen kann. Der Aufwand liegt im Aufbau und der Pflege der `tsvector`-Spalte, die bei jeder Änderung des Ausgangstexts aktualisiert werden muss, meist über einen Trigger oder ein automatisches Update beim Speichern.
+
+## Lesetraffic von der Hauptdatenbank fernhalten
+
+Auch mit gutem Index bleibt jede Suchanfrage eine Leseoperation auf der Datenbank. Bei einem kleinen Betrieb mit wenigen gleichzeitigen Nutzern ist das kein Thema. Bei einem Shop mit saisonalen Spitzen, etwa rund um den Jänner-Ausverkauf oder eine große Kampagne, kann die Summe aus Suchanfragen, Produktseitenaufrufen und Bestellprozessen die primäre Datenbank spürbar auslasten, gerade weil Bestellungen als schreibende Vorgänge Priorität haben sollten.
+
+Hier hilft [Streaming-Replikation](https://www.postgresql.org/docs/current/different-replication-solutions.html). Dabei wird eine oder mehrere Kopien der Datenbank, sogenannte Read-Replicas, laufend mit den Änderungen des Primärservers synchronisiert. Lesende Anfragen wie Suchabfragen werden dann gezielt an die Replica geschickt, während die primäre Datenbank sich auf schreibende Vorgänge wie neue Bestellungen konzentrieren kann. Für ein wachsendes Unternehmen mit einer Website und angeschlossenem Bestellsystem ist das ein wirkungsvoller, aber auch aufwendigerer Schritt, der erst dann sinnvoll ist, wenn Indizierung allein die Last nicht mehr ausreichend senkt.
+
+## Ein Cache für wiederkehrende Suchanfragen
+
+Nicht jede Suchanfrage ist einzigartig. Bestimmte Suchbegriffe wiederholen sich ständig, etwa "Öffnungszeiten", ein aktuell beworbenes Produkt oder ein saisonal gefragter Artikel. Jede dieser Anfragen erneut komplett gegen die Datenbank laufen zu lassen ist unnötige Arbeit. Genau dafür eignet sich das [Cache-Aside-Muster mit Redis](https://redis.io/docs/latest/develop/use-cases/cache-aside/), das Ergebnis einer Suchabfrage wird nach dem ersten Treffer im Arbeitsspeicher zwischengespeichert. Fragt ein weiterer Besucher denselben Begriff an, liefert der Cache die Antwort direkt aus, ohne dass die Datenbank überhaupt involviert wird.
+
+Der Effekt ist besonders bei populären Suchbegriffen groß, weil wenige Begriffe oft einen unverhältnismäßig hohen Anteil des Suchtraffics ausmachen. Wichtig dabei ist eine durchdachte Invalidierung, ändert sich ein Produkt, muss der zugehörige Cache-Eintrag verworfen oder aktualisiert werden, sonst zeigt die Suche veraltete Ergebnisse an, etwa einen Artikel, der längst ausverkauft ist. Ein Cache ohne Invalidierungsstrategie ist am Ende gefährlicher als gar kein Cache.
+
+## Wann eine dedizierte Such-Engine die bessere Wahl ist
+
+Irgendwann reicht Optimierung innerhalb der Datenbank nicht mehr aus. Besonders dann, wenn Tippfehlertoleranz und Facettensuche nach Kategorie oder Preis gefragt sind, oder wenn die Datenmenge sehr groß ist und sich häufig ändert. An diesem Punkt lohnt sich der Blick auf [dedizierte Such-Engines wie Meilisearch](https://www.meilisearch.com/blog/meilisearch-vs-typesense). Solche Systeme indizieren Daten asynchron und getrennt vom laufenden Anwendungsbetrieb. Sie arbeiten mit einer eigenen, speicherabgebildeten Datenstruktur auf der Festplatte statt mit der Produktionsdatenbank und halten dadurch auch bei wachsenden Datenmengen eine stabile Suchgeschwindigkeit, ohne die primäre Datenbank zusätzlich zu belasten.
+
+Der Trade-off ist zusätzliche Infrastruktur, die betrieben und laufend synchron zur Datenbank gehalten werden muss. Für einen kleinen Handwerksbetrieb mit zwanzig Leistungsseiten ist das klar überdimensioniert. Für einen Onlineshop mit mehreren zehntausend Artikeln, Filialen in Wien und Graz und einer Suche, die für den Umsatz mitentscheidend ist, kann sich der Aufwand dagegen schnell auszahlen.
+
+## Die einfachste Bremse zuerst: Debouncing im Frontend
+
+Bevor man an Indizes, Replicas oder neue Infrastruktur denkt, lohnt sich ein Blick auf eine Maßnahme, die fast nichts kostet und sofort wirkt, Debouncing der Sucheingabe. Ohne diese Bremse löst jeder einzelne Tastenanschlag im Suchfeld eine eigene Anfrage an das Backend aus. Wer "Gartenmöbel" eintippt, erzeugt so theoretisch zwölf Anfragen für ein einziges gemeintes Suchergebnis.
+
+[Algolia empfiehlt in der eigenen Dokumentation](https://www.algolia.com/doc/ui-libraries/autocomplete/guides/debouncing-sources) zur Autocomplete-Funktion, Anfragen erst nach einer kurzen Tippunterbrechung abzuschicken, üblicherweise nach zwei- bis dreihundert Millisekunden ohne weitere Eingabe. Diese Änderung betrifft nur das Frontend, ist in wenigen Zeilen Code umgesetzt und reduziert die Anzahl der Datenbankabfragen bei aktivem Tippen drastisch. Es ist die günstigste Maßnahme auf dieser Liste und sollte unabhängig davon umgesetzt werden, welche der anderen Lösungen Sie später dazu nehmen.
+
+## Schritt für Schritt: So gehen Sie konkret vor
+
+Nicht alles muss auf einmal umgesetzt werden. Ein sinnvoller Weg sieht so aus.
+
+Zuerst prüfen Sie den Ist-Zustand mit `EXPLAIN ANALYZE` auf der bestehenden Suchabfrage. Das zeigt sofort, ob die Datenbank einen vollständigen Tabellen-Scan durchführt, und ist der wichtigste erste Schritt, den erstaunlich viele Betriebe überspringen. Danach bauen Sie Debouncing im Frontend ein, weil es unabhängig von der Datenbankstruktur sofort Wirkung zeigt. Anschließend legen Sie, je nach Anforderung, einen Trigram-Index für einfache Teilstring-Suche oder eine `tsvector`-Spalte mit GIN-Index für relevanzbasierte Volltextsuche an.
+
+Erst wenn die Leselast trotz Index spürbar steigt, etwa weil gleichzeitig viele Bestellungen und Suchanfragen laufen, ziehen Sie eine Read-Replica in Betracht. Zeigt die Analyse, dass wenige Suchbegriffe einen Großteil des Traffics ausmachen, ergänzen Sie einen Redis-Cache nach dem Cache-Aside-Muster. Und erst wenn absehbar ist, dass Sie dauerhaft Facettensuche oder Tippfehlertoleranz brauchen, vielleicht weil die Datenmenge stark wächst, planen Sie den Umstieg auf eine dedizierte Such-Engine.
+
+## Häufige Fallen in der Praxis
+
+Ein paar Fehler sehen wir immer wieder, unabhängig von Branche oder Größe des Unternehmens. Kommt Ihnen die eine oder andere bekannt vor, oder? Die erste Falle ist eine `LIKE`-Abfrage mit führendem Prozentzeichen, die von Anfang an ohne Trigram-Index in Produktion geht, weil sie im Test mit wenigen Datensätzen unauffällig läuft. Die zweite Falle ist ein Cache ohne Invalidierung, Produkte werden aktualisiert, der Suchindex oder Cache aber nicht, und Kunden sehen veraltete Preise oder ausverkaufte Artikel als Treffer. Die dritte Falle ist ein fehlendes Debouncing, das gerade bei viralem Traffic oder einer Rabattaktion die Datenbank unnötig unter Druck setzt, obwohl die eigentliche Ursache im Frontend liegt und in einer Stunde behoben wäre. Die vierte Falle ist, gleich zu Beginn eine komplette Such-Engine wie Meilisearch aufzusetzen, obwohl ein einfacher Index völlig ausgereicht hätte, was unnötige Betriebskosten und Wartungsaufwand verursacht.
+
+## TL;DR
+
+Eine interne Suche wird selten durch die Suche selbst zum Problem, sondern durch fehlende Indizes. Wer zuerst misst, dann Debouncing und Indizes umsetzt und erst danach über Replicas, Cache oder eine dedizierte Such-Engine nachdenkt, spart sich in den meisten Fällen teure Infrastruktur.
+
+## Fazit
+
+Die Reihenfolge macht den Unterschied. Erst messen. Dann die günstigste Maßnahme umsetzen, erst danach über zusätzliche Infrastruktur wie Replicas oder eine eigene Such-Engine nachdenken. Wer diese Reihenfolge umdreht, baut oft eine teure Lösung für ein Problem, das ein einziger Index gelöst hätte.
+
+Wenn Sie unsicher sind, wo Ihre eigene Website-Suche in dieser Kette gerade steht, schauen wir uns das gerne gemeinsam an, unverbindlich und ohne dass gleich ein großes Projekt daraus wird. Kontaktieren Sie uns über unsere [Kontaktseite](/kontakt).

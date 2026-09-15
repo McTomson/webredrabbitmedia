@@ -4442,3 +4442,57 @@ quelle: https://web.dev/articles/dom-size-and-interactivity
 quelle_name: web.dev - How large DOM sizes affect interactivity, and what you can do about it
 geprueft_am: 2026-09-14
 recheck_nach: 2027-03-13
+
+## t102-2026-09-15-494
+cluster: 2
+keywords: integriert, interne, suchfunktionen, ohne, datenbank, überlasten
+aussage: PostgreSQL kann LIKE/ILIKE-Mustersuchen (z. B. Volltextsuche über %begriff%) durch GIN- oder GiST-Trigram-Indizes (Erweiterung pg_trgm) beschleunigen, sodass die Datenbank statt eines vollständigen Tabellen-Scans einen Index-Lookup ausführt – die Suchstring wird dafür in 3-Zeichen-Trigramme zerlegt.
+quelle: https://www.postgresql.org/docs/current/pgtrgm.html
+quelle_name: PostgreSQL Documentation - pg_trgm
+geprueft_am: 2026-09-15
+recheck_nach: 2027-03-14
+
+## t102-2026-09-15-495
+cluster: 2
+keywords: integriert, interne, suchfunktionen, ohne, datenbank, überlasten
+aussage: PostgreSQL bietet eine native Volltextsuche über tsvector-Spalten, die mit einem GIN-Index (invertierter Index, mappt jedes Wort/Lexem auf die Zeilen, in denen es vorkommt) indiziert wird – die empfohlene Standardmethode für Textsuche direkt in der Datenbank.
+quelle: https://www.postgresql.org/docs/current/textsearch-indexes.html
+quelle_name: PostgreSQL Documentation - Text Search Indexes
+geprueft_am: 2026-09-15
+recheck_nach: 2027-03-14
+
+## t102-2026-09-15-496
+cluster: 2
+keywords: integriert, interne, suchfunktionen, ohne, datenbank, überlasten
+aussage: Über Streaming-Replikation lassen sich Read-Replicas aufsetzen, die WAL-Datensätze vom Primärserver laufend übernehmen; lesende Anfragen (z. B. Suchabfragen) können dann an die Replica statt an die primäre, schreibende Datenbank geschickt werden, um Lesetraffic vom Primärsystem fernzuhalten.
+quelle: https://www.postgresql.org/docs/current/different-replication-solutions.html
+quelle_name: PostgreSQL Documentation - Comparison of Different Replication Solutions
+geprueft_am: 2026-09-15
+recheck_nach: 2027-03-14
+
+## t102-2026-09-15-497
+cluster: 2
+keywords: integriert, interne, suchfunktionen, ohne, datenbank, überlasten
+aussage: Mit dem Cache-Aside-Muster in Redis wird das Ergebnis einer Suchabfrage nach dem ersten Treffer im Arbeitsspeicher zwischengespeichert; wiederholte identische Anfragen (z. B. populäre Suchbegriffe) werden dann direkt aus dem Cache beantwortet, ohne die Datenbank erneut abzufragen.
+quelle: https://redis.io/docs/latest/develop/use-cases/cache-aside/
+quelle_name: Redis Documentation - Cache-aside pattern
+geprueft_am: 2026-09-15
+recheck_nach: 2027-03-14
+
+## t102-2026-09-15-498
+cluster: 2
+keywords: integriert, interne, suchfunktionen, ohne, datenbank, überlasten
+aussage: Dedizierte Such-Engines wie Meilisearch führen die Indizierung asynchron und getrennt vom Anwendungsbetrieb aus, arbeiten mit einer speicherabgebildeten (memory-mapped) Datenstruktur auf Disk statt der Produktionsdatenbank und halten so auch bei wachsenden Datenmengen die Suchperformance stabil, ohne die primäre Datenbank zusätzlich zu belasten.
+quelle: https://www.meilisearch.com/blog/meilisearch-vs-typesense
+quelle_name: Meilisearch Blog - Meilisearch vs Typesense
+geprueft_am: 2026-09-15
+recheck_nach: 2027-03-14
+
+## t102-2026-09-15-499
+cluster: 2
+keywords: integriert, interne, suchfunktionen, ohne, datenbank, überlasten
+aussage: Für Sucheingabefelder empfiehlt Algolia in der offiziellen Autocomplete-Dokumentation ein Debouncing der Anfragen, damit nicht bei jedem Tastenanschlag eine neue Anfrage an das Backend/die Datenbank geschickt wird, sondern erst nach einer kurzen Tippunterbrechung.
+quelle: https://www.algolia.com/doc/ui-libraries/autocomplete/guides/debouncing-sources
+quelle_name: Algolia Documentation - Debounce sources
+geprueft_am: 2026-09-15
+recheck_nach: 2027-03-14
