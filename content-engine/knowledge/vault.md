@@ -4496,3 +4496,48 @@ quelle: https://www.algolia.com/doc/ui-libraries/autocomplete/guides/debouncing-
 quelle_name: Algolia Documentation - Debounce sources
 geprueft_am: 2026-09-15
 recheck_nach: 2027-03-14
+
+## t103-2026-09-16-500
+cluster: 2
+keywords: warum, staging, server, jeder, live, schaltung, absolute, pflicht
+aussage: Vercel unterscheidet offiziell drei Umgebungen – Local, Preview und Production – und empfiehlt explizit, vor der Promotion in Production ein production-like Preview-Deployment (Staging) als Zwischenschritt zu nutzen, statt direkt in Production zu pushen.
+quelle: https://vercel.com/docs/deployments/environments
+quelle_name: Vercel Docs - Environments
+geprueft_am: 2026-09-16
+recheck_nach: 2027-03-15
+
+## t103-2026-09-16-501
+cluster: 2
+keywords: warum, staging, server, jeder, live, schaltung, absolute, pflicht
+aussage: OWASP nennt fehlende Umgebungs-Trennung (Development/Staging/Production) explizit als Ursache fuer 'Security Misconfiguration' (A05:2021) und fordert, dass alle Umgebungen identisch konfiguriert sind, aber mit unterschiedlichen Zugangsdaten – Aenderungen sollen zuerst in einer Staging-Umgebung getestet werden, bevor sie live gehen.
+quelle: https://owasp.org/Top10/2021/A05_2021-Security_Misconfiguration/
+quelle_name: OWASP Top 10:2021 - A05 Security Misconfiguration
+geprueft_am: 2026-09-16
+recheck_nach: 2027-03-15
+
+## t103-2026-09-16-502
+cluster: 2
+keywords: warum, staging, server, jeder, live, schaltung, absolute, pflicht
+aussage: Google Search Central empfiehlt fuer Entwicklungs-/Staging-Websites explizit einen Passwortschutz: Das blockiert Googlebot zuverlaessig vom Crawlen/Indexieren, waehrend Tester weiterhin Zugriff haben – so wird verhindert, dass unfertige Inhalte live im Google-Index landen, bevor die Seite bereit ist.
+quelle: https://developers.google.com/search/docs/crawling-indexing/control-what-you-share
+quelle_name: Google Search Central - Control the Content You Share on Search
+geprueft_am: 2026-09-16
+recheck_nach: 2027-03-15
+
+## t103-2026-09-16-503
+cluster: 2
+keywords: warum, staging, server, jeder, live, schaltung, absolute, pflicht
+aussage: Laut dem DORA Accelerate State of DevOps Report 2024 haben 'Elite Performer' (Top-Team-Cluster) eine Change-Failure-Rate von nur rund 5% und stellen Fehler in unter einer Stunde wieder her – Teams mit etablierten, vorgelagerten Test-/Deployment-Prozessen liefern also nachweislich zuverlaessiger als solche ohne.
+quelle: https://dora.dev/research/2024/
+quelle_name: DORA - Accelerate State of DevOps Report 2024
+geprueft_am: 2026-09-16
+recheck_nach: 2027-03-15
+
+## t103-2026-09-16-504
+cluster: 2
+keywords: warum, staging, server, jeder, live, schaltung, absolute, pflicht
+aussage: Bei Vercel gelten fuer Serverless/Edge Functions harte Laufzeitlimits (z. B. 60s im Hobby-Plan); wird eine Funktion falsch konfiguriert (z. B. zu lange DB-Verbindung, falsche Region), bricht die Plattform sie systematisch ab – solche Fehler zeigen sich reproduzierbar in einer Staging-Umgebung, bevor sie im Live-Betrieb jeden Nutzer treffen.
+quelle: https://vercel.com/docs/functions/configuring-functions/duration
+quelle_name: Vercel Docs - Configuring Maximum Duration for Vercel Functions
+geprueft_am: 2026-09-16
+recheck_nach: 2027-03-15
