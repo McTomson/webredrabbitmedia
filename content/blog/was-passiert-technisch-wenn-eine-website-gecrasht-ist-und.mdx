@@ -1,0 +1,124 @@
+---
+title: "Website gecrasht: Was technisch passiert und Wiederherstellung 2026"
+slug: was-passiert-technisch-wenn-eine-website-gecrasht-ist-und
+excerpt: "Ein Website-Crash zeigt sich technisch meist als Statuscode 503. Wir erklären, was dahintersteckt und wie Rollback, Backup und DNS bei der Wiederherstellung helfen."
+featuredSnippetTitle: "Was passiert technisch, wenn eine Website gecrasht ist, und wie stellt man sie wieder her?"
+featuredSnippet: "Ein Website-Crash bedeutet technisch fast immer, dass der Server eine Anfrage nicht mehr beantworten kann, etwa wegen Überlastung, eines Fehlers im Code oder Wartungsarbeiten, und deshalb den Statuscode 503 Service Unavailable zurückgibt. Die Wiederherstellung hängt vor allem an einem sofortigen Rollback, einem aktuellen Backup und, falls sich der Server geändert hat, an der richtigen DNS-Konfiguration."
+author: "Dmitry Pashlov"
+publishedAt: "2026-09-17"
+updatedAt: "2026-09-17"
+category: "Technik & Performance"
+tags: ["Website Crash", "Downtime", "Backup", "Server Wartung", "Österreich"]
+featuredImage: "/images/blog/was-passiert-technisch-wenn-eine-website-gecrasht-ist-und.png"
+status: draft
+aiAssisted: true
+sources:
+  - name: "MDN Web Docs - 503 Service Unavailable"
+    url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/503"
+  - name: "Google Search Central - Troubleshoot Google Search Crawling Errors"
+    url: "https://developers.google.com/search/docs/crawling-indexing/troubleshoot-crawling-errors"
+  - name: "Vercel Docs - Performing an Instant Rollback on a Deployment"
+    url: "https://vercel.com/docs/instant-rollback"
+  - name: "BSI - Datensicherung und Datenverlust"
+    url: "https://www.bsi.bund.de/DE/Themen/Verbraucherinnen-und-Verbraucher/Informationen-und-Empfehlungen/Cyber-Sicherheitsempfehlungen/Daten-sichern-verschluesseln-und-loeschen/Datensicherung-und-Datenverlust/datensicherung-und-datenverlust_node.html"
+  - name: "AWS Route 53 Developer Guide - Ich habe DNS Einstellungen geaendert, aber sie wirken nicht"
+    url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/troubleshooting-new-dns-settings-not-in-effect.html"
+keyTakeaways:
+  - "Ein Crash zeigt sich technisch meist über den Statuscode 503, der eine vorübergehende Überlastung, Wartung oder Selbstschutz des Servers signalisiert."
+  - "Google toleriert Ausfälle von bis zu rund zwei Tagen ohne spürbare Rankingfolgen, danach drohen Deindexierung und langsameres Crawling."
+  - "Ein Instant Rollback, etwa bei Vercel, ist meist der schnellste Weg zurück zur letzten funktionierenden Version, im Hobby Plan aber nur einen Schritt zurück, in Pro und Enterprise Plänen beliebig weit."
+  - "Nach BSI Empfehlung gehören Backups immer extern und getrennt vom Produktivsystem gelagert, sonst sind sie im Ernstfall wertlos."
+  - "Bei DNS Änderungen sorgt der TTL Wert dafür, dass eine Korrektur erst nach einer gewissen Zeit überall sichtbar wird, TTL vor kritischen Änderungen vorsorglich verkürzen."
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Wie lange kann eine Website ausfallen, ohne dass Google das Ranking bestraft?"
+    answer: "Laut Google Search Central toleriert Google Ausfälle mit den Statuscodes 503 oder 429 rund zwei Tage lang, ohne die betroffenen Seiten aus dem Index zu nehmen. Erst wenn der Fehler länger anhält, beginnt Google mit der Deindexierung und drosselt das Crawling."
+  - question: "Was ist der Unterschied zwischen einem Rollback und einer Wiederherstellung aus dem Backup?"
+    answer: "Ein Rollback setzt nur Code und Konfiguration auf eine frühere, funktionierende Deployment Version zurück und ist meist in Sekunden erledigt. Eine Wiederherstellung aus dem Backup bringt zusätzlich die eigentlichen Daten zurück, etwa nach einem Hackerangriff oder einem kaputten Server, dauert aber deutlich länger."
+  - question: "Warum sehe ich nach der Reparatur einer Website trotzdem noch die Fehlerseite?"
+    answer: "Meistens liegt das entweder an einer gecachten 503 Antwort, die im Browser oder CDN hängen geblieben ist, oder am TTL Wert der DNS Einträge. Solange dieser TTL Wert nicht abgelaufen ist, liefern DNS Resolver weiterhin die alte Adresse aus."
+  - question: "Reicht ein einziges Backup auf dem Hosting Server als Absicherung?"
+    answer: "Nein. Das BSI empfiehlt ausdrücklich, Backups getrennt vom Produktivsystem und extern zu lagern. Liegt die einzige Kopie auf demselben Server wie die Website, ist sie im Ernstfall eines Hardwaredefekts oder Angriffs meist ebenfalls verloren."
+  - question: "Was sollte ich vor einem größeren Website Update auf jeden Fall vorbereiten?"
+    answer: "Notieren Sie sich kurz, welche Konfiguration und welche Umgebungsvariablen sich ändern, denn ein späterer Rollback setzt auch diese Einstellungen zurück. Prüfen Sie außerdem, ob Ihr aktuelles Backup wirklich einspielbar ist, bevor Sie es im Ernstfall brauchen."
+hookCandidates:
+  - "website gecrasht: was jetzt tun?"
+  - "server antwortet nicht mehr, oder?"
+  - "rollback rettet die website"
+---
+
+Stellen Sie sich ein Geschäft am Naschmarkt vor, das mitten am Samstagvormittag plötzlich die Rolläden runterlässt. Die Kunden stehen davor, klingeln, rütteln an der Tür, und niemand sagt ihnen, ob der Laden in fünf Minuten wieder aufsperrt oder ob er für immer zugemacht hat. Genau das erlebt ein Besucher, wenn eine Website crasht. Der Server hinter der Seite kann die Anfrage gerade nicht bearbeiten, meldet das aber meistens mit einer ziemlich nüchternen Fehlermeldung, die kaum jemand versteht.
+
+**Direkte Antwort:** Ein Website-Crash bedeutet technisch fast immer, dass der Server eine Anfrage nicht mehr beantworten kann, etwa wegen Überlastung, eines Fehlers im Code oder Wartungsarbeiten, und deshalb den Statuscode 503 Service Unavailable zurückgibt. Die Wiederherstellung hängt vor allem an einem sofortigen Rollback auf die letzte funktionierende Version, einem aktuellen Backup und, falls sich der Hosting-Server geändert hat, an der richtigen DNS-Konfiguration.
+
+Klingt einfach, ist es im Detail aber nicht. Schauen wir uns Schritt für Schritt an, was tatsächlich passiert und was Sie als Betreiber einer Website konkret tun können, bevor und während es brennt.
+
+## Was heißt "die Website ist down" technisch eigentlich?
+
+Wenn Ihre Website nicht mehr erreichbar ist, sendet der Server in den meisten Fällen den HTTP-Statuscode 503 Service Unavailable. Laut [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/503) bedeutet dieser Code, dass der Server die Anfrage vorübergehend nicht bearbeiten kann. Die typischen Gründe dafür sind Wartungsarbeiten, ausgeschöpfte Serverressourcen, also eine echte Überlastung, oder eine bewusste Ablehnung von Anfragen, mit der sich der Server selbst schützt. Diese bewusste Ablehnung nennt man auch Backpressure, der Server drosselt sich quasi selbst, bevor er komplett in die Knie geht.
+
+Wichtig dabei: Ein sauber konfigurierter Server sollte bei einem 503 einen sogenannten Retry-After-Header mitsenden. Der teilt Browsern und Suchmaschinen mit, wann sie es wieder versuchen sollen. Und die Fehlerantwort selbst darf nicht gecacht werden, sonst sehen Besucher noch Stunden nach der Behebung die veraltete Fehlerseite, obwohl die Website längst wieder läuft. Genau das ist einer der häufigsten Anfängerfehler bei selbst gehosteten Projekten: Der Cache hält die Fehlermeldung fest, obwohl der eigentliche Fehler längst behoben ist.
+
+## Die häufigsten Ursachen für einen echten Crash
+
+In der Praxis sind es meist eine Handvoll Auslöser, die zum Totalausfall führen. Am häufigsten: ein fehlerhaftes Update eines Plugins oder einer Bibliothek, das die gesamte Seite lahmlegt, oder ein plötzlicher Besucheransturm, etwa nach einem viralen Social-Media-Post, der mehr Anfragen verursacht, als der Server verarbeiten kann. Manchmal steckt aber auch einfach ein Hardwaredefekt beim Hosting-Anbieter dahinter, auf den Sie als Kunde ohnehin keinen direkten Einfluss haben. Mehr dazu, wie schon eine fehlerhafte Server-Konfiguration dauerhafte Fehler auslösen kann, lesen Sie in unserem Artikel zu [500er-Fehlern durch Server-Konfiguration](/tipps/warum-fuehrt-fehlerhafte-server-konfiguration-zu-permanenten-500er-fehlern).
+
+Das [Bundesamt für Sicherheit in der Informationstechnik (BSI)](https://www.bsi.bund.de/DE/Themen/Verbraucherinnen-und-Verbraucher/Informationen-und-Empfehlungen/Cyber-Sicherheitsempfehlungen/Daten-sichern-verschluesseln-und-loeschen/Datensicherung-und-Datenverlust/datensicherung-und-datenverlust_node.html) weist in diesem Zusammenhang auf einen Punkt hin, den viele Website-Betreiber unterschätzen: Daten, die nur auf einer einzigen Festplatte oder einem einzigen Server liegen, sind nie wirklich sicher. Hardwaredefekte, Stromausfälle, Malware- oder Ransomware-Angriffe und schlicht menschliches Versehen, also versehentliches Löschen oder Überschreiben, können Daten unwiederbringlich zerstören. Für Ihre Website heißt das ganz konkret: Wenn die einzige Kopie Ihrer Datenbank auf demselben Server liegt, der gerade abgestürzt ist, haben Sie im schlimmsten Fall nicht nur einen Ausfall, sondern einen echten Datenverlust.
+
+## Wie reagiert Google, wenn Ihre Seite plötzlich nicht erreichbar ist?
+
+Hier atmen viele Website-Betreiber erst mal durch, wenn sie die Details kennen. [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/troubleshoot-crawling-errors) bestätigt, dass kurze Ausfälle toleriert werden. Wenn Ihr Server überlastet ist und deshalb vorübergehend die Codes 503 oder 429 an den Googlebot sendet, ruft Google die betroffenen URLs rund zwei Tage lang trotzdem immer wieder erneut ab. Ein Ausfall am Freitagabend, der bis Sonntagmittag behoben ist, wird also in aller Regel keine spürbaren Folgen im Google-Ranking haben.
+
+Das Problem beginnt, wenn der Fehler länger bestehen bleibt. Halten die "nicht verfügbar"-Codes länger als zwei Tage an, beginnt Google damit, die betroffenen URLs aus dem Index zu entfernen. Zieht sich der Ausfall über mehrere Tage, verlangsamt Google das Crawling der Seite spürbar oder stoppt es sogar ganz. Für ein Wiener Unternehmen, das über die Website neue Kunden gewinnt, ist das der eigentlich teure Teil eines Crashs. Nicht der Umsatzausfall während der zwei, drei Stunden Downtime, sondern der Rankingverlust, wenn niemand rechtzeitig reagiert und der Fehler tagelang stehen bleibt.
+
+## Schritt für Schritt: Was Sie konkret tun, wenn die Seite down ist
+
+Wenn Sie merken, dass Ihre Website nicht mehr erreichbar ist, sollten Sie nicht wild herumklicken, sondern der Reihe nach vorgehen.
+
+Erstens: Prüfen Sie, ob es wirklich Ihr Server ist. Ein kurzer Blick über ein Tool wie "Down for everyone or just me" oder ein Ping von einem anderen Netzwerk aus zeigt, ob das Problem lokal bei Ihnen liegt oder tatsächlich beim Hosting.
+
+Zweitens: Schauen Sie sich die genaue Fehlermeldung an. Ein 503 deutet auf Überlastung oder Wartung hin, ein 500 eher auf einen Fehler im Code selbst, etwa nach einem missglückten Update.
+
+Drittens: Wenn Sie ein aktuelles Deployment auf einer modernen Hosting-Plattform betreiben, ist ein Rollback fast immer der schnellste Weg zurück in den Normalbetrieb. Dazu gleich mehr.
+
+Viertens: Informieren Sie, wenn möglich, kurz über einen anderen Kanal, etwa Social Media oder eine Statusseite, dass Sie das Problem kennen und daran arbeiten. Das wirkt professioneller als tagelange Stille.
+
+## Rollback als Rettungsanker: Das Beispiel Vercel
+
+Moderne Hosting-Plattformen haben genau für diesen Ernstfall eine Funktion eingebaut, die den Unterschied zwischen einer Stunde Ausfall und einer Nacht voller Panik ausmachen kann. Beim Hosting-Anbieter [Vercel](https://vercel.com/docs/instant-rollback) etwa heißt diese Funktion "Instant Rollback". Sie setzt die Domain augenblicklich auf eine zuvor produktiv geschaltete Deployment-Version zurück, also auf den letzten Stand, von dem man sicher weiß, dass er funktioniert hat.
+
+Im kostenlosen Hobby-Plan ist dabei allerdings nur ein Rollback auf das unmittelbar vorherige Deployment möglich. Wer also seit dem letzten funktionierenden Stand schon mehrere Male neu deployt hat, kann im Hobby-Plan nicht einfach drei Versionen zurückspringen. In den Pro- und Enterprise-Plänen dagegen kann auf jedes frühere Deployment zurückgerollt werden, das jemals live auf der Produktions-Domain lief, egal wie weit das zurückliegt.
+
+Ein Detail, das dabei gerne übersehen wird: Beim Rollback werden auch Cron-Jobs und die Konfiguration auf den Stand des zurückgerollten Deployments zurückgesetzt. Wenn Sie also zwischenzeitlich wichtige Einstellungen geändert haben, etwa eine neue Umgebungsvariable für eine Zahlungsschnittstelle, verschwindet die beim Rollback mit. Genau deshalb würde ich jedem raten, der auf einer solchen Plattform arbeitet, sich vor jedem größeren Update kurz zu notieren, was sich an der Konfiguration geändert hat. Das kostet zwei Minuten und erspart im Ernstfall böse Überraschungen.
+
+## Backups: Die zweite Verteidigungslinie
+
+Ein Rollback rettet Sie, wenn das Problem im Code oder in der Konfiguration liegt. Er rettet Sie nicht, wenn die eigentlichen Daten weg sind, etwa der Inhalt einer Datenbank nach einem Hackerangriff oder einem kaputten Server. Genau hier kommt das ins Spiel, was das BSI als zentrale Empfehlung ausgibt: Daten regelmäßig sichern und die Sicherung zusätzlich extern aufbewahren, also getrennt vom eigentlichen Produktivsystem.
+
+Praktisch heißt das für eine Website: Eine Kopie der Datenbank, die auf demselben Server liegt wie die Datenbank selbst, ist im Ernstfall wertlos, wenn genau dieser Server ausfällt oder verschlüsselt wird. Sinnvoll ist ein automatisiertes, tägliches Backup, das an einem anderen Ort liegt als das Hosting selbst, zum Beispiel bei einem separaten Cloud-Speicher. Für ein kleines bis mittleres Unternehmen in Österreich reicht dafür oft schon eine einfache, automatisierte Lösung, die der Hosting-Anbieter oder das CMS mitbringt. Wichtig ist nur, dass sie wirklich läuft und dass jemand hin und wieder testet, ob sich aus dem Backup auch tatsächlich wiederherstellen lässt. Ein Backup, das im Ernstfall nicht einspielbar ist, ist letztlich nur eine trügerische Beruhigung.
+
+## DNS und TTL: Warum eine Reparatur nicht sofort überall sichtbar ist
+
+Ein Punkt, der bei einem größeren Ausfall häufig für Verwirrung sorgt: Sie haben das Problem behoben, den Hosting-Server gewechselt oder die DNS-Einträge angepasst, und trotzdem sehen manche Besucher die Website immer noch nicht oder landen auf der alten Fehlerseite. Der Grund liegt in der Funktionsweise von DNS selbst.
+
+Laut [AWS Route 53 Developer Guide](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/troubleshooting-new-dns-settings-not-in-effect.html) greift eine Änderung an DNS-Einträgen nicht sofort. DNS-Resolver, also die Systeme, die im Hintergrund Domainnamen in Serveradressen übersetzen, cachen jeden Eintrag für die Dauer seines TTL-Werts, kurz für Time to Live. Solange dieser Wert nicht abgelaufen ist, liefern die Resolver weiterhin die alte, unter Umständen nicht mehr erreichbare Adresse aus, selbst wenn Sie den Eintrag längst korrigiert haben.
+
+Als Best Practice empfiehlt sich deshalb, die TTL vor einer geplanten, kritischen DNS-Änderung vorübergehend zu verkürzen. Dadurch verbreitet sich eine spätere Korrektur deutlich schneller im Netz, falls doch etwas schiefgeht. Wer das im Vorfeld nicht bedacht hat und mitten im Ausfall die DNS-Einträge ändert, muss unter Umständen zusehen, wie sich die Wiederherstellung über Stunden hinzieht, obwohl der eigentliche Fehler längst behoben ist. Das ist einer der Momente, in denen man merkt, wie viel technische Vorbereitung in einer stabil laufenden Website steckt, die man im Alltag gar nicht sieht.
+
+## Häufige Irrtümer, die die Wiederherstellung unnötig verlangsamen
+
+Ein verbreiteter Irrtum ist die Annahme, dass ein einmaliger Ausfall dem Google-Ranking sofort schadet. Wie oben erwähnt, toleriert Google kurze Unterbrechungen von bis zu rund zwei Tagen ohne größere Folgen. Genauso hartnäckig hält sich die Annahme, ein Rollback würde automatisch auch die Datenbank mit zurücksetzen. Stimmt bei den meisten modernen Plattformen nicht: Ein Rollback betrifft in der Regel den Code und die Konfiguration, nicht zwangsläufig den Datenbankinhalt.
+
+Und dann ist da noch die Fehlerseite selbst. Wenn die 503-Antwort fälschlicherweise gecacht wird, sehen Besucher die Fehlermeldung weiter, obwohl der Server längst wieder normal arbeitet. Wer im Ernstfall nur den Server neu startet, aber den Cache nicht leert, wundert sich dann zu Unrecht, warum die Seite angeblich immer noch down ist. Wer eine Downtime von vornherein vermeiden will, findet dazu auch Hinweise in unserem Artikel zu [Ausfallzeiten beim Website-Relaunch](/tipps/wie-verhindert-man-ausfallzeiten-downtime-waehrend-eines-website-relaunches).
+
+## Key Takeaways
+
+- Ein Crash zeigt sich technisch meist über den Statuscode 503, der eine vorübergehende Überlastung, Wartung oder Selbstschutz des Servers signalisiert.
+- Google toleriert Ausfälle von bis zu rund zwei Tagen ohne spürbare Rankingfolgen, danach drohen Deindexierung und langsameres Crawling.
+- Ein Instant Rollback, etwa bei Vercel, ist meist der schnellste Weg zurück zur letzten funktionierenden Version, im Hobby-Plan aber nur einen Schritt zurück, in Pro-/Enterprise-Plänen beliebig weit.
+- Nach BSI-Empfehlung gehören Backups immer extern und getrennt vom Produktivsystem gelagert, sonst sind sie im Ernstfall wertlos.
+- Bei DNS-Änderungen sorgt der TTL-Wert dafür, dass eine Korrektur erst nach einer gewissen Zeit überall sichtbar wird, TTL vor kritischen Änderungen vorsorglich verkürzen.
+
+## Was, wenn Sie das lieber gar nicht selbst durchspielen wollen?
+
+Ein Website-Crash ist selten ein reines Zufallsereignis. Meistens ist er die Quittung dafür, dass irgendwo an Backups, Monitoring oder einer sauberen Deployment-Strategie gespart wurde. Wenn Sie sich nicht sicher sind, wie gut Ihre eigene Website im Ernstfall abgesichert ist, oder gerade selbst einen Ausfall hinter sich haben und das nächste Mal besser vorbereitet sein wollen, sprechen Sie uns über unser [Kontaktformular](/kontakt) an. Wir schauen uns Ihre aktuelle Hosting- und Backup-Situation gemeinsam mit Ihnen an und sagen Ihnen ehrlich, wo die größten Lücken liegen, ganz ohne Verkaufsdruck.

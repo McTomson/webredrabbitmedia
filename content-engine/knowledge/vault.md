@@ -4541,3 +4541,48 @@ quelle: https://vercel.com/docs/functions/configuring-functions/duration
 quelle_name: Vercel Docs - Configuring Maximum Duration for Vercel Functions
 geprueft_am: 2026-09-16
 recheck_nach: 2027-03-15
+
+## t104-2026-09-17-505
+cluster: 2
+keywords: passiert, technisch, wenn, eine, website, gecrasht, stellt, wieder
+aussage: Der HTTP-Statuscode 503 Service Unavailable bedeutet, dass der Server eine Anfrage vorübergehend nicht bearbeiten kann – typische Ursachen sind Wartungsarbeiten, ausgeschöpfte Serverressourcen (Overload) oder bewusste Ablehnung von Anfragen zum Selbstschutz (Backpressure). Für diesen Fehler sollte der Server nach Möglichkeit einen 'Retry-After'-Header mit der geschätzten Wiederherstellungszeit mitsenden, und die Fehlerantwort darf nicht gecacht werden, damit Nutzer nach der Behebung nicht weiter eine veraltete Fehlerseite sehen.
+quelle: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/503
+quelle_name: MDN Web Docs - 503 Service Unavailable
+geprueft_am: 2026-09-17
+recheck_nach: 2027-03-16
+
+## t104-2026-09-17-506
+cluster: 2
+keywords: passiert, technisch, wenn, eine, website, gecrasht, stellt, wieder
+aussage: Google toleriert kurze Ausfälle: Server dürfen bei Überlastung vorübergehend die Codes 503 oder 429 an Googlebot senden, der die betroffenen URLs dann rund 2 Tage lang weiter erneut abruft. Bleiben diese 'nicht verfügbar'-Codes länger als 2 Tage bestehen, entfernt Google die URLs aus dem Index; hält der Ausfall mehrere Tage an, verlangsamt oder stoppt Google das Crawling der Seite dauerhaft.
+quelle: https://developers.google.com/search/docs/crawling-indexing/troubleshoot-crawling-errors
+quelle_name: Google Search Central - Troubleshoot Google Search Crawling Errors
+geprueft_am: 2026-09-17
+recheck_nach: 2027-03-16
+
+## t104-2026-09-17-507
+cluster: 2
+keywords: passiert, technisch, wenn, eine, website, gecrasht, stellt, wieder
+aussage: Beim Hosting-Anbieter Vercel erfolgt eine 'Instant Rollback' genannte Wiederherstellung augenblicklich: Die Domain wird auf eine zuvor produktiv geschaltete Deployment-Version zurückgesetzt. Im kostenlosen Hobby-Plan ist nur ein Rollback auf das unmittelbar vorherige Deployment möglich, in Pro-/Enterprise-Plänen auf jedes frühere, jemals der Produktions-Domain zugewiesene Deployment; Cron-Jobs und Konfiguration werden dabei auf den Stand des zurückgerollten Deployments zurückgesetzt.
+quelle: https://vercel.com/docs/instant-rollback
+quelle_name: Vercel Docs - Performing an Instant Rollback on a Deployment
+geprueft_am: 2026-09-17
+recheck_nach: 2027-03-16
+
+## t104-2026-09-17-508
+cluster: 2
+keywords: passiert, technisch, wenn, eine, website, gecrasht, stellt, wieder
+aussage: Das deutsche Bundesamt für Sicherheit in der Informationstechnik (BSI) weist darauf hin, dass auf einer Festplatte bzw. einem einzelnen Server gespeicherte Daten nicht dauerhaft sicher sind – Hardwaredefekte, Stromausfälle, Malware/Ransomware-Angriffe sowie versehentliches Löschen oder Überschreiben können Daten unwiederbringlich zerstören. Die Empfehlung lautet, Daten regelmäßig zu sichern und zusätzlich extern (getrennt vom Produktivsystem) aufzubewahren.
+quelle: https://www.bsi.bund.de/DE/Themen/Verbraucherinnen-und-Verbraucher/Informationen-und-Empfehlungen/Cyber-Sicherheitsempfehlungen/Daten-sichern-verschluesseln-und-loeschen/Datensicherung-und-Datenverlust/datensicherung-und-datenverlust_node.html
+quelle_name: BSI - Datensicherung und Datenverlust
+geprueft_am: 2026-09-17
+recheck_nach: 2027-03-16
+
+## t104-2026-09-17-509
+cluster: 2
+keywords: passiert, technisch, wenn, eine, website, gecrasht, stellt, wieder
+aussage: Wenn sich DNS-Einträge einer Domain ändern (z. B. beim Wechsel des Hosting-Servers nach einem Ausfall), greift diese Änderung nicht sofort: DNS-Resolver cachen jeden Eintrag für die Dauer seines TTL-Werts (Time to Live, in Sekunden) und liefern bis zum Ablauf dieser Zeit weiterhin die alte, unter Umständen nicht mehr erreichbare Adresse aus. Als Best Practice wird empfohlen, die TTL vor einer geplanten kritischen DNS-Änderung vorübergehend zu verkürzen, um im Notfall schneller reagieren und zurückrollen zu können.
+quelle: https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/troubleshooting-new-dns-settings-not-in-effect.html
+quelle_name: AWS Route 53 Developer Guide - 'I changed DNS settings, but they haven't taken effect'
+geprueft_am: 2026-09-17
+recheck_nach: 2027-03-16
