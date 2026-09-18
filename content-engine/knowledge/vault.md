@@ -4586,3 +4586,48 @@ quelle: https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/troubleshootin
 quelle_name: AWS Route 53 Developer Guide - 'I changed DNS settings, but they haven't taken effect'
 geprueft_am: 2026-09-17
 recheck_nach: 2027-03-16
+
+## t106-2026-09-18-510
+cluster: 3
+keywords: unterschied, zwischen, einer, generierten, website, menschlicher, programmierung
+aussage: Seit 28. Juni 2025 gilt in Österreich das Barrierefreiheitsgesetz (BaFG), das die EU-Richtlinie 2019/882 (European Accessibility Act) national umsetzt und Unternehmen mit B2C-Onlineangeboten (u.a. Onlineshops, E-Banking, Online-Buchungen) zur digitalen Barrierefreiheit nach WCAG 2.1 Level AA verpflichtet; Verstöße können mit Verwaltungsstrafen bis 80.000 EUR geahndet werden.
+quelle: https://www.sozialministerium.gv.at/Themen/Soziales/Menschen-mit-Behinderungen/Barrierefreiheitsgesetz.html
+quelle_name: Sozialministerium Österreich - Barrierefreiheitsgesetz
+geprueft_am: 2026-09-18
+recheck_nach: 2027-03-17
+
+## t106-2026-09-18-511
+cluster: 3
+keywords: unterschied, zwischen, einer, generierten, website, menschlicher, programmierung
+aussage: Eine akademische Studie ('Generated Inaccessible: Measuring WCAG Violations in AI UI Design Tools', Web4All Conference 2026) hat 21.880 Accessibility-Bewertungen von KI-generierten UI-Oberflächen ausgewertet und fand nur 29,0% WCAG-Konformität insgesamt, mit besonders schwachen Werten bei Farbkontrast (26,8%) und Farbnutzung (19,2%).
+quelle: https://dl.acm.org/doi/10.1145/3800424.3800430
+quelle_name: ACM Digital Library - Proceedings of the 23rd International Web for All Conference
+geprueft_am: 2026-09-18
+recheck_nach: 2027-03-17
+
+## t106-2026-09-18-512
+cluster: 3
+keywords: unterschied, zwischen, einer, generierten, website, menschlicher, programmierung
+aussage: Eine kontrollierte Stanford-Studie (CCS 2023) mit Programmierern zeigte, dass Teilnehmer mit Zugang zu einem KI-Code-Assistenten bei vier von fünf Aufgaben unsichereren Code schrieben als eine Kontrollgruppe ohne KI-Unterstützung, und dass sie ihren eigenen (unsicheren) Code gleichzeitig häufiger fälschlich als sicher einschätzten ('false sense of security').
+quelle: https://arxiv.org/abs/2211.03622
+quelle_name: Perry et al., ACM CCS 2023 - Do Users Write More Insecure Code with AI Assistants?
+geprueft_am: 2026-09-18
+recheck_nach: 2027-03-17
+
+## t106-2026-09-18-513
+cluster: 3
+keywords: unterschied, zwischen, einer, generierten, website, menschlicher, programmierung
+aussage: Die GitClear-Analyse von 211 Millionen Codezeilen (2020-2024) zeigt einen Anstieg des 'Code Churn' (Code, der binnen zwei Wochen wieder verworfen wird) von 4,5% (2023) auf 5,7% (2024), einen Rückgang von Refactoring um 39,9% sowie eine Zunahme von kopiertem/eingefügtem statt umstrukturiertem Code – ein Trend, den die Autoren mit wachsender GenAI-Nutzung beim Programmieren in Verbindung bringen und als Risiko für langfristige Wartbarkeit werten.
+quelle: https://www.gitclear.com/ai_assistant_code_quality_2025_research
+quelle_name: GitClear - AI Copilot Code Quality Research 2025
+geprueft_am: 2026-09-18
+recheck_nach: 2027-03-17
+
+## t106-2026-09-18-514
+cluster: 3
+keywords: unterschied, zwischen, einer, generierten, website, menschlicher, programmierung
+aussage: Google stellt in seiner offiziellen Search-Central-Dokumentation klar, dass automatisiert (auch KI-)erzeugte Inhalte nicht grundsätzlich abgewertet werden, aber die Nutzung von Automatisierung/KI mit dem primären Zweck, das Ranking zu manipulieren oder in großem Stil Seiten ohne Mehrwert für Nutzer zu erzeugen, gegen die Google-Spam-Richtlinien (Scaled Content Abuse) verstößt – entscheidend sei die Qualität und der Nutzen für Menschen, nicht die Produktionsmethode.
+quelle: https://developers.google.com/search/docs/fundamentals/using-gen-ai-content
+quelle_name: Google Search Central - Google Search's Guidance on Generative AI Content on Your Website
+geprueft_am: 2026-09-18
+recheck_nach: 2027-03-17
