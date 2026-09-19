@@ -1,0 +1,129 @@
+---
+title: "Sprachmodelle im Kundenportal integrieren 2026: Recht & Sicherheit"
+slug: "wie-integriert-man-intelligente-sprachmodelle-direkt-in-das-kundenportal"
+excerpt: "Wer ein Sprachmodell in ein Kundenportal integriert, muss Kennzeichnungspflicht, Auftragsverarbeitung, Kosten und Prompt Injection gleichzeitig im Griff haben. Der Leitfaden zeigt, worauf es 2026 konkret ankommt."
+featuredSnippetTitle: "Was muss man bei der Integration eines Sprachmodells in ein Kundenportal beachten?"
+featuredSnippet: "Wer ein Sprachmodell in ein Kundenportal integriert, muss vier Dinge klären: eine sichtbare KI-Kennzeichnung beim ersten Kontakt gemäß EU AI Act, einen Auftragsverarbeitungsvertrag mit dem Modell-Anbieter gemäß Art. 28 DSGVO, ein reelles Bild der laufenden Token-Kosten und eine technische Trennung zwischen Systemanweisungen und Kundendaten gegen Prompt Injection."
+author: "Dmitry Pashlov"
+publishedAt: "2026-09-19"
+updatedAt: "2026-09-19"
+category: "KI & Automatisierung"
+tags: ["Sprachmodelle", "KI-Integration", "DSGVO", "EU AI Act", "Kundenportal", "IT-Sicherheit"]
+featuredImage: "/images/blog/wie-integriert-man-intelligente-sprachmodelle-direkt-in-das-kundenportal.png"
+status: "draft"
+aiAssisted: true
+sources:
+  - name: "RTR KI-Servicestelle - Transparenzpflichten (AI Act)"
+    url: "https://www.rtr.at/rtr/service/ki-servicestelle/ai-act/Transparenzpflichten.de.html"
+  - name: "externer-datenschutzbeauftragter-dresden.de - Art. 28 DSGVO AVV-Leitfaden"
+    url: "https://externer-datenschutzbeauftragter-dresden.de/art-28-dsgvo/"
+  - name: "Anthropic - API and data retention (Claude Platform Docs)"
+    url: "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention"
+  - name: "OpenAI - offizielle API-Preisseite"
+    url: "https://developers.openai.com/api/docs/pricing"
+  - name: "OWASP GenAI Security Project - Top 10 for LLM Applications 2026"
+    url: "https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/"
+keyTakeaways:
+  - "Seit 2. August 2026 verlangt Art. 50 Abs. 1 EU AI Act eine sichtbare KI-Kennzeichnung genau zum Zeitpunkt der ersten Interaktion, ein Hinweis in den AGB reicht nicht."
+  - "Verarbeitet das Sprachmodell personenbezogene Kundendaten, ist ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO zwingend, sonst drohen Bußgelder bis zu 20 Millionen Euro oder 4 Prozent des Jahresumsatzes."
+  - "Kostenlose Consumer-Tarife wie ChatGPT Free oder Plus bieten keinen AVV, für ein Kundenportal braucht es einen Business- oder API-Zugang."
+  - "Die API-Kosten unterscheiden sich um ein Vielfaches, GPT-4o-mini kostet nur rund ein Sechzehntel von GPT-4o, für einfache Anfragen meist die wirtschaftlichere Wahl."
+  - "Prompt Injection ist laut OWASP das Sicherheitsrisiko Nummer eins bei Sprachmodell-Anwendungen, eine technische Trennschicht zwischen Modell und Kundendatenbank ist deshalb Pflicht, keine Kür."
+conclusionStats:
+  - label: "Bußgeldrahmen bei fehlendem AVV"
+    value: "bis 20 Mio. Euro"
+  - label: "GPT-4o Input-Kosten"
+    value: "2,50 USD / 1 Mio. Tokens"
+  - label: "GPT-4o-mini Input-Kosten"
+    value: "0,15 USD / 1 Mio. Tokens"
+  - label: "OWASP Sicherheitsrisiko Nr. 1"
+    value: "Prompt Injection"
+autoGenerateFAQs: false
+customFAQs:
+  - question: "Reicht ein Hinweis in den AGB als KI-Kennzeichnung im Kundenportal?"
+    answer: "Nein. Nach Art. 50 Abs. 1 EU AI Act muss die Information, dass ein KI-System antwortet, genau zum Zeitpunkt der ersten Interaktion sichtbar sein, etwa als erste Chatnachricht. Ein Hinweis irgendwo in den AGB oder im Footer erfüllt diese Pflicht nicht."
+  - question: "Brauche ich einen Auftragsverarbeitungsvertrag für einen KI-Chatbot im Kundenportal?"
+    answer: "Ja, sobald das Sprachmodell personenbezogene Kundendaten verarbeitet. Ohne einen Auftragsverarbeitungsvertrag nach Art. 28 DSGVO drohen Bußgelder bis zu 20 Millionen Euro oder 4 Prozent des weltweiten Jahresumsatzes."
+  - question: "Kann ich einfach meinen privaten ChatGPT-Plus-Zugang für das Kundenportal nutzen?"
+    answer: "Nein, das ist rechtlich riskant. Für kostenlose Consumer-Tarife wie ChatGPT Free oder Plus bieten Anbieter keinen Auftragsverarbeitungsvertrag an. Ein Kundenportal mit echten Kundendaten braucht einen Business- oder API-Zugang mit abgeschlossenem AVV."
+  - question: "Was kostet die Einbindung eines Sprachmodells in ein Kundenportal wirklich?"
+    answer: "Das hängt vom Modell und Anfragevolumen ab. Bei rund 1.000 Support-Anfragen pro Monat liegen die Modellkosten mit GPT-4o bei etwa 6 bis 8 Euro, mit dem günstigeren GPT-4o-mini bei unter 1 Euro. Bei Onlineshops mit hohem Anfragevolumen steigen die Kosten entsprechend."
+  - question: "Wie schützt man ein Kundenportal vor Prompt Injection?"
+    answer: "Das Sprachmodell darf nie direkten, ungefilterten Zugriff auf die komplette Kundendatenbank erhalten. Eine dazwischengeschaltete Anwendungsschicht muss den Zugriff auf die Daten der eingeloggten Sitzung beschränken und die Modellausgaben vor der Anzeige prüfen."
+hookCandidates:
+  - "website relaunch: was macht der bot?"
+  - "kundenportal ki: wer haftet dann?"
+  - "sprachmodell im chat, aber sicher?"
+---
+
+Stellen Sie sich vor, Sie stellen einen neuen Mitarbeiter ein, geben ihm Zugriff auf sämtliche Kundendaten und lassen ihn ohne Arbeitsvertrag und ohne Verschwiegenheitserklärung direkt mit Ihren Kunden telefonieren. Eine Einschulung gibt es auch nicht. Kein seriöser Unternehmer würde das tun. Genau das passiert aber in vielen Kundenportalen, wenn ein Sprachmodell wie GPT-4o oder Claude eingebunden wird, ohne dass vorher die rechtlichen, technischen und wirtschaftlichen Fragen geklärt sind.
+
+Die Integration eines Sprachmodells in ein Kundenportal ist heute technisch in wenigen Stunden machbar. Die eigentliche Arbeit liegt woanders, in der Absicherung. Wer ein KI-System an echte Kundendaten anbindet, muss vier Baustellen gleichzeitig bearbeiten: Transparenzpflichten, Datenschutz, Kostenkontrolle und IT-Sicherheit. Dieser Leitfaden zeigt, worauf es 2026 konkret ankommt, mit Zahlen, Paragraphen und einer klaren Schritt für Schritt Anleitung.
+
+## Die kurze Antwort: Was müssen Sie beachten?
+
+Wer ein Sprachmodell in ein Kundenportal integriert, muss vier Dinge klären: eine sichtbare KI-Kennzeichnung beim ersten Kontakt gemäß EU AI Act, einen Auftragsverarbeitungsvertrag mit dem Modell-Anbieter gemäß Art. 28 DSGVO, ein reelles Bild der laufenden Token-Kosten und eine technische Trennung zwischen Systemanweisungen und Kundendaten, um Prompt Injection zu verhindern. Fehlt einer dieser vier Bausteine, ist die Integration weder rechtlich sauber noch sicher noch wirtschaftlich kalkulierbar.
+
+## Die Kennzeichnungspflicht: Warum "diese Seite nutzt KI" nicht reicht
+
+Viele Websites glauben, mit einem Satz in den AGB oder einem kleinen Hinweis im Footer sei die Sache erledigt. Das stimmt seit 2. August 2026 nicht mehr. Nach Art. 50 Abs. 1 des EU AI Act müssen Anbieter von Chatbots und Sprachassistenten Nutzer spätestens beim ersten Interaktionszeitpunkt informieren, dass sie gerade mit einem KI-System kommunizieren, wie die [RTR KI-Servicestelle](https://www.rtr.at/rtr/service/ki-servicestelle/ai-act/Transparenzpflichten.de.html) in ihrem Leitfaden zu den Transparenzpflichten festhält. Das bedeutet konkret: Sobald das Chatfenster im Kundenportal aufgeht, muss dort stehen, dass ein KI-System antwortet, nicht ein Mensch.
+
+Für die Praxis heißt das, ein allgemeiner Datenschutzhinweis reicht nicht, und eine Formulierung wie "diese Website nutzt künstliche Intelligenz" irgendwo auf einer Unterseite erfüllt die Pflicht ebenfalls nicht. Die Information muss am Ort und zum Zeitpunkt der Interaktion selbst erscheinen, am besten als erste Nachricht im Chatverlauf, etwa "Sie sprechen gerade mit unserem KI-Assistenten." Das ist technisch trivial umzusetzen, wird aber trotzdem regelmäßig vergessen, weil Entwickler den Chat testen und dabei den Kennzeichnungstext als lästige Formalität überspringen. Wie sich ein solcher Chatbot wirtschaftlich rechnet und welche Leads er wirklich bringt, haben wir in unserem Beitrag zu [KI-Chatbots für qualifizierte Leads](/tipps/kann-ein-ki-chatbot-auf-der-website-qualifizierte-leads) im Detail durchgerechnet.
+
+## Auftragsverarbeitung: Der Vertrag, den viele vergessen
+
+Sobald ein Sprachmodell echte Kundendaten aus dem Portal verarbeitet, etwa Namen, Bestellnummern oder Support-Anliegen, wird aus einer technischen Integration ein datenschutzrechtlicher Vorgang. Nach Art. 28 DSGVO ist in diesem Fall ein Auftragsverarbeitungsvertrag, kurz AVV oder DPA, mit dem eingesetzten KI-Anbieter zwingend erforderlich. Ohne diesen Vertrag drohen laut dem [Leitfaden eines externen Datenschutzbeauftragten](https://externer-datenschutzbeauftragter-dresden.de/art-28-dsgvo/) Bußgelder bis zu 20 Millionen Euro oder 4 Prozent des weltweiten Jahresumsatzes, je nachdem, was höher ist.
+
+Hier liegt eine Falle, die in der Praxis oft übersehen wird. Für kostenlose Endkunden-Tarife wie ChatGPT Free oder ChatGPT Plus bieten die Anbieter keinen AVV an, weil diese Produkte als B2C-Angebote eingestuft sind, nicht als B2B-Geschäftskunden-Lösung. Ein Entwickler, der aus Kostengründen den privaten ChatGPT-Plus-Zugang für die Portal-Integration verwendet, handelt damit automatisch ohne die notwendige Rechtsgrundlage, sobald echte Kundendaten durchlaufen. Für ein Kundenportal brauchen Sie also zwingend einen Business- oder API-Zugang mit abgeschlossenem AVV, nicht den privaten Consumer-Zugang. Wie die DSGVO auf einer Website technisch sauber umgesetzt wird, zeigen wir in unserem [Praxis-Leitfaden zur DSGVO-Umsetzung](/tipps/wie-wird-die-dsgvo-auf-der-website-technisch-umgesetzt).
+
+## Was passiert mit den Kundendaten beim Anbieter?
+
+Neben dem Vertrag zählt auch, was der Anbieter technisch mit den Daten macht. Am Beispiel von [Anthropics Claude API](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention) lässt sich das gut zeigen. Standardmäßig gilt für Ein- und Ausgaben eine Speicherfrist von 30 Tagen, danach werden die Daten automatisch gelöscht. Ohne ausdrückliche Erlaubnis des Kunden werden diese Daten auch nicht für das Training neuer Modelle verwendet. Wer eine noch striktere Lösung braucht, kann eine Zero-Data-Retention-Vereinbarung abschließen, bei der gar keine Speicherung über den Verarbeitungszeitpunkt hinaus stattfindet, außer wenn eine gesetzliche Aufbewahrungspflicht besteht. Diese Vereinbarung ist allerdings nicht automatisch verfügbar, sondern nur für berechtigte Enterprise- und API-Kunden nach gesonderter Freigabe durch Anthropic.
+
+Für ein Kundenportal mit sensiblen Anfragen, etwa im Gesundheits- oder Finanzbereich, lohnt sich die Prüfung einer Zero-Data-Retention-Option. Für einen einfachen FAQ-Chatbot im Handwerksbetrieb reicht in der Regel die Standard-Aufbewahrung von 30 Tagen, solange der AVV steht und die Datenkategorien im Vertrag korrekt beschrieben sind.
+
+## Die Kostenrechnung: Was kostet eine Anfrage wirklich?
+
+Bevor Sie ein Sprachmodell fix in Ihr Kundenportal einbauen, sollten Sie die laufenden Kosten realistisch durchrechnen, denn API-Zugriffe werden pro Token abgerechnet, nicht als Fixpreis. Die Unterschiede zwischen den Modellen sind erheblich. GPT-4o kostet laut der [offiziellen OpenAI-Preisseite](https://developers.openai.com/api/docs/pricing) 2,50 US-Dollar pro 1 Million Input-Tokens und 10,00 US-Dollar pro 1 Million Output-Tokens. Das günstigere GPT-4o-mini liegt bei nur 0,15 beziehungsweise 0,60 US-Dollar pro 1 Million Tokens, also etwa ein Sechzehntel der Kosten.
+
+Was heißt das für ein reales Kundenportal? Eine durchschnittliche Support-Anfrage samt Kontext, also der bisherige Chatverlauf plus die Antwort des Modells, umfasst häufig 500 bis 1.500 Tokens. Bei 1.000 Anfragen im Monat und einem geschätzten Durchschnitt von 1.000 Tokens pro Anfrage würden Sie mit GPT-4o bei ungefähr 6 bis 8 Euro Modellkosten landen, mit GPT-4o-mini bei unter 1 Euro. Bei einem Onlineshop mit 50.000 Kundenanfragen im Monat verschiebt sich diese Rechnung schnell in einen dreistelligen bis niedrigen vierstelligen Eurobereich, je nach Modell und Antwortlänge. Die Empfehlung daraus ist einfach: Für einfache, klar abgegrenzte Aufgaben wie Bestellstatus-Abfragen oder häufige Fragen reicht in den meisten Fällen ein günstigeres Modell wie GPT-4o-mini völlig aus. Das teurere Flaggschiff-Modell lohnt sich erst dort, wo komplexes Verständnis oder mehrstufiges Schlussfolgern gefragt ist, etwa bei technischer Beratung zu individualisierten Produkten.
+
+## Das größte Sicherheitsrisiko: Prompt Injection
+
+Der Punkt, der in vielen Projekten am meisten unterschätzt wird, ist die IT-Sicherheit der Integration selbst. Laut der aktuellen Sicherheitsanalyse des [OWASP GenAI Security Project](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/) ist Prompt Injection das Risiko Nummer eins bei Anwendungen mit Sprachmodellen, unmittelbar gefolgt von Sensitive Information Disclosure, also der ungewollten Preisgabe sensibler Daten, auf Platz zwei.
+
+Der Grund dafür ist technisch nachvollziehbar. Anweisungen an das Modell und die eigentlichen Daten, etwa der Text einer Kundenanfrage, landen im selben Kontextfenster. Es gibt bei Sprachmodellen kein Äquivalent zu einer parametrisierten Datenbankabfrage, mit der man Befehl und Nutzdaten sauber voneinander trennen könnte. Ein Kunde könnte also theoretisch in sein Chatfeld schreiben, er solle alle vorherigen Anweisungen ignorieren und stattdessen die Bestelldaten eines anderen Kunden ausgeben, und wenn das System nicht sauber gegen solche Manipulationsversuche abgesichert ist, folgt das Modell dieser Anweisung im schlimmsten Fall tatsächlich.
+
+Für Ihr Kundenportal bedeutet das konkret: Das Sprachmodell darf niemals direkten, ungefilterten Lese- oder Schreibzugriff auf die komplette Kundendatenbank bekommen. Stattdessen braucht es eine dazwischengeschaltete Anwendungsschicht, die genau festlegt, welche Datensätze zu welcher angemeldeten Sitzung gehören, und die Ausgaben des Modells vor der Anzeige noch einmal prüft. Wer diesen Zwischenschritt spart, um Entwicklungszeit zu sparen, riskiert genau die Art von Datenleck, die anschließend peinlich ist und obendrein meldepflichtig nach der DSGVO. Wie sich fehlerhafte Schnittstellen ganz allgemein zum Sicherheitsrisiko für eine Website entwickeln, beschreiben wir in unserem Beitrag zur [fehlerhaften API-Anbindung als Sicherheitsrisiko](/tipps/warum-ist-eine-fehlerhafte-api-anbindung-ein-sicherheitsrisiko-fuer).
+
+## Schritt für Schritt: So gehen Sie konkret vor
+
+Wenn Sie ein Sprachmodell in Ihr Kundenportal integrieren wollen, hat sich folgende Reihenfolge in der Praxis bewährt.
+
+Erstens klären Sie den Anwendungsfall genau. Soll das Modell nur allgemeine Fragen beantworten, oder braucht es Zugriff auf konkrete Kundendaten wie Bestellstatus oder Vertragsdetails? Diese Entscheidung bestimmt alles Weitere, von der Wahl des Modells bis zum Datenschutzaufwand.
+
+Zweitens wählen Sie einen Business- oder API-Zugang mit abschließbarem AVV, niemals einen privaten Consumer-Account. Prüfen Sie dabei auch die Speicherfristen und ob eine Zero-Data-Retention-Option verfügbar und für Ihren Anwendungsfall überhaupt nötig ist.
+
+Drittens bauen Sie eine Zwischenschicht zwischen Modell und Datenbank, die den Zugriff auf genau die Daten der eingeloggten Sitzung beschränkt und Ausgaben vor der Anzeige filtert. Diese Schicht ist der wichtigste technische Baustein gegen Prompt Injection und sollte nicht outgesourct oder übersprungen werden.
+
+Viertens ergänzen Sie die sichtbare KI-Kennzeichnung als erste Nachricht im Chat, formuliert einfach und unmissverständlich.
+
+Fünftens kalkulieren Sie die laufenden Token-Kosten anhand realistischer Nutzungsszenarien und legen ein monatliches Kostenlimit beim Anbieter fest, damit ein unerwarteter Nutzungsanstieg nicht zu einer bösen Überraschung auf der Rechnung wird.
+
+Sechstens testen Sie die Integration gezielt mit Manipulationsversuchen, bevor sie live geht, etwa indem Sie selbst versuchen, das System dazu zu bringen, fremde Anweisungen zu befolgen oder Daten anderer Kunden preiszugeben.
+
+## Häufige Irrtümer in der Praxis
+
+Ein verbreiteter Irrtum ist die Annahme, ein Hinweis in den AGB reiche als Kennzeichnung aus. Das stimmt seit August 2026 nicht mehr, die Information muss zum Interaktionszeitpunkt selbst sichtbar sein. Genauso hartnäckig hält sich der Griff zum privaten ChatGPT-Zugang, weil er günstiger wirkt. Ohne AVV ist dieser Zugang für ein Kundenportal mit echten Kundendaten schlicht nicht zulässig. Häufig wird auch angenommen, ein gutes Sprachmodell sei von sich aus sicher gegen Manipulation. Das Gegenteil ist der Fall, gerade die leistungsfähigsten Modelle folgen Anweisungen besonders gut, auch wenn diese von einem böswilligen Nutzer stammen und nicht vom Betreiber der Website. Und nicht zuletzt wird die Kostenfrage oft erst nach dem Launch gestellt, dabei entscheidet gerade sie darüber, ob der Chatbot ein nützliches Werkzeug bleibt oder zum stillen Budgetfresser wird.
+
+Wer eine solche Integration technisch sauber und rechtlich abgesichert plant, sollte diese vier Punkte, Kennzeichnung, Auftragsverarbeitung, Kostenkontrolle und Absicherung gegen Prompt Injection, von Anfang an mitdenken statt sie nachträglich zu reparieren. Ein Kundenportal, das die KI-Kennzeichnung erst im Nachhinein einbaut, wirkt bei Kunden weniger seriös, ganz einfach. Wenn Sie unsicher sind, wo Ihr geplantes Projekt in dieser Checkliste steht, sprechen Sie uns über unsere [Kontaktseite](/kontakt) an, wir sehen uns Ihr Vorhaben gerne konkret an.
+
+## Key Takeaways
+
+- Seit 2. August 2026 verlangt Art. 50 Abs. 1 EU AI Act eine sichtbare KI-Kennzeichnung genau zum Zeitpunkt der ersten Interaktion, ein Hinweis in den AGB reicht nicht.
+- Verarbeitet das Sprachmodell personenbezogene Kundendaten, ist ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO zwingend, sonst drohen Bußgelder bis zu 20 Millionen Euro oder 4 Prozent des Jahresumsatzes.
+- Kostenlose Consumer-Tarife wie ChatGPT Free oder Plus bieten keinen AVV, für ein Kundenportal braucht es einen Business- oder API-Zugang.
+- Die API-Kosten unterscheiden sich um ein Vielfaches, GPT-4o-mini kostet nur rund ein Sechzehntel von GPT-4o, für einfache Anfragen meist die wirtschaftlichere Wahl.
+- Prompt Injection ist laut OWASP das Sicherheitsrisiko Nummer eins bei Sprachmodell-Anwendungen, eine technische Trennschicht zwischen Modell und Kundendatenbank ist deshalb Pflicht, keine Kür.
+
+Die Integration eines Sprachmodells ins Kundenportal ist kein IT-Nebenprojekt. Es ist eine rechtliche und wirtschaftliche Entscheidung, die von Anfang an mitgeplant werden muss, nicht nachträglich repariert. Wenn Sie Unterstützung bei der Umsetzung in Ihrem Unternehmen brauchen, melden Sie sich über unsere [Kontaktseite](/kontakt), wir beraten unabhängig davon, welchen Anbieter Sie am Ende wählen.

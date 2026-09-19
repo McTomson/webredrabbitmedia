@@ -4631,3 +4631,48 @@ quelle: https://developers.google.com/search/docs/fundamentals/using-gen-ai-cont
 quelle_name: Google Search Central - Google Search's Guidance on Generative AI Content on Your Website
 geprueft_am: 2026-09-18
 recheck_nach: 2027-03-17
+
+## t107-2026-09-19-515
+cluster: 3
+keywords: integriert, intelligente, sprachmodelle, direkt, kundenportal, einer, website
+aussage: Chatbots/Sprachassistenten in einem Kundenportal fallen unter Art. 50 Abs. 1 des EU AI Act: Anbieter müssen Nutzer spätestens beim ersten Interaktionszeitpunkt darüber informieren, dass sie mit einem KI-System kommunizieren. Ein reiner Hinweis in den AGB oder eine allgemeine Website-Aussage wie 'diese Seite nutzt KI' reicht nicht aus. Diese Pflicht gilt seit 2. August 2026.
+quelle: https://www.rtr.at/rtr/service/ki-servicestelle/ai-act/Transparenzpflichten.de.html
+quelle_name: RTR KI-Servicestelle - Transparenzpflichten (AI Act)
+geprueft_am: 2026-09-19
+recheck_nach: 2027-03-18
+
+## t107-2026-09-19-516
+cluster: 3
+keywords: integriert, intelligente, sprachmodelle, direkt, kundenportal, einer, website
+aussage: Wird ein KI-Anbieter (z.B. OpenAI, Anthropic) zur Verarbeitung personenbezogener Kundendaten aus dem Portal eingesetzt, ist nach Art. 28 DSGVO ein Auftragsverarbeitungsvertrag (AVV/DPA) zwingend erforderlich; ohne AVV drohen Bußgelder bis zu 20 Mio. Euro oder 4 % des Jahresumsatzes. Für kostenlose Endkunden-Tarife wie ChatGPT Free/Plus wird von den Anbietern kein AVV angeboten, da diese als B2C-Produkte eingestuft sind.
+quelle: https://externer-datenschutzbeauftragter-dresden.de/art-28-dsgvo/
+quelle_name: externer-datenschutzbeauftragter-dresden.de - Art. 28 DSGVO AVV-Leitfaden
+geprueft_am: 2026-09-19
+recheck_nach: 2027-03-18
+
+## t107-2026-09-19-517
+cluster: 3
+keywords: integriert, intelligente, sprachmodelle, direkt, kundenportal, einer, website
+aussage: Für Anthropics Claude API gilt standardmäßig eine Speicherfrist von Ein- und Ausgaben von 30 Tagen, danach automatische Löschung; die Daten werden ohne ausdrückliche Erlaubnis nicht zum Training verwendet. Eine Zero-Data-Retention-Vereinbarung (keine Speicherung außer bei gesetzlicher Pflicht) ist nur für berechtigte Enterprise-/API-Kunden nach Anthropic-Freigabe verfügbar.
+quelle: https://platform.claude.com/docs/en/manage-claude/api-and-data-retention
+quelle_name: Anthropic - API and data retention (Claude Platform Docs)
+geprueft_am: 2026-09-19
+recheck_nach: 2027-03-18
+
+## t107-2026-09-19-518
+cluster: 3
+keywords: integriert, intelligente, sprachmodelle, direkt, kundenportal, einer, website
+aussage: Die API-Kosten für gängige Sprachmodelle unterscheiden sich stark: GPT-4o kostet 2,50 USD pro 1 Mio. Input-Tokens und 10,00 USD pro 1 Mio. Output-Tokens, das günstigere GPT-4o-mini nur 0,15 USD bzw. 0,60 USD pro 1 Mio. Tokens — ein Faktor, der bei der technischen Planung eines KI-gestützten Kundenportals (Kosten pro Anfrage) berücksichtigt werden muss.
+quelle: https://developers.openai.com/api/docs/pricing
+quelle_name: OpenAI - offizielle API-Preisseite
+geprueft_am: 2026-09-19
+recheck_nach: 2027-03-18
+
+## t107-2026-09-19-519
+cluster: 3
+keywords: integriert, intelligente, sprachmodelle, direkt, kundenportal, einer, website
+aussage: Beim direkten Anbinden eines Sprachmodells an interne Kunden-/Portaldaten ist laut OWASP-Sicherheitsanalyse 'Prompt Injection' das Risiko Nr. 1 und 'Sensitive Information Disclosure' Risiko Nr. 2 für LLM-Anwendungen, da Anweisungen und Daten im selben Kontextfenster verarbeitet werden und es kein Äquivalent zu parametrisierten Datenbankabfragen gibt, um beides sauber zu trennen.
+quelle: https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/
+quelle_name: OWASP GenAI Security Project - Top 10 for LLM Applications 2026
+geprueft_am: 2026-09-19
+recheck_nach: 2027-03-18
